@@ -126,7 +126,7 @@ const ItemTabs = (props) => {
                                             setData(nextList);
                                         }}
                                     >
-                                        <Icon name={item.open?"chevron-up":"chevron-down"}
+                                        <Icon name={item.open ? "chevron-up" : "chevron-down"}
                                             color={COLORS.colorB}
                                             size={25}
                                             style={{ paddingLeft: 13 }}

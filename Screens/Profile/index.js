@@ -76,8 +76,9 @@ const Profile = ({ navigation }) => {
 
                     <FlatList
                         data={DATA}
-                        renderItem={({ item }) => 
+                        renderItem={({ item,index}) => 
                         <ItemTabs 
+                        index={index}
                         id={item.id}
                         title={item.title}
                         image={item.image}

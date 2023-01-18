@@ -34,7 +34,16 @@ const ItemTabs = (props) => {
     }
     return (
         <>
-            <TouchableOpacity style={[styles.tabContainer]} onPress={()=>props.navigation.navigate('ActivityScreens')}>
+            <TouchableOpacity style={[styles.tabContainer]} onPress={() => {
+                if (props.index === 0) {
+                    props.navigation.navigate('ActivityScreens')
+
+                } else if (props.index === 2) {
+                    props.navigation.navigate('NewLead')
+                }
+
+
+            }}>
                 {props.image}
                 <Text style={styles.titleText}>{props.title}</Text>
                 {props.notification
