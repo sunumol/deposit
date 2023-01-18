@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View, StatusBar, SafeAreaView, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import Svadhan from '../../../assets/Images/svadhan.svg'
+import Svadhan from '../../../assets/image/AgentLogo.svg'
 
 const CustomStatusBar = ({ backgroundColor, ...props }) => {
     const { top } = useSafeAreaInsets()
@@ -11,7 +11,7 @@ const CustomStatusBar = ({ backgroundColor, ...props }) => {
 
             <StatusBar translucent backgroundColor={backgroundColor} {...props} />
             <View style={styles.view}>
-            <Svadhan  width={160} height={51} resizeMode='contain' />
+            <Svadhan  width={205} height={67} resizeMode='contain' />
             </View>
 
         </View>

@@ -123,7 +123,7 @@ const CreatePin = ({ navigation}) => {
                                             setError(true);
                                             clearText();
                                         } else {
-                                            navigation.navigate('EligibilityConditions');
+                                            navigation.navigate('Profile');
                                         }
                                     }
                                 }

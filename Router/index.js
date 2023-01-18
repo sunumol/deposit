@@ -5,7 +5,11 @@ import SplashScreen from '../Screens/SplashScreen';
 import IntroScreens from '../Screens/IntroScreens';
 import LoginScreen from '../Screens/LoginScreen';
 import  Permission from '../Screens/Permission';
-import CreatePin from '../Screens/CreatePin'
+import CreatePin from '../Screens/CreatePin';
+import Profile from '../Screens/Profile'
+import PrivacyPolicy from '../Screens/PrivacyPolicy'
+import Terms from '../Screens/Terms'
+
 // import { useNetInfo } from "@react-native-community/netinfo";
 
 const Stack = createNativeStackNavigator();
@@ -24,6 +28,9 @@ export default function Router() {
         <Stack.Screen name="LoginScreen" component={LoginScreen} />
         <Stack.Screen name="Permission" component={Permission} />
         <Stack.Screen name="CreatePin" component={CreatePin} />
+        <Stack.Screen name="Profile" component={Profile} />
+        <Stack.Screen name="Privacy" component={PrivacyPolicy} />
+        <Stack.Screen name="Terms" component={Terms} />
       </Stack.Navigator>
     </NavigationContainer>
   );
