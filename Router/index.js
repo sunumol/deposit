@@ -9,7 +9,10 @@ import CreatePin from '../Screens/CreatePin';
 import Profile from '../Screens/Profile'
 import PrivacyPolicy from '../Screens/PrivacyPolicy'
 import Terms from '../Screens/Terms'
-
+import NewLead from '../Screens/NewLead';
+import ResePin from '../Screens/ResePin'
+import ForgotPin from '../Screens/ForgotPin';
+import PinScreen from '../Screens/PinScreen';
 // import { useNetInfo } from "@react-native-community/netinfo";
 
 const Stack = createNativeStackNavigator();
@@ -31,6 +34,10 @@ export default function Router() {
         <Stack.Screen name="Profile" component={Profile} />
         <Stack.Screen name="Privacy" component={PrivacyPolicy} />
         <Stack.Screen name="Terms" component={Terms} />
+        <Stack.Screen name="NewLead" component={NewLead} />
+        <Stack.Screen name="ResetPin" component={ResePin} />
+        <Stack.Screen name="ForgotPin" component={ForgotPin} />
+        <Stack.Screen name="PinScreen" component={PinScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

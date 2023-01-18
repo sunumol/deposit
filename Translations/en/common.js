@@ -348,8 +348,8 @@ export default {
 
     'ResetPin': 'Reset PIN',
     'EnterOPIN': 'Enter old PIN',
-    'EnterNewPin': 'Enter new PIN',
-    'ConfirmNewPin': 'Confirm new PIN',
+    'EnterNewPin': 'Enter PIN',
+    'ConfirmNewPin': 'Confirm PIN',
     'PINreset': 'PIN reset successfully',
 
     //Select Language
@@ -441,5 +441,14 @@ export default {
 'AreYou':'Are you sure you want to preclose your loan ?',
 // --------------------- Preclosure -------------------
 
+//New Lead
 
+'NewLead':'New Lead',
+'SmartPhone':'Smartphone linked mobile no.',
+'Village':'Village',
+'LeadG':'Lead Generated',
+
+//Forgot PIN
+
+'ForgotPin':'Forgot PIN',
 }
