@@ -16,7 +16,13 @@ export const  COLORS = {
     colorRed:'#EA4047',
     color333:'#333333',
     colorGreen:'#219653',
-    topColor:'#1d1d1d33'
+    topColor:'#1d1d1d33',
+    DarkYellow:'#F2994A',
+    LightYellow:'rgba(242, 153, 74, 0.1)',
+    DarkPurple:'#9B51E0',
+    LightPurple:'rgba(155, 81, 224, 0.1)',
+    DarkBlue:'#2F80ED',
+    LightBlue:'rgba(47, 128, 237, 0.1)'
 
 }
 

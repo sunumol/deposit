@@ -53,7 +53,7 @@ const Data = [
     {
         id: "3",
         title1: "Location",
-        description1: "Will be used to verify customer location to check serviceability",
+        description1: "Will be used to verify location",
         title2: "സ്ഥാനം",
         description2: "സേവന ലഭ്യത പരിശോധിക്കാൻ ഉപയോഗിക്കപ്പെടും",
         // image: resolveAssetSource(location),
@@ -156,7 +156,7 @@ const Permission = ({ navigation }) => {
                     {Data.map((item, index) => {
                         return (
                             <View key={index} style={styles.Card}>
-                                <View style={{ flex: 1, flexDirection: 'row', marginTop: 10 }}>
+                                <View style={{ flex: 1, flexDirection: 'row', marginTop: 10,marginBottom:20 }}>
 
                                     {item.id == 1 ?
                                         <File
@@ -192,7 +192,7 @@ const Permission = ({ navigation }) => {
                                         style={[styles.Image]}
                                         width={item.width}
                                         height={item.height} /> */}
-                                    <View style={{ flexDirection: 'column', paddingLeft: 15.5 }}>
+                                    <View style={{flex:1, flexDirection: 'column', paddingHorizontal: 15.5, }}>
                                         <Text style={styles.title}>{lang == "en" ? item.title1 : item.title2}</Text>
                                         <Text style={[styles.Desc, { fontSize: lang == 'en' ? 12 : 10 }]}>{lang == "en" ? item.description1 : item.description2}</Text>
                                     </View>
@@ -234,7 +234,6 @@ const styles = StyleSheet.create({
     Card: {
         backgroundColor: COLORS.colorBackground,
         width: Dimensions.get('window').width * 0.9,
-        height: 79,
         marginLeft: 17,
         marginRight: 17,
         marginBottom: 17,
@@ -257,8 +256,9 @@ const styles = StyleSheet.create({
         fontFamily: FONTS.FontRegular,
         fontWeight: '400',
         color: COLORS.colorBlack,
-        maxWidth: 230,
+        // maxWidth: 230,
         marginTop: 5,
+        marginRight:20
     },
     Image: {
         marginLeft: 19,

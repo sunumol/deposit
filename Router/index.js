@@ -8,7 +8,8 @@ import  Permission from '../Screens/Permission';
 import CreatePin from '../Screens/CreatePin';
 import Profile from '../Screens/Profile'
 import PrivacyPolicy from '../Screens/PrivacyPolicy'
-import Terms from '../Screens/Terms'
+import Terms from '../Screens/Terms';
+import ActivityScreens from '../Screens/ActivityScreens'
 
 // import { useNetInfo } from "@react-native-community/netinfo";
 
@@ -31,6 +32,7 @@ export default function Router() {
         <Stack.Screen name="Profile" component={Profile} />
         <Stack.Screen name="Privacy" component={PrivacyPolicy} />
         <Stack.Screen name="Terms" component={Terms} />
+        <Stack.Screen name="ActivityScreens" component={ActivityScreens} />
       </Stack.Navigator>
     </NavigationContainer>
   );
