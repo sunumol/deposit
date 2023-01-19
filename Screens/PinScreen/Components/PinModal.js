@@ -4,10 +4,10 @@ import { COLORS, FONTS } from '../../../Constants/Constants';
 import { useTranslation } from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 const { height, width } = Dimensions.get('screen');
-import Image1 from '../../../assets/image/call.svg';
 
 
-const CallModal = ({ ModalVisible, onPressOut, setModalVisible,onPress }) => {
+
+const PinModal = ({ ModalVisible, onPressOut, setModalVisible,onPress }) => {
     const [state, setState] = useState(null);
     const { t } = useTranslation();
     const [Lang, setLang] = useState('')
@@ -44,20 +44,14 @@ const CallModal = ({ ModalVisible, onPressOut, setModalVisible,onPress }) => {
                 </TouchableOpacity>
 
                 <View style={styles.modalContainer}>
-                    <View style={{paddingTop:width*0.065}}>
-                        <Image1 />
-                    </View>
-
-                    
+                <Text style={[styles.textdesc1,
+                { paddingTop: width * 0.05, textAlign: 'center' }]}>PIN Expired</Text>
                         <Text style={[styles.textdesc,
-                             {fontFamily:FONTS.FontBold,paddingTop: width * 0.06, }]}>Your last call status has not </Text>
-                                <Text style={[styles.textdesc,
-                             { fontFamily:FONTS.FontBold }]}>been updated.</Text>
-                           
-                                <Text style={[styles.textdesc,{paddingTop:width*0.05}]}>Please update the same</Text>
+                             { paddingTop: width * 0.02, textAlign: 'center' }]}>Your PIN has expired. Please reset</Text>
+                
 
                     <TouchableOpacity style={styles.buttonStyle} onPress={()=>setModalVisible(false)}>
-                        <Text style={styles.buttonTextStyle}>{t('common:Okay')}</Text>
+                        <Text style={styles.buttonTextStyle}>Reset</Text>
                     </TouchableOpacity>
                 </View>
 
@@ -79,8 +73,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     modalContainer: {
-        width: Dimensions.get('window').width * 0.90,
-        height: Dimensions.get('window').width * 0.74,
+        width: Dimensions.get('window').width * 0.82,
+        height: Dimensions.get('window').width * 0.43,
         backgroundColor: COLORS.colorBackground,
         borderRadius: 20,
         alignItems: 'center',
@@ -96,12 +90,12 @@ const styles = StyleSheet.create({
     },
     buttonStyle: {
         backgroundColor: COLORS.colorB,
-        width: Dimensions.get('window').width * 0.36,
+        width: Dimensions.get('window').width * 0.70,
         height: 46,
         borderRadius: 54,
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: width * 0.07,
+        marginTop: width * 0.06,
         marginBottom: 21
     },
     buttonTextStyle: {
@@ -138,12 +132,14 @@ const styles = StyleSheet.create({
     },
     textdesc: {
         fontSize: 14,
-        //paddingTop: width * 0.02,
-         textAlign: 'center' ,
-        color: "#1A051D",
+        color: "#3B3D43",
         fontFamily: FONTS.FontRegular,
     },
-
+    textdesc1: {
+        fontSize: 18,
+        color: "#3B3D43",
+        fontFamily: FONTS.FontSemiB,
+    },
 });
 
-export default CallModal;
+export default PinModal;
