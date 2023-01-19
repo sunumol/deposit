@@ -22,7 +22,10 @@ export const  COLORS = {
     DarkPurple:'#9B51E0',
     LightPurple:'rgba(155, 81, 224, 0.1)',
     DarkBlue:'#2F80ED',
-    LightBlue:'rgba(47, 128, 237, 0.1)'
+    LightBlue:'rgba(47, 128, 237, 0.1)',
+    DarkGreen:'#27AE60',
+    LightGreen:'rgba(39, 174, 96, 0.1)'
+
 
 }
 

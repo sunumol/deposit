@@ -1,14 +1,16 @@
 ;
 import React, { useEffect, useState } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
-import { COLORS, FONTS } from '../../../Constants/Constants';
+import { COLORS, FONTS } from '../../../../Constants/Constants';
 import { useTranslation } from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon1 from 'react-native-vector-icons/Ionicons'
-import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons'
+import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
+import ActivityModal from '../components/ActiveModal';
 const ActiveTab = (props) => {
     const { t } = useTranslation();
     const [Lang, setLang] = useState('')
+    const [modalVisible,setModalVisible]=useState(false)
 
     useEffect(() => {
         getData()
@@ -23,7 +25,11 @@ const ActiveTab = (props) => {
         }
     }
     return (
-        <View style={styles.boxStyle} key={props.id}>
+        <>
+        <TouchableOpacity 
+        style={styles.boxStyle} 
+        key={props.id}
+        onPress={()=>setModalVisible(true)}>
             <View style={{ flex: 1, flexDirection: 'row' }}>
 
                 <View style={[styles.circleStyle, { backgroundColor: props.color }]}>
@@ -54,7 +60,7 @@ const ActiveTab = (props) => {
                 }
                 {props.status === 'Explain' &&
                     <View style={[styles.leadContainer, { backgroundColor: COLORS.LightPurple }]}>
-                        <Text style={[styles.leadText, { color: COLORS.DarkPurple }]}>Leads Follow Up</Text>
+                        <Text style={[styles.leadText, { color: COLORS.DarkPurple }]}>Explain Trust Circle</Text>
                     </View>
                 }
                 {props.status === 'Conduct' &&
@@ -62,10 +68,16 @@ const ActiveTab = (props) => {
                         <Text style={[styles.leadText, { color: COLORS.DarkBlue }]}>Conduct CGT</Text>
                     </View>
                 }
+                {props.status === 'Collection' &&
+                    <View style={[styles.leadContainer, { backgroundColor: COLORS.LightGreen }]}>
+                        <Text style={[styles.leadText, { color: COLORS.DarkGreen }]}>Collection Follow Up</Text>
+                    </View>
+                }
             </View>
 
-        </View>
-
+        </TouchableOpacity>
+            <ActivityModal visible={modalVisible} onPressOut={()=>setModalVisible(!modalVisible)} meet={props.status === 'Explain' ? false : true}/>
+            </>
     )
 }
 
@@ -111,9 +123,8 @@ const styles = StyleSheet.create({
     },
     idText: {
         fontSize: 11,
-        fontFamily: FONTS.FontSemiB,
+        fontFamily: FONTS.FontRegular,
         color: COLORS.colorDark,
-        fontWeight: '500',
         paddingTop: 3,
         width: 110
     },

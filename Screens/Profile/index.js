@@ -59,7 +59,7 @@ const Profile = ({ navigation }) => {
         {
             id: '6',
             title: 'Collect',
-            image:<Collect/>,
+            image:<Collect width={50} height={40}/>,
             notification:true,
         },
     ];
