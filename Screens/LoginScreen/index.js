@@ -28,6 +28,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Resend from '../../assets/Images/resend.svg'
 import Logo from '../../assets/Images/svadhan.svg';
 import ToastModal from '../../Components/ToastModal';
+import ValidModal from './Components/ValidModal';
+import OtpModal from './Components/OtpModal';
 //import { useSelector, useDispatch, connect } from 'react-redux';
 
 const LoginScreen = ({ navigation, routew, props }) => {
@@ -48,6 +50,8 @@ const LoginScreen = ({ navigation, routew, props }) => {
     const [PhoneNum, setPhoneNum] = useState(null)
     const [ModalVisible, setModalVisible] = useState(false)
     const [ModalVisible1, setModalVisible1] = useState(false)
+    const [ValidModal1, setValidModal1] = useState(false)
+    const [OtpModal1, setOtpModal1] = useState(false)
     const isDarkMode = true;
     const [lang, setLang] = useState('')
     const [count, setCount] = useState(1)
@@ -58,7 +62,7 @@ const LoginScreen = ({ navigation, routew, props }) => {
     const [status, setStatus] = useState(false)
     const [valid1, setValid1] = useState(true)
     const [otp, setOtp] = useState(false)
-    const [ExitStatus,setExitStatus] = useState(false)
+    const [ExitStatus, setExitStatus] = useState(false)
 
     useEffect(() => {
         getData()
@@ -115,7 +119,7 @@ const LoginScreen = ({ navigation, routew, props }) => {
                 if (exitApp === 0) {
                     setExitApp(exitApp + 1);
 
-                    console.log("exit app Login", IsOtp2, IsOtp1,ExitStatus)
+                    console.log("exit app Login", IsOtp2, IsOtp1, ExitStatus)
                     ToastAndroid.show("Press back again to exit.", ToastAndroid.SHORT);
                 }
                 else if (exitApp === 1) {
@@ -213,7 +217,7 @@ const LoginScreen = ({ navigation, routew, props }) => {
         setIsOtp2(true)
         setModalVisible(true)
         setStatus(true)
-          setTimer(30)
+        setTimer(30)
         console.log("getotp update....", status, timerCount)
     }
 
@@ -239,7 +243,7 @@ const LoginScreen = ({ navigation, routew, props }) => {
             // setTimeout(()=>{
             //     setValid1(true)
             //   },[1000])
-            console.log("click count 2...", count,valid,valid1,timerCount)
+            console.log("click count 2...", count, valid, valid1, timerCount)
         }
 
     }
@@ -252,7 +256,7 @@ const LoginScreen = ({ navigation, routew, props }) => {
             // setPhoneNum(null)
             setModalVisible1(true)
             console.log("restricted values", num, PhoneNum)
-           // ToastAndroid.show(t('common:Valid'), ToastAndroid.SHORT);
+            // ToastAndroid.show(t('common:Valid'), ToastAndroid.SHORT);
         }
     }
 
@@ -294,8 +298,10 @@ const LoginScreen = ({ navigation, routew, props }) => {
 
                         <View style={[styles.container, { marginTop: Dimensions.get('window').height * 0.05 }]}>
 
-                            <Text style={styles.Heading1} onPress={()=>{navigation.navigate('Profile')
-                        setExitStatus(true)}}>{t('common:Verify')}</Text>
+                            <Text style={styles.Heading1} onPress={() => {
+                             navigation.navigate('PinScreen')
+                                setExitStatus(true)
+                            }}>{t('common:Verify')}</Text>
 
                             <View style={styles.ViewInput}>
                                 <View style={{ justifyContent: 'center' }}>
@@ -393,7 +399,7 @@ const LoginScreen = ({ navigation, routew, props }) => {
 
                             {IsOtp1 ?
                                 <View style={styles.ViewOtp}>
-                                    <Text style={styles.textOtp} onPress={()=>navigation.navigate('PreClosure')}>{t('common:EnterOtp')} </Text>
+                                    <Text style={styles.textOtp} onPress={() => navigation.navigate('PreClosure')}>{t('common:EnterOtp')} </Text>
                                 </View> : null}
 
                             {IsOtp1 ?
@@ -456,6 +462,19 @@ const LoginScreen = ({ navigation, routew, props }) => {
                             ModalVisible={ModalVisible1}
                             onPressOut={() => setModalVisible1(!ModalVisible1)}
                             setModalVisible={setModalVisible1}
+                        />
+                        <ValidModal
+                            Validation={'The mobile is already registered with us.'}
+                            ModalVisible={ValidModal1}
+                            onPressOut={() => setValidModal1(!ValidModal1)}
+                            setModalVisible={setValidModal1}
+                        />
+
+                        <OtpModal
+                            Validation={'OTP has expired'}
+                            ModalVisible={OtpModal1}
+                            onPressOut={() => setOtpModal1(!OtpModal1)}
+                            setModalVisible={setOtpModal1}
                         />
                     </KeyboardAvoidingView>
                 </ScrollView>

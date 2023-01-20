@@ -21,6 +21,7 @@ import TextInputBox from './TextInput';
 import Image1 from '../assets/Vector.svg';
 import { useTranslation } from 'react-i18next';
 import LeadModal from './LeadModal';
+import ValidModal from './ValidModal';
 
 const NewLead1 = ({ navigation }) => {
     const { t } = useTranslation();
@@ -31,7 +32,8 @@ const NewLead1 = ({ navigation }) => {
     const [BStatus, setBstatus] = useState(false)
     const [Button, setButton] = useState(false)
     const [ModalVisible, setModalVisible] = useState(false)
-    const [VStatus,setVStatus] = useState(false)
+    const [VStatus, setVStatus] = useState(false)
+    const [ValidModal1, setValidModal1] = useState(false)
 
     const VillageList = [
         {
@@ -107,44 +109,46 @@ const NewLead1 = ({ navigation }) => {
                             maxLength={6}
                             onChangeText={(text) => {
                                 setPincode(text)
+                                if(text.length == 6){
+                              
                                 setVStatus(true)
-
+                                }
                             }}
                         />
                     </View>
 
                     {VStatus &&
-                    <View style={{ paddingTop: width * 0.05, }}>
-                        <Text style={styles.TextName}>{t('common:Village')}</Text>
+                        <View style={{ paddingTop: width * 0.05, }}>
+                            <Text style={styles.TextName}>{t('common:Village')}</Text>
 
-                        <View style={[styles.textInput1, { flexDirection: 'row', }]} >
+                            <View style={[styles.textInput1, { flexDirection: 'row', }]} >
+                                {BStatus &&
+                                    <Image1 />}
+                                <TextInput
+                                    value={Village}
+                                    style={styles.TextInputBranch}
+                                    onChangeText={(text) => onChangeVillage(text)} />
+                            </View>
                             {BStatus &&
-                                <Image1 />}
-                            <TextInput
-                                value={Village}
-                                style={styles.TextInputBranch}
-                                onChangeText={(text) => onChangeVillage(text)} />
-                        </View>
-                        {BStatus &&
-                            <View style={styles.ViewMapBranch}>
-                                {VillageList.map((item) => {
-                                    return (
-                                        <TouchableOpacity onPress={() => {
-                                            setBstatus(false)
-                                            setVillage(item.title)
-                                            setButton(true)
-                                        }}>
-                                            <View style={{ paddingTop: width * 0.05 }}>
+                                <View style={styles.ViewMapBranch}>
+                                    {VillageList.map((item) => {
+                                        return (
+                                            <TouchableOpacity onPress={() => {
+                                                setBstatus(false)
+                                                setVillage(item.title)
+                                                setButton(true)
+                                            }}>
+                                                <View style={{ paddingTop: width * 0.05 }}>
 
-                                                <Text style={styles.ItemNameBranch}>{item.title}</Text>
-                                                {item.id == 1 &&
-                                                    <View style={styles.Line} />}
-                                            </View>
-                                        </TouchableOpacity>
-                                    )
-                                })}
-                            </View>}
-                    </View>}
+                                                    <Text style={styles.ItemNameBranch}>{item.title}</Text>
+                                                    {item.id == 1 &&
+                                                        <View style={styles.Line} />}
+                                                </View>
+                                            </TouchableOpacity>
+                                        )
+                                    })}
+                                </View>}
+                        </View>}
 
 
                 </ScrollView>
@@ -153,7 +157,7 @@ const NewLead1 = ({ navigation }) => {
 
                 <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                     <TouchableOpacity style={[styles.Button1, { backgroundColor: Button ? COLORS.colorB : '#ECEBED' }]}
-                        onPress={() => Button ? setModalVisible(true) : setModalVisible(false)}>
+                        onPress={() => Button ? setModalVisible(true) : setValidModal1(true)}>
                         <Text style={[styles.text1, { color: Button ? COLORS.colorBackground : '#979C9E' }]}>{t('common:Confirm')}</Text>
                     </TouchableOpacity>
                 </View>
@@ -163,6 +167,13 @@ const NewLead1 = ({ navigation }) => {
                 onPress={() => OnpressOut1()}
                 onPressOut={() => setModalVisible(!ModalVisible)}
                 setModalVisible={setModalVisible} />
+
+            <ValidModal
+                Validation={'This number is already registered.'}
+                ModalVisible={ValidModal1}
+                onPressOut={() => setValidModal1(!ValidModal1)}
+                setModalVisible={setValidModal1}
+            />
         </>
     )
 }
