@@ -29,7 +29,7 @@ const App = ({ visible, onPressOut, meet }) => {
             checked: false
         }
     ])
-{console.log("hdhfjhdskjgkghkerhkg----",meet)}
+
     return (
         <Modal isVisible={visible}
             onBackButtonPress={onPressOut}

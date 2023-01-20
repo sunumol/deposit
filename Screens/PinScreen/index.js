@@ -35,7 +35,7 @@ const PinScreen = ({ navigation, }) => {
     const [lang, setLang] = useState('')
     const [BStatus, setBstatus] = useState(false)
     const [OtpValue, setOtpValue] = useState('')
-    const [ModalVisible,setModalVisible] = useState(false)
+    const [ModalVisible, setModalVisible] = useState(false)
 
     useEffect(() => {
         getData()
@@ -74,19 +74,19 @@ const PinScreen = ({ navigation, }) => {
 
 
             <View style={styles.ViewContent}>
-                <LinearGradient colors={['#003874','#003874','#FFFFFF', '#003874']}
-                    start={{ x: 1, y: 1}} end={{ x:1 , y: 1 }}
+                <LinearGradient colors={['#003874', '#003874', '#FFFFFF', '#003874']}
+                    start={{ x: 1, y: 1 }} end={{ x: 1, y: 1 }}
                     //'#003874','#003874','#FFFFFF', '#003874',
                     style={styles.Linear}>
 
-                    <Svadhan width={350} height={80} resizeMode='contain' style={{top:-10}} />
+                    <Svadhan width={350} height={80} resizeMode='contain' style={{ top: -10 }} />
 
                     <Text style={styles.Text1}>Hi, Athira Anil</Text>
                 </LinearGradient>
 
 
                 <View style={styles.ViewPin}>
-                    <Text style={styles.PinTEXT} onPress={()=>setModalVisible(true)}>Please enter your PIN</Text>
+                    <Text style={styles.PinTEXT} onPress={() => setModalVisible(true)}>Please enter your PIN</Text>
 
                     <OTPInputView
                         style={[styles.OtpInput, {}]}
@@ -99,12 +99,12 @@ const PinScreen = ({ navigation, }) => {
                         codeInputFieldStyle={{ color: '#090A0A', borderRadius: 8, backgroundColor: '#FFFFF', }}
                         placeholderTextColor="black"
                         onCodeFilled={(code => {
-
+                            setModalVisible(!ModalVisible)
 
                         })}
                     />
 
-                    <Text style={styles.TextF}>Forgot PIN?</Text>
+                    <Text style={styles.TextF} onPress={() => navigation.navigate('ForgotPin')}>Forgot PIN?</Text>
 
                 </View>
 
@@ -116,7 +116,8 @@ const PinScreen = ({ navigation, }) => {
             <PinModal ModalVisible={ModalVisible}
                 onPress={() => OnpressOut1()}
                 onPressOut={() => setModalVisible(!ModalVisible)}
-                setModalVisible={setModalVisible} />
+                setModalVisible={setModalVisible}
+                navigation={navigation} />
         </SafeAreaProvider>
     )
 }

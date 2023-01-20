@@ -7,7 +7,8 @@ import {
     View,
     TouchableOpacity,
     FlatList,
-    ScrollView
+    ScrollView,
+    Text
 } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Statusbar from '../../Components/StatusBar';
@@ -90,7 +91,10 @@ const Profile = ({ navigation }) => {
                         columnWrapperStyle={{ justifyContent: 'space-between' }}
                         contentContainerStyle={{ padding: 20, }}
                     />
-
+ <Text style={{color:'black',textAlign:'center'}} onPress={() => {
+                             navigation.navigate('PinScreen')
+                                
+                            }}>Existing UserFlow</Text>
 
                 </ScrollView>
             </View>

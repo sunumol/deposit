@@ -26,7 +26,7 @@ const MeetTab = (props) => {
     }
     return (
         <>
-            <Text style={styles.timeDropStyle}>{props.time} AM ({props.data.length})</Text>
+            <Text style={styles.timeDropStyle}>{props.time} ({props.data.length})</Text>
             {props.data.map((item, index) => {
                 return (
                     <TouchableOpacity 
@@ -65,7 +65,7 @@ const MeetTab = (props) => {
                     </TouchableOpacity>
                 )
             })}
-        <ActivityModal visible={modalVisible} onPressOut={()=>setModalVisible(!modalVisible)} meet={props.meet}/>
+        <ActivityModal visible={modalVisible} onPressOut={()=>setModalVisible(!modalVisible)} meet={props.meet} />
         </>
     )
 }

@@ -11,6 +11,9 @@ import PrivacyPolicy from '../Screens/PrivacyPolicy'
 import Terms from '../Screens/Terms';
 import ActivityScreens from '../Screens/ActivityScreens';
 import NewLead from '../Screens/NewLead';
+import ResetPin from '../Screens/ResePin';
+import ForgotPin from '../Screens/ForgotPin';
+import PinScreen from '../Screens/PinScreen'
 
 // import { useNetInfo } from "@react-native-community/netinfo";
 
@@ -35,6 +38,10 @@ export default function Router() {
         <Stack.Screen name="Terms" component={Terms} />
         <Stack.Screen name="ActivityScreens" component={ActivityScreens} />
         <Stack.Screen name="NewLead" component={NewLead} />
+        <Stack.Screen name="ResetPin" component={ResetPin} />
+        <Stack.Screen name="ForgotPin" component={ForgotPin} />
+        <Stack.Screen name="PinScreen" component={PinScreen} />
+
       </Stack.Navigator>
     </NavigationContainer>
   );

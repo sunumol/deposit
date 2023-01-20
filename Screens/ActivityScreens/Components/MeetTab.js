@@ -30,7 +30,7 @@ const ItemTabs = (props) => {
                 color: '#6979F8',
                 status: 'Conduct',
             }],
-            time: '12:30'
+            time: '12:30 PM'
         },
         {
             id: 2,
@@ -43,7 +43,7 @@ const ItemTabs = (props) => {
                 color: '#75B5C4',
                 status: 'Conduct',
             }],
-            time: '01:30'
+            time: '01:30 PM'
         },
         {
             id: 3,
@@ -56,7 +56,7 @@ const ItemTabs = (props) => {
                 color: '#80C475',
                 status: 'Conduct',
             }],
-            time: '03:30'
+            time: '03:30 PM'
         },
         {
             id: 4,
@@ -70,7 +70,7 @@ const ItemTabs = (props) => {
                 status: 'Conduct',
             }],
 
-            time: '04:30'
+            time: '04:30 PM'
         },
     ])
 
