@@ -34,9 +34,16 @@ const ItemTabs = (props) => {
     }
     return (
         <>
-            <TouchableOpacity style={[styles.tabContainer]} onPress={()=>props.id == '1' ? 
-                props.navigation.navigate('ActivityScreens'):props.id == '5' ? setModalVisible(true):
-                props.navigation.navigate('NewLead')}>
+            <TouchableOpacity style={[styles.tabContainer]} onPress={() => {
+                if (props.index === 0) {
+                    props.navigation.navigate('ActivityScreens')
+
+                } else if (props.index === 2) {
+                    props.navigation.navigate('NewLead')
+                }
+
+
+            }}>
                 {props.image}
                 <Text style={styles.titleText}>{props.title}</Text>
                 {props.notification

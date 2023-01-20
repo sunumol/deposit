@@ -13,7 +13,7 @@ const { height, width } = Dimensions.get('screen');
 import { useTranslation } from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import DropTab from './DropTab'
+import DropTab from '../Components/components/dropTab'
 
 
 const ItemTabs = (props) => {
@@ -126,7 +126,7 @@ const ItemTabs = (props) => {
                                             setData(nextList);
                                         }}
                                     >
-                                        <Icon name={item.open?"chevron-up":"chevron-down"}
+                                        <Icon name={item.open ? "chevron-up" : "chevron-down"}
                                             color={COLORS.colorB}
                                             size={25}
                                             style={{ paddingLeft: 13 }}

@@ -440,8 +440,20 @@ export default {
 'PreDisable':'Pre-closure option will thereafter be disabled.',
 'AreYou':'Are you sure you want to preclose your loan ?',
 // --------------------- Preclosure -------------------
-
 //New Lead
+
+<<<<<<< HEAD
+//New Lead
+=======
+'NewLead':'New Lead',
+'SmartPhone':'Smartphone linked mobile no.',
+'Village':'Village',
+'LeadG':'Lead Generated',
+
+//Forgot PIN
+
+'ForgotPin':'Forgot PIN',
+>>>>>>> 1979099872f5b6536ba77c45f0b0cc23b83fd6a7
 
 'NewLead':'New Lead',
 'SmartPhone':'Smartphone linked mobile no.',
