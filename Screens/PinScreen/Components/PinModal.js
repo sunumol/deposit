@@ -7,7 +7,7 @@ const { height, width } = Dimensions.get('screen');
 
 
 
-const PinModal = ({ ModalVisible, onPressOut, setModalVisible,onPress }) => {
+const PinModal = ({ ModalVisible, onPressOut, setModalVisible,onPress ,navigation}) => {
     const [state, setState] = useState(null);
     const { t } = useTranslation();
     const [Lang, setLang] = useState('')
@@ -50,7 +50,11 @@ const PinModal = ({ ModalVisible, onPressOut, setModalVisible,onPress }) => {
                              { paddingTop: width * 0.02, textAlign: 'center' }]}>Your PIN has expired. Please reset</Text>
                 
 
-                    <TouchableOpacity style={styles.buttonStyle} onPress={()=>setModalVisible(false)}>
+                    <TouchableOpacity style={styles.buttonStyle} onPress={()=>
+                    {
+                        navigation.navigate('ResetPin')
+                        setModalVisible(false)
+                        }}>
                         <Text style={styles.buttonTextStyle}>Reset</Text>
                     </TouchableOpacity>
                 </View>

@@ -49,7 +49,7 @@ const ItemTabs = (props) => {
                     status: 'Conduct',
                 }],
 
-            time: '07:00'
+            time: '07:00 AM'
         },
         {
             id: 2,
@@ -73,7 +73,7 @@ const ItemTabs = (props) => {
                     status: 'Explain',
                 }],
 
-            time: '12:30'
+            time: '12:30 PM'
         },
     ])
 
