@@ -13,6 +13,8 @@ import NewLead from '../Screens/NewLead';
 import ResePin from '../Screens/ResePin'
 import ForgotPin from '../Screens/ForgotPin';
 import PinScreen from '../Screens/PinScreen';
+import ActivityScreens from '../Screens/ActivityScreens'
+
 // import { useNetInfo } from "@react-native-community/netinfo";
 
 const Stack = createNativeStackNavigator();
@@ -38,6 +40,7 @@ export default function Router() {
         <Stack.Screen name="ResetPin" component={ResePin} />
         <Stack.Screen name="ForgotPin" component={ForgotPin} />
         <Stack.Screen name="PinScreen" component={PinScreen} />
+        <Stack.Screen name="ActivityScreens" component={ActivityScreens} />
       </Stack.Navigator>
     </NavigationContainer>
   );

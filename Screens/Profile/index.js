@@ -16,11 +16,53 @@ import HeaderDashBoard from '../../Components/HeaderDashBoard';
 import BottomTabs from './Components/BottomTab';
 import ItemTabs from './Components/ItemTab';
 
-
+import Activity from './assets/Activity.svg';
+import Calendar from './assets/Calendar.svg';
+import Collect from './assets/Collect.svg';
+import NewCall from './assets/NewCall.svg';
+import NewLead from './assets/NewLead.svg';
+import NewUser from './assets/NewUser.svg';
 
 const Profile = ({ navigation }) => {
     const isDarkMode = true;
-  
+    const DATA = [
+        {
+            id: '1',
+            title: 'Activity',
+            image:<Activity/>,
+            notification:true,
+        },
+        {
+            id: '2',
+            title: 'Calendar',
+            image:<Calendar/>,
+            notification:false,
+        },
+        {
+            id: '3',
+            title: 'New Lead',
+            image:<NewLead/>,
+            notification:false,
+        },
+        {
+            id: '4',
+            title: 'New CGT',
+            image:<NewUser/>,
+            notification:false,
+        },
+        {
+            id: '5',
+            title: 'New Call',
+            image:<NewCall/>,
+            notification:false,
+        },
+        {
+            id: '6',
+            title: 'Collect',
+            image:<Collect/>,
+            notification:true,
+        },
+    ];
 
     return (
         <SafeAreaProvider>
@@ -31,11 +73,23 @@ const Profile = ({ navigation }) => {
 
             <View style={styles.container2}>
                 <ScrollView showsVerticalScrollIndicator={false}>
-     
-        <ItemTabs />
-    
-     
-            
+
+                    <FlatList
+                        data={DATA}
+                        renderItem={({ item }) => 
+                        <ItemTabs 
+                        id={item.id}
+                        title={item.title}
+                        image={item.image}
+                        notification={item.notification}
+                        navigation={navigation}/>}
+                        keyExtractor={item => item.id}
+                        horizontal={false}
+                        numColumns={2}
+                        columnWrapperStyle={{ justifyContent: 'space-between' }}
+                        contentContainerStyle={{ padding: 20, }}
+                    />
+
 
                 </ScrollView>
             </View>
@@ -53,7 +107,7 @@ const styles = StyleSheet.create({
     container2: {
         flex: 1,
         backgroundColor: COLORS.colorBackground,
-        padding: 20,
+
         //justifyContent: 'center',
     },
 

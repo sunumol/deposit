@@ -11,12 +11,7 @@ import { COLORS, FONTS } from '../../../Constants/Constants';
 const { height, width } = Dimensions.get('screen');
 import { useTranslation } from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Activity from '../assets/Activity.svg';
-import Calendar from '../assets/Calendar.svg';
-import Collect from '../assets/Collect.svg';
-import NewCall from '../assets/NewCall.svg';
-import NewLead from '../assets/NewLead.svg';
-import NewUser from '../assets/NewUser.svg';
+
 
 const ItemTabs = (props) => {
     const { t } = useTranslation();
@@ -38,61 +33,36 @@ const ItemTabs = (props) => {
         }
     }
     return (
-        <View style={{ paddingBottom: 20 }}>
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 21 }}>
-                <TouchableOpacity style={[styles.tabContainer]}>
-                    <Activity />
-                    <Text style={styles.titleText}>Activity</Text>
-                    <View style={styles.badgeView}>
+        <>
+            <TouchableOpacity style={[styles.tabContainer]} onPress={()=>props.navigation.navigate('ActivityScreens')}>
+                {props.image}
+                <Text style={styles.titleText}>{props.title}</Text>
+                {props.notification
+                    ? <View style={styles.badgeView}>
                         <Text style={styles.badgeText}>4</Text>
-                    </View>
-                </TouchableOpacity>
-                <TouchableOpacity style={[styles.tabContainer]}>
-                    <Calendar />
-                    <Text style={styles.titleText}>Calendar</Text>
-                </TouchableOpacity>
-            </View>
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 21 }}>
-                <TouchableOpacity style={[styles.tabContainer]}>
-                    <NewLead />
-                    <Text style={styles.titleText}>New Lead</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={[styles.tabContainer]}>
-                    <NewUser />
-                    <Text style={styles.titleText}>New CGT</Text>
-                </TouchableOpacity>
-            </View>
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 21 }}>
-                <TouchableOpacity style={[styles.tabContainer]}>
-                    <NewCall />
-                    <Text style={styles.titleText}>New Call</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={[styles.tabContainer]}>
-                    <Collect />
-                    <Text style={styles.titleText}>Collect</Text>
-                    <View style={styles.badgeView}>
-                        <Text style={styles.badgeText}>4</Text>
-                    </View>
-                </TouchableOpacity>
-            </View>
+                    </View> : null}
 
-        </View>
+            </TouchableOpacity>
+
+        </>
     )
 }
 
 const styles = StyleSheet.create({
     tabContainer: {
-        width: Dimensions.get('window').width * 0.42,
+        width: '47%',
         height: 125,
         backgroundColor: COLORS.colorBackground,
         borderRadius: 15,
-        shadowColor: 'rgba(0, 0, 0, 0.4)',
-        shadowOffset: { width: 0, height: 1 },
+        shadowColor: 'rgba(0, 0, 0, 2.7)',
+        shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.5,
-        elevation: 7,
+        elevation: 10,
         shadowRadius: 7,
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        marginTop: 20,
+
 
     },
     titleText: {
