@@ -107,11 +107,11 @@ const CreatePin = ({ navigation}) => {
                         <View style={{ alignItems: 'center', paddingTop: 41 }}>
                             <Reset />
                         </View>
-                       
-                    <Text style={styles.textPin}>Enter PIN</Text>
+                        
+                    <Text style={styles.textPin}>{t('common:EnterPin')} </Text>
                     <View style={{ alignItems: 'center' }}>
                         <OTPTextInput
-                            confirm={t('common:ConfirmNewPin')}
+                            confirm={t('common:ConfirmPIN')}
                             ref={otpInput2}
                             autoFocus={focus1}
                             inputCount={8}

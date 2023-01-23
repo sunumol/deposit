@@ -506,6 +506,12 @@ export default{
 'Notinterested':'താൽപ്പര്യമില്ല',
 'Notreachable':'എത്തിച്ചേരാനാകില്ല',
 'Eligibilitynotchecked':'യോഗ്യത പരിശോധിച്ചിട്ടില്ല',
-'ExplainedTrustCircle':'ട്രസ്റ്റ് സർക്കിൾ വിശദീകരിച്ചു'
+'ExplainedTrustCircle':'ട്രസ്റ്റ് സർക്കിൾ വിശദീകരിച്ചു',
+'Hi':'ഹായ്',
+'PleaseEnterPIN':'ദയവായി നിങ്ങളുടെ പിൻ നൽകുക',
+'ForgotPIN':'പിൻ മറന്നു?',
+'EnterPin':'പിൻ നൽകുക',
+'ConfirmPIN':'പിൻ സ്ഥിരീകരിക്കുക',
+
 
 }

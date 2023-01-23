@@ -502,8 +502,12 @@ export default {
     'Notinterested': 'Not interested',
     'Notreachable': 'Not reachable',
     'Eligibilitynotchecked': 'Eligibility not checked',
-    'ExplainedTrustCircle': 'Explained Trust Circle'
-
+    'ExplainedTrustCircle': 'Explained Trust Circle',
+    'Hi': 'Hi',
+    'PleaseEnterPIN': 'Please enter your PIN',
+    'ForgotPIN': 'Forgot PIN?',
+    'EnterPin': 'Enter PIN',
+    'ConfirmPIN': 'Confirm PIN',
 
 
 }

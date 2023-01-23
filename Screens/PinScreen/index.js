@@ -84,12 +84,12 @@ const PinScreen = ({ navigation, }) => {
 
                     <Svadhan width={350} height={80} resizeMode='contain' style={{ top: -10 }} />
 
-                    <Text style={styles.Text1}>Hi, Athira Anil</Text>
+                    <Text style={styles.Text1}>{t('common:Hi')}, Athira Anil</Text>
                 </ImageBackground>
 
 
                 <View style={styles.ViewPin}>
-                    <Text style={styles.PinTEXT} onPress={() => setModalVisible(true)}>Please enter your PIN</Text>
+                    <Text style={styles.PinTEXT} onPress={() => setModalVisible(true)}>{t('common:PleaseEnterPIN')}</Text>
 
                     <OTPInputView
                         style={[styles.OtpInput, {}]}
@@ -107,7 +107,7 @@ const PinScreen = ({ navigation, }) => {
                         })}
                     />
 
-                    <Text style={styles.TextF} onPress={() => navigation.navigate('ForgotPin')}>Forgot PIN?</Text>
+                    <Text style={styles.TextF} onPress={() => navigation.navigate('ForgotPin')}>{t('common:ForgotPIN')}</Text>
 
                 </View>
 
