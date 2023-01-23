@@ -36,10 +36,6 @@ export default function Router() {
         <Stack.Screen name="Profile" component={Profile} />
         <Stack.Screen name="Privacy" component={PrivacyPolicy} />
         <Stack.Screen name="Terms" component={Terms} />
-        <Stack.Screen name="NewLead" component={NewLead} />
-        <Stack.Screen name="ResetPin" component={ResePin} />
-        <Stack.Screen name="ForgotPin" component={ForgotPin} />
-        <Stack.Screen name="PinScreen" component={PinScreen} />
         <Stack.Screen name="ActivityScreens" component={ActivityScreens} />
         <Stack.Screen name="NewLead" component={NewLead} />
         <Stack.Screen name="ResetPin" component={ResetPin} />
