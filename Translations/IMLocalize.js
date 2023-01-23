@@ -46,7 +46,7 @@ i18n
 
   .init({
     resources: LANGUAGES,
-   //  lng:"ml",
+   lng:"en",
     react: {
       useSuspense: false
     },

@@ -140,7 +140,7 @@ const ItemTabs = (props) => {
                                 <>
                                     <View>
                                         <Text style={styles.timeDropStyle}>07:00 AM (3)</Text>
-                                        <Text style={styles.headText}>CALL</Text>
+                                        <Text style={styles.headText}>{t('common:Call')}</Text>
                                         {listData.map((item) => {
                                             return (
                                                 <DropTab
@@ -159,7 +159,7 @@ const ItemTabs = (props) => {
                                     </View>
                                     <View>
                                         <Text style={styles.timeDropStyle}>08:30 AM (1)</Text>
-                                        <Text style={styles.headText}>MEET</Text>
+                                        <Text style={styles.headText}>{t('common:Meet')}</Text>
                                         {meetData.map((item) => {
                                             return (
                                                 <DropTab

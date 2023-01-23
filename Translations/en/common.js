@@ -135,7 +135,7 @@ export default {
     'PayNow': 'Pay Now',
     'ReferNow': 'Refer Now',
     'PaymentUp': 'Upcoming Payments',
-   
+
     'Months': 'Months',
     'TC': 'Trust Circle',
     'Support': 'Support',
@@ -219,8 +219,8 @@ export default {
     'Pdf': 'Save as PDF',
     'Repay': 'Repay',
     'ConfirmPin': 'Confirm your PIN',
-    'Include':'Including past due',
-    'AmonutModal':'Amount cannot be higher than Pay total',
+    'Include': 'Including past due',
+    'AmonutModal': 'Amount cannot be higher than Pay total',
 
     //---------------------- Repay End---------------------
 
@@ -276,7 +276,7 @@ export default {
 
     'Our': 'Our',
     'SvadhanM': 'Svadhan Mitra',
-   // 'WillC': 'will contact',
+    // 'WillC': 'will contact',
     'Soonto': 'will contact soon to help you.',
 
     //PERMISSION
@@ -312,11 +312,11 @@ export default {
     'Reject': 'Reject',
     'rejectSure': 'Are you sure you want to \nreject this member ?',
     'PleaseContact': 'Please contact your Svadhan Mitra with the details of a new trust circle member',
-    'awaitApp':'Awaiting Approvals',
-    'AwaitDesc':'Please ask these members to approve you',
-    'waitApprove':'Waiting for her approval',
-    'Activememb':'Active Members',
-    'No1':'No',
+    'awaitApp': 'Awaiting Approvals',
+    'AwaitDesc': 'Please ask these members to approve you',
+    'waitApprove': 'Waiting for her approval',
+    'Activememb': 'Active Members',
+    'No1': 'No',
     //About us
 
     'AboutUs': 'About Us',
@@ -324,7 +324,7 @@ export default {
     //FAQ
 
     'FAQ': 'Frequently Asked Questions',
-    'FAQQ':'FAQ',
+    'FAQQ': 'FAQ',
 
     //Notification
 
@@ -364,9 +364,9 @@ export default {
     'BankN': 'Bank Name',
     'BranchN': 'Branch Name',
     'Search': 'Search',
-    'SearchBy':'Search by',
-    'IFSC':'IFSC',
-    'BankB':'Bank and Branch',
+    'SearchBy': 'Search by',
+    'IFSC': 'IFSC',
+    'BankB': 'Bank and Branch',
 
 
     //Add Bank Account page
@@ -381,7 +381,7 @@ export default {
     'verifyBA': 'Verifying your bank account',
     'VerifySuccess': 'Verification Successful',
     'VerifyDesc': 'Your Bank account could not be verified, Please try again with correct details',
-  
+
     //Bank Account page
 
     'BankAcct': 'Bank Account',
@@ -391,91 +391,119 @@ export default {
 
     //More popup
 
-    'More':'More',
-    'bankacc':'Bank account',
-    'Language':'Language',
-    'MPIN':'Change MPIN',
+    'More': 'More',
+    'bankacc': 'Bank account',
+    'Language': 'Language',
+    'MPIN': 'Change MPIN',
 
     //iNSURANCE CLAIM
 
-    'deathG':'Continuing Guarantor Death Intimation',
-    'TCDeath':'Trust Circle Member Death Intimation',
-    'initimation':'We have already received intimation',
-    'Memberdetail':'Member details',
-    'DOD':'Date of Death',
-    'DeathIntim':'We have received the death intimation of',
-    'Contents1':'We will call you on your number 97XXXXX374 shortly',
+    'deathG': 'Continuing Guarantor Death Intimation',
+    'TCDeath': 'Trust Circle Member Death Intimation',
+    'initimation': 'We have already received intimation',
+    'Memberdetail': 'Member details',
+    'DOD': 'Date of Death',
+    'DeathIntim': 'We have received the death intimation of',
+    'Contents1': 'We will call you on your number 97XXXXX374 shortly',
 
     //Svadhan Mitra Support
 
-    'SvadhanMs':'Svadhan Mitra Support',
-    'UnService':'Unsatisfactory service',
-    'MisLeadinfo':'Provided misleading information',
-    'ContactOFF':'Unable to contact',
-    'Others':'Others',
-    'ReqSupport':'You have requested support for',
-    'Descp':'Description',
+    'SvadhanMs': 'Svadhan Mitra Support',
+    'UnService': 'Unsatisfactory service',
+    'MisLeadinfo': 'Provided misleading information',
+    'ContactOFF': 'Unable to contact',
+    'Others': 'Others',
+    'ReqSupport': 'You have requested support for',
+    'Descp': 'Description',
 
     //Loans Support
 
-    'LoanSupp':'Loans Support',
-    'SupportPl':'Please select the loan for which you need support',
-    'Notcredit':'Loan amount not credited',
-    'repayNot':'Repayment not credited',
-    'creditBu':'Incorrect information in Credit Bureau',
-    'PreClose':'Request for loan Pre-closure',
-    'RequestSupp':'You have requested loan support for',
-    'Callback':'You have already requested for a callback',
-    'Requested':'Requested',
-    'Submit':'Submit',
+    'LoanSupp': 'Loans Support',
+    'SupportPl': 'Please select the loan for which you need support',
+    'Notcredit': 'Loan amount not credited',
+    'repayNot': 'Repayment not credited',
+    'creditBu': 'Incorrect information in Credit Bureau',
+    'PreClose': 'Request for loan Pre-closure',
+    'RequestSupp': 'You have requested loan support for',
+    'Callback': 'You have already requested for a callback',
+    'Requested': 'Requested',
+    'Submit': 'Submit',
 
     //Exit Modal
 
-    'ExitModal':'Are you sure you want to exit ? ',
+    'ExitModal': 'Are you sure you want to exit ? ',
 
-//  -------------------- PreClosure -------------------
-'PreClose' :'Pre-close loan',
-'PreCloseAmount':'Pre-Closure amount',
-'PleaseNot':'Please note that the pre-closure amount is valid only for payments made before 8:00 PM today.',
-'PreDisable':'Pre-closure option will thereafter be disabled.',
-'AreYou':'Are you sure you want to preclose your loan ?',
-// --------------------- Preclosure -------------------
-//New Lead
+    //  -------------------- PreClosure -------------------
+    'PreClose': 'Pre-close loan',
+    'PreCloseAmount': 'Pre-Closure amount',
+    'PleaseNot': 'Please note that the pre-closure amount is valid only for payments made before 8:00 PM today.',
+    'PreDisable': 'Pre-closure option will thereafter be disabled.',
+    'AreYou': 'Are you sure you want to preclose your loan ?',
+    // --------------------- Preclosure -------------------
+    //New Lead
 
-'NewLead':'New Lead',
-'SmartPhone':'Smartphone linked mobile no.',
-'Village':'Village',
-'LeadG':'Lead Generated',
+    'NewLead': 'New Lead',
+    'SmartPhone': 'Smartphone linked mobile no.',
+    'Village': 'Village',
+    'LeadG': 'Lead Generated',
 
-//Forgot PIN
+    //Forgot PIN
 
-'ForgotPin':'Forgot PIN',
+    'ForgotPin': 'Forgot PIN',
 
-'NewLead':'New Lead',
-'SmartPhone':'Smartphone linked mobile no.',
-'Village':'Village',
-'LeadG':'Lead Generated',
-'leadValid':'This number is already registered.',
+    'NewLead': 'New Lead',
+    'SmartPhone': 'Smartphone linked mobile no.',
+    'Village': 'Village',
+    'LeadG': 'Lead Generated',
+    'leadValid': 'This number is already registered.',
 
-//Forgot PIN
+    //Forgot PIN
 
-'ForgotPin':'Forgot PIN',
+    'ForgotPin': 'Forgot PIN',
 
-//exist user
+    //exist user
 
-'Pinexp':'PIN Expired',
-'Pinexp1':'Your PIN has expired. Please reset',
-'Reset':'Reset',
+    'Pinexp': 'PIN Expired',
+    'Pinexp1': 'Your PIN has expired. Please reset',
+    'Reset': 'Reset',
 
-//reset pin
-'otpexp':'OTP has expired',
+    //reset pin
+    'otpexp': 'OTP has expired',
 
-//Home Modal 
+    //Home Modal 
 
-'statusModal1':'Your last call status has not been updated.',
-'statusModal2':'Please update the same',
+    'statusModal1': 'Your last call status has not been updated.',
+    'statusModal2': 'Please update the same',
 
-//login modal
+    //login modal
 
-'registerMob':'The mobile is already registered with us.'
+    'registerMob': 'The mobile is already registered with us.',
+
+
+    // Profile
+
+    'Activity': 'Activity',
+    'Calendar': 'Calendar',
+    'NewLead': 'New Lead',
+    'NewCGT': 'New CGT',
+    'NewCall': 'New Call',
+    'Collect': 'Collect',
+
+    //  Activity
+
+    'All': 'ALL',
+    'Meet': 'MEET',
+    'Call': 'CALL',
+    'CollectionFollowUp': 'Collection Follow Up',
+    'ExplainTrustCircle': 'Explain Trust Circle',
+    'ConductCGT': 'Conduct CGT',
+    'LeadsFollowUp': 'Leads Follow Up',
+    'Status': 'Status',
+    'Notinterested': 'Not interested',
+    'Notreachable': 'Not reachable',
+    'Eligibilitynotchecked': 'Eligibility not checked',
+    'ExplainedTrustCircle': 'Explained Trust Circle'
+
+
+
 }

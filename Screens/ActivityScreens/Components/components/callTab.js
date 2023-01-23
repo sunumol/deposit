@@ -10,8 +10,8 @@ import ActivityModal from '../components/ActiveModal';
 const MeetTab = (props) => {
     const { t } = useTranslation();
     const [Lang, setLang] = useState('')
-    const [modalVisible,setModalVisible]=useState(false)
-    const [details,setDetails]=useState()
+    const [modalVisible, setModalVisible] = useState(false)
+    const [details, setDetails] = useState()
 
     useEffect(() => {
         getData()
@@ -30,12 +30,12 @@ const MeetTab = (props) => {
             <Text style={styles.timeDropStyle}>{props.time} ({props.data.length})</Text>
             {props.data.map((item, index) => {
                 return (
-                    <TouchableOpacity 
-                    onPress={()=>{
-                        setModalVisible(true)
-                        setDetails(item)
-                    }}
-                    style={styles.boxStyle} key={props.id}>
+                    <TouchableOpacity
+                        onPress={() => {
+                            setModalVisible(true)
+                            setDetails(item)
+                        }}
+                        style={styles.boxStyle} key={props.id}>
                         <View style={{ flex: 1, flexDirection: 'row' }}>
 
                             <View style={[styles.circleStyle, { backgroundColor: item.color }]}>
@@ -61,7 +61,7 @@ const MeetTab = (props) => {
                             </View>
 
                             <View style={[styles.leadContainer, { backgroundColor: COLORS.LightPurple }]}>
-                                <Text style={[styles.leadText, { color: COLORS.DarkPurple }]}>{props.meet?'Conduct CGT':'Explain Trust Circle'}</Text>
+                                <Text style={[styles.leadText, { color: COLORS.DarkPurple }]}>{props.meet ? t('common:ConductCGT') : t('common:ExplainTrustCircle')}</Text>
                             </View>
 
                         </View>
@@ -69,7 +69,7 @@ const MeetTab = (props) => {
                     </TouchableOpacity>
                 )
             })}
-        <ActivityModal visible={modalVisible} onPressOut={()=>setModalVisible(!modalVisible)} meet={props.meet} details={details}/>
+            <ActivityModal visible={modalVisible} onPressOut={() => setModalVisible(!modalVisible)} meet={props.meet} details={details} />
         </>
     )
 }
@@ -169,6 +169,7 @@ const styles = StyleSheet.create({
         padding: 4,
         borderRadius: 3,
         marginTop: 2,
+        maxWidth: 150
     },
 
 

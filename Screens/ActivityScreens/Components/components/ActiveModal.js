@@ -10,22 +10,23 @@ import Enable from '../../Images/enable.svg'
 import { Colors } from "react-native/Libraries/NewAppScreen";
 
 const App = ({ visible, onPressOut, meet, details }) => {
+    const { t } = useTranslation();
     const [enableContinue, setEnableContinue] = useState(false)
     const [id, setId] = useState()
     const [data, setData] = useState([
         {
             id: 1,
-            title: 'Not interested',
+            title: t('common:Notinterested'),
             checked: false
         },
         {
             id: 2,
-            title: 'Not reachable',
+            title: t('common:Notreachable'),
             checked: false
         },
         {
             id: 3,
-            title: meet === true ? 'Eligibility not checked' : 'Explained Trust Circle',
+            title: meet === true ? t('common:Eligibilitynotchecked') : t('common:ExplainedTrustCircle'),
             checked: false
         }
     ])
@@ -37,7 +38,7 @@ const App = ({ visible, onPressOut, meet, details }) => {
             style={{ margin: 0 }}>
             <View style={styles.mainContainer}>
                 <View style={styles.modalContainer}>
-                    <Text style={styles.statusText}>Status</Text>
+                    <Text style={styles.statusText}>{t('common:Status')}</Text>
                     <View style={{ flexDirection: 'row', paddingHorizontal: 20, paddingTop: 20, marginBottom: 30 }}>
                         <View style={{ flex: 1, flexDirection: 'row' }}>
                             <View style={[styles.circleStyle, { backgroundColor: details?.color }]}>
@@ -88,16 +89,16 @@ const App = ({ visible, onPressOut, meet, details }) => {
                                 </View>
                                 {index !== 2
                                     ? <View style={styles.lineView} />
-                                    : <View style={{marginTop:10}} />}
+                                    : <View style={{ marginTop: 10 }} />}
                             </>
                         )
                     })}
 
                     <TouchableOpacity
-                        style={[styles.continueView, { backgroundColor: id ? COLORS.colorB : COLORS.colorBorder}]}
+                        style={[styles.continueView, { backgroundColor: id ? COLORS.colorB : COLORS.colorBorder }]}
                         onPress={onPressOut}
                         disabled={id ? false : true}>
-                        <Text style={[styles.continueText, { color: id ? COLORS.colorBackground : COLORS.colorWhite2 }]}>Submit</Text>
+                        <Text style={[styles.continueText, { color: id ? COLORS.colorBackground : COLORS.colorWhite2 }]}>{t('common:Submit')}</Text>
                     </TouchableOpacity>
 
                 </View>
