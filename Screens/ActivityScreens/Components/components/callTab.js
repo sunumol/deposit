@@ -11,6 +11,7 @@ const MeetTab = (props) => {
     const { t } = useTranslation();
     const [Lang, setLang] = useState('')
     const [modalVisible,setModalVisible]=useState(false)
+    const [details,setDetails]=useState()
 
     useEffect(() => {
         getData()
@@ -30,7 +31,10 @@ const MeetTab = (props) => {
             {props.data.map((item, index) => {
                 return (
                     <TouchableOpacity 
-                    onPress={()=>setModalVisible(true)}
+                    onPress={()=>{
+                        setModalVisible(true)
+                        setDetails(item)
+                    }}
                     style={styles.boxStyle} key={props.id}>
                         <View style={{ flex: 1, flexDirection: 'row' }}>
 
@@ -65,7 +69,7 @@ const MeetTab = (props) => {
                     </TouchableOpacity>
                 )
             })}
-        <ActivityModal visible={modalVisible} onPressOut={()=>setModalVisible(!modalVisible)} meet={props.meet} />
+        <ActivityModal visible={modalVisible} onPressOut={()=>setModalVisible(!modalVisible)} meet={props.meet} details={details}/>
         </>
     )
 }

@@ -108,7 +108,7 @@ const CreatePin = ({ navigation}) => {
                             <Reset />
                         </View>
                        
-                    <Text style={styles.textPin}>{t('common:EnterNewPin')}</Text>
+                    <Text style={styles.textPin}>Enter PIN</Text>
                     <View style={{ alignItems: 'center' }}>
                         <OTPTextInput
                             confirm={t('common:ConfirmNewPin')}

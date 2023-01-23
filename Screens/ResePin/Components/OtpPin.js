@@ -21,10 +21,9 @@ const styles = StyleSheet.create({
   },
   textPin: {
     marginTop: 48,
-    fontSize: 14,
-    fontFamily: FONTS.FontRegular,
+    fontSize: 16,
+    fontFamily: FONTS.FontSemiB,
     color: COLORS.colorDark,
-    fontWeight: '400',
     textAlign: 'center'
   },
 });
@@ -243,7 +242,7 @@ getData = async () => {
     return (
       <View>
         <View style={[styles.container, containerStyle]}>{TextInputs}</View>
-        <Text style={[styles.textPin, { marginTop: 41,fontFamily:FONTS.FontSemiB }]}>{confirm}</Text>
+        <Text style={[styles.textPin]}>Confirm PIN</Text>
         <View style={[styles.container, containerStyle]}>{TextInputs2}</View>
       </View>
     );

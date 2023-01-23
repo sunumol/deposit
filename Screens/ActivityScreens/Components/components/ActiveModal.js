@@ -9,7 +9,7 @@ import Disable from '../../Images/disable.svg'
 import Enable from '../../Images/enable.svg'
 import { Colors } from "react-native/Libraries/NewAppScreen";
 
-const App = ({ visible, onPressOut, meet }) => {
+const App = ({ visible, onPressOut, meet, details }) => {
     const [enableContinue, setEnableContinue] = useState(false)
     const [id, setId] = useState()
     const [data, setData] = useState([
@@ -38,59 +38,63 @@ const App = ({ visible, onPressOut, meet }) => {
             <View style={styles.mainContainer}>
                 <View style={styles.modalContainer}>
                     <Text style={styles.statusText}>Status</Text>
-                    <View style={{ flexDirection: 'row', paddingHorizontal: 20, paddingTop: 20 }}>
+                    <View style={{ flexDirection: 'row', paddingHorizontal: 20, paddingTop: 20, marginBottom: 30 }}>
                         <View style={{ flex: 1, flexDirection: 'row' }}>
-                            <View style={[styles.circleStyle, { backgroundColor: '#94BCC8' }]}>
-                                <Text style={styles.circleText}>AJ</Text>
+                            <View style={[styles.circleStyle, { backgroundColor: details?.color }]}>
+                                <Text style={styles.circleText}>{details?.short}</Text>
                             </View>
 
                             <View style={{ flexDirection: 'column', paddingLeft: 12, paddingTop: 5 }}>
-                                <Text style={styles.nameText}>Ashly James</Text>
+                                <Text style={styles.nameText}>{details?.name}</Text>
                                 <View style={{ flexDirection: 'row', }}>
                                     <View style={{ paddingTop: 5, paddingRight: 1 }}>
                                         <Icon1 name="location-outline" color={"black"} />
                                     </View>
-                                    <Text style={[styles.idText, { paddingTop: 4 }]}>682025</Text>
+                                    <Text style={[styles.idText, { paddingTop: 4 }]}>{details?.text}</Text>
                                 </View>
                             </View>
                         </View>
                         <View style={{ flexDirection: 'row', paddingTop: 4 }}>
                             <Icon2 name="phone-in-talk-outline" color={"black"} size={15} />
-                            <Text style={[styles.numText, { paddingLeft: 6 }]}>878XXXXX00</Text>
+                            <Text style={[styles.numText, { paddingLeft: 6 }]}>{details?.phoneNumber}</Text>
                         </View>
 
                     </View>
 
-                    {data.map((item, data) => {
+                    {data.map((item, index) => {
                         return (
-                            <View
-                                style={{
-                                    flexDirection: 'row',
-                                    justifyContent: 'space-between',
-                                    paddingHorizontal: 20,
-                                    paddingTop: 40,
-                                    marginRight: 10
-                                }}>
+                            <>
+                                <View
+                                    style={{
+                                        flexDirection: 'row',
+                                        justifyContent: 'space-between',
+                                        paddingHorizontal: 20,
+                                        marginRight: 10
+                                    }}>
 
-                                <Text style={styles.textStyle}>{item.title}</Text>
-                                {enableContinue && id && item.id === id
-                                    ? <Enable width={18} height={18} onPress={() => {
-                                        setEnableContinue(false)
-                                        setId()
+                                    <Text style={styles.textStyle}>{item.title}</Text>
+                                    {enableContinue && id && item.id === id
+                                        ? <Enable width={18} height={18} onPress={() => {
+                                            setEnableContinue(false)
+                                            setId()
 
-                                    }} />
-                                    : <Disable width={18} height={18} onPress={() => {
-                                        setEnableContinue(true)
-                                        setId(item.id)
+                                        }} />
+                                        : <Disable width={18} height={18} onPress={() => {
+                                            setEnableContinue(true)
+                                            setId(item.id)
+                                        }
+                                        } />
                                     }
-                                    } />
-                                }
-                            </View>
+                                </View>
+                                {index !== 2
+                                    ? <View style={styles.lineView} />
+                                    : <View style={{marginTop:10}} />}
+                            </>
                         )
                     })}
 
                     <TouchableOpacity
-                        style={[styles.continueView, { backgroundColor: id ? COLORS.colorB : COLORS.colorBorder }]}
+                        style={[styles.continueView, { backgroundColor: id ? COLORS.colorB : COLORS.colorBorder}]}
                         onPress={onPressOut}
                         disabled={id ? false : true}>
                         <Text style={[styles.continueText, { color: id ? COLORS.colorBackground : COLORS.colorWhite2 }]}>Submit</Text>
@@ -178,7 +182,15 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         backgroundColor: COLORS.colorB,
         marginVertical: 22,
-        marginHorizontal: 15
+        marginHorizontal: 15,
+    },
+    lineView: {
+        borderWidth: 0.9,
+        borderColor: COLORS.Gray6,
+        backgroundColor: COLORS.Gray6,
+        opacity: 0.5,
+        marginVertical: 20
+
     },
 
 });

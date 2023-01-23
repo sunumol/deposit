@@ -68,7 +68,7 @@ const Profile = ({ navigation }) => {
     return (
         <SafeAreaProvider>
             <SafeAreaView style={styles.container1} />
-            <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} backgroundColor={COLORS.colorB} />
+            <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} backgroundColor={"#002B59"} />
 
             <HeaderDashBoard navigation={navigation} />
 

@@ -111,7 +111,7 @@ const ItemTabs = (props) => {
                 {data.map((item, index) => {
                     return (
                         <>
-                            <View style={styles.containerTab}>
+                            <View style={[styles.containerTab,{backgroundColor:item.open?'rgba(242, 242, 242, 0.5)':COLORS.backgroundColor}]}>
                                 <View style={{ flex: 1 }}>
                                     <Text style={styles.timeText}>{item.startTime} - {item.endTime}</Text>
                                 </View>
@@ -151,6 +151,7 @@ const ItemTabs = (props) => {
                                                     phoneNumber={item.phoneNumber}
                                                     color={item.color}
                                                     status={item.status}
+                                                    details={item}
                                                 />
                                             );
                                         })}
@@ -169,6 +170,7 @@ const ItemTabs = (props) => {
                                                     phoneNumber={item.phoneNumber}
                                                     color={item.color}
                                                     status={item.status}
+                                                    details={item}
                                                 />
                                             );
                                         })}

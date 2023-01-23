@@ -1,11 +1,12 @@
-import React from 'react';
+import React,{useCallback} from 'react';
 import {
     StatusBar,
     Platform,
     StyleSheet,
     SafeAreaView,
     View,
-    ScrollView
+    ScrollView,
+    BackHandler
 } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Statusbar from '../../Components/StatusBar';
@@ -15,15 +16,29 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import AllTab from './Components/AllTab';
 import MeetTab from './Components/MeetTab';
 import CallTab from './Components/CallTab';
+import { useFocusEffect } from '@react-navigation/native';
 
 const Activityscreens = ({ navigation }) => {
     const isDarkMode = true;
     const Tab = createMaterialTopTabNavigator();
-
+    
+    const handleGoBack = useCallback(() => {
+        navigation.goBack()
+        return true; // Returning true from onBackPress denotes that we have handled the event
+      }, [navigation]);
+    
+      useFocusEffect(
+        React.useCallback(() => {
+          BackHandler.addEventListener('hardwareBackPress', handleGoBack);
+    
+          return () =>
+            BackHandler.removeEventListener('hardwareBackPress', handleGoBack);
+        }, [handleGoBack]),
+      );
     return (
         <SafeAreaProvider>
             <SafeAreaView style={styles.container1} />
-            <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} backgroundColor={COLORS.colorB} />
+            <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} backgroundColor={"#002B59"} />
 
             <HeaderDashBoard navigation={navigation} name="Activity" />
 

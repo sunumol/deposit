@@ -44,21 +44,23 @@ const NewLead = ({ navigation, }) => {
         }
     }
 
-    const backAction =()=> {
+    const handleGoBack = useCallback(() => {
         if(BStatus){
             setBstatus(false)
         }else{
             navigation.goBack()
         }
-    }
-
-    useEffect(() => {
-        const backHandler = BackHandler.addEventListener(
-            'hardwareBackPress',
-            backAction,
-        );
-        return () => backHandler.remove();
-    }, [navigation]);
+        return true; // Returning true from onBackPress denotes that we have handled the event
+      }, [navigation]);
+    
+      useFocusEffect(
+        React.useCallback(() => {
+          BackHandler.addEventListener('hardwareBackPress', handleGoBack);
+    
+          return () =>
+            BackHandler.removeEventListener('hardwareBackPress', handleGoBack);
+        }, [handleGoBack]),
+      );
     return (
         <SafeAreaProvider>
             <SafeAreaView style={styles.container1} />
