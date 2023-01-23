@@ -442,9 +442,6 @@ export default {
 // --------------------- Preclosure -------------------
 //New Lead
 
-<<<<<<< HEAD
-//New Lead
-=======
 'NewLead':'New Lead',
 'SmartPhone':'Smartphone linked mobile no.',
 'Village':'Village',
@@ -453,14 +450,32 @@ export default {
 //Forgot PIN
 
 'ForgotPin':'Forgot PIN',
->>>>>>> 1979099872f5b6536ba77c45f0b0cc23b83fd6a7
 
 'NewLead':'New Lead',
 'SmartPhone':'Smartphone linked mobile no.',
 'Village':'Village',
 'LeadG':'Lead Generated',
+'leadValid':'This number is already registered.',
 
 //Forgot PIN
 
 'ForgotPin':'Forgot PIN',
+
+//exist user
+
+'Pinexp':'PIN Expired',
+'Pinexp1':'Your PIN has expired. Please reset',
+'Reset':'Reset',
+
+//reset pin
+'otpexp':'OTP has expired',
+
+//Home Modal 
+
+'statusModal1':'Your last call status has not been updated.',
+'statusModal2':'Please update the same',
+
+//login modal
+
+'registerMob':'The mobile is already registered with us.'
 }
