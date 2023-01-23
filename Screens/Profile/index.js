@@ -30,38 +30,38 @@ const Profile = ({ navigation }) => {
         {
             id: '1',
             title: 'Activity',
-            image:<Activity/>,
-            notification:true,
+            image: <Activity />,
+            notification: true,
         },
         {
             id: '2',
             title: 'Calendar',
-            image:<Calendar/>,
-            notification:false,
+            image: <Calendar />,
+            notification: false,
         },
         {
             id: '3',
             title: 'New Lead',
-            image:<NewLead/>,
-            notification:false,
+            image: <NewLead />,
+            notification: false,
         },
         {
             id: '4',
             title: 'New CGT',
-            image:<NewUser/>,
-            notification:false,
+            image: <NewUser />,
+            notification: false,
         },
         {
             id: '5',
             title: 'New Call',
-            image:<NewCall/>,
-            notification:false,
+            image: <NewCall />,
+            notification: false,
         },
         {
             id: '6',
             title: 'Collect',
-            image:<Collect width={50} height={40}/>,
-            notification:true,
+            image: <Collect width={50} height={40} />,
+            notification: true,
         },
     ];
 
@@ -77,24 +77,24 @@ const Profile = ({ navigation }) => {
 
                     <FlatList
                         data={DATA}
-                        renderItem={({ item,index}) => 
-                        <ItemTabs 
-                        index={index}
-                        id={item.id}
-                        title={item.title}
-                        image={item.image}
-                        notification={item.notification}
-                        navigation={navigation}/>}
+                        renderItem={({ item, index }) =>
+                            <ItemTabs
+                                index={index}
+                                id={item.id}
+                                title={item.title}
+                                image={item.image}
+                                notification={item.notification}
+                                navigation={navigation} />}
                         keyExtractor={item => item.id}
                         horizontal={false}
                         numColumns={2}
                         columnWrapperStyle={{ justifyContent: 'space-between' }}
                         contentContainerStyle={{ padding: 20, }}
                     />
- <Text style={{color:'black',textAlign:'center'}} onPress={() => {
-                             navigation.navigate('PinScreen')
-                                
-                            }}>Existing UserFlow</Text>
+                    <Text style={{ color: 'black', textAlign: 'center' }} onPress={() => {
+                        navigation.navigate('PinScreen')
+
+                    }}>Existing UserFlow</Text>
 
                 </ScrollView>
             </View>

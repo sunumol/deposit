@@ -114,7 +114,7 @@ const LoginScreen = ({ navigation, routew, props }) => {
     const backAction = () => {
 
         if (!ExitStatus) {
-            console.log("route...", timerCount, valid, IsOtp2, IsOtp1, status)
+            console.log("route...", timerCount, valid, IsOtp2, IsOtp1, status, ExitStatus)
             if (IsOtp1 == false && IsOtp2 == false) {
                 if (exitApp === 0) {
                     setExitApp(exitApp + 1);
@@ -166,12 +166,49 @@ const LoginScreen = ({ navigation, routew, props }) => {
     useEffect(() => {
         const backHandler = BackHandler.addEventListener(
             'hardwareBackPress',
-            backAction,
+            handleGoBack,
         );
         return () => backHandler.remove();
     }, [exitApp]);
 
+    const handleGoBack = () => {
+        if (!ExitStatus) {
+            if (!IsOtp1 && !IsOtp2) {
+                if (exitApp === 0) {
+                    setExitApp(exitApp + 1);
+                    console.log("exit app create pin", exitApp)
+                    ToastAndroid.show("Press back again to exit.", ToastAndroid.SHORT);
+                } else if (exitApp === 1) {
+                    BackHandler.exitApp();
+                    console.log("exit app else", exitApp)
+                }
+            }
+            else if (IsOtp1 == true) {
+                setPhoneNum(null)
+                setIsOtp1(false)
+                setIsOtp2(false)
+                setStatus(false)
+                //setTimeout(30)
+                setValid(false)
+                //setTimer(30)
+                // setStatus(false)
 
+            }
+            else if (IsOtp2 == true) {
+                setPhoneNum(null)
+                setIsOtp1(false)
+                setIsOtp2(false)
+                setStatus(false)
+                //setTimeout(30)
+                setValid(false)
+                //setTimer(30)
+                // setStatus(false)
+
+            }
+            return true;
+
+        }
+    }
     const resendCheck = () => {
         setIsOtp2(false)
         setResend(true)
@@ -299,7 +336,7 @@ const LoginScreen = ({ navigation, routew, props }) => {
                         <View style={[styles.container, { marginTop: Dimensions.get('window').height * 0.05 }]}>
 
                             <Text style={styles.Heading1} onPress={() => {
-                             navigation.navigate('ResetPin')
+                                navigation.navigate('ResetPin')
                                 setExitStatus(true)
                             }}>{t('common:Verify')}</Text>
 
@@ -464,14 +501,14 @@ const LoginScreen = ({ navigation, routew, props }) => {
                             setModalVisible={setModalVisible1}
                         />
                         <ValidModal
-                            Validation={'The mobile is already registered with us.'}
+                            Validation={('common:registerMob')}
                             ModalVisible={ValidModal1}
                             onPressOut={() => setValidModal1(!ValidModal1)}
                             setModalVisible={setValidModal1}
                         />
 
                         <OtpModal
-                            Validation={'OTP has expired'}
+                            Validation={'otpexp'}
                             ModalVisible={OtpModal1}
                             onPressOut={() => setOtpModal1(!OtpModal1)}
                             setModalVisible={setOtpModal1}

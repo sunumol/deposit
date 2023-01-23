@@ -34,6 +34,7 @@ const NewLead1 = ({ navigation }) => {
     const [ModalVisible, setModalVisible] = useState(false)
     const [VStatus, setVStatus] = useState(false)
     const [ValidModal1, setValidModal1] = useState(false)
+    const [ResultError,setResultError]  = useState(false)
 
     const VillageList = [
         {
@@ -47,8 +48,15 @@ const NewLead1 = ({ navigation }) => {
     ]
 
     const onChangeVillage = (text) => {
-        setBstatus(true)
         setVillage(text)
+        if(text == 'Kakkanad' ){
+            setBstatus(true)
+            setVillage(text)
+            setResultError(false)
+        }else{
+            setResultError(true)
+        }
+      
     }
 
     const OnpressOut1 = () => {
@@ -62,6 +70,18 @@ const NewLead1 = ({ navigation }) => {
         setButton(false)
         setVStatus(false)
 
+    }
+
+    const OnchangeNumber = (num) => {
+        if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(num) || num === '') {
+            setMobile(num)
+           
+        } else {
+            // setPhoneNum(null)
+          //  setModalVisible1(true)
+          //  console.log("restricted values", num, PhoneNum)
+             ToastAndroid.show(t('common:Valid'), ToastAndroid.SHORT);
+        }
     }
 
     return (
@@ -94,8 +114,7 @@ const NewLead1 = ({ navigation }) => {
                             color={"#1A051D"}
                             maxLength={10}
                             onChangeText={(text) => {
-                                setMobile(text)
-
+                                OnchangeNumber(text)
                             }}
                         />
 
@@ -137,6 +156,7 @@ const NewLead1 = ({ navigation }) => {
                                                 setBstatus(false)
                                                 setVillage(item.title)
                                                 setButton(true)
+                                                setResultError(false)
                                             }}>
                                                 <View style={{ paddingTop: width * 0.05 }}>
 
@@ -147,6 +167,14 @@ const NewLead1 = ({ navigation }) => {
                                             </TouchableOpacity>
                                         )
                                     })}
+                                </View>}
+                                {ResultError && !BStatus &&
+                                 <View style={[styles.ViewMapBranch,{ height: width * 0.15,}]}>
+                                    <View style={{ paddingTop: width * 0.05 }}>
+
+                                    <Text style={styles.ItemNameBranch}>No results found</Text>
+                               
+                                </View>
                                 </View>}
                         </View>}
 
@@ -169,7 +197,7 @@ const NewLead1 = ({ navigation }) => {
                 setModalVisible={setModalVisible} />
 
             <ValidModal
-                Validation={'This number is already registered.'}
+                Validation={t('common:leadValid')}
                 ModalVisible={ValidModal1}
                 onPressOut={() => setValidModal1(!ValidModal1)}
                 setModalVisible={setValidModal1}

@@ -40,6 +40,8 @@ const ItemTabs = (props) => {
 
                 } else if (props.index === 2) {
                     props.navigation.navigate('NewLead')
+                }else if (props.index === 4) {
+                    setModalVisible(true)
                 }
 
 

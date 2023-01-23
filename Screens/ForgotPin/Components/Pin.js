@@ -17,7 +17,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { FONTS } from '../../../Constants/Constants';
 const { height, width } = Dimensions.get('screen');
 import OTPInputView from '@twotalltotems/react-native-otp-input';
-import AllowModal from '../../../Components/AllowModal';
+import AllowModal from '../Components/AllowModal';
 import { useTranslation } from 'react-i18next';
 
 const Pin = ({ navigation }) => {
@@ -60,7 +60,7 @@ const Pin = ({ navigation }) => {
                 </View>
 
                 <View style={styles.View1}>
-                    <Text style={styles.otptext} onPress={() => setModalVisible(true)}>Enter OTP</Text>
+                    <Text style={styles.otptext} >{t('common:EnterNewPin')}</Text>
                 </View>
 
                 <OTPInputView
@@ -76,6 +76,9 @@ const Pin = ({ navigation }) => {
                     onCodeFilled={(code => {
                         if(code !== '4040'){
                             setOtpStatus(false)
+                            setModalVisible(true)
+                        }else{
+                            setModalVisible(true)
                         }
 
                     })}
@@ -87,10 +90,10 @@ const Pin = ({ navigation }) => {
                 </View>
                 {!otpStatus ?
                 <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                    <Text style={styles.errrorText}>You entered wrong OTP</Text>
+                    <Text style={styles.errrorText}>{t('common:otpValid')}</Text>
                 </View>: timerCount == 0 &&
                    <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                   <Text style={styles.errrorText}>OTP has expired</Text>
+                   <Text style={styles.errrorText}>{t('common:otpexp')}</Text>
                </View>}
             </View>
             <AllowModal ModalVisible={ModalVisible}

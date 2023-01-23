@@ -45,9 +45,9 @@ const PinModal = ({ ModalVisible, onPressOut, setModalVisible,onPress ,navigatio
 
                 <View style={styles.modalContainer}>
                 <Text style={[styles.textdesc1,
-                { paddingTop: width * 0.05, textAlign: 'center' }]}>PIN Expired</Text>
+                { paddingTop: width * 0.05, textAlign: 'center' }]}>{t('common:Pinexp')}</Text>
                         <Text style={[styles.textdesc,
-                             { paddingTop: width * 0.02, textAlign: 'center' }]}>Your PIN has expired. Please reset</Text>
+                             { paddingTop: width * 0.02, textAlign: 'center' }]}>{t('common:Pinexp1')}</Text>
                 
 
                     <TouchableOpacity style={styles.buttonStyle} onPress={()=>
@@ -55,7 +55,7 @@ const PinModal = ({ ModalVisible, onPressOut, setModalVisible,onPress ,navigatio
                         navigation.navigate('ResetPin')
                         setModalVisible(false)
                         }}>
-                        <Text style={styles.buttonTextStyle}>Reset</Text>
+                        <Text style={styles.buttonTextStyle}>{t('common:Reset')}</Text>
                     </TouchableOpacity>
                 </View>
 

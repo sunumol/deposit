@@ -48,13 +48,19 @@ const CallModal = ({ ModalVisible, onPressOut, setModalVisible,onPress }) => {
                         <Image1 />
                     </View>
 
-                    
-                        <Text style={[styles.textdesc,
+                    {Lang == 'en' ? 
+<View>
+                    <Text style={[styles.textdesc,
                              {fontFamily:FONTS.FontBold,paddingTop: width * 0.06, }]}>Your last call status has not </Text>
                                 <Text style={[styles.textdesc,
                              { fontFamily:FONTS.FontBold }]}>been updated.</Text>
+                             </View>:
+                    
+                        <Text style={[styles.textdesc,
+                             {fontFamily:FONTS.FontBold,paddingTop: width * 0.06, }]}>{t('common:statusModal1')}</Text>
+                        }
                            
-                                <Text style={[styles.textdesc,{paddingTop:width*0.05}]}>Please update the same</Text>
+                                <Text style={[styles.textdesc,{paddingTop:width*0.05}]}>{t('common:statusModal2')}</Text>
 
                     <TouchableOpacity style={styles.buttonStyle} onPress={()=>setModalVisible(false)}>
                         <Text style={styles.buttonTextStyle}>{t('common:Okay')}</Text>

@@ -61,7 +61,7 @@ const CreatePin = ({ navigation}) => {
 
 
     const handleGoBack = () => {
-        if (routes.name === "CreatePin") {
+        if (routes.name === "ResetPin") {
             if (exitApp === 0) {
                 setExitApp(exitApp + 1);
                 console.log("exit app create pin", exitApp)

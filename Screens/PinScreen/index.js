@@ -11,7 +11,8 @@ import {
     StatusBar,
     ScrollView,
     Dimensions,
-    BackHandler
+    BackHandler,
+    ImageBackground
 } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { COLORS, FONTS } from '../../Constants/Constants';
@@ -74,21 +75,19 @@ const PinScreen = ({ navigation, }) => {
 
 
             <View style={styles.ViewContent}>
-                <LinearGradient colors={['#003874', '#003874', '#FFFFFF', '#003874']}
-                    start={{ x: 1, y: 1 }} end={{ x: 1, y: 1 }}
-                    //'#003874','#003874','#FFFFFF', '#003874',
-                    style={styles.Linear}>
 
-                    <Svadhan width={350} height={80} resizeMode='contain' style={{ top: -10 }} />
+                <ImageBackground source={require('../../assets/image/bg.png')} >
+                <Svadhan width={350} height={80} resizeMode='contain' style={{ top: -10 }} />
 
-                    <Text style={styles.Text1}>Hi, Athira Anil</Text>
-                </LinearGradient>
+<Text style={styles.Text1}>Hi, Athira Anil</Text>
+                    </ImageBackground>
+         
 
 
-                <View style={styles.ViewPin}>
-                    <Text style={styles.PinTEXT} onPress={() => setModalVisible(true)}>Please enter your PIN</Text>
+                {/* <View style={styles.ViewPin}> */}
+                    {/* <Text style={styles.PinTEXT} onPress={() => setModalVisible(true)}>{t('common:PleasePin')}</Text> */}
 
-                    <OTPInputView
+                    {/* <OTPInputView
                         style={[styles.OtpInput, {}]}
                         pinCount={4}
                         code={OtpValue}
@@ -102,11 +101,11 @@ const PinScreen = ({ navigation, }) => {
                             setModalVisible(!ModalVisible)
 
                         })}
-                    />
+                    /> */}
 
-                    <Text style={styles.TextF} onPress={() => navigation.navigate('ForgotPin')}>Forgot PIN?</Text>
+                    {/* <Text style={styles.TextF} onPress={() => navigation.navigate('ForgotPin')}>{t('common:ForgotPin')} ?</Text>
 
-                </View>
+                </View> */}
 
                 {/* <View style={{justifyContent:'center'}}>
                 <Text style={styles.errrorText}>Invalid PIN</Text>
