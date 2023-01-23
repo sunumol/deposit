@@ -12,7 +12,6 @@ import {
     ScrollView,
     BackHandler,
     Dimensions,
-    StatusBar,
     ToastAndroid,
 } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -280,14 +279,13 @@ const LoginScreen = ({ navigation, routew, props }) => {
         <>
 
             <SafeAreaProvider style={{ backgroundColor: COLORS.colorBackground }} >
-
+            <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} backgroundColor={"#002B59"}/>
                 <ScrollView ref={scrollViewRef}
                     onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: true })}>
                     <KeyboardAvoidingView style={{ flex: 1 }}
                         {...(Platform.OS === 'ios' && { behavior: 'position' })}
                     >
                         <SafeAreaView style={styles.container1} />
-                        <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
 
                         <View style={{ marginBottom: IsOtp1 ? 0 : 0, marginTop: Dimensions.get('window').height * 0.2, alignItems: 'center', justifyContent: 'center', }}>
 
@@ -299,7 +297,7 @@ const LoginScreen = ({ navigation, routew, props }) => {
                         <View style={[styles.container, { marginTop: Dimensions.get('window').height * 0.05 }]}>
 
                             <Text style={styles.Heading1} onPress={() => {
-                             navigation.navigate('ResetPin')
+                             navigation.navigate('Profile')
                                 setExitStatus(true)
                             }}>{t('common:Verify')}</Text>
 

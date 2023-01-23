@@ -11,7 +11,9 @@ import {
     StatusBar,
     ScrollView,
     Dimensions,
-    BackHandler
+    BackHandler,
+    ImageBackground,
+    
 } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { COLORS, FONTS } from '../../Constants/Constants';
@@ -51,21 +53,23 @@ const PinScreen = ({ navigation, }) => {
         }
     }
 
-    const backAction = () => {
-        if (BStatus) {
+    const handleGoBack = useCallback(() => {
+        if(BStatus){
             setBstatus(false)
-        } else {
+        }else{
             navigation.goBack()
         }
-    }
-
-    useEffect(() => {
-        const backHandler = BackHandler.addEventListener(
-            'hardwareBackPress',
-            backAction,
-        );
-        return () => backHandler.remove();
-    }, [navigation]);
+        return true; // Returning true from onBackPress denotes that we have handled the event
+      }, [navigation]);
+    
+      useFocusEffect(
+        React.useCallback(() => {
+          BackHandler.addEventListener('hardwareBackPress', handleGoBack);
+    
+          return () =>
+            BackHandler.removeEventListener('hardwareBackPress', handleGoBack);
+        }, [handleGoBack]),
+      );
 
     return (
         <SafeAreaProvider>
@@ -74,15 +78,14 @@ const PinScreen = ({ navigation, }) => {
 
 
             <View style={styles.ViewContent}>
-                <LinearGradient colors={['#003874', '#003874', '#FFFFFF', '#003874']}
-                    start={{ x: 1, y: 1 }} end={{ x: 1, y: 1 }}
+                <ImageBackground  source={require('./Images/bg.png')}
                     //'#003874','#003874','#FFFFFF', '#003874',
                     style={styles.Linear}>
 
                     <Svadhan width={350} height={80} resizeMode='contain' style={{ top: -10 }} />
 
                     <Text style={styles.Text1}>Hi, Athira Anil</Text>
-                </LinearGradient>
+                </ImageBackground>
 
 
                 <View style={styles.ViewPin}>

@@ -12,7 +12,8 @@ import {
     TextInput,
     KeyboardAvoidingView,
     ScrollView,
-    ToastAndroid
+    ToastAndroid,
+    Platform
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Entypo'
 import { COLORS, FONTS } from '../../../Constants/Constants';
@@ -34,6 +35,7 @@ const NewLead1 = ({ navigation }) => {
     const [ModalVisible, setModalVisible] = useState(false)
     const [VStatus, setVStatus] = useState(false)
     const [ValidModal1, setValidModal1] = useState(false)
+    const [ResultError, setResultError] = useState(false)
 
     const VillageList = [
         {
@@ -47,8 +49,15 @@ const NewLead1 = ({ navigation }) => {
     ]
 
     const onChangeVillage = (text) => {
-        setBstatus(true)
         setVillage(text)
+        if (text == 'Kakkanad') {
+            setBstatus(true)
+            setVillage(text)
+            setResultError(false)
+        } else {
+            setResultError(true)
+        }
+
     }
 
     const OnpressOut1 = () => {
@@ -63,12 +72,25 @@ const NewLead1 = ({ navigation }) => {
         setVStatus(false)
 
     }
+    const OnchangeNumber = (num) => {
+        if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(num) || num === '') {
+            setMobile(num)
+
+        } else {
+            // setPhoneNum(null)
+            //  setModalVisible1(true)
+            //  console.log("restricted values", num, PhoneNum)
+            ToastAndroid.show(t('common:Valid'), ToastAndroid.SHORT);
+        }
+    }
 
     return (
         <>
 
 
-            <KeyboardAvoidingView styles={styles.container} behavior='padding'>
+            <KeyboardAvoidingView
+                behavior={Platform.OS === "ios" ? "padding" : null}
+                style={{ flex: 1, backgroundColor: 'white' }}>
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <View style={{ alignItems: 'center', justifyContent: 'center' }} >
 
@@ -94,12 +116,9 @@ const NewLead1 = ({ navigation }) => {
                             color={"#1A051D"}
                             maxLength={10}
                             onChangeText={(text) => {
-                                setMobile(text)
-
+                                OnchangeNumber(text)
                             }}
                         />
-
-
 
                         <TextInputBox
                             name={t('common:Pincode')}
@@ -109,9 +128,9 @@ const NewLead1 = ({ navigation }) => {
                             maxLength={6}
                             onChangeText={(text) => {
                                 setPincode(text)
-                                if(text.length == 6){
-                              
-                                setVStatus(true)
+                                if (text.length == 6) {
+
+                                    setVStatus(true)
                                 }
                             }}
                         />
@@ -137,6 +156,7 @@ const NewLead1 = ({ navigation }) => {
                                                 setBstatus(false)
                                                 setVillage(item.title)
                                                 setButton(true)
+                                                setResultError(false)
                                             }}>
                                                 <View style={{ paddingTop: width * 0.05 }}>
 
@@ -148,20 +168,24 @@ const NewLead1 = ({ navigation }) => {
                                         )
                                     })}
                                 </View>}
+                            {ResultError && !BStatus &&
+                                <View style={[styles.ViewMapBranch, { height: width * 0.15, }]}>
+                                    <View style={{ paddingTop: width * 0.05 }}>
+
+                                        <Text style={styles.ItemNameBranch}>No results found</Text>
+
+                                    </View>
+                                </View>}
                         </View>}
 
 
                 </ScrollView>
             </KeyboardAvoidingView>
-            <View style={styles.ViewVerify} >
 
-                <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                    <TouchableOpacity style={[styles.Button1, { backgroundColor: Button ? COLORS.colorB : '#ECEBED' }]}
-                        onPress={() => Button ? setModalVisible(true) : setValidModal1(true)}>
-                        <Text style={[styles.text1, { color: Button ? COLORS.colorBackground : '#979C9E' }]}>{t('common:Confirm')}</Text>
-                    </TouchableOpacity>
-                </View>
-            </View>
+            <TouchableOpacity style={[styles.Button1, { backgroundColor: Button ? COLORS.colorB : '#ECEBED' }]}
+                onPress={() => Button ? setModalVisible(true) : setValidModal1(true)}>
+                <Text style={[styles.text1, { color: Button ? COLORS.colorBackground : '#979C9E' }]}>{t('common:Confirm')}</Text>
+            </TouchableOpacity>
 
             <LeadModal ModalVisible={ModalVisible}
                 onPress={() => OnpressOut1()}
@@ -169,7 +193,7 @@ const NewLead1 = ({ navigation }) => {
                 setModalVisible={setModalVisible} />
 
             <ValidModal
-                Validation={'This number is already registered.'}
+                Validation={'The number is already registered'}
                 ModalVisible={ValidModal1}
                 onPressOut={() => setValidModal1(!ValidModal1)}
                 setModalVisible={setValidModal1}
@@ -187,7 +211,6 @@ const styles = StyleSheet.create({
     ViewVerify: {
         alignItems: 'center',
         justifyContent: 'center',
-        position: 'absolute',
         left: 0,
         right: 0,
         bottom: 0,
@@ -236,7 +259,6 @@ const styles = StyleSheet.create({
         marginBottom: 20
     },
     text1: {
-
         fontFamily: FONTS.FontBold,
         fontSize: 14,
         fontWeight: '700'

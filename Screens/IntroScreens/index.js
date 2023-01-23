@@ -8,22 +8,21 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useTranslation } from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRoute } from '@react-navigation/native';
-import First from './Assets/welcome-1.svg';
-import Second from './Assets/welcome-3.svg';
-import Third from './Assets/welcome-4.svg';
-import Fourth from './Assets/higher-loan-amount.svg';
+import First from './Assets/Dummy.svg';
+import Second from './Assets/Dummy.svg';
+import Third from './Assets/Dummy.svg';
 
 
 const slides = [
     {
         key: 1,
-        text: 'Offers from \n Multiple Lenders',
+        text: 'Lorem Ipsum',
         description: 'Option to take loan from Lender\n of your choice',
         // image: resolveAssetSource(first),
         //image: first,
         width: 294,
         height: 280,
-        text1: 'Offers from \n Multiple Lenders',
+        text1: 'Lorem Ipsum',
         description1: 'Option to take loan from Lender\n of your choice',
         text2: 'പല വായ്‌പ്പാ ദാതാക്കളിൽ നിന്നുള്ള ഓഫറുകൾ',
         description2:'നിങ്ങളുടെ ഇഷ്ടപ്രകാരം വായ്പ \nതിരഞ്ഞെടുക്കു',
@@ -37,13 +36,13 @@ const slides = [
     },
     {
         key: 2,
-        text: 'Higher Loan Amount',
+        text: 'Lorem Ipsum',
         description: ' No need to wait to get higher\n loan amount',
         // image: resolveAssetSource(second),
         
         width: 263,
         height: 257,
-        text1: 'Higher Loan Amount',
+        text1: 'Lorem Ipsum',
         description1: ' No need to wait to get higher\n loan amount',
         text2: 'ഉയർന്ന ലോൺ തുക',
         description2: 'താമസം കൂടാതെ ഉയർന്ന വായ്പ ലഭിക്കും',
@@ -57,13 +56,13 @@ const slides = [
     },
     {
         key: 3,
-        text: 'Digital with a\n Human Touch',
+        text: 'Lorem Ipsum',
         description: 'Apply and manage loan on your\n mobile. Doorstep service when\n required',
         // image: resolveAssetSource(third),
     
         width: 271,
         height: 269,
-        text1: 'Digital with a\n Human Touch',
+        text1: 'Lorem Ipsum',
         description1: 'Apply and manage loan on your\n mobile. Doorstep service when\n required',
         text2: 'മനുഷ്യ സ്പർശം ഉള്ള ഡിജിറ്റൽ',
         description2: 'എല്ലാ സേവനങ്ങളും നിങ്ങളുടെ\n മൊബൈലിൽ. ആവശ്യം ഉള്ളപ്പോൾ\n വാതിൽ പടി സേവനവും',
@@ -75,26 +74,7 @@ const slides = [
         imageTop: 96,
         commonTop: Dimensions.get('window').height * 0.19
     },
-    {
-        key: 4,
-        text: 'No Time for\n Center Meetings?',
-        description: 'No worries! We do not have\n center meetings',
-        // image: resolveAssetSource(fourth),
-       
-        width: 275,
-        height: 271,
-        text1: 'No Time for\n Center Meetings?',
-        description1: 'No worries! We do not have\n center meetings',
-        text2: 'സെന്റർ മീറ്റിംഗുകൾക്ക് സമയമില്ലേ?',
-        description2: 'വിഷമിക്കേണ്ട! ഞങ്ങൾക്ക്\n സെന്റർ മീറ്റിംഗുകൾ ഇല്ല',
-        // image: resolveAssetSource(fourth),
-        // image:require('./Assets/welcome-4.png'),
-        // width: "275",
-        // height: "271",
-        paddingTop: 88,
-        imageTop: 94,
-        commonTop: Dimensions.get('window').height * 0.19
-    }
+   
 ];
 
 
@@ -145,9 +125,9 @@ const IntroScreens = ({ navigation }) => {
     const _renderItem = ({ item, index }) => {
         return (
             <View style={[
-                styles.slide, { paddingTop: item.commonTop }]}>
+                styles.slide, { paddingTop: Dimensions.get('window').height * 0.23 }]}>
 
-                {index !== 3 ?
+                {index !== 2 ?
                     <TouchableOpacity
                         style={{ position: 'absolute', zIndex: 1000, right: 18, paddingTop: 50, }}
                         onPress={() => navigation.navigate('LoginScreen')}>
@@ -166,16 +146,12 @@ const IntroScreens = ({ navigation }) => {
 
                             resizeMode="contain"
                         /> :
-                        index == 3 ?
+                       
                             <Third
                                 style={{ width: item.width, height: item.height, paddingHorizontal: 33 }}
 
                                 resizeMode="contain"
-                            /> : <Fourth
-                                style={{ width: item.width, height: item.height, paddingHorizontal: 33 }}
-
-                                resizeMode="contain"
-                            />}
+                            /> }
                 {/* <SvgUri
                     width={item.width}
                     height={item.height}
@@ -183,10 +159,10 @@ const IntroScreens = ({ navigation }) => {
                     style={{ paddingHorizontal: 33, paddingTop: item.imageTop }}
                 /> */}
                 <View style={[styles.texView, { paddingTop: Dimensions.get('window').height * 0.06 }]}>
-                    <Text style={[styles.text, { lineHeight: lang == "en" ? 30 : 32 }]}>{lang == "en" ? item.text1 : item.text2}</Text>
+                    <Text style={[styles.text, { lineHeight: lang == "en" ? 30 : 32 }]}>Lorem Ipsum</Text>
                 </View>
                 <View style={styles.descriptionView}>
-                    <Text style={styles.description}>{lang == "en" ? item.description1 : item.description2}</Text>
+                    <Text style={styles.description}>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</Text>
                 </View>
             </View>
         );
@@ -289,7 +265,8 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: '400',
         lineHeight: 19,
-        letterSpacing: 0.64
+        letterSpacing: 0.64,
+        maxWidth:250
     },
     texView: {
         paddingHorizontal: Dimensions.get('window').width * 0.02,

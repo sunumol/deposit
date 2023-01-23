@@ -8,7 +8,7 @@ import LinearGradient from 'react-native-linear-gradient';
 const SplashScreen = ({ navigation }) => {
     const isDarkMode = true
     useEffect(() => {
-       setTimeout(() => navigation.navigate('LoginScreen'), 3000);
+       setTimeout(() => navigation.navigate('IntroScreen'), 3000);
 
       }, []);
 
@@ -16,7 +16,7 @@ const SplashScreen = ({ navigation }) => {
         <>
             <SafeAreaProvider>
                 <SafeAreaView style={styles.container} />
-                <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} backgroundColor={"#002B59"} />
+                <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} backgroundColor={'#002B59'} />
 
 
 

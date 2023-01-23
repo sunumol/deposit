@@ -76,7 +76,7 @@ const ActiveTab = (props) => {
             </View>
 
         </TouchableOpacity>
-            <ActivityModal visible={modalVisible} onPressOut={()=>setModalVisible(!modalVisible)} meet={props.status === 'Explain' ? false : true}/>
+            <ActivityModal visible={modalVisible} onPressOut={()=>setModalVisible(!modalVisible)} meet={props.status === 'Explain' ? false : true} details={props.details}/>
             </>
     )
 }

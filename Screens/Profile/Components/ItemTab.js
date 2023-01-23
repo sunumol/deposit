@@ -11,12 +11,12 @@ import { COLORS, FONTS } from '../../../Constants/Constants';
 const { height, width } = Dimensions.get('screen');
 import { useTranslation } from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import CallModal from './Modal';
 
 const ItemTabs = (props) => {
     const { t } = useTranslation();
     const [Lang, setLang] = useState('')
-    const [ModalVisible1, setModalVisible1] = useState(false)
+    const [ModalVisible, setModalVisible] = useState(false)
 
 
     useEffect(() => {
@@ -40,6 +40,8 @@ const ItemTabs = (props) => {
 
                 } else if (props.index === 2) {
                     props.navigation.navigate('NewLead')
+                }else if (props.index === 4) {
+                    setModalVisible(true)
                 }
 
 
@@ -53,6 +55,10 @@ const ItemTabs = (props) => {
 
             </TouchableOpacity>
 
+            <CallModal ModalVisible={ModalVisible}
+                onPress={() => OnpressOut1()}
+                //onPressOut={() => setModalVisible(!ModalVisible)}
+                setModalVisible={setModalVisible} />
         </>
     )
 }
