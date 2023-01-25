@@ -18,6 +18,7 @@ import NetWorkError from '../Screens/NetWorkError';
 import SelectCustomer from '../Screens/SelectCustomer';
 
 import { useNetInfo } from "@react-native-community/netinfo";
+import NewCgt from '../Screens/NewCgt';
 
 const Stack = createNativeStackNavigator();
 
@@ -31,19 +32,21 @@ export default function Router() {
         headerShown: false
       }}>
         <Stack.Screen name="SplashScreen" component={SplashScreen} />
-        <Stack.Screen name="IntroScreen" component={netInfo.isConnected ? IntroScreens : NetWorkError} />
-        <Stack.Screen name="LoginScreen" component={netInfo.isConnected ? LoginScreen : NetWorkError} />
-        <Stack.Screen name="Permission" component={netInfo.isConnected ? Permission : NetWorkError} />
-        <Stack.Screen name="CreatePin" component={netInfo.isConnected ? CreatePin : NetWorkError} />
-        <Stack.Screen name="Profile" component={netInfo.isConnected ? Profile : NetWorkError} />
-        <Stack.Screen name="Privacy" component={netInfo.isConnected ? PrivacyPolicy : NetWorkError} />
-        <Stack.Screen name="Terms" component={netInfo.isConnected ? Terms : NetWorkError} />
-        <Stack.Screen name="ActivityScreens" component={netInfo.isConnected ? ActivityScreens : NetWorkError} />
-        <Stack.Screen name="NewLead" component={netInfo.isConnected ? NewLead : NetWorkError} />
-        <Stack.Screen name="ResetPin" component={netInfo.isConnected ? ResetPin : NetWorkError} />
-        <Stack.Screen name="ForgotPin" component={netInfo.isConnected ? ForgotPin : NetWorkError} />
-        <Stack.Screen name="PinScreen" component={netInfo.isConnected ? PinScreen : NetWorkError} />
-        <Stack.Screen name="SelectCustomer" component={netInfo.isConnected ? SelectCustomer : NetWorkError} />
+        <Stack.Screen name="IntroScreen" component={netInfo.isConnected ? IntroScreens:NetWorkError} />
+        <Stack.Screen name="LoginScreen" component={netInfo.isConnected ?LoginScreen:NetWorkError} />
+        <Stack.Screen name="Permission" component={netInfo.isConnected ?Permission:NetWorkError} />
+        <Stack.Screen name="CreatePin" component={netInfo.isConnected ?CreatePin:NetWorkError} />
+        <Stack.Screen name="Profile" component={netInfo.isConnected ?Profile:NetWorkError} />
+        <Stack.Screen name="Privacy" component={netInfo.isConnected ?PrivacyPolicy:NetWorkError} />
+        <Stack.Screen name="Terms" component={netInfo.isConnected ?Terms:NetWorkError} />
+        <Stack.Screen name="ActivityScreens" component={netInfo.isConnected ?ActivityScreens:NetWorkError} />
+        <Stack.Screen name="NewLead" component={netInfo.isConnected ?NewLead:NetWorkError} />
+        <Stack.Screen name="ResetPin" component={netInfo.isConnected ?ResetPin:NetWorkError} />
+        <Stack.Screen name="ForgotPin" component={netInfo.isConnected ?ForgotPin:NetWorkError} />
+        <Stack.Screen name="PinScreen" component={netInfo.isConnected ?PinScreen:NetWorkError} />
+        <Stack.Screen name="NewCgt" component={netInfo.isConnected ?NewCgt:NetWorkError} />
+        <Stack.Screen name="SelectCustomer" component={netInfo.isConnected ? SelectCustomer:NetWorkError} />
+
       </Stack.Navigator>
     </NavigationContainer>
   );
