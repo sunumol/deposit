@@ -19,27 +19,43 @@ const { height, width } = Dimensions.get('screen');
 import OTPInputView from '@twotalltotems/react-native-otp-input';
 import AllowModal from '../Components/AllowModal';
 import { useTranslation } from 'react-i18next';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Pin = ({ navigation }) => {
     const { t } = useTranslation();
     const [OtpValue, setOtpValue] = useState('')
     const [ModalVisible, setModalVisible] = useState(false)
     const [timerCount, setTimer] = useState(30)
-    const [IsOtp2,setIsOtp2] = useState(true)
-    const [otpStatus,setOtpStatus] = useState(true)
+    const [IsOtp2, setIsOtp2] = useState(true)
+    const [otpStatus, setOtpStatus] = useState(true)
+    const [lang, setLang] = useState('')
+
+    useEffect(() => {
+        getData()
+    }, [])
+
+    const getData = async () => {
+        try {
+            const lang = await AsyncStorage.getItem('user-language')
+            setLang(lang)
+
+        } catch (e) {
+            console.log(e)
+        }
+    }
 
     useEffect(() => {
         if (IsOtp2) {
-           // setModalVisible(true)
+            // setModalVisible(true)
             let interval = setInterval(() => {
                 setTimer(lastTimerCount => {
                     lastTimerCount <= 1 && clearInterval(interval)
-                    
+
                     return lastTimerCount - 1
-                    
+
                 })
             }, 1000)
-            console.log("timer state",interval,timerCount)
+            console.log("timer state", interval, timerCount)
             if (timerCount === 0) {
                 setOtpStatus(true)
                 setIsOtp2(false)
@@ -52,16 +68,30 @@ const Pin = ({ navigation }) => {
     return (
         <View style={{ justifyContent: 'center', alignItems: 'center' }}>
             <View style={{ paddingTop: width * 0.1, justifyContent: 'center', alignItems: 'center' }}>
-                <Text style={styles.textTit}>Please enter OTP sent to</Text>
+                {lang == 'en'
+                    ? <>
+                        <Text style={styles.textTit}>Please enter OTP sent to</Text>
 
-                <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                    <Text style={[styles.textTit, { fontFamily: FONTS.FontBold }]}>80XXXX3903 </Text>
-                    <Text style={styles.textTit}>via SMS</Text>
-                </View>
+                        <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                            <Text style={[styles.textTit, { fontFamily: FONTS.FontBold }]}>80XXXX3903 </Text>
+                            <Text style={styles.textTit}>via SMS</Text>
+                        </View>
 
-                <View style={styles.View1}>
-                    <Text style={styles.otptext} >{t('common:EnterNewPin')}</Text>
-                </View>
+                        <View style={styles.View1}>
+                            <Text style={styles.otptext} >{t('common:EnterNewPin')}</Text>
+                        </View>
+                    </> : <>
+                        <Text style={styles.textTit}>എസ്എംഎസ് വഴി  <Text style={[styles.textTit, { fontFamily: FONTS.FontBold }]}>80XXXX3903 </Text>എന്ന</Text>
+
+                        <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                          
+                            <Text style={styles.textTit}> നമ്പറിലേക്ക് അയച്ച OTP നൽകുക</Text>
+                        </View>
+
+                        <View style={styles.View1}>
+                            <Text style={styles.otptext} >{t('common:EnterNewPin')}</Text>
+                        </View>
+                    </>}
 
                 <OTPInputView
                     style={[styles.OtpInput, {}]}
@@ -74,10 +104,10 @@ const Pin = ({ navigation }) => {
                     codeInputFieldStyle={{ color: '#090A0A', borderRadius: 8, backgroundColor: '#FFFFF', }}
                     placeholderTextColor="black"
                     onCodeFilled={(code => {
-                        if(code !== '4040'){
+                        if (code !== '4040') {
                             setOtpStatus(false)
                             setModalVisible(true)
-                        }else{
+                        } else {
                             setModalVisible(true)
                         }
 
@@ -89,12 +119,12 @@ const Pin = ({ navigation }) => {
                     <Text style={styles.resendText}>{t('common:Resend')} 00:{timerCount < 10 ? '0' : ''}{timerCount}</Text>
                 </View>
                 {!otpStatus ?
-                <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                    <Text style={styles.errrorText}>{t('common:otpValid')}</Text>
-                </View>: timerCount == 0 &&
-                   <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                   <Text style={styles.errrorText}>{t('common:otpexp')}</Text>
-               </View>}
+                    <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                        <Text style={styles.errrorText}>{t('common:otpValid')}</Text>
+                    </View> : timerCount == 0 &&
+                    <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                        <Text style={styles.errrorText}>{t('common:otpexp')}</Text>
+                    </View>}
             </View>
             <AllowModal ModalVisible={ModalVisible}
                 onPressOut={() => setModalVisible(!ModalVisible)}

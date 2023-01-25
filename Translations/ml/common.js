@@ -481,5 +481,37 @@ export default{
 
 //login modal
 
-'registerMob':'മൊബൈൽ ഇതിനകം ഞങ്ങളിൽ രജിസ്റ്റർ ചെയ്തിട്ടുണ്ട്.'
+'registerMob':'മൊബൈൽ ഇതിനകം ഞങ്ങളിൽ രജിസ്റ്റർ ചെയ്തിട്ടുണ്ട്.',
+
+
+// Profile
+
+'Activity':'പ്രവർത്തനം',
+'Calendar':'കലണ്ടർ',
+'NewLead':'പുതിയ ലീഡ്',
+'NewCGT':'പുതിയ CGT',
+'NewCall':'പുതിയ കോൾ',
+'Collect':'ശേഖരിക്കുക',
+
+//  Activity
+
+'All':'എല്ലാം',
+'Meet':'കണ്ടുമുട്ടുക',
+'Call':'കോൾ',
+'CollectionFollowUp':'ശേഖരം പിന്തുടരുക',
+'ExplainTrustCircle':'ട്രസ്റ്റ് സർക്കിൾ വിശദീകരിക്കുക',
+'ConductCGT':'CGT നടത്തുക',
+'LeadsFollowUp':'ഫോളോ അപ്പ് നയിക്കുന്നു',
+'Status':'നില',
+'Notinterested':'താൽപ്പര്യമില്ല',
+'Notreachable':'എത്തിച്ചേരാനാകില്ല',
+'Eligibilitynotchecked':'യോഗ്യത പരിശോധിച്ചിട്ടില്ല',
+'ExplainedTrustCircle':'ട്രസ്റ്റ് സർക്കിൾ വിശദീകരിച്ചു',
+'Hi':'ഹായ്',
+'PleaseEnterPIN':'ദയവായി നിങ്ങളുടെ പിൻ നൽകുക',
+'ForgotPIN':'പിൻ മറന്നു?',
+'EnterPin':'പിൻ നൽകുക',
+'ConfirmPIN':'പിൻ സ്ഥിരീകരിക്കുക',
+
+
 }

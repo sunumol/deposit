@@ -15,6 +15,7 @@ import ResetPin from '../Screens/ResePin';
 import ForgotPin from '../Screens/ForgotPin';
 import PinScreen from '../Screens/PinScreen';
 import NetWorkError from '../Screens/NetWorkError';
+import SelectCustomer from '../Screens/SelectCustomer';
 
 import { useNetInfo } from "@react-native-community/netinfo";
 import NewCgt from '../Screens/NewCgt';
@@ -44,6 +45,8 @@ export default function Router() {
         <Stack.Screen name="ForgotPin" component={netInfo.isConnected ?ForgotPin:NetWorkError} />
         <Stack.Screen name="PinScreen" component={netInfo.isConnected ?PinScreen:NetWorkError} />
         <Stack.Screen name="NewCgt" component={netInfo.isConnected ?NewCgt:NetWorkError} />
+        <Stack.Screen name="SelectCustomer" component={netInfo.isConnected ? SelectCustomer:NetWorkError} />
+
       </Stack.Navigator>
     </NavigationContainer>
   );

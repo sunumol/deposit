@@ -55,22 +55,22 @@ const ActiveTab = (props) => {
                 </View>
                 {props.status === 'Lead' &&
                     <View style={[styles.leadContainer, { backgroundColor: COLORS.LightYellow }]}>
-                        <Text style={[styles.leadText, { color: COLORS.DarkYellow }]}>Leads Follow Up</Text>
+                        <Text style={[styles.leadText, { color: COLORS.DarkYellow }]}>{t('common:LeadsFollowUp')}</Text>
                     </View>
                 }
                 {props.status === 'Explain' &&
                     <View style={[styles.leadContainer, { backgroundColor: COLORS.LightPurple }]}>
-                        <Text style={[styles.leadText, { color: COLORS.DarkPurple }]}>Explain Trust Circle</Text>
+                        <Text style={[styles.leadText, { color: COLORS.DarkPurple }]}>{t('common:ExplainTrustCircle')}</Text>
                     </View>
                 }
                 {props.status === 'Conduct' &&
                     <View style={[styles.leadContainer, { backgroundColor: COLORS.LightBlue }]}>
-                        <Text style={[styles.leadText, { color: COLORS.DarkBlue }]}>Conduct CGT</Text>
+                        <Text style={[styles.leadText, { color: COLORS.DarkBlue }]}>{t('common:CollectionFollowUp')}</Text>
                     </View>
                 }
                 {props.status === 'Collection' &&
                     <View style={[styles.leadContainer, { backgroundColor: COLORS.LightGreen }]}>
-                        <Text style={[styles.leadText, { color: COLORS.DarkGreen }]}>Collection Follow Up</Text>
+                        <Text style={[styles.leadText, { color: COLORS.DarkGreen }]}>{t('common:ConductCGT')}</Text>
                     </View>
                 }
             </View>
@@ -170,6 +170,7 @@ const styles = StyleSheet.create({
         padding: 4,
         borderRadius: 3,
         marginTop: 2,
+        maxWidth:150
     },
 
 

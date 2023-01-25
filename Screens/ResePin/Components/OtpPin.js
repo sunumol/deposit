@@ -242,7 +242,7 @@ getData = async () => {
     return (
       <View>
         <View style={[styles.container, containerStyle]}>{TextInputs}</View>
-        <Text style={[styles.textPin]}>Confirm PIN</Text>
+        <Text style={[styles.textPin]}>{confirm}</Text>
         <View style={[styles.container, containerStyle]}>{TextInputs2}</View>
       </View>
     );

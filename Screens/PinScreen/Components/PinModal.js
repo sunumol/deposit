@@ -78,11 +78,11 @@ const styles = StyleSheet.create({
     },
     modalContainer: {
         width: Dimensions.get('window').width * 0.82,
-        height: Dimensions.get('window').width * 0.43,
         backgroundColor: COLORS.colorBackground,
         borderRadius: 20,
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        paddingHorizontal:20
     },
 
     textStyle: {

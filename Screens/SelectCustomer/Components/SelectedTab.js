@@ -1,17 +1,15 @@
 ;
 import React, { useEffect, useState } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
-import { COLORS, FONTS } from '../../../../Constants/Constants';
+import { COLORS, FONTS } from '../../../Constants/Constants';
 import { useTranslation } from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon1 from 'react-native-vector-icons/Ionicons'
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
-import ActivityModal from '../components/ActiveModal';
+
 const MeetTab = (props) => {
     const { t } = useTranslation();
     const [Lang, setLang] = useState('')
-    const [modalVisible, setModalVisible] = useState(false)
-    const [details, setDetails] = useState()
 
     useEffect(() => {
         getData()
@@ -26,29 +24,23 @@ const MeetTab = (props) => {
         }
     }
     return (
-        <>
-            <Text style={styles.timeDropStyle}>{props.time} ({props.data.length})</Text>
-            {props.data.map((item, index) => {
-                return (
-                    <TouchableOpacity
-                        onPress={() => {
-                            setModalVisible(true)
-                            setDetails(item)
-                        }}
+       
+                    <View
+                       
                         style={styles.boxStyle} key={props.id}>
                         <View style={{ flex: 1, flexDirection: 'row' }}>
 
-                            <View style={[styles.circleStyle, { backgroundColor: item.color }]}>
-                                <Text style={styles.circleText}>{item.short}</Text>
+                            <View style={[styles.circleStyle, { backgroundColor: '#B9BB70' }]}>
+                                <Text style={styles.circleText}>{props.item.short}</Text>
                             </View>
 
                             <View style={{ flexDirection: 'column', paddingLeft: 12, paddingTop: 5 }}>
-                                <Text style={styles.nameText}>{item.name}</Text>
+                                <Text style={styles.nameText}>{props.item.name}</Text>
                                 <View style={{ flexDirection: 'row', }}>
                                     <View style={{ paddingTop: 5, paddingRight: 1 }}>
                                         <Icon1 name="location-outline" color={"black"} />
                                     </View>
-                                    <Text style={[styles.idText, { paddingTop: 4 }]}>{item.text}</Text>
+                                    <Text style={[styles.idText, { paddingTop: 4 }]}>{props.item.text}</Text>
                                 </View>
                             </View>
 
@@ -57,20 +49,17 @@ const MeetTab = (props) => {
                         <View style={{ flexDirection: 'column', paddingTop: 5, alignItems: 'flex-end' }}>
                             <View style={{ flexDirection: 'row' }}>
                                 <Icon2 name="phone-in-talk-outline" color={"black"} size={15} />
-                                <Text style={[styles.numText, { paddingLeft: 6 }]}>{item.phoneNumber}</Text>
+                                <Text style={[styles.numText, { paddingLeft: 6 }]}>{props.item.number}</Text>
                             </View>
 
-                            <View style={[styles.leadContainer, { backgroundColor: COLORS.LightPurple }]}>
-                                <Text style={[styles.leadText, { color: COLORS.DarkPurple }]}>{props.meet ? t('common:ConductCGT') : t('common:ExplainTrustCircle')}</Text>
+                            <View style={[styles.leadContainer, { backgroundColor: COLORS.LightBlue }]}>
+                                <Text style={[styles.leadText, { color: COLORS.DarkBlue }]}>{t('common:ConductCGT')}</Text>
                             </View>
 
                         </View>
 
-                    </TouchableOpacity>
-                )
-            })}
-            <ActivityModal visible={modalVisible} onPressOut={() => setModalVisible(!modalVisible)} meet={props.meet} details={details} />
-        </>
+                    </View>
+              
     )
 }
 

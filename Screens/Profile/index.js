@@ -16,6 +16,7 @@ import { FONTS, COLORS } from '../../Constants/Constants';
 import HeaderDashBoard from '../../Components/HeaderDashBoard';
 import BottomTabs from './Components/BottomTab';
 import ItemTabs from './Components/ItemTab';
+import { useTranslation } from 'react-i18next';
 
 import Activity from './assets/Activity.svg';
 import Calendar from './assets/Calendar.svg';
@@ -25,41 +26,42 @@ import NewLead from './assets/NewLead.svg';
 import NewUser from './assets/NewUser.svg';
 
 const Profile = ({ navigation }) => {
+    const { t } = useTranslation();
     const isDarkMode = true;
     const DATA = [
         {
             id: '1',
-            title: 'Activity',
+            title: t('common:Activity'),
             image: <Activity />,
             notification: true,
         },
         {
             id: '2',
-            title: 'Calendar',
+            title: t('common:Calendar'),
             image: <Calendar />,
             notification: false,
         },
         {
             id: '3',
-            title: 'New Lead',
+            title: t('common:NewLead'),
             image: <NewLead />,
             notification: false,
         },
         {
             id: '4',
-            title: 'New CGT',
+            title:t('common:NewCGT'),
             image: <NewUser />,
             notification: false,
         },
         {
             id: '5',
-            title: 'New Call',
+            title:t('common:NewCall'),
             image: <NewCall />,
             notification: false,
         },
         {
             id: '6',
-            title: 'Collect',
+            title: t('common:Collect'),
             image: <Collect width={50} height={40} />,
             notification: true,
         },

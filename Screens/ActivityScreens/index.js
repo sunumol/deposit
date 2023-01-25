@@ -17,10 +17,12 @@ import AllTab from './Components/AllTab';
 import MeetTab from './Components/MeetTab';
 import CallTab from './Components/CallTab';
 import { useFocusEffect } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 
 const Activityscreens = ({ navigation }) => {
     const isDarkMode = true;
     const Tab = createMaterialTopTabNavigator();
+    const { t } = useTranslation();
     
     const handleGoBack = useCallback(() => {
         navigation.goBack()
@@ -40,7 +42,7 @@ const Activityscreens = ({ navigation }) => {
             <SafeAreaView style={styles.container1} />
             <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} backgroundColor={"#002B59"} />
 
-            <HeaderDashBoard navigation={navigation} name="Activity" />
+            <HeaderDashBoard navigation={navigation} name={t('common:Activity')} />
 
 
             <Tab.Navigator
@@ -52,9 +54,9 @@ const Activityscreens = ({ navigation }) => {
                 tabBarActiveTintColor: COLORS.colorBackground ,
                 
               }}>
-                <Tab.Screen name="All" component={AllTab} />
-                <Tab.Screen name="meet" component={MeetTab} />
-                <Tab.Screen name="call" component={CallTab} />
+                <Tab.Screen name={t('common:All')} component={AllTab} />
+                <Tab.Screen name={t('common:Meet')} component={MeetTab} />
+                <Tab.Screen name={t('common:Call')} component={CallTab} />
             </Tab.Navigator>
 
         </SafeAreaProvider>
