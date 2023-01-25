@@ -17,6 +17,7 @@ import PinScreen from '../Screens/PinScreen';
 import NetWorkError from '../Screens/NetWorkError';
 
 import { useNetInfo } from "@react-native-community/netinfo";
+import NewCgt from '../Screens/NewCgt';
 
 const Stack = createNativeStackNavigator();
 
@@ -42,7 +43,7 @@ export default function Router() {
         <Stack.Screen name="ResetPin" component={netInfo.isConnected ?ResetPin:NetWorkError} />
         <Stack.Screen name="ForgotPin" component={netInfo.isConnected ?ForgotPin:NetWorkError} />
         <Stack.Screen name="PinScreen" component={netInfo.isConnected ?PinScreen:NetWorkError} />
-
+        <Stack.Screen name="NewCgt" component={netInfo.isConnected ?NewCgt:NetWorkError} />
       </Stack.Navigator>
     </NavigationContainer>
   );
