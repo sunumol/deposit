@@ -9,12 +9,14 @@ import Edit from './Images/Vector.svg'
 import Search from './Images/Search.svg'
 import ItemTabs from '../ActivityScreens/Components/AllTab';
 import Icon1 from 'react-native-vector-icons/Ionicons'
-import SelectedTab from './Components/SelectedTab'
+import SelectedTab from './Components/SelectedTab';
+import CgtModal from './Components/Modal';
 
 const SelectCustomer = ({ navigation }) => {
   const isDarkMode = true;
   const [text, onChangeText] = useState('');
-  const [selectedItem, setSelectedItem] = useState()
+  const [selectedItem, setSelectedItem] = useState();
+  const [ModalVisible,setModalVisible] = useState(false)
   const handleGoBack = useCallback(() => {
     navigation.goBack()
     return true; // Returning true from onBackPress denotes that we have handled the event
@@ -170,12 +172,17 @@ const SelectCustomer = ({ navigation }) => {
         </ScrollView>
         {selectedItem
           ?
-          <TouchableOpacity style={styles.buttonView}>
+          <TouchableOpacity style={styles.buttonView} onPress={()=>setModalVisible(true)}>
             <Text style={styles.continueText}>Continue</Text>
           </TouchableOpacity>
           : null
         }
       </View>
+
+      <CgtModal ModalVisible={ModalVisible}
+                 onPressOut={() => navigation.navigate('CgtScreen')}
+              //  onPressOut={() => setModalVisible(!ModalVisible)}
+                setModalVisible={setModalVisible} />
     </SafeAreaProvider>
   )
 }

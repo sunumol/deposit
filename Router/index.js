@@ -19,6 +19,8 @@ import SelectCustomer from '../Screens/SelectCustomer';
 
 import { useNetInfo } from "@react-native-community/netinfo";
 import NewCgt from '../Screens/NewCgt';
+import CgtScreen from '../Screens/CGT';
+import Activity from '../Screens/Activities';
 
 const Stack = createNativeStackNavigator();
 
@@ -46,7 +48,8 @@ export default function Router() {
         <Stack.Screen name="PinScreen" component={netInfo.isConnected ?PinScreen:NetWorkError} />
         <Stack.Screen name="NewCgt" component={netInfo.isConnected ?NewCgt:NetWorkError} />
         <Stack.Screen name="SelectCustomer" component={netInfo.isConnected ? SelectCustomer:NetWorkError} />
-
+        <Stack.Screen name="CgtScreen" component={netInfo.isConnected?CgtScreen:NetWorkError} />
+        <Stack.Screen name="Activity" component={netInfo.isConnected?Activity:NetWorkError} />
       </Stack.Navigator>
     </NavigationContainer>
   );
