@@ -20,6 +20,8 @@ import CGT from '../Screens/CGT';
 
 import { useNetInfo } from "@react-native-community/netinfo";
 import NewCgt from '../Screens/NewCgt';
+import CgtScreen from '../Screens/CGT';
+
 
 const Stack = createNativeStackNavigator();
 
@@ -48,6 +50,7 @@ export default function Router() {
         <Stack.Screen name="NewCgt" component={netInfo.isConnected ? NewCgt : NetWorkError} />
         <Stack.Screen name="SelectCustomer" component={netInfo.isConnected ? SelectCustomer : NetWorkError} />
         <Stack.Screen name="CGT" component={netInfo.isConnected ? CGT : NetWorkError} />
+        <Stack.Screen name="CgtScreen" component={netInfo.isConnected?CgtScreen:NetWorkError} />
 
       </Stack.Navigator>
     </NavigationContainer>
