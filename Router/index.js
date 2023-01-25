@@ -4,7 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import SplashScreen from '../Screens/SplashScreen';
 import IntroScreens from '../Screens/IntroScreens';
 import LoginScreen from '../Screens/LoginScreen';
-import  Permission from '../Screens/Permission';
+import Permission from '../Screens/Permission';
 import CreatePin from '../Screens/CreatePin';
 import Profile from '../Screens/Profile'
 import PrivacyPolicy from '../Screens/PrivacyPolicy'
