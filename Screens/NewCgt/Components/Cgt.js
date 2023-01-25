@@ -18,8 +18,8 @@ import {
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { COLORS, FONTS } from '../../../Constants/Constants';
 const { height, width } = Dimensions.get('screen');
-import moment from 'moment/moment';
-import { useTranslation } from 'react-i18next';
+// import moment from 'moment/moment';
+// import { useTranslation } from 'react-i18next';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { PagerView } from 'react-native-pager-view';
 import {
@@ -33,7 +33,7 @@ import {
     eachMonthOfInterval,
     addWeeks
 } from 'date-fns';
-import Swiper from 'react-native-swiper'
+// import Swiper from 'react-native-swiper'
 const Cgt = () => {
     const [status, setStatus] = useState(false);
     const weekDay = [];
