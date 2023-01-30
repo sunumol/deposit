@@ -22,24 +22,14 @@ import { useTranslation } from 'react-i18next';
 const { height, width } = Dimensions.get('screen');
 
 
-const Cgt = ({ navigation }) => {
+const Activities = ({ navigation }) => {
     const route = useRoute();
     console.log("route name", route.name);
     const isDarkMode = true
     const { t } = useTranslation();
     const [lang, setLang] = useState('')
 
-    const Data = [
-        {
-            id: 1,
-        },
-        {
-            id: 2,
-        },
-        {
-            id: 3
-        }
-    ]
+   
 
     useEffect(() => {
         getData()
@@ -60,44 +50,12 @@ const Cgt = ({ navigation }) => {
 <>
 <ScrollView>
         <View style={{}}>
-
-            <View style={styles.TextView}>
-                <Text style={styles.text1}>By proceeding I confirm that I shall verify during CGT:</Text>
-            </View>
-
-            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                {Data.map((item) => {
-                    return (
-                        <View style={styles.viewCard}>
-
-                            <View style={styles.ViewId}>
-                                <Text style={styles.TextID}>{item.id}</Text>
-                            </View>
-
-                            {item.id === 1 ?
-                                <View>
-                                    <Text style={styles.textBold}>Customer’s <Text style={styles.textReg}>address in Aadhaar matches</Text></Text>
-                                    <Text style={styles.textReg}>with their current residence address</Text>
-                                </View> :
-                                item.id === 2 ?
-                                    <View>
-                                        <Text style={styles.textReg}>No two <Text style={styles.textBold}>Trust Circle </Text>members stay in the</Text>
-                                        <Text>same address</Text>
-                                    </View> :
-                                    <View>
-                                        <Text style={styles.textReg}>KYC IDs of the<Text style={styles.textBold}> Customers and their</Text></Text>
-                                        <Text style={styles.textBold}>Spouse <Text style={styles.textReg}>with original KYC IDs, for KYC</Text></Text>
-                                        <Text style={styles.textReg}>unverified cases</Text>
-
-                                    </View>}
-                        </View>
-                    )
-                })}
-            </View>
-            </View>
+        <Text style={styles.textConfirm}>{t('common:Confirm')}</Text>
+            
+</View>
             </ScrollView>
             <View style={styles.ViewButton} >
-                <TouchableOpacity style={styles.Button1} onPress ={()=>navigation.navigate('Profile')}>
+                <TouchableOpacity style={styles.Button1} >
                     <Text style={styles.textConfirm}>{t('common:Confirm')}</Text>
                 </TouchableOpacity>
             </View>
@@ -106,7 +64,7 @@ const Cgt = ({ navigation }) => {
     )
 }
 
-export default Cgt;
+export default Activities;
 
 
 const styles = StyleSheet.create({
@@ -162,8 +120,8 @@ const styles = StyleSheet.create({
         marginBottom: width * 0.03
     },
     ViewButton: {
-        alignItems: 'center',
-        justifyContent: 'center',
+        alignItems:'flex-end',
+        justifyContent:'flex-end',
         position: 'absolute',
         left: 0,
         right: 0,
@@ -171,16 +129,17 @@ const styles = StyleSheet.create({
         //top:0
     },
     Button1: {
-        width: width * 0.87,
-        height: 48,
+        width: 80,
+        height: 80,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: COLORS.colorB,
+        backgroundColor:'rgba(0, 0, 0, 0.1)',
         marginTop: width * 0.04,
         marginLeft: 12,
         marginRight: 12,
         borderRadius: 40,
-        marginBottom: 20
+        marginBottom: 20,
+        borderRadius:40
     },
     textConfirm: {
         color: COLORS.colorBackground,

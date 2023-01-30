@@ -5,8 +5,6 @@ import { useTranslation } from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 const { height, width } = Dimensions.get('screen');
 
-
-
 const PinModal = ({ ModalVisible, onPressOut, setModalVisible,onPress ,navigation}) => {
     const [state, setState] = useState(null);
     const { t } = useTranslation();

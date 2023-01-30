@@ -21,7 +21,7 @@ const { height, width } = Dimensions.get('screen');
 import moment from 'moment/moment';
 import { useTranslation } from 'react-i18next';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
-import { PagerView } from 'react-native-pager-view';
+
 import {
     addDays,
     eachWeekOfInterval,
@@ -34,11 +34,11 @@ import {
     addWeeks
 } from 'date-fns';
 import Swiper from 'react-native-swiper'
-const Cgt = () => {
+const Cgt = ({navigation}) => {
     const [status, setStatus] = useState(false);
     const weekDay = [];
     const year = [];
-    const ref = React.useRef(PagerView);
+   // const ref = React.useRef(PagerView);
     const [currentDate, setCurrentDate] = useState(new Date());
     const [DateStatus, setDateStatus] = useState(false)
     const [selectedItem1, setSelectedItem1] = useState()
@@ -221,10 +221,30 @@ const Cgt = () => {
         setSelectedItem1(day)
     }
 
+    const OnPress = (item)=>{
+        if(!status){
+            setStatus(true)
+           
+        }else{
+          navigation.navigate('SelectCustomer')
+        }
+    }
+
+ useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+        setStatus(false)
+      // do something
+    });
+
+    return unsubscribe;
+  }, [navigation]);
+
     const renderItem = ({ item }) => {
         return (
             <View style={{ justifyContent: 'space-around', margin: 5 }}>
-                <TouchableOpacity onPress={() => setStatus(!status)}
+                <TouchableOpacity onPress={() => {item.id == 8 ? OnPress(item.id):console.log("hello")}
+               // setStatus(!status)
+            }
                     style={[styles.Touch, { borderColor: item.bgcolor, backgroundColor: item.id == 8 && status ? 'rgba(39, 174, 96, 1)' : COLORS.colorBackground }]}>
                     <Text style={[styles.timeText1, { color: item.id == 8 && status ? COLORS.colorBackground : item.color }]}>{item.slot}</Text>
                 </TouchableOpacity>
@@ -276,7 +296,7 @@ const Cgt = () => {
        
             </View> */}
 
-            <View style={{ margin: 20, marginRight: 40, marginLeft: 40 }}>
+            {/* <View style={{ margin: 20, marginRight: 40, marginLeft: 40 }}>
                 {/* <Swiper 
 style={{height:50,marginTop:"300%"}} 
             showsPagination={false}
@@ -287,7 +307,7 @@ style={{height:50,marginTop:"300%"}}
                
             }}> */}
 
-                {weekDay.map((week, i) => {
+                {/* {weekDay.map((week, i) => {
                     return (
                         <View key={i}>
                             <View style={styles.daterow}>
@@ -320,9 +340,9 @@ style={{height:50,marginTop:"300%"}}
                             </View>
                         </View>
                     )
-                })}
+                })} */}
                 {/* </Swiper> */}
-            </View>
+            {/* </View>  */}
 
             <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                 <Text style={styles.timeText}>Time slots</Text>

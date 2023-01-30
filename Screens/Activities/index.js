@@ -21,9 +21,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRoute } from '@react-navigation/native';
 import { useFocusEffect } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
-import Cgt from './Components/cgt'
+import Activities from './Components/Activity';
 
-const CgtScreen = ({ navigation, }) => {
+const Activity = ({ navigation, }) => {
     const route = useRoute();
     console.log("route name",);
     const isDarkMode = true
@@ -67,17 +67,17 @@ const CgtScreen = ({ navigation, }) => {
             <SafeAreaView style={styles.container1} />
             <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
 
-            <Header navigation={navigation} name="CGT" />
+            <Header navigation={navigation} name="Activities" />
 
             <View style={styles.ViewContent}>
-                <Cgt navigation={navigation} />
+               <Activities/>
             </View>
 
         </SafeAreaProvider>
     )
 }
 
-export default CgtScreen;
+export default Activity;
 
 
 const styles = StyleSheet.create({

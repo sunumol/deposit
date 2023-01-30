@@ -19,7 +19,7 @@ const SelectCustomer = ({ navigation }) => {
   const [ModalVisible,setModalVisible] = useState(false)
   const handleGoBack = useCallback(() => {
     navigation.goBack()
-    return true; // Returning true from onBackPress denotes that we have handled the event
+    return false; // Returning true from onBackPress denotes that we have handled the event
   }, [navigation]);
 
   useFocusEffect(
@@ -82,6 +82,20 @@ const SelectCustomer = ({ navigation }) => {
   },
   ]
 
+ 
+    const OnchangeNumber = (num) => {
+        if (/^[^!-\/:-@\.,[-`{-~]+$/.test(num) || num === '') {
+            onChangeText(num)
+           
+        // } else {
+        //     // setPhoneNum(null)
+        //   //  setModalVisible1(true)
+        //   //  console.log("restricted values", num, PhoneNum)
+        //      ToastAndroid.show(t('common:Valid'), ToastAndroid.SHORT);
+        // }
+    }
+    }
+
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container1} />
@@ -105,10 +119,10 @@ const SelectCustomer = ({ navigation }) => {
             <TextInput
               placeholder='Enter name or mobile number'
               placeholderTextColor={'colorDSText'}
-              onChangeText={onChangeText}
+              onChangeText={(text)=>OnchangeNumber(text)}
               value={text}
               style={{ flex: 1,color:COLORS.colorDark,fontSize:14,fontFamily:FONTS.FontMedium }}
-              keyboardType={'numeric'}
+             
             />
             <Search />
           </View>
@@ -180,14 +194,15 @@ const SelectCustomer = ({ navigation }) => {
       </View>
 
       <CgtModal ModalVisible={ModalVisible}
-                 onPressOut={() => navigation.navigate('CgtScreen')}
+                 onPressOut={() => {navigation.navigate('CgtScreen')
+                 setModalVisible(false)}}
               //  onPressOut={() => setModalVisible(!ModalVisible)}
                 setModalVisible={setModalVisible} />
     </SafeAreaProvider>
   )
 }
 
-export default SelectCustomer
+export default SelectCustomer;
 
 const styles = StyleSheet.create({
   container1: {

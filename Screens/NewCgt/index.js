@@ -62,6 +62,9 @@ const NewCgt = ({ navigation, }) => {
             BackHandler.removeEventListener('hardwareBackPress', handleGoBack);
         }, [handleGoBack]),
       );
+
+
+   
     return (
         <SafeAreaProvider>
             <SafeAreaView style={styles.container1} />
@@ -70,7 +73,7 @@ const NewCgt = ({ navigation, }) => {
             <Header navigation={navigation} name={"New CGT"} />
             <View style={styles.ViewContent}>
        
-              <Cgt />
+              <Cgt navigation={navigation} />
        
             
             </View>
