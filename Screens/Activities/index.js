@@ -46,11 +46,9 @@ const Activity = ({ navigation, }) => {
     }
 
     const handleGoBack = useCallback(() => {
-        if (BStatus) {
-            setBstatus(false)
-        } else {
-            navigation.goBack()
-        }
+    
+            navigation.navigate('NewCgt')
+        
         return true; // Returning true from onBackPress denotes that we have handled the event
     }, [navigation]);
 
@@ -67,10 +65,10 @@ const Activity = ({ navigation, }) => {
             <SafeAreaView style={styles.container1} />
             <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
 
-            <Header navigation={navigation} name="Activities" />
+            <Header  name="Activities" navigation={navigation} />
 
             <View style={styles.ViewContent}>
-               <Activities/>
+               <Activities navigation={navigation}/>
             </View>
 
         </SafeAreaProvider>
@@ -91,7 +89,7 @@ const styles = StyleSheet.create({
         //  alignItems: 'center',
         flex: 1,
         backgroundColor: COLORS.colorBackground,
-        padding: 10
+        padding: 20
     },
     text: {
         fontWeight: '400',

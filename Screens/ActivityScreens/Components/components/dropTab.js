@@ -7,7 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon1 from 'react-native-vector-icons/Ionicons'
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 import ActivityModal from '../components/ActiveModal';
-const ActiveTab = (props) => {
+const ActiveTab = (props,navigation) => {
     const { t } = useTranslation();
     const [Lang, setLang] = useState('')
     const [modalVisible,setModalVisible]=useState(false)
@@ -64,13 +64,14 @@ const ActiveTab = (props) => {
                     </View>
                 }
                 {props.status === 'Conduct' &&
-                    <View style={[styles.leadContainer, { backgroundColor: COLORS.LightBlue }]}>
-                        <Text style={[styles.leadText, { color: COLORS.DarkBlue }]}>{t('common:CollectionFollowUp')}</Text>
-                    </View>
+                    <TouchableOpacity onPress={props.navigation}
+                    style={[styles.leadContainer, { backgroundColor: COLORS.LightBlue }]}>
+                        <Text style={[styles.leadText, { color: COLORS.DarkBlue }]}>{t('common:ConductCGT')}</Text>
+                    </TouchableOpacity>
                 }
                 {props.status === 'Collection' &&
                     <View style={[styles.leadContainer, { backgroundColor: COLORS.LightGreen }]}>
-                        <Text style={[styles.leadText, { color: COLORS.DarkGreen }]}>{t('common:ConductCGT')}</Text>
+                        <Text style={[styles.leadText, { color: COLORS.DarkGreen }]}>{t('common:CollectionFollowUp')}</Text>
                     </View>
                 }
             </View>

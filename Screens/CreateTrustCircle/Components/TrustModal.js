@@ -4,10 +4,9 @@ import { COLORS, FONTS } from '../../../Constants/Constants';
 import { useTranslation } from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 const { height, width } = Dimensions.get('screen');
-import Image1 from '../../NewLead/assets/tick.svg';
 
 
-const CgtModal = ({ ModalVisible, onPressOut, setModalVisible,onPress,navigation }) => {
+const TrustModal = ({ ModalVisible, onPressOut,onPress1 }) => {
     const [state, setState] = useState(null);
     const { t } = useTranslation();
     const [Lang, setLang] = useState('')
@@ -32,33 +31,28 @@ const CgtModal = ({ ModalVisible, onPressOut, setModalVisible,onPress,navigation
             animationType="fade"
             transparent={true}
             visible={ModalVisible}
-            onRequestClose={() => {
-                setModalVisible(!ModalVisible)
-                navigation.navigate('NewCgt')
-            }}
+            onRequestClose={onPressOut}
         >
-       <TouchableOpacity onPressOut={onPressOut}
+           <TouchableOpacity onPressOut={onPressOut}
             style={{ backgroundColor: "#000000aa", flex: 1, alignItems: 'center', justifyContent: 'center', opacity: 5 }} >
 
-         
-
                 <View style={styles.modalContainer}>
-                    <View style={{paddingTop:width*0.08}}>
-                        <Image1 />
+                    <View style={{ paddingTop: width * 0.065 }}>
+                        <Image source={require('../../CGTCustomer/Images/check.png')}
+                        resizeMode={"contain"}
+                         style={{width:width*0.15,height:width*0.15}} />
                     </View>
 
-                    
-                        <Text style={[styles.textdesc,
-                             { paddingTop: width * 0.02, textAlign: 'center' }]}>{t('common:CgtDesc')}</Text>
-                
+                    <View style={{ paddingTop: width * 0.01 }}>
+                        <Text  style={[styles.textdesc, { fontFamily: FONTS.FontBold }]}>Trust Circle <Text style={styles.textdesc} >created successfully</Text></Text>
 
-                    <TouchableOpacity style={styles.buttonStyle} onPress={()=>{onPressOut()
-                    navigation.navigate('NewCgt')}}>
+                    </View>
+
+                    <TouchableOpacity style={styles.buttonStyle} onPress={onPress1}>
                         <Text style={styles.buttonTextStyle}>{t('common:Okay')}</Text>
                     </TouchableOpacity>
                 </View>
-
-                </TouchableOpacity>
+</TouchableOpacity>
         </Modal>
 
     );
@@ -72,10 +66,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     modalContainer: {
-        width: Dimensions.get('window').width * 0.82,
-        height: Dimensions.get('window').width * 0.63,
+        width: Dimensions.get('window').width * 0.90,
+        height: Dimensions.get('window').width * 0.54,
         backgroundColor: COLORS.colorBackground,
-        borderRadius: 20,
+        borderRadius: 8,
         alignItems: 'center',
         justifyContent: 'center'
     },
@@ -89,12 +83,12 @@ const styles = StyleSheet.create({
     },
     buttonStyle: {
         backgroundColor: COLORS.colorB,
-        width: Dimensions.get('window').width * 0.36,
-        height: 46,
+        width: Dimensions.get('window').width * 0.30,
+        height: 48,
         borderRadius: 54,
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: width * 0.07,
+        marginTop: width * 0.06,
         marginBottom: 21
     },
     buttonTextStyle: {
@@ -131,10 +125,12 @@ const styles = StyleSheet.create({
     },
     textdesc: {
         fontSize: 14,
-        color: "#3B3D43",
-        fontFamily: FONTS.FontSemiB,
+        //paddingTop: width * 0.02,
+        textAlign: 'center',
+        color: "#1A051D",
+        fontFamily: FONTS.FontRegular,
     },
 
 });
 
-export default CgtModal;
+export default TrustModal;

@@ -510,4 +510,49 @@ export default {
     'ConfirmPIN': 'Confirm PIN',
 
 
+
+    //Activities
+
+    'Activities':'Activities',
+    'NoActivity':'NO ACTIVITIES',
+    'CALL':'CALL',
+    'CGT':'CGT',
+    'ExpCircle':'Explain Trust Circle',
+    'CollectPay':'Collect Payment',
+
+    //Activity Modal
+
+    'MeetAct':'Reschedule meet activities from calendar.',
+    'ActResh':'Activities rescheduled',
+
+
+    //Confirm Member
+
+    'ConfirmMemb':'Confirm Member',
+    'EnterNORM':'Enter name or mobile number',
+    'AadharID':'Aadhar ID',
+    'SpVoterID':'Spouse Voter ID',
+    'RecentCust':'Recently added customers',
+    'RejectReason':'Reason for reject',
+    'SusFraud':'Suspected fraud',
+    'NonCrp':'Non cooperative',
+    'SubWrong':'Submitted wrong data',
+    'kycMain':'KYC mismatch',
+
+    //Create Trust Circle
+
+    'createTC':'Create Trust Circle',
+    'ReCGT':'Reschedule CGT',
+    'TrustCM':'Trust Circle Members',
+    'AddNewM':'Add new member',
+
+    //Select Customer
+
+    'SelectCM':'Select Customer',
+    'Change':'Change',
+    'CgtDesc':'CGT has been scheduled'
+ 
+
+
+
 }

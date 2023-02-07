@@ -18,8 +18,8 @@ import {
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { COLORS, FONTS } from '../../../Constants/Constants';
 const { height, width } = Dimensions.get('screen');
-import moment from 'moment/moment';
-import { useTranslation } from 'react-i18next';
+// import moment from 'moment/moment';
+// import { useTranslation } from 'react-i18next';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 import {
@@ -33,7 +33,7 @@ import {
     eachMonthOfInterval,
     addWeeks
 } from 'date-fns';
-import Swiper from 'react-native-swiper'
+//import Swiper from 'react-native-swiper'
 const Cgt = ({navigation}) => {
     const [status, setStatus] = useState(false);
     const weekDay = [];
@@ -89,13 +89,13 @@ const Cgt = ({navigation}) => {
             id: 8,
             slot: '10:30 AM',
             bgcolor: 'rgba(39, 174, 96, 1)',
-            Color: '#808080'
+            color: '#808080'
         },
         {
             id: 9,
             slot: '11:00 AM',
             bgcolor: 'rgba(39, 174, 96, 1)',
-            Color: '#808080'
+            color: '#808080'
 
         },
         {
@@ -108,33 +108,33 @@ const Cgt = ({navigation}) => {
             id: 11,
             slot: '12:00 PM',
             bgcolor: 'rgba(39, 174, 96, 1)',
-            Color: '#808080'
+            color: '#808080'
 
         },
         {
             id: 12,
             slot: '12:30 PM',
             bgcolor: 'rgba(39, 174, 96, 1)',
-            Color: '#808080'
+            color: '#808080'
 
         },
         {
             id: 13,
             slot: '01:00 PM',
             bgcolor: 'rgba(39, 174, 96, 1)',
-            Color: '#808080'
+            color: '#808080'
         },
         {
             id: 14,
             slot: '01:30 PM',
             bgcolor: 'rgba(39, 174, 96, 1)',
-            Color: '#808080'
+            color: '#808080'
         },
         {
             id: 15,
             slot: '02:00 PM',
             bgcolor: 'rgba(39, 174, 96, 1)',
-            Color: '#808080'
+            color: '#808080'
         },
         {
             id: 16,
@@ -146,38 +146,38 @@ const Cgt = ({navigation}) => {
             id: 17,
             slot: '03:00 PM',
             bgcolor: 'rgba(39, 174, 96, 1)',
-            Color: '#808080'
+            color: '#808080'
         },
         {
             id: 18,
             slot: '03:30 PM',
             bgcolor: 'rgba(39, 174, 96, 1)',
-            Color: '#808080'
+            color: '#808080'
         },
 
         {
             id: 20,
             slot: '04:00 PM',
             bgcolor: 'rgba(39, 174, 96, 1)',
-            Color: '#808080'
+            color: '#808080'
         },
         {
             id: 21,
             slot: '04:30 PM',
             bgcolor: 'rgba(39, 174, 96, 1)',
-            Color: '#808080'
+            color: '#808080'
         },
         {
             id: 22,
             slot: '05:00 PM',
             bgcolor: 'rgba(39, 174, 96, 1)',
-            Color: '#808080'
+            color: '#808080'
         },
         {
             id: 23,
             slot: '05:30 PM',
             bgcolor: 'rgba(39, 174, 96, 1)',
-            Color: '#808080'
+            color: '#808080'
         },
         {
             id: 23,
@@ -189,8 +189,9 @@ const Cgt = ({navigation}) => {
             id: 24,
             slot: '06:30 PM',
             bgcolor: 'rgba(39, 174, 96, 1)',
-            Color: '#808080'
-        }
+            color: '#808080'
+        },
+     
     ]
 
 
@@ -242,7 +243,7 @@ const Cgt = ({navigation}) => {
     const renderItem = ({ item }) => {
         return (
             <View style={{ justifyContent: 'space-around', margin: 5 }}>
-                <TouchableOpacity onPress={() => {item.id == 8 ? OnPress(item.id):console.log("hello")}
+                <TouchableOpacity onPress={() => {item.id == 8 ? OnPress(item.id):item.id == 5 ? navigation.navigate('Activities'):console.log("hello")}
                // setStatus(!status)
             }
                     style={[styles.Touch, { borderColor: item.bgcolor, backgroundColor: item.id == 8 && status ? 'rgba(39, 174, 96, 1)' : COLORS.colorBackground }]}>
@@ -252,99 +253,8 @@ const Cgt = ({navigation}) => {
         )
     }
     return (
-        <View style={{}}>
-
-            {/* <View style={{marginTop:"10%",marginBottom:20}}>
-            <Swiper style={{height:50,}} 
-            showsPagination={false}
-            showsButtons={true}
-            buttonWrapperStyle={{
-                top:-296,
-         
-               
-            }}>
-                 
-                {weekDay.map((week, i) => {
-                    return (
-                        <View key={i}>
-                            <View style={styles.daterow}>
-                                {week.map(day => {
-                                    const txt = format(day, 'EEE');
-                                    const isSelected1 = (selectedItem1 === day);
-                                    console.log("text console....",isSelected1)
-                                    return (
-
-                                        <View style={{ flexDirection: 'row' }}>
-                                            <View style={{ flexDirection: 'column' }}>
-                                   <TouchableOpacity onPress={()=>ChooseDate(day)} style={{backgroundColor:isSelected1 ? COLORS.colorB:COLORS.colorBackground,
-                                    width:width*0.1,height:width*0.12,alignItems:'center',justifyContent:'center',borderRadius:10,}}>
-                                                <Text style={{ color:isSelected1?  COLORS.colorBackground : '#171930',
-                                                fontSize: 11,fontFamily:FONTS.FontRegular,}}>{isToday(day)
-                                                    ? 'Today':txt}</Text>
-                                                <Text style={{ color:isSelected1?  COLORS.colorBackground : '#171930',
-                                                 fontSize: 15,fontFamily:FONTS.FontSemiB}}>{day.getDate()}</Text>
-                                                </TouchableOpacity>
-                                            </View>
-                                        </View>
-                                    )
-                                })}
-                            </View>
-                        </View>
-                    )
-                })}
-                </Swiper>
-       
-            </View> */}
-
-            {/* <View style={{ margin: 20, marginRight: 40, marginLeft: 40 }}>
-                {/* <Swiper 
-style={{height:50,marginTop:"300%"}} 
-            showsPagination={false}
-            showsButtons={true}
-            buttonWrapperStyle={{
-               // top:-296,
-         
-               
-            }}> */}
-
-                {/* {weekDay.map((week, i) => {
-                    return (
-                        <View key={i}>
-                            <View style={styles.daterow}>
-                                {week.map(day => {
-                                    const txt = format(day, 'EEE');
-                                    const isSelected1 = (selectedItem1 === day);
-                                    console.log("text console....", isSelected1)
-                                    return (
-
-                                        <View style={{ flexDirection: 'row' }}>
-                                            <View style={{ flexDirection: 'column' }}>
-                                                <TouchableOpacity onPress={() => ChooseDate(day)} style={{
-                                                    backgroundColor: isSelected1 ? COLORS.colorB : COLORS.colorBackground,
-                                                    width: width * 0.1, height: width * 0.12, alignItems: 'center', justifyContent: 'center', borderRadius: 10,
-                                                }}>
-                                                    <Text style={{
-                                                        color: isSelected1 ? COLORS.colorBackground : '#171930',
-                                                        fontSize: 11, fontFamily: FONTS.FontRegular,
-                                                    }}>{isToday(day)
-                                                        ? 'Today' : txt}</Text>
-                                                    <Text style={{
-                                                        color: isSelected1 ? COLORS.colorBackground : '#171930',
-                                                        fontSize: 15, fontFamily: FONTS.FontSemiB
-                                                    }}>{day.getDate()}</Text>
-                                                </TouchableOpacity>
-                                            </View>
-                                        </View>
-                                    )
-                                })}
-                            </View>
-                        </View>
-                    )
-                })} */}
-                {/* </Swiper> */}
-            {/* </View>  */}
-
-            <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+        <View style={{top:0}}>
+            <View style={{ alignItems: 'center', justifyContent: 'center' ,marginBottom:0}}>
                 <Text style={styles.timeText}>Time slots</Text>
             </View>
 
@@ -371,8 +281,8 @@ const styles = StyleSheet.create({
         color: '#171930',
         fontSize: 17,
         fontFamily: FONTS.FontSemiB,
-
-        paddingTop: width * 0.1
+        top:-5
+        
     },
     timeText1: {
 

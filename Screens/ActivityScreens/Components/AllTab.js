@@ -16,7 +16,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import DropTab from '../Components/components/dropTab'
 
 
-const ItemTabs = (props) => {
+const ItemTabs = ({navigation}) => {
     const { t } = useTranslation();
     const [Lang, setLang] = useState('')
     const [dropStatus, setDropStatus] = useState(false)
@@ -107,7 +107,7 @@ const ItemTabs = (props) => {
     }
     return (
         <ScrollView style={{ flex: 1, backgroundColor: COLORS.colorBackground }}>
-            <View style={{ paddingHorizontal: 20 }}>
+            <View style={{ paddingHorizontal: 20,marginBottom:10 }}>
                 {data.map((item, index) => {
                     return (
                         <>
@@ -171,6 +171,7 @@ const ItemTabs = (props) => {
                                                     color={item.color}
                                                     status={item.status}
                                                     details={item}
+                                                    navigation={()=>navigation.navigate('CGT')}
                                                 />
                                             );
                                         })}

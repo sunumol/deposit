@@ -22,10 +22,13 @@ import { useRoute } from '@react-navigation/native';
 import { useFocusEffect } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import Cgt from './Components/Cgt';
+import DatePicker from './Components/CalenderPick';
+import CalendarStrips from './Components/Calender';
+import  CalendarDay from './Components/Day';
 
 const NewCgt = ({ navigation, }) => {
     const route = useRoute();
-    console.log("route name", );
+    console.log("route name",);
     const isDarkMode = true
     const { t } = useTranslation();
     const [lang, setLang] = useState('')
@@ -46,25 +49,25 @@ const NewCgt = ({ navigation, }) => {
     }
 
     const handleGoBack = useCallback(() => {
-        if(BStatus){
+        if (BStatus) {
             setBstatus(false)
-        }else{
+        } else {
             navigation.goBack()
         }
         return true; // Returning true from onBackPress denotes that we have handled the event
-      }, [navigation]);
-    
-      useFocusEffect(
+    }, [navigation]);
+
+    useFocusEffect(
         React.useCallback(() => {
-          BackHandler.addEventListener('hardwareBackPress', handleGoBack);
-    
-          return () =>
-            BackHandler.removeEventListener('hardwareBackPress', handleGoBack);
+            BackHandler.addEventListener('hardwareBackPress', handleGoBack);
+
+            return () =>
+                BackHandler.removeEventListener('hardwareBackPress', handleGoBack);
         }, [handleGoBack]),
-      );
+    );
 
 
-   
+
     return (
         <SafeAreaProvider>
             <SafeAreaView style={styles.container1} />
@@ -72,12 +75,16 @@ const NewCgt = ({ navigation, }) => {
 
             <Header navigation={navigation} name={"New CGT"} />
             <View style={styles.ViewContent}>
-       
-              <Cgt navigation={navigation} />
-       
-            
+          
+           
+                <CalendarStrips />
+                <Cgt navigation={navigation} />
+              
+                {/* <DatePicker/> */}
+
+
             </View>
-        
+
         </SafeAreaProvider>
     )
 }
@@ -92,7 +99,7 @@ const styles = StyleSheet.create({
         paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
     },
     ViewContent: {
-       // justifyContent: 'center',
+        // justifyContent: 'center',
         //alignItems: 'center',
         flex: 1,
         backgroundColor: COLORS.colorBackground,

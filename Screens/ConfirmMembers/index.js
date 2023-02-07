@@ -1,36 +1,31 @@
-import { StyleSheet, Text, View, BackHandler, StatusBar,
-   SafeAreaView, Platform, TextInput, ScrollView, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, BackHandler, StatusBar, SafeAreaView, Platform, TextInput, ScrollView, TouchableOpacity } from 'react-native'
 import React, { useCallback, useState,useEffect } from 'react'
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Statusbar from '../../Components/StatusBar';
 import { useFocusEffect } from '@react-navigation/native';
 import Header from '../../Components/RepayHeader';
 import { FONTS, COLORS } from '../../Constants/Constants';
-import Edit from './Images/Vector.svg'
-import Search from './Images/Search.svg'
+import Edit from '../SelectCustomer/Images/Vector.svg'
+import Search from '../SelectCustomer/Images/Search.svg'
 import ItemTabs from '../ActivityScreens/Components/AllTab';
-import Icon1 from 'react-native-vector-icons/Ionicons'
-import SelectedTab from './Components/SelectedTab';
-import CgtModal from './Components/Modal';
+import Icon1 from 'react-native-vector-icons/Ionicons';
 import SearchIcon from 'react-native-vector-icons/Feather'
-import { useTranslation } from 'react-i18next';
-const SelectCustomer = ({ navigation }) => {
+import SelectTab from './Components/SelectTab';
+import ReasonModal from './Components/ReasonModal';
+import ErrorModal from './Components/ErrorModal';
+
+const ConfirmMembers = ({ navigation }) => {
   const isDarkMode = true;
   const [text, onChangeText] = useState('');
   const [selectedItem, setSelectedItem] = useState();
   const [ModalVisible,setModalVisible] = useState(false)
-  const { t } = useTranslation();
+  const [ModalError, setModalError] = useState(false)
+  const [ModalReason,setModalReason] = useState(false)
+  const handleGoBack = useCallback(() => {
 
-  const handleGoBack =()=> {
-
-    if(text.length>0){
-      onChangeText('')
-      console.log("text nulll",text)
-    }else{
-      navigation.goBack()
-    }
-return true
-  }
+    navigation.navigate('CgtCustomer')
+    return true; // Returning true from onBackPress denotes that we have handled the event
+  }, [navigation]);
 
   useEffect(() => {
     const backHandler = BackHandler.addEventListener(
@@ -39,11 +34,20 @@ return true
     );
     return () => backHandler.remove();
 }, [handleGoBack]);
+
+  // useFocusEffect(
+  //   React.useCallback(() => {
+  //     BackHandler.addEventListener('hardwareBackPress', handleGoBack);
+
+  //     return () =>
+  //       BackHandler.removeEventListener('hardwareBackPress', handleGoBack);
+  //   }, [handleGoBack]),
+  // );
   const data = [{
     id: 1,
     name: 'Anjana Mathew',
     number: '9688XXXXX77',
-    short: 'AA',
+    short: 'AM',
     text: '686666'
   },
   {
@@ -126,41 +130,57 @@ return true
     }
     }
 
+    useEffect(() => {
+      if (ModalError == true) {
+          const timer = setTimeout(() => {
+
+              setModalError(false)
+              setModalReason(false)
+              navigation.navigate('Profile')
+            //  console.log('This will run after 1 second!', ModalVisibles)
+          }, 1000);
+          return () => clearTimeout(timer);
+      }
+
+  }, [ModalError])
+
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+   setSelectedItem('')
+   onChangeText('')
+      // do something
+    });
+
+    return unsubscribe;
+  }, [navigation]);
+
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container1} />
       <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} backgroundColor={"#002B59"} />
 
-      <Header navigation={navigation} name={t('common:SelectCM')} />
+      <Header navigation={navigation} name="Confirm Member" />
 
       <View style={styles.mainContainer}>
         <ScrollView showsVerticalScrollIndicator={false} >
-          <View style={styles.boxView}>
-            <View style={styles.contentView}>
-              <Text style={styles.timeText}>10:30 AM</Text>
-              <Text style={styles.dateText}>Wed, 12 Oct</Text>
-            </View>
-            
-            < TouchableOpacity style={styles.editView} onPress={()=>navigation.navigate('NewCgt')}>
-              <Edit />
-              <Text style={styles.changeText}>{t('common:Change')}</Text>
-            </TouchableOpacity>
-          </View>
+          <View style={{padding:20,paddingTop:2}}>
+    {!selectedItem ?
           <View style={styles.searchBox}>
             <TextInput
-              placeholder={t('common:EnterNORM')}
-              placeholderTextColor={'#808080'}
+              placeholder='Enter name or mobile number'
+              placeholderTextColor={"#808080"}
               onChangeText={(text)=>OnchangeNumber(text)}
               value={text}
               style={{ flex: 1,color:COLORS.colorDark,fontSize:14,fontFamily:FONTS.FontMedium }}
              
             />
-               <SearchIcon color={"#808080"} name="search" size={18} style={{right:5}} />
-          </View>
+            <SearchIcon color={"#808080"} name="search" size={18} style={{right:5}} />
+          </View>:null}
           {text.length === 0 && !selectedItem
             ?
             <>
-              <Text style={styles.recentlyText}>{t('common:RecentCust')}</Text>
+              <Text style={styles.recentlyText}>Recently added customers</Text>
               {data.map((item, index) =>
                 <>
                 <TouchableOpacity onPress={()=>setSelectedItem(item)}>
@@ -209,36 +229,55 @@ return true
             </View>
             : null
           }
-     
+
           {selectedItem
-            ? <SelectedTab item={selectedItem} />
+            ?
+             <SelectTab item={selectedItem} />
             : null
           }
 
-
+</View>
         </ScrollView>
         {selectedItem
           ?
-          <TouchableOpacity style={styles.buttonView} onPress={()=>setModalVisible(true)}>
-            <Text style={styles.continueText}>{t('common:Confirm')}</Text>
-          </TouchableOpacity>
+     
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between' ,paddingLeft:15,paddingRight:10}}>
+
+                <TouchableOpacity style={[styles.buttonView, { backgroundColor: COLORS.colorLight }]}
+                    onPress={() => setModalReason(true)}>
+                    <Text style={[styles.continueText, { color: COLORS.colorB }]}>Reject</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.navigate('CreateTrustCircle')}
+                    style={[styles.buttonView, { backgroundColor: COLORS.colorB }]}>
+                    <Text style={[styles.continueText, { color: COLORS.colorBackground }]}>Confirm</Text>
+                </TouchableOpacity>
+            </View> 
           : null
         }
       </View>
 
-      <CgtModal ModalVisible={ModalVisible}
-                 onPressOut={() => {
-                 setModalVisible(false)
-                navigation.navigate('NewCgt')}}
-               
-                 navigation={navigation}
-              //  onPressOut={() => setModalVisible(!ModalVisible)}
-                setModalVisible={setModalVisible} />
+   <ReasonModal
+                onPress1={() => {
+                    // setModalVisible(false)
+                    setModalError(true)
+                }}
+                ModalVisible={ModalReason}
+                navigation={navigation}
+                onPressOut={() => setModalReason(!ModalReason)}
+                setModalVisible={setModalReason}
+            />
+
+
+            <ErrorModal
+                ModalVisible={ModalError}
+                onPressOut={() => setModalError(!ModalError)}
+                setModalVisible={setModalError}
+            />
     </SafeAreaProvider>
   )
 }
 
-export default SelectCustomer;
+export default ConfirmMembers;
 
 const styles = StyleSheet.create({
   container1: {
@@ -248,7 +287,7 @@ const styles = StyleSheet.create({
   },
   mainContainer: {
     flex: 1,
-    paddingHorizontal: 20,
+    //padding: 5,
     backgroundColor: COLORS.colorBackground
   },
   editView: {
@@ -340,13 +379,14 @@ const styles = StyleSheet.create({
     fontWeight: '400',
   },
   buttonView: {
-    backgroundColor: COLORS.colorB,
+
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 54,
     height: 48,
-    marginBottom: 25
-  },
+    marginBottom: 20,
+    width: '48%'
+},
   continueText: {
     fontSize: 14,
     fontFamily: FONTS.FontBold,
@@ -355,3 +395,4 @@ const styles = StyleSheet.create({
   }
 
 })
+

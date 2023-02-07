@@ -4,10 +4,10 @@ import { COLORS, FONTS } from '../../../Constants/Constants';
 import { useTranslation } from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 const { height, width } = Dimensions.get('screen');
-import Image1 from '../../NewLead/assets/tick.svg';
+import Image1 from '../../../assets/image/ticks.svg';
 
 
-const CgtModal = ({ ModalVisible, onPressOut, setModalVisible,onPress,navigation }) => {
+const ActivityModal = ({ ModalVisible, onPressOut,onPress1 }) => {
     const [state, setState] = useState(null);
     const { t } = useTranslation();
     const [Lang, setLang] = useState('')
@@ -32,33 +32,35 @@ const CgtModal = ({ ModalVisible, onPressOut, setModalVisible,onPress,navigation
             animationType="fade"
             transparent={true}
             visible={ModalVisible}
-            onRequestClose={() => {
-                setModalVisible(!ModalVisible)
-                navigation.navigate('NewCgt')
-            }}
+            onRequestClose={onPressOut}
         >
-       <TouchableOpacity onPressOut={onPressOut}
-            style={{ backgroundColor: "#000000aa", flex: 1, alignItems: 'center', justifyContent: 'center', opacity: 5 }} >
+            <View style={styles.mainContainer} >
 
-         
+                <TouchableOpacity
+                    onPressOut={onPressOut}
+                    style={styles.touchableStyle} >
+                </TouchableOpacity>
 
                 <View style={styles.modalContainer}>
-                    <View style={{paddingTop:width*0.08}}>
-                        <Image1 />
+                    <View style={{ paddingTop: width * 0.065 }}>
+                   <Image1 width={90} height={90}/>
                     </View>
 
-                    
-                        <Text style={[styles.textdesc,
-                             { paddingTop: width * 0.02, textAlign: 'center' }]}>{t('common:CgtDesc')}</Text>
-                
+                    <View style={{ paddingTop: width * 0.01 }}>
+                      
+                        <Text style={styles.textdesc}>Activities rescheduled</Text>
+                    </View>
 
-                    <TouchableOpacity style={styles.buttonStyle} onPress={()=>{onPressOut()
-                    navigation.navigate('NewCgt')}}>
+                    <TouchableOpacity style={styles.buttonStyle} onPress={onPressOut}>
                         <Text style={styles.buttonTextStyle}>{t('common:Okay')}</Text>
                     </TouchableOpacity>
                 </View>
 
+                <TouchableOpacity
+                    onPressOut={onPressOut}
+                    style={styles.touchableStyle} >
                 </TouchableOpacity>
+            </View>
         </Modal>
 
     );
@@ -73,7 +75,7 @@ const styles = StyleSheet.create({
     },
     modalContainer: {
         width: Dimensions.get('window').width * 0.82,
-        height: Dimensions.get('window').width * 0.63,
+        height: Dimensions.get('window').width * 0.66,
         backgroundColor: COLORS.colorBackground,
         borderRadius: 20,
         alignItems: 'center',
@@ -89,12 +91,12 @@ const styles = StyleSheet.create({
     },
     buttonStyle: {
         backgroundColor: COLORS.colorB,
-        width: Dimensions.get('window').width * 0.36,
-        height: 46,
+        width: Dimensions.get('window').width * 0.34,
+        height: 48,
         borderRadius: 54,
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: width * 0.07,
+        marginTop: width * 0.065,
         marginBottom: 21
     },
     buttonTextStyle: {
@@ -131,10 +133,12 @@ const styles = StyleSheet.create({
     },
     textdesc: {
         fontSize: 14,
+        //paddingTop: width * 0.02,
+        textAlign: 'center',
         color: "#3B3D43",
         fontFamily: FONTS.FontSemiB,
     },
 
 });
 
-export default CgtModal;
+export default ActivityModal;

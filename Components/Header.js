@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     Text,
     View,
@@ -28,20 +28,22 @@ const Header = ({ name, navigation }) => {
     }
     return (
         <View style={styles.Header}>
-            <View style={{ left:15,alignItems:'center',justifyContent:'center',top:-3}}>
-                <TouchableOpacity onPress={() => {navigation.goBack()}} style={{padding:0}}>
-             <Icon size={17} color={"white"} name="left"/>
+            <View style={{ left: 15, alignItems: 'center', justifyContent: 'center', top: -3 }}>
+                <TouchableOpacity onPress={() => name =='Activities'?navigation.navigate('NewCgt'):navigation.goBack()} style={{ padding: 0 }}>
+                    <Icon size={17} color={"white"} name="left" />
                 </TouchableOpacity>
             </View>
 
-            <View style={{left:lang=='en' ? -10 : 5}}>
-                <Text style={[styles.textPrivacy],{fontSize:name== t('common:Track') ? 14:16,      color: COLORS.colorBackground,
-    
-        fontFamily: FONTS.FontRegular,
-        fontWeight: '700',
-        marginTop: 10,
-        marginBottom: 16,
-        left:-5}}>{name}</Text>
+            <View style={{ left: lang == 'en' ? -10 : 5 }}>
+                <Text style={[styles.textPrivacy], {
+                    fontSize: name == t('common:Track') ? 14 : 16, color: COLORS.colorBackground,
+
+                    fontFamily: FONTS.FontRegular,
+                    fontWeight: '700',
+                    marginTop: 10,
+                    marginBottom: 16,
+                    left: -5
+                }}>{name}</Text>
             </View>
 
             <View></View>
@@ -65,6 +67,6 @@ const styles = StyleSheet.create({
         fontWeight: '700',
         marginTop: 10,
         marginBottom: 16,
-        left:-5
+        left: -5
     },
 })

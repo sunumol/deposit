@@ -36,7 +36,7 @@ const HeaderDashBoard = ({navigation}) => {
 
               
 
-                <View style={{ marginLeft: 15 }}>
+                <View style={{ marginLeft: 25 }}>
                     <TouchableOpacity onPress={()=>setModalVisible(true)}>
                     <Icon name="ios-power"
                         size={23}

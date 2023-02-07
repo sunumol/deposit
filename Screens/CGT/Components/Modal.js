@@ -4,10 +4,10 @@ import { COLORS, FONTS } from '../../../Constants/Constants';
 import { useTranslation } from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 const { height, width } = Dimensions.get('screen');
-import Image1 from '../../NewLead/assets/tick.svg';
+import Image1 from '../../../assets/image/call.svg';
 
 
-const CgtModal = ({ ModalVisible, onPressOut, setModalVisible,onPress,navigation }) => {
+const CallModal = ({ ModalVisible, onPressOut }) => {
     const [state, setState] = useState(null);
     const { t } = useTranslation();
     const [Lang, setLang] = useState('')
@@ -32,33 +32,38 @@ const CgtModal = ({ ModalVisible, onPressOut, setModalVisible,onPress,navigation
             animationType="fade"
             transparent={true}
             visible={ModalVisible}
-            onRequestClose={() => {
-                setModalVisible(!ModalVisible)
-                navigation.navigate('NewCgt')
-            }}
+            onRequestClose={onPressOut}
         >
-       <TouchableOpacity onPressOut={onPressOut}
-            style={{ backgroundColor: "#000000aa", flex: 1, alignItems: 'center', justifyContent: 'center', opacity: 5 }} >
+            <View style={styles.mainContainer} >
 
-         
+                <TouchableOpacity
+                    onPressOut={onPressOut}
+                    style={styles.touchableStyle} >
+                </TouchableOpacity>
 
                 <View style={styles.modalContainer}>
-                    <View style={{paddingTop:width*0.08}}>
+                    <View style={{ paddingTop: width * 0.065 }}>
                         <Image1 />
                     </View>
 
-                    
-                        <Text style={[styles.textdesc,
-                             { paddingTop: width * 0.02, textAlign: 'center' }]}>{t('common:CgtDesc')}</Text>
-                
 
-                    <TouchableOpacity style={styles.buttonStyle} onPress={()=>{onPressOut()
-                    navigation.navigate('NewCgt')}}>
+                    <Text style={[styles.textdesc,
+                    { fontFamily: FONTS.FontBold, paddingTop: width * 0.06, }]}>Your last call status has not </Text>
+                    <Text style={[styles.textdesc,
+                    { fontFamily: FONTS.FontBold }]}>been updated.</Text>
+
+                    <Text style={[styles.textdesc, { paddingTop: width * 0.05 }]}>Please update the same</Text>
+
+                    <TouchableOpacity style={styles.buttonStyle} onPress={onPressOut}>
                         <Text style={styles.buttonTextStyle}>{t('common:Okay')}</Text>
                     </TouchableOpacity>
                 </View>
 
+                <TouchableOpacity
+                    onPressOut={onPressOut}
+                    style={styles.touchableStyle} >
                 </TouchableOpacity>
+            </View>
         </Modal>
 
     );
@@ -72,8 +77,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     modalContainer: {
-        width: Dimensions.get('window').width * 0.82,
-        height: Dimensions.get('window').width * 0.63,
+        width: Dimensions.get('window').width * 0.90,
+        height: Dimensions.get('window').width * 0.74,
         backgroundColor: COLORS.colorBackground,
         borderRadius: 20,
         alignItems: 'center',
@@ -131,10 +136,12 @@ const styles = StyleSheet.create({
     },
     textdesc: {
         fontSize: 14,
-        color: "#3B3D43",
-        fontFamily: FONTS.FontSemiB,
+        //paddingTop: width * 0.02,
+        textAlign: 'center',
+        color: "#1A051D",
+        fontFamily: FONTS.FontRegular,
     },
 
 });
 
-export default CgtModal;
+export default CallModal;

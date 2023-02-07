@@ -54,7 +54,7 @@ const Activityscreens = ({ navigation }) => {
                 tabBarActiveTintColor: COLORS.colorBackground ,
                 
               }}>
-                <Tab.Screen name={t('common:All')} component={AllTab} />
+                <Tab.Screen name={t('common:All')} component={AllTab} navigation={navigation} />
                 <Tab.Screen name={t('common:Meet')} component={MeetTab} />
                 <Tab.Screen name={t('common:Call')} component={CallTab} />
             </Tab.Navigator>

@@ -16,11 +16,14 @@ import ForgotPin from '../Screens/ForgotPin';
 import PinScreen from '../Screens/PinScreen';
 import NetWorkError from '../Screens/NetWorkError';
 import SelectCustomer from '../Screens/SelectCustomer';
-
+import CGT from '../Screens/CGT';
+import CgtCustomer from '../Screens/CGTCustomer';
 import { useNetInfo } from "@react-native-community/netinfo";
 import NewCgt from '../Screens/NewCgt';
-import CgtScreen from '../Screens/CGT';
-import Activity from '../Screens/Activities';
+import CreateTrustCircle from '../Screens/CreateTrustCircle';
+import Activities from '../Screens/Activities';
+import ConfirmMembers from '../Screens/ConfirmMembers';
+
 
 const Stack = createNativeStackNavigator();
 
@@ -34,22 +37,25 @@ export default function Router() {
         headerShown: false
       }}>
         <Stack.Screen name="SplashScreen" component={SplashScreen} />
-        <Stack.Screen name="IntroScreen" component={netInfo.isConnected ? IntroScreens:NetWorkError} />
-        <Stack.Screen name="LoginScreen" component={netInfo.isConnected ?LoginScreen:NetWorkError} />
-        <Stack.Screen name="Permission" component={netInfo.isConnected ?Permission:NetWorkError} />
-        <Stack.Screen name="CreatePin" component={netInfo.isConnected ?CreatePin:NetWorkError} />
-        <Stack.Screen name="Profile" component={netInfo.isConnected ?Profile:NetWorkError} />
-        <Stack.Screen name="Privacy" component={netInfo.isConnected ?PrivacyPolicy:NetWorkError} />
-        <Stack.Screen name="Terms" component={netInfo.isConnected ?Terms:NetWorkError} />
-        <Stack.Screen name="ActivityScreens" component={netInfo.isConnected ?ActivityScreens:NetWorkError} />
-        <Stack.Screen name="NewLead" component={netInfo.isConnected ?NewLead:NetWorkError} />
-        <Stack.Screen name="ResetPin" component={netInfo.isConnected ?ResetPin:NetWorkError} />
-        <Stack.Screen name="ForgotPin" component={netInfo.isConnected ?ForgotPin:NetWorkError} />
-        <Stack.Screen name="PinScreen" component={netInfo.isConnected ?PinScreen:NetWorkError} />
-        <Stack.Screen name="NewCgt" component={netInfo.isConnected ?NewCgt:NetWorkError} />
-        <Stack.Screen name="SelectCustomer" component={netInfo.isConnected ? SelectCustomer:NetWorkError} />
-        <Stack.Screen name="CgtScreen" component={netInfo.isConnected?CgtScreen:NetWorkError} />
-        <Stack.Screen name="Activity" component={netInfo.isConnected?Activity:NetWorkError} />
+        <Stack.Screen name="IntroScreen" component={netInfo.isConnected ? IntroScreens : NetWorkError} />
+        <Stack.Screen name="LoginScreen" component={netInfo.isConnected ? LoginScreen : NetWorkError} />
+        <Stack.Screen name="Permission" component={netInfo.isConnected ? Permission : NetWorkError} />
+        <Stack.Screen name="CreatePin" component={netInfo.isConnected ? CreatePin : NetWorkError} />
+        <Stack.Screen name="Profile" component={netInfo.isConnected ? Profile : NetWorkError} />
+        <Stack.Screen name="Privacy" component={netInfo.isConnected ? PrivacyPolicy : NetWorkError} />
+        <Stack.Screen name="Terms" component={netInfo.isConnected ? Terms : NetWorkError} />
+        <Stack.Screen name="ActivityScreens" component={netInfo.isConnected ? ActivityScreens : NetWorkError} />
+        <Stack.Screen name="NewLead" component={netInfo.isConnected ? NewLead : NetWorkError} />
+        <Stack.Screen name="ResetPin" component={netInfo.isConnected ? ResetPin : NetWorkError} />
+        <Stack.Screen name="ForgotPin" component={netInfo.isConnected ? ForgotPin : NetWorkError} />
+        <Stack.Screen name="PinScreen" component={netInfo.isConnected ? PinScreen : NetWorkError} />
+        <Stack.Screen name="NewCgt" component={netInfo.isConnected ? NewCgt : NetWorkError} />
+        <Stack.Screen name="SelectCustomer" component={netInfo.isConnected ? SelectCustomer : NetWorkError} />
+        <Stack.Screen name="CGT" component={netInfo.isConnected ? CGT : NetWorkError} />
+        <Stack.Screen name="Activities" component={netInfo.isConnected ? Activities : NetWorkError} />
+        <Stack.Screen name="CgtCustomer" component={netInfo.isConnected ? CgtCustomer : NetWorkError} />
+        <Stack.Screen name="CreateTrustCircle" component={netInfo.isConnected ? CreateTrustCircle : NetWorkError} />
+        <Stack.Screen name="ConfirmMembers" component={netInfo.isConnected ? ConfirmMembers : NetWorkError} />
       </Stack.Navigator>
     </NavigationContainer>
   );

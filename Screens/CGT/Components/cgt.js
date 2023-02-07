@@ -97,7 +97,7 @@ const Cgt = ({ navigation }) => {
             </View>
             </ScrollView>
             <View style={styles.ViewButton} >
-                <TouchableOpacity style={styles.Button1} onPress ={()=>navigation.navigate('Profile')}>
+                <TouchableOpacity style={styles.Button1} onPress ={()=>navigation.navigate('CgtCustomer')}>
                     <Text style={styles.textConfirm}>{t('common:Confirm')}</Text>
                 </TouchableOpacity>
             </View>
@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
         width: width * 0.92,
         borderRadius: 6,
         height: width * 0.22,
-        marginBottom: width * 0.03,
+        marginBottom: width * 0.04,
         alignItems: 'center',
         flexDirection: 'row',
         shadowColor: '#000000',
@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
         paddingLeft: width * 0.02,
         justifyContent: 'flex-start',
         alignItems: 'flex-start',
-        marginBottom: width * 0.03
+        marginBottom: width * 0.05 
     },
     ViewButton: {
         alignItems: 'center',

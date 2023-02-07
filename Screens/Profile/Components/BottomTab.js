@@ -37,7 +37,7 @@ const BottomTabs = ({navigation}) => {
     return (
         <View style={styles.botttomContainer}>
         <TouchableOpacity 
-        style={{alignItems:'center'}}
+        style={{alignItems:'center',paddingLeft:width*0.1}}
         onPress={()=>navigation.navigate('ProfileScreen')}
         >
                 <Icon1 name="user"
@@ -47,16 +47,16 @@ const BottomTabs = ({navigation}) => {
                 <Text style={styles.titleText}>{t('common:Profile')}</Text>
             </TouchableOpacity>
             
-            <TouchableOpacity 
+            {/* <TouchableOpacity 
             style={{alignItems:'center'}}>
             <Icon3 name="headset"
                 color={"#FFFFFF"}
                 size={23}
                 />
                   <Text style={styles.titleText}>{t('common:Support')}</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             <TouchableOpacity 
-            style={{alignItems:'center'}}>
+            style={{alignItems:'center',paddingRight:width*0.1}}>
             <Icon4 name="ellipsis-horizontal-circle"
                 color={"#FFFFFF"}
                 size={23}
@@ -80,8 +80,9 @@ const styles = StyleSheet.create({
         flex: 0.1, 
         backgroundColor: COLORS.colorB, 
         flexDirection: 'row', 
-        justifyContent: 'space-around', 
-        alignItems: 'center' 
+        justifyContent: 'space-between', 
+        alignItems: 'center' ,
+       
     }
 })
 export default BottomTabs;
