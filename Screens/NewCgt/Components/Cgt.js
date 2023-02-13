@@ -195,28 +195,6 @@ const Cgt = ({navigation}) => {
     ]
 
 
-
-    const dates = eachWeekOfInterval(
-        {
-            start: subDays(new Date(), 14),
-            end: addDays(new Date(), 14),
-        },
-        {
-            weekStartsOn: 1,
-        },
-    ).reduce((acc, cur) => {
-        const allDays = eachDayOfInterval({
-            start: cur,
-            end: addDays(cur, 4),
-        });
-
-        weekDay.push(allDays);
-
-        return weekDay;
-    });
-    console.log(dates);
-    console.log("current date....", currentDate)
-
     const ChooseDate = (day) => {
         console.log("day selection...", day)
         setSelectedItem1(day)
@@ -254,11 +232,11 @@ const Cgt = ({navigation}) => {
     }
     return (
         <View style={{top:0}}>
-            <View style={{ alignItems: 'center', justifyContent: 'center' ,marginBottom:0}}>
+            <View style={{ alignItems: 'center', justifyContent: 'center' ,marginBottom:0,marginTop:10}}>
                 <Text style={styles.timeText}>Time slots</Text>
             </View>
 
-            <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+            <View style={{ alignItems: 'center', justifyContent: 'center' ,marginBottom:10}}>
                 <FlatList
                     data={Data}
                     style={{ marginTop: 10, }}
@@ -292,7 +270,7 @@ const styles = StyleSheet.create({
     Touch: {
         borderWidth: 1,
         width: width * 0.26,
-        height: width * 0.1,
+        height: width * 0.118,
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 8

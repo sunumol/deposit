@@ -24,7 +24,7 @@ import { useTranslation } from 'react-i18next';
 import Cgt from './Components/Cgt';
 import DatePicker from './Components/CalenderPick';
 import CalendarStrips from './Components/Calender';
-import  CalendarDay from './Components/Day';
+
 
 const NewCgt = ({ navigation, }) => {
     const route = useRoute();
