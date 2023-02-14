@@ -14,7 +14,7 @@ import Icon1 from '../assets/Profile.svg';
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 import Icon3 from '../assets/Support.svg';
 import Icon4 from '../assets/More.svg';
-
+import MoreModal from '../Components/MoreModal';
 const BottomTabs = ({navigation}) => {
     const { t} = useTranslation();
     const [Lang, setLang] = useState('')
@@ -55,7 +55,7 @@ const BottomTabs = ({navigation}) => {
                 />
                   <Text style={styles.titleText}>{t('common:Support')}</Text>
             </TouchableOpacity> */}
-            <TouchableOpacity 
+            <TouchableOpacity onPress={()=>setModalVisible1(true)}
             style={{alignItems:'center',paddingRight:width*0.1}}>
             <Icon4 name="ellipsis-horizontal-circle"
                 color={"#FFFFFF"}
@@ -63,6 +63,7 @@ const BottomTabs = ({navigation}) => {
                  />
                   <Text style={styles.titleText}>{t('common:More')}</Text>
             </TouchableOpacity>
+            <MoreModal ModalVisible={ModalVisible1} onPressOut={() => setModalVisible1(!ModalVisible1)} setModalVisible={setModalVisible1} navigation={navigation}/>
         </View>
 
     )

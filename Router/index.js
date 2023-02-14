@@ -23,7 +23,14 @@ import NewCgt from '../Screens/NewCgt';
 import CreateTrustCircle from '../Screens/CreateTrustCircle';
 import Activities from '../Screens/Activities';
 import ConfirmMembers from '../Screens/ConfirmMembers';
-
+import SelectCustomerCall from '../Screens/SelectCustomCall';
+import AboutUs from '../Screens/AboutUs';
+import FAQ from '../Screens/FAQ';
+import Language from '../Screens/Language';
+import NewCall from '../Screens/NewCall';
+import ChangeMPIN from '../Screens/ChangeMPIN';
+import ProfileScreen from '../Screens/ProfileScreen';
+import DLESchedule from '../Screens/DLEschedule';
 
 const Stack = createNativeStackNavigator();
 
@@ -56,6 +63,14 @@ export default function Router() {
         <Stack.Screen name="CgtCustomer" component={netInfo.isConnected ? CgtCustomer : NetWorkError} />
         <Stack.Screen name="CreateTrustCircle" component={netInfo.isConnected ? CreateTrustCircle : NetWorkError} />
         <Stack.Screen name="ConfirmMembers" component={netInfo.isConnected ? ConfirmMembers : NetWorkError} />
+        <Stack.Screen name="SelectCustomerCall" component={netInfo.isConnected ? SelectCustomerCall : NetWorkError} />
+        <Stack.Screen name="AboutUs" component={netInfo.isConnected ? AboutUs : NetWorkError} />
+        <Stack.Screen name="FAQ" component={netInfo.isConnected ? FAQ : NetWorkError} />
+        <Stack.Screen name="Language" component={netInfo.isConnected ? Language : NetWorkError} />
+        <Stack.Screen name="NewCall" component={netInfo.isConnected ? NewCall : NetWorkError} />
+        <Stack.Screen name="ProfileScreen" component={netInfo.isConnected ? ProfileScreen : NetWorkError} />
+        <Stack.Screen name="ChangeMPIN" component={netInfo.isConnected ? ChangeMPIN : NetWorkError} />
+        <Stack.Screen name="DLESchedule" component={netInfo.isConnected ? DLESchedule : NetWorkError} />
       </Stack.Navigator>
     </NavigationContainer>
   );
