@@ -23,6 +23,7 @@ import NewCgt from '../Screens/NewCgt';
 import CreateTrustCircle from '../Screens/CreateTrustCircle';
 import Activities from '../Screens/Activities';
 import ConfirmMembers from '../Screens/ConfirmMembers';
+import ContinuingGuarantor from '../Screens/ContinuingGuarantor';
 
 
 const Stack = createNativeStackNavigator();
@@ -56,6 +57,7 @@ export default function Router() {
         <Stack.Screen name="CgtCustomer" component={netInfo.isConnected ? CgtCustomer : NetWorkError} />
         <Stack.Screen name="CreateTrustCircle" component={netInfo.isConnected ? CreateTrustCircle : NetWorkError} />
         <Stack.Screen name="ConfirmMembers" component={netInfo.isConnected ? ConfirmMembers : NetWorkError} />
+        <Stack.Screen name="ContinuingGuarantor" component={netInfo.isConnected ? ContinuingGuarantor : NetWorkError} />
       </Stack.Navigator>
     </NavigationContainer>
   );
