@@ -105,6 +105,8 @@ const styles = StyleSheet.create({
     marginTop: 22
   },
   containerBox: {
+    borderWidth:1,
+    borderColor: COLORS.colorBorder,
     marginTop: 20,
     flexDirection: 'row',
     backgroundColor: COLORS.colorBackground,
