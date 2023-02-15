@@ -21,17 +21,16 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRoute } from '@react-navigation/native';
 import { useFocusEffect } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
-import DLE from './Components/DLE';
-import CGTModal from './Components/CGTModal';
+import Details from './Components/Details';
 
-const DLESchedule= ({ navigation, }) => {
+
+const CustomerDetails= ({ navigation, }) => {
     const route = useRoute();
     console.log("route name",);
     const isDarkMode = true
     const { t } = useTranslation();
     const [lang, setLang] = useState('')
     const [BStatus, setBstatus] = useState(false)
-    const [ModalVisible1,setModalVisible1] = useState(false)
 
     useEffect(() => {
         getData()
@@ -48,9 +47,9 @@ const DLESchedule= ({ navigation, }) => {
     }
 
     const handleGoBack = useCallback(() => {
-    
-            navigation.navigate('NewCgt')
-        
+
+        navigation.navigate('NewCgt')
+
         return true; // Returning true from onBackPress denotes that we have handled the event
     }, [navigation]);
 
@@ -67,25 +66,17 @@ const DLESchedule= ({ navigation, }) => {
             <SafeAreaView style={styles.container1} />
             <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
 
-            <Header  name="Schedule DLE Check" navigation={navigation}  />
+            <Header name="Customer Details" navigation={navigation} />
 
             <View style={styles.ViewContent}>
-                {/* <Text style={{color:'red'}} onPress={()=>setModalVisible1(true)}>MODAL</Text> */}
-            <DLE navigation={navigation}/>
+              <Details navigation={navigation}/>
             </View>
-            <CGTModal ModalVisible={ModalVisible1}
-                 onPressOut={() => {
-                 setModalVisible1(false)}}
-                //navigation.navigate('NewCgt')}}
-               
-                 navigation={navigation}
-              //  onPressOut={() => setModalVisible(!ModalVisible)}
-                setModalVisible={setModalVisible1} />
+
         </SafeAreaProvider>
     )
 }
 
-export default DLESchedule;
+export default CustomerDetails;
 
 
 const styles = StyleSheet.create({
@@ -99,8 +90,7 @@ const styles = StyleSheet.create({
         //  alignItems: 'center',
         flex: 1,
         backgroundColor: COLORS.colorBackground,
-        paddingLeft:20,
-        paddingRight:20
+        padding: 20
     },
     text: {
         fontWeight: '400',
