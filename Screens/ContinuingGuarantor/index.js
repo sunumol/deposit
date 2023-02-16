@@ -208,6 +208,8 @@ const styles = StyleSheet.create({
     fontWeight: '500'
   },
   containerBox: {
+    borderWidth:1,
+    borderColor: COLORS.colorBorder,
     marginTop: 20,
     flexDirection: 'row',
     backgroundColor: COLORS.colorBackground,
