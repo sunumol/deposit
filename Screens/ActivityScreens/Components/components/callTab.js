@@ -27,7 +27,8 @@ const MeetTab = (props) => {
     }
     return (
         <>
-            <Text style={styles.timeDropStyle}>{props.time} ({props.data.length})</Text>
+        <View style={{marginBottom:0}}>
+            <Text style={[styles.timeDropStyle,{paddingTop:props.time ?  18 :0}]}>{props.time}</Text>
             {props.data.map((item, index) => {
                 return (
                     <TouchableOpacity
@@ -35,7 +36,7 @@ const MeetTab = (props) => {
                             setModalVisible(true)
                             setDetails(item)
                         }}
-                        style={styles.boxStyle} key={props.id}>
+                        style={[styles.boxStyle,{marginTop:props.time ? 10 : 0}]} key={props.id}>
                         <View style={{ flex: 1, flexDirection: 'row' }}>
 
                             <View style={[styles.circleStyle, { backgroundColor: item.color }]}>
@@ -49,6 +50,9 @@ const MeetTab = (props) => {
                                         <Icon1 name="location-outline" color={"black"} />
                                     </View>
                                     <Text style={[styles.idText, { paddingTop: 4 }]}>{item.text}</Text>
+                                    {/* <TouchableOpacity onPress={()=>props.navigation.navigate('DetailCheck')}>
+                           
+                                </TouchableOpacity> */}
                                 </View>
                             </View>
 
@@ -59,10 +63,15 @@ const MeetTab = (props) => {
                                 <Icon2 name="phone-in-talk-outline" color={"black"} size={15} />
                                 <Text style={[styles.numText, { paddingLeft: 6 }]}>{item.phoneNumber}</Text>
                             </View>
-
-                            <View style={[styles.leadContainer, { backgroundColor: COLORS.LightPurple }]}>
-                                <Text style={[styles.leadText, { color: COLORS.DarkPurple }]}>{props.meet ? t('common:ConductCGT') : t('common:ExplainTrustCircle')}</Text>
-                            </View>
+                            {item.status == "Conduct DLE"
+                                ? <TouchableOpacity 
+                                //onPress={() => props.navigation.navigate('DetailCheck')}
+                                    style={[styles.leadContainer, { backgroundColor: 'rgba(186, 134, 205, 0.1)' }]}>
+                                    <Text style={[styles.leadText, { color: '#F2994A' }]}>Conduct DLE</Text>
+                                </TouchableOpacity>
+                                : <View style={[styles.leadContainer, { backgroundColor: COLORS.LightPurple }]}>
+                                    <Text style={[styles.leadText, { color: COLORS.DarkPurple }]}>{props.meet ? t('common:ConductCGT') : t('common:ExplainTrustCircle')}</Text>
+                                </View>}
 
                         </View>
 
@@ -70,6 +79,7 @@ const MeetTab = (props) => {
                 )
             })}
             <ActivityModal visible={modalVisible} onPressOut={() => setModalVisible(!modalVisible)} meet={props.meet} details={details} />
+            </View>
         </>
     )
 }
@@ -79,7 +89,7 @@ const styles = StyleSheet.create({
         fontSize: 11,
         fontFamily: FONTS.FontMedium,
         color: COLORS.colorDSText,
-        paddingTop: 18,
+        //paddingTop: 18,
     },
     boxStyle: {
         backgroundColor: COLORS.colorBackground,
@@ -90,7 +100,6 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.5,
         elevation: 7,
         padding: 10,
-        marginTop: 10,
         borderWidth: 1,
         borderColor: COLORS.colorBorder,
         flexDirection: 'row'

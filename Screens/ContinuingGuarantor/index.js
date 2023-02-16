@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, StatusBar, SafeAreaView, Platform,
-   TextInput, TouchableOpacity, Dimensions,ScrollView,KeyboardAvoidingView } from 'react-native'
+   TextInput, TouchableOpacity, Dimensions,ScrollView,KeyboardAvoidingView,Image } from 'react-native'
 import React, { useState,useEffect,useRef } from 'react'
 import Header from '../../Components/RepayHeader';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -70,7 +70,9 @@ const scrollViewRef = useRef();
                 <Text style={styles.nameText}>Anil Kumar</Text>
                 <Text style={styles.underText}>Daily wage labourer</Text>
               </View>
-              <View style={{ flexDirection: 'row' }}>
+              <View style={{ flexDirection: 'row' ,left:-5}}>
+                
+              <Image source={require('../../assets/image/cake.png')} resizeMode={'contain'} />
                 <Text style={styles.dateText}>12/10/1972</Text>
               </View>
             </View>
@@ -266,6 +268,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontFamily: FONTS.FontRegular,
     color: COLORS.colorDark,
+    marginLeft:5
   },
   buttonView: {
     backgroundColor: COLORS.colorB,

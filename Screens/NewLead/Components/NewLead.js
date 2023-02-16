@@ -72,16 +72,16 @@ const NewLead1 = ({ navigation }) => {
         setVStatus(false)
 
     }
- 
+
     const OnchangeNumber = (num) => {
         if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(num) || num === '') {
             setMobile(num)
-           
+
         } else {
             // setPhoneNum(null)
-          //  setModalVisible1(true)
-          //  console.log("restricted values", num, PhoneNum)
-             ToastAndroid.show(t('common:Valid'), ToastAndroid.SHORT);
+            //  setModalVisible1(true)
+            //  console.log("restricted values", num, PhoneNum)
+            ToastAndroid.show(t('common:Valid'), ToastAndroid.SHORT);
         }
     }
 

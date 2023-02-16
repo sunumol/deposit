@@ -221,11 +221,13 @@ const Cgt = ({navigation}) => {
     const renderItem = ({ item }) => {
         return (
             <View style={{ justifyContent: 'space-around', margin: 5 }}>
-                <TouchableOpacity onPress={() => {item.id == 8 ? OnPress(item.id):item.id == 5 ? navigation.navigate('Activities'):console.log("hello")}
+                <TouchableOpacity onPress={() => {item.id == 8 ?  navigation.navigate('SelectCustomerCall'):item.id == 5 ? navigation.navigate('Activities'):console.log("hello")}
                // setStatus(!status)
             }
-                    style={[styles.Touch, { borderColor: item.bgcolor, backgroundColor: item.id == 8 && status ? 'rgba(39, 174, 96, 1)' : COLORS.colorBackground }]}>
-                    <Text style={[styles.timeText1, { color: item.id == 8 && status ? COLORS.colorBackground : item.color }]}>{item.slot}</Text>
+                    style={[styles.Touch, { borderColor: item.bgcolor, backgroundColor: COLORS.colorBackground }]}>
+                    <Text style={[styles.timeText1, { color: item.color
+                        //item.id == 8 && status ? COLORS.colorBackground : 
+                         }]}>{item.slot}</Text>
                 </TouchableOpacity>
             </View>
         )

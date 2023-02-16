@@ -27,13 +27,19 @@ const CalendarStrips = () => {
 
 
 
+
+  //------------------------------------------------------- SetState ----------------------------------------
+  const [selectedDate, setSelectedDate] = useState(new Date())
+
+
+
   useEffect(() => {
     const dt = new Date();
     //console.log("new Date(",dt)
-    var month = dt.getMonth(),
-      year = dt.getFullYear();
-    var FirstDay = new Date(year, month, 1);
-    // console.log("firstDay.....",FirstDay)
+    // var month = dt.getMonth(),
+    //   year = dt.getFullYear();
+    // var FirstDay = new Date(year, month, 1);
+    // // console.log("firstDay.....",FirstDay)
 
 
 
@@ -149,73 +155,87 @@ const CalendarStrips = () => {
   const IncrementMonth = () => {
   //   const my_date = new Date();
   //  const monthFormat =  moment(Month).format("MMMM")
-    console.log("max date....Month",Month)
-    console.log("Format....",Format)
-    console.log("NDATE....",NDate)
-    if (NDate !== Format) {
+    // console.log("max date....Month",Month)
+    // console.log("Format....",Format)
+    // console.log("NDATE....",NDate)
+    // if (NDate !== Format) {
 
-      new Date(Month.setMonth(Month.getMonth() + 1));
-      setTimeout(() => {
-        setMonth(Month)
-      }, 2000);
-      setMonth(Month)
-      setStatus(true)
-      const CurrentDate1 = moment(Month).format("MMMM YYYY")
-      setNDate(CurrentDate1)
-      console.log("INC DATE", moment(Month).format("MMMM"));
-      // console.log("Month increment.....", Month)
+    //   new Date(Month.setMonth(Month.getMonth() + 1));
+    //   setTimeout(() => {
+    //     setMonth(Month)
+    //   }, 2000);
+    //   setMonth(Month)
+    //   setStatus(true)
+    //   const CurrentDate1 = moment(Month).format("MMMM YYYY")
+    //   setNDate(CurrentDate1)
+    //   console.log("INC DATE", moment(Month).format("MMMM"));
+    //   // console.log("Month increment.....", Month)
 
-      var date = new Date(), y = Month.getFullYear(), m = Month.getMonth();
-      var firstDay = new Date(y, m, 1);
-      setTimeout(() => {
-        setStartDay(firstDay)
-      }, 1000)
-      setStartDay(firstDay)
+    //   var date = new Date(), y = Month.getFullYear(), m = Month.getMonth();
+    //   var firstDay = new Date(y, m, 1);
+    //   setTimeout(() => {
+    //     setStartDay(firstDay)
+    //   }, 1000)
+    //   setStartDay(firstDay)
+    // }
+    // else {
+    //   console.log("else case")
+    //   console.log("print first day", firstDay)
+    //   console.log("first day state....", Month)
+    // }
+    const today = new Date();
+    console.log(today,"-----today-----")
+    let next;
+    if (today.getMonth() === 11) {
+      next = new Date(today.getFullYear() + 1, 0, 1);
+    } else {
+      next = new Date(today.getFullYear(), today?.getMonth() + 1, 1);
     }
-    else {
-      console.log("else case")
-      console.log("print first day", firstDay)
-      console.log("first day state....", Month)
-    }
+    setStartDay(next)
+    setSelectedDate(next)
+    // setMonth(next)
+    console.log("------",next);
 
   }
 
   const DecrementMonth = () => {
+  
+    setStartDay(new Date())
+    setSelectedDate(new Date())
+    // const my_date = new Date();
+    // const currentDate = moment(my_date).format("MM/YYYY")
+    // console.log("my date....", moment(my_date).format("MMMM"))
+    // setCurrentDate(currentDate)
+    // const MonthInc = moment(Month).format("MM/YYYY")
+    // setMonthInc(MonthInc)
+    // if (currentDate !== MonthInc) {
 
-    const my_date = new Date();
-    const currentDate = moment(my_date).format("MM/YYYY")
-    console.log("my date....", moment(my_date).format("MMMM"))
-    setCurrentDate(currentDate)
-    const MonthInc = moment(Month).format("MM/YYYY")
-    setMonthInc(MonthInc)
-    if (currentDate !== MonthInc) {
 
+    //   setMonth(my_date)
+    //   new Date(Month.setMonth(Month.getMonth() - 1));
+    //   setTimeout(() => {
+    //     setMonth(Month)
+    //   }, 2000);
+    //   setMonth(Month)
+    //   setStatus(true)
+    //   const CurrentDate1 = moment(Month).format("MMMM YYYY")
+    //   setNDate(CurrentDate1)
+    //   var date = new Date(), y = Month.getFullYear(), m = Month.getMonth();
+    //   var firstDay = new Date(y, m, 1);
 
-      setMonth(my_date)
-      new Date(Month.setMonth(Month.getMonth() - 1));
-      setTimeout(() => {
-        setMonth(Month)
-      }, 2000);
-      setMonth(Month)
-      setStatus(true)
-      const CurrentDate1 = moment(Month).format("MMMM YYYY")
-      setNDate(CurrentDate1)
-      var date = new Date(), y = Month.getFullYear(), m = Month.getMonth();
-      var firstDay = new Date(y, m, 1);
+    //   setTimeout(() => {
+    //     setStartDay(firstDay)
 
-      setTimeout(() => {
-        setStartDay(firstDay)
+    //   }, 1000)
+    //   setStartDay(firstDay)
 
-      }, 1000)
-      setStartDay(firstDay)
-
-      console.log(moment(Month).format("MM/YYYY"));
-      console.log("Month increment.....", Month)
-      console.log("first day....", Month, currentDate, MonthInc)
-    }
-    else {
-      console.log("hjhreri")
-    }
+    //   console.log(moment(Month).format("MM/YYYY"));
+    //   console.log("Month increment.....", Month)
+    //   console.log("first day....", Month, currentDate, MonthInc)
+    // }
+    // else {
+    //   console.log("hjhreri")
+    // }
     //     const getDays = (year, month) => {
     //       return new Date(year, month, 1).getDate();
     //   };
@@ -225,13 +245,15 @@ const CalendarStrips = () => {
 
   useEffect(() => {
     console.log("mAXdaTE....",Maxdate)
-    new Date(Maxdate.setMonth(Month.getMonth() + 1));
+    new Date(Maxdate.setMonth(Month?.getMonth() + 1));
 
     const Format1 = moment(Maxdate).format("MMMM YYYY")
     setFormat(Format1)
     console.log("dATE maximum....", Format, Format1,Maxdate)
 
   }, [])
+
+  
 
   const onWeekChanged = (start, end) => {
     console.log("start end.....", start)
@@ -249,12 +271,12 @@ const CalendarStrips = () => {
 
   }
 
-  // useEffect(()=>{
+  useEffect(()=>{
   
   
-  //   setMaxweek(Maxweek)
-  //   console.log("USEEFFECT CALLINGff.....",Maxweek)
-  // },[])
+    setMaxweek(Maxweek)
+    console.log("USEEFFECT CALLINGff.....",Maxweek)
+  },[])
 
   return (
     <View style={styles.container}>
@@ -286,7 +308,8 @@ const CalendarStrips = () => {
 
 
       <CalendarStrip
-        scrollable
+        scrollable={true}
+        scrollerPaging={true}
         // customDatesStyles={customDatesStyles}
         style={{ height: 100, paddingTop: 0, paddingBottom: 0 }}
         onWeekChanged={onWeekChanged}
@@ -304,8 +327,12 @@ const CalendarStrips = () => {
         iconLeftStyle={{ fontSize: 15, marginLeft: 15, width: 20, height: 15,color:"#171930" }}
         iconRightStyle={{ marginRight: 15, width: 20, height: 15,color:"#171930"}}
         onDateSelected={onDateSelected}
-        maxDate={Maxdate}
+        maxDate={new Date(new Date().setDate(new Date().getDate() + 30))}
         showMonth={false}
+        minDate={new Date()}
+        rightSelector={true}
+        Type={'parallel'}
+        scrollToOnSetSelectedDate={selectedDate}
         //leftSelector={}
         //minDate={StartDay}
         //calendarHeaderFormat={moment().format('MMM YY')}
@@ -313,6 +340,33 @@ const CalendarStrips = () => {
         // minDate={StartDay !== StartDay ? setTimeout(() => {
         //   StartDay
         // }, (1000)):alert(StartDay)}
+        dayComponent={(item)=>
+      {  return(
+              <TouchableOpacity 
+              style={{
+                alignItems:'center',
+                justifyContent:'center',
+                flex:1,
+                marginHorizontal:5,
+                borderRadius:10,
+                borderColor:moment(selectedDate).format('DD-MM-YYYY') === moment(item.date).format('DD-MM-YYYY') ?COLORS.colorB:'#E5E8EB',
+                borderWidth:0.5,
+                backgroundColor:moment(selectedDate).format('DD-MM-YYYY') === moment(item.date).format('DD-MM-YYYY') ?COLORS.colorB:COLORS.colorBackground
+              }}
+              onPress={()=>setSelectedDate(item.date)}>
+                <Text 
+                style = {{ 
+                  color: moment(selectedDate).format('DD-MM-YYYY') === moment(item.date).format('DD-MM-YYYY') ?COLORS.colorBackground:'#171930', 
+                  fontSize: 11, 
+                  textTransform: 'capitalize', 
+                  fontFamily: FONTS.FontRegular 
+                  }}>{moment(item.date).format('DD-MM-YYYY') === moment(new Date()).format('DD-MM-YYYY')?'Today':moment(item.date).format('ddd')}</Text>
+                <Text style={{ color:  moment(selectedDate).format('DD-MM-YYYY') === moment(item.date).format('DD-MM-YYYY') ?COLORS.colorBackground:'#171930', fontSize: 15,fontFamily:FONTS.FontSemiB}}>{moment(item.date).format('DD').replace(/\b0/g, '')}</Text>
+        {console.log('-----------------',item,'---------------------')}
+             
+              </TouchableOpacity>
+        )
+      }}
         numDaysInWeek={5}
       //  onDateSelected={onDateSelected}
 

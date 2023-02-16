@@ -39,7 +39,9 @@ import ResidenceOwner from '../Screens/ResidenceOwner';
 import ScheduleMeet from '../Screens/ScheduleMeet';
 import Collect from '../Screens/Collect';
 import AddVehicle from '../Screens/AddVehicle';
-
+import VehicleOwn from '../Screens/VehicleOwn';
+import WhiteGoodsOwner from '../Screens/WhiteGoodsOwner';
+import EnergyUtility from '../Screens/EnergyUtility'; 
 const Stack = createNativeStackNavigator();
 
 
@@ -86,6 +88,9 @@ export default function Router() {
         <Stack.Screen name="ScheduleMeet" component={netInfo.isConnected ? ScheduleMeet : NetWorkError} />
         <Stack.Screen name="Collect" component={netInfo.isConnected ? Collect : NetWorkError} />
         <Stack.Screen name="AddVehicle" component={netInfo.isConnected ? AddVehicle : NetWorkError} />
+        <Stack.Screen name="VehicleOwn" component={netInfo.isConnected ? VehicleOwn : NetWorkError} />
+        <Stack.Screen name="WhiteGoodsOwner" component={netInfo.isConnected ? WhiteGoodsOwner : NetWorkError} />
+        <Stack.Screen name="EnergyUtility" component={netInfo.isConnected ? EnergyUtility : NetWorkError} />
    </Stack.Navigator>
     </NavigationContainer>
   );

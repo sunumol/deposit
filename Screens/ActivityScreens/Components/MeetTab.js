@@ -14,24 +14,24 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import MeetTab from '../Components/components/callTab'
 
 
-const ItemTabs = (props) => {
+const ItemTabs = ({navigation}) => {
     const { t } = useTranslation();
     const [Lang, setLang] = useState('')
     const [ModalVisible1, setModalVisible1] = useState(false)
     const [meetData, setMeetData] = useState([
-        {
-            id: 1,
-            data: [{
-                id: 1,
-                short: 'AA',
-                name: 'Athira Anil',
-                text: '682025',
-                phoneNumber: '968XXXXX66',
-                color: '#6979F8',
-                status: 'Conduct',
-            }],
-            time: '12:30 PM'
-        },
+       // {
+        //     id: 1,
+        //     data: [{
+        //         id: 1,
+        //         short: 'AA',
+        //         name: 'Athira Anil',
+        //         text: '682025',
+        //         phoneNumber: '968XXXXX66',
+        //         color: '#6979F8',
+        //         status: 'Conduct',
+        //     }],
+        //     time: '12:30 PM (1)'
+        // },
         {
             id: 2,
             data: [{
@@ -43,7 +43,7 @@ const ItemTabs = (props) => {
                 color: '#75B5C4',
                 status: 'Conduct',
             }],
-            time: '01:30 PM'
+            time: '01:30 PM (1)'
         },
         {
             id: 3,
@@ -55,22 +55,76 @@ const ItemTabs = (props) => {
                 phoneNumber: '635XXXXX11',
                 color: '#80C475',
                 status: 'Conduct',
+                
             }],
-            time: '03:30 PM'
+            time: '03:30 PM (1)'
+        },
+
+        {
+            id: 5,
+            data: [{
+                id: 1,
+                short: 'AA',
+                name: 'Athira Anil',
+                text: '682025',
+                phoneNumber: '968XXXXX66',
+                color: '#8CCEC2',
+                status: 'Conduct DLE',
+            }],
+           
+            time: '05:00 PM (3)'
         },
         {
-            id: 4,
+            id: 6,
+            data: [{
+                id: 1,
+                short: 'AT',
+                name: 'Aiswarya Thomas',
+                text: '686666',
+                phoneNumber: '987XXXXX22',
+                color: '#8CACCE',
+                status: 'Conduct DLE',
+            }],
+            
+        },
+        {
+            id: 7,
             data: [{
                 id: 1,
                 short: 'EI',
                 name: 'Elizabeth Immanuel K...',
                 text: '682044',
                 phoneNumber: '635XXXXX11',
-                color: '#C47583',
-                status: 'Conduct',
+                color: '#9EC894',
+                status: 'Conduct DLE',
             }],
 
-            time: '04:30 PM'
+        },
+        {
+            id: 8,
+            data: [{
+                id: 1,
+                short: 'AA',
+                name: 'Manjusha Mohan Puthe...',
+                text: 'Kakkanad',
+                phoneNumber: '968XXXXX66',
+                color: '#C89494',
+                status: 'Conduct DLE',
+            }],
+            time: '05:00 PM (3)'
+        }, 
+             {
+            id: 9,
+            data: [{
+                id: 1,
+                short: 'BB',
+                name: 'Bestin Babu',
+                text: 'Kakkanad',
+                phoneNumber: '678XXXXX99',
+                color: '#C8AA94',
+                status: 'Conduct DLE',
+            }],
+           
         },
     ])
 
@@ -89,7 +143,7 @@ const ItemTabs = (props) => {
     }
     return (
         <ScrollView style={{ flex: 1, backgroundColor: COLORS.colorBackground }}>
-            <View style={{ paddingHorizontal: 20 }}>
+            <View style={{ paddingHorizontal: 20 ,marginBottom:10}}>
                 {
                     meetData.map((item, index) => {
                         return (
@@ -98,6 +152,8 @@ const ItemTabs = (props) => {
                                 data={item.data}
                                 time={item.time}
                                 meet={true}
+                                navigation={navigation}
+                            
                             />
                         )
                     })

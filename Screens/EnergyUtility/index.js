@@ -21,12 +21,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRoute } from '@react-navigation/native';
 import { useFocusEffect } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
-import Cgt from './Components/Cgt';
-import DatePicker from './Components/CalenderPick';
-import CalendarStrips from './Components/Calender';
+import Energy from './Components/Energy';
 
 
-const NewCgt = ({ navigation, }) => {
+const EnergyUtility = ({ navigation, }) => {
     const route = useRoute();
     console.log("route name",);
     const isDarkMode = true
@@ -49,11 +47,9 @@ const NewCgt = ({ navigation, }) => {
     }
 
     const handleGoBack = useCallback(() => {
-        if (BStatus) {
-            setBstatus(false)
-        } else {
-            navigation.navigate('Profile')
-        }
+
+        navigation.navigate('NewCgt')
+
         return true; // Returning true from onBackPress denotes that we have handled the event
     }, [navigation]);
 
@@ -65,31 +61,22 @@ const NewCgt = ({ navigation, }) => {
                 BackHandler.removeEventListener('hardwareBackPress', handleGoBack);
         }, [handleGoBack]),
     );
-
-
-
     return (
         <SafeAreaProvider>
             <SafeAreaView style={styles.container1} />
             <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
 
-            <Header navigation={navigation} name={"New CGT"} />
+            <Header name="Energy Utilities" navigation={navigation} />
+
             <View style={styles.ViewContent}>
-          
-           
-                <CalendarStrips />
-                <Cgt navigation={navigation} />
-              
-                {/* <DatePicker/> */}
-
-
+             <Energy  navigation={navigation}/>
             </View>
 
         </SafeAreaProvider>
     )
 }
 
-export default NewCgt;
+export default EnergyUtility;
 
 
 const styles = StyleSheet.create({
@@ -100,9 +87,10 @@ const styles = StyleSheet.create({
     },
     ViewContent: {
         // justifyContent: 'center',
-        //alignItems: 'center',
+        //  alignItems: 'center',
         flex: 1,
         backgroundColor: COLORS.colorBackground,
+        padding: 20
     },
     text: {
         fontWeight: '400',

@@ -53,7 +53,7 @@ const CgtModal = ({ ModalVisible, onPressOut, setModalVisible,onPress,navigation
                 
 
                     <TouchableOpacity style={styles.buttonStyle} onPress={()=>{onPressOut()
-                    navigation.navigate('NewCgt')}}>
+                    navigation.navigate('NewCall')}}>
                         <Text style={styles.buttonTextStyle}>{t('common:Okay')}</Text>
                     </TouchableOpacity>
                 </View>

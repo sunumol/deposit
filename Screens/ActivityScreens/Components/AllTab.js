@@ -24,7 +24,7 @@ const ItemTabs = ({navigation}) => {
         id: 1,
         startTime: '07:00 AM ',
         endTime: '10:00 AM',
-        badge: 4,
+        badge: 3,
         open: false
     }, {
         id: 1,
@@ -37,26 +37,18 @@ const ItemTabs = ({navigation}) => {
         id: 1,
         startTime: '01:00 PM',
         endTime: '04:00 PM',
-        badge: 4,
+        badge: 3,
         open: false
     },
     {
         id: 1,
         startTime: '04:00 PM',
         endTime: '07:00 PM',
-        badge: 2,
+        badge: 3,
         open: false
     }])
     const [listData, setListData] = useState([
-        {
-            id: '1',
-            short: 'EI',
-            name: 'Elizabeth Immanuel Ko...',
-            text: 'Kaippattur',
-            phoneNumber: '828XXXXX00',
-            color: '#C8BD94',
-            status: 'Lead',
-        },
+
         {
             id: '2',
             short: 'AJ',
@@ -139,7 +131,7 @@ const ItemTabs = ({navigation}) => {
                                 ?
                                 <>
                                     <View>
-                                        <Text style={styles.timeDropStyle}>07:00 AM (3)</Text>
+                                        <Text style={styles.timeDropStyle}>07:00 AM (2)</Text>
                                         <Text style={styles.headText}>{t('common:Call')}</Text>
                                         {listData.map((item) => {
                                             return (
