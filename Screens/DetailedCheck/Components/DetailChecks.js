@@ -137,7 +137,7 @@ const DetailChecks = ({navigation}) => {
                             onPress={() => setModalReason(true)}>
                             <Text style={[styles.continueText, { color: COLORS.colorB }]}>Reject</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => navigation.navigate('CustomerDetails')}
+                        <TouchableOpacity onPress={() =>checked? navigation.navigate('CustomerDetails'):console.log('')}
                             style={[styles.buttonView, { backgroundColor:checked ? COLORS.colorB: 'rgba(236, 235, 237, 1)' }]}>
                             <Text style={[styles.continueText, { color: checked? COLORS.colorBackground: '#979C9E' }]}>Confirm</Text>
                         </TouchableOpacity>

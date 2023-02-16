@@ -8,6 +8,7 @@ export const  COLORS = {
     colorLight:"#E5E7FA",
     colorBackground2:'#D1D1D1',
     colorWhite2:'#979C9EDE',
+    colorWhite3:'#979C9E',
     colorBox:'#DADADA',
     colorDSText:'#808080',
     Gray6:'#F2F2F2',

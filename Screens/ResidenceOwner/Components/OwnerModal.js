@@ -4,7 +4,8 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { COLORS, FONTS } from '../../../Constants/Constants';
 import { useTranslation } from 'react-i18next';
 
-const OwnerModal = ({ visible, onPressOut,setModalVisible,setPurpose}) => {
+const OwnerModal = ({ visible, onPressOut,setModalVisible,setPurpose,setNamestatus,
+    setUploadStatus,setImageStatus}) => {
     const { t } = useTranslation();
     return (
 
@@ -25,7 +26,10 @@ const OwnerModal = ({ visible, onPressOut,setModalVisible,setPurpose}) => {
                         <TouchableOpacity style={styles.textTouch}
                             onPress={() => {
                                 setPurpose('Electricity Bill')
+                                setUploadStatus(true)
                                 setModalVisible(!visible)
+                                setImageStatus(true)
+                                setNamestatus(true)
                             }
                             }>
                             <Text style={styles.modalText}>Electricity Bill</Text>
@@ -41,6 +45,9 @@ const OwnerModal = ({ visible, onPressOut,setModalVisible,setPurpose}) => {
                         <TouchableOpacity style={styles.textTouch} onPress={() => {
                             setPurpose("Water bill")
                             setModalVisible(!visible)
+                            setUploadStatus(true)
+                            setImageStatus(true)
+                            setNamestatus(true)
                         }
                         }>
                             <Text style={styles.modalText}>Water bill</Text>
@@ -56,6 +63,9 @@ const OwnerModal = ({ visible, onPressOut,setModalVisible,setPurpose}) => {
                         <TouchableOpacity style={styles.textTouch} onPress={() => {
                             setPurpose('Building Tax Receipt')
                             setModalVisible(!visible)
+                            setUploadStatus(true)
+                            setImageStatus(true)
+                            setNamestatus(true)
                         }
                         }>
                             <Text style={styles.modalText}>Building Tax Receipt</Text>

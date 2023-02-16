@@ -7,6 +7,7 @@ import {
     SafeAreaView,
     Platform,
     TextInput,
+    Image,
     ScrollView,
     Dimensions,
     TouchableOpacity
@@ -101,21 +102,22 @@ const Details = ({ navigation }) => {
                     <View style={{ marginTop: width * 0.05 }}>
                         <Text style={styles.TextSp}>Spouse details</Text>
                     </View>
-                    <View style={styles.cardView2}>
-                        <View style={[styles.circleStyle, { backgroundColor: 'rgba(206, 116, 143, 1)', marginLeft: width * 0.05 }]}>
-                            <Text style={styles.circleText}>AK</Text>
-                        </View>
 
-                        <View>
-                            <Text style={styles.NAMEFont}>Anil Kumar</Text>
-                            <Text style={styles.subText}>Daily wage labourer</Text>
-                        </View>
-
-                        <View>
-                            <Text style={styles.subText}>12/10/1972</Text>
+                    <View style={styles.containerBox}>
+                        <View style={{ flex: 1, flexDirection: 'row' }}>
+                            <View style={styles.circleView}>
+                                <Text style={styles.shortText}>AK</Text>
+                            </View>
+                            <View style={{ flexDirection: 'column', flex: 1, marginLeft: 12 }}>
+                                <Text style={styles.nameText}>Anil Kumar</Text>
+                                <Text style={styles.underText}>Daily wage labourer</Text>
+                            </View>
+                            <View style={{ flexDirection: 'row', }}>
+                                <Image source={require('../../../assets/image/cake.png')} resizeMode={'contain'} />
+                                <Text style={styles.dateText}>12/10/1972</Text>
+                            </View>
                         </View>
                     </View>
-
                 </ScrollView>
 
                 <View style={{ alignItems: 'center', justifyContent: 'center' }}>
@@ -234,11 +236,7 @@ const styles = StyleSheet.create({
         fontFamily: FONTS.FontSemiB,
         color: COLORS.colorB,
     },
-    dateText: {
-        fontSize: 14,
-        fontFamily: FONTS.FontRegular,
-        color: COLORS.colorBlack,
-    },
+
     changeText: {
         fontSize: 12,
         fontFamily: FONTS.FontMedium,
@@ -379,7 +377,56 @@ const styles = StyleSheet.create({
         fontFamily: FONTS.FontBold,
         color: COLORS.colorBackground,
         letterSpacing: 0.64
-    }
+    },
+    containerBox: {
+        marginTop: 20,
+        flexDirection: 'row',
+        backgroundColor: COLORS.colorBackground,
+        shadowColor: 'rgba(0, 0, 0, 0.4)',
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.5,
+        elevation: 5,
+        shadowRadius: 7,
+        borderRadius: 8,
+        marginRight: 15,
+        marginLeft: 2,
+        alignItems: 'center',
+        marginBottom: 14,
+        width: width * 0.88,
+        height: width * 0.18
+    },
+    circleView: {
+        width: 40,
+        height: 40,
+        backgroundColor: '#CE748F',
+        borderRadius: 20,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginLeft: 15
+    },
+    shortText: {
+        fontSize: 18,
+        fontFamily: FONTS.FontSemiB,
+        color: COLORS.colorBackground,
+
+    },
+    nameText: {
+        fontSize: 14,
+        fontFamily: FONTS.FontSemiB,
+        color: COLORS.colorDark,
+    },
+    underText: {
+        fontSize: 12,
+        fontFamily: FONTS.FontRegular,
+        color: COLORS.colorDark,
+    },
+    dateText: {
+        fontSize: 12,
+        fontFamily: FONTS.FontRegular,
+        color: COLORS.colorDark,
+        marginRight: 12,
+        marginLeft: 5
+    },
 
 
 })

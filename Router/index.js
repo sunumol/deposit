@@ -23,6 +23,8 @@ import NewCgt from '../Screens/NewCgt';
 import CreateTrustCircle from '../Screens/CreateTrustCircle';
 import Activities from '../Screens/Activities';
 import ConfirmMembers from '../Screens/ConfirmMembers';
+import ContinuingGuarantor from '../Screens/ContinuingGuarantor';
+
 import SelectCustomerCall from '../Screens/SelectCustomCall';
 import AboutUs from '../Screens/AboutUs';
 import FAQ from '../Screens/FAQ';
@@ -36,6 +38,7 @@ import CustomerDetails from '../Screens/CustomerDetails';
 import ResidenceOwner from '../Screens/ResidenceOwner';
 import ScheduleMeet from '../Screens/ScheduleMeet';
 import Collect from '../Screens/Collect';
+import AddVehicle from '../Screens/AddVehicle';
 
 const Stack = createNativeStackNavigator();
 
@@ -68,6 +71,7 @@ export default function Router() {
         <Stack.Screen name="CgtCustomer" component={netInfo.isConnected ? CgtCustomer : NetWorkError} />
         <Stack.Screen name="CreateTrustCircle" component={netInfo.isConnected ? CreateTrustCircle : NetWorkError} />
         <Stack.Screen name="ConfirmMembers" component={netInfo.isConnected ? ConfirmMembers : NetWorkError} />
+        <Stack.Screen name="ContinuingGuarantor" component={netInfo.isConnected ? ContinuingGuarantor : NetWorkError} />
         <Stack.Screen name="SelectCustomerCall" component={netInfo.isConnected ? SelectCustomerCall : NetWorkError} />
         <Stack.Screen name="AboutUs" component={netInfo.isConnected ? AboutUs : NetWorkError} />
         <Stack.Screen name="FAQ" component={netInfo.isConnected ? FAQ : NetWorkError} />
@@ -81,6 +85,7 @@ export default function Router() {
         <Stack.Screen name="CustomerDetails" component={netInfo.isConnected ? CustomerDetails: NetWorkError} />
         <Stack.Screen name="ScheduleMeet" component={netInfo.isConnected ? ScheduleMeet : NetWorkError} />
         <Stack.Screen name="Collect" component={netInfo.isConnected ? Collect : NetWorkError} />
+        <Stack.Screen name="AddVehicle" component={netInfo.isConnected ? AddVehicle : NetWorkError} />
    </Stack.Navigator>
     </NavigationContainer>
   );

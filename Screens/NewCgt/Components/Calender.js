@@ -149,73 +149,84 @@ const CalendarStrips = () => {
   const IncrementMonth = () => {
   //   const my_date = new Date();
   //  const monthFormat =  moment(Month).format("MMMM")
-    console.log("max date....Month",Month)
-    console.log("Format....",Format)
-    console.log("NDATE....",NDate)
-    if (NDate !== Format) {
+    // console.log("max date....Month",Month)
+    // console.log("Format....",Format)
+    // console.log("NDATE....",NDate)
+    // if (NDate !== Format) {
 
-      new Date(Month.setMonth(Month.getMonth() + 1));
-      setTimeout(() => {
-        setMonth(Month)
-      }, 2000);
-      setMonth(Month)
-      setStatus(true)
-      const CurrentDate1 = moment(Month).format("MMMM YYYY")
-      setNDate(CurrentDate1)
-      console.log("INC DATE", moment(Month).format("MMMM"));
-      // console.log("Month increment.....", Month)
+    //   new Date(Month.setMonth(Month.getMonth() + 1));
+    //   setTimeout(() => {
+    //     setMonth(Month)
+    //   }, 2000);
+    //   setMonth(Month)
+    //   setStatus(true)
+    //   const CurrentDate1 = moment(Month).format("MMMM YYYY")
+    //   setNDate(CurrentDate1)
+    //   console.log("INC DATE", moment(Month).format("MMMM"));
+    //   // console.log("Month increment.....", Month)
 
-      var date = new Date(), y = Month.getFullYear(), m = Month.getMonth();
-      var firstDay = new Date(y, m, 1);
-      setTimeout(() => {
-        setStartDay(firstDay)
-      }, 1000)
-      setStartDay(firstDay)
+    //   var date = new Date(), y = Month.getFullYear(), m = Month.getMonth();
+    //   var firstDay = new Date(y, m, 1);
+    //   setTimeout(() => {
+    //     setStartDay(firstDay)
+    //   }, 1000)
+    //   setStartDay(firstDay)
+    // }
+    // else {
+    //   console.log("else case")
+    //   console.log("print first day", firstDay)
+    //   console.log("first day state....", Month)
+    // }
+    const today = new Date();
+    console.log(today,"-----today-----")
+    let next;
+    if (today.getMonth() === 11) {
+      next = new Date(today.getFullYear() + 1, 0, 1);
+    } else {
+      next = new Date(today.getFullYear(), today.getMonth() + 1, 1);
     }
-    else {
-      console.log("else case")
-      console.log("print first day", firstDay)
-      console.log("first day state....", Month)
-    }
+    setStartDay(next)
+    // setMonth(next)
+    console.log("------",next);
 
   }
 
   const DecrementMonth = () => {
+    setStartDay(new Date())
+    // const my_date = new Date();
+    // const currentDate = moment(my_date).format("MM/YYYY")
+    // console.log("my date....", moment(my_date).format("MMMM"))
+    // setCurrentDate(currentDate)
+    // const MonthInc = moment(Month).format("MM/YYYY")
+    // setMonthInc(MonthInc)
+    // if (currentDate !== MonthInc) {
 
-    const my_date = new Date();
-    const currentDate = moment(my_date).format("MM/YYYY")
-    console.log("my date....", moment(my_date).format("MMMM"))
-    setCurrentDate(currentDate)
-    const MonthInc = moment(Month).format("MM/YYYY")
-    setMonthInc(MonthInc)
-    if (currentDate !== MonthInc) {
 
+    //   setMonth(my_date)
+    //   new Date(Month.setMonth(Month.getMonth() - 1));
+    //   setTimeout(() => {
+    //     setMonth(Month)
+    //   }, 2000);
+    //   setMonth(Month)
+    //   setStatus(true)
+    //   const CurrentDate1 = moment(Month).format("MMMM YYYY")
+    //   setNDate(CurrentDate1)
+    //   var date = new Date(), y = Month.getFullYear(), m = Month.getMonth();
+    //   var firstDay = new Date(y, m, 1);
 
-      setMonth(my_date)
-      new Date(Month.setMonth(Month.getMonth() - 1));
-      setTimeout(() => {
-        setMonth(Month)
-      }, 2000);
-      setMonth(Month)
-      setStatus(true)
-      const CurrentDate1 = moment(Month).format("MMMM YYYY")
-      setNDate(CurrentDate1)
-      var date = new Date(), y = Month.getFullYear(), m = Month.getMonth();
-      var firstDay = new Date(y, m, 1);
+    //   setTimeout(() => {
+    //     setStartDay(firstDay)
 
-      setTimeout(() => {
-        setStartDay(firstDay)
+    //   }, 1000)
+    //   setStartDay(firstDay)
 
-      }, 1000)
-      setStartDay(firstDay)
-
-      console.log(moment(Month).format("MM/YYYY"));
-      console.log("Month increment.....", Month)
-      console.log("first day....", Month, currentDate, MonthInc)
-    }
-    else {
-      console.log("hjhreri")
-    }
+    //   console.log(moment(Month).format("MM/YYYY"));
+    //   console.log("Month increment.....", Month)
+    //   console.log("first day....", Month, currentDate, MonthInc)
+    // }
+    // else {
+    //   console.log("hjhreri")
+    // }
     //     const getDays = (year, month) => {
     //       return new Date(year, month, 1).getDate();
     //   };
@@ -306,6 +317,7 @@ const CalendarStrips = () => {
         onDateSelected={onDateSelected}
         maxDate={Maxdate}
         showMonth={false}
+        minDate={new Date()}
         //leftSelector={}
         //minDate={StartDay}
         //calendarHeaderFormat={moment().format('MMM YY')}
