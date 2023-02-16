@@ -33,6 +33,12 @@ import NewCall from '../Screens/NewCall';
 import ChangeMPIN from '../Screens/ChangeMPIN';
 import ProfileScreen from '../Screens/ProfileScreen';
 import DLESchedule from '../Screens/DLEschedule';
+import DetailCheck from '../Screens/DetailedCheck';
+import CustomerDetails from '../Screens/CustomerDetails';
+import ResidenceOwner from '../Screens/ResidenceOwner';
+import ScheduleMeet from '../Screens/ScheduleMeet';
+import Collect from '../Screens/Collect';
+import AddVehicle from '../Screens/AddVehicle';
 
 const Stack = createNativeStackNavigator();
 
@@ -74,7 +80,13 @@ export default function Router() {
         <Stack.Screen name="ProfileScreen" component={netInfo.isConnected ? ProfileScreen : NetWorkError} />
         <Stack.Screen name="ChangeMPIN" component={netInfo.isConnected ? ChangeMPIN : NetWorkError} />
         <Stack.Screen name="DLESchedule" component={netInfo.isConnected ? DLESchedule : NetWorkError} />
-      </Stack.Navigator>
+        <Stack.Screen name="DetailCheck" component={netInfo.isConnected ? DetailCheck : NetWorkError} />
+        <Stack.Screen name="ResidenceOwner" component={netInfo.isConnected ? ResidenceOwner : NetWorkError} />
+        <Stack.Screen name="CustomerDetails" component={netInfo.isConnected ? CustomerDetails: NetWorkError} />
+        <Stack.Screen name="ScheduleMeet" component={netInfo.isConnected ? ScheduleMeet : NetWorkError} />
+        <Stack.Screen name="Collect" component={netInfo.isConnected ? Collect : NetWorkError} />
+        <Stack.Screen name="AddVehicle" component={netInfo.isConnected ? AddVehicle : NetWorkError} />
+   </Stack.Navigator>
     </NavigationContainer>
   );
 }
