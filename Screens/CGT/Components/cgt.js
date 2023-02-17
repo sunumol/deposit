@@ -57,52 +57,52 @@ const Cgt = ({ navigation }) => {
 
 
     return (
-<>
-<ScrollView>
-        <View style={{}}>
+        <>
+            <ScrollView>
+                <View style={{}}>
 
-            <View style={styles.TextView}>
-                <Text style={styles.text1}>By proceeding I confirm that I shall verify during CGT:</Text>
-            </View>
+                    <View style={styles.TextView}>
+                        <Text style={styles.text1}>By proceeding I confirm that I shall verify during CGT:</Text>
+                    </View>
 
-            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                {Data.map((item) => {
-                    return (
-                        <View style={styles.viewCard}>
+                    <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                        {Data.map((item) => {
+                            return (
+                                <View style={styles.viewCard}>
 
-                            <View style={styles.ViewId}>
-                                <Text style={styles.TextID}>{item.id}</Text>
-                            </View>
+                                    <View style={styles.ViewId}>
+                                        <Text style={styles.TextID}>{item.id}</Text>
+                                    </View>
 
-                            {item.id === 1 ?
-                                <View>
-                                    <Text style={styles.textBold}>Customer’s <Text style={styles.textReg}>address in Aadhaar matches</Text></Text>
-                                    <Text style={styles.textReg}>with their current residence address</Text>
-                                </View> :
-                                item.id === 2 ?
-                                    <View>
-                                        <Text style={styles.textReg}>No two <Text style={styles.textBold}>Trust Circle </Text>members stay in the</Text>
-                                        <Text>same address</Text>
-                                    </View> :
-                                    <View>
-                                        <Text style={styles.textReg}>KYC IDs of the<Text style={styles.textBold}> Customers and their</Text></Text>
-                                        <Text style={styles.textBold}>Spouse <Text style={styles.textReg}>with original KYC IDs, for KYC</Text></Text>
-                                        <Text style={styles.textReg}>unverified cases</Text>
+                                    {item.id === 1 ?
+                                        <View>
+                                            <Text style={styles.textBold}>Customer’s <Text style={styles.textReg}>address in Aadhaar matches</Text></Text>
+                                            <Text style={styles.textReg}>with their current residence address</Text>
+                                        </View> :
+                                        item.id === 2 ?
+                                            <View>
+                                                <Text style={styles.textReg}>No two <Text style={styles.textBold}>Trust Circle </Text>members stay in the</Text>
+                                                <Text style={styles.textReg}>same address</Text>
+                                            </View> :
+                                            <View>
+                                                <Text style={styles.textReg}>KYC IDs of the<Text style={styles.textBold}> Customers and their</Text></Text>
+                                                <Text style={styles.textBold}>spouse <Text style={styles.textReg}>with original KYC IDs, for KYC</Text></Text>
+                                                <Text style={styles.textReg}>unverified cases</Text>
 
-                                    </View>}
-                        </View>
-                    )
-                })}
-            </View>
-            </View>
+                                            </View>}
+                                </View>
+                            )
+                        })}
+                    </View>
+                </View>
             </ScrollView>
             <View style={styles.ViewButton} >
-                <TouchableOpacity style={styles.Button1} onPress ={()=>navigation.navigate('CgtCustomer')}>
+                <TouchableOpacity style={styles.Button1} onPress={() => navigation.navigate('CgtCustomer')}>
                     <Text style={styles.textConfirm}>{t('common:Confirm')}</Text>
                 </TouchableOpacity>
             </View>
-    
-</>
+
+        </>
     )
 }
 
@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
         paddingLeft: width * 0.02,
         justifyContent: 'flex-start',
         alignItems: 'flex-start',
-        marginBottom: width * 0.05 
+        marginBottom: width * 0.05
     },
     ViewButton: {
         alignItems: 'center',

@@ -27,58 +27,58 @@ const MeetTab = (props) => {
     }
     return (
         <>
-        <View style={{marginBottom:0}}>
-            <Text style={[styles.timeDropStyle,{paddingTop:props.time ?  18 :0}]}>{props.time}</Text>
-            {props.data.map((item, index) => {
-                return (
-                    <TouchableOpacity
-                        onPress={() => {
-                            setModalVisible(true)
-                            setDetails(item)
-                        }}
-                        style={[styles.boxStyle,{marginTop:props.time ? 10 : 0}]} key={props.id}>
-                        <View style={{ flex: 1, flexDirection: 'row' }}>
+            <View style={{ marginBottom: 0 }}>
+                <Text style={[styles.timeDropStyle, { paddingTop: props.time ? 18 : 0 }]}>{props.time}</Text>
+                {props.data.map((item, index) => {
+                    return (
+                        <TouchableOpacity
+                            onPress={() => {
+                                setModalVisible(true)
+                                setDetails(item)
+                            }}
+                            style={[styles.boxStyle, { marginTop: props.time ? 10 : 0 }]} key={props.id}>
+                            <View style={{ flex: 1, flexDirection: 'row' }}>
 
-                            <View style={[styles.circleStyle, { backgroundColor: item.color }]}>
-                                <Text style={styles.circleText}>{item.short}</Text>
-                            </View>
+                                <View style={[styles.circleStyle, { backgroundColor: item.color }]}>
+                                    <Text style={styles.circleText}>{item.short}</Text>
+                                </View>
 
-                            <View style={{ flexDirection: 'column', paddingLeft: 12, paddingTop: 5 }}>
-                                <Text style={styles.nameText}>{item.name}</Text>
-                                <View style={{ flexDirection: 'row', }}>
-                                    <View style={{ paddingTop: 5, paddingRight: 1 }}>
-                                        <Icon1 name="location-outline" color={"black"} />
-                                    </View>
-                                    <Text style={[styles.idText, { paddingTop: 4 }]}>{item.text}</Text>
-                                    {/* <TouchableOpacity onPress={()=>props.navigation.navigate('DetailCheck')}>
+                                <View style={{ flexDirection: 'column', paddingLeft: 12, paddingTop: 5 }}>
+                                    <Text style={styles.nameText}>{item.name}</Text>
+                                    <View style={{ flexDirection: 'row', }}>
+                                        <View style={{ paddingTop: 5, paddingRight: 1 }}>
+                                            <Icon1 name="location-outline" color={"black"} />
+                                        </View>
+                                        <Text style={[styles.idText, { paddingTop: 4 }]}>{item.text}</Text>
+                                        {/* <TouchableOpacity onPress={()=>props.navigation.navigate('DetailCheck')}>
                            
                                 </TouchableOpacity> */}
+                                    </View>
                                 </View>
+
                             </View>
 
-                        </View>
+                            <View style={{ flexDirection: 'column', paddingTop: 5, alignItems: 'flex-end' }}>
+                                <View style={{ flexDirection: 'row' }}>
+                                    <Icon2 name="phone-in-talk-outline" color={"black"} size={15} />
+                                    <Text style={[styles.numText, { paddingLeft: 6 }]}>{item.phoneNumber}</Text>
+                                </View>
+                                {item.status == "Conduct DLE"
+                                    ? <TouchableOpacity
+                                        //onPress={() => props.navigation.navigate('DetailCheck')}
+                                        style={[styles.leadContainer, { backgroundColor: 'rgba(186, 134, 205, 0.1)' }]}>
+                                        <Text style={[styles.leadText, { color: '#F2994A' }]}>Conduct DLE</Text>
+                                    </TouchableOpacity>
+                                    : <View style={[styles.leadContainer, { backgroundColor: props.meet ? COLORS.LightBlue : COLORS.LightPurple }]}>
+                                        <Text style={[styles.leadText, { color: props.meet ? COLORS.DarkBlue : COLORS.DarkPurple }]}>{props.meet ? t('common:ConductCGT') : t('common:ExplainTrustCircle')}</Text>
+                                    </View>}
 
-                        <View style={{ flexDirection: 'column', paddingTop: 5, alignItems: 'flex-end' }}>
-                            <View style={{ flexDirection: 'row' }}>
-                                <Icon2 name="phone-in-talk-outline" color={"black"} size={15} />
-                                <Text style={[styles.numText, { paddingLeft: 6 }]}>{item.phoneNumber}</Text>
                             </View>
-                            {item.status == "Conduct DLE"
-                                ? <TouchableOpacity 
-                                //onPress={() => props.navigation.navigate('DetailCheck')}
-                                    style={[styles.leadContainer, { backgroundColor: 'rgba(186, 134, 205, 0.1)' }]}>
-                                    <Text style={[styles.leadText, { color: '#F2994A' }]}>Conduct DLE</Text>
-                                </TouchableOpacity>
-                                : <View style={[styles.leadContainer, { backgroundColor: COLORS.LightPurple }]}>
-                                    <Text style={[styles.leadText, { color: COLORS.DarkPurple }]}>{props.meet ? t('common:ConductCGT') : t('common:ExplainTrustCircle')}</Text>
-                                </View>}
 
-                        </View>
-
-                    </TouchableOpacity>
-                )
-            })}
-            <ActivityModal visible={modalVisible} onPressOut={() => setModalVisible(!modalVisible)} meet={props.meet} details={details} />
+                        </TouchableOpacity>
+                    )
+                })}
+                <ActivityModal visible={modalVisible} onPressOut={() => setModalVisible(!modalVisible)} meet={props.meet} details={details} />
             </View>
         </>
     )

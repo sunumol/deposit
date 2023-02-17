@@ -16,7 +16,7 @@ import {
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { COLORS, FONTS } from '../../Constants/Constants';
 import Statusbar from '../../Components/StatusBar';
-import Header from '../../Components/Header';
+import Header from '../../Components/RepayHeader';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRoute } from '@react-navigation/native';
 import { useFocusEffect } from '@react-navigation/native';
@@ -73,7 +73,7 @@ const NewCgt = ({ navigation, }) => {
             <SafeAreaView style={styles.container1} />
             <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
 
-            <Header navigation={navigation} name={"New CGT"} />
+            <Header navigation={navigation} name={"New CGT"}  activity = {true} />
             <View style={styles.ViewContent}>
           
            

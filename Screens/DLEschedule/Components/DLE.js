@@ -23,13 +23,14 @@ import { useFocusEffect } from '@react-navigation/native';
 import { t } from 'i18next';
 import ApprovalModal from './ApprovalModal';
 import { set } from 'date-fns';
+import ModalSchedule from '../../../Components/ModalSchedule';
 const { height, width } = Dimensions.get('screen');
 
-const DLE = ({ navigation }) => {
+const DLE = ({ navigation, set }) => {
     const isDarkMode = true;
     const [lang, setLang] = useState('')
-    const [ModalVisible1,setModalVisible1] = useState(false)
-    const [status,setStatus] = useState(false)
+    const [ModalVisible1, setModalVisible1] = useState(false)
+    const [status, setStatus] = useState(false)
 
     useEffect(() => {
         getData()
@@ -44,6 +45,19 @@ const DLE = ({ navigation }) => {
             console.log(e)
         }
     }
+    const handleGoBack = useCallback(() => {
+        setModalVisible1(true)
+        return true; // Returning true from onBackPress denotes that we have handled the event
+    }, [navigation]);
+
+    useFocusEffect(
+        React.useCallback(() => {
+            BackHandler.addEventListener('hardwareBackPress', handleGoBack);
+
+            return () =>
+                BackHandler.removeEventListener('hardwareBackPress', handleGoBack);
+        }, [handleGoBack]),
+    );
 
     const Data = [
         {
@@ -109,17 +123,17 @@ const DLE = ({ navigation }) => {
     ]
     return (
 
-        <View style={{ alignItems: 'center', justifyContent: 'center',flex:1,marginTop:15}}>
+        <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1, marginTop: 15 }}>
             <ScrollView showsVerticalScrollIndicator={false}>
                 {Data.map((item) => {
                     return (
-                        <View style={[styles.viewCard,{borderColor:!status? 'white' : status && item.id == 3 ? COLORS.colorB:'white',borderWidth:2}]}>
-                            <View style={[styles.circleStyle, { backgroundColor:!status? item.color : status && item.id == 3 ?  COLORS.colorB:item.color, marginLeft: width * 0.03 }]}>
+                        <View style={[styles.viewCard, { borderColor: !status ? 'white' : status && item.id == 3 ? COLORS.colorB : 'white', borderWidth: 2 }]}>
+                            <View style={[styles.circleStyle, { backgroundColor: !status ? item.color : status && item.id == 3 ? COLORS.colorB : item.color, marginLeft: width * 0.03 }]}>
                                 {!status ?
-                                 <Text style={styles.circleText}>{item.Initial }</Text>:
-                                 status && item.id == 3 ? 
-                                 <Icon4 name='check' size={20} color={COLORS.colorBackground}/>:
-                                 <Text style={styles.circleText}>{item.Initial }</Text>}
+                                    <Text style={styles.circleText}>{item.Initial}</Text> :
+                                    status && item.id == 3 ?
+                                        <Icon4 name='check' size={20} color={COLORS.colorBackground} /> :
+                                        <Text style={styles.circleText}>{item.Initial}</Text>}
                                 {/* // !status && item.id == 3 ?
                                 // <Text style={styles.circleText}>{item.Initial }</Text>:
                                 // <Icon4 name='check' size={20} color={COLORS.colorBackground}/>} */}
@@ -144,8 +158,8 @@ const DLE = ({ navigation }) => {
                                 <View style={{ flexDirection: 'column', top: 0, alignItems: 'flex-end', flex: 1, paddingRight: width * 0.04 }}>
 
                                     <Text style={[styles.numText, {}]}>{item.number}</Text>
-                                    <TouchableOpacity onPress={()=>{item.id === 5? setModalVisible1(true):setStatus(!status)}}
-                                    style={[styles.ViewExplain, { right: 0, backgroundColor: item.backgroundColor, width: item.width }]}>
+                                    <TouchableOpacity onPress={() => { item.id === 5 ? setModalVisible1(true) : setStatus(!status) }}
+                                        style={[styles.ViewExplain, { right: 0, backgroundColor: item.backgroundColor, width: item.width }]}>
                                         <Text style={[styles.explainText, { color: item.color1 }]}>{item.Status}</Text>
                                     </TouchableOpacity>
                                 </View>
@@ -157,21 +171,28 @@ const DLE = ({ navigation }) => {
                 })}
             </ScrollView>
 
-            <View style={{ alignItems: 'center', justifyContent: 'center', position: 'absolute', left: 0, right: 0, bottom: 0 ,marginBottom:20}}>
+            {!set ? <View style={{ alignItems: 'center', justifyContent: 'center', position: 'absolute', left: 0, right: 0, bottom: 0, marginBottom: 20 }}>
                 <TouchableOpacity onPress={() => navigation.navigate('ScheduleMeet')}
                     style={[styles.Button1, { backgroundColor: COLORS.colorB }]}
                 >
                     <Text style={[styles.textB, { color: COLORS.colorBackground }]}>Schedule DLE</Text>
                 </TouchableOpacity>
-            </View>
-            <ApprovalModal ModalVisible={ModalVisible1}
+            </View> : null}
+            {/* <ApprovalModal ModalVisible={ModalVisible1}
                  onPressOut={() => {
                  setModalVisible1(false)}}
                 //navigation.navigate('NewCgt')}}
                
                  navigation={navigation}
               //  onPressOut={() => setModalVisible(!ModalVisible)}
-                setModalVisible={setModalVisible1} />
+                setModalVisible={setModalVisible1} /> */}
+            <ModalSchedule
+                ModalVisible={ModalVisible1}
+                setModalVisible={setModalVisible1}
+                onPressOut={() => {
+                    setModalVisible1(false)
+                }}
+                navigation={navigation} />
         </View>
     )
 }
@@ -226,7 +247,7 @@ const styles = StyleSheet.create({
         elevation: 2,
         shadowRadius: 7,
         justifyContent: 'center',
-        
+
         // marginLeft:50,
         // marginRight:50
     },
@@ -297,7 +318,7 @@ const styles = StyleSheet.create({
         shadowRadius: 7,
         marginLeft: 5,
         marginRight: 5,
-        marginTop:5
+        marginTop: 5
     },
     circleStyle: {
         width: 40,

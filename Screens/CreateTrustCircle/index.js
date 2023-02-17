@@ -25,6 +25,37 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import Plus from '../../assets/image/Plus.svg';
 const { height, width } = Dimensions.get('screen');
 import TrustModal from './Components/TrustModal';
+const Data = [
+    {
+        name: 'Aparna CS',
+        short: 'AC',
+        color: '#219653',
+        phone: '777XXXXX11',
+        pincode: '682025'
+    },
+    {
+        name: 'Arya C',
+        short: 'AC',
+        color: '#A37373',
+        phone: '677XXXXX11',
+        pincode: '682025'
+    },
+    {
+        name: 'Anjali Jacob',
+        short: 'AJ',
+        color: '#218196',
+        phone: '777XXXXX11',
+        pincode: '682025'
+    },
+    {
+        name: 'Reshmi P',
+        short: 'RP',
+        color: '#696A89',
+        phone: '977XXXXX22',
+        pincode: '682025'
+    },
+]
+
 const CreateTrustCircle = ({ navigation }) => {
     const isDarkMode = true;
     const [text, onChangeText] = useState('');
@@ -34,6 +65,8 @@ const CreateTrustCircle = ({ navigation }) => {
 
     const [ModalError, setModalError] = useState(false)
     const [ModalReason, setModalReason] = useState(false)
+    const [members, setMembers] = useState([Data[0]]);
+
     const handleGoBack = useCallback(() => {
         navigation.navigate('CGT')
         return true; // Returning true from onBackPress denotes that we have handled the event
@@ -54,7 +87,7 @@ const CreateTrustCircle = ({ navigation }) => {
             <SafeAreaView style={styles.container1} />
             <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} backgroundColor={"#002B59"} />
 
-            <Header navigation={navigation} name="CGT" />
+            <Header navigation={navigation} name="CGT" back={true} />
 
             <View style={styles.mainContainer}>
                 <ScrollView showsVerticalScrollIndicator={false} >
@@ -77,7 +110,7 @@ const CreateTrustCircle = ({ navigation }) => {
                         </View>
 
 
-                        <View style={{ flexDirection: 'column', paddingLeft: 12, paddingTop: 5 }}>
+                        <View style={{ flexDirection: 'column', paddingLeft: 12, paddingTop: 5, flex: 1 }}>
 
                             <Text style={styles.nameText}>Athira Anil</Text>
 
@@ -89,7 +122,7 @@ const CreateTrustCircle = ({ navigation }) => {
                                 <Text style={[styles.idText, { paddingTop: 4 }]}>682555</Text>
                             </View>
                         </View>
-                        <View style={{ flexDirection: 'column', top: -8, alignItems: 'flex-end', marginLeft: width * 0.05 }}>
+                        <View style={{ flexDirection: 'column', top: -8, alignItems: 'flex-end', marginRight: 14 }}>
                             <View style={{ flexDirection: 'row' }}>
                                 <Icon2 name="phone-in-talk-outline" color={"black"} size={15} />
                                 <Text style={[styles.numText, { paddingLeft: 6 }]}>961XXXXX77</Text>
@@ -98,62 +131,68 @@ const CreateTrustCircle = ({ navigation }) => {
                     </View>
 
                     <View>
-                        <Text style={styles.Trust}>Trust Circle Members (1)</Text>
+                        <Text style={styles.Trust}>Trust Circle Members ({members.length})</Text>
                     </View>
 
-                    <View style={[styles.viewCard, { flex: 1, flexDirection: 'row', }]}>
+                    {members.map((item) => {
+                        return (
+                            <View style={[styles.viewCard, { flex: 1, flexDirection: 'row', }]}>
 
-                        <View style={[styles.circleStyle, { backgroundColor: '#4B9760', marginLeft: width * 0.05 }]}>
-                            <Text style={styles.circleText}>AC</Text>
-                        </View>
-
-
-                        <View style={{ flexDirection: 'column', paddingLeft: 12, paddingTop: 5 }}>
-
-                            <Text style={styles.nameText}>Aparna CS</Text>
-
-
-                            <View style={{ flexDirection: 'row', }}>
-                                <View style={{ paddingTop: 5, paddingRight: 1 }}>
-                                    <Icon1 name="location-outline" color={"black"} />
+                                <View style={[styles.circleStyle, { backgroundColor: item.color, marginLeft: width * 0.05 }]}>
+                                    <Text style={styles.circleText}>{item.short}</Text>
                                 </View>
-                                <Text style={[styles.idText, { paddingTop: 4 }]}>682555</Text>
-                            </View>
-                        </View>
-                        <View style={{ flexDirection: 'column', top: -8, alignItems: 'flex-end', marginLeft: width * 0.04 }}>
-                            <View style={{ flexDirection: 'row' }}>
-                                <Icon2 name="phone-in-talk-outline" color={"black"} size={15} />
-                                <Text style={[styles.numText, { paddingLeft: 6 }]}>789XXXXX33</Text>
-                            </View>
-                        </View>
-                    </View>
 
-                    <TouchableOpacity style={styles.viewCard} onPress={()=>navigation.navigate('ConfirmMembers')}>
 
-                        <View style={{ marginLeft: width * 0.05 }}>
-                            <Plus />
-                        </View>
-                        <Text style={styles.AddText}>Add new member</Text>
-                    </TouchableOpacity>
+                                <View style={{ flexDirection: 'column', paddingLeft: 12, paddingTop: 5, flex: 1 }}>
+
+                                    <Text style={styles.nameText}>{item.name}</Text>
+
+
+                                    <View style={{ flexDirection: 'row', }}>
+                                        <View style={{ paddingTop: 5, paddingRight: 1 }}>
+                                            <Icon1 name="location-outline" color={"black"} />
+                                        </View>
+                                        <Text style={[styles.idText, { paddingTop: 4 }]}>{item.pincode}</Text>
+                                    </View>
+                                </View>
+                                <View style={{ flexDirection: 'column', top: -8, alignItems: 'flex-end', marginRight: 14 }}>
+                                    <View style={{ flexDirection: 'row' }}>
+                                        <Icon2 name="phone-in-talk-outline" color={"black"} size={15} />
+                                        <Text style={[styles.numText, { paddingLeft: 6 }]}>{item.phone}</Text>
+                                    </View>
+                                </View>
+                            </View>
+                        )
+                    })}
+                    {members.length === 1
+                        ? <TouchableOpacity style={styles.viewCard} onPress={() => setMembers(Data)}>
+
+                            <View style={{ marginLeft: width * 0.05 }}>
+                                <Plus />
+                            </View>
+                            <Text style={styles.AddText}>Add new member</Text>
+                        </TouchableOpacity> : null}
 
                 </ScrollView>
 
 
                 <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                     <TouchableOpacity style={[styles.Button1,
-                    { backgroundColor: !ButtonStatus ? COLORS.colorB : '#ECEBED' }]} onPress={()=>setModalVisible(true)}>
+                    { backgroundColor: members.length === 4 ? COLORS.colorB : '#ECEBED' }]} onPress={() => navigation.navigate('DLESchedule', { set: true })}>
 
-                        <Text style={[styles.text1, { color: !ButtonStatus ? COLORS.colorBackground : '#979C9E', paddingLeft: width * 0.02 }]}>Create Trust Circle</Text>
+                        <Text style={[styles.text1, { color: members.length === 4 ? COLORS.colorBackground : '#979C9E', paddingLeft: width * 0.02 }]}>Create Trust Circle</Text>
                     </TouchableOpacity>
                 </View>
             </View>
 
             <TrustModal
                 ModalVisible={ModalVisible}
-                onPressOut={() =>{ setModalVisible(!ModalVisible)
-                navigation.navigate('Activities')}}
+                onPressOut={() => {
+                    setModalVisible(!ModalVisible)
+                    navigation.navigate('Activities')
+                }}
                 setModalVisible={setModalVisible}
-                onPress1={()=>{
+                onPress1={() => {
                     setModalVisible(false)
                     navigation.navigate('Activities')
                 }
@@ -201,7 +240,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        marginBottom:5
+        marginBottom: 5
     },
     timeText: {
         fontSize: 12,
@@ -325,9 +364,9 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.5,
         elevation: 2,
         shadowRadius: 7,
-        marginLeft:2,
-        marginTop:10
-     },
+        marginLeft: 2,
+        marginTop: 10
+    },
     NumTexts: {
         color: '#1A051D',
         fontFamily: FONTS.FontRegular,

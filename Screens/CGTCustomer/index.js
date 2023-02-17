@@ -11,7 +11,7 @@ import {
     Dimensions,
     TouchableOpacity
 } from 'react-native'
-import React, { useCallback, useState,useEffect } from 'react'
+import React, { useCallback, useState, useEffect } from 'react'
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Statusbar from '../../Components/StatusBar';
 import { useFocusEffect } from '@react-navigation/native';
@@ -35,7 +35,7 @@ const CgtCustomer = ({ navigation }) => {
     const [selectedItem, setSelectedItem] = useState()
     const [ButtonStatus, setButtonStatus] = useState(false)
     const [ModalError, setModalError] = useState(false)
-    const [ModalReason,setModalReason] = useState(false)
+    const [ModalReason, setModalReason] = useState(false)
 
     const handleGoBack = useCallback(() => {
         navigation.goBack()
@@ -54,17 +54,17 @@ const CgtCustomer = ({ navigation }) => {
     useEffect(() => {
         if (ModalError == true) {
             const timer = setTimeout(() => {
-  
+
                 setModalError(false)
                 setModalReason(false)
                 navigation.navigate('Profile')
-              //  console.log('This will run after 1 second!', ModalVisibles)
+                //  console.log('This will run after 1 second!', ModalVisibles)
             }, 1000);
             return () => clearTimeout(timer);
         }
-  
+
     }, [ModalError])
-  
+
 
     return (
         <SafeAreaProvider>
@@ -80,21 +80,21 @@ const CgtCustomer = ({ navigation }) => {
                             <Text style={styles.timeText}>12:30 PM</Text>
                             <Text style={styles.dateText}>Wed, 12 Oct</Text>
                         </View>
-                        <TouchableOpacity style={styles.editView} onPress={()=>navigation.navigate('NewCgt')}>
+                        <TouchableOpacity style={styles.editView} onPress={() => navigation.navigate('NewCgt')}>
                             <Date />
                             <Text style={styles.changeText}>Reschedule CGT</Text>
                         </TouchableOpacity>
                     </View>
 
                     {ButtonStatus ?
-                        <View style={[styles.viewCard, { flex: 0, flexDirection: 'row', }]}>
+                        <View style={[styles.viewCard, { flex: 0, flexDirection: 'row' }]}>
 
                             <View style={[styles.circleStyle, { backgroundColor: '#6979F8', marginLeft: width * 0.05 }]}>
                                 <Text style={styles.circleText}>AA</Text>
                             </View>
 
 
-                            <View style={{ flexDirection: 'column', paddingLeft: 12, paddingTop: 5 }}>
+                            <View style={{ flexDirection: 'column', paddingLeft: 12, paddingTop: 5, flex: 1 }}>
 
                                 <Text style={styles.nameText}>Athira Anil</Text>
 
@@ -106,7 +106,7 @@ const CgtCustomer = ({ navigation }) => {
                                     <Text style={[styles.idText, { paddingTop: 4 }]}>682555</Text>
                                 </View>
                             </View>
-                            <View style={{ flexDirection: 'column', top: -8, alignItems: 'flex-end', marginLeft: width * 0.05 }}>
+                            <View style={{ flexDirection: 'column', top: -8, alignItems: 'flex-end', marginRight: 15 }}>
                                 <View style={{ flexDirection: 'row' }}>
                                     <Icon2 name="phone-in-talk-outline" color={"black"} size={15} />
                                     <Text style={[styles.numText, { paddingLeft: 6 }]}>961XXXXX77</Text>
@@ -186,7 +186,7 @@ const CgtCustomer = ({ navigation }) => {
                     <View style={{ alignItems: 'center', justifyContent: 'center' }}>
 
                         <TouchableOpacity style={[styles.Button1, { backgroundColor: COLORS.colorB }]}
-                        onPress={()=>navigation.navigate('ConfirmMembers')}
+                            onPress={() => navigation.navigate('ConfirmMembers')}
                         >
                             <Icon name="pluscircleo" size={15} color={"#FFFFFF"} />
                             <Text style={[styles.text1, { color: COLORS.colorBackground, paddingLeft: width * 0.02 }]}>Add Trust Circle Member</Text>
@@ -201,22 +201,26 @@ const CgtCustomer = ({ navigation }) => {
                     setModalVisible(!ModalVisible)
                 }}
                 ModalVisible={ModalVisible}
-                onPressOut={() => {setModalVisible(!ModalVisible)
-                                setButtonStatus(true)}}
+                onPressOut={() => {
+                    setModalVisible(!ModalVisible)
+                    setButtonStatus(true)
+                }}
                 setModalVisible={setModalVisible}
             />
 
             <ErrorModal
                 ModalVisible={ModalError}
-                onPressOut={() => {setModalError(!ModalError)
-                    setModalReason(!ModalReason) 
-                navigation.navigate('Profile')}}
+                onPressOut={() => {
+                    setModalError(!ModalError)
+                    setModalReason(!ModalReason)
+                    navigation.navigate('Profile')
+                }}
                 setModalVisible={setModalError}
             />
 
             <ReasonModal
-                onPress1 = {()=>{
-                   // setModalVisible(false)
+                onPress1={() => {
+                    // setModalVisible(false)
                     setModalError(true)
                 }}
                 ModalVisible={ModalReason}
@@ -394,7 +398,7 @@ const styles = StyleSheet.create({
         elevation: 2,
         shadowRadius: 7,
         marginTop: width * 0.045,
-        marginLeft:2
+        marginLeft: 2
     },
     NumTexts: {
         color: '#1A051D',

@@ -8,7 +8,7 @@ import LinearGradient from 'react-native-linear-gradient';
 const SplashScreen = ({ navigation }) => {
     const isDarkMode = true
     useEffect(() => {
-       setTimeout(() => navigation.navigate('IntroScreen'), 3000);
+       setTimeout(() => navigation.navigate('LoginScreen'), 3000);
 
       }, []);
 
