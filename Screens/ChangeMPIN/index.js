@@ -31,6 +31,7 @@ const ChangeMPIN = ({ navigation }) => {
     const { t } = useTranslation();
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(false);
+    const [errorOldPin, setErrorOldPin] = useState(false);
     const otpInput2 = React.createRef();
 
     const clearText = () => {
@@ -41,16 +42,16 @@ const ChangeMPIN = ({ navigation }) => {
         getData()
     }, [])
 
-    useEffect(() => {
-        if (OtpValue3.length == 4) {
-            setSuccess(true)
-          //  setError(false)
-            Keyboard.dismiss()
-        } else {
-            //setError(true)
-            setSuccess(false)
-        }
-    }, [OtpValue3])
+    // useEffect(() => {
+    //     if (OtpValue3.length == 4) {
+    //         setSuccess(true)
+    //       //  setError(false)
+    //         Keyboard.dismiss()
+    //     } else {
+    //         //setError(true)
+    //         setSuccess(false)
+    //     }
+    // }, [OtpValue3])
 
     const getData = async () => {
         try {
@@ -93,11 +94,12 @@ const ChangeMPIN = ({ navigation }) => {
                             <Reset />
                         </View>
                         <Text style={styles.textPin}>{t('common:EnterOPIN')}</Text>
-                        <View style={{ alignItems: 'center' }}>
+                        <View>
                             <OTPTextInput
                                 ref={otpInput2}
                                 Confirm1={"Enter new PIN"}
                                 Confirm2={'Confirm new PIN'}
+                                errorOld={errorOldPin}
                                 autoFocus={true}
                                 inputCount={12}
                                 inputCellLength={1}
@@ -110,11 +112,33 @@ const ChangeMPIN = ({ navigation }) => {
                                     setOtpValue(code.slice(0, 4))
                                     setOtpValue2(code.slice(4, 8))
                                     setOtpValue3(code.slice(8))
-
+                                    if (code) {
+                                        setError(false)
+                                        setErrorOldPin(false)
+                                    }
+                                    if (code.slice(0, 4).length === 4) {
+                                        if (code.slice(0, 4) !== '1234') {
+                                            setErrorOldPin(true)
+                                            console.log("bjjhbjhbjhbjh",)
+                                            clearText()
+                                        }
+                                    }
+                                    if (code.slice(8).length === 4) {
+                                        if (OtpValue2.length === 4) {
+                                            if (OtpValue2 !== code.slice(8)) {
+                                                setError(true)
+                                                setSuccess(false)
+                                                clearText()
+                                            } else {
+                                                setError(false)
+                                                setSuccess(true)
+                                            }
+                                        }
+                                    }
                                     // if (code) {
                                     //     setError(false)
                                     // }
-    
+
                                     // if (code.slice(4).length === 4) {
                                     //     if (OtpValue2.length === 4) {
                                     //         if (OtpValue2 !== code.slice(4)) {
@@ -133,6 +157,9 @@ const ChangeMPIN = ({ navigation }) => {
                         : null} */}
                         {success
                             ? <Text style={styles.successText}>{t('common:PINreset')}</Text>
+                            : null}
+                        {error
+                            ? <Text style={[styles.successText, { color: COLORS.colorRed }]}>{t('common:PinError')}</Text>
                             : null}
                     </ScrollView>
                 </View>

@@ -32,6 +32,7 @@ const EnergyUtility = ({ navigation, }) => {
     const [lang, setLang] = useState('')
     const [BStatus, setBstatus] = useState(false)
 
+
     useEffect(() => {
         getData()
     }, [])
@@ -70,6 +71,7 @@ const EnergyUtility = ({ navigation, }) => {
 
             <View style={styles.ViewContent}>
              <Energy  navigation={navigation}/>
+  
             </View>
 
         </SafeAreaProvider>

@@ -334,7 +334,7 @@ const LoginScreen = ({ navigation, routew, props }) => {
                         <View style={[styles.container, { marginTop: Dimensions.get('window').height * 0.05 }]}>
 
                             <Text style={styles.Heading1} onPress={() => {
-                                navigation.navigate('EnergyUtility')
+                                navigation.navigate('DetailCheck')
                                 setExitStatus(true)
                             }}>{t('common:Verify')}</Text>
 

@@ -8,7 +8,7 @@ import PropTypes from "prop-types";
 const styles = StyleSheet.create({
     container: {
         flexDirection: "row",
-        justifyContent: "space-between",
+
     },
     textInput: {
         height: 50,
@@ -26,6 +26,13 @@ const styles = StyleSheet.create({
         color: COLORS.colorDark,
         textAlign: 'center'
     },
+    successText: {
+        fontSize: 12,
+        fontFamily: FONTS.FontMedium,
+        textAlign: 'center',
+        marginTop: 20,
+        letterSpacing: 0.64
+    }
 });
 
 const getOTPTextChucks = (inputCount, inputCellLength, text) => {
@@ -46,7 +53,7 @@ class OTPTextView extends Component {
                 props.inputCount,
                 props.inputCellLength,
                 props.defaultValue
-            ), 
+            ),
             lang: '',
             times: null,
         };
@@ -110,10 +117,10 @@ class OTPTextView extends Component {
 
     onKeyPress = (e, i) => {
         const val = this.state.otpText[i] || "";
-       
+
         this.setState({ times: 1 })
         if (e.nativeEvent.key === "Backspace" && i !== 0) {
-            
+
             if (this.state.times == 1) {
                 this.inputs[i].focus();
                 this.setState({ times: 2 })
@@ -169,6 +176,7 @@ class OTPTextView extends Component {
             secureTextEntry,
             Confirm1,
             Confirm2,
+            errorOld,
             ...textInputProps
         } = this.props;
 
@@ -202,7 +210,7 @@ class OTPTextView extends Component {
                             autoFocus={i === 0}
                             value={otpText[i] || ""}
                             style={inputStyle}
-                            secureTextEntry={false}
+                            secureTextEntry={true}
                             maxLength={this.props.inputCellLength}
                             onFocus={() => this.onInputFocus(i)}
                             onChangeText={(text) => this.onTextChange(text, i)}
@@ -224,7 +232,7 @@ class OTPTextView extends Component {
                                 autoFocus={i === 0}
                                 value={otpText[i] || ""}
                                 style={inputStyle}
-                                secureTextEntry={false}
+                                secureTextEntry={true}
                                 maxLength={this.props.inputCellLength}
                                 onFocus={() => this.onInputFocus(i)}
                                 onChangeText={(text) => this.onTextChange(text, i)}
@@ -259,11 +267,23 @@ class OTPTextView extends Component {
 
         return (
             <View>
-                <View style={[styles.container, containerStyle]}>{TextInputs}</View>
-                <Text style={[styles.textPin, { marginTop: 61 }]}>{Confirm1}</Text>
-                <View style={[styles.container, containerStyle]}>{TextInputs2}</View>
-                <Text style={[styles.textPin, { marginTop: 31 }]}>{Confirm2}</Text>
-                <View style={[styles.container, containerStyle]}>{TextInputs3}</View>
+                <View style={{ alignItems: 'center' }}>
+                    <View style={[styles.container, containerStyle]}>{TextInputs}</View>
+                </View>
+                {errorOld
+                    ? <Text style={[styles.successText, { color: COLORS.colorRed }]}>Invalid PIN</Text> : null}
+                <View style={{
+                    borderWidth: 0.9,
+                    borderColor: COLORS.Gray6,
+                    backgroundColor: COLORS.Gray6,
+                    opacity: 0.5, marginTop: 34, marginHorizontal: 16
+                }} />
+                <View style={{ alignItems: 'center' }}>
+                    <Text style={[styles.textPin, { marginTop: 31 }]}>{Confirm1}</Text>
+                    <View style={[styles.container, containerStyle]}>{TextInputs2}</View>
+                    <Text style={[styles.textPin, { marginTop: 31 }]}>{Confirm2}</Text>
+                    <View style={[styles.container, containerStyle]}>{TextInputs3}</View>
+                </View>
             </View>
         );
     }

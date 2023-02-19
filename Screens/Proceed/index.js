@@ -16,23 +16,22 @@ import {
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { COLORS, FONTS } from '../../Constants/Constants';
 import Statusbar from '../../Components/StatusBar';
-import Header from '../../Components/RepayHeader';
+import Header from '../../Components/Header';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRoute } from '@react-navigation/native';
 import { useFocusEffect } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
-import Cgt from './Components/Cgt';
-import DatePicker from './Components/CalenderPick';
-import CalendarStrips from './Components/Calender';
+import Proceeds from './Components/Proceed';
 
 
-const NewCgt = ({ navigation, }) => {
+const Proceed = ({ navigation, }) => {
     const route = useRoute();
     console.log("route name",);
     const isDarkMode = true
     const { t } = useTranslation();
     const [lang, setLang] = useState('')
     const [BStatus, setBstatus] = useState(false)
+
 
     useEffect(() => {
         getData()
@@ -49,11 +48,9 @@ const NewCgt = ({ navigation, }) => {
     }
 
     const handleGoBack = useCallback(() => {
-        if (BStatus) {
-            setBstatus(false)
-        } else {
-            navigation.navigate('Profile')
-        }
+
+        navigation.navigate('NewCgt')
+
         return true; // Returning true from onBackPress denotes that we have handled the event
     }, [navigation]);
 
@@ -65,23 +62,15 @@ const NewCgt = ({ navigation, }) => {
                 BackHandler.removeEventListener('hardwareBackPress', handleGoBack);
         }, [handleGoBack]),
     );
-
-
-
     return (
         <SafeAreaProvider>
             <SafeAreaView style={styles.container1} />
             <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
 
-            <Header navigation={navigation} name={"New CGT"}  activity = {true} />
-            <View style={styles.ViewContent}>
-          
-           
-                <CalendarStrips />
-                <Cgt navigation={navigation} />
-              
-                {/* <DatePicker/> */}
+            <Header navigation={navigation} />
 
+            <View style={styles.ViewContent}>
+                <Proceeds navigation={navigation} />
 
             </View>
 
@@ -89,7 +78,7 @@ const NewCgt = ({ navigation, }) => {
     )
 }
 
-export default NewCgt;
+export default Proceed;
 
 
 const styles = StyleSheet.create({
@@ -100,9 +89,10 @@ const styles = StyleSheet.create({
     },
     ViewContent: {
         // justifyContent: 'center',
-        //alignItems: 'center',
+        //  alignItems: 'center',
         flex: 1,
         backgroundColor: COLORS.colorBackground,
+        padding: 20
     },
     text: {
         fontWeight: '400',

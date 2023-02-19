@@ -21,7 +21,8 @@ import { CheckBox } from 'react-native-elements/dist/checkbox/CheckBox';
 import Icon1 from 'react-native-vector-icons/Ionicons'
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 import Search from 'react-native-vector-icons/Feather';
-
+import ErrorModal from './ErrorModal';
+import ReasonModal from './ReasonModal';
 const { height, width } = Dimensions.get('screen');
 
 const DetailChecks = ({navigation}) => {
@@ -144,7 +145,25 @@ const DetailChecks = ({navigation}) => {
                     </View>
 
                 </ScrollView>
+                <ErrorModal
+                ModalVisible={ModalError}
+                onPressOut={() => {
+                    setModalError(!ModalError)
+                    setModalReason(!ModalReason)
+                    navigation.navigate('Profile')
+                }}
+                setModalVisible={setModalError}
+            />
 
+            <ReasonModal
+                onPress1={() => {
+                    // setModalVisible(false)
+                    setModalError(true)
+                }}
+                ModalVisible={ModalReason}
+                onPressOut={() => setModalReason(!ModalReason)}
+                setModalVisible={setModalReason}
+            />
 
             </View>
 

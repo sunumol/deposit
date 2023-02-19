@@ -10,7 +10,7 @@ import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 const MeetTab = (props) => {
     const { t } = useTranslation();
     const [Lang, setLang] = useState('')
-    console.log("state....",props.state)
+    console.log("state....", props.state)
     useEffect(() => {
         getData()
     }, [])
@@ -51,12 +51,18 @@ const MeetTab = (props) => {
                     {/* <Icon2 name="phone-in-talk-outline" color={"black"} size={15} /> */}
                     <Text style={[styles.numText, { paddingLeft: 6 }]}>{props.item.number}</Text>
                 </View>
-            
-            {props.state ? 
-                <View style={[styles.leadContainer, { backgroundColor: 'rgba(155, 81, 224, 0.1)' }]}>
 
-                <Text style={[styles.leadText, { color: "#9B51E0" }]}>{props.state}</Text>
-                </View>:null}
+                {props.state && props.state === 'Conduct CGT' ?
+                    <View style={[styles.leadContainer, { backgroundColor: COLORS.LightBlue }]}>
+
+                        <Text style={[styles.leadText, { color: COLORS.DarkBlue }]}>{props.state}</Text>
+                    </View> : null}
+                {props.state && props.state === 'Explain Trust Circle' ?
+                    <View style={[styles.leadContainer, { backgroundColor: COLORS.LightPurple }]}>
+
+                        <Text style={[styles.leadText, { color: COLORS.DarkPurple }]}>{props.state}</Text>
+                    </View> : null}
+
 
             </View>
 
