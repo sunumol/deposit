@@ -29,6 +29,7 @@ import Logo from '../../assets/Images/svadhan.svg';
 import ToastModal from '../../Components/ToastModal';
 import ValidModal from './Components/ValidModal';
 import OtpModal from './Components/OtpModal';
+
 //import { useSelector, useDispatch, connect } from 'react-redux';
 
 const LoginScreen = ({ navigation, routew, props }) => {
@@ -334,7 +335,7 @@ const LoginScreen = ({ navigation, routew, props }) => {
                         <View style={[styles.container, { marginTop: Dimensions.get('window').height * 0.05 }]}>
 
                             <Text style={styles.Heading1} onPress={() => {
-                                navigation.navigate("IncomeDetails"
+                                navigation.navigate("Proceed"
                                 )
                                 setExitStatus(true)
                             }}>{t('common:Verify')}</Text>
