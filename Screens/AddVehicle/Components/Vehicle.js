@@ -12,7 +12,7 @@ import {
     Dimensions,
     TouchableOpacity
 } from 'react-native'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useState, useEffect } from 'react'
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Statusbar from '../../../Components/StatusBar';
 import { useFocusEffect } from '@react-navigation/native';
@@ -20,9 +20,22 @@ import Header from '../../../Components/RepayHeader';
 import { FONTS, COLORS } from '../../../Constants/Constants';
 import Search from '../../../assets/image/search2.svg'
 import Icon1 from 'react-native-vector-icons/Entypo'
+import Purpose from '../../SelectCustomCall/Components/Purpose';
 const { height, width } = Dimensions.get('screen');
-
+import OwnerModal from './OwnerModal';
 const Vehicle = ({ navigation }) => {
+
+    useEffect(() => {
+        const willFocusSubscription = navigation.addListener('focus', () => {
+            setPurpose('')
+            setSearchStatus2(false)
+            setSearchStatus(false)
+            setNumbers('')
+            console.log("search status.....",SearchStatus)
+
+        });
+        return willFocusSubscription;
+    }, []);
 
     const isDarkMode = true;
     const [text, onChangeText] = useState('');
@@ -34,7 +47,10 @@ const Vehicle = ({ navigation }) => {
     const [checked, setChecked] = useState(false);
     const [numbers, setNumbers] = useState('')
     const [number, setNumber] = useState(false)
-    const [SearchStatus,setSearchStatus] =  useState(false)
+    const [Purpose, setPurpose] = useState('')
+    const [SearchStatus, setSearchStatus] = useState(false)
+    const [SearchStatus2, setSearchStatus2] = useState(false)
+    const [Status, setStatus] = useState(false)
     const toggleCheckbox = () => setChecked(!checked);
 
     const Data = [
@@ -60,16 +76,51 @@ const Vehicle = ({ navigation }) => {
         }
     ]
 
-const StatusChange=()=>{
-    if(numbers.length>0){
-        setSearchStatus(true)
-        console.log("search.....",SearchStatus)
-    }else{
-        setSearchStatus(false)
-        console.log("search rt.....",SearchStatus)
+    const StatusChange1 = () => {
+
+        if (numbers.length > 0) {
+            setSearchStatus(true)
+            setStatus(true)
+            console.log("search.....", SearchStatus)
+        } else {
+            setSearchStatus(false)
+            setStatus(true)
+            console.log("search rt.....", SearchStatus)
+        }
+
     }
-   
-}
+    const StatusChange2 = () => {
+
+        if (numbers.length > 0) {
+            setSearchStatus2(true)
+            setStatus(true)
+            console.log("search.....", SearchStatus)
+        } else {
+            setSearchStatus2(false)
+            setStatus(true)
+            console.log("search rt.....", SearchStatus)
+        }
+
+    }
+
+    const OnchangeNumbers = (num) => {
+        if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(num) || num === '') {
+            setNumbers(num)
+
+        } else {
+
+            // ToastAndroid.show(t('common:Valid'), ToastAndroid.SHORT);
+        }
+    }
+
+    const GetStateChange = () => {
+        setModalReason(true)
+        setPurpose('')
+        setNumbers('')
+        setStatus(false)
+        setSearchStatus(false)
+        setSearchStatus2(false)
+    }
     return (
 
         <>
@@ -79,10 +130,17 @@ const StatusChange=()=>{
                         <Text style={styles.TextOwner}>Vehicle owner</Text>
                     </View>
 
-                    <TouchableOpacity style={styles.SelectBox} >
-                        <Text style={styles.textSelect}>Select</Text>
-                        {/* <Text style={[styles.textSelect],{color:'#1A051D',marginLeft:8}}>{Purpose}</Text>} */}
-                       
+                    <TouchableOpacity style={styles.SelectBox} onPress={() => {
+                        setModalReason(true)
+                        setPurpose('')
+                        setNumbers('')
+                        setStatus(false)
+                        setSearchStatus(false)
+                        setSearchStatus2(false)
+                    }} >
+                        {!Purpose ? <Text style={styles.textSelect}>Select</Text> :
+                            <Text style={[styles.textSelect], { color: '#1A051D', marginLeft: 8 }}>{Purpose}</Text>}
+
                         <Icon1 name="chevron-down" size={18} color={'#808080'} style={{ marginRight: 10 }} />
                     </TouchableOpacity>
                     <View>
@@ -101,20 +159,25 @@ const StatusChange=()=>{
                             placeholderTextColor="#808080"
 
                             onChangeText={(text) => {
-                                setNumbers(text)
+                                OnchangeNumbers(text)
+
 
                             }
 
                             }
 
-                           // keyboardType="numeric"
+                        // keyboardType="numeric"
                         />
-                        <TouchableOpacity style={styles.SearhView} onPress={()=>StatusChange()}>
-                            <Search />
-                        </TouchableOpacity>
+                        {Purpose === 'Self' || Purpose === 'Children' ?
+                            <TouchableOpacity style={styles.SearhView} onPress={() => numbers?.length > 0 ? StatusChange1() : console.log("null")}>
+                                <Search />
+                            </TouchableOpacity> :
+                            <TouchableOpacity style={styles.SearhView} onPress={() => numbers?.length > 0 ? StatusChange2() : console.log("null")}>
+                                <Search />
+                            </TouchableOpacity>}
                     </TouchableOpacity>
 
-                    {SearchStatus&&
+                    {SearchStatus2 ?
 
                         <View style={styles.containerBox}>
                             <View style={{ flex: 1, flexDirection: 'row' }}>
@@ -130,9 +193,27 @@ const StatusChange=()=>{
                                     <Text style={styles.dateText}>Customer</Text>
                                 </View>
                             </View>
+                        </View> : SearchStatus &&
+                        <View style={styles.containerBox}>
+                            <View style={{ flex: 1, flexDirection: 'row' }}>
+                                <View style={[styles.circleView, { backgroundColor: 'rgba(206, 116, 143, 1)' }]}>
+                                    <Text style={styles.shortText}>AK</Text>
+                                </View>
+                                <View style={{ flexDirection: 'column', flex: 1, marginLeft: 12 }}>
+                                    <Text style={styles.nameText}>Anil Kumar</Text>
+                                    <Text style={styles.underText}>Daily wage labourer</Text>
+                                </View>
+
+
+                                <View style={{ flexDirection: 'row', }}>
+                                    <Image source={require('../../../assets/image/cake.png')} resizeMode={'contain'} />
+                                    <Text style={styles.dateText}>12/10/1972</Text>
+                                </View>
+
+                            </View>
                         </View>}
 
-                    {SearchStatus ?
+                    {SearchStatus2 ?
 
 
                         <View>
@@ -180,16 +261,13 @@ const StatusChange=()=>{
                                         <Text style={styles.NameStyle}>2017</Text>
                                     </View>
                                 </View>
-
-
-
                                 <View style={{
                                     flexDirection: 'row', justifyContent: 'space-between', marginTop: width * 0.05,
                                     paddingLeft: 20, paddingRight: 20
                                 }}>
 
                                     <TouchableOpacity style={[styles.buttonView1, { backgroundColor: 'rgba(229, 231, 250, 1)' }]}
-                                       >
+                                    >
                                         <Text style={[styles.continueText, { color: COLORS.colorB }]}>Reject</Text>
                                     </TouchableOpacity>
                                     <TouchableOpacity onPress={() => navigation.navigate('VehicleOwn')}
@@ -198,21 +276,91 @@ const StatusChange=()=>{
                                     </TouchableOpacity>
                                 </View>
                             </View>
-                        </View> : null}
+                        </View> : SearchStatus && <View>
+                            <View style={styles.containerBox1}>
+                                <View style={{
+                                    flexDirection: 'row', justifyContent: 'space-around',
+                                    paddingTop: width * 0.05, marginLeft: width * 0.05
+                                }}>
+                                    <View style={{ flexDirection: 'column', flex: 1, alignItems: 'flex-start' }}>
+                                        <Text style={styles.owner}>Owner name</Text>
+                                        <Text style={styles.NameStyle}>Anil Kumar</Text>
+                                    </View>
+                                    <View style={{ flexDirection: 'column', flex: 1, alignItems: 'center', left: -9 }}>
+                                        {Data.map((item) => {
+                                            return (
+                                                <View style={{ flexDirection: 'column', }}>
+                                                    <Text style={{ fontSize: 6, color: "#C4C4C4" }}>{item.label}</Text>
+                                                </View>
+                                            )
+                                        })}
+                                    </View>
+                                    <View style={{ flexDirection: 'column', flex: 1, left: -25 }}>
+                                        <Text style={styles.owner}>Vehicle Number</Text>
+                                        <Text style={styles.NameStyle}>KL34E3278</Text>
+                                    </View>
+                                </View>
+
+                                <View style={{ flexDirection: 'row', justifyContent: 'space-around', paddingTop: width * 0.05 }}>
+                                    <View style={{ flexDirection: 'column', marginLeft: width * 0.055 }}>
+                                        <Text style={styles.owner}>Model</Text>
+                                        <Text style={styles.NameStyle}>Maruti Suzuki Alto</Text>
+                                    </View>
+
+                                    <View style={{ flexDirection: 'column', alignItems: 'center', flex: 1, left: -15 }}>
+                                        {Data.map((item) => {
+                                            return (
+                                                <View style={{ flexDirection: 'column', }}>
+                                                    <Text style={{ fontSize: 6, color: "#C4C4C4" }}>{item.label}</Text>
+                                                </View>
+                                            )
+                                        })}
+                                    </View>
+                                    <View style={{ flexDirection: 'column', flex: 1, left: -28 }}>
+                                        <Text style={styles.owner}>Year</Text>
+                                        <Text style={styles.NameStyle}>2017</Text>
+                                    </View>
+                                </View>
+                                <View style={{
+                                    flexDirection: 'row', justifyContent: 'space-between', marginTop: width * 0.05,
+                                    paddingLeft: 20, paddingRight: 20
+                                }}>
+
+                                    <TouchableOpacity style={[styles.buttonView1, { backgroundColor: 'rgba(229, 231, 250, 1)' }]}
+                                    >
+                                        <Text style={[styles.continueText, { color: COLORS.colorB }]}>Reject</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity onPress={() => {navigation.navigate('VehicleOwn')
+                                     setSearchStatus2(false)}}
+                                        style={[styles.buttonView1, { backgroundColor: COLORS.colorB }]}>
+                                        <Text style={[styles.continueText, { color: COLORS.colorBackground }]}>Confirm</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+                        </View>}
 
                 </ScrollView>
 
-                {!SearchStatus&&
-                <View style={{ alignItems: 'center', justifyContent: 'center', marginBottom: 20 }}>
-                    <Text style={styles.skip}>Skip</Text>
-                </View>}
-                {!SearchStatus &&
-                <TouchableOpacity style={[styles.buttonView, { backgroundColor: number ? COLORS.colorB : '#E0E0E0' }]}>
-                    <Text style={[styles.continueText, { color: number ? COLORS.colorBackground : COLORS.colorWhite3 }]}>Continue</Text>
-                </TouchableOpacity>}
+                {!Status &&
+                    <View style={{ alignItems: 'center', justifyContent: 'center', marginBottom: 20 }}>
+                        <Text style={styles.skip}>Skip</Text>
+                    </View>}
+                {!Status &&
+                    <TouchableOpacity style={[styles.buttonView, { backgroundColor: number ? COLORS.colorB : '#E0E0E0' }]}>
+                        <Text style={[styles.continueText, { color: number ? COLORS.colorBackground : COLORS.colorWhite3 }]}>Continue</Text>
+                    </TouchableOpacity>}
             </View>
 
-
+            <OwnerModal
+                onPress1={() => {
+                    // setModalVisible(false)
+                    //setModalError(true)
+                }}
+                ModalVisible={ModalReason}
+                setPurpose={setPurpose}
+                onPressOut={() => setModalReason(!ModalReason)}
+                setModalVisible={setModalReason}
+            />
 
 
         </>
@@ -243,8 +391,8 @@ const styles = StyleSheet.create({
         fontSize: 14,
         fontFamily: FONTS.FontRegular,
         left: 6,
-    // backgroundColor:'red',
-     width:width*0.6
+        // backgroundColor:'red',
+        width: width * 0.6
     },
     continueText: {
         fontSize: 14,

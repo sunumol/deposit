@@ -67,7 +67,7 @@ const DebitDetails = ({ navigation, }) => {
             <SafeAreaView style={styles.container1} />
             <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
 
-            <Header name="External Debt Details Utilities" navigation={navigation} />
+            <Header name="External Debt Details" navigation={navigation} />
 
             <View style={styles.ViewContent}>
              

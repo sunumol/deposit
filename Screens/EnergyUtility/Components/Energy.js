@@ -39,7 +39,7 @@ const Energy = ({ navigation }) => {
                     <View>
                         <Text style={styles.TextElect}>Electricity connection available</Text>
                     </View>
-                    <TouchableOpacity style={[styles.SelectBox, { backgroundColor: '#ECEBED' }]} onPress={() => setModalVisible1(true)} >
+                    <TouchableOpacity style={[styles.SelectBox1, { backgroundColor: '#ECEBED' }]} >
                         <Text style={styles.textSelect}>Yes</Text>
                         {/* <Text style={[styles.textSelect],{color:'#1A051D',marginLeft:8}}>{Relation}</Text>} */}
                         <Icon1 name="chevron-down" size={18} color={'#808080'} style={{ marginRight: 10 }} />
@@ -48,10 +48,11 @@ const Energy = ({ navigation }) => {
                         <Text style={styles.TextElect}>Average bill amount</Text>
                     </View>
                     <View style={styles.SelectBox}>
-                    <Text style={[styles.RS,{color:Amount === '' ? '#808080' :'#1A051D'}]}>₹</Text>
+                        <Text style={[styles.RS, { color: Amount === '' ? '#808080' : '#1A051D' }]}>₹</Text>
                         <TextInput
                             style={[{ fontSize: 14, color: '#1A051D', fontFamily: FONTS.FontRegular, left: 5 }]}
                             value={Amount}
+                            keyboardType={'number-pad'}
                             onChangeText={(text) => setAmount(text)} />
                     </View>
                     <View>
@@ -65,19 +66,21 @@ const Energy = ({ navigation }) => {
                         <Icon1 name="chevron-down" size={18} color={'#808080'} style={{ marginRight: 10 }} />
                     </TouchableOpacity>
 
-                    <View>
-                        <Text style={styles.TextElect}>Average days a cylinder will last</Text>
-                    </View>
+                    {Purpose &&
+                        <View>
+                            <Text style={styles.TextElect}>Average days a cylinder will last</Text>
+                        </View>}
 
-                    <View style={styles.SelectBox}>
-                        <TextInput
-                            placeholder="Enter number of days"
-                            placeholderTextColor={"#808080"}
-                            style={[{ fontSize: 14, color: '#1A051D', fontFamily: FONTS.FontRegular, left: 5, width: width * 0.5 }]}
-                            value={days}
-                            keyboardType={'number-pad'}
-                            onChangeText={(text) => setDays(text)} />
-                    </View>
+                    {Purpose &&
+                        <View style={styles.SelectBox}>
+                            <TextInput
+                                placeholder="Enter number of days"
+                                placeholderTextColor={"#808080"}
+                                style={[{ fontSize: 14, color: '#1A051D', fontFamily: FONTS.FontRegular, left: 5, width: width * 0.5 }]}
+                                value={days}
+                                keyboardType={'number-pad'}
+                                onChangeText={(text) => setDays(text)} />
+                        </View>}
                 </ScrollView>
                 <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                     <TouchableOpacity style={[styles.buttonView, { backgroundColor: COLORS.colorB }]}
@@ -144,7 +147,7 @@ const styles = StyleSheet.create({
         borderColor: 'rgba(236, 235, 237, 1)',
         alignItems: 'center',
         flexDirection: 'row',
-       // justifyContent: 'space-between',
+        // justifyContent: 'space-between',
         marginTop: width * 0.02,
         marginBottom: width * 0.02
     },

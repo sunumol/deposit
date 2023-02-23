@@ -26,15 +26,16 @@ import Details from './Components/Details';
 
 const IncomeDetails = ({ navigation, }) => {
     const route = useRoute();
-    console.log("route name",);
+   
     const isDarkMode = true
     const { t } = useTranslation();
     const [lang, setLang] = useState('')
-    const [BStatus, setBstatus] = useState(false)
-
+    const [statusChange,setStatusChange] = useState(false)
+ console.log("route name",statusChange);
 
     useEffect(() => {
         getData()
+        
     }, [])
 
     const getData = async () => {
@@ -70,7 +71,7 @@ const IncomeDetails = ({ navigation, }) => {
             <Header name="Income Details" navigation={navigation} />
 
             <View style={styles.ViewContent}>
-            <Details navigation={navigation}/>
+            <Details navigation={navigation} setStatusChange={statusChange}/>
   
             </View>
 

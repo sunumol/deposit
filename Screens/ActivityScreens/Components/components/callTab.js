@@ -65,7 +65,7 @@ const MeetTab = (props) => {
                                 </View>
                                 {item.status == "Conduct DLE"
                                     ? <TouchableOpacity
-                                        //onPress={() => props.navigation.navigate('DetailCheck')}
+                                        onPress={() => props.navigation.navigate('DetailCheck')}
                                         style={[styles.leadContainer, { backgroundColor: 'rgba(186, 134, 205, 0.1)' }]}>
                                         <Text style={[styles.leadText, { color: '#F2994A' }]}>Conduct DLE</Text>
                                     </TouchableOpacity>

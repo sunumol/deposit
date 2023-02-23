@@ -120,7 +120,7 @@ const Vehicles = ({ navigation }) => {
 
                     <View style={{ alignItems: 'flex-end' }}>
                         <TouchableOpacity style={[styles.buttonView1, { backgroundColor: 'rgba(0, 56, 116, 0.1)' }]}
-                        >
+                       onPress={()=>navigation.navigate('AddVehicle')} >
                             <Icon1 name="plus" size={18} color={COLORS.colorB} />
                             <Text style={[styles.continueText, { color: COLORS.colorB, marginLeft: 5 }]}>Add New</Text>
                         </TouchableOpacity>
@@ -129,7 +129,7 @@ const Vehicles = ({ navigation }) => {
                 </ScrollView>
 
                 <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                    <TouchableOpacity style={[styles.buttonView, { backgroundColor: COLORS.colorB }]}>
+                    <TouchableOpacity style={[styles.buttonView, { backgroundColor: COLORS.colorB }]} onPress={()=>navigation.navigate('WhiteGoodsOwner')}>
                         <Text style={[styles.continueText, { color: COLORS.colorBackground }]}>Continue</Text>
                     </TouchableOpacity>
                 </View>

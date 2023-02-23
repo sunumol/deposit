@@ -23,7 +23,8 @@ import CreditModal from './CreditModal';
 
 const { height, width } = Dimensions.get('screen');
 
-const Details = ({ navigation }) => {
+const Details = ({ navigation,setStatusChange}) => {
+    console.log("stateChange.....",setStatusChange)
     const [Amount, setAmount] = useState('')
     const [ModalVisible, setModalVisible] = useState(false)
     const [Purpose, setPurpose] = useState('')
@@ -34,17 +35,20 @@ const Details = ({ navigation }) => {
     const [MonthsCustom, setMonthCustom] = useState('')
     const [Credit, setCredit] = useState('')
     const [Salary, setSalary] = useState('')
-    const [StateChange, setStateChange] = useState(false)
+    const [StateChange1, setStateChange1] = useState(false)
     const [ButtonSP, setButtonSP] = useState(false)
 
+    useEffect(()=>{
+       // setStatusChange(StateChange1)
+    },[StateChange1])
 
-    const ButtonClick = (text) => {
-        setAvg(text)
+    const ButtonClick = () => {
+    
         if (Amount !== '' && Avg !== '' && Month !== '') {
-            setButtons(true)
+            setStateChange1(true)
 
         } else {
-            setButtons(false)
+            setStateChange1(false)
         }
     }
 
@@ -69,7 +73,7 @@ const Details = ({ navigation }) => {
         <>
             <View style={styles.mainContainer}>
                 <ScrollView>
-                    {!StateChange ?
+                    {!StateChange1 ?
                         <View style={styles.containerBox}>
                             <View style={{ flex: 1, flexDirection: 'row' }}>
                                 <View style={styles.circleView}>
@@ -101,7 +105,7 @@ const Details = ({ navigation }) => {
                             </View>
                         </View>}
 
-                    {!StateChange ?
+                    {!StateChange1 ?
                         <View>
                             <View>
                                 <Text style={styles.TextElect}>Highest monthly income earned in last 12 months</Text>
@@ -178,10 +182,10 @@ const Details = ({ navigation }) => {
                             </View>
                         </View>}
                 </ScrollView>
-                {!StateChange ?
+                {!StateChange1 ?
                     <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                         <TouchableOpacity style={[styles.buttonView, { backgroundColor: Buttons ? COLORS.colorB : 'rgba(224, 224, 224, 1)' }]}
-                            onPress={() => setStateChange(true)}>
+                            onPress={() => ButtonClick()}>
                             <Text style={[styles.continueText, { color: Buttons ? COLORS.colorBackground : '#979C9E' }]}>Continue</Text>
                         </TouchableOpacity>
                     </View> :

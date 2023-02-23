@@ -138,7 +138,7 @@ const DetailChecks = ({ navigation, setState }) => {
             </ScrollView>
 
             <View style={{ position: 'absolute', left: 0, right: 0, bottom: 0, alignItems: 'center', justifyContent: 'center' }}>
-                <TouchableOpacity onPress={()=>navigation.navigate('ContinuingGuarantor')}
+                <TouchableOpacity onPress={()=>Relation ? navigation.navigate('ContinuingGuarantor'):console.log("helo")}
                 style={[styles.Button1, { backgroundColor: Relation ? COLORS.colorB : 'rgba(224, 224, 224, 1)' }]}
                 >
                     <Text style={[styles.text1, { color: Relation ? COLORS.colorBackground : '#979C9E' }]}>Continue</Text>

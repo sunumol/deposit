@@ -39,6 +39,16 @@ const ContinuingGuarantor = ({ navigation }) => {
     }
 }, [number]);
 
+const OnchangeNumbers = (num) => {
+  if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(num) || num === '') {
+      onChangeNumber(num)
+     
+  } else {
+
+      // ToastAndroid.show(t('common:Valid'), ToastAndroid.SHORT);
+  }
+}
+
 const scrollViewRef = useRef();
   return (
     <SafeAreaProvider>
@@ -86,18 +96,19 @@ const scrollViewRef = useRef();
               maxLength={10}
               style={styles.textIn1}
               onChangeText={(text)=>{
-                onChangeNumber(text)}
+                OnchangeNumbers(text)
+                setOtpValue('')}
               
             }
               placeholderTextColor={COLORS.colorDark}
               keyboardType="numeric"
             />
-            {number &&
+            {number?.length === 10 &&
             <View style={styles.CallView}>
               <Call width={16} height={16} />
             </View>}
           </View>
-          {number&&
+          {number?.length === 10&&
           <View style={styles.ViewOtp}>
             <Text style={styles.textOtp} onPress={() => navigation.navigate('PreClosure')}>{t('common:EnterOtp')} </Text>
 
@@ -105,6 +116,7 @@ const scrollViewRef = useRef();
               style={[styles.OtpInput, {}]}
               pinCount={4}
               code={OtpValue}
+          
                onCodeChanged={otp => setOtpValue(otp)}
               // code={this.state.code} //You can supply this prop or not. The component will be used as a controlled / uncontrolled component respectively.
               // onCodeChanged = {code => { this.setState({code})}}
@@ -137,8 +149,9 @@ const scrollViewRef = useRef();
         </View>
         </ScrollView>
 
-        <TouchableOpacity style={[styles.buttonView, { backgroundColor: number ? COLORS.colorB : '#E0E0E0' }]}>
-          <Text style={[styles.continueText, { color: number ? COLORS.colorBackground : COLORS.colorWhite3 }]}>Continue</Text>
+        <TouchableOpacity onPress={()=>OtpValue?.length === 4 && number?.length === 10 ? navigation.navigate('AddVehicle'): console.log("geki")}
+        style={[styles.buttonView, { backgroundColor:OtpValue?.length === 4 && number?.length === 10  ? COLORS.colorB : '#E0E0E0' }]}>
+          <Text style={[styles.continueText, { color: OtpValue?.length === 4 && number?.length === 10 ? COLORS.colorBackground : COLORS.colorWhite3 }]}>Continue</Text>
         </TouchableOpacity>
         </KeyboardAvoidingView>
        

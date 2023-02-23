@@ -119,7 +119,7 @@ const Goods = ({ navigation }) => {
                                     <Media1 width={30} height={30} />
                                 </TouchableOpacity>
                             </View> : UploadStatus ? 
-                                <View style={{ alignItems: 'flex-start', flex: 1, marginLeft: 25 }}>
+                                <View style={{ alignItems: 'center', flex: 1, marginLeft: 0 }}>
                                     <TouchableOpacity onPress={() => UploadImage()}>
                                      {Id ==1 ?   
                                      <Images2 width={30} height={30} /> : Id ==2 ?
@@ -131,7 +131,7 @@ const Goods = ({ navigation }) => {
                                 </View> : <View style={{ alignItems: 'flex-start', flex: 1, marginLeft: 10 }}>
                                     <Image source={{ uri: Image1 }} style={{ width: 55, height: 65, borderRadius: 6 }} /></View>}
                         <View style={styles.Line} />
-                        <View style={{ flexDirection: 'column', left: 5 }}>
+                        <View style={{ flexDirection: 'column', }}>
                             <Text style={[styles.UploadText, { color: NameStatus ? '#1A051D' : '#808080' }]}>Upload photo</Text>
                             <Text style={styles.Prooftext}>Upload photo of item selected</Text>
                         </View>
@@ -146,7 +146,8 @@ const Goods = ({ navigation }) => {
                 </ScrollView>
 
                 <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                    <TouchableOpacity style={[styles.buttonView, { backgroundColor:Image1 == ''? 'rgba(224, 224, 224, 1)':COLORS.colorB }]}>
+                    <TouchableOpacity style={[styles.buttonView, { backgroundColor:Image1 == ''? 'rgba(224, 224, 224, 1)':COLORS.colorB }]} 
+                    onPress={()=>!Image1 ?  navigation.navigate('EnergyUtility'):console.log('helo')}>
                         <Text style={[styles.continueText, { color: Image1 == ''? 'rgba(151, 156, 158, 1)': COLORS.colorBackground }]}>Continue</Text>
                     </TouchableOpacity>
                 </View>
@@ -258,19 +259,20 @@ const styles = StyleSheet.create({
         fontSize: 14,
         fontFamily: FONTS.FontSemiB,
         color: 'rgba(128, 128, 128, 1)',
+        right:-15
     },
     Prooftext: {
         color: 'rgba(128, 128, 128, 1)',
         fontFamily: FONTS.FontRegular,
         fontSize: 12,
-        marginLeft: 0
+        right:-15
     },
     Line: {
 
         borderWidth: 0.3,
         height: 80,
         borderColor: '#F2F2F2',
-        left: -8
+        //left: -8
 
     },
     TextOwner: {
