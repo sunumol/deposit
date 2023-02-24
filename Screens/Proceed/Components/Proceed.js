@@ -21,33 +21,16 @@ import { useFocusEffect } from '@react-navigation/native';
 import Header from '../../../Components/RepayHeader';
 import { FONTS, COLORS } from '../../../Constants/Constants';
 import Icon1 from 'react-native-vector-icons/Entypo'
-
+import LottieView from 'lottie-react-native';
 
 const { height, width } = Dimensions.get('screen');
 
 const Energy = ({ navigation }) => {
     const [ButtonS, setButtonS] = useState(false)
-    let rotateValueHolder = new Animated.Value(0);
-
-
+  
     useEffect(() => {
-        startImageRotateFunction()
+        setTimeout(() => setButtonS(true), 3000);
     }, [])
-    const startImageRotateFunction = () => {
-        rotateValueHolder.setValue(0);
-        Animated.timing(rotateValueHolder, {
-            toValue: 1,
-            duration: 3000,
-            easing: Easing.linear,
-            useNativeDriver: false,
-        }).start(() => startImageRotateFunction());
-    };
-
-    const RotateData = rotateValueHolder.interpolate({
-        inputRange: [0, 1],
-        outputRange: ['0deg', '360deg'],
-    });
-
 
     return (
 
@@ -56,15 +39,11 @@ const Energy = ({ navigation }) => {
                 <ScrollView>
                     <View style={{ alignItems:'center',
                             justifyContent:'center',}}>
-                    <Animated.Image
-                        style={{
-                            width: 200,
-                            height: 200,
-                           
-                            transform: [{ rotate: RotateData }],
-                        }}
-                        source={require('../../../assets/image/homeB.png')}
-                    />
+                    
+                    {ButtonS
+                    ?<LottieView source={require('../Assets/shakehand.json')} autoPlay loop={true} style={{ width: 200, height: 200 }} />
+                    :<LottieView source={require('../Assets/clocktime.json')} autoPlay loop={true} style={{ width: 200, height: 200 }} />
+}
                     </View>
                     <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                         <Text style={styles.textD1}>Data sent to Customer for verification.</Text>
