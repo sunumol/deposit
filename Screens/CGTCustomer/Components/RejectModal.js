@@ -7,7 +7,7 @@ const { height, width } = Dimensions.get('screen');
 import Image1 from '../Images/check.svg';
 
 
-const RejectModal = ({ ModalVisible, onPressOut, onPress1, setModalVisible }) => {
+const RejectModal = ({ ModalVisible, onPressOut, onPress1, setModalVisible,onPressClose }) => {
     const [state, setState] = useState(null);
     const { t } = useTranslation();
     const [Lang, setLang] = useState('')
@@ -32,9 +32,9 @@ const RejectModal = ({ ModalVisible, onPressOut, onPress1, setModalVisible }) =>
         animationType="fade"
         transparent={true}
         visible={ModalVisible}
-        onRequestClose={onPressOut}>
+        onRequestClose={onPressClose}>
 
-        <TouchableOpacity onPressOut={onPressOut}
+        <TouchableOpacity onPressOut={onPressClose}
             style={{ backgroundColor: "#000000aa", flex: 1, alignItems: 'center', justifyContent: 'center', opacity: 5 }} >
             <View style={styles.ModalView1}>
                 {/*<Text style={styles.TextDelete}>{t('common:AreS1')} ?</Text>*/}
@@ -50,7 +50,7 @@ const RejectModal = ({ ModalVisible, onPressOut, onPress1, setModalVisible }) =>
                         <Text style={styles.textdesc}>details of the Customer</Text>
                     </View>
 
-                    <TouchableOpacity style={styles.buttonStyle} onPress={onPress1}>
+                    <TouchableOpacity style={styles.buttonStyle} onPress={onPressClose}>
                         <Text style={styles.buttonTextStyle}>{t('common:Okay')}</Text>
                     </TouchableOpacity>
               

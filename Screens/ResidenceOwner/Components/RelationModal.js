@@ -21,7 +21,7 @@ const RelationModal = ({ visible, onPressOut,setModalVisible,setRelaton}) => {
                 </TouchableOpacity>
                 <View style={styles.centeredView2}>
                     <View style={styles.modalView}>
-                        <Text style={styles.modalTextHead}>Select relation</Text>
+                        <Text style={styles.modalTextHead}>Select Relation</Text>
                         <TouchableOpacity style={styles.textTouch}
                             onPress={() => {
                                 setRelaton('Self')

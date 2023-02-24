@@ -1,6 +1,8 @@
-import { StyleSheet, Text, View, StatusBar, SafeAreaView, Platform,
-   TextInput, TouchableOpacity, Dimensions,ScrollView,KeyboardAvoidingView,Image } from 'react-native'
-import React, { useState,useEffect,useRef } from 'react'
+import {
+  StyleSheet, Text, View, StatusBar, SafeAreaView, Platform,
+  TextInput, TouchableOpacity, Dimensions, ScrollView, KeyboardAvoidingView, Image
+} from 'react-native'
+import React, { useState, useEffect, useRef } from 'react'
 import Header from '../../Components/RepayHeader';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { COLORS, FONTS } from '../../Constants/Constants';
@@ -10,6 +12,7 @@ import Call from '../../assets/image/calls.svg';
 const { height, width } = Dimensions.get('screen');
 import OTPInputView from '@twotalltotems/react-native-otp-input';
 import { useTranslation } from 'react-i18next';
+import Image1 from '../../assets/Images/cakes.svg';
 
 const ContinuingGuarantor = ({ navigation }) => {
   const isDarkMode = true;
@@ -18,38 +21,41 @@ const ContinuingGuarantor = ({ navigation }) => {
   const [OtpValue, setOtpValue] = useState('')
   const [timerCount, setTimer] = useState(30)
   const [IsOtp1, setIsOtp1] = useState(false)
- const [Bstatus,setBstatus] = useState(false)
+  const [Bstatus, setBstatus] = useState(false)
   const [IsOtp2, setIsOtp2] = useState(true)
 
-  useEffect(() => {
-    if (number) {
-        let interval = setInterval(() => {
-            setTimer(lastTimerCount => {
-                lastTimerCount <= 1 && clearInterval(interval)
-                return lastTimerCount - 1
-            })
-        }, 1000)
-        console.log(interval)
-        if (timerCount === 0) {
-          //  setStatus(false)
-            console.log("timer count useEffect", timerCount)
-        }//each count lasts for a second
-        //cleanup the interval on complete
-        return () => clearInterval(interval)
-    }
-}, [number]);
 
-const OnchangeNumbers = (num) => {
-  if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(num) || num === '') {
+  useEffect(() => {
+    if (number?.length == 10) {
+      let interval = setInterval(() => {
+        setTimer(lastTimerCount => {
+          lastTimerCount <= 1 && clearInterval(interval)
+          return lastTimerCount - 1
+        })
+      }, 1000)
+      console.log(interval)
+      if (timerCount === 0) {
+
+        console.log("timer count useEffect", timerCount)
+      }//each count lasts for a second
+      //cleanup the interval on complete
+      return () => clearInterval(interval)
+    }
+  }, []);
+
+
+
+  const OnchangeNumbers = (num) => {
+    if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(num) || num === '') {
       onChangeNumber(num)
-     
-  } else {
+
+    } else {
 
       // ToastAndroid.show(t('common:Valid'), ToastAndroid.SHORT);
+    }
   }
-}
 
-const scrollViewRef = useRef();
+  const scrollViewRef = useRef();
   return (
     <SafeAreaProvider>
 
@@ -59,105 +65,106 @@ const scrollViewRef = useRef();
       <Header navigation={navigation} name={"Continuing Guarantor"} />
 
       <View style={styles.mainContainer}>
-     
-                    <KeyboardAvoidingView style={{ flex: 1 }}
-                        {...(Platform.OS === 'ios' && { behavior: 'position' })}
-                    >
-                       <ScrollView ref={scrollViewRef}
-                    onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: true })}>
-        <View style={{ flex: 1 }}>
-          <Text style={styles.headerText}>Relationship with Customer</Text>
-          <View style={styles.dropDown}>
-            <Text style={styles.spouseText}>Spouse</Text>
-            <Icon1 name="chevron-down" size={18} color={'#808080'} />
-          </View>
-          <View style={styles.containerBox}>
-            <View style={{ flex: 1, flexDirection: 'row' }}>
-              <View style={styles.circleView}>
-                <Text style={styles.shortText}>AK</Text>
+
+        <KeyboardAvoidingView style={{ flex: 1 }}
+          {...(Platform.OS === 'ios' && { behavior: 'position' })}
+        >
+          <ScrollView ref={scrollViewRef}
+            onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: true })}>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.headerText}>Relationship with Customer</Text>
+              <View style={styles.dropDown}>
+                <Text style={styles.spouseText}>Spouse</Text>
+                <Icon1 name="chevron-down" size={18} color={'#808080'} />
               </View>
-              <View style={{ flexDirection: 'column', flex: 1, marginLeft: 12 }}>
-                <Text style={styles.nameText}>Anil Kumar</Text>
-                <Text style={styles.underText}>Daily wage labourer</Text>
+              <View style={styles.containerBox}>
+                <View style={{ flex: 1, flexDirection: 'row' }}>
+                  <View style={styles.circleView}>
+                    <Text style={styles.shortText}>AK</Text>
+                  </View>
+                  <View style={{ flexDirection: 'column', flex: 1, marginLeft: 12 }}>
+                    <Text style={styles.nameText}>Anil Kumar</Text>
+                    <Text style={styles.underText}>Daily wage labourer</Text>
+                  </View>
+                  <View style={{ flexDirection: 'row', left: -5 }}>
+
+                    <Image1 width={11} height={11} top={3} />
+                    <Text style={styles.dateText}>12/10/1972</Text>
+                  </View>
+                </View>
               </View>
-              <View style={{ flexDirection: 'row' ,left:-5}}>
-                
-              <Image source={require('../../assets/image/cake.png')} resizeMode={'contain'} />
-                <Text style={styles.dateText}>12/10/1972</Text>
+              <Text style={styles.mobileText}>Mobile Number</Text>
+              <View style={styles.inPutStyle}>
+                <TextInput
+
+                  placeholder=''
+                  value={number}
+                  maxLength={10}
+                  style={styles.textIn1}
+                  onChangeText={(text) => {
+                    OnchangeNumbers(text)
+                    setOtpValue('')
+                  }
+
+                  }
+                  placeholderTextColor={COLORS.colorDark}
+                  keyboardType="numeric"
+                />
+                {number?.length === 10 &&
+                  <View style={styles.CallView}>
+                    <Call width={16} height={16} />
+                  </View>}
               </View>
+              {number?.length === 10 &&
+                <View style={styles.ViewOtp}>
+                  <Text style={styles.textOtp} onPress={() => navigation.navigate('PreClosure')}>{t('common:EnterOtp')} </Text>
+
+                  <OTPInputView
+                    style={[styles.OtpInput, {}]}
+                    pinCount={4}
+                    code={OtpValue}
+
+                    onCodeChanged={otp => setOtpValue(otp)}
+                    // code={this.state.code} //You can supply this prop or not. The component will be used as a controlled / uncontrolled component respectively.
+                    // onCodeChanged = {code => { this.setState({code})}}
+                    autoFocusOnLoad={false}
+                    codeInputFieldStyle={{ color: '#090A0A', borderRadius: 8, backgroundColor: '#FCFCFC', }}
+                    placeholderTextColor="black"
+                    onCodeFilled={(code => {
+
+                      if (code && code == '1091') {
+                        navigation.navigate('Permission')
+                        // setOtp(false)
+                      }
+                      else {
+                        console.log("otp value//...", OtpValue)
+                        // setOtp(true)
+                        // setCount(1)
+                      }
+                    })}
+                  />
+
+
+
+                  <View style={{ marginTop: Dimensions.get('window').height * 0.03 }}>
+                    <Text style={styles.TextResend}>{t('common:Resend')} 00:{timerCount < 10 ? '0' : ''}{timerCount}</Text>
+                  </View>
+                </View>}
+
+
+              <Call />
             </View>
-          </View>
-          <Text style={styles.mobileText}>Mobile Number</Text>
-          <View style={styles.inPutStyle}>
-            <TextInput
+          </ScrollView>
 
-              placeholder=''
-              value={number}
-              maxLength={10}
-              style={styles.textIn1}
-              onChangeText={(text)=>{
-                OnchangeNumbers(text)
-                setOtpValue('')}
-              
-            }
-              placeholderTextColor={COLORS.colorDark}
-              keyboardType="numeric"
-            />
-            {number?.length === 10 &&
-            <View style={styles.CallView}>
-              <Call width={16} height={16} />
-            </View>}
-          </View>
-          {number?.length === 10&&
-          <View style={styles.ViewOtp}>
-            <Text style={styles.textOtp} onPress={() => navigation.navigate('PreClosure')}>{t('common:EnterOtp')} </Text>
-
-            <OTPInputView
-              style={[styles.OtpInput, {}]}
-              pinCount={4}
-              code={OtpValue}
-          
-               onCodeChanged={otp => setOtpValue(otp)}
-              // code={this.state.code} //You can supply this prop or not. The component will be used as a controlled / uncontrolled component respectively.
-              // onCodeChanged = {code => { this.setState({code})}}
-              autoFocusOnLoad={false}
-              codeInputFieldStyle={{ color: '#090A0A', borderRadius: 8, backgroundColor: '#FCFCFC', }}
-              placeholderTextColor="black"
-              onCodeFilled={(code => {
-
-                if (code && code == '1091') {
-                  navigation.navigate('Permission')
-                  // setOtp(false)
-                }
-                else {
-                  console.log("otp value//...", OtpValue)
-                  // setOtp(true)
-                  // setCount(1)
-                }
-              })}
-            />
-
-
-
-            <View style={{ marginTop: Dimensions.get('window').height * 0.03 }}>
-              <Text style={styles.TextResend}>{t('common:Resend')} 00:{timerCount < 10 ? '0' : ''}{timerCount}</Text>
-            </View>
-          </View>}
-
-
-          <Call />
-        </View>
-        </ScrollView>
-
-        <TouchableOpacity onPress={()=>OtpValue?.length === 4 && number?.length === 10 ? navigation.navigate('AddVehicle'): console.log("geki")}
-        style={[styles.buttonView, { backgroundColor:OtpValue?.length === 4 && number?.length === 10  ? COLORS.colorB : '#E0E0E0' }]}>
-          <Text style={[styles.continueText, { color: OtpValue?.length === 4 && number?.length === 10 ? COLORS.colorBackground : COLORS.colorWhite3 }]}>Continue</Text>
-        </TouchableOpacity>
+          <TouchableOpacity onPress={() => OtpValue?.length === 4 && number?.length === 10 ? navigation.navigate('AddVehicle') : console.log("geki")}
+            style={[styles.buttonView, { backgroundColor: OtpValue?.length === 4 && number?.length === 10 ? COLORS.colorB : '#E0E0E0' }]}>
+            <Text style={[styles.continueText, { color: OtpValue?.length === 4 && number?.length === 10 ? COLORS.colorBackground : COLORS.colorWhite3 }]}>Continue</Text>
+          </TouchableOpacity>
         </KeyboardAvoidingView>
-       
+
       </View>
- 
-   
+
+
     </SafeAreaProvider>
   )
 }
@@ -223,7 +230,7 @@ const styles = StyleSheet.create({
     fontWeight: '500'
   },
   containerBox: {
-    borderWidth:1,
+    borderWidth: 1,
     borderColor: COLORS.colorBorder,
     marginTop: 20,
     flexDirection: 'row',
@@ -269,7 +276,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: FONTS.FontSemiB,
     color: COLORS.colorDark,
-    marginBottom:10
+    marginBottom: 10
     // fontWeight: '700'
   },
   underText: {
@@ -281,7 +288,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontFamily: FONTS.FontRegular,
     color: COLORS.colorDark,
-    marginLeft:5
+    marginLeft: 5
   },
   buttonView: {
     backgroundColor: COLORS.colorB,
@@ -318,8 +325,8 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     fontWeight: 'bold',
     color: "black",
-    borderColor:'#ECEBED',
-    backgroundColor:COLORS.colorBackground
+    borderColor: '#ECEBED',
+    backgroundColor: COLORS.colorBackground
 
     //margin:5
   },

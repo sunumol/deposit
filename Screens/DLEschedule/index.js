@@ -49,7 +49,7 @@ const DLESchedule = ({ navigation }) => {
 
     const handleGoBack = useCallback(() => {
 
-        navigation.navigate('NewCgt')
+        navigation.navigate('Profile')
 
         return true; // Returning true from onBackPress denotes that we have handled the event
     }, [navigation]);

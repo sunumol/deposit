@@ -253,7 +253,7 @@ const Debit = ({ navigation }) => {
 
                     <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                         <TouchableOpacity style={[styles.buttonView, { backgroundColor: ButtonSP ? COLORS.colorB : 'rgba(224, 224, 224, 1)' }]}
-                            onPress={() => ButtonSP ? navigation.navigate('DebitDetails') : console.log("heloo")}>
+                            onPress={() => ButtonSP ? navigation.navigate('Proceed') : console.log("heloo")}>
                             <Text style={[styles.continueText, { color: ButtonSP ? COLORS.colorBackground : '#979C9E' }]}>Continue</Text>
                         </TouchableOpacity>
                     </View>}

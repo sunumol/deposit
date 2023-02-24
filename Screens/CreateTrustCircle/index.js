@@ -178,8 +178,8 @@ const CreateTrustCircle = ({ navigation }) => {
 
                 <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                     <TouchableOpacity style={[styles.Button1,
-                    { backgroundColor: members.length === 4 ? COLORS.colorB : '#ECEBED' }]} onPress={() => navigation.navigate('DLESchedule', { set: true })}>
-
+                    { backgroundColor: members.length === 4 ? COLORS.colorB : '#ECEBED' }]} onPress={() =>setModalVisible(true)}>
+{/* //{ set: true } */}
                         <Text style={[styles.text1, { color: members.length === 4 ? COLORS.colorBackground : '#979C9E', paddingLeft: width * 0.02 }]}>Create Trust Circle</Text>
                     </TouchableOpacity>
                 </View>
@@ -194,7 +194,7 @@ const CreateTrustCircle = ({ navigation }) => {
                 setModalVisible={setModalVisible}
                 onPress1={() => {
                     setModalVisible(false)
-                    navigation.navigate('Activities')
+                    navigation.navigate('DLESchedule',{ set: true })
                 }
                 }
             />

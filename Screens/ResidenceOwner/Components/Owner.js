@@ -18,7 +18,7 @@ import Statusbar from '../../../Components/StatusBar';
 import { useFocusEffect } from '@react-navigation/native';
 import Header from '../../../Components/RepayHeader';
 import { FONTS, COLORS } from '../../../Constants/Constants';
-import { CheckBox } from 'react-native-elements/dist/checkbox/CheckBox';
+
 import Icon1 from 'react-native-vector-icons/Entypo'
 import Icon2 from 'react-native-vector-icons/Entypo';
 import Search from 'react-native-vector-icons/Feather';
@@ -28,7 +28,7 @@ const { height, width } = Dimensions.get('screen');
 import OwnerModal from './OwnerModal';
 import RelationModal from './RelationModal';
 import ImagePicker from 'react-native-image-crop-picker';
-
+import Image1 from '../../../assets/Images/cakes.svg';
 
 const DetailChecks = ({ navigation, setState }) => {
 
@@ -130,7 +130,7 @@ const DetailChecks = ({ navigation, setState }) => {
                             <Text style={styles.underText}>Daily wage labourer</Text>
                         </View>
                         <View style={{ flexDirection: 'row', }}>
-                            <Image source={require('../../../assets/image/cake.png')} resizeMode={'contain'} />
+                        <Image1 width={11} height={11} top={3}/>
                             <Text style={styles.dateText}>12/10/1972</Text>
                         </View>
                     </View>
