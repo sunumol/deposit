@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useState,useEffect} from 'react';
 import {
     StatusBar,
     Platform,
@@ -17,6 +17,7 @@ import HeaderDashBoard from '../../Components/HeaderDashBoard';
 import BottomTabs from './Components/BottomTab';
 import ItemTabs from './Components/ItemTab';
 import { useTranslation } from 'react-i18next';
+import { api } from '../../Services/Api';
 
 import Activity from './assets/Activity.svg';
 import Calendar from './assets/Calendar.svg';
@@ -27,6 +28,7 @@ import NewUser from './assets/NewUser.svg';
 
 const Profile = ({ navigation }) => {
     const { t } = useTranslation();
+    const [notificationCount,SetNotificationCount]=useState()
     const isDarkMode = true;
     const DATA = [
         {
@@ -66,6 +68,26 @@ const Profile = ({ navigation }) => {
             notification: true,
         },
     ];
+        // ------------------ HomeScreen Api Call Start ------------------
+        const HomeScreenApiCall = async () => {
+            const data = {
+              "employeeId":1
+            };
+    
+            const res = await api.HomeScreen(data).catch(err => {
+                console.log(err.response);
+            });
+            if (res?.data?.status) {
+                console.log('response Login Api', res.data)
+                SetNotificationCount(res.data.body)
+            } else {
+    
+            }
+        };
+        // ------------------ HomeScreen Api Call End ------------------
+        useEffect(() => {
+            HomeScreenApiCall()
+           }, []);
 
     return (
         <SafeAreaProvider>
