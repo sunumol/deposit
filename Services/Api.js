@@ -1,8 +1,14 @@
-import { axios, constants } from './BASE_URL';
+import axios from 'axios';
+const baseURL = 'http://3.108.93.231:8383/'
 
 export const api = {
-  HomeScreen: data => {
-    return axios.post(`${constants.baseURL}getHomeDetails`,data);
+ 
+  homeScreenApi: data => {
+    return axios.post(`${baseURL}getHomeDetails`,data,{
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
   },
 };
 

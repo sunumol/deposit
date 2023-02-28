@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     StatusBar,
     Platform,
@@ -28,7 +28,7 @@ import NewUser from './assets/NewUser.svg';
 
 const Profile = ({ navigation }) => {
     const { t } = useTranslation();
-    const [notificationCount,SetNotificationCount]=useState()
+    const [notificationCount, SetNotificationCount] = useState()
     const isDarkMode = true;
     const DATA = [
         {
@@ -51,13 +51,13 @@ const Profile = ({ navigation }) => {
         },
         {
             id: '4',
-            title:t('common:NewCGT'),
+            title: t('common:NewCGT'),
             image: <NewUser />,
             notification: false,
         },
         {
             id: '5',
-            title:t('common:NewCall'),
+            title: t('common:NewCall'),
             image: <NewCall />,
             notification: false,
         },
@@ -68,26 +68,25 @@ const Profile = ({ navigation }) => {
             notification: true,
         },
     ];
-        // ------------------ HomeScreen Api Call Start ------------------
-        const HomeScreenApiCall = async () => {
-            const data = {
-              "employeeId":1
-            };
-    
-            const res = await api.HomeScreen(data).catch(err => {
-                console.log(err.response);
-            });
-            if (res?.data?.status) {
-                console.log('response Login Api', res.data)
-                SetNotificationCount(res.data.body)
-            } else {
-    
-            }
+
+    // ------------------ HomeScreen Api Call Start ------------------
+    const HomeScreenApiCall = async () => {
+        const data = {
+            "employeeId": 1
         };
-        // ------------------ HomeScreen Api Call End ------------------
-        useEffect(() => {
-            HomeScreenApiCall()
-           }, []);
+        await api.homeScreenApi(data).then((res) => {
+            console.log('-------------------res', res?.data)
+            SetNotificationCount(res.data.body)
+        })
+            .catch((err) => {
+                console.log('-------------------err', err?.response)
+            })
+    };
+    // ------------------ HomeScreen Api Call End ------------------
+
+    useEffect(() => {
+        HomeScreenApiCall()
+    }, []);
 
     return (
         <SafeAreaProvider>
