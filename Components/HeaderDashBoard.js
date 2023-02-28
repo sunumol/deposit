@@ -13,11 +13,28 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import * as Icon1 from "react-native-unicons";
 const { height, width } = Dimensions.get('screen');
 import { useTranslation } from 'react-i18next';
+import axios from 'axios';
 
 const HeaderDashBoard = ({navigation,notificationCounts}) => {
     const [ModalVisible, setModalVisible] = useState(false)
     const { t } = useTranslation();
-
+    async function LogoutApi() {
+        var url = 'http://3.108.93.231:8383/logout/1'
+        axios.get(url, {
+            headers: {
+                "Content-Type": "application/json",
+            }
+        })
+            .then((res) => {
+                if (res?.status == 200) {
+                    console.log(res)
+                    navigation.navigate('LoginScreen')
+                }
+            })
+            .catch((err) => {
+                console.log('-------------------err', err?.response)
+            })
+    }
     return (
         <View style={styles.Header}>
             <View style={{ marginBottom: 12,left:-15 }}>
@@ -64,7 +81,7 @@ const HeaderDashBoard = ({navigation,notificationCounts}) => {
                                 <Text style={styles.text2}>{t('common:No')}</Text>
                             </TouchableOpacity>
 
-                            <TouchableOpacity style={styles.ButtonContinue} onPress={() => navigation.navigate('LoginScreen')}>
+                            <TouchableOpacity style={styles.ButtonContinue} onPress={LogoutApi}>
                                 <Text style={styles.textC}>{t('common:Yes')}</Text>
                             </TouchableOpacity>
                         </View>
