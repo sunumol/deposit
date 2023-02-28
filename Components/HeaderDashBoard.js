@@ -1,4 +1,4 @@
-import React ,{useState}from 'react';
+import React, { useState } from 'react';
 import {
     Text,
     View,
@@ -13,52 +13,49 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import * as Icon1 from "react-native-unicons";
 const { height, width } = Dimensions.get('screen');
 import { useTranslation } from 'react-i18next';
-import axios from 'axios';
+import { api } from '../Services/Api'
 
-const HeaderDashBoard = ({navigation,notificationCounts}) => {
+const HeaderDashBoard = ({ navigation, notificationCounts }) => {
+    
     const [ModalVisible, setModalVisible] = useState(false)
     const { t } = useTranslation();
+    
     async function LogoutApi() {
-        var url = 'http://3.108.93.231:8383/logout/1'
-        axios.get(url, {
-            headers: {
-                "Content-Type": "application/json",
+        await api.logoutApi().then((res) => {
+            if (res?.status == 200) {
+                console.log(res)
+                navigation.navigate('LoginScreen')
             }
         })
-            .then((res) => {
-                if (res?.status == 200) {
-                    console.log(res)
-                    navigation.navigate('LoginScreen')
-                }
-            })
             .catch((err) => {
                 console.log('-------------------err', err?.response)
             })
     }
+    
     return (
         <View style={styles.Header}>
-            <View style={{ marginBottom: 12,left:-15 }}>
+            <View style={{ marginBottom: 12, left: -15 }}>
                 <Image source={require('../assets/image/logo-white.png')}
                     style={{ width: 160, height: 35 }}
                     resizeMode='contain' />
             </View>
 
-            <View style={{ flexDirection: 'row',left:-8 }}>
-                <TouchableOpacity onPress={()=>navigation.navigate('NotificationScreen')}>
+            <View style={{ flexDirection: 'row', left: -8 }}>
+                <TouchableOpacity onPress={() => navigation.navigate('NotificationScreen')}>
                     <Icon1.Bell color={COLORS.colorBackground} width={25} height={25} />
                     <View style={styles.IconView}>
-                    <Text style={styles.textCount}>{notificationCounts?.notificationCount}</Text>
-                </View>
+                        <Text style={styles.textCount}>{notificationCounts?.notificationCount}</Text>
+                    </View>
                 </TouchableOpacity>
 
-              
+
 
                 <View style={{ marginLeft: 25 }}>
-                    <TouchableOpacity onPress={()=>setModalVisible(true)}>
-                    <Icon name="ios-power"
-                        size={23}
-                        color={COLORS.colorBackground} />
-                        </TouchableOpacity>
+                    <TouchableOpacity onPress={() => setModalVisible(true)}>
+                        <Icon name="ios-power"
+                            size={23}
+                            color={COLORS.colorBackground} />
+                    </TouchableOpacity>
                 </View>
 
 
@@ -75,7 +72,7 @@ const HeaderDashBoard = ({navigation,notificationCounts}) => {
                     <View style={styles.ModalView1}>
                         {/*<Text style={styles.TextDelete}>{t('common:AreS1')} ?</Text>*/}
 
-                        <Text style={[styles.TextDelete1,{textAlign:'center'}]}>{t('common:LogoutMsg')}</Text>
+                        <Text style={[styles.TextDelete1, { textAlign: 'center' }]}>{t('common:LogoutMsg')}</Text>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingTop: 22, paddingBottom: 22 }}>
                             <TouchableOpacity style={[styles.ButtonCancel, { marginRight: 10 }]} onPress={() => setModalVisible(false)}>
                                 <Text style={styles.text2}>{t('common:No')}</Text>
@@ -112,8 +109,8 @@ const styles = StyleSheet.create({
         borderRadius: 7.5,
         alignItems: 'center',
         justifyContent: 'center',
-        position:'absolute',
-        left:10
+        position: 'absolute',
+        left: 10
     },
     textCount: {
         color: COLORS.colorBackground,

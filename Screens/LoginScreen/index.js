@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
     StyleSheet,
     Text,
@@ -6,7 +6,6 @@ import {
     View,
     TouchableOpacity,
     TextInput,
-    Image,
     Platform,
     KeyboardAvoidingView,
     ScrollView,
@@ -18,10 +17,8 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { COLORS, FONTS } from '../../Constants/Constants';
 import Statusbar from '../../Components/StatusBar';
 import OTPInputView from '@twotalltotems/react-native-otp-input';
-import { useFocusEffect } from '@react-navigation/native';
 import AllowModal from '../../Components/AllowModal';
 import { useTranslation } from 'react-i18next';
-import { useRoute } from '@react-navigation/native';
 const { height, width } = Dimensions.get('screen');
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Resend from '../../assets/Images/resend.svg'
@@ -30,19 +27,11 @@ import ToastModal from '../../Components/ToastModal';
 import ValidModal from './Components/ValidModal';
 import OtpModal from './Components/OtpModal';
 
-//import { useSelector, useDispatch, connect } from 'react-redux';
+const LoginScreen = ({ navigation}) => {
 
-const LoginScreen = ({ navigation, routew, props }) => {
-    const route = useRoute();
-    // const token = useSelector((state)=>{  // calling state 
-    //     console.log("staee... home",state.profile)
-    //     return state.profile
-    // })
     const { t } = useTranslation();
-    const [routes, setRoute] = useState()
     const [IsOtp1, setIsOtp1] = useState(false)
     const [IsOtp2, setIsOtp2] = useState(false)
-    const [valid2, setValid2] = useState(true)
     const [valid, setValid] = useState(false)
     const [resend, setResend] = useState(false)
     const [exitApp, setExitApp] = useState(0);
@@ -57,8 +46,6 @@ const LoginScreen = ({ navigation, routew, props }) => {
     const [count, setCount] = useState(1)
     const [button, setButton] = useState(true)
     const [timerCount, setTimer] = useState(30)
-    const [text, setText] = useState('Maximum number of OTPs are exceeded.')
-    const [text1, setText1] = useState('Please try after 30 minutes')
     const [status, setStatus] = useState(false)
     const [valid1, setValid1] = useState(true)
     const [otp, setOtp] = useState(false)
@@ -67,6 +54,7 @@ const LoginScreen = ({ navigation, routew, props }) => {
     useEffect(() => {
         getData()
     }, [])
+   
     useEffect(() => {
         if (!OtpValue) {
             setOtp(false)
@@ -82,7 +70,6 @@ const LoginScreen = ({ navigation, routew, props }) => {
             console.log(e)
         }
     }
-
 
     useEffect(() => {
         if (IsOtp2) {
@@ -101,6 +88,7 @@ const LoginScreen = ({ navigation, routew, props }) => {
             return () => clearInterval(interval)
         }
     }, [IsOtp2]);
+    
     useEffect(() => {
 
         if (timerCount === 0) {
@@ -110,58 +98,6 @@ const LoginScreen = ({ navigation, routew, props }) => {
         //cleanup the interval on complete
 
     }, [timerCount]);
-
-    const backAction = () => {
-
-        if (!ExitStatus) {
-            console.log("route...", timerCount, valid, IsOtp2, IsOtp1, status, ExitStatus)
-            if (IsOtp1 == false && IsOtp2 == false) {
-                if (exitApp === 0) {
-                    setExitApp(exitApp + 1);
-
-                    console.log("exit app Login", IsOtp2, IsOtp1, ExitStatus)
-                    ToastAndroid.show("Press back again to exit.", ToastAndroid.SHORT);
-                }
-                else if (exitApp === 1) {
-                    BackHandler.exitApp();
-                    setExitApp(exitApp + 1);
-                    console.log("exit app else", ExitStatus)
-                }
-            }
-            else if (IsOtp1 == true) {
-                setPhoneNum(null)
-                setIsOtp1(false)
-                setIsOtp2(false)
-                setStatus(false)
-                //setTimeout(30)
-                setValid(false)
-                //setTimer(30)
-                // setStatus(false)
-
-            }
-            else if (IsOtp2 == true) {
-                setPhoneNum(null)
-                setIsOtp1(false)
-                setIsOtp2(false)
-                setStatus(false)
-                //setTimeout(30)
-                setValid(false)
-                //setTimer(30)
-                // setStatus(false)
-
-            }
-            // else if (valid == true) {
-            //     setValid(false)
-            //    setPhoneNum(null)
-            //    setIsOtp1(false)
-            //     // setValid1(false)
-            //     setTimer(null)
-
-            // }
-
-            return false;
-        }
-    };
 
     useEffect(() => {
         const backHandler = BackHandler.addEventListener(
@@ -188,10 +124,7 @@ const LoginScreen = ({ navigation, routew, props }) => {
                 setIsOtp1(false)
                 setIsOtp2(false)
                 setStatus(false)
-                //setTimeout(30)
                 setValid(false)
-                //setTimer(30)
-                // setStatus(false)
 
             }
             else if (IsOtp2 == true) {
@@ -199,19 +132,11 @@ const LoginScreen = ({ navigation, routew, props }) => {
                 setIsOtp1(false)
                 setIsOtp2(false)
                 setStatus(false)
-                //setTimeout(30)
                 setValid(false)
-                //setTimer(30)
-                // setStatus(false)
-
             }
             return true;
 
         }
-    }
-    const resendCheck = () => {
-        setIsOtp2(false)
-        setResend(true)
     }
     const verifyPhone = (Phone) => {
         var reg = /^([0-9])\1{9}$/;
@@ -224,7 +149,6 @@ const LoginScreen = ({ navigation, routew, props }) => {
 
         if (PhoneNum?.length != 10 || PhoneNum == "") {
             setModalVisible1(true)
-            // ToastAndroid.show(t('common:Valid'), ToastAndroid.SHORT);
         } else if (firstDigitStr === '1' || firstDigitStr === '2' || firstDigitStr === '3' || firstDigitStr === '4' || firstDigitStr === '5' || firstDigitStr === '0') {
             setModalVisible1(true)
         } else if (verifyPhone(PhoneNum)) {
@@ -262,7 +186,6 @@ const LoginScreen = ({ navigation, routew, props }) => {
 
     const CountDownResend = () => {
         if (count == 1) {
-            //console.log("click count 0....",count)
             setCount(count + 1)
             console.log("click count 0....", count)
         } else if (count == 2) {
@@ -272,14 +195,10 @@ const LoginScreen = ({ navigation, routew, props }) => {
             setCount(count + 1)
             console.log("click count 2...", count)
         } else if (count == 4) {
-            // ToastAndroid.show("Maximum number of OTPs are exceeded. Please try after 30 minutes", ToastAndroid.SHORT);
             setCount(count + 1)
             setTimer(null)
             setValid(true)
             setValid1(true)
-            // setTimeout(()=>{
-            //     setValid1(true)
-            //   },[1000])
             console.log("click count 2...", count, valid, valid1, timerCount)
         }
 
@@ -290,10 +209,8 @@ const LoginScreen = ({ navigation, routew, props }) => {
             setPhoneNum(num)
             setButton(true)
         } else {
-            // setPhoneNum(null)
             setModalVisible1(true)
             console.log("restricted values", num, PhoneNum)
-            // ToastAndroid.show(t('common:Valid'), ToastAndroid.SHORT);
         }
     }
 
@@ -305,9 +222,7 @@ const LoginScreen = ({ navigation, routew, props }) => {
             setButton(true)
             setValid(false)
             setCount(1)
-            //Put your Data loading function here instead of my loadData()
         });
-
         return unsubscribe;
     }, [navigation]);
 
@@ -335,7 +250,7 @@ const LoginScreen = ({ navigation, routew, props }) => {
                         <View style={[styles.container, { marginTop: Dimensions.get('window').height * 0.05 }]}>
 
                             <Text style={styles.Heading1} onPress={() => {
-                            navigation.navigate('Collect')
+                            navigation.navigate('Profile')
                                 setExitStatus(true)
                             }}>{t('common:Verify')}</Text>
 
@@ -357,19 +272,6 @@ const LoginScreen = ({ navigation, routew, props }) => {
 
                                         OnchangeNumber(num)
                                     }
-                                        // let num1 = Number(num);
-                                        //     const regex = /^([,]?[\s0-10]+)?(\d{3}|[.]?[0-10]+[)])?([-]?[\s]?[0-10])+$/i;
-                                        //     if (regex.test(PhoneNum) === false) {
-
-                                        //         setPhoneNum(num)
-                                        //         console.log("number ",regex.test(PhoneNum))
-                                        //         ToastAndroid.show("Please enter a valid mobile number", ToastAndroid.SHORT);
-                                        //     }
-                                        //     else {
-                                        //         console.log("number ", typeof (num))
-                                        //         setPhoneNum(num)
-                                        //     }
-                                        // }
                                     }
                                     keyboardType="numeric"
 
@@ -420,18 +322,6 @@ const LoginScreen = ({ navigation, routew, props }) => {
                                     <Text style={[styles.textTerms2, { paddingLeft: 5 }]}>ഞാൻ അംഗീകരിക്കുന്നു.</Text>
 
                                 </View>}
-                            {/* // <View style={[styles.viewTerms,{flexDirection:'row'}]}>
-
-                            //         <TouchableOpacity onPress={() => navigation.navigate('Privacy')}>
-
-                            //             <Text style={[styles.textTerms1, { textAlign: 'left', }]}>സ്വകാര്യതാ നയവും</Text>
-                            //             <View style={[styles.ViewLine,{justifyContent:'flex-start',alignItems:'flex-start'}]} />
-
-
-                            //             <Text style={[styles.textTerms2, { textAlign: 'left' }]}>ഞാൻ അംഗീകരിക്കുന്നു.</Text>
-
-                            //         </TouchableOpacity>
-                            //     </View>} */}
 
                             {IsOtp1 ?
                                 <View style={styles.ViewOtp}>
@@ -444,8 +334,6 @@ const LoginScreen = ({ navigation, routew, props }) => {
                                     pinCount={4}
                                     code={OtpValue}
                                     onCodeChanged={otp => setOtpValue(otp)}
-                                    // code={this.state.code} //You can supply this prop or not. The component will be used as a controlled / uncontrolled component respectively.
-                                    // onCodeChanged = {code => { this.setState({code})}}
                                     autoFocusOnLoad={false}
                                     codeInputFieldStyle={{ color: '#090A0A', borderRadius: 8, backgroundColor: '#FCFCFC', borderColor: !otp ? "lightgrey" : "red" }}
                                     placeholderTextColor="black"
@@ -476,12 +364,10 @@ const LoginScreen = ({ navigation, routew, props }) => {
                             {IsOtp2 && timerCount === 0 ?
                                 <TouchableOpacity onPress={() => CountDownResend()} style={{ padding: 18 }}>
                                     <View style={{ flexDirection: 'row', }}>
-                                        {/* <Icon name="reload1" size={20} style={{transform:lang == "en" ? [{ rotateY: '360deg' }] : [{ rotateX: '180deg' }]}} /> */}
                                         <Resend style={{ width: 9, height: 11, top: 3, marginRight: 6, }} resizeMode="contain" />
 
                                         <TouchableOpacity onPress={() => CountDownResend()}>
                                             <Text style={styles.TextResend1} onPress={() => CountDownResend()
-                                                //navigation.navigate('Permission')
                                             } >{t('common:Resend1')}</Text></TouchableOpacity>
                                     </View>
                                 </TouchableOpacity> : timerCount == null && valid && valid1 ?
