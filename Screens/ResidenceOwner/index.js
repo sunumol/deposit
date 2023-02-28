@@ -48,7 +48,7 @@ const ResidenceOwner = ({ navigation, }) => {
 
     const handleGoBack = useCallback(() => {
 
-        navigation.navigate('NewCgt')
+        navigation.goBack()
 
         return true; // Returning true from onBackPress denotes that we have handled the event
     }, [navigation]);
@@ -66,7 +66,7 @@ const ResidenceOwner = ({ navigation, }) => {
             <SafeAreaView style={styles.container1} />
             <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
 
-            <Header name="Current Residence Owner" navigation={navigation} />
+            <Header name="Current Residence Owner" navigation={navigation} setState={state} />
 
             <View style={styles.ViewContent}>
                 <Owner navigation={navigation} setState={setState}  />

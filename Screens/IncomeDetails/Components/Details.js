@@ -23,8 +23,8 @@ import CreditModal from './CreditModal';
 
 const { height, width } = Dimensions.get('screen');
 
-const Details = ({ navigation,setStatusChange}) => {
-    console.log("stateChange.....",setStatusChange)
+const Details = ({ navigation,setStatusChange,setStatusChange2}) => {
+    console.log("stateChange details.....",setStatusChange2)
     const [Amount, setAmount] = useState('')
     const [ModalVisible, setModalVisible] = useState(false)
     const [Purpose, setPurpose] = useState('')
@@ -35,20 +35,32 @@ const Details = ({ navigation,setStatusChange}) => {
     const [MonthsCustom, setMonthCustom] = useState('')
     const [Credit, setCredit] = useState('')
     const [Salary, setSalary] = useState('')
-    const [StateChange1, setStateChange1] = useState(false)
+    const [StateChange1, setStateChange1] = useState(setStatusChange2)
     const [ButtonSP, setButtonSP] = useState(false)
+    const [focus,setFocus] =  useState(true)
 
     useEffect(()=>{
-       // setStatusChange(StateChange1)
+        console.log("status change",setStatusChange)
+        setStatusChange(StateChange1)
+        console.log("updated state",StateChange1)
+       //setStateChange1(setStatusChange2)
     },[StateChange1])
+
+    useEffect(()=>{
+        if(setStatusChange2 === false){
+            setStateChange1(false)
+        }
+    },[])
 
     const ButtonClick = () => {
     
         if (Amount !== '' && Avg !== '' && Month !== '') {
             setStateChange1(true)
+           // setStatusChange(true)
 
         } else {
             setStateChange1(false)
+           // setStatusChange(false)
         }
     }
 
@@ -154,6 +166,7 @@ const Details = ({ navigation,setStatusChange}) => {
                                 <TextInput
                                     style={[{ fontSize: 14, color: '#1A051D', fontFamily: FONTS.FontRegular, left: 5 }]}
                                     value={MonthsCustom}
+                                    onFocus={()=>setFocus(true)}
                                     keyboardType={'number-pad'}
                                     //label={'₹'}
                                     onChangeText={(text) => setMonthCustom(text)} />

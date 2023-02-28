@@ -10,12 +10,17 @@ import { useTranslation } from 'react-i18next';
 import { COLORS, FONTS } from '../Constants/Constants';
 import Icon from 'react-native-vector-icons/AntDesign';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-const Header = ({ name, navigation }) => {
+const Header = ({ name, navigation,setStatusChange,setStatusChange1 }) => {
+    console.log("setState header.....",setStatusChange)
     const [lang, setLang] = useState('')
     const { t } = useTranslation();
     useEffect(() => {
         getData()
-    }, [])
+        if(setStatusChange === true){
+            setStatusChange1(false)
+        }
+       
+    }, [setStatusChange])
 
     const getData = async () => {
         try {
@@ -29,7 +34,7 @@ const Header = ({ name, navigation }) => {
     return (
         <View style={styles.Header}>
             <View style={{ left: 15, alignItems: 'center', justifyContent: 'center', top: -3 }}>
-                <TouchableOpacity onPress={() => name =='Activities'?navigation.navigate('NewCgt'):navigation.goBack()} style={{ padding: 0 }}>
+                <TouchableOpacity onPress={() => name =='Activities'?navigation.navigate('NewCgt'):!setStatusChange ? navigation.goBack() : setStatusChange1(false)} style={{ padding: 0 }}>
                     <Icon size={17} color={"white"} name="left" />
                 </TouchableOpacity>
             </View>

@@ -23,7 +23,10 @@ import Icon1 from 'react-native-vector-icons/Entypo'
 import Purpose from '../../SelectCustomCall/Components/Purpose';
 const { height, width } = Dimensions.get('screen');
 import OwnerModal from './OwnerModal';
+import Image1 from '../../../assets/Images/cakes.svg';
 const Vehicle = ({ navigation }) => {
+
+
 
     useEffect(() => {
         const willFocusSubscription = navigation.addListener('focus', () => {
@@ -206,7 +209,7 @@ const Vehicle = ({ navigation }) => {
 
 
                                 <View style={{ flexDirection: 'row', }}>
-                                    <Image source={require('../../../assets/image/cake.png')} resizeMode={'contain'} />
+                                <Image1 width={11} height={11} top={3}/>
                                     <Text style={styles.dateText}>12/10/1972</Text>
                                 </View>
 

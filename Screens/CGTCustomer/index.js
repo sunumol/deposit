@@ -205,6 +205,11 @@ const CgtCustomer = ({ navigation }) => {
                     setModalVisible(!ModalVisible)
                     setButtonStatus(true)
                 }}
+                onPressClose={()=>{
+                    setModalVisible(!ModalVisible)
+       
+     
+                }}
                 setModalVisible={setModalVisible}
             />
 
@@ -215,6 +220,7 @@ const CgtCustomer = ({ navigation }) => {
                     setModalReason(!ModalReason)
                     navigation.navigate('Profile')
                 }}
+              
                 setModalVisible={setModalError}
             />
 

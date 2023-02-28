@@ -21,6 +21,7 @@ const ItemTabs = (props) => {
 
     useEffect(() => {
         getData()
+
     }, [])
 
     const getData = async () => {
@@ -40,12 +41,12 @@ const ItemTabs = (props) => {
 
                 } else if (props.index === 2) {
                     props.navigation.navigate('NewLead')
-                }else if (props.index === 4) {
+                } else if (props.index === 4) {
                     //setModalVisible(true)
                     props.navigation.navigate('NewCall')
-                }else if (props.index === 3) {
+                } else if (props.index === 3) {
                     props.navigation.navigate('NewCgt')
-                  
+
                 }
 
 
@@ -53,11 +54,14 @@ const ItemTabs = (props) => {
             }}>
                 {props.image}
                 <Text style={styles.titleText}>{props.title}</Text>
+
                 {props.notification
                     ? <View style={styles.badgeView}>
-                        <Text style={styles.badgeText}>4</Text>
+                        {props.index === 0 ?
+                            <Text style={[styles.badgeText,{color:'white'}]}>{props?.notificationCounts?.activityCount}</Text> : props.index === 5 ?
+                                <Text style={[styles.badgeText,{color:'white'}]}>{props?.notificationCounts?.collectCount}</Text> : null}
                     </View> : null}
-
+                {console.log("pros pass", props.notificationCounts)}
             </TouchableOpacity>
 
             <CallModal ModalVisible={ModalVisible}

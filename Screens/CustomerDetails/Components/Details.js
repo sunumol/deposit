@@ -22,6 +22,7 @@ import { CheckBox } from 'react-native-elements/dist/checkbox/CheckBox';
 import Icon1 from 'react-native-vector-icons/Ionicons'
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 import Search from 'react-native-vector-icons/Feather';
+import Image1 from '../../../assets/Images/cakes.svg';
 
 const { height, width } = Dimensions.get('screen');
 
@@ -113,7 +114,7 @@ const Details = ({ navigation }) => {
                                 <Text style={styles.underText}>Daily wage labourer</Text>
                             </View>
                             <View style={{ flexDirection: 'row', }}>
-                                <Image source={require('../../../assets/image/cake.png')} resizeMode={'contain'} />
+                            <Image1 width={11} height={11} top={3}/>
                                 <Text style={styles.dateText}>12/10/1972</Text>
                             </View>
                         </View>

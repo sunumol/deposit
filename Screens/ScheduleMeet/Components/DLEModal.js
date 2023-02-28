@@ -53,7 +53,7 @@ const DLEModal = ({ ModalVisible, onPressOut, setModalVisible,onPress,navigation
                 
 
                     <TouchableOpacity style={styles.buttonStyle} onPress={()=>{onPressOut()
-                    navigation.navigate('DLESchedule')
+                    navigation.navigate('DLESchedule',{set:true})
                   }}>
                         <Text style={styles.buttonTextStyle}>{t('common:Okay')}</Text>
                     </TouchableOpacity>

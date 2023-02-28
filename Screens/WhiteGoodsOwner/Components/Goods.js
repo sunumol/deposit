@@ -147,7 +147,7 @@ const Goods = ({ navigation }) => {
 
                 <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                     <TouchableOpacity style={[styles.buttonView, { backgroundColor:Image1 == ''? 'rgba(224, 224, 224, 1)':COLORS.colorB }]} 
-                    onPress={()=>!Image1 ?  navigation.navigate('EnergyUtility'):console.log('helo')}>
+                    onPress={()=>Image1 ?  navigation.navigate('EnergyUtility'):console.log('helo')}>
                         <Text style={[styles.continueText, { color: Image1 == ''? 'rgba(151, 156, 158, 1)': COLORS.colorBackground }]}>Continue</Text>
                     </TouchableOpacity>
                 </View>

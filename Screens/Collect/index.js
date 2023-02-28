@@ -14,10 +14,12 @@ import { FONTS, COLORS } from '../../Constants/Constants';
 import HeaderDashBoard from '../../Components/RepayHeader';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import AllTab from './Components/AllTab';
-import MeetTab from './Components/MeetTab';
+
+
 
 import { useFocusEffect } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
+import CompleteTab from './Components/components/Complete';
 
 const Collect = ({ navigation }) => {
     const isDarkMode = true;
@@ -55,7 +57,7 @@ const Collect = ({ navigation }) => {
                 
               }}>
                 <Tab.Screen name={'pending'} component={AllTab} navigation={navigation} />
-                <Tab.Screen name={'completed'} component={MeetTab} />
+                <Tab.Screen name={'completed'} component={CompleteTab} />
                
             </Tab.Navigator>
 

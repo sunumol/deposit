@@ -158,7 +158,8 @@ const DLE = ({ navigation, set }) => {
                                 <View style={{ flexDirection: 'column', top: 0, alignItems: 'flex-end', flex: 1, paddingRight: width * 0.04 }}>
 
                                     <Text style={[styles.numText, {}]}>{item.number}</Text>
-                                    <TouchableOpacity onPress={() => { item.id === 5 ? setModalVisible1(true) : setStatus(!status) }}
+                                    <TouchableOpacity onPress={() => {navigation.navigate('ScheduleMeet')}}
+                                        // item.id === 5 ? setModalVisible1(true) : setStatus(!status) }}
                                         style={[styles.ViewExplain, { right: 0, backgroundColor: item.backgroundColor, width: item.width }]}>
                                         <Text style={[styles.explainText, { color: item.color1 }]}>{item.Status}</Text>
                                     </TouchableOpacity>
@@ -191,6 +192,7 @@ const DLE = ({ navigation, set }) => {
                 setModalVisible={setModalVisible1}
                 onPressOut={() => {
                     setModalVisible1(false)
+                    
                 }}
                 navigation={navigation} />
         </View>

@@ -68,7 +68,6 @@ const Profile = ({ navigation }) => {
             notification: true,
         },
     ];
-
     // ------------------ HomeScreen Api Call Start ------------------
     const HomeScreenApiCall = async () => {
         const data = {
@@ -76,7 +75,7 @@ const Profile = ({ navigation }) => {
         };
         await api.homeScreenApi(data).then((res) => {
             console.log('-------------------res', res?.data)
-            SetNotificationCount(res.data.body)
+            SetNotificationCount(res?.data?.body)
         })
             .catch((err) => {
                 console.log('-------------------err', err?.response)
@@ -93,7 +92,7 @@ const Profile = ({ navigation }) => {
             <SafeAreaView style={styles.container1} />
             <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} backgroundColor={"#002B59"} />
 
-            <HeaderDashBoard navigation={navigation} />
+            <HeaderDashBoard navigation={navigation} notificationCounts={notificationCount}  />
 
             <View style={styles.container2}>
                 <ScrollView showsVerticalScrollIndicator={false}>
@@ -106,18 +105,20 @@ const Profile = ({ navigation }) => {
                                 id={item.id}
                                 title={item.title}
                                 image={item.image}
+                                notificationCounts={notificationCount}
                                 notification={item.notification}
                                 navigation={navigation} />}
                         keyExtractor={item => item.id}
                         horizontal={false}
                         numColumns={2}
+                      
                         columnWrapperStyle={{ justifyContent: 'space-between' }}
                         contentContainerStyle={{ padding: 20, }}
                     />
-                    <Text style={{ color: 'black', textAlign: 'center' }} onPress={() => {
+                    {/* <Text style={{ color: 'black', textAlign: 'center' }} onPress={() => {
                         navigation.navigate('PinScreen')
 
-                    }}>Existing UserFlow</Text>
+                    }}>Existing UserFlow</Text> */}
 
                 </ScrollView>
             </View>
