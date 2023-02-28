@@ -13,10 +13,10 @@ const { height, width } = Dimensions.get('screen');
 import { useTranslation } from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import DropTab from '../Components/components/dropTab'
+import CustomDetails from './components/CustomDetails';
 import Image1 from '../Images/IMG2.svg';
-import Image2 from '../Images/IMG2.svg';
-import Image3 from '../Images/IMG3.svg';
+import Image2 from '../Images/IMG3.svg';
+import Image3 from '../Images/IMG4.svg';
 
 const ItemTabs = ({ navigation }) => {
     const { t } = useTranslation();
@@ -108,14 +108,45 @@ const ItemTabs = ({ navigation }) => {
         }
     }
     return (
-        <View style={{ flex: 1, backgroundColor: COLORS.colorBackground, alignItems: 'center', justifyContent: 'center' }}>
+        <View style={{ flex: 1, backgroundColor: COLORS.colorBackground, alignItems: 'center', justifyContent: 'center', }}>
             <ScrollView showsVerticalScrollIndicator={false}>
 
                 <View style={styles.ViewCard}>
-                <View style={styles.Card1}>
-                    <Image1 />
-                </View>
-                </View>
+                    <View style={{ flexDirection: 'column', }}>
+                        <View style={{ flexDirection: 'row',paddingLeft:width*0.05,marginTop:width*0.05 }}>
+                            <View style={styles.Card1}>
+                                <Image1 width={20} height={20}/>
+                            </View>
+
+                            <View style={{ flexDirection: 'column',paddingLeft:width*0.03 }}>
+                                <Text style={styles.TextCust}>Customers Due</Text>
+                                <Text style={styles.NumText}>05</Text>
+                            </View>
+                        </View>
+
+                        <View style={{ flexDirection: 'row' ,paddingLeft:width*0.05,marginTop:width*0.04 }}>
+                            <View style={styles.Card1}>
+                                <Image2  width={20} height={20} />
+                            </View>
+                            <View style={{ flexDirection: 'column',paddingLeft:width*0.03  }}>
+                                <Text style={styles.TextCust}>Amount Due</Text>
+                                <Text style={styles.AmtText}>₹48,224</Text>
+                            </View>
+                        </View>
+                        </View>
+
+                        <View style={{ flexDirection: 'row' ,paddingLeft:width*0.09,marginTop:width*0.05  }}>
+                        <View style={styles.Card1}>
+                            <Image3  width={20} height={20}/>
+                        </View>
+                        <View style={{ flexDirection: 'column' ,paddingLeft:width*0.03 }}>
+                            <Text style={styles.TextCust}>Loans Due</Text>
+                            <Text style={styles.NumText}>06</Text>
+                        </View>
+                    </View>
+                    </View>
+            
+            <CustomDetails />
 
             </ScrollView>
         </View>
@@ -125,25 +156,41 @@ const ItemTabs = ({ navigation }) => {
 const styles = StyleSheet.create({
     ViewCard: {
         width: width * 0.90,
-        height: width * 0.28,
-        backgroundColor:COLORS.colorBackground,
+        height: width * 0.35,
+        backgroundColor: COLORS.colorBackground,
         elevation: 2,
-        alignItems: 'center',
-        justifyContent: 'center',
+        // alignItems: 'center',
+        flexDirection: 'row',
+       // justifyContent: 'center',
         borderRadius: 15,
         shadowColor: '#000000',
         marginTop: 20,
-        marginLeft:10,
-        marginRight:10,
-        marginBottom:10
+        marginLeft: 10,
+        marginRight: 10,
+        marginBottom: 10
     },
-    Card1:{
-        backgroundColor:'rgba(242, 153, 74, 0.1)',
-        width:50,
-        height:50,
-        borderRadius:25,
-        alignItems:'center',
-        justifyContent:'center'
+    Card1: {
+        backgroundColor: 'rgba(242, 153, 74, 0.1)',
+        width: 40,
+        height: 40,
+        borderRadius: 20,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    TextCust: {
+        fontFamily: FONTS.FontRegular,
+        fontSize: 12,
+        color: 'rgba(128, 128, 128, 1)'
+    },
+    NumText: {
+        color: COLORS.colorDark,
+        fontSize: 12,
+        fontFamily: FONTS.FontMedium
+    },
+    AmtText: {
+        color: 'rgba(234, 64, 71, 1)',
+        fontSize: 11,
+        fontFamily: FONTS.FontSemiB
     }
 })
 export default ItemTabs;

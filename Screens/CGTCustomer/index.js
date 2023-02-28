@@ -207,6 +207,8 @@ const CgtCustomer = ({ navigation }) => {
                 }}
                 onPressClose={()=>{
                     setModalVisible(!ModalVisible)
+       
+     
                 }}
                 setModalVisible={setModalVisible}
             />

@@ -50,7 +50,7 @@ const RejectModal = ({ ModalVisible, onPressOut, onPress1, setModalVisible,onPre
                         <Text style={styles.textdesc}>details of the Customer</Text>
                     </View>
 
-                    <TouchableOpacity style={styles.buttonStyle} onPress={onPressClose}>
+                    <TouchableOpacity style={styles.buttonStyle} onPress={onPressOut}>
                         <Text style={styles.buttonTextStyle}>{t('common:Okay')}</Text>
                     </TouchableOpacity>
               

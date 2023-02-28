@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     StatusBar,
     Platform,
@@ -17,6 +17,7 @@ import HeaderDashBoard from '../../Components/HeaderDashBoard';
 import BottomTabs from './Components/BottomTab';
 import ItemTabs from './Components/ItemTab';
 import { useTranslation } from 'react-i18next';
+import { api } from '../../Services/Api';
 
 import Activity from './assets/Activity.svg';
 import Calendar from './assets/Calendar.svg';
@@ -27,6 +28,7 @@ import NewUser from './assets/NewUser.svg';
 
 const Profile = ({ navigation }) => {
     const { t } = useTranslation();
+    const [notificationCount, SetNotificationCount] = useState('')
     const isDarkMode = true;
     const DATA = [
         {
@@ -49,13 +51,13 @@ const Profile = ({ navigation }) => {
         },
         {
             id: '4',
-            title:t('common:NewCGT'),
+            title: t('common:NewCGT'),
             image: <NewUser />,
             notification: false,
         },
         {
             id: '5',
-            title:t('common:NewCall'),
+            title: t('common:NewCall'),
             image: <NewCall />,
             notification: false,
         },
@@ -66,13 +68,33 @@ const Profile = ({ navigation }) => {
             notification: true,
         },
     ];
+    // ------------------ HomeScreen Api Call Start ------------------
+    const HomeScreenApiCall = async () => {
+        const data = {
+            "employeeId": 1
+        };
+
+        const res = await api.HomeScreen(data).catch(err => {
+            console.log(err.response);
+        });
+        if (res) {
+            console.log('response Login Api', res.data.body.activityCount)
+            SetNotificationCount(res?.data?.body)
+        } else {
+            console.log('response Login Api else', res)
+        }
+    };
+    // ------------------ HomeScreen Api Call End ------------------
+    useEffect(() => {
+        HomeScreenApiCall()
+    }, []);
 
     return (
         <SafeAreaProvider>
             <SafeAreaView style={styles.container1} />
             <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} backgroundColor={"#002B59"} />
 
-            <HeaderDashBoard navigation={navigation} />
+            <HeaderDashBoard navigation={navigation} notificationCounts={notificationCount}  />
 
             <View style={styles.container2}>
                 <ScrollView showsVerticalScrollIndicator={false}>
@@ -85,18 +107,20 @@ const Profile = ({ navigation }) => {
                                 id={item.id}
                                 title={item.title}
                                 image={item.image}
+                                notificationCounts={notificationCount}
                                 notification={item.notification}
                                 navigation={navigation} />}
                         keyExtractor={item => item.id}
                         horizontal={false}
                         numColumns={2}
+                      
                         columnWrapperStyle={{ justifyContent: 'space-between' }}
                         contentContainerStyle={{ padding: 20, }}
                     />
-                    <Text style={{ color: 'black', textAlign: 'center' }} onPress={() => {
+                    {/* <Text style={{ color: 'black', textAlign: 'center' }} onPress={() => {
                         navigation.navigate('PinScreen')
 
-                    }}>Existing UserFlow</Text>
+                    }}>Existing UserFlow</Text> */}
 
                 </ScrollView>
             </View>

@@ -37,6 +37,7 @@ const Details = ({ navigation,setStatusChange,setStatusChange2}) => {
     const [Salary, setSalary] = useState('')
     const [StateChange1, setStateChange1] = useState(setStatusChange2)
     const [ButtonSP, setButtonSP] = useState(false)
+    const [focus,setFocus] =  useState(true)
 
     useEffect(()=>{
         console.log("status change",setStatusChange)
@@ -165,6 +166,7 @@ const Details = ({ navigation,setStatusChange,setStatusChange2}) => {
                                 <TextInput
                                     style={[{ fontSize: 14, color: '#1A051D', fontFamily: FONTS.FontRegular, left: 5 }]}
                                     value={MonthsCustom}
+                                    onFocus={()=>setFocus(true)}
                                     keyboardType={'number-pad'}
                                     //label={'₹'}
                                     onChangeText={(text) => setMonthCustom(text)} />

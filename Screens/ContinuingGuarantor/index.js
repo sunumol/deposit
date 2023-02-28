@@ -26,7 +26,7 @@ const ContinuingGuarantor = ({ navigation }) => {
 
 
   useEffect(() => {
-    if (number?.length == 10) {
+    if (number) {
       let interval = setInterval(() => {
         setTimer(lastTimerCount => {
           lastTimerCount <= 1 && clearInterval(interval)
@@ -41,7 +41,7 @@ const ContinuingGuarantor = ({ navigation }) => {
       //cleanup the interval on complete
       return () => clearInterval(interval)
     }
-  }, []);
+  }, [number]);
 
 
 

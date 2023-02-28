@@ -192,6 +192,7 @@ const DLE = ({ navigation, set }) => {
                 setModalVisible={setModalVisible1}
                 onPressOut={() => {
                     setModalVisible1(false)
+                    
                 }}
                 navigation={navigation} />
         </View>

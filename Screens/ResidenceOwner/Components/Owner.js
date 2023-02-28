@@ -28,7 +28,7 @@ const { height, width } = Dimensions.get('screen');
 import OwnerModal from './OwnerModal';
 import RelationModal from './RelationModal';
 import ImagePicker from 'react-native-image-crop-picker';
-import Image1 from '../../../assets/Images/cakes.svg';
+import Image2 from '../../../assets/Images/cakes.svg'
 
 const DetailChecks = ({ navigation, setState }) => {
 
@@ -43,18 +43,22 @@ const DetailChecks = ({ navigation, setState }) => {
     const [checked, setChecked] = useState(false);
     const toggleCheckbox = () => setChecked(!checked);
     const [Purpose, setPurpose] = useState(null)
+    const [Purposes, setPurposes] = useState(null)
     const [imageStatus, setImageStatus] = useState(false)
-    const [Relation, setRelation] = useState(null)
+    const [Relation, setRelation] = useState('')
     const [Image1, setImage] = useState('')
+    const [status,setStatus] =  useState(false)
     const [UploadStatus, setUploadStatus] = useState(false)
     const [NameStatus,setNamestatus] = useState(false)
     useEffect(() => {
 
-        console.log("purpose print....", Purpose, Relation,UploadStatus)
+        console.log("purpose print....", Purposes)
         setState(Purpose)
         setPurpose(Purpose)
+        setPurposes(Purposes)
         setRelation(Relation)
-    }, [Purpose])
+        //setStatus(true)
+    }, [Purpose,Relation])
 
     const UploadImage = () => {
 
@@ -114,34 +118,37 @@ const DetailChecks = ({ navigation, setState }) => {
                     <Text style={styles.proof}>Relationship with Customer</Text>
                 </View>
                 <TouchableOpacity style={styles.SelectBox} onPress={() => setModalVisible1(true)} >
-                {!Relation ? <Text style={styles.textSelect}>Select</Text> :
-                        <Text style={[styles.textSelect],{color:'#1A051D',marginLeft:8}}>{Relation}</Text>}
+                {Purposes === null ? <Text style={styles.textSelect}>Select</Text> :
+                        <Text style={[styles.textSelect],{color:'#1A051D',marginLeft:8}}>{Purposes}</Text>}
                     <Icon1 name="chevron-down" size={18} color={'#808080'} style={{ marginRight: 10 }} />
                 </TouchableOpacity>
 
-                        {Relation ? 
-                <View style={styles.containerBox}>
-                    <View style={{ flex: 1, flexDirection: 'row' }}>
-                        <View style={styles.circleView}>
+
+              {Purposes !== null ?
+              <View style={styles.containerBox}>
+                     <View style={{ flex: 1, flexDirection: 'row' }}>
+                     <View style={styles.circleView}>
                             <Text style={styles.shortText}>AK</Text>
                         </View>
+
                         <View style={{ flexDirection: 'column', flex: 1, marginLeft: 12 }}>
                             <Text style={styles.nameText}>Anil Kumar</Text>
                             <Text style={styles.underText}>Daily wage labourer</Text>
                         </View>
                         <View style={{ flexDirection: 'row', }}>
-                        <Image1 width={11} height={11} top={3}/>
+                        <Image2 width={11} height={11} top={3}/>
                             <Text style={styles.dateText}>12/10/1972</Text>
                         </View>
-                    </View>
-                </View>:null}
+                        </View>
+              </View>:null}
+                        
             </ScrollView>
 
             <View style={{ position: 'absolute', left: 0, right: 0, bottom: 0, alignItems: 'center', justifyContent: 'center' }}>
-                <TouchableOpacity onPress={()=>Relation ? navigation.navigate('ContinuingGuarantor'):console.log("helo")}
-                style={[styles.Button1, { backgroundColor: Relation ? COLORS.colorB : 'rgba(224, 224, 224, 1)' }]}
+                <TouchableOpacity onPress={()=>Purposes !== '' ? navigation.navigate('ContinuingGuarantor'):console.log("helo")}
+                style={[styles.Button1, { backgroundColor:Purposes !== '' ? COLORS.colorB : 'rgba(224, 224, 224, 1)' }]}
                 >
-                    <Text style={[styles.text1, { color: Relation ? COLORS.colorBackground : '#979C9E' }]}>Continue</Text>
+                    <Text style={[styles.text1, { color:Purposes !== '' ? COLORS.colorBackground : '#979C9E' }]}>Continue</Text>
                 </TouchableOpacity>
             </View>
             <OwnerModal
@@ -157,8 +164,9 @@ const DetailChecks = ({ navigation, setState }) => {
             />
             <RelationModal
                 visible={ModalVisible1}
-                setRelaton={setRelation}
+                setRelation={setRelation} setPurposes={setPurposes}
                 setModalVisible={setModalVisible1}
+                setStatus={setStatus}
                 onPressOut={() => setModalVisible1(!ModalVisible1)}
             // navigation={navigation}
 

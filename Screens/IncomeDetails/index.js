@@ -66,7 +66,7 @@ console.log("statecha nge.....",StateChange1)
 
     const handleGoBack = useCallback(() => {
 
-        navigation.navigate('NewCgt')
+        navigation.goBack()
 
         return true; // Returning true from onBackPress denotes that we have handled the event
     }, [navigation]);

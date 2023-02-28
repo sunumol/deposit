@@ -1,11 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Dimensions, Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { COLORS, FONTS } from '../../../Constants/Constants';
 import { useTranslation } from 'react-i18next';
 
-const RelationModal = ({ visible, onPressOut,setModalVisible,setRelaton}) => {
+const RelationModal = ({ visible, onPressOut,setModalVisible,setRelation,setPurposes,setStatus}) => {
     const { t } = useTranslation();
+    console.log("setRelation....",setRelation)
+
+
     return (
 
         <Modal
@@ -24,7 +27,9 @@ const RelationModal = ({ visible, onPressOut,setModalVisible,setRelaton}) => {
                         <Text style={styles.modalTextHead}>Select Relation</Text>
                         <TouchableOpacity style={styles.textTouch}
                             onPress={() => {
-                                setRelaton('Self')
+                               // setRelation("Self")
+                              // setStatus(true)
+                                setPurposes('Self')
                                 setModalVisible(!visible)
                             }
                             }>
@@ -39,7 +44,7 @@ const RelationModal = ({ visible, onPressOut,setModalVisible,setRelaton}) => {
                         </TouchableOpacity >
                         <View style={styles.lineView} />
                         <TouchableOpacity style={styles.textTouch} onPress={() => {
-                            setRelaton("Children")
+                            setPurposes("Children")
                             setModalVisible(!visible)
                         }
                         }>
@@ -54,7 +59,7 @@ const RelationModal = ({ visible, onPressOut,setModalVisible,setRelaton}) => {
                         </TouchableOpacity>
                         <View style={styles.lineView} />
                         <TouchableOpacity style={styles.textTouch} onPress={() => {
-                             setRelaton('Parents')
+                            setPurposes("Parents")
                             setModalVisible(!visible)
                         }
                         }>
@@ -71,7 +76,7 @@ const RelationModal = ({ visible, onPressOut,setModalVisible,setRelaton}) => {
                   
                         <View style={styles.lineView} />
                         <TouchableOpacity style={styles.textTouch} onPress={() => {
-                             setRelaton('Parents in Law')
+                             setPurposes('Parents in Law')
                             setModalVisible(!visible)
                         }
                         }>

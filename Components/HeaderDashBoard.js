@@ -14,7 +14,7 @@ import * as Icon1 from "react-native-unicons";
 const { height, width } = Dimensions.get('screen');
 import { useTranslation } from 'react-i18next';
 
-const HeaderDashBoard = ({navigation}) => {
+const HeaderDashBoard = ({navigation,notificationCounts}) => {
     const [ModalVisible, setModalVisible] = useState(false)
     const { t } = useTranslation();
 
@@ -30,7 +30,7 @@ const HeaderDashBoard = ({navigation}) => {
                 <TouchableOpacity onPress={()=>navigation.navigate('NotificationScreen')}>
                     <Icon1.Bell color={COLORS.colorBackground} width={25} height={25} />
                     <View style={styles.IconView}>
-                    <Text style={styles.textCount}>2</Text>
+                    <Text style={styles.textCount}>{notificationCounts?.notificationCount}</Text>
                 </View>
                 </TouchableOpacity>
 

@@ -48,7 +48,7 @@ const ResidenceOwner = ({ navigation, }) => {
 
     const handleGoBack = useCallback(() => {
 
-        navigation.navigate('NewCgt')
+        navigation.goBack()
 
         return true; // Returning true from onBackPress denotes that we have handled the event
     }, [navigation]);
