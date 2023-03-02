@@ -119,7 +119,7 @@ const ItemTabs = ({ navigation }) => {
                             </View>
 
                             <View style={{ flexDirection: 'column',paddingLeft:width*0.03 }}>
-                                <Text style={styles.TextCust}>Customers Due</Text>
+                                <Text style={styles.TextCust}>{t('common:CustomDue')}</Text>
                                 <Text style={styles.NumText}>05</Text>
                             </View>
                         </View>

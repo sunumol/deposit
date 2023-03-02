@@ -28,8 +28,8 @@ import Image1 from '../../Images/greenCash.svg';
 
 const ComCard = ({ navigation }) => {
     const route = useRoute();
-
-
+    const [Lang,setLang] = useState('')
+    const { t } = useTranslation();
 
 
     useEffect(() => {

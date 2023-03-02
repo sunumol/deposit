@@ -9,19 +9,16 @@ import {
     BackHandler
 } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import Statusbar from '../../Components/StatusBar';
-import { FONTS, COLORS } from '../../Constants/Constants';
-import HeaderDashBoard from '../../Components/RepayHeader';
+import Statusbar from '../../../Components/StatusBar';
+import { FONTS, COLORS } from '../../../Constants/Constants';
+import HeaderDashBoard from '../../../Components/RepayHeader';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import AllTab from './Components/AllTab';
-
-
-
+import Trend from './Trend';
+import History from './History';
 import { useFocusEffect } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
-import CompleteTab from './Components/components/Complete';
 
-const Collect = ({ navigation }) => {
+const DetailTab = ({ navigation }) => {
     const isDarkMode = true;
     const Tab = createMaterialTopTabNavigator();
     const { t } = useTranslation();
@@ -40,28 +37,26 @@ const Collect = ({ navigation }) => {
         }, [handleGoBack]),
       );
     return (
-        <SafeAreaProvider>
-            <SafeAreaView style={styles.container1} />
-            <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} backgroundColor={"#002B59"} />
 
-            <HeaderDashBoard navigation={navigation} name={t('common:Collect')} />
+      
+
 
 
             <Tab.Navigator
              screenOptions={{
-                tabBarLabelStyle: { focused: true,fontSize: 14,fontFamily:FONTS.FontSemiB},
-                tabBarStyle: { backgroundColor: COLORS.colorB },
-                tabBarIndicatorStyle:{backgroundColor:"#A5AFFB",height:5},
-                tabBarInactiveTintColor:'#D0C9D6',
-                tabBarActiveTintColor: COLORS.colorBackground ,
+                tabBarLabelStyle: { focused: true,fontSize: 13.5,fontFamily:FONTS.FontSemiB},
+                tabBarStyle: { backgroundColor: COLORS.colorBackground,elevation:2},
+                tabBarInactiveTintColor:'#BDBDBD',
+                tabBarIndicatorStyle:{backgroundColor:COLORS.colorB,height:5},
+                tabBarActiveTintColor: COLORS.colorDark ,
                 
               }}>
-                <Tab.Screen name={t('common:pending')} component={AllTab} navigation={navigation} />
-                <Tab.Screen name={t('common:completed')} component={CompleteTab} />
+                <Tab.Screen name={'Payment History'} component={History} navigation={navigation} />
+                <Tab.Screen name={'Trend'} component={Trend} />
+             
                
             </Tab.Navigator>
 
-        </SafeAreaProvider>
     );
 }
 
@@ -80,4 +75,4 @@ const styles = StyleSheet.create({
 
 })
 
-export default Collect;
+export default DetailTab;

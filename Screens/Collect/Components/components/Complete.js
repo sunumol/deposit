@@ -31,22 +31,23 @@ import ComCard from './ComCard';
 
 const CompleteTab = ({ navigation }) => {
     const route = useRoute();
+    const [Lang, setLang] = useState('')
     const { t } = useTranslation();
     const [data, setData] = useState([{
         id: 1,
-        title:'Deposit Pending ₹33,000',
-        badge:3,
-        color:'rgba(235, 87, 87, 0.1)',
+        title: 'Deposit Pending ₹33,000',
+        badge: 3,
+        color: 'rgba(235, 87, 87, 0.1)',
         open: false
     }, {
         id: 2,
-        title:'Deposited ₹15,224',
-        badge:2,
-        color:'rgba(39, 174, 96, 0.1)',
+        title: 'Deposited ₹15,224',
+        badge: 2,
+        color: 'rgba(39, 174, 96, 0.1)',
         open: false
     },
 
- ])
+    ])
 
 
     const Data1 = [
@@ -57,8 +58,8 @@ const CompleteTab = ({ navigation }) => {
             phone: '987XXXXX22',
             Initial: 'AT',
             Amount: '₹18,724',
-            color1: 'rgba(234, 64, 71, 1)',
-            color:  'rgba(148, 166, 200, 1)'
+            color1: 'rgba(39, 174, 96, 1)',
+            color: 'rgba(148, 166, 200, 1)'
         },
         {
             id: 2,
@@ -67,8 +68,31 @@ const CompleteTab = ({ navigation }) => {
             phone: '987XXXXX22',
             Initial: 'AT',
             Amount: '₹14,276',
-            color1: 'rgba(26, 5, 29, 1)',
+            color1: 'rgba(235, 87, 87, 1)',
             color: 'rgba(148, 200, 153, 1)'
+        },
+    ]
+
+    const Data2 = [
+        {
+            id: 1,
+            name: 'Ashly James',
+            place: 'Kakkanad',
+            phone: '987XXXXX22',
+            Initial: 'AT',
+            Amount: '₹7,500',
+            color1: 'rgba(39, 174, 96, 1)',
+            color: 'rgba(148, 166, 200, 1)'
+        },
+        {
+            id: 2,
+            name: 'Anupama S',
+            place: 'Kakkanad',
+            phone: '987XXXXX22',
+            Initial: 'AJ',
+            Amount: '₹7,724',
+            color1: 'rgba(235, 87, 87, 1)',
+            color: 'rgba(200, 148, 148, 1)'
         },
     ]
 
@@ -108,72 +132,147 @@ const CompleteTab = ({ navigation }) => {
                 {data.map((item, index) => {
                     return (
                         <>
-                            <View style={[styles.containerTab,{backgroundColor:item.open?'rgba(242, 242, 242, 0.5)':'rgba(255, 255, 255, 1)'}]}>
-                               {item.id === 1 ? 
-                               <View style={[styles.Card1,{backgroundColor:'rgba(235, 87, 87, 0.1)'}]}>
-                                <Image1 />
-                                </View>:
-                                    <View style={[styles.Card1,{backgroundColor:'rgba(39, 174, 96, 0.1)'}]}>
-                                <Image2 /></View>}
+                            <View style={[styles.containerTab, { backgroundColor: item.open ? 'rgba(242, 242, 242, 0.5)' : 'rgba(255, 255, 255, 1)' }]}>
+                                {item.id === 1 ?
+                                    <View style={[styles.Card1, { backgroundColor: 'rgba(235, 87, 87, 0.1)' }]}>
+                                        <Image1 />
+                                    </View> :
+                                    <View style={[styles.Card1, { backgroundColor: 'rgba(39, 174, 96, 0.1)' }]}>
+                                        <Image2 /></View>}
 
-                                <View style={{justifyContent:'space-around',flexDirection:'row',alignItems:'center'}}>
-                                <View style={{marginLeft:width*0.03 }}>
-                                    <Text style={styles.timeText}>{item.title}</Text>
-                                </View>
+                                <View style={{ justifyContent: 'space-around', flexDirection: 'row', alignItems: 'center' }}>
+                                    <View style={{ marginLeft: width * 0.03 }}>
+                                        <Text style={styles.timeText}>{item.title}</Text>
+                                    </View>
 
-                                {item.id === 1 ? 
-                               <View style={[styles.Card1,{backgroundColor:'rgba(235, 87, 87, 0.1)',marginLeft:width*0.05}]}>
-                                <Img2 />
-                                </View>:
-                                    <View style={[styles.Card1,{backgroundColor:'rgba(39, 174, 96, 0.1)',marginLeft:width*0.155}]}>
-                                <Img1 /></View>}
-                                <View style={{marginLeft:width*0.025}}>
+                                    {item.id === 1 ?
+                                        <View style={[styles.Card1, { backgroundColor: 'rgba(235, 87, 87, 0.1)', marginLeft: width * 0.05 }]}>
+                                            <Img2 />
+                                        </View> :
+                                        <View style={[styles.Card1, { backgroundColor: 'rgba(39, 174, 96, 0.1)', marginLeft: width * 0.155 }]}>
+                                            <Img1 /></View>}
+                                    <View style={{ marginLeft: width * 0.025 }}>
                                         <Text style={styles.badgeText}>{item.badge}</Text>
                                     </View>
-                                    <View style={{marginLeft:item.id ===1 ? width*0.033 : width*0.036}}>
+                                    <View style={{ marginLeft: item.id === 1 ? width * 0.033 : width * 0.036 }}>
 
-                                    <TouchableOpacity
-                                        onPress={() => {
-                                            const nextList = [...data];
-                                            nextList[index].open = !nextList[index].open;
-                                            setData(nextList);
-                                        }}
-                                    >
-                                        <Icon name={item.open ? "chevron-up" : "chevron-down"}
-                                            color={COLORS.colorB}
-                                            size={25}
-                                            style={{ paddingLeft: 13 }}
+                                        <TouchableOpacity
+                                            onPress={() => {
+                                                const nextList = [...data];
+                                                nextList[index].open = !nextList[index].open;
+                                                setData(nextList);
+                                            }}
+                                        >
+                                            <Icon name={item.open ? "chevron-up" : "chevron-down"}
+                                                color={COLORS.colorB}
+                                                size={25}
+                                                style={{ paddingLeft: 13 }}
 
-                                        />
-                                    </TouchableOpacity>
+                                            />
+                                        </TouchableOpacity>
                                     </View>
                                 </View>
-                                <View style={{alignItems:'center',flexDirection:'row' }}>
-                              
+                                <View style={{ alignItems: 'center', flexDirection: 'row' }}>
+
                                     {/* <View style={{flex:1,alignItems:'flex-end'}}>
                      
                                     </View> */}
                                 </View>
                             </View>
-                            {item.open
-                                ?
-                                <>
-                                    <View>
-                                      
-                                        <Text style={styles.headText}>{t('common:Call')}</Text>
-                                        {Data1.map((item) => {
-                                            return (
-                                          <View></View>
-                                            );
-                                        })}
+                            {item.id === 1 ?
 
-                                    </View>
-                                    <View>
-                                        <Text style={styles.timeDropStyle}>08:30 AM (1)</Text>
-                                        <Text style={styles.headText}>{t('common:Meet')}</Text>
-                                      
-                                    </View>
-                                </> : null}
+
+                                <>
+                                    {item.open &&
+                                        <View>
+
+
+                                            {Data1.map((item) => {
+                                                return (
+                                                    <TouchableOpacity
+                                                        style={styles.boxStyle} >
+                                                        <View style={{ flex: 1, flexDirection: 'row' }}>
+
+                                                            <View style={[styles.circleStyle, { backgroundColor: item.color }]}>
+                                                                <Text style={styles.circleText}>{item.Initial}</Text>
+                                                            </View>
+
+                                                            <View style={{ flexDirection: 'column', paddingLeft: 12, paddingTop: 5 }}>
+                                                                <Text style={styles.nameText}>{item.name}</Text>
+                                                                <View style={{ flexDirection: 'row', }}>
+                                                                    <View style={{ paddingTop: 5, paddingRight: 1 }}>
+                                                                        <Icon1 name="location-outline" color={"black"} />
+                                                                    </View>
+                                                                    <Text style={[styles.idText, { paddingTop: 4 }]}>{item.place}</Text>
+                                                                </View>
+                                                            </View>
+
+                                                        </View>
+
+                                                        <View style={{ flexDirection: 'column', paddingTop: 5, alignItems: 'flex-end' }}>
+                                                            <View style={{ flexDirection: 'row' }}>
+                                                                <Icon2 name="phone-call" color={"black"} size={11} style={{ top: 4 }} />
+                                                                <Text style={[styles.numText, { paddingLeft: 6 }]}>{item.phone}</Text>
+                                                            </View>
+
+
+                                                            <Text style={[styles.leadText, { color: item.color1 }]}>{item.Amount}</Text>
+
+
+                                                        </View>
+
+                                                    </TouchableOpacity>
+                                                );
+                                            })}
+
+                                        </View>}
+
+                                </> : item.id === 2 ?
+                                    <>
+                                        {item.open &&
+                                            <View>
+
+
+                                                {Data2.map((item) => {
+                                                    return (
+                                                        <TouchableOpacity
+                                                            style={styles.boxStyle} >
+                                                            <View style={{ flex: 1, flexDirection: 'row' }}>
+
+                                                                <View style={[styles.circleStyle, { backgroundColor: item.color }]}>
+                                                                    <Text style={styles.circleText}>{item.Initial}</Text>
+                                                                </View>
+
+                                                                <View style={{ flexDirection: 'column', paddingLeft: 12, paddingTop: 5 }}>
+                                                                    <Text style={styles.nameText}>{item.name}</Text>
+                                                                    <View style={{ flexDirection: 'row', }}>
+                                                                        <View style={{ paddingTop: 5, paddingRight: 1 }}>
+                                                                            <Icon1 name="location-outline" color={"black"} />
+                                                                        </View>
+                                                                        <Text style={[styles.idText, { paddingTop: 4 }]}>{item.place}</Text>
+                                                                    </View>
+                                                                </View>
+
+                                                            </View>
+
+                                                            <View style={{ flexDirection: 'column', paddingTop: 5, alignItems: 'flex-end' }}>
+                                                                <View style={{ flexDirection: 'row' }}>
+                                                                    <Icon2 name="phone-call" color={"black"} size={11} style={{ top: 4 }} />
+                                                                    <Text style={[styles.numText, { paddingLeft: 6 }]}>{item.phone}</Text>
+                                                                </View>
+
+
+                                                                <Text style={[styles.leadText, { color: item.color1 }]}>{item.Amount}</Text>
+
+
+                                                            </View>
+
+                                                        </TouchableOpacity>
+                                                    );
+                                                })}
+                                            </View>}
+                                    </>
+                                    : null}
 
 
                         </>
@@ -208,8 +307,8 @@ const styles = StyleSheet.create({
         borderRadius: 17,
         alignItems: 'center',
         justifyContent: 'center',
-        marginLeft:width*0.02,
-        marginTop:3
+        marginLeft: width * 0.02,
+        marginTop: 3
     },
     PlaceText: {
         fontFamily: FONTS.FontSemiB,
@@ -309,23 +408,23 @@ const styles = StyleSheet.create({
         marginTop: 2,
         maxWidth: 150
     },
-    containerTab:{
-        width:width*0.90,
-        backgroundColor:'rgba(242, 242, 242, 1)',
-        elevation:2,
-        flexDirection:'row',
-        marginTop:width*0.06,
-        borderWidth:0.5,
-        borderRadius:6,
+    containerTab: {
+        width: width * 0.90,
+        backgroundColor: 'rgba(242, 242, 242, 1)',
+        //elevation:2,
+        flexDirection: 'row',
+        marginTop: width * 0.06,
+        borderWidth: 0.5,
+        borderRadius: 6,
         borderColor: COLORS.colorBorder,
-        alignItems:'center',
-        height:width*0.13
+        alignItems: 'center',
+        height: width * 0.13
         //justifyContent:'center'
     },
-    timeText:{
-        fontFamily:FONTS.FontSemiB,
-        color:COLORS.colorDark,
-        fontSize:12
+    timeText: {
+        fontFamily: FONTS.FontSemiB,
+        color: COLORS.colorDark,
+        fontSize: 12
     }
 
 

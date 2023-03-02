@@ -13,15 +13,13 @@ import Statusbar from '../../Components/StatusBar';
 import { FONTS, COLORS } from '../../Constants/Constants';
 import HeaderDashBoard from '../../Components/RepayHeader';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import AllTab from './Components/AllTab';
-
-
-
+import LoanTab from './Components/LoanTab';
+import ProfileTab from './Components/ProfileTab';
+import TCMemberTab from './Components/TCMemberTab';
 import { useFocusEffect } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
-import CompleteTab from './Components/components/Complete';
 
-const Collect = ({ navigation }) => {
+const Collection = ({ navigation }) => {
     const isDarkMode = true;
     const Tab = createMaterialTopTabNavigator();
     const { t } = useTranslation();
@@ -44,20 +42,21 @@ const Collect = ({ navigation }) => {
             <SafeAreaView style={styles.container1} />
             <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} backgroundColor={"#002B59"} />
 
-            <HeaderDashBoard navigation={navigation} name={t('common:Collect')} />
+            <HeaderDashBoard navigation={navigation} name={t('common:Collection')} />
 
 
             <Tab.Navigator
              screenOptions={{
-                tabBarLabelStyle: { focused: true,fontSize: 14,fontFamily:FONTS.FontSemiB},
+                tabBarLabelStyle: { focused: true,fontSize: 13.5,fontFamily:FONTS.FontSemiB},
                 tabBarStyle: { backgroundColor: COLORS.colorB },
                 tabBarIndicatorStyle:{backgroundColor:"#A5AFFB",height:5},
                 tabBarInactiveTintColor:'#D0C9D6',
                 tabBarActiveTintColor: COLORS.colorBackground ,
                 
               }}>
-                <Tab.Screen name={t('common:pending')} component={AllTab} navigation={navigation} />
-                <Tab.Screen name={t('common:completed')} component={CompleteTab} />
+                <Tab.Screen name={'LOANS'} component={LoanTab} navigation={navigation} />
+                <Tab.Screen name={'profile'} component={ProfileTab} />
+                <Tab.Screen name={'TC MEMBERS'} component={TCMemberTab} />
                
             </Tab.Navigator>
 
@@ -80,4 +79,4 @@ const styles = StyleSheet.create({
 
 })
 
-export default Collect;
+export default Collection;

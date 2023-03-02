@@ -47,6 +47,9 @@ const ItemTabs = (props) => {
                 } else if (props.index === 3) {
                     props.navigation.navigate('NewCgt')
 
+                } else if (props.index === 5) {
+                    props.navigation.navigate('Collect')
+
                 }
 
 

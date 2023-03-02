@@ -26,7 +26,7 @@ const { height, width } = Dimensions.get('screen');
 
 const CustomDetails = ({ navigation }) => {
     const route = useRoute();
-
+    const { t } = useTranslation();
 
 
     const Data = [

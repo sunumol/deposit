@@ -513,46 +513,72 @@ export default {
 
     //Activities
 
-    'Activities':'Activities',
-    'NoActivity':'NO ACTIVITIES',
-    'CALL':'CALL',
-    'CGT':'CGT',
-    'ExpCircle':'Explain Trust Circle',
-    'CollectPay':'Collect Payment',
+    'Activities': 'Activities',
+    'NoActivity': 'NO ACTIVITIES',
+    'CALL': 'CALL',
+    'CGT': 'CGT',
+    'ExpCircle': 'Explain Trust Circle',
+    'CollectPay': 'Collect Payment',
 
     //Activity Modal
 
-    'MeetAct':'Reschedule meet activities from calendar.',
-    'ActResh':'Activities rescheduled',
+    'MeetAct': 'Reschedule meet activities from calendar.',
+    'ActResh': 'Activities rescheduled',
 
 
     //Confirm Member
 
-    'ConfirmMemb':'Confirm Member',
-    'EnterNORM':'Enter name or mobile number',
-    'AadharID':'Aadhar ID',
-    'SpVoterID':'Spouse Voter ID',
-    'RecentCust':'Recently added customers',
-    'RejectReason':'Reason for reject',
-    'SusFraud':'Suspected fraud',
-    'NonCrp':'Non cooperative',
-    'SubWrong':'Submitted wrong data',
-    'kycMain':'KYC mismatch',
+    'ConfirmMemb': 'Confirm Member',
+    'EnterNORM': 'Enter name or mobile number',
+    'AadharID': 'Aadhar ID',
+    'SpVoterID': 'Spouse Voter ID',
+    'RecentCust': 'Recently added customers',
+    'RejectReason': 'Reason for reject',
+    'SusFraud': 'Suspected fraud',
+    'NonCrp': 'Non cooperative',
+    'SubWrong': 'Submitted wrong data',
+    'kycMain': 'KYC mismatch',
 
     //Create Trust Circle
 
-    'createTC':'Create Trust Circle',
-    'ReCGT':'Reschedule CGT',
-    'TrustCM':'Trust Circle Members',
-    'AddNewM':'Add new member',
+    'createTC': 'Create Trust Circle',
+    'ReCGT': 'Reschedule CGT',
+    'TrustCM': 'Trust Circle Members',
+    'AddNewM': 'Add new member',
 
     //Select Customer
 
-    'SelectCM':'Select Customer',
-    'Change':'Change',
-    'CgtDesc':'CGT has been scheduled'
- 
+    'SelectCM': 'Select Customer',
+    'Change': 'Change',
+    'CgtDesc': 'CGT has been scheduled',
 
+
+    //Collect
+    'Collect': 'Collect',
+    'pending': 'pending',
+    'completed': 'completed',
+    'CustomDue': 'Customers Due',
+    'LoanDue': 'Loans Due',
+    'AmtDue': 'Amount Due',
+    'DescCollect1': 'Total amount collected is',
+    'DescCollect2': 'Please deposit amount in',
+    'Deps1': 'Deposit Pending',
+    'Desp2': 'Deposited',
+
+
+
+    //Collection
+
+    'Collection': 'Collection',
+    'TCMemb': 'TC MEMBERS ',
+    'CollectLn': 'Collected Loans',
+    'Collectamt': 'Collected Amount',
+    'PaidBy': 'Paid by',
+    'TCM1': 'TC Member',
+    'ALA': 'Active Loan Accounts',
+    'AdhaarId':'Aadhaar ID',
+    'ConGTR':'Continuing Guarantor',
+    'Spouse':'Spouse'
 
 
 }
