@@ -1,12 +1,14 @@
 ;
 import React, { useEffect, useState } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity,Dimensions } from 'react-native';
 import { COLORS, FONTS } from '../../../../Constants/Constants';
 import { useTranslation } from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon1 from 'react-native-vector-icons/Ionicons'
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 import ActivityModal from '../components/ActiveModal';
+const { height, width } = Dimensions.get('screen');
+
 const MeetTab = (props) => {
     const { t } = useTranslation();
     const [Lang, setLang] = useState('')
@@ -44,7 +46,7 @@ const MeetTab = (props) => {
                                 </View>
 
                                 <View style={{ flexDirection: 'column', paddingLeft: 12, paddingTop: 5 }}>
-                                    <Text style={styles.nameText}>{item.name}</Text>
+                                    <Text style={styles.nameText} numberOfLines={1}>{item.name}</Text>
                                     <View style={{ flexDirection: 'row', }}>
                                         <View style={{ paddingTop: 5, paddingRight: 1 }}>
                                             <Icon1 name="location-outline" color={"black"} />
@@ -128,6 +130,7 @@ const styles = StyleSheet.create({
         fontFamily: FONTS.FontBold,
         color: COLORS.colorDark,
         fontWeight: '600',
+        maxWidth:width*0.30
     },
     idText: {
         fontSize: 11,

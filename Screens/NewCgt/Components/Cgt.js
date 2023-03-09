@@ -20,7 +20,7 @@ import { COLORS, FONTS } from '../../../Constants/Constants';
 const { height, width } = Dimensions.get('screen');
 // import moment from 'moment/moment';
 // import { useTranslation } from 'react-i18next';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
+
 
 import {
     addDays,

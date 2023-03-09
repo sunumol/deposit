@@ -235,7 +235,7 @@ const LoginScreen = ({ navigation }) => {
                 latitude: "10.0302",//Todo
                 longitude: "76.33553"//Todo
             },
-            mobile: '+91' + PhoneNum,
+            mobile: '91' + PhoneNum,
             deviceIpAddress: ipAdrress,
             simId: "11111",
         }
@@ -335,7 +335,7 @@ const LoginScreen = ({ navigation }) => {
     async function ConfirmOtp(otp) {
         const data = {
             otp: otp,
-            mobNumber: '+91' + PhoneNum,
+            mobNumber: '91' + PhoneNum,
         }
         await api.confirmLoginOtp(data).then((res) => {
             console.log('-------------------res', res?.status)
@@ -396,7 +396,7 @@ const LoginScreen = ({ navigation }) => {
                 latitude: "10.0302",//Todo
                 longitude: "76.33553"//Todo
             },
-            mobile: '+91' + PhoneNum,
+            mobile: '91' + PhoneNum,
             deviceIpAddress: ipAdrress,
             simId: "11111",
         }

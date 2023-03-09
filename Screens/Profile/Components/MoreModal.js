@@ -136,12 +136,12 @@ const MoreModal = ({ ModalVisible, onPressOut, setModalVisible, setOtpValue, nav
 
                             <View style={{ flexDirection: 'row', justifyContent:'flex-start',
                              marginTop: width * 0.08, marginBottom: 35,paddingLeft:width*0.1 }}>
-                              <View style={{ alignItems:'flex-start', justifyContent:'flex-start' ,left:Lang == 'en' ? 0 : -12,
+                              <View style={{ alignItems:'flex-start', justifyContent:'flex-start' ,left:Lang == 'en' ? 0 : 5,
                                 }} >
                                     <TouchableOpacity style={styles.touch} onPress={()=>navigation.navigate('Language')}>
                                     <Image6 />
                                     </TouchableOpacity>
-                                    <Text style={[styles.text,{left:5}]}>{t('common:Language')}</Text>
+                                    <Text style={[styles.text,{left:Lang=='en' ? 5 :18}]}>{t('common:Language')}</Text>
                                 </View>
                          
 

@@ -64,8 +64,8 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontFamily: FONTS.FontRegular,
         fontWeight: '700',
-        marginTop: 10,
-        marginBottom: 16,
+        marginTop: 15,
+        marginBottom: 7,
         textAlign: 'center'
     },
 })
