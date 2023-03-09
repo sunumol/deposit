@@ -94,13 +94,10 @@ const CreatePin = ({ navigation }) => {
                         handleTextChange={(code => {
                             console.log(code.slice(4, 7));
                             setOtpValue(code.slice(0, 4))
-
                             if (code) {
                                 setError(false)
                             }
-
-                            if (code.slice(4).length === 4) {
-                                if (OtpValue.length === 4) {
+                            if (code.slice(4).length === 4 && code.slice(4, 7).length === 4) {
                                     if (OtpValue !== code.slice(4)) {
                                         setError(true);
                                         clearText();
@@ -109,7 +106,6 @@ const CreatePin = ({ navigation }) => {
                                         AsyncStorage.setItem('Pin', code.slice(4));
                                         AsyncStorage.setItem('PinDate', JSON.stringify(new Date()));
                                     }
-                                }
                             }
                         })} />
 

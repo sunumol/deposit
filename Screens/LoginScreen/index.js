@@ -12,49 +12,49 @@ import {
     BackHandler,
     Dimensions,
     ToastAndroid,
+    PermissionsAndroid
 } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { COLORS, FONTS } from '../../Constants/Constants';
-import Statusbar from '../../Components/StatusBar';
 import OTPInputView from '@twotalltotems/react-native-otp-input';
-import AllowModal from '../../Components/AllowModal';
-import { useTranslation } from 'react-i18next';
-const { height, width } = Dimensions.get('screen');
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Resend from '../../assets/Images/resend.svg'
-import Logo from '../../assets/Images/svadhan.svg';
-import ToastModal from '../../Components/ToastModal';
-import ValidModal from './Components/ValidModal';
-import OtpModal from './Components/OtpModal';
-
+import { useTranslation } from 'react-i18next';
 import SmsAndroid from 'react-native-get-sms-android';
 import DeviceInfo from 'react-native-device-info';
 import { NetworkInfo } from 'react-native-network-info';
+
+// --------------- Component Imports ---------------------
+import { COLORS, FONTS } from '../../Constants/Constants';
+import Statusbar from '../../Components/StatusBar';
+import AllowModal from '../../Components/AllowModal';
+import ToastModal from '../../Components/ToastModal';
+import { api } from '../../Services/Api';
+
+// --------------- Image Imports ---------------------
+import Resend from '../../assets/Images/resend.svg'
+import Logo from '../../assets/Images/svadhan.svg';
+
+const { height, width } = Dimensions.get('screen');
 
 const LoginScreen = ({ navigation }) => {
 
     const { t } = useTranslation();
     const isDarkMode = true;
     const scrollViewRef = useRef();
+    const Screen ="LoginScreen";
 
-    const [IsOtp1, setIsOtp1] = useState(false)
     const [OtpValue, setOtpValue] = useState('')
-    const [otp, setOtp] = useState(false)
-    const [timerCount, setTimer] = useState(30)
-    const [status, setStatus] = useState(false)
-
-    const [lang, setLang] = useState('')
-    const [exitApp, setExitApp] = useState(0);
-    const [ExitStatus, setExitStatus] = useState(false)
-
     const [PhoneNum, setPhoneNum] = useState(null)
-
+    const [lang, setLang] = useState('')
+    const [timerCount, setTimer] = useState(30)
+    
     const [ModalVisible, setModalVisible] = useState(false)
     const [ModalVisible1, setModalVisible1] = useState(false)
-    const [ValidModal1, setValidModal1] = useState(false)
-    const [OtpModal1, setOtpModal1] = useState(false)
-
+    const [otp, setOtp] = useState(false)
+    const [IsOtp1, setIsOtp1] = useState(false)
     const [button, setButton] = useState(true)
+    const [status, setStatus] = useState(false)
+    const [ExitStatus,setExitStatus] = useState(false)
+    const [exitApp, setExitApp] = useState(0);
 
     // --------------Device Configuration Start----------
     const [ipAdrress, setIPAddress] = useState();
@@ -67,68 +67,51 @@ const LoginScreen = ({ navigation }) => {
     const [ModalVisibleError, setModalVisibleError] = useState(false)
     const [maxError, setMaxError] = useState(false)
     // --------------Device Configuration End----------
-    {console.log('--------------------',DeviceId,ipAdrress)}
+
     useEffect(() => {
+
         getData()
-        // -------------- Get IPV4 Address Start ----------
+        // Get IPV4 Address Start ------------------------
         NetworkInfo.getIPV4Address().then(ipv4Address => {
             console.log(ipv4Address);
             setIPAddress(ipv4Address)
         });
-        // -------------- Get IPV4 Address End ----------
-        // -------------- Get DeviceInfo start----------
+        // Get IPV4 Address End --------------------------
+
+        // Get DeviceInfo start-----------------------
         DeviceInfo.getUniqueId().then((uniqueId) => {
             setDeviceId(uniqueId)
         });
-        // -------------- Get DeviceInfo End ----------
+        // Get DeviceInfo End ------------------------
 
     }, [])
 
-   
     useEffect(() => {
-        getData()
-    }, [])
-
-    const getData = async () => {
-        try {
-            const lang = await AsyncStorage.getItem('user-language')
-            setLang(lang)
-        } catch (e) {
-            console.log(e)
+        if (permissions && fetOtp) {
+            const interval = setInterval(() => {
+                callMessage()
+            }, 3000);
+            return () => clearInterval(interval);
         }
-    }
-    useEffect(() => {
-        const backHandler = BackHandler.addEventListener(
-            'hardwareBackPress',
-            handleGoBack,
-        );
-        return () => backHandler.remove();
-    }, [exitApp]);
-
-    const handleGoBack = () => {
-        if (!ExitStatus) {
-            if (!IsOtp1) {
-                if (exitApp === 0) {
-                    setExitApp(exitApp + 1);
-                    ToastAndroid.show("Press back again to exit.", ToastAndroid.SHORT);
-                } else if (exitApp === 1) {
-                    BackHandler.exitApp();
-                }
-            }
-            else if (IsOtp1 == true) {
-                setPhoneNum(null)
-                setIsOtp1(false)
-                setStatus(false)
-            }
-            return true;
-        }
-    }
+        // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
+    }, [permissions, fetOtp])
 
     useEffect(() => {
         if (!OtpValue) {
             setOtp(false)
         }
     }, [OtpValue])
+
+    useEffect(() => {
+        setMaxError(false)
+    }, [])
+
+    useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+            setButton(true)
+        });
+        return unsubscribe;
+    }, [navigation]);
 
     useEffect(() => {
         if (IsOtp1 && timerCount > 0) {
@@ -138,7 +121,51 @@ const LoginScreen = ({ navigation }) => {
         }
     }, [timerCount, IsOtp1]);
 
+    useEffect(() => {
+        const backHandler = BackHandler.addEventListener(
+            'hardwareBackPress',
+            backAction
+        );
+        return () => backHandler.remove();
+    }, []);
 
+    const getData = async () => {
+        try {
+            const lang = await AsyncStorage.getItem('user-language')
+            setLang(lang)
+            console.log("language", lang)
+        } catch (e) {
+            console.log(e)
+        }
+    }
+    const backAction = () => {
+        if (!ExitStatus) {
+            if(IsOtp1){
+                setExitApp(0); 
+                setButton(false)
+                setPhoneNum(null)
+                setIsOtp1(false)
+                setMaxError(false) 
+            }else{
+                if (exitApp === 0) {
+                    setButton(false)
+                    setPhoneNum(null)
+                    setIsOtp1(false)
+                    setMaxError(false)
+                    setExitApp(exitApp + 1);
+                    ToastAndroid.show("Press back again to exit.", ToastAndroid.SHORT);
+                }
+                else if (exitApp === 1) {
+                    BackHandler.exitApp();
+                }
+            }   
+            setTimeout(() => {
+                setExitApp(0)
+            }, 3000);
+            return false;
+        }
+    };
+  
     const verifyPhone = (Phone) => {
         var reg = /^([0-9])\1{9}$/;
         return reg.test(Phone);
@@ -156,29 +183,37 @@ const LoginScreen = ({ navigation }) => {
             setModalVisible1(true)
         }
         else {
-            getOtp();
-            setIsOtp1(true)
-            setExitApp(3)
+            LoginApiCall()
         }
     }
 
     const getOtp = () => {
-        setTimeout(() => {
+        //bug fixing privacy policy and tc back navigation
+        if (IsOtp1 && timerCount === 0) {
+            setTimeout(() => {
+                setIsOtp1(true)
+                setStatus(true)
+                setTimer(30)
+            }, 1000)
+            setButton(false)
             setIsOtp1(true)
             setStatus(true)
             setTimer(30)
-        }, 1000)
-        setButton(false)
-        setModalVisible(false)
-        setIsOtp1(true)
-        setModalVisible(true)
-        setStatus(true)
-        setTimer(30)
+        } else {
+            setTimeout(() => {
+                setIsOtp1(true)
+                setStatus(true)
+            }, 1000)
+            setButton(false)
+            setIsOtp1(true)
+            setStatus(true)
+        }
     }
 
     const CountDownResend = () => {
         setTimer(30)
         setStatus(true)
+        setIsOtp1(true)
     }
 
     const OnchangeNumber = (num) => {
@@ -191,16 +226,51 @@ const LoginScreen = ({ navigation }) => {
         }
     }
 
-    useEffect(() => {
-        const unsubscribe = navigation.addListener('focus', () => {
-            setPhoneNum(null)
-            setIsOtp1(null)
-            setButton(true)
-        });
-        return unsubscribe;
-    }, [navigation]);
-    
-    const requestCameraPermission = async () => {
+    // ------------------ Login Api Call Start ------------------
+    async function LoginApiCall() {
+        setConfirmDate(new Date().getTime())
+        const data = {
+            deviceId: DeviceId,
+            geoLocation: {
+                latitude: "10.0302",//Todo
+                longitude: "76.33553"//Todo
+            },
+            mobile: '91' + PhoneNum,
+            deviceIpAddress: ipAdrress,
+            simId: "11111",
+        }
+        await api.getLoginOtp(data).then((res) => {
+            console.log('-------------------res', res?.status)
+            if (res?.status == 200) {
+                setMaxError(false)
+                requestPermission()
+                setOtpFetch(true)
+                setIsOtp1(true)
+                getOtp();
+                setTimer(30)
+            }
+        }).catch((err) => {
+            console.log("err->", err?.response)
+            if (err?.message !== 'Network Error') {
+                if (err?.response?.data?.message === 'the device ID is already existing in the DB.') {
+                    setModalVisibleError(true)
+                    setMaxError(false)
+                    setMessage('This Mobile is already registered with us.')
+                } else if (err?.response?.data?.message === 'Maximum number of OTPs are exceeded. Please try after 30 minutes.') {
+                    setOtpFetch(false)
+                    setIsOtp1(true)
+                    setStatus(false)
+                    setMaxError(true)
+                } else {
+                    setMaxError(false)
+                }
+
+            }
+        })
+    }
+    // ------------------ Login Api Call End ------------------
+
+    const requestPermission = async () => {
         try {
             const granted = await PermissionsAndroid.request(
                 PermissionsAndroid.PERMISSIONS.READ_SMS,
@@ -216,18 +286,8 @@ const LoginScreen = ({ navigation }) => {
             console.warn(err);
         }
     };
-    
-    // useEffect(() => {
-    //     if (permissions && fetOtp) {
-    //         const interval = setInterval(() => {
-    //             callMessage()
-    //         }, 3000);
-    //         return () => clearInterval(interval);
-    //     }
-    //     // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
-    // }, [permissions, fetOtp])
 
-
+    // -------------------------------- Fetch Message From device Start -------------------------------------------
     const callMessage = () => {
         var filter = {
             box: 'inbox', // 'inbox' (default), 'sent', 'draft', 'outbox', 'failed', 'queued', and '' for all
@@ -247,17 +307,21 @@ const LoginScreen = ({ navigation }) => {
 
                 arr.forEach(function (object) {
                     console.log('Object: ' + object);
-                    console.log('-->' + object.date);
-                    console.log('-->' + object.body);
+                    console.log('--> sms date' + object.date);
+                    console.log('--> sms body' + object.body);
 
                     if (object.body.includes('One Time Password')) {
-                        setOtpFetch(false)
-                        console.log('-->' + object)
+                       
                         let match = object.body.match(/\b\d{4}\b/)
-
+                        setOtpFetch(false)
                         if (match) {
+                            setOtpFetch(false)
                             setOtpMessage(match[0])
-                            setModalVisible(true)
+                            console.log("otpmessage.....", otpMessage, match[0])
+                            console.log("match exist", match)
+                            if(Screen === "LoginScreen"){
+                                setModalVisible(true)
+                            }
                         }
                     }
 
@@ -265,30 +329,115 @@ const LoginScreen = ({ navigation }) => {
             },
         );
     };
+    // -------------------------------- Fetch Message From device End -------------------------------------------
+
+    // ------------------ Confirm Otp Api Call Start ------------------
+    async function ConfirmOtp(otp) {
+        const data = {
+            otp: otp,
+            mobNumber: '91' + PhoneNum,
+        }
+        await api.confirmLoginOtp(data).then((res) => {
+            console.log('-------------------res', res?.status)
+            if (res?.data?.status) {
+                setMaxError(false)
+                AsyncStorage.setItem('Mobile', '91' + PhoneNum);
+                console.log("succuss", res?.data?.customerId)
+                AsyncStorage.setItem('CustomerId', JSON.stringify(res?.data?.customerId));
+                if (res?.data?.register) {
+                    isGrantedPermissions(res?.data?.status)
+                } else {
+                    setPhoneNum(null)
+                    setIsOtp1(false)
+                    setButton(true)
+                    setOtpValue('')
+                    navigation.navigate('Permission')
+                }
+                setOtpFetch(false)
+
+            } else {
+                console.log(res?.data)
+            }
+        }).catch((err) => {
+            console.log("err->", err?.response)
+            if (err?.response?.data?.message === 'You entered wrong OTP') {
+                setOtp(true)
+            }
+        })
+    }
+    // ------------------ Confirm Otp Api Call End ------------------
+
+    // ----------------------------------- Permission Check Start ----------------------------------------------
+    const isGrantedPermissions = async (register) => {
+        const camera = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.CAMERA)
+        const Location = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION)
+        if (camera && Location) {
+            const Pin = await AsyncStorage.getItem('Pin')
+            const PinDate = await AsyncStorage.getItem('PinDate')
+            setOtpValue('')
+            if (Pin && PinDate) {
+
+                navigation.navigate('PinScreen')
+            } else {
+                navigation.navigate('CreatePin', { resgisted: register })
+            }
+        } else {
+            navigation.navigate('Permission', { resgisted: register })
+        }
+    };
+    // ------------------------------------ Permission Check End --------------------------------------------------
+
+    // ------------------ Resend Api Call Start ------------------
+    async function ResendApiCall() {
+        setConfirmDate(new Date().getTime())
+        const data = {
+            deviceId: DeviceId,
+            geoLocation: {
+                latitude: "10.0302",//Todo
+                longitude: "76.33553"//Todo
+            },
+            mobile: '91' + PhoneNum,
+            deviceIpAddress: ipAdrress,
+            simId: "11111",
+        }
+        await api.resendLoginOtp(data).then((res) => {
+            if (res?.data?.status) {
+                console.log('response Login Api', res.data)
+                CountDownResend()
+                setOtpFetch(true)
+                setMaxError(false)
+            } else {
+                console.log(res?.data)
+            }
+        }).catch((err) => {
+            console.log("err->", err.response)
+            if (err?.response?.data?.message) {
+                setMaxError(true)
+            }
+        })
+    }
+    // ------------------ Resend Api Call End ----------------------
 
     return (
         <>
             <SafeAreaProvider style={{ backgroundColor: COLORS.colorBackground }} >
-                <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} backgroundColor={"#002B59"} />
+
                 <ScrollView ref={scrollViewRef}
                     onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: true })}>
+
                     <KeyboardAvoidingView style={{ flex: 1 }}
-                        {...(Platform.OS === 'ios' && { behavior: 'position' })}
-                    >
+                        {...(Platform.OS === 'ios' && { behavior: 'position' })}>
+
                         <SafeAreaView style={styles.container1} />
+                        <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
 
                         <View style={{ marginBottom: IsOtp1 ? 0 : 0, marginTop: Dimensions.get('window').height * 0.2, alignItems: 'center', justifyContent: 'center', }}>
-
                             <Logo width={160} height={51} resizeMode='contain' />
-
                         </View>
 
                         <View style={[styles.container, { marginTop: Dimensions.get('window').height * 0.05 }]}>
 
-                            <Text style={styles.Heading1} onPress={() => {
-                                navigation.navigate('PinScreen')
-                                setExitStatus(true)
-                            }}>{t('common:Verify')}</Text>
+                            <Text style={styles.Heading1} onPress={() => navigation.navigate('DetailsScreen2')}>{t('common:Verify')}</Text>
 
                             <View style={styles.ViewInput}>
                                 <View style={{ justifyContent: 'center' }}>
@@ -296,7 +445,7 @@ const LoginScreen = ({ navigation }) => {
                                 </View>
                                 <View style={styles.Line} />
                                 <TextInput
-                                    style={[styles.TextInput, { fontSize: lang == 'en' ? 15 : 14,width:lang=='en'?245:250}]}
+                                    style={[styles.TextInput, { fontSize: lang == 'en' ? 15 : 14, width: lang == 'en' ? 190 : 250, }]}
                                     placeholder={t('common:Placeholder')}
                                     placeholderTextColor="#808080"
                                     returnKeyType="done"
@@ -320,6 +469,7 @@ const LoginScreen = ({ navigation }) => {
                                 <Text style={[styles.text, { color: button ? COLORS.colorBackground : "#979C9E" }]}>{t('common:GetOTP')}</Text>
 
                             </TouchableOpacity>
+
                             {lang == "en" ?
                                 <View style={styles.viewTerms}>
                                     <Text style={styles.textTerms2}>By continuing, I accept the </Text>
@@ -350,7 +500,6 @@ const LoginScreen = ({ navigation }) => {
                                         <View style={styles.ViewLine} />
                                     </TouchableOpacity>
                                     <Text style={[styles.textTerms2, { paddingLeft: 5 }]}>ഞാൻ അംഗീകരിക്കുന്നു.</Text>
-
                                 </View>}
 
                             {IsOtp1 ?
@@ -363,20 +512,20 @@ const LoginScreen = ({ navigation }) => {
                                     style={[styles.OtpInput, {}]}
                                     pinCount={4}
                                     code={OtpValue}
-                                    onCodeChanged={otp => setOtpValue(otp)}
+                                    onCodeChanged={otp => {
+                                        setOtpValue(otp)
+                                        if (otp.length === 4) {
+                                            ConfirmOtp(otp)
+                                        }
+                                    }}
                                     autoFocusOnLoad={false}
                                     codeInputFieldStyle={{ color: '#090A0A', borderRadius: 8, backgroundColor: '#FCFCFC', borderColor: !otp ? "lightgrey" : "red" }}
                                     placeholderTextColor="black"
                                     onCodeFilled={(code => {
-
-                                        if (code && code == '1091') {
-                                            navigation.navigate('Permission')
-                                            AsyncStorage.setItem('Mobile', '91' + PhoneNum);
-                                            AsyncStorage.setItem('Token', 'dXNlckBleGFtcGxlLmNvbTpzZWNyZXQ=');
+                                        if (code) {
                                             setOtp(false)
                                         }
                                         else {
-                                            console.log("otp value//...", OtpValue)
                                             setOtp(true)
                                         }
                                     })}
@@ -396,45 +545,41 @@ const LoginScreen = ({ navigation }) => {
                                     <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center', width: width * 0.8 }}>{t('common:Valid2')}</Text>
                                     <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center' }}>{t('common:Valid3')}</Text></View>
                                 : IsOtp1 && timerCount === 0 ?
-                                    <TouchableOpacity onPress={CountDownResend} style={{ padding: 18 }}>
+                                    <TouchableOpacity onPress={() => ResendApiCall()} style={{ padding: 18 }}>
                                         <View style={{ flexDirection: 'row', }}>
-                                            {/* <Icon name="reload1" size={20} style={{transform:lang == "en" ? [{ rotateY: '360deg' }] : [{ rotateX: '180deg' }]}} /> */}
                                             <Resend style={{ width: 9, height: 11, top: 3, marginRight: 6, }} resizeMode="contain" />
-
                                             <TouchableOpacity>
-                                                <Text style={styles.TextResend1} onPress={CountDownResend}>{t('common:Resend1')}</Text></TouchableOpacity>
+                                                <Text style={styles.TextResend1} onPress={() => ResendApiCall()}>{t('common:Resend1')}</Text></TouchableOpacity>
                                         </View>
                                     </TouchableOpacity> : null}
 
                         </View>
+
                         <AllowModal ModalVisible={ModalVisible}
                             onPressOut={() => setModalVisible(!ModalVisible)}
-                            setOtpValue={setOtpValue} setModalVisible={setModalVisible} navigation={navigation} />
+                            setOtpValue={setOtpValue}
+                            otpMessage={otpMessage}
+                            setModalVisible={setModalVisible}
+                            navigation={navigation}
+                            ConfirmOtp={(data) => ConfirmOtp(data)}
+                            setOtpFetch={setOtpFetch} />
+
                         <ToastModal
                             Validation={t('common:Valid')}
                             ModalVisible={ModalVisible1}
                             onPressOut={() => setModalVisible1(!ModalVisible1)}
                             setModalVisible={setModalVisible1}
                         />
-                        <ValidModal
-                            Validation={('common:registerMob')}
-                            ModalVisible={ValidModal1}
-                            onPressOut={() => setValidModal1(!ValidModal1)}
-                            setModalVisible={setValidModal1}
-                        />
-                        <OtpModal
-                            Validation={'otpexp'}
-                            ModalVisible={OtpModal1}
-                            onPressOut={() => setOtpModal1(!OtpModal1)}
-                            setModalVisible={setOtpModal1}
-                        />
-                         <ToastModal
+
+                        <ToastModal
                             Validation={message}
                             ModalVisible={ModalVisibleError}
                             onPressOut={() => setModalVisibleError(!ModalVisibleError)}
                             setModalVisible={setModalVisibleError}
                         />
+
                     </KeyboardAvoidingView>
+
                 </ScrollView>
             </SafeAreaProvider>
         </>
@@ -484,7 +629,7 @@ const styles = StyleSheet.create({
         marginLeft: 3
     },
     TextInput: {
-        paddingLeft: 20,
+        paddingLeft: 21,
         fontSize: 15,
         color: COLORS.colorDark,
         fontWeight: '400',
