@@ -8,9 +8,8 @@ import {
 } from './utils/PushNotifications';
 import ForegroundHandler from './utils/ForegroundHandler';
 import { Provider } from 'react-redux';
-import configureStore from './Redux/store';
 
-const store = configureStore()
+
 
 const App = () => {
 
@@ -22,7 +21,7 @@ const App = () => {
   }, []);
 
   return (
-    <Provider store={store}>
+    <Provider>
       <ForegroundHandler />
       <Router />
     </Provider>
