@@ -32,16 +32,12 @@
     "react-native-asset": "^2.0.1",
     "react-native-calendar-strip": "^2.2.6",
     "react-native-calendars": "^1.1293.0",
-<<<<<<< HEAD
     "react-native-device-info": "^10.4.0",
-    "react-native-elements": "^3.4.3",
     "react-native-geolocation-service": "^5.3.1",
     "react-native-get-sms-android": "^2.1.0",
-=======
     "react-native-dropdown-picker": "^5.4.4",
     "react-native-elements": "^3.4.3",
     "react-native-gifted-charts": "^1.2.42",
->>>>>>> abb1b12ec4cfe42e8f24688b30fa459cea94d820
     "react-native-image-crop-picker": "^0.38.1",
     "react-native-linear-gradient": "^2.6.2",
     "react-native-localize": "^2.2.4",
@@ -59,13 +55,10 @@
     "react-native-toggle-calendar": "^1.0.3",
     "react-native-unicons": "^1.0.4",
     "react-native-vector-icons": "^9.2.0",
-<<<<<<< HEAD
     "react-redux": "^8.0.5",
     "redux": "^4.2.1",
-    "redux-persist": "^6.0.0"
-=======
+    "redux-persist": "^6.0.0",
     "victory-native": "^36.6.8"
->>>>>>> abb1b12ec4cfe42e8f24688b30fa459cea94d820
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
