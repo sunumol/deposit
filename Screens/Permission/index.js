@@ -98,6 +98,7 @@ const Permission = ({ navigation }) => {
     }
 
     const requestCameraPermission = async () => {
+       
         try {
 
             const granted = await PermissionsAndroid.requestMultiple([
@@ -125,14 +126,13 @@ const Permission = ({ navigation }) => {
                     } else {
                         navigation.navigate('CreatePin')
                     }
-               
-
             } else {
                 setModalVisible1(true)
             }
         } catch (err) {
             console.warn(err);
         }
+
     };
 
     return (

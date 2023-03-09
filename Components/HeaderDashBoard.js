@@ -8,30 +8,33 @@ import {
     Dimensions,
     TouchableOpacity
 } from 'react-native';
-import { COLORS, FONTS } from '../Constants/Constants';
 import Icon from 'react-native-vector-icons/Ionicons';
 import * as Icon1 from "react-native-unicons";
-const { height, width } = Dimensions.get('screen');
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTranslation } from 'react-i18next';
+
 import { api } from '../Services/Api'
+import { COLORS, FONTS } from '../Constants/Constants';
+
+const { height, width } = Dimensions.get('screen');
 
 const HeaderDashBoard = ({ navigation, notificationCounts }) => {
-    
+
     const [ModalVisible, setModalVisible] = useState(false)
     const { t } = useTranslation();
-    
+
     async function LogoutApi() {
         await api.logoutApi().then((res) => {
             if (res?.status == 200) {
                 console.log(res)
                 navigation.navigate('LoginScreen')
+                AsyncStorage.removeItem('Token')
             }
+        }).catch((err) => {
+            console.log('-------------------err', err?.response)
         })
-            .catch((err) => {
-                console.log('-------------------err', err?.response)
-            })
     }
-    
+
     return (
         <View style={styles.Header}>
             <View style={{ marginBottom: 12, left: -15 }}>
@@ -48,8 +51,6 @@ const HeaderDashBoard = ({ navigation, notificationCounts }) => {
                     </View>
                 </TouchableOpacity>
 
-
-
                 <View style={{ marginLeft: 25 }}>
                     <TouchableOpacity onPress={() => setModalVisible(true)}>
                         <Icon name="ios-power"
@@ -57,7 +58,6 @@ const HeaderDashBoard = ({ navigation, notificationCounts }) => {
                             color={COLORS.colorBackground} />
                     </TouchableOpacity>
                 </View>
-
 
             </View>
             <Modal
@@ -70,7 +70,6 @@ const HeaderDashBoard = ({ navigation, notificationCounts }) => {
                 <TouchableOpacity onPressOut={() => setModalVisible(false)}
                     style={{ backgroundColor: "#000000aa", flex: 1, alignItems: 'center', justifyContent: 'center', opacity: 5 }} >
                     <View style={styles.ModalView1}>
-                        {/*<Text style={styles.TextDelete}>{t('common:AreS1')} ?</Text>*/}
 
                         <Text style={[styles.TextDelete1, { textAlign: 'center' }]}>{t('common:LogoutMsg')}</Text>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingTop: 22, paddingBottom: 22 }}>
