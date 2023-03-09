@@ -120,12 +120,7 @@ const LoginScreen = ({ navigation }) => {
                 setIsOtp1(false)
                 setStatus(false)
             }
-<<<<<<< HEAD
-            return false;
-
-=======
             return true;
->>>>>>> 7851c8651d0a0cb5cf09729dbc9be9304e7f06fc
         }
     }
 
