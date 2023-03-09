@@ -53,7 +53,7 @@ const ProfileScreen = ({ navigation }) => {
                 <View style={{ marginTop: 24 }}>
                     <Text style={styles.mobileText}>Date of join</Text>
                     <TextInput
-                        style={styles.TextInputStyle}
+                      style={[styles.TextInputStyle,{height:45}]}
                         onChangeText={onChangeJoin}
                         value={Join}
                         editable={false}
@@ -62,7 +62,7 @@ const ProfileScreen = ({ navigation }) => {
                 <View style={{ marginTop: 24 }}>
                     <Text style={styles.mobileText}>{t('common:MobileNum')}</Text>
                     <TextInput
-                        style={styles.TextInputStyle}
+                        style={[styles.TextInputStyle,{height:45}]}
                         onChangeText={onChangeMobile}
                         value={mobile}
                         editable={false}
@@ -71,7 +71,7 @@ const ProfileScreen = ({ navigation }) => {
                 <View style={{ marginTop: 24 }}>
                     <Text style={styles.mobileText}>{t('common:AddressB')}</Text>
                     <TextInput
-                        style={[styles.TextInputStyle, { height: 58 }]}
+                        style={[styles.TextInputStyle, { }]}
                         onChangeText={onChangeAddress}
                         value={address}
                         numberOfLines={2}
@@ -82,7 +82,7 @@ const ProfileScreen = ({ navigation }) => {
                 <View style={{ marginTop: 24 }}>
                     <Text style={styles.mobileText}>{t('common:Adhaar1')}</Text>
                     <TextInput
-                        style={styles.TextInputStyle}
+                        style={[styles.TextInputStyle,{height:45}]}
                         onChangeText={onChangeAadhar}
                         value={aadhar}
                         editable={false}
@@ -91,7 +91,7 @@ const ProfileScreen = ({ navigation }) => {
                 <View style={{ marginTop: 24 }}>
                     <Text style={styles.mobileText}>{t('common:Voters')}</Text>
                     <TextInput
-                        style={styles.TextInputStyle}
+                        style={[styles.TextInputStyle,{height:45}]}
                         onChangeText={onChangeVoter}
                         value={voter}
                         editable={false}
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: COLORS.colorBorder,
         borderRadius: 8,
-        height: 45,
+        //height: 45,
         paddingHorizontal: 12,
         marginTop: 7
     },

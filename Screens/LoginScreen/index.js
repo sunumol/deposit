@@ -335,7 +335,7 @@ const LoginScreen = ({ navigation, routew, props }) => {
                         <View style={[styles.container, { marginTop: Dimensions.get('window').height * 0.05 }]}>
 
                             <Text style={styles.Heading1} onPress={() => {
-                            navigation.navigate('Collection')
+                            navigation.navigate('NewCgt')
                                 setExitStatus(true)
                             }}>{t('common:Verify')}</Text>
 
@@ -345,13 +345,13 @@ const LoginScreen = ({ navigation, routew, props }) => {
                                 </View>
                                 <View style={styles.Line} />
                                 <TextInput
-                                    style={[styles.TextInput, { fontSize: lang == 'en' ? 15 : 14, width: lang == 'en' ? 190 : 250, }]}
+                                    style={[styles.TextInput, { fontSize: lang == 'en' ? 15 : 14,width:lang=='en'?245:250}]}
                                     placeholder={t('common:Placeholder')}
                                     placeholderTextColor="#808080"
                                     returnKeyType="done"
                                     maxLength={10}
                                     autoFocus={true}
-
+                                    numberOfLines={1}
                                     value={PhoneNum}
                                     onChangeText={(num) => {
 
@@ -568,13 +568,11 @@ const styles = StyleSheet.create({
         marginLeft: 3
     },
     TextInput: {
-        paddingLeft: 21,
+        paddingLeft: 20,
         fontSize: 15,
         color: COLORS.colorDark,
         fontWeight: '400',
         fontFamily: FONTS.FontRegular,
-
-
     },
     Line: {
         borderRightWidth: 1,

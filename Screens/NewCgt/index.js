@@ -22,7 +22,6 @@ import { useRoute } from '@react-navigation/native';
 import { useFocusEffect } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import Cgt from './Components/Cgt';
-import DatePicker from './Components/CalenderPick';
 import CalendarStrips from './Components/Calender';
 
 
