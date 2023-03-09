@@ -6,20 +6,21 @@ import {
     View,
     TouchableOpacity,
     ScrollView,
-    Image,
     Dimensions,
     PermissionsAndroid,
     StatusBar,
-    ToastAndroid
 } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { useTranslation } from 'react-i18next';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Geolocation from 'react-native-geolocation-service';
+
+// ----------------- Component Import ---------------------
 import { COLORS, FONTS } from '../../Constants/Constants';
 import Statusbar from '../../Components/StatusBar';
 import Header2 from '../../Components/Header2';
-import { SvgUri } from 'react-native-svg';
-import { useTranslation } from 'react-i18next';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import resolveAssetSource from 'react-native/Libraries/Image/resolveAssetSource';
+
+// ---------------- Image Import ----------------------------
 import File from './assets/file.svg';
 import Camera from './assets/cam.svg';
 import Location from './assets/loc.svg';
@@ -34,8 +35,6 @@ const Data = [
         description1: "Will be used to store and upload documents",
         title2: "ഫോൺ സംഭരണം",
         description2: "പ്രമാണങ്ങൾ സംഭരിക്കുന്നതിനും അപ് ലോഡ് ചെയ്യുന്നതിനും ഉപയോഗിക്കപ്പെടും",
-        //image: resolveAssetSource(file),
-        image: require('./assets/file.svg'),
         width: 18,
         height: 16,
     },
@@ -45,8 +44,6 @@ const Data = [
         description1: "Will be used to take photos and for video calls",
         title2: "ക്യാമറ",
         description2: "ഫോട്ടോ എടുക്കുന്നതിനും വീഡിയോ കോളുകൾക്കും ഉപയോഗിക്കപ്പെടും",
-        //image: resolveAssetSource(camera),
-        image: require('../../assets/image/15.png'),
         width: 18,
         height: 16,
     },
@@ -56,8 +53,6 @@ const Data = [
         description1: "Will be used to verify location",
         title2: "സ്ഥാനം",
         description2: "സേവന ലഭ്യത പരിശോധിക്കാൻ ഉപയോഗിക്കപ്പെടും",
-        // image: resolveAssetSource(location),
-        image: require('../../assets/image/16.png'),
         width: 16,
         height: 18.11,
     },
@@ -67,8 +62,6 @@ const Data = [
         description1: "Will be used for audio/video calls",
         title2: "മൈക്രോഫോൺ",
         description2: "ഓഡിയോ/വീഡിയോ കോളുകൾക്കായി ഉപയോഗിക്കപ്പെടും",
-        //image: resolveAssetSource(microphone),
-        image: require('../../assets/image/17.png'),
         width: 14,
         height: 19,
     },
@@ -78,14 +71,13 @@ const Data = [
         description1: "Will be used to read SMS related to transactions",
         title2: "എസ് എം എസ്",
         description2: "ഇടപാടുകളുമായി ബന്ധപ്പെട്ട എസ് എം എസ് വായിക്കാൻ ഉപയോഗിക്കപ്പെടും",
-        //image: resolveAssetSource(sms),
-        image: require('../../assets/image/18.png'),
         width: 18,
         height: 18,
     },
 
 ]
 const Permission = ({ navigation }) => {
+   
     const { t } = useTranslation();
     const isDarkMode = true;
     const [lang, setLang] = useState('')
@@ -107,30 +99,41 @@ const Permission = ({ navigation }) => {
 
     const requestCameraPermission = async () => {
         try {
-            const granted = await PermissionsAndroid.request(
+
+            const granted = await PermissionsAndroid.requestMultiple([
                 PermissionsAndroid.PERMISSIONS.CAMERA,
-                // {
-                //   title: "Camera and Location  Permission",
-                //   message:
-                //     "Allow permission to access photos, media, and files on your device ? ",
-                //   buttonNeutral: "Ask Me Later",
-                //   buttonNegative: "Cancel",
-                //   buttonPositive: "OK"
-                // }
-            );
-            if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-                navigation.navigate('CreatePin', { t: t })
+                PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
+            ]);
+
+            if (granted['android.permission.CAMERA'] === PermissionsAndroid.RESULTS.GRANTED && granted['android.permission.ACCESS_FINE_LOCATION'] === PermissionsAndroid.RESULTS.GRANTED) {
+                Geolocation.getCurrentPosition(
+                    position => {
+                        console.log(position);
+                        AsyncStorage.setItem('Location', JSON.stringify(position));
+                    },
+                    error => {
+                        // See error code charts below.
+                        console.log(error.code, error.message);
+
+                    },
+                    { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 },
+                );
+                    const Pin = await AsyncStorage.getItem('Pin')
+                    const PinDate = await AsyncStorage.getItem('PinDate')
+                    if (Pin && PinDate) {
+                        navigation.navigate('PinScreen')
+                    } else {
+                        navigation.navigate('CreatePin')
+                    }
+               
+
             } else {
                 setModalVisible1(true)
-               // ToastAndroid.show("Please provide requested permissions to proceed further", ToastAndroid.SHORT);
-                // requestCameraPermission()
             }
         } catch (err) {
             console.warn(err);
         }
     };
-
-
 
     return (
         <SafeAreaProvider>
@@ -187,11 +190,7 @@ const Permission = ({ navigation }) => {
                                                         style={[styles.Image]}
                                                         width={item.width}
                                                         height={item.height} />}
-                                    {/* <SvgUri
-                                        uri={item.image.uri}
-                                        style={[styles.Image]}
-                                        width={item.width}
-                                        height={item.height} /> */}
+
                                     <View style={{flex:1, flexDirection: 'column', paddingHorizontal: 15.5, }}>
                                         <Text style={styles.title}>{lang == "en" ? item.title1 : item.title2}</Text>
                                         <Text style={[styles.Desc, { fontSize: lang == 'en' ? 12 : 10 }]}>{lang == "en" ? item.description1 : item.description2}</Text>
@@ -200,6 +199,7 @@ const Permission = ({ navigation }) => {
                             </View>
                         )
                     })}
+
                 </ScrollView>
                 <View style={{ flex: 0.1 }}>
                     <View style={styles.ViewButton}>
@@ -216,6 +216,7 @@ const Permission = ({ navigation }) => {
                 onPressOut={() => setModalVisible1(!ModalVisible1)}
                 setModalVisible={setModalVisible1}
             />
+
         </SafeAreaProvider>
     )
 }

@@ -23,6 +23,7 @@ import Image1 from '../assets/Vector.svg';
 import { useTranslation } from 'react-i18next';
 import LeadModal from './LeadModal';
 import ValidModal from './ValidModal';
+import { api } from '../../../Services/Api'
 
 const NewLead1 = ({ navigation }) => {
     const { t } = useTranslation();
@@ -37,16 +38,14 @@ const NewLead1 = ({ navigation }) => {
     const [ValidModal1, setValidModal1] = useState(false)
     const [ResultError, setResultError] = useState(false)
 
-    const VillageList = [
-        {
-            id: '1',
-            title: 'Kakkanad North'
-        },
-        {
-            id: '2',
-            title: 'Kakkanad West'
-        }
-    ]
+    const [vilageList, setVillageList] = useState([])
+
+    const [error, setError] = useState({
+        Name: true,
+        Mobile: true,
+        Pincode: true,
+        Village: true,
+    })
 
     const onChangeVillage = (text) => {
         setVillage(text)
@@ -84,6 +83,45 @@ const NewLead1 = ({ navigation }) => {
             ToastAndroid.show(t('common:Valid'), ToastAndroid.SHORT);
         }
     }
+
+    async function getVillage(text) {
+        const data = {
+            "pin": Pincode,
+            "villageName": text,
+        }
+        await api.getNewLeadVillage(data).then((res) => {
+            console.log('-------------------res', res?.data?.body)
+            setVillageList(res?.data?.body)
+            setBstatus(true)
+        })
+            .catch((err) => {
+                console.log('-------------------err', err?.response)
+            })
+    }
+
+    async function onSubmit() {
+        const data = {
+            "leadName": Name,
+            "mobileNumber": Mobile,
+            "pin": Pincode,
+            "village": Village
+        }
+        await api.createLead(data).then((res) => {
+            if (res?.status == 200) {
+                if (res?.data?.body == 'This number is already registered') {
+                    setValidModal1(true)
+                }
+                else if (res?.data?.body == 'Lead generated') {
+                    setModalVisible(true)
+                }
+            }
+            console.log('-------------------res', res)
+        })
+            .catch((err) => {
+                console.log('-------------------err', err?.response)
+            })
+    }
+
 
     return (
         <>
@@ -147,45 +185,59 @@ const NewLead1 = ({ navigation }) => {
                                 <TextInput
                                     value={Village}
                                     style={styles.TextInputBranch}
-                                    onChangeText={(text) => onChangeVillage(text)} />
+                                    onChangeText={(text) => {
+                                        setVillage(text)
+                                        if (text == '') {
+                                            setVillageList([])
+                                            setBstatus(false)
+                                            setButton(false)
+                                        } else {
+                                            getVillage(text)
+                                        }
+                                    }} />
                             </View>
-                            {BStatus &&
-                                <View style={styles.ViewMapBranch}>
-                                    {VillageList.map((item) => {
+                            {vilageList.length > 0
+                                ? <View style={styles.ViewMapBranch1}>
+                                    {vilageList.map((item) => {
                                         return (
-                                            <TouchableOpacity onPress={() => {
-                                                setBstatus(false)
-                                                setVillage(item.title)
-                                                setButton(true)
-                                                setResultError(false)
-                                            }}>
-                                                <View style={{ paddingTop: width * 0.05 }}>
 
-                                                    <Text style={styles.ItemNameBranch}>{item.title}</Text>
-                                                    {item.id == 1 &&
-                                                        <View style={styles.Line} />}
+                                            <TouchableOpacity onPress={() => {
+                                                setVillage(item)
+                                                setButton(true)
+                                                setVillageList([])
+                                                setBstatus(false)
+                                            }}>
+                                                <View style={{ paddingTop: 8 }}>
+
+                                                    <Text style={styles.ItemNameBranch}>{item}</Text>
+
+                                                    <View style={styles.Line} />
                                                 </View>
                                             </TouchableOpacity>
+
                                         )
                                     })}
-                                </View>}
-                            {ResultError && !BStatus &&
-                                <View style={[styles.ViewMapBranch, { height: width * 0.15, }]}>
-                                    <View style={{ paddingTop: width * 0.05 }}>
+                                </View>
+                                : null}
+                            {vilageList.length == 0 && BStatus ? <View style={[styles.ViewMapBranch, { height: width * 0.15, }]}>
+                                <View style={{ paddingTop: width * 0.05 }}>
 
-                                        <Text style={styles.ItemNameBranch}>No results found</Text>
+                                    <Text style={styles.ItemNameBranch}>No results found</Text>
 
-                                    </View>
-                                </View>}
+                                </View>
+                            </View> : null}
+
                         </View>}
 
 
                 </ScrollView>
             </KeyboardAvoidingView>
-
-            <TouchableOpacity style={[styles.Button1, { backgroundColor: Button ? COLORS.colorB : '#ECEBED' }]}
-                onPress={() => Button ? setModalVisible(true) : setValidModal1(true)}>
-                <Text style={[styles.text1, { color: Button ? COLORS.colorBackground : '#979C9E' }]}>{t('common:Confirm')}</Text>
+            {/* Button ? setModalVisible(true) : setValidModal1(true) */}
+            <TouchableOpacity
+                style={[styles.Button1, { backgroundColor: Button && Name && Mobile && Pincode ? COLORS.colorB : '#ECEBED' }]}
+                disabled={Button && Name && Mobile && Pincode ? false : true}
+                onPress={onSubmit}>
+                <Text style={[styles.text1, { color: Button && Name && Mobile && Pincode ? COLORS.colorBackground : '#979C9E' }]}>{t('common:Confirm')}</Text>
             </TouchableOpacity>
 
             <LeadModal ModalVisible={ModalVisible}
@@ -302,6 +354,17 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         marginTop: width * 0.025,
         backgroundColor: '#FCFCFC'
+    },
+    ViewMapBranch1: {
+        width: width * 0.9,
+        // height: height * 0.16,
+        borderWidth: 1,
+        paddingLeft: width * 0.02,
+        borderColor: 'rgba(236, 235, 237, 1)',
+        borderRadius: 8,
+        marginTop: width * 0.025,
+        backgroundColor: '#FCFCFC',
+        alignSelf: 'flex-start'
     },
     ItemNameBranch: {
         paddingLeft: width * 0.02,

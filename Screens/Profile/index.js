@@ -28,7 +28,7 @@ import NewUser from './assets/NewUser.svg';
 
 const Profile = ({ navigation }) => {
     const { t } = useTranslation();
-    const [notificationCount, SetNotificationCount] = useState('')
+    const [notificationCount, SetNotificationCount] = useState()
     const isDarkMode = true;
     const DATA = [
         {
@@ -73,18 +73,16 @@ const Profile = ({ navigation }) => {
         const data = {
             "employeeId": 1
         };
-
-        const res = await api.HomeScreen(data).catch(err => {
-            console.log(err.response);
-        });
-        if (res) {
-            console.log('response Login Api', res.data.body.activityCount)
+        await api.homeScreenApi(data).then((res) => {
+            console.log('-------------------res', res?.data)
             SetNotificationCount(res?.data?.body)
-        } else {
-            console.log('response Login Api else', res)
-        }
+        })
+            .catch((err) => {
+                console.log('-------------------err', err?.response)
+            })
     };
     // ------------------ HomeScreen Api Call End ------------------
+
     useEffect(() => {
         HomeScreenApiCall()
     }, []);

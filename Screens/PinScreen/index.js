@@ -4,40 +4,38 @@ import {
     Text,
     SafeAreaView,
     View,
-    TouchableOpacity,
-    TextInput,
-    Image,
-    KeyboardAvoidingView,
     StatusBar,
-    ScrollView,
     Dimensions,
     BackHandler,
     ImageBackground,
-    
 } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { COLORS, FONTS } from '../../Constants/Constants';
-import Statusbar from '../../Components/StatusBar';
-import Header from '../../Components/Header';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRoute } from '@react-navigation/native';
 import { useFocusEffect } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import OTPInputView from '@twotalltotems/react-native-otp-input';
-const { height, width } = Dimensions.get('screen');
-import LinearGradient from 'react-native-linear-gradient';
-import Svadhan from '../../assets/image/AgentLogo.svg';
+
+import { COLORS, FONTS } from '../../Constants/Constants';
+import Statusbar from '../../Components/StatusBar';
 import PinModal from './Components/PinModal';
 
+import Svadhan from '../../assets/image/AgentLogo.svg';
+
+const { height, width } = Dimensions.get('screen');
+
 const PinScreen = ({ navigation, }) => {
+
     const route = useRoute();
-    console.log("route name",);
     const isDarkMode = true
     const { t } = useTranslation();
+
     const [lang, setLang] = useState('')
-    const [BStatus, setBstatus] = useState(false)
     const [OtpValue, setOtpValue] = useState('')
+
     const [ModalVisible, setModalVisible] = useState(false)
+    const [BStatus, setBstatus] = useState(false)
+    const [error, setError] = useState(false)
 
     useEffect(() => {
         getData()
@@ -54,66 +52,84 @@ const PinScreen = ({ navigation, }) => {
     }
 
     const handleGoBack = useCallback(() => {
-        if(BStatus){
+        if (BStatus) {
             setBstatus(false)
-        }else{
+        } else {
             navigation.goBack()
         }
         return true; // Returning true from onBackPress denotes that we have handled the event
-      }, [navigation]);
-    
-      useFocusEffect(
+    }, [navigation]);
+
+    useFocusEffect(
         React.useCallback(() => {
-          BackHandler.addEventListener('hardwareBackPress', handleGoBack);
-    
-          return () =>
-            BackHandler.removeEventListener('hardwareBackPress', handleGoBack);
+            BackHandler.addEventListener('hardwareBackPress', handleGoBack);
+
+            return () =>
+                BackHandler.removeEventListener('hardwareBackPress', handleGoBack);
         }, [handleGoBack]),
-      );
+    );
+
+    const getPinCheck = async (code) => {
+        try {
+            const Pin = await AsyncStorage.getItem('Pin')
+            console.log('-----pin', Pin)
+
+            if (Pin === code) {
+                navigation.navigate('Profile')
+
+            } else {
+                setError(true)
+                setInvalidState(invalidState + 1)
+                if (invalidState === 4) {
+                    invalidOtpApi()
+                }
+                console.log('invalidState', invalidState)
+            }
+        } catch (e) {
+            console.log(e)
+        }
+    }
 
     return (
         <SafeAreaProvider>
             <SafeAreaView style={styles.container1} />
             <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
 
-
             <View style={styles.ViewContent}>
-                <ImageBackground  source={require('./Images/bg.png')}
-                    //'#003874','#003874','#FFFFFF', '#003874',
+
+                <ImageBackground source={require('./Images/bg.png')}
                     style={styles.Linear}>
-
                     <Svadhan width={350} height={80} resizeMode='contain' style={{ top: -10 }} />
-
                     <Text style={styles.Text1}>{t('common:Hi')}, Athira Anil</Text>
                 </ImageBackground>
 
-
                 <View style={styles.ViewPin}>
-                    <Text style={styles.PinTEXT} onPress={() => setModalVisible(true)}>{t('common:PleaseEnterPIN')}</Text>
 
+                    <Text style={styles.PinTEXT} onPress={() => setModalVisible(true)}>{t('common:PleaseEnterPIN')}</Text>
                     <OTPInputView
                         style={[styles.OtpInput, {}]}
                         pinCount={4}
                         code={OtpValue}
                         onCodeChanged={otp => setOtpValue(otp)}
-                        // code={this.state.code} //You can supply this prop or not. The component will be used as a controlled / uncontrolled component respectively.
-                        // onCodeChanged = {code => { this.setState({code})}}
                         autoFocusOnLoad={false}
                         codeInputFieldStyle={{ color: '#090A0A', borderRadius: 8, backgroundColor: '#FFFFF', }}
                         placeholderTextColor="black"
                         onCodeFilled={(code => {
-                            setModalVisible(!ModalVisible)
-
+                            if (code.length === 4) {
+                                getPinCheck(code)
+                            }
+                            // setModalVisible(!ModalVisible)
                         })}
                     />
-
                     <Text style={styles.TextF} onPress={() => navigation.navigate('ForgotPin')}>{t('common:ForgotPIN')}</Text>
 
                 </View>
 
-                {/* <View style={{justifyContent:'center'}}>
-                <Text style={styles.errrorText}>Invalid PIN</Text>
-                </View> */}
+                {error
+                    ? <View style={{ justifyContent: 'center' }}>
+                        <Text style={styles.errrorText}>Invalid PIN</Text>
+                    </View> : null}
+
             </View>
 
             <PinModal ModalVisible={ModalVisible}
@@ -127,7 +143,6 @@ const PinScreen = ({ navigation, }) => {
 
 export default PinScreen;
 
-
 const styles = StyleSheet.create({
     container1: {
         flex: 0,
@@ -135,7 +150,6 @@ const styles = StyleSheet.create({
         paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
     },
     ViewContent: {
-        // justifyContent: 'center',
         alignItems: 'center',
         flex: 1,
         backgroundColor: COLORS.colorBackground,
@@ -169,7 +183,6 @@ const styles = StyleSheet.create({
         borderRadius: 12,
         fontWeight: 'bold',
         color: "black",
-        //margin:5
     },
     Linear: {
         width: width,
