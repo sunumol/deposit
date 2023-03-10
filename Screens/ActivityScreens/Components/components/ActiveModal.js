@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+
+import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View, Dimensions, Image, Animated } from "react-native";
 import Icon1 from 'react-native-vector-icons/Ionicons'
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -8,28 +9,65 @@ import Modal from "react-native-modal";
 import Disable from '../../Images/disable.svg'
 import Enable from '../../Images/enable.svg'
 import { Colors } from "react-native/Libraries/NewAppScreen";
+import { api } from "../../../../Services/Api";
 
-const App = ({ visible, onPressOut, meet, details }) => {
+const App = ({ visible, onPressOut, meet, details ,setEnab}) => {
     const { t } = useTranslation();
     const [enableContinue, setEnableContinue] = useState(false)
     const [id, setId] = useState()
     const [data, setData] = useState([
         {
-            id: 1,
+            id: "Not interested",
             title: t('common:Notinterested'),
             checked: false
         },
         {
-            id: 2,
+            id: "Not reachable",
             title: t('common:Notreachable'),
             checked: false
         },
         {
-            id: 3,
+            id: meet === true ? "Eligibility not checked": "Explained Trust Circle",
             title: meet === true ? t('common:Eligibilitynotchecked') : t('common:ExplainedTrustCircle'),
             checked: false
         }
     ])
+
+
+
+        // ------------------ Activity Update Api Call Start ------------------
+        const updateActivity = async () => {
+
+
+            const data = {
+                "employeeId": 1,
+                "activityType": id,
+                "activityId":details?.activityId
+
+            };
+            await api.updateActivity(data).then((res) => {
+                console.log('-------------------res update', res.data.body)
+                onPressOut();
+                setEnab(true)
+          
+            })
+                .catch((err) => {
+                    console.log('-------------------err123', err?.response)
+                })
+        };
+        // ------------------ Activity Update Api Call End ------------------
+    
+
+   
+    useEffect(() => {
+  
+    }, [])
+
+
+  const  selectstatus = (value) => {
+    setId(value)
+        console.log('activity',value)
+    }
 
     return (
         <Modal isVisible={visible}
@@ -41,23 +79,23 @@ const App = ({ visible, onPressOut, meet, details }) => {
                     <Text style={styles.statusText}>{t('common:Status')}</Text>
                     <View style={{ flexDirection: 'row', paddingHorizontal: 20, paddingTop: 20, marginBottom: 30 }}>
                         <View style={{ flex: 1, flexDirection: 'row' }}>
-                            <View style={[styles.circleStyle, { backgroundColor: details?.color }]}>
-                                <Text style={styles.circleText}>{details?.short}</Text>
+                            <View style={[styles.circleStyle, { backgroundColor: '#94BCC8'}]}>
+                                <Text numberOfLines={1} style={styles.circleText}>{details?.customerName}</Text>
                             </View>
 
                             <View style={{ flexDirection: 'column', paddingLeft: 12, paddingTop: 5 }}>
-                                <Text style={styles.nameText}>{details?.name}</Text>
+                                <Text style={styles.nameText}>{details?.customerName}</Text>
                                 <View style={{ flexDirection: 'row', }}>
                                     <View style={{ paddingTop: 5, paddingRight: 1 }}>
                                         <Icon1 name="location-outline" color={"black"} />
                                     </View>
-                                    <Text style={[styles.idText, { paddingTop: 4 }]}>{details?.text}</Text>
+                                    <Text style={[styles.idText, { paddingTop: 4 }]}>{details?.pin}</Text>
                                 </View>
                             </View>
                         </View>
                         <View style={{ flexDirection: 'row', paddingTop: 4 }}>
                             <Icon2 name="phone-in-talk-outline" color={"black"} size={15} />
-                            <Text style={[styles.numText, { paddingLeft: 6 }]}>{details?.phoneNumber}</Text>
+                            <Text style={[styles.numText, { paddingLeft: 6 }]}>{details?.mobileNumber}</Text>
                         </View>
 
                     </View>
@@ -83,6 +121,7 @@ const App = ({ visible, onPressOut, meet, details }) => {
                                         : <Disable width={18} height={18} onPress={() => {
                                             setEnableContinue(true)
                                             setId(item.id)
+                                            selectstatus(item.id)
                                         }
                                         } />
                                     }
@@ -96,7 +135,8 @@ const App = ({ visible, onPressOut, meet, details }) => {
 
                     <TouchableOpacity
                         style={[styles.continueView, { backgroundColor: id ? COLORS.colorB : COLORS.colorBorder }]}
-                        onPress={onPressOut}
+                        onPress={()=> {updateActivity()}}
+                    
                         disabled={id ? false : true}>
                         <Text style={[styles.continueText, { color: id ? COLORS.colorBackground : COLORS.colorWhite2 }]}>{t('common:Submit')}</Text>
                     </TouchableOpacity>

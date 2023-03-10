@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import {
     View,
@@ -11,13 +12,16 @@ import { COLORS, FONTS } from '../../../Constants/Constants';
 const { height, width } = Dimensions.get('screen');
 import { useTranslation } from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import CallTab from '../Components/components/callTab'
+import CallTab from '../Components/components/callTab';
+import { api } from '../../../Services/Api';
 
 
-const ItemTabs = (props) => {
+const ItemTabs = ({props,navigation}) => {
     const { t } = useTranslation();
     const [Lang, setLang] = useState('')
     const [ModalVisible1, setModalVisible1] = useState(false)
+    const [listing,setListing] = useState ([])
+    const [enab,setEnab]=useState(false)
     const [meetData, setMeetData] = useState([
         {
             id: 1,
@@ -77,9 +81,45 @@ const ItemTabs = (props) => {
         },
     ])
 
+
+
+
+    const ActivityListingApiCall = async () => {
+        const data = {
+            "employeeId": 1,
+            "activityType":"CALL"
+        };
+        await api.activitylistingscreenApi(data).then((res) => {
+            console.log('-------------------res call', res?.data?.body)
+            setListing(res?.data?.body)
+            setEnab(false)
+        })
+            .catch((err) => {
+                console.log('-------------------err', err?.response)
+            })
+    };
+
+
+
+
+
+    React.useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+        
+           ActivityListingApiCall()
+       
+        });
+getData();
+        return unsubscribe;
+    }, [navigation,enab]);
+
+    {console.log('====fkjkfjkjfkjrf',enab)}
+    
     useEffect(() => {
-        getData()
-    }, [])
+           ActivityListingApiCall()
+    }, [enab]);
+
+ 
 
     const getData = async () => {
         try {
@@ -95,13 +135,17 @@ const ItemTabs = (props) => {
             <View style={{ paddingHorizontal: 20 }}>
 
                 {
-                    meetData.map((item, index) => {
+                    listing.map((item, index) => {
+                 
                         return (
-                            <CallTab
+                            <>
+                           {item?.data.length > 0 ?  (<CallTab
                                 id={item.id}
                                 time={item.time}
                                 data={item.data} 
-                                meet={false}/>
+                                setEnab={setEnab}
+                                meet={false}/>) : null}
+                                </>
                         )
                     })
                 }

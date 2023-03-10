@@ -1,3 +1,4 @@
+
 ;
 import React, { useEffect, useState } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
@@ -11,11 +12,35 @@ const ActiveTab = (props,navigation) => {
     const { t } = useTranslation();
     const [Lang, setLang] = useState('')
     const [modalVisible,setModalVisible]=useState(false)
+    const [enab,setEnab]=useState(false)
 
     useEffect(() => {
         getData()
     }, [])
-
+    const  getRandomColor=()=> {
+        var letters = '0123456789ABCDEF';
+        var color = '#';
+        for (var i = 0; i < 3; i++) {
+          color += letters[Math.floor(Math.random() * 8)];
+        }
+        return color;
+      }
+    
+    
+      const getInitials = (name) => {
+        let initials;
+        const nameSplit = name?.split(" ");
+         const nameLength = nameSplit?.length;
+        if (nameLength > 1) {
+            initials =
+                nameSplit[0].substring(0, 1) +
+                nameSplit[nameLength - 1].substring(0, 1);
+        } else if (nameLength === 1) {
+            initials = nameSplit[0].substring(0, 1);
+        } else return;
+    
+         return initials.toUpperCase();
+    };
     const getData = async () => {
         try {
             const lang = await AsyncStorage.getItem('user-language')
@@ -32,12 +57,12 @@ const ActiveTab = (props,navigation) => {
         onPress={()=>setModalVisible(true)}>
             <View style={{ flex: 1, flexDirection: 'row' }}>
 
-                <View style={[styles.circleStyle, { backgroundColor: props.color }]}>
-                    <Text style={styles.circleText}>{props.short}</Text>
+                <View style={[styles.circleStyle, { backgroundColor: getRandomColor() }]}>
+                    <Text  style={styles.circleText}>{getInitials(props.name)}</Text>
                 </View>
 
                 <View style={{ flexDirection: 'column', paddingLeft: 12, paddingTop: 5 }}>
-                    <Text style={styles.nameText}>{props.name}</Text>
+                    <Text  style={styles.nameText}>{props.name}</Text>
                     <View style={{ flexDirection: 'row', }}>
                         <View style={{ paddingTop: 5, paddingRight: 1 }}>
                             <Icon1 name="location-outline" color={"black"} />
@@ -53,17 +78,17 @@ const ActiveTab = (props,navigation) => {
             <Icon2 name="phone-in-talk-outline" color={"black"} size={15}/>
                 <Text style={[styles.numText,{paddingLeft:6}]}>{props.phoneNumber}</Text>
                 </View>
-                {props.status === 'Lead' &&
+                {props.status === 'Leads Follow Up' &&
                     <View style={[styles.leadContainer, { backgroundColor: COLORS.LightYellow }]}>
                         <Text style={[styles.leadText, { color: COLORS.DarkYellow }]}>{t('common:LeadsFollowUp')}</Text>
                     </View>
                 }
-                {props.status === 'Explain' &&
+                {props.status === 'Explain Trust Circle' &&
                     <View style={[styles.leadContainer, { backgroundColor: COLORS.LightPurple }]}>
                         <Text style={[styles.leadText, { color: COLORS.DarkPurple }]}>{t('common:ExplainTrustCircle')}</Text>
                     </View>
                 }
-                {props.status === 'Conduct' &&
+                {props.status === 'Conduct CGT' &&
                     <TouchableOpacity onPress={props.navigation}
                     style={[styles.leadContainer, { backgroundColor: COLORS.LightBlue }]}>
                         <Text style={[styles.leadText, { color: COLORS.DarkBlue }]}>{t('common:ConductCGT')}</Text>
@@ -77,7 +102,7 @@ const ActiveTab = (props,navigation) => {
             </View>
 
         </TouchableOpacity>
-            <ActivityModal visible={modalVisible} onPressOut={()=>setModalVisible(!modalVisible)} meet={props.status === 'Explain' ? false : true} details={props.details}/>
+            <ActivityModal visible={modalVisible} onPressOut={()=>setModalVisible(!modalVisible)} meet={props.status === 'Explain Trust Circle' ? false : true} details={props.details} setEnab={props.setEnab}/>
             </>
     )
 }

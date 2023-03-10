@@ -495,7 +495,7 @@ export default {
     'Meet': 'MEET',
     'Call': 'CALL',
     'CollectionFollowUp': 'Collection Follow Up',
-    'ExplainTrustCircle': 'Explain Trust Circle',
+    'ExplainTrustCircle': 'Welcome Call',
     'ConductCGT': 'Conduct CGT',
     'LeadsFollowUp': 'Leads Follow Up',
     'Status': 'Status',

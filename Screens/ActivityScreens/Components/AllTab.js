@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import {
     View,
@@ -6,6 +7,7 @@ import {
     StyleSheet,
     TouchableOpacity,
     Image,
+    FlatList,
     ScrollView
 } from 'react-native';
 import { COLORS, FONTS } from '../../../Constants/Constants';
@@ -14,39 +16,80 @@ import { useTranslation } from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import DropTab from '../Components/components/dropTab'
+import { api } from '../../../Services/Api';
+import moment from 'moment';
 
 
-const ItemTabs = ({navigation}) => {
+
+const ItemTabs = ({ navigation }) => {
     const { t } = useTranslation();
     const [Lang, setLang] = useState('')
     const [dropStatus, setDropStatus] = useState(false)
-    const [data, setData] = useState([{
-        id: 1,
-        startTime: '07:00 AM ',
-        endTime: '10:00 AM',
-        badge: 3,
-        open: false
-    }, {
-        id: 1,
-        startTime: '10:00 AM',
-        endTime: '01:00 PM',
-        badge: 3,
-        open: false
-    },
-    {
-        id: 1,
-        startTime: '01:00 PM',
-        endTime: '04:00 PM',
-        badge: 3,
-        open: false
-    },
-    {
-        id: 1,
-        startTime: '04:00 PM',
-        endTime: '07:00 PM',
-        badge: 3,
-        open: false
-    }])
+    const [callcount, setCallcount] = useState();
+    const [meetcount, setMeetCount] = useState([]);
+    const [listing, setListing] = useState()
+    const [enab,setEnab]=useState(false)
+
+  
+
+
+    const [data, setData] = useState([
+        {
+            time: "09:00:00",
+            data: []
+        },
+        {
+            time: "12:00:00",
+            data: [
+                {
+                    activityId: 52,
+                    activityType: "CALL",
+                    purpose: "Leads Follow Up",
+                    fromTime: "2023-03-03T12:26:15.674",
+                    toTime: "2023-02-22T12:00:00",
+                    customerName: "Anand451612932",
+                    short: "AJ",
+                    color: '#94BCC8',
+                    mobileNumber: "1092787395",
+                    villageName: "Test Village",
+                    pin: 2100044061,
+                    employeeId: 1,
+                    updatedTime: "2023-02-21T16:47:13.745573",
+                    updatedBy: "SYSTEM",
+                    status: "Not reachable",
+                    customerId: null,
+                    handled: false
+                },
+                {
+                    activityId: 52,
+                    activityType: "MEET",
+                    purpose: "Leads Follow Up",
+                    fromTime: "2023-03-03T12:26:15.674",
+                    toTime: "2023-02-22T12:00:00",
+                    short: "AJ",
+                    color: '#94BCC8',
+                    customerName: "Anand451612932",
+                    mobileNumber: "1092787395",
+                    villageName: "Test Village",
+                    pin: 2100044061,
+                    employeeId: 1,
+                    updatedTime: "2023-02-21T16:47:13.745573",
+                    updatedBy: "SYSTEM",
+                    status: "Not reachable",
+                    customerId: null, handled: false
+                }
+                ,]
+        },
+        {
+            time: "12:30:00",
+            data: []
+        },
+
+    ])
+
+
+
+
     const [listData, setListData] = useState([
 
         {
@@ -83,10 +126,43 @@ const ItemTabs = ({navigation}) => {
 
 
 
+    // ------------------ Activity Listing Api Call Start ------------------
+    const ActivityListingApiCall = async () => {
+        const data = {
+            "employeeId": 1
+        };
+        await api.activitylistingscreenApi(data).then((res) => {
+            console.log('-------------------res', res?.data?.body)
+            setListing(res?.data?.body)
+            setEnab(false)
+
+        })
+            .catch((err) => {
+                console.log('-------------------err', err?.response)
+            })
+    };
+    // ------------------ Activity Api Call End ------------------
+
+
+
+    React.useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+        
+           ActivityListingApiCall()
+       
+          
+        });
+getData();
+        return unsubscribe;
+    }, [navigation,enab]);
+
 
     useEffect(() => {
-        getData()
-    }, [])
+        ActivityListingApiCall()
+ }, [enab]);
+
+
+
 
     const getData = async () => {
         try {
@@ -97,25 +173,160 @@ const ItemTabs = ({navigation}) => {
             console.log(e)
         }
     }
+
+
+
+
+
+
+
     return (
         <ScrollView style={{ flex: 1, backgroundColor: COLORS.colorBackground }}>
-            <View style={{ paddingHorizontal: 20,marginBottom:10 }}>
-                {data.map((item, index) => {
+            <View style={{ paddingHorizontal: 20, marginBottom: 10 }}>
+
+                {/* <FlatList
+                    data={listing}
+                    showsVerticalScrollIndicator={false}
+                    renderItem={(item) => {
+
+                        return (
+                            <View>
+                            {console.log('flatlist-----------',item.item)} 
+
+                                <>
+                                    <View style={[styles.containerTab, { backgroundColor: item.open ? 'rgba(242, 242, 242, 0.5)' : COLORS.backgroundColor }]}>
+                                        <View style={{ flex: 1 }}>
+                                            <Text style={styles.timeText}>{item.item.time} - {item.item.endTime}</Text>
+                                        </View>
+                                        <View style={{ justifyContent: 'flex-end', flexDirection: 'row', alignItems: 'center' }}>
+                                            <View style={styles.badgeContainer}>
+                                                <Text style={styles.badgeText}>{item.item?.data?.length}</Text>
+                                            </View>
+                                            <TouchableOpacity
+                                                onPress={() => {
+                                                    const nextList = [...data];
+                                                    nextList[item.index].open = !nextList[item.index].open;
+                                                    setData(nextList);
+                                                }}
+                                            >
+                                                <Icon name={item.open ? "chevron-up" : "chevron-down"}
+                                                    color={COLORS.colorB}
+                                                    size={25}
+                                                    style={{ paddingLeft: 13 }}
+
+                                                />
+                                            </TouchableOpacity>
+                                        </View>
+                                    </View>
+                                    {item.open
+                                        ?
+                                        <>
+
+                                            <View>
+                                                <Text style={styles.timeDropStyle}>{item.item.time} (2)</Text>
+                                                <Text style={styles.headText}>{t('common:Call')}</Text>
+
+                                                <FlatList
+                                                    data={item.item.data}
+                                                    renderItem={({ item, index }) => {
+                                                        console.log('detials-------', item)
+
+
+                                                        if (item.activityType == 'CALL') {
+
+                                                            return (
+                                                                <DropTab
+                                                                    id={item.id}
+                                                                    short={item.short}
+                                                                    name={item.customerName}
+                                                                    text={item.pin}
+                                                                    phoneNumber={item.mobileNumber}
+                                                                    color={item.color}
+                                                                    status={item.purpose}
+                                                                    details={item}
+                                                                />
+                                                            );
+                                                        }
+
+                                                    }}
+
+
+
+
+                                                />
+
+                                            </View>
+                                            <View>
+                                                <Text style={styles.timeDropStyle}>{item.item.time} AM (1)</Text>
+                                                <Text style={styles.headText}>{t('common:Meet')}</Text>
+
+
+
+                                                <FlatList
+                                                    data={item.item.data}
+                                                    renderItem={({ item, index }) => {
+
+
+                                                        if (item.activityType == 'MEET') {
+                                                            return (
+                                                                <DropTab
+                                                                    id={item.id}
+                                                                    short={item.short}
+                                                                    name={item.customerName}
+                                                                    text={item.pin}
+                                                                    phoneNumber={item.mobileNumber}
+                                                                    color={item.color}
+                                                                    status={item.purpose}
+                                                                    details={item}
+                                                                    navigation={() => navigation.navigate('CGT')}
+                                                                />
+                                                            );
+                                                        }
+
+                                                    }}
+
+
+
+
+                                                />
+
+                                            </View>
+
+                                        </> : null}
+
+
+                                </>
+
+                            </View>
+                        );
+                    }}
+
+                /> */}
+
+                {listing?.map((item, index) => {
+                 
+                
                     return (
                         <>
-                            <View style={[styles.containerTab,{backgroundColor:item.open?'rgba(242, 242, 242, 0.5)':COLORS.backgroundColor}]}>
+                         { item.data.length > 0 ?  <TouchableOpacity 
+                           onPress={() => {
+                            const nextList = [...listing];
+                            nextList[index].open = !nextList[index].open;
+                            setListing(nextList);
+                        }}
+                         style={[styles.containerTab, { backgroundColor: item.open ? 'rgba(242, 242, 242, 0.5)' : COLORS.backgroundColor }]}>
                                 <View style={{ flex: 1 }}>
                                     <Text style={styles.timeText}>{item.startTime} - {item.endTime}</Text>
                                 </View>
                                 <View style={{ justifyContent: 'flex-end', flexDirection: 'row', alignItems: 'center' }}>
                                     <View style={styles.badgeContainer}>
-                                        <Text style={styles.badgeText}>{item.badge}</Text>
+                                        <Text style={styles.badgeText}>{item.data.length}</Text>
                                     </View>
                                     <TouchableOpacity
                                         onPress={() => {
-                                            const nextList = [...data];
+                                            const nextList = [...listing];
                                             nextList[index].open = !nextList[index].open;
-                                            setData(nextList);
+                                            setListing(nextList);
                                         }}
                                     >
                                         <Icon name={item.open ? "chevron-up" : "chevron-down"}
@@ -126,49 +337,64 @@ const ItemTabs = ({navigation}) => {
                                         />
                                     </TouchableOpacity>
                                 </View>
-                            </View>
+                            </TouchableOpacity> : null}
                             {item.open
                                 ?
                                 <>
+
                                     <View>
-                                        <Text style={styles.timeDropStyle}>07:00 AM (2)</Text>
+                                    {item.callCount >0 ?(   
+                                        <>
+                                         <Text style={styles.timeDropStyle}>{item.startTime} ({item.callCount})</Text>
                                         <Text style={styles.headText}>{t('common:Call')}</Text>
-                                        {listData.map((item) => {
-                                            return (
-                                                <DropTab
-                                                    id={item.id}
-                                                    short={item.short}
-                                                    name={item.name}
-                                                    text={item.text}
-                                                    phoneNumber={item.phoneNumber}
-                                                    color={item.color}
-                                                    status={item.status}
-                                                    details={item}
-                                                />
-                                            );
+                                        </>):null}
+                                        {item.data.map((item,index) => {
+                                            if (item.activityType == 'CALL') {
+                                                    console.log('call datasss')
+                                                return (
+                                                    <DropTab
+                                                        id={item.id}
+                                                        short={item.short}
+                                                        name={item.customerName}
+                                                        text={item.pin}
+                                                        phoneNumber={item.mobileNumber}
+                                                        color={item.color}
+                                                        setEnab={setEnab}
+                                                        status={item.purpose}
+                                                        details={item}
+                                                    />
+                                                );
+                                            }
                                         })}
 
                                     </View>
                                     <View>
-                                        <Text style={styles.timeDropStyle}>08:30 AM (1)</Text>
+                                       {item.meetCount > 0 ?( 
+                                        <>
+                                       <Text style={styles.timeDropStyle}>{item.startTime}   ({item.meetCount})</Text>
                                         <Text style={styles.headText}>{t('common:Meet')}</Text>
-                                        {meetData.map((item) => {
-                                            return (
-                                                <DropTab
-                                                    id={item.id}
-                                                    short={item.short}
-                                                    name={item.name}
-                                                    text={item.text}
-                                                    phoneNumber={item.phoneNumber}
-                                                    color={item.color}
-                                                    status={item.status}
-                                                    details={item}
-                                                    navigation={()=>navigation.navigate('CGT')}
-                                                />
-                                            );
+                                        </>): null}
+                                        {item.data.map((item) => {
+                                            if (item.activityType == 'MEET') {
+                                                return (
+                                                    <DropTab
+                                                        id={item.id}
+                                                        short={item.short}
+                                                        name={item.customerName}
+                                                        text={item.pin}
+                                                        phoneNumber={item.mobileNumber}
+                                                        color={item.color}
+                                                        status={item.purpose}
+                                                        setEnab={setEnab}
+                                                        details={item}
+                                                        navigation={() => navigation.navigate('CGT')}
+                                                    />
+                                                );
+                                            }
                                         })}
 
                                     </View>
+
                                 </> : null}
 
 
