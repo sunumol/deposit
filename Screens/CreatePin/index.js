@@ -11,25 +11,28 @@ import {
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useRoute } from '@react-navigation/native';
+import { addDays } from 'date-fns'
+import moment from 'moment'
+
 import { COLORS, FONTS } from '../../Constants/Constants';
 import Statusbar from '../../Components/StatusBar';
 import Header2 from '../../Components/Header2';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useRoute } from '@react-navigation/native';
 import OTPTextInput from './Components/otpInput'
 
-const CreatePin = ({ navigation }) => {
+const CreatePin = ({ navigation}) => {
 
+    const routes = useRoute();
     const { t } = useTranslation();
     const otpInput2 = React.createRef();
     const isDarkMode = true;
-    const routes = useRoute();
 
     const [OtpValue, setOtpValue] = useState()
     const [lang, setLang] = useState('')
     const [exitApp, setExitApp] = useState(0);
     const [error, setError] = useState(false);
-
+   
     const clearText = () => {
         otpInput2.current.clear();
     }
@@ -46,9 +49,11 @@ const CreatePin = ({ navigation }) => {
         if (routes.name === "CreatePin") {
             if (exitApp === 0) {
                 setExitApp(exitApp + 1);
+                console.log("exit app create pin", exitApp)
                 ToastAndroid.show("Press back again to exit.", ToastAndroid.SHORT);
             } else if (exitApp === 1) {
                 BackHandler.exitApp();
+                console.log("exit app else", exitApp)
             }
             setTimeout(() => {
                 setExitApp(0)
@@ -97,21 +102,22 @@ const CreatePin = ({ navigation }) => {
                             if (code) {
                                 setError(false)
                             }
-                            if (code.slice(4).length === 4 && code.slice(4, 7).length === 4) {
+                            if (code.slice(4).length === 4) {
+                                if (OtpValue?.length === 4) {
                                     if (OtpValue !== code.slice(4)) {
                                         setError(true);
                                         clearText();
                                     } else {
-                                        navigation.navigate('Profile');
                                         AsyncStorage.setItem('Pin', code.slice(4));
-                                        AsyncStorage.setItem('PinDate', JSON.stringify(new Date()));
+                                        AsyncStorage.setItem('PinDate',new Date().toISOString());
+                                        navigation.navigate('Profile');
                                     }
+                                }
                             }
                         })} />
-
                 </View>
 
-                {error
+                    {error
                     ? <Text style={styles.errrorText}>{t('common:PinError')}</Text>
                     : null}
 

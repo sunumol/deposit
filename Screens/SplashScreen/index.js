@@ -34,6 +34,8 @@ const SplashScreen = ({ navigation }) => {
         if (camera && Location) {
             const Pin = await AsyncStorage.getItem('Pin')
             const PinDate = await AsyncStorage.getItem('PinDate')
+            const ExpiredDate = await AsyncStorage.getItem('ExpiredDate')
+            console.log(Pin,PinDate,ExpiredDate)
             if (Pin && PinDate) {
                 navigation.navigate('PinScreen')
             } else {

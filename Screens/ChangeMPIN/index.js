@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
     StyleSheet,
     Text,
@@ -13,50 +13,45 @@ import {
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+// --------------- Component Imports ---------------------
 import { COLORS, FONTS } from '../../Constants/Constants';
 import Statusbar from '../../Components/StatusBar';
-import Header2 from '../../Components/Header2';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
 import OTPTextInput from './Components/OtpPin'
 import Header from '../../Components/RepayHeader';
+
+// --------------- Image Imports ---------------------
 import Reset from './Images/Reset.svg'
 
 const ChangeMPIN = ({ navigation }) => {
-    const [OtpValue, setOtpValue] = useState("")
-    const [OtpValue2, setOtpValue2] = useState("")
-    const [OtpValue3, setOtpValue3] = useState("")
+
     const isDarkMode = true;
-    const [lang, setLang] = useState('')
     const { t } = useTranslation();
+    const otpInput2 = React.createRef();
+
+    const [OtpValue2, setOtpValue2] = useState("")
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(false);
     const [errorOldPin, setErrorOldPin] = useState(false);
-    const otpInput2 = React.createRef();
+    const [pinSet, setPinSet] = useState()
 
     const clearText = () => {
         otpInput2.current.clear();
     }
 
     useEffect(() => {
-        getData()
+        getPinCheck()
     }, [])
 
-    // useEffect(() => {
-    //     if (OtpValue3.length == 4) {
-    //         setSuccess(true)
-    //       //  setError(false)
-    //         Keyboard.dismiss()
-    //     } else {
-    //         //setError(true)
-    //         setSuccess(false)
-    //     }
-    // }, [OtpValue3])
-
-    const getData = async () => {
+    const getPinCheck = async () => {
         try {
-            const lang = await AsyncStorage.getItem('user-language')
-            setLang(lang)
+            const Pin = await AsyncStorage.getItem('Pin')
+            console.log(Pin, '--------------')
+            if (Pin) {
+                setPinSet(Pin)
+            }
         } catch (e) {
             console.log(e)
         }
@@ -70,7 +65,6 @@ const ChangeMPIN = ({ navigation }) => {
     useFocusEffect(
         React.useCallback(() => {
             BackHandler.addEventListener('hardwareBackPress', handleGoBack);
-
             return () =>
                 BackHandler.removeEventListener('hardwareBackPress', handleGoBack);
         }, [handleGoBack]),
@@ -109,17 +103,14 @@ const ChangeMPIN = ({ navigation }) => {
                                 keyboardType="numeric"
                                 containerStyle={{ marginTop: 7 }}
                                 handleTextChange={(code => {
-                                    setOtpValue(code.slice(0, 4))
                                     setOtpValue2(code.slice(4, 8))
-                                    setOtpValue3(code.slice(8))
                                     if (code) {
                                         setError(false)
                                         setErrorOldPin(false)
                                     }
                                     if (code.slice(0, 4).length === 4) {
-                                        if (code.slice(0, 4) !== '1234') {
+                                        if (code.slice(0, 4) !== pinSet) {
                                             setErrorOldPin(true)
-                                            console.log("bjjhbjhbjhbjh",)
                                             clearText()
                                         }
                                     }
@@ -130,31 +121,17 @@ const ChangeMPIN = ({ navigation }) => {
                                                 setSuccess(false)
                                                 clearText()
                                             } else {
+                                                AsyncStorage.setItem('Pin', code.slice(8));
+                                                AsyncStorage.setItem('PinDate', new Date().toISOString());
                                                 setError(false)
                                                 setSuccess(true)
+                                                Keyboard.dismiss()
                                             }
                                         }
                                     }
-                                    // if (code) {
-                                    //     setError(false)
-                                    // }
-
-                                    // if (code.slice(4).length === 4) {
-                                    //     if (OtpValue2.length === 4) {
-                                    //         if (OtpValue2 !== code.slice(4)) {
-                                    //             setError(true);
-                                    //             clearText();
-                                    //         } else {
-                                    //           setSuccess(true)
-                                    //         }
-                                    //     }
-                                    // }
                                 })} />
 
                         </View>
-                        {/* {error
-                        ? <Text style={styles.errrorText}>{t('common:PinError')}</Text>
-                        : null} */}
                         {success
                             ? <Text style={styles.successText}>{t('common:PINreset')}</Text>
                             : null}

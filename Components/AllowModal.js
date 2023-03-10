@@ -4,7 +4,7 @@ import { COLORS, FONTS } from '../Constants/Constants';
 const width = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;
 import { useTranslation } from 'react-i18next';
-const App = ({ ModalVisible, onPressOut, setModalVisible, setOtpValue, navigation }) => {
+const App = ({ ModalVisible, onPressOut, setModalVisible, setOtpValue, navigation, setOtpFetch, ConfirmOtp, otpMessage }) => {
     const { t } = useTranslation();
     return (
 
@@ -21,26 +21,20 @@ const App = ({ ModalVisible, onPressOut, setModalVisible, setOtpValue, navigatio
                     style={styles.touchableStyle} >
                 </TouchableOpacity>
                 <View style={styles.centeredView2}>
-
                     <View style={styles.ModalView}>
-
                         <Text style={styles.textHead}>{t('common:Sms1')}</Text>
-                        <Text style={styles.otpnumber}>1091</Text>
+                        <Text style={styles.otpnumber}>{otpMessage}</Text>
                         <View style={{ flexDirection: 'row', marginTop: 25, marginBottom: 20 }}>
                             <TouchableOpacity style={styles.DenyTouch} onPress={() => {
-                                setOtpValue('')
-                                setModalVisible(!ModalVisible)
-                            }
-                            }>
+                               setOtpFetch(false)
+                                setModalVisible(!ModalVisible)}}>
                                 <Text style={styles.DenyText}>{t('common:Deny')}</Text>
                             </TouchableOpacity>
 
                             <TouchableOpacity style={styles.allowTouch} onPress={() => {
-                                setOtpValue('1091')
+                                setOtpValue(otpMessage)
                                 setModalVisible(!ModalVisible)
-                                setTimeout(() => navigation.navigate('Permission'), 100);
-                            }
-                            }>
+                                ConfirmOtp(otpMessage)}}>
                                 <Text style={styles.allowText}>{t('common:Allow1')}</Text>
                             </TouchableOpacity>
                         </View>
@@ -64,7 +58,6 @@ const styles = StyleSheet.create({
     },
     centeredView2: {
         justifyContent: "flex-end",
-
     },
     ModalView: {
         backgroundColor: COLORS.colorBackground,

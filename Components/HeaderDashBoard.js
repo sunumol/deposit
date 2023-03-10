@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import {
     Text,
     View,
@@ -22,13 +22,24 @@ const HeaderDashBoard = ({ navigation, notificationCounts }) => {
 
     const [ModalVisible, setModalVisible] = useState(false)
     const { t } = useTranslation();
+    const [custID, setCustId] = useState()
+
+    useEffect(() => {
+        AsyncStorage.getItem("CustomerId").then((value) => {
+            setCustId(value)
+        })
+    }, [])
 
     async function LogoutApi() {
-        await api.logoutApi().then((res) => {
+        const data = {
+            id: custID
+        }
+        await api.logoutApi(data).then((res) => {
             if (res?.status == 200) {
                 console.log(res)
                 navigation.navigate('LoginScreen')
                 AsyncStorage.removeItem('Token')
+                AsyncStorage.removeItem('CustomerId')
             }
         }).catch((err) => {
             console.log('-------------------err', err?.response)

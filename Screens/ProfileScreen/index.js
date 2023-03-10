@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { Text, View, StyleSheet, BackHandler, SafeAreaView, StatusBar, TextInput,Image } from 'react-native';
+import { Text, View, StyleSheet, BackHandler, SafeAreaView, StatusBar, TextInput, Image } from 'react-native';
 import { COLORS, FONTS } from '../../Constants/Constants';
 import Header from '../../Components/RepayHeader';
 import { useFocusEffect } from '@react-navigation/native';
@@ -38,10 +38,12 @@ const ProfileScreen = ({ navigation }) => {
             <Header name={t('common:Profile')} navigation={navigation} />
             <View style={styles.mainContainer}>
                 <View style={styles.boxShadow}>
-                    <View style={{borderWidth:4,borderRadius:35,borderColor:"#A5AFFB",alignItems:'center',justifyContent:'center',
-                    width:70,height:70}}>
-                    <Image source={require('./Images/PRO1.png')}
-                     style={{width:62,height:62,borderRadius:31}} /> 
+                    <View style={{
+                        borderWidth: 4, borderRadius: 35, borderColor: "#A5AFFB", alignItems: 'center', justifyContent: 'center',
+                        width: 70, height: 70
+                    }}>
+                        <Image source={require('./Images/PRO1.png')}
+                            style={{ width: 62, height: 62, borderRadius: 31 }} />
                     </View>
                     {/* */}
                     <View style={{ flexDirection: 'column', paddingLeft: 19 }}>
@@ -53,7 +55,7 @@ const ProfileScreen = ({ navigation }) => {
                 <View style={{ marginTop: 24 }}>
                     <Text style={styles.mobileText}>Date of join</Text>
                     <TextInput
-                      style={[styles.TextInputStyle,{height:45}]}
+                        style={[styles.TextInputStyle, { height: 45 }]}
                         onChangeText={onChangeJoin}
                         value={Join}
                         editable={false}
@@ -62,7 +64,7 @@ const ProfileScreen = ({ navigation }) => {
                 <View style={{ marginTop: 24 }}>
                     <Text style={styles.mobileText}>{t('common:MobileNum')}</Text>
                     <TextInput
-                        style={[styles.TextInputStyle,{height:45}]}
+                        style={[styles.TextInputStyle, { height: 45 }]}
                         onChangeText={onChangeMobile}
                         value={mobile}
                         editable={false}
@@ -71,7 +73,7 @@ const ProfileScreen = ({ navigation }) => {
                 <View style={{ marginTop: 24 }}>
                     <Text style={styles.mobileText}>{t('common:AddressB')}</Text>
                     <TextInput
-                        style={[styles.TextInputStyle, { }]}
+                        style={[styles.TextInputStyle, {}]}
                         onChangeText={onChangeAddress}
                         value={address}
                         numberOfLines={2}
@@ -82,7 +84,7 @@ const ProfileScreen = ({ navigation }) => {
                 <View style={{ marginTop: 24 }}>
                     <Text style={styles.mobileText}>{t('common:Adhaar1')}</Text>
                     <TextInput
-                        style={[styles.TextInputStyle,{height:45}]}
+                        style={[styles.TextInputStyle, { height: 45 }]}
                         onChangeText={onChangeAadhar}
                         value={aadhar}
                         editable={false}
@@ -91,7 +93,7 @@ const ProfileScreen = ({ navigation }) => {
                 <View style={{ marginTop: 24 }}>
                     <Text style={styles.mobileText}>{t('common:Voters')}</Text>
                     <TextInput
-                        style={[styles.TextInputStyle,{height:45}]}
+                        style={[styles.TextInputStyle, { height: 45 }]}
                         onChangeText={onChangeVoter}
                         value={voter}
                         editable={false}
