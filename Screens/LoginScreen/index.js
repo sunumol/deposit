@@ -235,7 +235,7 @@ const LoginScreen = ({ navigation }) => {
                 latitude: "10.0302",//Todo
                 longitude: "76.33553"//Todo
             },
-            mobile: '91' + PhoneNum,
+            mobile: '+91' + PhoneNum,
             deviceIpAddress: ipAdrress,
             simId: "11111",
         }
@@ -335,26 +335,18 @@ const LoginScreen = ({ navigation }) => {
     async function ConfirmOtp(otp) {
         const data = {
             otp: otp,
-            mobNumber: '91' + PhoneNum,
+            mobNumber: '+91' + PhoneNum,
         }
         await api.confirmLoginOtp(data).then((res) => {
-            console.log('-------------------res', res?.status)
+            console.log('-------------------res', res)
             if (res?.data?.status) {
                 setMaxError(false)
                 AsyncStorage.setItem('Mobile', '91' + PhoneNum);
                 console.log("succuss", res?.data?.customerId)
                 AsyncStorage.setItem('CustomerId', JSON.stringify(res?.data?.customerId));
-                if (res?.data?.register) {
-                    isGrantedPermissions(res?.data?.status)
-                } else {
-                    setPhoneNum(null)
-                    setIsOtp1(false)
-                    setButton(true)
-                    setOtpValue('')
-                    navigation.navigate('Permission')
-                }
+                AsyncStorage.setItem('Token', 'dXNlckBleGFtcGxlLmNvbTpzZWNyZXQ=');
+                isGrantedPermissions()
                 setOtpFetch(false)
-
             } else {
                 console.log(res?.data)
             }
@@ -368,7 +360,7 @@ const LoginScreen = ({ navigation }) => {
     // ------------------ Confirm Otp Api Call End ------------------
 
     // ----------------------------------- Permission Check Start ----------------------------------------------
-    const isGrantedPermissions = async (register) => {
+    const isGrantedPermissions = async () => {
         const camera = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.CAMERA)
         const Location = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION)
         if (camera && Location) {
@@ -379,10 +371,10 @@ const LoginScreen = ({ navigation }) => {
 
                 navigation.navigate('PinScreen')
             } else {
-                navigation.navigate('CreatePin', { resgisted: register })
+                navigation.navigate('CreatePin')
             }
         } else {
-            navigation.navigate('Permission', { resgisted: register })
+            navigation.navigate('Permission')
         }
     };
     // ------------------------------------ Permission Check End --------------------------------------------------
@@ -396,7 +388,7 @@ const LoginScreen = ({ navigation }) => {
                 latitude: "10.0302",//Todo
                 longitude: "76.33553"//Todo
             },
-            mobile: '91' + PhoneNum,
+            mobile: '+91' + PhoneNum,
             deviceIpAddress: ipAdrress,
             simId: "11111",
         }

@@ -31,8 +31,8 @@ export const api = {
   },
 
   // ---------------- Logout Api -----------------
-  logoutApi: () => {
-    return axios.get(`${baseURL}logout/1`, {
+  logoutApi: data => {
+    return axios.get(`${baseURL}logout/${data.id}`, {
       headers: {
         'Content-Type': 'application/json',
       }

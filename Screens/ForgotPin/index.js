@@ -11,7 +11,8 @@ import {
     StatusBar,
     ScrollView,
     Dimensions,
-    BackHandler
+    BackHandler,
+    ToastAndroid
 } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { COLORS, FONTS } from '../../Constants/Constants';
@@ -23,16 +24,19 @@ import { useFocusEffect } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import Pin from './Components/Pin';
 
-const ForgotPin = ({ navigation, }) => {
-    const route = useRoute();
+
+const ForgotPin = ({ navigation,route }) => {
+    const routes = useRoute();
     console.log("route name", );
     const isDarkMode = true
     const { t } = useTranslation();
     const [lang, setLang] = useState('')
     const [BStatus, setBstatus] = useState(false)
+    const [exitApp,setExitApp] =  useState(0)
 
     useEffect(() => {
         getData()
+       
     }, [])
 
     const getData = async () => {
@@ -45,23 +49,48 @@ const ForgotPin = ({ navigation, }) => {
         }
     }
 
-    const handleGoBack = useCallback(() => {
-        if(BStatus){
-            setBstatus(false)
-        }else{
-            navigation.goBack()
+    // const handleGoBack = useCallback(() => {
+    //     if(BStatus){
+    //         setBstatus(false)
+    //     }else{
+    //         navigation.goBack()
+    //     }
+    //     return true; // Returning true from onBackPress denotes that we have handled the event
+    //   }, [navigation]);
+    
+    //   useFocusEffect(
+    //     React.useCallback(() => {
+    //       BackHandler.addEventListener('hardwareBackPress', handleGoBack);
+    
+    //       return () =>
+    //         BackHandler.removeEventListener('hardwareBackPress', handleGoBack);
+    //     }, [handleGoBack]),
+    //   );
+
+      useEffect(() => {
+        const backHandler = BackHandler.addEventListener(
+            'hardwareBackPress',
+            handleGoBack,
+        );
+        return () => backHandler.remove();
+    }, [exitApp]);
+    const handleGoBack = () => {
+        if (routes.name === "ForgotPin") {
+            if (exitApp === 0) {
+                setExitApp(exitApp + 1);
+               // console.log("exit app intro", exitApp)
+                ToastAndroid.show("Press back again to exit.", ToastAndroid.SHORT);
+            } else if (exitApp === 1) {
+                BackHandler.exitApp();
+                console.log("exit app else", exitApp)
+            }
+            setTimeout(() => {
+                setExitApp(0)
+            }, 3000);
+            return true;
         }
-        return true; // Returning true from onBackPress denotes that we have handled the event
-      }, [navigation]);
-    
-      useFocusEffect(
-        React.useCallback(() => {
-          BackHandler.addEventListener('hardwareBackPress', handleGoBack);
-    
-          return () =>
-            BackHandler.removeEventListener('hardwareBackPress', handleGoBack);
-        }, [handleGoBack]),
-      );
+    }
+
 
     return (
         <SafeAreaProvider>
@@ -70,7 +99,7 @@ const ForgotPin = ({ navigation, }) => {
 
             <Header navigation={navigation} name={t('common:ForgotPin')} />
             <View style={styles.ViewContent}>
-                <Pin navigation={navigation} />
+                <Pin navigation={navigation} conFirmDate ={route.params.conFirmdate}/>
             
             </View>
         

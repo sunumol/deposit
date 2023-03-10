@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState,useCallback } from 'react';
 import {
     StyleSheet,
     Text,
@@ -6,97 +6,59 @@ import {
     View,
     Platform,
     StatusBar,
-    TextInput,
-    Image,
-    Dimensions,
     KeyboardAvoidingView,
-    ToastAndroid,
     BackHandler,
     ScrollView,
-    Button,
-    ActivityIndicator
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { useFocusEffect } from '@react-navigation/native';
+import { addDays } from 'date-fns'
+import moment from 'moment'
+
+// --------------- Component Imports ---------------------
 import { COLORS, FONTS } from '../../Constants/Constants';
 import Statusbar from '../../Components/StatusBar';
-import Header2 from '../../Components/Header2';
-import OTPInputView from '@twotalltotems/react-native-otp-input';
 import Header from '../../Components/RepayHeader';
-import Reset from './Images/Reset.svg'
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useFocusEffect } from '@react-navigation/native';
-import { useRoute } from '@react-navigation/native';
-import OTPTextInput from '../ResePin/Components/OtpPin'
-const CreatePin = ({ navigation}) => {
-    const routes = useRoute();
-    const [OtpValue, setOtpValue] = useState("")
-    const [OtpValue2, setOtpValue2] = useState("")
-    const isDarkMode = true;
-    const [lang, setLang] = useState('')
-    const { t } = useTranslation();
-    const [exitApp, setExitApp] = useState(0);
-    const [focus1, setFocus1] = useState(true);
-    const [error, setError] = useState(false);
-    const [loader, setLoader] = useState(true);
+import OTPTextInput from './Components/OtpPin'
 
+// --------------- Image Imports ---------------------
+import Reset from './Images/Reset.svg'
+
+const CreatePin = ({ navigation }) => {
+
+    const isDarkMode = true;
+    const { t } = useTranslation();
     const otpInput2 = React.createRef();
+
+    const [error, setError] = useState(false);
+    const [success, setSuccess] = useState(false)
+    const [OtpValue, setOtpValue] = useState("")
 
     const clearText = () => {
         otpInput2.current.clear();
-        console.log("hhhh")
     }
 
-    useEffect(() => {
-        const backHandler = BackHandler.addEventListener(
-            'hardwareBackPress',
-            handleGoBack,
-        );
-        return () => backHandler.remove();
-    }, [exitApp]);
+    const handleGoBack = useCallback(() => {
+        navigation.goBack()
+        return true; // Returning true from onBackPress denotes that we have handled the event
+    }, [navigation]);
 
-    useEffect(() => {
-        setTimeout(() => setLoader(false), 500);
-    }, []);
-
-
-    const handleGoBack = () => {
-        if (routes.name === "ResetPin") {
-            if (exitApp === 0) {
-                setExitApp(exitApp + 1);
-                console.log("exit app create pin", exitApp)
-                ToastAndroid.show("Press back again to exit.", ToastAndroid.SHORT);
-            } else if (exitApp === 1) {
-                BackHandler.exitApp();
-                console.log("exit app else", exitApp)
-            }
-            setTimeout(() => {
-                setExitApp(0)
-            }, 3000);
-            return true;
-        }
-    }
-
-    useEffect(() => {
-        getData()
-    }, [])
-
-    const getData = async () => {
-        try {
-            const lang = await AsyncStorage.getItem('user-language')
-            setLang(lang)
-        } catch (e) {
-            console.log(e)
-        }
-    }
-
+    useFocusEffect(
+        React.useCallback(() => {
+            BackHandler.addEventListener('hardwareBackPress', handleGoBack);
+            return () =>
+                BackHandler.removeEventListener('hardwareBackPress', handleGoBack);
+        }, [handleGoBack]),
+    );
 
     return (
         <SafeAreaProvider>
 
             <KeyboardAvoidingView style={{ flex: 1 }}
-                {...(Platform.OS === 'ios' && { behavior: 'position' })}
-            >
+                {...(Platform.OS === 'ios' && { behavior: 'position' })}>
+
                 <SafeAreaView style={styles.container1} />
                 <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} backgroundColor={"#002B59"} />
 
@@ -107,51 +69,57 @@ const CreatePin = ({ navigation}) => {
                         <View style={{ alignItems: 'center', paddingTop: 41 }}>
                             <Reset />
                         </View>
-                        
-                    <Text style={styles.textPin}>{t('common:EnterPin')} </Text>
-                    <View style={{ alignItems: 'center' }}>
-                        <OTPTextInput
-                            confirm={t('common:ConfirmPIN')}
-                            ref={otpInput2}
-                            autoFocus={focus1}
-                            inputCount={8}
-                            inputCellLength={1}
-                            offTintColor={'#ECEBED'}
-                            tintColor={'#ECEBED'}
-                            textInputStyle={styles.imputContainerStyle}
-                            keyboardType="numeric"
-                            containerStyle={{ marginTop: 7 }}
-                            handleTextChange={(code => {
-                                console.log(code.slice(4, 7));
-                                setOtpValue(code.slice(0, 4))
-                                setOtpValue2(code.slice(4))
 
-                                if (code) {
-                                    setError(false)
-                                }
+                        <Text style={styles.textPin}>{t('common:EnterPin')}</Text>
+                        <View style={{ alignItems: 'center' }}>
 
-                                if (code.slice(4).length === 4) {
-                                    if (OtpValue.length === 4) {
-                                        if (OtpValue !== code.slice(4)) {
-                                            setError(true);
-                                            clearText();
-                                        } else {
-                                            navigation.navigate('Profile');
+                            <OTPTextInput
+                                confirm={t('common:ConfirmPIN')}
+                                ref={otpInput2}
+                                autoFocus={true}
+                                inputCount={8}
+                                inputCellLength={1}
+                                offTintColor={'#ECEBED'}
+                                tintColor={'#ECEBED'}
+                                textInputStyle={styles.imputContainerStyle}
+                                keyboardType="numeric"
+                                containerStyle={{ marginTop: 7 }}
+                                handleTextChange={(code => {
+                                    console.log(code.slice(4, 7));
+                                    setOtpValue(code.slice(0, 4))
+
+                                    if (code) {
+                                        setError(false)
+                                    }
+                                    if (code.slice(4).length === 4) {
+                                        if (OtpValue.length === 4) {
+                                            if (OtpValue !== code.slice(4)) {
+                                                setError(true);
+                                                clearText();
+                                            } else {
+                                                AsyncStorage.setItem('Pin', code.slice(4));
+                                                 AsyncStorage.setItem('PinDate',new Date().toISOString());
+                                                setSuccess(true)
+                                                setTimeout(() => {
+
+                                                    navigation.navigate('Profile');
+                                                }, 2000)
+                                            }
                                         }
                                     }
-                                }
-                            })} />
+                                })} />
 
-                    </View>
+                        </View>
 
-                    {error
-                        ? <Text style={styles.errrorText}>{t('common:PinError')}</Text>
-                        : null}
+                        {error
+                            ? <Text style={styles.errrorText}>{t('common:PinError')}</Text>
+                            : null}
 
-                
+                        {success &&
+                            <Text style={[styles.errrorText, { color: '#219653' }]}>PIN reset succesfully</Text>}
+
                     </ScrollView>
                 </View>
-
 
             </KeyboardAvoidingView>
 
@@ -183,7 +151,6 @@ const styles = StyleSheet.create({
         color: COLORS.colorDark,
         textAlign: 'center'
     },
-
     imputContainerStyle: {
         borderRadius: 8,
         backgroundColor: COLORS.colorBackground,
