@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import {
     View,
@@ -11,13 +12,16 @@ import { COLORS, FONTS } from '../../../Constants/Constants';
 const { height, width } = Dimensions.get('screen');
 import { useTranslation } from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import MeetTab from '../Components/components/callTab'
+import MeetTab from '../Components/components/callTab';
+import { api } from '../../../Services/Api';
 
 
 const ItemTabs = ({navigation}) => {
     const { t } = useTranslation();
     const [Lang, setLang] = useState('')
     const [ModalVisible1, setModalVisible1] = useState(false)
+    const [listing,setListing] = useState ([])
+    const [enab,setEnab]=useState(false)
     const [meetData, setMeetData] = useState([
        // {
         //     id: 1,
@@ -128,9 +132,39 @@ const ItemTabs = ({navigation}) => {
         },
     ])
 
+
+    const ActivityListingApiCall = async () => {
+        const data = {
+            "employeeId": 1,
+            "activityType":"MEET"
+        };
+        await api.activitylistingscreenApi(data).then((res) => {
+            console.log('-------------------res meet', res?.data?.body)
+            setListing(res?.data?.body)
+            setEnab(false)
+        })
+            .catch((err) => {
+                console.log('-------------------err', err?.response)
+            })
+    };
+
+
+    React.useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+        
+           ActivityListingApiCall()
+       
+          
+        });
+getData();
+        return unsubscribe;
+    }, [navigation,enab]);
+
+
     useEffect(() => {
-        getData()
-    }, [])
+        ActivityListingApiCall()
+ }, [enab]);
+
 
     const getData = async () => {
         try {
@@ -145,16 +179,20 @@ const ItemTabs = ({navigation}) => {
         <ScrollView style={{ flex: 1, backgroundColor: COLORS.colorBackground }}>
             <View style={{ paddingHorizontal: 20 ,marginBottom:10}}>
                 {
-                    meetData.map((item, index) => {
+                    listing.map((item, index) => {
+                     
                         return (
-                            <MeetTab
+                            <>
+                        { item.data.length ?  ( <MeetTab
                                 id={item.id}
                                 data={item.data}
                                 time={item.time}
+                                setEnab={setEnab}
                                 meet={true}
                                 navigation={navigation}
                             
-                            />
+                            />) : null }
+                            </>
                         )
                     })
                 }

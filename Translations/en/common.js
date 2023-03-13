@@ -347,7 +347,7 @@ export default {
     //Change mpin
 
     'ResetPin': 'Reset PIN',
-    'EnterOPIN': 'Enter old PIN',
+    'EnterOPIN': 'Enter Old PIN',
     'EnterNewPin': 'Enter PIN',
     'ConfirmNewPin': 'Confirm PIN',
     'PINreset': 'PIN reset successfully',
@@ -495,7 +495,7 @@ export default {
     'Meet': 'MEET',
     'Call': 'CALL',
     'CollectionFollowUp': 'Collection Follow Up',
-    'ExplainTrustCircle': 'Explain Trust Circle',
+    'ExplainTrustCircle': 'Welcome Call',
     'ConductCGT': 'Conduct CGT',
     'LeadsFollowUp': 'Leads Follow Up',
     'Status': 'Status',

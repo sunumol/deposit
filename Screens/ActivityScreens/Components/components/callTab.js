@@ -1,23 +1,53 @@
+
 ;
 import React, { useEffect, useState } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity,Dimensions } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { COLORS, FONTS } from '../../../../Constants/Constants';
 import { useTranslation } from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon1 from 'react-native-vector-icons/Ionicons'
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 import ActivityModal from '../components/ActiveModal';
-const { height, width } = Dimensions.get('screen');
-
 const MeetTab = (props) => {
     const { t } = useTranslation();
     const [Lang, setLang] = useState('')
     const [modalVisible, setModalVisible] = useState(false)
     const [details, setDetails] = useState()
+    const [enab,setEnab]=useState(false)
 
     useEffect(() => {
         getData()
+       
     }, [])
+
+
+ const  getRandomColor =()=> {
+    var letters = '0123456789ABCDEF';
+    var color = '#';
+    for (var i = 0; i < 3; i++) {
+      color += letters[Math.floor(Math.random() * 8)];
+    }
+    return color;
+  }
+
+
+  const getInitials = (name) => {
+  
+    let initials;
+    const nameSplit = name?.split(" ");
+     const nameLength = nameSplit?.length;
+    if (nameLength > 1) {
+        initials =
+            nameSplit[0].substring(0, 1) +
+            nameSplit[nameLength - 1].substring(0, 1);
+    } else if (nameLength === 1) {
+        initials = nameSplit[0].substring(0, 1);
+    } else return;
+
+     return initials.toUpperCase();
+};
+
+
 
     const getData = async () => {
         try {
@@ -27,6 +57,9 @@ const MeetTab = (props) => {
             console.log(e)
         }
     }
+
+
+
     return (
         <>
             <View style={{ marginBottom: 0 }}>
@@ -41,17 +74,18 @@ const MeetTab = (props) => {
                             style={[styles.boxStyle, { marginTop: props.time ? 10 : 0 }]} key={props.id}>
                             <View style={{ flex: 1, flexDirection: 'row' }}>
 
-                                <View style={[styles.circleStyle, { backgroundColor: item.color }]}>
-                                    <Text style={styles.circleText}>{item.short}</Text>
+                                <View style={[styles.circleStyle, { backgroundColor: getRandomColor()}]}>
+                                    {/* <Text numberOfLines={1} style={styles.circleText}>{(item.customerName)}</Text> */}
+                                    <Text numberOfLines={1} style={styles.circleText}>{getInitials(item.customerName)}</Text>
                                 </View>
 
                                 <View style={{ flexDirection: 'column', paddingLeft: 12, paddingTop: 5 }}>
-                                    <Text style={styles.nameText} numberOfLines={1}>{item.name}</Text>
+                                    <Text style={styles.nameText}>{item.customerName}</Text>
                                     <View style={{ flexDirection: 'row', }}>
                                         <View style={{ paddingTop: 5, paddingRight: 1 }}>
                                             <Icon1 name="location-outline" color={"black"} />
                                         </View>
-                                        <Text style={[styles.idText, { paddingTop: 4 }]}>{item.text}</Text>
+                                        <Text style={[styles.idText, { paddingTop: 4 }]}>{item.pin}</Text>
                                         {/* <TouchableOpacity onPress={()=>props.navigation.navigate('DetailCheck')}>
                            
                                 </TouchableOpacity> */}
@@ -63,7 +97,7 @@ const MeetTab = (props) => {
                             <View style={{ flexDirection: 'column', paddingTop: 5, alignItems: 'flex-end' }}>
                                 <View style={{ flexDirection: 'row' }}>
                                     <Icon2 name="phone-in-talk-outline" color={"black"} size={15} />
-                                    <Text style={[styles.numText, { paddingLeft: 6 }]}>{item.phoneNumber}</Text>
+                                    <Text style={[styles.numText, { paddingLeft: 6 }]}>{item.mobileNumber}</Text>
                                 </View>
                                 {item.status == "Conduct DLE"
                                     ? <TouchableOpacity
@@ -80,7 +114,7 @@ const MeetTab = (props) => {
                         </TouchableOpacity>
                     )
                 })}
-                <ActivityModal visible={modalVisible} onPressOut={() => setModalVisible(!modalVisible)} meet={props.meet} details={details} />
+                <ActivityModal visible={modalVisible} onPressOut={() => setModalVisible(!modalVisible)} meet={props.meet} details={details} setEnab={props.setEnab}/>
             </View>
         </>
     )
@@ -130,7 +164,6 @@ const styles = StyleSheet.create({
         fontFamily: FONTS.FontBold,
         color: COLORS.colorDark,
         fontWeight: '600',
-        maxWidth:width*0.30
     },
     idText: {
         fontSize: 11,
