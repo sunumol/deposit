@@ -109,6 +109,7 @@ const LoginScreen = ({ navigation }) => {
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
             setButton(true)
+        
         });
         return unsubscribe;
     }, [navigation]);
@@ -340,7 +341,11 @@ const LoginScreen = ({ navigation }) => {
         await api.confirmLoginOtp(data).then((res) => {
             console.log('-------------------res', res)
             if (res?.data?.status) {
+                
                 setMaxError(false)
+                setOtpFetch(false)
+                setIsOtp1(false)
+                setPhoneNum(null)
                 AsyncStorage.setItem('Mobile', '91' + PhoneNum);
                 console.log("succuss", res?.data?.customerId)
                 AsyncStorage.setItem('CustomerId', JSON.stringify(res?.data?.customerId));
@@ -429,7 +434,7 @@ const LoginScreen = ({ navigation }) => {
 
                         <View style={[styles.container, { marginTop: Dimensions.get('window').height * 0.05 }]}>
 
-                            <Text style={styles.Heading1} onPress={() => navigation.navigate('Profile')}>{t('common:Verify')}</Text>
+                            <Text style={styles.Heading1}>{t('common:Verify')}</Text>
 
                             <View style={styles.ViewInput}>
                                 <View style={{ justifyContent: 'center' }}>

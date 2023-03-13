@@ -91,8 +91,8 @@ const ChangeMPIN = ({ navigation }) => {
                         <View>
                             <OTPTextInput
                                 ref={otpInput2}
-                                Confirm1={"Enter new PIN"}
-                                Confirm2={'Confirm new PIN'}
+                                Confirm1={"Enter New PIN"}
+                                Confirm2={'Confirm New PIN'}
                                 errorOld={errorOldPin}
                                 autoFocus={true}
                                 inputCount={12}

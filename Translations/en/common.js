@@ -347,7 +347,7 @@ export default {
     //Change mpin
 
     'ResetPin': 'Reset PIN',
-    'EnterOPIN': 'Enter old PIN',
+    'EnterOPIN': 'Enter Old PIN',
     'EnterNewPin': 'Enter PIN',
     'ConfirmNewPin': 'Confirm PIN',
     'PINreset': 'PIN reset successfully',
