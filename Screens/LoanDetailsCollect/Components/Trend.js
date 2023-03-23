@@ -118,12 +118,12 @@ const Trend = ({ navigation }) => {
 
                                 </View>
 
-                                <View style={{left:-350}}>
+                                <View style={{left:-340}}>
                                 <View style={styles.verticleLine}/>
                                 </View>
 
                                 <View style={{}}>
-                                    <View style={{ left: -475 }}>
+                                    <View style={{ left: -455 }}>
                                         <VictoryPie
                                             data={graphicData1}
                                             colorScale={graphicColor}
@@ -176,7 +176,7 @@ const styles = StyleSheet.create({
         //alignItems: 'center'
     },
     ViewCard: {
-        width: width * 0.89,
+        width: width * 0.86,
         height: width * 0.50,
         backgroundColor: COLORS.colorBackground,
         elevation: 2,

@@ -42,7 +42,7 @@ const Energy = ({ navigation }) => {
                     <TouchableOpacity style={[styles.SelectBox1, { backgroundColor: '#ECEBED' }]} >
                         <Text style={styles.textSelect}>Yes</Text>
                         {/* <Text style={[styles.textSelect],{color:'#1A051D',marginLeft:8}}>{Relation}</Text>} */}
-                        <Icon1 name="chevron-down" size={18} color={'#808080'} style={{ marginRight: 10 }} />
+                        {/* <Icon1 name="chevron-down" size={18} color={'#808080'} style={{ marginRight: 10 }} /> */}
                     </TouchableOpacity>
                     <View>
                         <Text style={styles.TextElect}>Average bill amount</Text>
@@ -63,7 +63,7 @@ const Energy = ({ navigation }) => {
                         {!Purpose ?
                             <Text style={styles.textSelect}>Select</Text> :
                             <Text style={[styles.textSelect], { color: '#1A051D', marginLeft: 8 }}>{Purpose}</Text>}
-                        <Icon1 name="chevron-down" size={18} color={'#808080'} style={{ marginRight: 10 }} />
+                        {/* <Icon1 name="chevron-down" size={18} color={'#808080'} style={{ marginRight: 10 }} /> */}
                     </TouchableOpacity>
 
                     {Purpose &&

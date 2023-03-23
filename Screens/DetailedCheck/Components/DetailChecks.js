@@ -101,7 +101,7 @@ const DetailChecks = ({navigation}) => {
                             <TouchableOpacity style={styles.SelectBox} >
                    <Text style={[styles.textSelect,{color:!status ? '#808080':'#1A051D'}]}>{!status ? 'Select' : 'Four-wheeler'}</Text>
               
-                    <Icon1 name="chevron-down" size={18} color={'#808080'} style={{ marginRight: 10 }} />
+                    {/* <Icon1 name="chevron-down" size={18} color={'#808080'} style={{ marginRight: 10 }} /> */}
                 </TouchableOpacity>
                         </View>
 

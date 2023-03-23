@@ -23,6 +23,7 @@ const OwnerModal = ({ visible, onPressOut,setModalVisible,setPurpose,setNamestat
                 <View style={styles.centeredView2}>
                     <View style={styles.modalView}>
                         <Text style={styles.modalTextHead}>Ownership Proof</Text>
+                        <View style={styles.lineView} />
                         <TouchableOpacity style={styles.textTouch}
                             onPress={() => {
                                 setPurpose('Electricity Bill')
@@ -108,8 +109,8 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.1,
         elevation: 5,
         shadowRadius: 2,
-        borderTopStartRadius: 30,
-        borderTopEndRadius: 30,
+        borderBottomStartRadius: 30,
+        borderBottomEndRadius: 30,
         width: Dimensions.get('window').width,
         paddingBottom: 7
         // height:Dimensions.get('window').height*0.3
@@ -138,16 +139,15 @@ const styles = StyleSheet.create({
     },
     modalTextHead: {
         color: '#3B3D43',
-        textAlign: 'center',
+        textAlign: 'left',
         fontFamily: FONTS.FontSemiB,
         fontSize: 15,
-        //fontWeight: '700',
-        //: 17,
-        marginTop: 20,
-        marginBottom: 0
+        marginLeft: 25,
+        marginTop: 22,
+        marginBottom: 15
     },
     lineView: {
-        borderWidth: 0.8,
+        borderWidth: 0.5,
         borderColor: COLORS.Gray6,
         backgroundColor: COLORS.Gray6,
         opacity: 0.5
