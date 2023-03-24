@@ -8,12 +8,15 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon1 from 'react-native-vector-icons/Ionicons'
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 import ActivityModal from '../components/ActiveModal';
+import { useDispatch } from 'react-redux';
+
 const MeetTab = (props) => {
     const { t } = useTranslation();
     const [Lang, setLang] = useState('')
     const [modalVisible, setModalVisible] = useState(false)
     const [details, setDetails] = useState()
     const [enab,setEnab]=useState(false)
+    const dispatch = useDispatch()
 
     useEffect(() => {
         getData()
@@ -105,7 +108,13 @@ const MeetTab = (props) => {
                                         style={[styles.leadContainer, { backgroundColor: 'rgba(186, 134, 205, 0.1)' }]}>
                                         <Text style={[styles.leadText, { color: '#F2994A' }]}>Conduct DLE</Text>
                                     </TouchableOpacity>
-                                    : <TouchableOpacity style={[styles.leadContainer, { backgroundColor: props.meet ? COLORS.LightBlue : COLORS.LightPurple }]} onPress={()=> props.navigation.navigate('CGT',{activityId:item.activityId})}>
+                                    : <TouchableOpacity style={[styles.leadContainer, { backgroundColor: props.meet ? COLORS.LightBlue : COLORS.LightPurple }]} onPress={()=>{
+                                        dispatch({
+                                            type: 'SET_CGT_ACTIVITY_ID',
+                                            payload: item.activityId,
+                                          });
+                                          props.navigation.navigate('CGT')
+                                    } }>
                                         <Text style={[styles.leadText, { color: props.meet ? COLORS.DarkBlue : COLORS.DarkPurple }]}>{props.meet ? t('common:ConductCGT') : t('common:ExplainTrustCircle')}</Text>
                                     </TouchableOpacity>}
 

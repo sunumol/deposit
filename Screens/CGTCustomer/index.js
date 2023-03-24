@@ -31,6 +31,7 @@ import { api } from '../../Services/Api';
 
 // ------------- Import Image --------
 import Date from './Images/Date.svg';
+import { useSelector } from 'react-redux';
 
 const { height, width } = Dimensions.get('screen');
 
@@ -46,6 +47,8 @@ const CgtCustomer = ({ navigation }) => {
     const [details, setDetails] = useState()
     const [custID, setCustId] = useState()
     const [rejectReason, setRejectReason] = useState()
+
+    const activityId = useSelector(state => state.activityId);
 
     // -----------Redux State ---------------------------------
     const dispatch = useDispatch()
@@ -85,7 +88,7 @@ const CgtCustomer = ({ navigation }) => {
     // ------------------ GET Setails Cgt Api Call Start ------------------
     const getDetails = async () => {
         const data = {
-            "activityId": route.params.activityId
+            "activityId": activityId
         };
         await api.getCGTDetails(data).then((res) => {
             console.log('-------------------res', res?.data)
@@ -102,7 +105,7 @@ const CgtCustomer = ({ navigation }) => {
         const data = {
             "activityStatus": "kyc verified",
             "employeeId": Number(custID),
-            "activityId": route.params.activityId
+            "activityId": activityId
         };
         await api.updateActivity(data).then((res) => {
             console.log('-------------------res', res?.data)
@@ -111,7 +114,7 @@ const CgtCustomer = ({ navigation }) => {
                 dispatch({
                     type: 'SET_CGT_CUSTOMERdETAILS',
                     payload: details,
-                  });
+                });
             }
         })
             .catch((err) => {
@@ -125,7 +128,7 @@ const CgtCustomer = ({ navigation }) => {
         const data = {
             "activityStatus": rejectReason,
             "employeeId": Number(custID),
-            "activityId": route.params.activityId
+            "activityId": activityId
         };
         await api.updateActivity(data).then((res) => {
             console.log('-------------------res', res?.data)
@@ -159,74 +162,74 @@ const CgtCustomer = ({ navigation }) => {
                         </TouchableOpacity>
                     </View>
 
-                        <View style={styles.searchBox}>
-                            <View style={styles.boxStyle}>
-                                <View style={{ flex: 1, flexDirection: 'row' }}>
+                    <View style={styles.searchBox}>
+                        <View style={styles.boxStyle}>
+                            <View style={{ flex: 1, flexDirection: 'row' }}>
 
-                                    <View style={[styles.circleStyle, { backgroundColor: '#6979F8' }]}>
-                                        <Text style={styles.circleText}>AA</Text>
-                                    </View>
+                                <View style={[styles.circleStyle, { backgroundColor: '#6979F8' }]}>
+                                    <Text style={styles.circleText}>AA</Text>
+                                </View>
 
-                                    <View style={{ flexDirection: 'column', paddingLeft: 12, paddingTop: 5 }}>
-                                        <Text style={styles.nameText}>{details?.customerName}</Text>
-                                        <View style={{ flexDirection: 'row', }}>
-                                            <View style={{ paddingTop: 5, paddingRight: 1 }}>
-                                                <Icon1 name="location-outline" color={"black"} />
-                                            </View>
-                                            <Text style={[styles.idText, { paddingTop: 4 }]}>{details?.pin}</Text>
+                                <View style={{ flexDirection: 'column', paddingLeft: 12, paddingTop: 5 }}>
+                                    <Text style={styles.nameText}>{details?.customerName}</Text>
+                                    <View style={{ flexDirection: 'row', }}>
+                                        <View style={{ paddingTop: 5, paddingRight: 1 }}>
+                                            <Icon1 name="location-outline" color={"black"} />
                                         </View>
-                                    </View>
-
-                                </View>
-
-                                <View style={{ flexDirection: 'column', paddingTop: 5, alignItems: 'flex-end' }}>
-                                    <View style={{ flexDirection: 'row' }}>
-                                        <Icon2 name="phone-in-talk-outline" color={"black"} size={15} />
-                                        <Text style={[styles.numText, { paddingLeft: 6 }]}>{details?.mobileNumber}</Text>
+                                        <Text style={[styles.idText, { paddingTop: 4 }]}>{details?.pin}</Text>
                                     </View>
                                 </View>
 
                             </View>
-                            <View style={styles.lineView} />
-                            <View style={{ paddingHorizontal: 17, }}>
-                                <Text style={styles.headTextTitle}>Address</Text>
-                                <Text style={[styles.subText, { maxWidth: 200 }]}>{details?.address}</Text>
-                            </View>
-                            <View style={styles.lineView} />
-                            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 17, }}>
-                                <View style={{ flexDirection: 'column', flex: 1, marginRight: 10 }}>
-                                    <Text style={styles.headTextTitle}>Aadhaar ID</Text>
-                                    <Text style={styles.subText}>{details?.aadharNumber}</Text>
-                                </View>
 
-                            </View>
-                            <View style={styles.lineView} />
-                            <View style={{ paddingHorizontal: 17, }}>
-                                <Text style={styles.headTextTitle}>Voter ID</Text>
-                                <Text style={styles.subText}>{details?.voterId}</Text>
-                            </View>
-                            <View style={styles.lineView} />
-                            <View style={{ paddingHorizontal: 17, paddingBottom: 16 }}>
-                                <Text style={styles.headTextTitle}>Spouse Voter ID</Text>
-                                <Text style={styles.subText}>{details?.spouseVoterId}</Text>
+                            <View style={{ flexDirection: 'column', paddingTop: 5, alignItems: 'flex-end' }}>
+                                <View style={{ flexDirection: 'row' }}>
+                                    <Icon2 name="phone-in-talk-outline" color={"black"} size={15} />
+                                    <Text style={[styles.numText, { paddingLeft: 6 }]}>{details?.mobileNumber}</Text>
+                                </View>
                             </View>
 
                         </View>
+                        <View style={styles.lineView} />
+                        <View style={{ paddingHorizontal: 17, }}>
+                            <Text style={styles.headTextTitle}>Address</Text>
+                            <Text style={[styles.subText, { maxWidth: 200 }]}>{details?.address}</Text>
+                        </View>
+                        <View style={styles.lineView} />
+                        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 17, }}>
+                            <View style={{ flexDirection: 'column', flex: 1, marginRight: 10 }}>
+                                <Text style={styles.headTextTitle}>Aadhaar ID</Text>
+                                <Text style={styles.subText}>{details?.aadharNumber}</Text>
+                            </View>
+
+                        </View>
+                        <View style={styles.lineView} />
+                        <View style={{ paddingHorizontal: 17, }}>
+                            <Text style={styles.headTextTitle}>Voter ID</Text>
+                            <Text style={styles.subText}>{details?.voterId}</Text>
+                        </View>
+                        <View style={styles.lineView} />
+                        <View style={{ paddingHorizontal: 17, paddingBottom: 16 }}>
+                            <Text style={styles.headTextTitle}>Spouse Voter ID</Text>
+                            <Text style={styles.subText}>{details?.spouseVoterId}</Text>
+                        </View>
+
+                    </View>
 
                 </ScrollView>
 
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
 
-                        <TouchableOpacity style={[styles.buttonView, { backgroundColor: COLORS.colorLight }]}
-                            onPress={() => setModalReason(true)}>
-                            <Text style={[styles.continueText, { color: COLORS.colorB }]}>Reject</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={updateActivity}
-                            style={[styles.buttonView, { backgroundColor: COLORS.colorB }]}>
-                            <Text style={[styles.continueText, { color: COLORS.colorBackground }]}>Confirm</Text>
-                        </TouchableOpacity>
-                    </View> 
-             
+                    <TouchableOpacity style={[styles.buttonView, { backgroundColor: COLORS.colorLight }]}
+                        onPress={() => setModalReason(true)}>
+                        <Text style={[styles.continueText, { color: COLORS.colorB }]}>Reject</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={updateActivity}
+                        style={[styles.buttonView, { backgroundColor: COLORS.colorB }]}>
+                        <Text style={[styles.continueText, { color: COLORS.colorBackground }]}>Confirm</Text>
+                    </TouchableOpacity>
+                </View>
+
             </View>
 
             <RejectModal
@@ -236,7 +239,7 @@ const CgtCustomer = ({ navigation }) => {
                 ModalVisible={ModalVisible}
                 onPressOut={() => {
                     setModalVisible(!ModalVisible)
-                    navigation.navigate('CreateTrustCircle',{customerDetails:details})
+                    navigation.navigate('CreateTrustCircle', { customerDetails: details })
                 }}
                 onPressClose={() => {
                     setModalVisible(!ModalVisible)

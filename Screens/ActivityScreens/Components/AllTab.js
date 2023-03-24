@@ -387,7 +387,7 @@ getData();
                                                         status={item.purpose}
                                                         setEnab={setEnab}
                                                         details={item}
-                                                        navigation={() => navigation.navigate('CGT',{activityId:item.activityId})}
+                                                        navigation={navigation}
                                                     />
                                                 );
                                             }

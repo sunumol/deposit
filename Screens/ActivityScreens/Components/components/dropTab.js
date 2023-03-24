@@ -8,11 +8,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon1 from 'react-native-vector-icons/Ionicons'
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 import ActivityModal from '../components/ActiveModal';
+import { useDispatch } from 'react-redux';
 const ActiveTab = (props) => {
     const { t } = useTranslation();
     const [Lang, setLang] = useState('')
     const [modalVisible,setModalVisible]=useState(false)
     const [enab,setEnab]=useState(false)
+    const dispatch = useDispatch()
 
     useEffect(() => {
         getData()
@@ -89,7 +91,14 @@ const ActiveTab = (props) => {
                     </View>
                 }
                 {props.status === 'Conduct CGT' &&
-                    <TouchableOpacity onPress={props.navigation}
+                    <TouchableOpacity onPress={()=>{
+                        dispatch({
+                            type: 'SET_CGT_ACTIVITY_ID',
+                            payload: item.activityId,
+                          });
+                        props.navigation.navigate('CGT')
+
+                    }}
                     style={[styles.leadContainer, { backgroundColor: COLORS.LightBlue }]}>
                         <Text style={[styles.leadText, { color: COLORS.DarkBlue }]}>{t('common:ConductCGT')}</Text>
                     </TouchableOpacity>
