@@ -255,6 +255,7 @@ const CgtCustomer = ({ navigation }) => {
                 }}
                 setModalVisible={setModalError}
             />
+            
             <ReasonModal
                 onPress1={updateActivityReject}
                 ModalVisible={ModalReason}

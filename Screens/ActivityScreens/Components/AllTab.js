@@ -24,112 +24,15 @@ import moment from 'moment';
 const ItemTabs = ({ navigation }) => {
     const { t } = useTranslation();
     const [Lang, setLang] = useState('')
-    const [dropStatus, setDropStatus] = useState(false)
-    const [callcount, setCallcount] = useState();
-    const [meetcount, setMeetCount] = useState([]);
     const [listing, setListing] = useState()
     const [enab,setEnab]=useState(false)
-
-  
-
-
-    const [data, setData] = useState([
-        {
-            time: "09:00:00",
-            data: []
-        },
-        {
-            time: "12:00:00",
-            data: [
-                {
-                    activityId: 52,
-                    activityType: "CALL",
-                    purpose: "Leads Follow Up",
-                    fromTime: "2023-03-03T12:26:15.674",
-                    toTime: "2023-02-22T12:00:00",
-                    customerName: "Anand451612932",
-                    short: "AJ",
-                    color: '#94BCC8',
-                    mobileNumber: "1092787395",
-                    villageName: "Test Village",
-                    pin: 2100044061,
-                    employeeId: 1,
-                    updatedTime: "2023-02-21T16:47:13.745573",
-                    updatedBy: "SYSTEM",
-                    status: "Not reachable",
-                    customerId: null,
-                    handled: false
-                },
-                {
-                    activityId: 52,
-                    activityType: "MEET",
-                    purpose: "Leads Follow Up",
-                    fromTime: "2023-03-03T12:26:15.674",
-                    toTime: "2023-02-22T12:00:00",
-                    short: "AJ",
-                    color: '#94BCC8',
-                    customerName: "Anand451612932",
-                    mobileNumber: "1092787395",
-                    villageName: "Test Village",
-                    pin: 2100044061,
-                    employeeId: 1,
-                    updatedTime: "2023-02-21T16:47:13.745573",
-                    updatedBy: "SYSTEM",
-                    status: "Not reachable",
-                    customerId: null, handled: false
-                }
-                ,]
-        },
-        {
-            time: "12:30:00",
-            data: []
-        },
-
-    ])
-
-
-
-
-    const [listData, setListData] = useState([
-
-        {
-            id: '2',
-            short: 'AJ',
-            name: 'Ashly James',
-            text: '682025',
-            phoneNumber: '878XXXXX00',
-            color: '#94BCC8',
-            status: 'Explain',
-        },
-        {
-            id: '3',
-            short: 'NM',
-            name: 'Sismi Joseph',
-            text: '682025',
-            phoneNumber: '965XXXXX00',
-            color: '#9EC894',
-            status: 'Explain',
-        }
-    ])
-    const [meetData, setMeetData] = useState([
-        {
-            id: '1',
-            short: 'KA',
-            name: 'Kripa Anil',
-            text: '682025',
-            phoneNumber: '677XXXXX00',
-            color: '#94BCC8',
-            status: 'Conduct',
-        },
-
-    ])
-
 
 
     // ------------------ Activity Listing Api Call Start ------------------
     const ActivityListingApiCall = async () => {
         const data = {
-            "employeeId": 9252
+            "employeeId": 1
+
         };
         await api.activitylistingscreenApi(data).then((res) => {
             console.log('-------------------res', res?.data?.body)
@@ -162,8 +65,6 @@ getData();
  }, [enab]);
 
 
-
-
     const getData = async () => {
         try {
             const lang = await AsyncStorage.getItem('user-language')
@@ -175,136 +76,11 @@ getData();
     }
 
 
-
-
-
-
-
     return (
         <ScrollView style={{ flex: 1, backgroundColor: COLORS.colorBackground }}>
             <View style={{ paddingHorizontal: 20, marginBottom: 10 }}>
 
-                {/* <FlatList
-                    data={listing}
-                    showsVerticalScrollIndicator={false}
-                    renderItem={(item) => {
-
-                        return (
-                            <View>
-                            {console.log('flatlist-----------',item.item)} 
-
-                                <>
-                                    <View style={[styles.containerTab, { backgroundColor: item.open ? 'rgba(242, 242, 242, 0.5)' : COLORS.backgroundColor }]}>
-                                        <View style={{ flex: 1 }}>
-                                            <Text style={styles.timeText}>{item.item.time} - {item.item.endTime}</Text>
-                                        </View>
-                                        <View style={{ justifyContent: 'flex-end', flexDirection: 'row', alignItems: 'center' }}>
-                                            <View style={styles.badgeContainer}>
-                                                <Text style={styles.badgeText}>{item.item?.data?.length}</Text>
-                                            </View>
-                                            <TouchableOpacity
-                                                onPress={() => {
-                                                    const nextList = [...data];
-                                                    nextList[item.index].open = !nextList[item.index].open;
-                                                    setData(nextList);
-                                                }}
-                                            >
-                                                <Icon name={item.open ? "chevron-up" : "chevron-down"}
-                                                    color={COLORS.colorB}
-                                                    size={25}
-                                                    style={{ paddingLeft: 13 }}
-
-                                                />
-                                            </TouchableOpacity>
-                                        </View>
-                                    </View>
-                                    {item.open
-                                        ?
-                                        <>
-
-                                            <View>
-                                                <Text style={styles.timeDropStyle}>{item.item.time} (2)</Text>
-                                                <Text style={styles.headText}>{t('common:Call')}</Text>
-
-                                                <FlatList
-                                                    data={item.item.data}
-                                                    renderItem={({ item, index }) => {
-                                                        console.log('detials-------', item)
-
-
-                                                        if (item.activityType == 'CALL') {
-
-                                                            return (
-                                                                <DropTab
-                                                                    id={item.id}
-                                                                    short={item.short}
-                                                                    name={item.customerName}
-                                                                    text={item.pin}
-                                                                    phoneNumber={item.mobileNumber}
-                                                                    color={item.color}
-                                                                    status={item.purpose}
-                                                                    details={item}
-                                                                />
-                                                            );
-                                                        }
-
-                                                    }}
-
-
-
-
-                                                />
-
-                                            </View>
-                                            <View>
-                                                <Text style={styles.timeDropStyle}>{item.item.time} AM (1)</Text>
-                                                <Text style={styles.headText}>{t('common:Meet')}</Text>
-
-
-
-                                                <FlatList
-                                                    data={item.item.data}
-                                                    renderItem={({ item, index }) => {
-
-
-                                                        if (item.activityType == 'MEET') {
-                                                            return (
-                                                                <DropTab
-                                                                    id={item.id}
-                                                                    short={item.short}
-                                                                    name={item.customerName}
-                                                                    text={item.pin}
-                                                                    phoneNumber={item.mobileNumber}
-                                                                    color={item.color}
-                                                                    status={item.purpose}
-                                                                    details={item}
-                                                                    navigation={() => navigation.navigate('CGT')}
-                                                                />
-                                                            );
-                                                        }
-
-                                                    }}
-
-
-
-
-                                                />
-
-                                            </View>
-
-                                        </> : null}
-
-
-                                </>
-
-                            </View>
-                        );
-                    }}
-
-                /> */}
-
                 {listing?.map((item, index) => {
-                 
                 
                     return (
                         <>

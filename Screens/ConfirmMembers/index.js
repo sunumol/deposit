@@ -22,13 +22,15 @@ const ConfirmMembers = ({ navigation }) => {
   const [text, onChangeText] = useState('');
   const [selectedItem, setSelectedItem] = useState();
   const [dataSelected, setDataSelected] = useState();
+  const [dataSelectedID, setDataSelectedID] = useState();
 
   const [ModalError, setModalError] = useState(false)
   const [ModalReason, setModalReason] = useState(false)
+  const [rejectReason, setRejectReason] = useState()
 
   // -----------Redux State ---------------------------------
   const dispatch = useDispatch()
-  const customerList = useSelector(state=>state.customerList);
+  const customerList = useSelector(state => state.customerList);
   const customerID = useSelector(state => state.customerID);
 
   const handleGoBack = useCallback(() => {
@@ -44,7 +46,7 @@ const ConfirmMembers = ({ navigation }) => {
     return () => backHandler.remove();
   }, [handleGoBack]);
 
-  const [data,setData]=useState()
+  const [data, setData] = useState()
 
   const OnchangeNumber = (num) => {
     if (/^[^!-\/:-@\.,[-`{-~]+$/.test(num) || num === '') {
@@ -75,7 +77,7 @@ const ConfirmMembers = ({ navigation }) => {
   }, [navigation]);
 
   useEffect(() => {
-    getCustomerLists()
+    getCustomerLists('')
   }, []);
 
   // ------------------ get Slot Api Call Start ------------------
@@ -95,8 +97,8 @@ const ConfirmMembers = ({ navigation }) => {
   // ------------------ get Slot Api Call Start ------------------
   const getCustomerLists = async (phone) => {
     const data = {
-      "employeeId":1,
-      "customerNameOrNumber":phone
+      "employeeId": 1,
+      "customerNameOrNumber": phone
     };
     await api.getCustomerList(data).then((res) => {
       console.log('------------------- CGT slot res', res)
@@ -106,6 +108,26 @@ const ConfirmMembers = ({ navigation }) => {
     })
   };
   // ------------------ get slot Api Call End ------------------getCustomerList
+
+  // ------------------ Update Activity Reject Api Call Start ------------------
+  const updateActivityReject = async () => {
+    { console.log('-----Number(id)', Number(dataSelectedID)) }
+    const data = {
+      "customerId": Number(dataSelectedID),
+      "status": rejectReason,
+      "tcMemberIds": []
+    };
+    await api.rejectTrustCircleMembers(data).then((res) => {
+      console.log('-------------------res', res?.data)
+      if (res?.status) {
+        setModalError(true)
+      }
+    })
+      .catch((err) => {
+        console.log('-------------------err', err?.response)
+      })
+  };
+  // ------------------ Update Activity Reject Api Call End ------------------
 
   return (
     <SafeAreaProvider>
@@ -135,16 +157,18 @@ const ConfirmMembers = ({ navigation }) => {
                 <Text style={styles.recentlyText}>Recently added customers</Text>
                 {data?.map((item, index) =>
                   <>
+                    {console.log('-----', item)}
                     <TouchableOpacity onPress={() => {
-                     const data = [...customerID]
+                      const data = [...customerID]
                       data.push(item?.id)
                       setSelectedItem(data)
-                      
+
                       getTCDetails(item?.id)
+                      setDataSelectedID(item?.id)
                     }}>
                       <Text style={styles.dataText}>{item.name}</Text>
                     </TouchableOpacity>
-                    {index !== data.length-1
+                    {index !== data.length - 1
                       ? <View style={styles.lineView} />
                       : null
                     }
@@ -158,7 +182,7 @@ const ConfirmMembers = ({ navigation }) => {
               <View style={{ borderWidth: 1, paddingTop: 12, paddingBottom: 22, borderColor: COLORS.colorBorder, marginTop: 10, borderRadius: 8 }}>
                 {data.map((item, index) =>
                   <>
-                  {console.log(item,"-------")}
+                    {console.log(item, "-------")}
                     <TouchableOpacity style={{ flexDirection: 'row', paddingHorizontal: 15, }}
                       onPress={() => {
                         setSelectedItem(item)
@@ -180,7 +204,7 @@ const ConfirmMembers = ({ navigation }) => {
                       <Text style={[styles.numText, { paddingLeft: 6 }]}>{item?.mobile}</Text>
                     </TouchableOpacity>
 
-                    {index !== data?.length -1
+                    {index !== data?.length - 1
                       ? <View style={styles.lineView} />
                       : null
                     }
@@ -198,7 +222,6 @@ const ConfirmMembers = ({ navigation }) => {
 
           </View>
         </ScrollView>
-        {console.log(dataSelected)}
         {dataSelected
           ?
 
@@ -209,17 +232,18 @@ const ConfirmMembers = ({ navigation }) => {
               <Text style={[styles.continueText, { color: COLORS.colorB }]}>Reject</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => {
-               const data = [...customerList]
-               data.push(dataSelected)
-                dispatch({
-                 type: 'SET_SELECTED_CUSTOMERLIST',
-                 payload: data,
-               });
-               dispatch({
+              const data = [...customerList]
+              data.push(dataSelected)
+              dispatch({
+                type: 'SET_SELECTED_CUSTOMERLIST',
+                payload: data,
+              });
+              dispatch({
                 type: 'SET_SELECTED_CUSTOMERID',
                 payload: selectedItem,
               });
-              navigation.navigate('CreateTrustCircle')}}
+              navigation.navigate('CreateTrustCircle')
+            }}
               style={[styles.buttonView, { backgroundColor: COLORS.colorB }]}>
               <Text style={[styles.continueText, { color: COLORS.colorBackground }]}>Confirm</Text>
             </TouchableOpacity>
@@ -229,13 +253,11 @@ const ConfirmMembers = ({ navigation }) => {
       </View>
 
       <ReasonModal
-        onPress1={() => {
-          setModalError(true)
-        }}
+        onPress1={updateActivityReject}
         ModalVisible={ModalReason}
-        navigation={navigation}
         onPressOut={() => setModalReason(!ModalReason)}
         setModalVisible={setModalReason}
+        setRejectReason={setRejectReason}
       />
 
       <ErrorModal

@@ -90,11 +90,12 @@ const ActiveTab = (props) => {
                         <Text style={[styles.leadText, { color: COLORS.DarkPurple }]}>{t('common:ExplainTrustCircle')}</Text>
                     </View>
                 }
+                {console.log(props)}
                 {props.status === 'Conduct CGT' &&
                     <TouchableOpacity onPress={()=>{
                         dispatch({
                             type: 'SET_CGT_ACTIVITY_ID',
-                            payload: item.activityId,
+                            payload: props.details.activityId,
                           });
                         props.navigation.navigate('CGT')
 
@@ -111,7 +112,11 @@ const ActiveTab = (props) => {
             </View>
 
         </TouchableOpacity>
-            <ActivityModal visible={modalVisible} onPressOut={()=>setModalVisible(!modalVisible)} meet={props.status === 'Explain Trust Circle' ? false : true} details={props.details} setEnab={props.setEnab}/>
+            <ActivityModal visible={modalVisible} 
+            onPressOut={()=>setModalVisible(!modalVisible)} 
+            meet={props.status === 'Explain Trust Circle' ? false : true} 
+            details={props.details} setEnab={props.setEnab}
+            />
             </>
     )
 }
