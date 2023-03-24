@@ -1,3 +1,4 @@
+
 import { StyleSheet, Text, View, BackHandler, StatusBar,
   SafeAreaView, Platform, TextInput, ScrollView, TouchableOpacity } from 'react-native'
 import React, { useCallback, useState,useEffect } from 'react'
@@ -21,6 +22,7 @@ import moment from 'moment';
 
 
 const SelectCustomer = ({ navigation,route }) => {
+ console.log('select customer=====>',route?.params?.date)
  const isDarkMode = true;
  const [text, onChangeText] = useState('');
  const [selectedItem, setSelectedItem] = useState();
@@ -160,6 +162,9 @@ return true
              // ------------------ get Customer List Api Call Start ------------------
              const createCGT = async () => {
 
+
+               console.log('creat=======',selectedDate)
+
                let date = (moment(selectedDate).utc().format("DD-MM-YYYY"))
                let selectedtime = route?.params?.data?.time
 
@@ -169,7 +174,7 @@ return true
                
          
 
-               console.log('schedule time',time)
+               console.log('schedule time',date,time)
             
                const data = {
                  "employeeId":1,
@@ -177,11 +182,10 @@ return true
                  "scheduleStartTime":date +" " + time
              }
                await api.createCGT(data).then((res) => {
-                   console.log('------------------- create CGT res', res.data.body)
+                   console.log('------------------- create CGT res', res)
                  // setCustomerList(res?.data?.body)
                   setModalVisible(true)
-                  setEnab(false)
-               })
+                  setEnab(true)                })
                    .catch((err) => {
                        console.log('-------------------err', err?.response)
                    })
@@ -247,7 +251,7 @@ return true
                <TouchableOpacity onPress={()=>{setSelectedItem(item),console}}>
                  <Text style={styles.dataText}>{item.name ?  item.name : item.mobile}</Text>
                  </TouchableOpacity>
-                 {index !== 6
+                 {index !== 10
                    ? <View style={styles.lineView} />
                    : null
                  }

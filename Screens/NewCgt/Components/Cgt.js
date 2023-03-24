@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import {
     StyleSheet,
@@ -34,6 +35,7 @@ const Cgt = ({navigation,data,date}) => {
     const [currentDate, setCurrentDate] = useState(date);
     const [DateStatus, setDateStatus] = useState(false)
     const [selectedItem1, setSelectedItem1] = useState()
+    const [enab,setEnab]=useState(false)
     const Data = [
         {
             id: 1,
@@ -223,7 +225,7 @@ const Cgt = ({navigation,data,date}) => {
         return (
             <View style={{ justifyContent: 'space-around', margin: 5 }}>
                 <TouchableOpacity 
-                onPress={() => { item.availabilityStatu == "notAvailable" ? navigation.navigate('Activities',{data:item}): navigation.navigate('SelectCustomer',{data : item,date :currentDate}) }}
+                onPress={() => { item.availabilityStatu == "notAvailable" ? navigation.navigate('Activities',{data:item}): navigation.navigate('SelectCustomer',{data : item,date :date}) }}
                     style={[styles.Touch, { borderColor: item.availabilityStatu == "partiallyAvailable"  ? 'rgba(242, 153, 74, 1)': item.availabilityStatu == "fullyAvailable"  ? 'rgba(39, 174, 96, 1)':item.availabilityStatu == "fullyAllocated"  ? 'rgba(234, 64, 71, 1)':item.availabilityStatu == "notAvailable"  ? 'rgba(155, 81, 224, 1)':null, backgroundColor: COLORS.colorBackground }]}>
                     <Text style={[styles.timeText1, { color: item.availabilityStatu == "partiallyAvailable"  ? 'rgba(242, 153, 74, 1)': item.availabilityStatu == "fullyAvailable"  ? 'rgba(39, 174, 96, 1)':item.availabilityStatu == "fullyAllocated"  ? 'rgba(234, 64, 71, 1)':item.availabilityStatu == "notAvailable"  ? 'rgba(155, 81, 224, 1)':null }]}>{item.time}</Text>
                 </TouchableOpacity>

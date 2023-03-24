@@ -41,6 +41,7 @@ const HeaderDashBoard = ({ navigation, notificationCounts }) => {
                 navigation.navigate('LoginScreen')
                 AsyncStorage.removeItem('Token')
                 AsyncStorage.removeItem('CustomerId')
+                setModalVisible(false)
             }else{
                 console.log("re",res)
             }

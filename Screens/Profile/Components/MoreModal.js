@@ -101,7 +101,7 @@ const MoreModal = ({ ModalVisible, onPressOut, setModalVisible, setOtpValue, nav
                         <View style={styles.Line} />
 
                         <View style={{ justifyContent: 'center' }}>
-                            <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginTop: width * 0.12,paddingLeft:width*0.05,paddingRight:width*0.05 }}>
+                            <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginTop: width * 0.12,paddingLeft:width*0.06,paddingRight:width*0.05,marginBottom:width*0.1 }}>
                       
                             <View style={{ alignItems: 'center', justifyContent: 'center',paddingRight:Lang=='en' ? width*0.04:0, }}>
                                     <TouchableOpacity style={styles.touch} onPress={() => {
@@ -133,7 +133,7 @@ const MoreModal = ({ ModalVisible, onPressOut, setModalVisible, setOtpValue, nav
                                     <Text style={styles.text}>{t('common:MPIN')}</Text>
                                 </View>
                             </View>
-
+{/* 
                             <View style={{ flexDirection: 'row', justifyContent:'flex-start',
                              marginTop: width * 0.08, marginBottom: 35,paddingLeft:width*0.1 }}>
                               <View style={{ alignItems:'flex-start', justifyContent:'flex-start' ,left:Lang == 'en' ? 0 : 5,
@@ -145,7 +145,7 @@ const MoreModal = ({ ModalVisible, onPressOut, setModalVisible, setOtpValue, nav
                                 </View>
                          
 
-                            </View>
+                            </View> */}
                         </View>
 
                     </View>

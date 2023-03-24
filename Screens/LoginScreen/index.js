@@ -15,13 +15,13 @@ import {
     PermissionsAndroid
 } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import OTPInputView from '@twotalltotems/react-native-otp-input';
+// import OTPInputView from '@twotalltotems/react-native-otp-input';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTranslation } from 'react-i18next';
 import SmsAndroid from 'react-native-get-sms-android';
 import DeviceInfo from 'react-native-device-info';
 import { NetworkInfo } from 'react-native-network-info';
-
+import { useIsFocused } from '@react-navigation/native';
 // --------------- Component Imports ---------------------
 import { COLORS, FONTS } from '../../Constants/Constants';
 import Statusbar from '../../Components/StatusBar';
@@ -33,7 +33,7 @@ import { api } from '../../Services/Api';
 import Resend from '../../assets/Images/resend.svg'
 import Logo from '../../assets/Images/svadhan.svg';
 import { useNavigationState } from '@react-navigation/native';
-
+import OTPInputView from '../../Components/OTPInputView';
 const { height, width } = Dimensions.get('screen');
 
 const LoginScreen = ({ navigation }) => {
@@ -48,7 +48,7 @@ console.log("index",index)
     const [PhoneNum, setPhoneNum] = useState(null)
     const [lang, setLang] = useState('')
     const [timerCount, setTimer] = useState(30)
-    
+    const screenIsFocused = useIsFocused();
     const [ModalVisible, setModalVisible] = useState(false)
     const [ModalVisible1, setModalVisible1] = useState(false)
     const [otp, setOtp] = useState(false)
@@ -479,7 +479,7 @@ console.log("index",index)
 
                         <View style={[styles.container, { marginTop: Dimensions.get('window').height * 0.05 }]}>
 
-                            <Text style={styles.Heading1} onPress={() => navigation.navigate('NewLead')}>{t('common:Verify')}</Text>
+                            <Text style={styles.Heading1} >{t('common:Verify')}</Text>
 
                             <View style={styles.ViewInput}>
                                 <View style={{ justifyContent: 'center' }}>
@@ -512,37 +512,23 @@ console.log("index",index)
 
                             </TouchableOpacity>
 
-                            {lang == "en" ?
+                        
                                 <View style={styles.viewTerms}>
                                     <Text style={styles.textTerms2}>By continuing, I accept the </Text>
                                     <TouchableOpacity onPress={() => navigation.navigate('Terms')}>
                                         <Text style={styles.textTerms1}>terms and conditions</Text>
                                         <View style={styles.ViewLine} />
                                     </TouchableOpacity>
-                                </View> :
-                                <View style={styles.viewTerms}>
-                                    <Text style={styles.textTerms2}>തുടരുന്നതിലൂടെ,  </Text>
-                                    <TouchableOpacity onPress={() => navigation.navigate('Terms')}>
-                                        <Text style={styles.textTerms1}>നിബന്ധനകളും വ്യവസ്ഥകളും</Text>
-                                        <View style={styles.ViewLine} />
-                                    </TouchableOpacity>
-                                </View>}
+                                </View> 
 
-                            {lang == "en" ?
                                 <View style={styles.viewTerms}>
                                     <Text style={styles.textTerms2}>and </Text>
                                     <TouchableOpacity onPress={() => navigation.navigate('Privacy')}>
                                         <Text style={styles.textTerms1}>privacy policy.</Text>
                                         <View style={[styles.ViewLine, { marginRight: 4 }]} />
                                     </TouchableOpacity>
-                                </View> :
-                                <View style={styles.viewTerms}>
-                                    <TouchableOpacity onPress={() => navigation.navigate('Privacy')}>
-                                        <Text style={styles.textTerms1}>സ്വകാര്യതാ നയവും</Text>
-                                        <View style={styles.ViewLine} />
-                                    </TouchableOpacity>
-                                    <Text style={[styles.textTerms2, { paddingLeft: 5 }]}>ഞാൻ അംഗീകരിക്കുന്നു.</Text>
-                                </View>}
+                                </View> 
+                             
 
                             {IsOtp1 ?
                                 <View style={styles.ViewOtp}>
@@ -551,27 +537,25 @@ console.log("index",index)
 
                             {IsOtp1 ?
                                 <OTPInputView
-                                    style={[styles.OtpInput, {}]}
-                                    pinCount={4}
-                                    code={OtpValue}
-                                    onCodeChanged={otp => {
-                                        setOtpValue(otp)
-                                        if (otp.length === 4) {
-                                            ConfirmOtp(otp)
-                                        }
-                                    }}
-                                    autoFocusOnLoad={false}
-                                    codeInputFieldStyle={{ color: '#090A0A', borderRadius: 8, backgroundColor: '#FCFCFC', borderColor: !otp ? "lightgrey" : "red" }}
-                                    placeholderTextColor="black"
-                                    onCodeFilled={(code => {
-                                        if (code) {
-                                            setOtp(false)
-                                        }
-                                        else {
-                                            setOtp(true)
-                                        }
-                                    })}
-                                /> : null}
+                                // ref={otpInput2}
+                                //value={OtpValue}
+                                autoFocus={true}
+                                inputCount={4}
+                                inputCellLength={1}
+                                offTintColor={!otp ? "lightgrey" : "red"}
+                                tintColor={!otp ? "lightgrey" : "red"}
+                                textInputStyle={[styles.imputContainerStyle, { color: '#090A0A', borderRadius: 8, backgroundColor: '#FCFCFC', borderColor: !otp ? "lightgrey" : "red" }]}
+                                keyboardType="numeric"
+                                containerStyle={{ marginTop: 7 }}
+                                handleTextChange={(code => {
+                                    setOtpValue(code)
+                                    if (code.length === 4) {
+                                        ConfirmOtp(code)
+                                    }
+                                    if (code.length === '') {
+                                        setOtp(false)
+                                    }
+                                })} /> : null}
                             {otp ?
                                 <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 12, marginBottom: 5 }}>
                                     <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center' }}>{t('common:otpValid')}</Text>
@@ -596,7 +580,7 @@ console.log("index",index)
                                     </TouchableOpacity> : null}
 
                         </View>
-
+                        {screenIsFocused &&
                         <AllowModal ModalVisible={ModalVisible}
                             onPressOut={() => setModalVisible(!ModalVisible)}
                             setOtpValue={setOtpValue}
@@ -605,6 +589,7 @@ console.log("index",index)
                             navigation={navigation}
                             ConfirmOtp={(data) => ConfirmOtp(data)}
                             setOtpFetch={setOtpFetch} />
+                        }
 
                         <ToastModal
                             Validation={t('common:Valid')}
@@ -676,6 +661,13 @@ const styles = StyleSheet.create({
         color: COLORS.colorDark,
         fontWeight: '400',
         fontFamily: FONTS.FontRegular,
+    },
+    imputContainerStyle: {
+        borderWidth: 1,
+        height: 48,
+        width: 48,
+        fontSize: 12,
+        fontWeight: 'bold',
     },
     Line: {
         borderRightWidth: 1,

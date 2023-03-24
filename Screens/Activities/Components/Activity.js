@@ -193,20 +193,20 @@ const Activities = ({ navigation ,data}) => {
 
                 <Text style={[styles.textActive, { paddingBottom: width * 0.03 }]}>CGT</Text>
 
-                {list.map((item) => {
+                {list?.map((item) => {
                     console.log('CGT listing activities',item.activityType)
                     if(item.activityType == 'MEET'){
                     return (
                         <View style={styles.viewCard}>
                              <View style={[styles.circleStyle, { backgroundColor: "#A294C8", marginLeft: width * 0.03,alignItems:'center' }]}>
-                                <Text style={styles.circleText}>{getInitials(item.customerName ? item.customerName : item.mobileNumber)}</Text>
+                                <Text style={styles.circleText}>{getInitials(item?.customerName ? item?.customerName : item?.mobileNumber)}</Text>
                             </View> 
 
                      
                              <View style={{ flexDirection: 'row' ,justifyContent:'space-between',flex:1,paddingRight:width*0.04}}>
                                 <View style={{ flexDirection: 'column', paddingLeft: 12, paddingTop: 5, }}>
 
-                                    <Text style={styles.nameText}>{item.customerName ? item.customerName : item.mobileNumber}</Text>
+                                    <Text style={styles.nameText}>{item.customerName ? item.customerName : item?.mobileNumber}</Text>
 
 
                                     <View style={{ flexDirection: 'row', }}>
@@ -222,8 +222,8 @@ const Activities = ({ navigation ,data}) => {
                                 <View style={{ flexDirection: 'column', top: 5,alignItems:'flex-end',flex:1 }}>
 
                                     <Text style={[styles.numText, {}]}>{item.mobileNumber}</Text>
-                                    <View style={[styles.ViewExplain, { backgroundColor: 'rgba(39, 174, 96, 0.1)', width: width * 0.27, marginLeft: width * 0.03 }]}>
-                                        <Text style={[styles.explainText, { color: "#27AE60" }]}>Collect Payment</Text>
+                                    <View style={[styles.ViewExplain, { backgroundColor: item?.purpose == 'Conduct CGT' ? 'rgba(47, 128, 237, 0.1)' :'rgba(39, 174, 96, 0.1)', width: width * 0.27, marginLeft: width * 0.03 }]}>
+                                        <Text style={[styles.explainText, { color: item?.purpose == 'Conduct CGT' ? 'rgba(47, 128, 237, 1)' : "#27AE60" }]}>{item?.purpose}</Text>
                                     </View>
                                 </View>
                             </View> 

@@ -13,7 +13,7 @@ const Summary = () => {
 
     return (
         <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={{ alignItems: 'center', justifyContent: 'center',marginBottom:15 }}>
+        <View style={{ alignItems: 'center', justifyContent: 'center',marginBottom:15,backgroundColor:COLORS.colorBackground }}>
         
             <Chart1 />
             <Chart2 />
