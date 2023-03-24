@@ -247,7 +247,7 @@ const Activities = ({ navigation ,data}) => {
 
                 onPressOut={() => {
                     setModalVisible(!ModalVisible)
-                    navigation.navigate('SelectCustomer')
+                    navigation.navigate('SelectCustomerNewCgt')
                 }}
                 setModalVisible={setModalVisible}
             />

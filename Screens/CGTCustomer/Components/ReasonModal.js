@@ -3,7 +3,8 @@ import { Dimensions, Modal, StyleSheet, Text, TouchableOpacity, View, Pressable,
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { COLORS, FONTS } from '../../../Constants/Constants';
 import { useTranslation } from 'react-i18next';
-import { CheckBox } from 'react-native-elements';
+import { api } from '../../../Services/Api';
+
 const { height, width } = Dimensions.get('screen');
 
 const data = [
@@ -33,7 +34,7 @@ const data = [
         isChecked: false
     },
 ]
-const ReasonModal = ({ModalVisible, onPressOut,setModalVisible,onPress1}) => {
+const ReasonModal = ({ModalVisible, onPressOut,setModalVisible,onPress1,setRejectReason}) => {
     const { t } = useTranslation();
 
     const [Data, setData] = useState(data)
@@ -65,6 +66,9 @@ const ReasonModal = ({ModalVisible, onPressOut,setModalVisible,onPress1}) => {
      
     }
 
+
+    
+
     return (
 
         <Modal
@@ -90,7 +94,10 @@ const ReasonModal = ({ModalVisible, onPressOut,setModalVisible,onPress1}) => {
                                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', 
                                 paddingLeft: width * 0.06,paddingRight:width*0.06,alignItems:'center',marginBottom:width*0.05,marginTop:width*0.05 }}>
                                     <Text style={styles.TextTitle}>{item.Title}</Text>
-                                    <Pressable onPress={() => onCheck1(item.id)} >
+                                    <Pressable onPress={() => {
+                                        onCheck1(item.id)
+                                        setRejectReason(item.Title)
+                                        }} >
                                         <Icon name={item.isChecked ? 'checkbox-marked' : 'checkbox-blank-outline'} size={22} color={item.isChecked ? COLORS.colorB : '#DADADA'} />
                                     </Pressable>
                                     

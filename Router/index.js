@@ -48,6 +48,7 @@ import Proceed from '../Screens/Proceed';
 import Collection from '../Screens/Collection';
 import LoanDetailsCollect from '../Screens/LoanDetailsCollect';
 import Dashboard from '../Screens/Dashboard';
+import SelectCustomerNewCgt from '../Screens/SelectCustomNewCgt';
 
 const Stack = createNativeStackNavigator();
 
@@ -104,6 +105,7 @@ export default function Router() {
         <Stack.Screen name="Collection" component={netInfo.isConnected ? Collection : NetWorkError} />
         <Stack.Screen name="LoanDetailsCollect" component={netInfo.isConnected ?LoanDetailsCollect:NetWorkError} />
         <Stack.Screen name="Dashboard" component={netInfo.isConnected ? Dashboard : NetWorkError} />
+        <Stack.Screen name="SelectCustomerNewCgt" component={netInfo.isConnected ? SelectCustomerNewCgt : NetWorkError} />
    </Stack.Navigator>
     </NavigationContainer>
   );

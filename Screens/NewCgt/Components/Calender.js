@@ -107,12 +107,15 @@ const CalendarStrips = ({callback}) => {
     const Moment = moment(Data).utc().format('MMMM YYYY')
     console.log('?Momemnt.....', Moment)
     setMonth(Data)
+   // setSelectedDate(Data)
     if (moment(selectedDate).format('MMMM YYYY') !== moment(end).format('MMMM YYYY')) {
       IncrementMonth()
       setArrowEnable(true)
     }
 
   }
+
+  
 
   return (
     <View style={styles.container}>
@@ -129,7 +132,10 @@ const CalendarStrips = ({callback}) => {
         {/* <TouchableOpacity onPress={() => nextPress()}>
           <Icon1 name="arrow-left" size={14} color={"#171930"} />
         </TouchableOpacity> */}
+
         <View style={{}}>
+          {/* {selectedDate ? 
+            <Text style={styles.YearText}>{moment(selectedDate).format("MMMM")} '{moment(selectedDate).format("YY")}</Text>: */}
           <Text style={styles.YearText}>{moment(Month).format("MMMM")} '{moment(Month).format("YY")}</Text>
         </View>
         {/* <TouchableOpacity onPress={() => backPress()}>
@@ -215,7 +221,10 @@ const CalendarStrips = ({callback}) => {
                 borderWidth: 0.5,
                 backgroundColor: moment(selectedDate).format('DD-MM-YYYY') === moment(item.date).format('DD-MM-YYYY') ? COLORS.colorB : COLORS.colorBackground
               }}
-              onPress={() => {setSelectedDate(item.date._d),handleCallBack(item.date._d)}}>
+              onPress={() => {setSelectedDate(item?.date._d),
+              handleCallBack(item?.date._d),
+              setMonth(item?.date._d),
+              console.log("selct date",item?.date._d)}}>
               <Text
                 style={{
                   color: moment(selectedDate).format('DD-MM-YYYY') === moment(item.date).format('DD-MM-YYYY') ? COLORS.colorBackground : '#171930',

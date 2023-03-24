@@ -225,7 +225,7 @@ const Cgt = ({navigation,data,date}) => {
         return (
             <View style={{ justifyContent: 'space-around', margin: 5 }}>
                 <TouchableOpacity 
-                onPress={() => { item.availabilityStatu == "notAvailable" ? navigation.navigate('Activities',{data:item}): navigation.navigate('SelectCustomer',{data : item,date :date}) }}
+                onPress={() => { item.availabilityStatu == "notAvailable" ? navigation.navigate('Activities',{data:item}): navigation.navigate('SelectCustomerNewCgt',{data : item,date :date}) }}
                     style={[styles.Touch, { borderColor: item.availabilityStatu == "partiallyAvailable"  ? 'rgba(242, 153, 74, 1)': item.availabilityStatu == "fullyAvailable"  ? 'rgba(39, 174, 96, 1)':item.availabilityStatu == "fullyAllocated"  ? 'rgba(234, 64, 71, 1)':item.availabilityStatu == "notAvailable"  ? 'rgba(155, 81, 224, 1)':null, backgroundColor: COLORS.colorBackground }]}>
                     <Text style={[styles.timeText1, { color: item.availabilityStatu == "partiallyAvailable"  ? 'rgba(242, 153, 74, 1)': item.availabilityStatu == "fullyAvailable"  ? 'rgba(39, 174, 96, 1)':item.availabilityStatu == "fullyAllocated"  ? 'rgba(234, 64, 71, 1)':item.availabilityStatu == "notAvailable"  ? 'rgba(155, 81, 224, 1)':null }]}>{item.time}</Text>
                 </TouchableOpacity>

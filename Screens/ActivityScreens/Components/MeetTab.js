@@ -190,7 +190,6 @@ getData();
                                 setEnab={setEnab}
                                 meet={true}
                                 navigation={navigation}
-                            
                             />) : null }
                             </>
                         )

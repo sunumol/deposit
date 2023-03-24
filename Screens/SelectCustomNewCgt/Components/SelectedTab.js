@@ -2,24 +2,26 @@
 ;
 import React, { useEffect, useState } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
-import { COLORS, FONTS } from '../../../../Constants/Constants';
+import { COLORS, FONTS } from '../../../Constants/Constants';
 import { useTranslation } from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon1 from 'react-native-vector-icons/Ionicons'
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
-import ActivityModal from '../components/ActiveModal';
-import { useDispatch } from 'react-redux';
-const ActiveTab = (props) => {
+
+const MeetTab = (props) => {
     const { t } = useTranslation();
     const [Lang, setLang] = useState('')
-    const [modalVisible,setModalVisible]=useState(false)
-    const [enab,setEnab]=useState(false)
-    const dispatch = useDispatch()
 
     useEffect(() => {
         getData()
+        console.log('selected tab',props)
     }, [])
-    const  getRandomColor=()=> {
+
+
+    // String.prototype.replaceAt = function (index, replacement) {
+    //     return this.substring(0, index) + replacement + this.substring(index + replacement.length);
+    // }
+    const  getRandomColor =()=> {
         var letters = '0123456789ABCDEF';
         var color = '#';
         for (var i = 0; i < 3; i++) {
@@ -28,8 +30,11 @@ const ActiveTab = (props) => {
         return color;
       }
     
-    
+      String.prototype.replaceAt = function (index, replacement) {
+        return this.substring(0, index) + replacement + this.substring(index + replacement.length);
+      }
       const getInitials = (name) => {
+      
         let initials;
         const nameSplit = name?.split(" ");
          const nameLength = nameSplit?.length;
@@ -43,6 +48,8 @@ const ActiveTab = (props) => {
     
          return initials.toUpperCase();
     };
+    
+
     const getData = async () => {
         try {
             const lang = await AsyncStorage.getItem('user-language')
@@ -52,71 +59,52 @@ const ActiveTab = (props) => {
         }
     }
     return (
-        <>
-        <TouchableOpacity 
-        style={styles.boxStyle} 
-        key={props.id}
-        onPress={()=>setModalVisible(true)}>
-            <View style={{ flex: 1, flexDirection: 'row' }}>
+       
+                    <View
+                       
+                        style={styles.boxStyle} key={props.id}>
+                        <View style={{ flex: 1, flexDirection: 'row' }}>
 
-                <View style={[styles.circleStyle, { backgroundColor: getRandomColor() }]}>
-                    <Text  style={styles.circleText}>{getInitials(props.name)}</Text>
-                </View>
+                            <View style={[styles.circleStyle, { backgroundColor: getRandomColor() }]}>
+                                <Text style={styles.circleText}>{getInitials(props.item.name ? props.item.name : props.item.mobile)}</Text>
+                            </View>
 
-                <View style={{ flexDirection: 'column', paddingLeft: 12, paddingTop: 5 }}>
-                    <Text  style={styles.nameText}>{props.name}</Text>
-                    <View style={{ flexDirection: 'row', }}>
-                        <View style={{ paddingTop: 5, paddingRight: 1 }}>
-                            <Icon1 name="location-outline" color={"black"} />
+                            <View style={{ flexDirection: 'column', paddingLeft: 12, paddingTop: 5 }}>
+                                <Text style={styles.nameText}>{props?.item?.name ? props?.item?.name : props?.item?.mobile}</Text>
+                                <View style={{ flexDirection: 'row', }}>
+                                {props.item?.pin ? (    <View style={{ paddingTop: 5, paddingRight: 1 }}>
+                                        <Icon1 name="location-outline" color={"black"} />
+                                    </View>):null}
+                                    <Text style={[styles.idText, { paddingTop: 4 }]}>{props?.item?.pin}</Text>
+                                </View>
+                            </View>
+
                         </View>
-                        <Text style={[styles.idText, { paddingTop: 4 }]}>{props.text}</Text>
-                    </View>
-                </View>
 
-            </View>
+                        <View style={{ flexDirection: 'column', paddingTop: 5, alignItems: 'flex-end' }}>
+                            <View style={{ flexDirection: 'row' }}>
+                                <Icon2 name="phone-in-talk-outline" color={"black"} size={15} />
+                                <Text style={[styles.numText, { paddingLeft: 6 }]}>{props?.item?.mobile.replace(/^.{0}/g, '').replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X")}</Text>
+                            </View>
 
-            <View style={{ flexDirection: 'column', paddingTop: 5, alignItems: 'flex-end' }}>
-            <View style={{flexDirection:'row'}}>
-            <Icon2 name="phone-in-talk-outline" color={"black"} size={15}/>
-                <Text style={[styles.numText,{paddingLeft:6}]}>{props.phoneNumber}</Text>
-                </View>
-                {props.status === 'Leads Follow Up' &&
-                    <View style={[styles.leadContainer, { backgroundColor: COLORS.LightYellow }]}>
-                        <Text style={[styles.leadText, { color: COLORS.DarkYellow }]}>{t('common:LeadsFollowUp')}</Text>
-                    </View>
-                }
-                {props.status === 'Explain Trust Circle' &&
-                    <View style={[styles.leadContainer, { backgroundColor: COLORS.LightPurple }]}>
-                        <Text style={[styles.leadText, { color: COLORS.DarkPurple }]}>{t('common:ExplainTrustCircle')}</Text>
-                    </View>
-                }
-                {props.status === 'Conduct CGT' &&
-                    <TouchableOpacity onPress={()=>{
-                        dispatch({
-                            type: 'SET_CGT_ACTIVITY_ID',
-                            payload: item.activityId,
-                          });
-                        props.navigation.navigate('CGT')
+                            <View style={[styles.leadContainer, { backgroundColor: COLORS.LightBlue }]}>
+                                <Text style={[styles.leadText, { color: COLORS.DarkBlue }]}>{t('common:ConductCGT')}</Text>
+                            </View>
 
-                    }}
-                    style={[styles.leadContainer, { backgroundColor: COLORS.LightBlue }]}>
-                        <Text style={[styles.leadText, { color: COLORS.DarkBlue }]}>{t('common:ConductCGT')}</Text>
-                    </TouchableOpacity>
-                }
-                {props.status === 'Collection' &&
-                    <View style={[styles.leadContainer, { backgroundColor: COLORS.LightGreen }]}>
-                        <Text style={[styles.leadText, { color: COLORS.DarkGreen }]}>{t('common:CollectionFollowUp')}</Text>
-                    </View>
-                }
-            </View>
+                        </View>
 
-        </TouchableOpacity>
-            <ActivityModal visible={modalVisible} onPressOut={()=>setModalVisible(!modalVisible)} meet={props.status === 'Explain Trust Circle' ? false : true} details={props.details} setEnab={props.setEnab}/>
-            </>
+                    </View>
+              
     )
 }
 
 const styles = StyleSheet.create({
+    timeDropStyle: {
+        fontSize: 11,
+        fontFamily: FONTS.FontMedium,
+        color: COLORS.colorDSText,
+        paddingTop: 18,
+    },
     boxStyle: {
         backgroundColor: COLORS.colorBackground,
         borderColor: COLORS.colorBorder,
@@ -199,15 +187,15 @@ const styles = StyleSheet.create({
         fontSize: 11,
         fontFamily: FONTS.FontSemiB,
         fontWeight: '600',
-        
+
     },
     leadContainer: {
         padding: 4,
         borderRadius: 3,
         marginTop: 2,
-        maxWidth:150
+        maxWidth: 150
     },
 
 
 });
-export default ActiveTab;
+export default MeetTab;

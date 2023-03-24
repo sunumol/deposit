@@ -22,14 +22,17 @@ import { useRoute } from '@react-navigation/native';
 import { useFocusEffect } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import Cgt from './Components/cgt'
+import { useSelector } from 'react-redux';
 
 const CgtScreen = ({ navigation, }) => {
     const route = useRoute();
-    console.log("route name",);
     const isDarkMode = true
     const { t } = useTranslation();
     const [lang, setLang] = useState('')
     const [BStatus, setBstatus] = useState(false)
+
+    const activityId = useSelector(state => state.activityId);
+
 
     useEffect(() => {
         getData()
@@ -70,7 +73,7 @@ const CgtScreen = ({ navigation, }) => {
             <Header navigation={navigation} name="CGT" />
 
             <View style={styles.ViewContent}>
-                <Cgt navigation={navigation} />
+                <Cgt navigation={navigation} activityId={activityId} />
             </View>
 
         </SafeAreaProvider>
