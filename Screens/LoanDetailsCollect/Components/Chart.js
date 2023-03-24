@@ -148,7 +148,7 @@ const Chart = ({ navigation }) => {
                             }}
                             textStyle={{
                                 fontFamily: FONTS.FontRegular,
-                                fontSize: 12,
+                                fontSize: 10,
                                 color: '#808080',
                                 top: value === '6 Months' || value === '1 Month' ? 0 : -1,
 
@@ -198,7 +198,7 @@ const Chart = ({ navigation }) => {
                     yAxisThickness={0.9}
                     xAxisThickness={1}
                     height={100}
-                   
+                    disableScroll={true}
                     xAxisIndicesColor={'#E5E7FA'}
                     xAxisColor={'#E5E7FA'}
                     yAxisColor={'#E5E7FA'}

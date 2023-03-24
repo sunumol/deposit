@@ -9,12 +9,14 @@ import {
     Dimensions,
     PermissionsAndroid,
     StatusBar,
+    BackHandler,
+    ToastAndroid
 } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Geolocation from 'react-native-geolocation-service';
-
+import { useNavigationState } from '@react-navigation/native';
 // ----------------- Component Import ---------------------
 import { COLORS, FONTS } from '../../Constants/Constants';
 import Statusbar from '../../Components/StatusBar';
@@ -82,7 +84,9 @@ const Permission = ({ navigation }) => {
     const isDarkMode = true;
     const [lang, setLang] = useState('')
     const [ModalVisible1,setModalVisible1] =  useState(false)
-
+    const [exitApp,setExitApp] = useState(0)
+    const index = useNavigationState(state => state.index);
+    console.log("index of introscreen",index)
     useEffect(() => {
         getData()
     }, [])
@@ -94,6 +98,31 @@ const Permission = ({ navigation }) => {
 
         } catch (e) {
             console.log(e)
+        }
+    }
+
+    useEffect(() => {
+        const backHandler = BackHandler.addEventListener(
+            'hardwareBackPress',
+            handleGoBack,
+        );
+        return () => backHandler.remove();
+    }, [exitApp]);
+    const handleGoBack = () => {
+        if (index==1 || index ==2) {
+            if (exitApp === 0) {
+                setExitApp(exitApp + 1);
+               // console.log("exit app intro", exitApp)
+                ToastAndroid.show("Press back again to exit.", ToastAndroid.SHORT);
+         
+            } else if (exitApp === 1) {
+                BackHandler.exitApp();
+                console.log("exit app else intro", exitApp)
+            }
+            setTimeout(() => {
+                setExitApp(0)
+            }, 3000);
+            return true;
         }
     }
 

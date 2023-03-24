@@ -46,6 +46,7 @@ i18n
 
   .init({
     resources: LANGUAGES,
+    compatibilityJSON: 'v3',
     lng:"en",
     react: {
       useSuspense: false

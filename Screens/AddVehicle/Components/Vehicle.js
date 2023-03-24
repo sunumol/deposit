@@ -144,7 +144,7 @@ const Vehicle = ({ navigation }) => {
                         {!Purpose ? <Text style={styles.textSelect}>Select</Text> :
                             <Text style={[styles.textSelect], { color: '#1A051D', marginLeft: 8 }}>{Purpose}</Text>}
 
-                        <Icon1 name="chevron-down" size={18} color={'#808080'} style={{ marginRight: 10 }} />
+                        {/* <Icon1 name="chevron-down" size={18} color={'#808080'} style={{ marginRight: 10 }} /> */}
                     </TouchableOpacity>
                     <View>
                         <Text style={[styles.TextOwner, { marginTop: 10 }]}>Enter the vehicle number</Text>

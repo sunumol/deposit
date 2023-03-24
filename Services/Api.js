@@ -139,5 +139,12 @@ export const api = {
     })
   },
 
+  createCGT: data => {
+    return axios.post(`${baseURL}createOrUpdateCGT`,data,{
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+  },
 };
 

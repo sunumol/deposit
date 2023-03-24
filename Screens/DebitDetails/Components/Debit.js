@@ -131,6 +131,7 @@ const Debit = ({ navigation }) => {
                                             fontFamily: FONTS.FontRegular, left: 5, top: 2,
                                         }]}
                                         value={Salary}
+                                        
                                         onChangeText={(text) => setSalary(text)} />
                                 </View>
                             </View>
@@ -171,7 +172,7 @@ const Debit = ({ navigation }) => {
                                     {!Purpose ?
                                         <Text style={styles.textSelect}>Select</Text> :
                                         <Text style={[styles.textSelect], { color: '#1A051D', marginLeft: 8 }}>{Purpose}</Text>}
-                                    <Icon1 name="chevron-down" size={18} color={'#808080'} style={{ marginRight: 10 }} />
+                                    {/* <Icon1 name="chevron-down" size={18} color={'#808080'} style={{ marginRight: 10 }} /> */}
                                 </TouchableOpacity>
 
 
@@ -234,7 +235,7 @@ const Debit = ({ navigation }) => {
                                     {!Frequency ?
                                         <Text style={styles.textSelect}>Select</Text> :
                                         <Text style={[styles.textSelect], { color: '#1A051D', marginLeft: 8 }}>{Frequency}</Text>}
-                                    <Icon1 name="chevron-down" size={18} color={'#808080'} style={{ marginRight: 10 }} />
+                                    {/* <Icon1 name="chevron-down" size={18} color={'#808080'} style={{ marginRight: 10 }} /> */}
                                 </TouchableOpacity>
 
 

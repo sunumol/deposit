@@ -11,7 +11,7 @@ import {
     ToastAndroid
 } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import OTPInputView from '@twotalltotems/react-native-otp-input';
+//import OTPInputView from '@twotalltotems/react-native-otp-input';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import DeviceInfo from 'react-native-device-info';
@@ -19,7 +19,7 @@ import { NetworkInfo } from 'react-native-network-info';
 import { useRoute } from '@react-navigation/native';
 import { addDays } from 'date-fns'
 import moment from 'moment'
-
+import OTPInputView from '../../Components/OTPInputView';
 import { COLORS, FONTS } from '../../Constants/Constants';
 import Statusbar from '../../Components/StatusBar';
 import { useFocusEffect } from '@react-navigation/native';
@@ -106,7 +106,7 @@ const PinScreen = ({ navigation, }) => {
             const dateToday = new Date()
             const dateExpired = new Date(addDays(new Date(pinDate), 90))
             //  const dateExpired =new Date('2/2/2023')
-            console.log('----', dateExpired, '-----', dateToday, pinDate,Pin)
+            console.log('----', dateExpired, '-----', dateToday, pinDate, Pin)
 
             var Difference_In_Time = dateExpired.getTime() - dateToday.getTime()
             // To calculate the no. of days between two dates
@@ -161,11 +161,13 @@ const PinScreen = ({ navigation, }) => {
                     latitude: "10.0302",//Todo
                     longitude: "76.33553"//Todo
                 },
-                mobile: mobile,
+                mobile: '+' + mobile,
                 deviceIpAddress: ipAdrress,
                 simId: "11111",
                 "otpReason": "FORGOT_PIN"
             }
+
+            console.log("data print", body)
             const res = await axios.post(url, body, { headers });
             if (res?.data?.status) {
                 console.log('response Login Api', res.data)
@@ -222,7 +224,7 @@ const PinScreen = ({ navigation, }) => {
                 <View style={styles.ViewPin}>
                     <Text style={styles.PinTEXT} onPress={() => setModalVisible(true)}>{t('common:PleaseEnterPIN')}</Text>
 
-                    <OTPInputView
+                    {/* <OTPInputView
                         ref={otpInput2}
                         style={[styles.OtpInput, {}]}
                         pinCount={4}
@@ -236,8 +238,27 @@ const PinScreen = ({ navigation, }) => {
                                 getPinCheck(code)
                             }
                         })}
+                    /> */}
+                    <OTPInputView
+                        ref={otpInput2}
+                        autoFocus={true}
+                        inputCount={4}
+                        inputCellLength={1}
+                        offTintColor={'#ECEBED'}
+                        tintColor={'#ECEBED'}
+                        textInputStyle={styles.imputContainerStyle}
+                        keyboardType="numeric"
+                        containerStyle={{ marginTop: 7 }}
+                        handleTextChange={(code => {
+                            if (code.length === 4) {
+                                getPinCheck(code)
+                            }
+                            setOtpValue(code)
+                            if (code.length !== 4) {
+                                setError(false)
+                            }
+                        })}
                     />
-
                     <Text style={styles.TextF} onPress={forgotApiCall}>{t('common:ForgotPIN')}</Text>
 
                 </View>
@@ -320,7 +341,7 @@ const styles = StyleSheet.create({
         shadowRadius: 20,
         elevation: 5,
         width: width * 0.90,
-        height: width * 0.46,
+        height: width * 0.48,
         backgroundColor: COLORS.colorBackground,
         borderRadius: 15,
         alignItems: 'center',
@@ -329,9 +350,21 @@ const styles = StyleSheet.create({
     PinTEXT: {
         color: '#1A051D',
         fontFamily: FONTS.FontRegular,
-        paddingBottom: width * 0.04,
+        paddingBottom: width * 0.02,
         ontSize: 14,
         paddingTop: width * 0.065
+    },
+    imputContainerStyle: {
+        borderRadius: 8,
+        borderRadius: 8,
+        backgroundColor: COLORS.backgroundColor,
+        borderWidth: 1,
+        borderColor: '#ECEBED',
+        height: 48,
+        width: 48,
+        color: '#090A0A',
+        fontSize: 12,
+        fontWeight: 'bold',
     },
     TextF: {
         color: '#1A051D',

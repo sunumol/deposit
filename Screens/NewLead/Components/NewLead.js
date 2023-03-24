@@ -77,12 +77,10 @@ const NewLead1 = ({ navigation }) => {
             setMobile(num)
 
         } else {
-            // setPhoneNum(null)
-            //  setModalVisible1(true)
-            //  console.log("restricted values", num, PhoneNum)
             ToastAndroid.show(t('common:Valid'), ToastAndroid.SHORT);
         }
     }
+
 
     async function getVillage(text) {
         const data = {
@@ -142,7 +140,13 @@ const NewLead1 = ({ navigation }) => {
 
                             // edit={AccStatus}
                             onChangeText={(text) => {
-                                setName(text)
+                                if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(text) || text === '') {
+                                    setName(text)
+                        
+                                } else {
+                                    ToastAndroid.show(t('common:Valid'), ToastAndroid.SHORT);
+                                }
+                                
                             }}
                         />
 
@@ -166,10 +170,17 @@ const NewLead1 = ({ navigation }) => {
                             color={"#1A051D"}
                             maxLength={6}
                             onChangeText={(text) => {
-                                setPincode(text)
-                                if (text.length == 6) {
-
+                               // setPincode(text)
+                                if(text.length==6){
+                                    setPincode(text)
                                     setVStatus(true)
+                               }
+                                else if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(text) || text === '') {
+                                    setPincode(text)
+                                   // setVStatus(true)
+                                }
+                                else {
+                                    ToastAndroid.show(t('common:Valid'), ToastAndroid.SHORT);
                                 }
                             }}
                         />
@@ -234,10 +245,10 @@ const NewLead1 = ({ navigation }) => {
             </KeyboardAvoidingView>
             {/* Button ? setModalVisible(true) : setValidModal1(true) */}
             <TouchableOpacity
-                style={[styles.Button1, { backgroundColor: Button && Name && Mobile && Pincode ? COLORS.colorB : '#ECEBED' }]}
-                disabled={Button && Name && Mobile && Pincode ? false : true}
+                style={[styles.Button1, { backgroundColor: Button &&  Name?.length>=3  && Mobile?.length===10  && Pincode?.length===6 ? COLORS.colorB : '#ECEBED' }]}
+                disabled={Button && Name?.length>=3 && Mobile?.length===10 && Pincode?.length===6 ? false : true}
                 onPress={onSubmit}>
-                <Text style={[styles.text1, { color: Button && Name && Mobile && Pincode ? COLORS.colorBackground : '#979C9E' }]}>{t('common:Confirm')}</Text>
+                <Text style={[styles.text1, { color: Button && Name?.length>=3  && Mobile?.length===10  && Pincode?.length===6? COLORS.colorBackground : '#979C9E' }]}>{t('common:Confirm')}</Text>
             </TouchableOpacity>
 
             <LeadModal ModalVisible={ModalVisible}

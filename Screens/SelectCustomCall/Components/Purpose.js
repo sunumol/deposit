@@ -38,7 +38,7 @@ const Purpose = ({ navigation ,setState}) => {
 
             <TouchableOpacity style={styles.Border} onPress={() => setModalVisible1(true)}>
                 <Text style={[styles.textSelect,{color:Purpose ? '#1A051D':'#808080'}]}>{!Purpose ? 'Select' : Purpose}</Text>
-                <Icon1 name="chevron-down" size={20} color={"#808080"} style={{ marginRight: 10 }} />
+                {/* <Icon1 name="chevron-down" size={20} color={"#808080"} style={{ marginRight: 10 }} /> */}
             </TouchableOpacity>
 
             <PurposeModal

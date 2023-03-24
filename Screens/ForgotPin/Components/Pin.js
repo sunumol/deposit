@@ -8,11 +8,11 @@ import {
 } from 'react-native';
 import { FONTS } from '../../../Constants/Constants';
 const { height, width } = Dimensions.get('screen');
-import OTPInputView from '@twotalltotems/react-native-otp-input';
+//import OTPInputView from '@twotalltotems/react-native-otp-input';
 import AllowModal from '../../../Components/AllowModal';
 import { useTranslation } from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import OTPInputView from '../../../Components/OTPInputView';
 import SmsAndroid from 'react-native-get-sms-android';
 import axios from 'axios';
 import DeviceInfo from 'react-native-device-info';
@@ -20,6 +20,7 @@ import { NetworkInfo } from 'react-native-network-info';
 import { api } from '../../../Services/Api';
 import Resend from '../../../assets/Images/resend.svg'
 import { COLORS } from '../../../Constants/Constants';
+
 
 const Pin = ({ navigation, conFirmDate }) => {
 
@@ -221,7 +222,7 @@ const Pin = ({ navigation, conFirmDate }) => {
                 <View style={styles.View1}>
                     <Text style={styles.otptext} >{t('common:EnterOtp')}</Text>
                 </View>
-                <OTPInputView
+                {/* <OTPInputView
                     style={[styles.OtpInput, {}]}
                     pinCount={4}
                     code={OtpValue}
@@ -235,7 +236,29 @@ const Pin = ({ navigation, conFirmDate }) => {
                             ConfirmOtp(otp)
                         }
                     })}
+                /> */}
+
+<OTPInputView
+                    autoFocus={true}
+                    inputCount={4}
+                    inputCellLength={1}
+                    offTintColor={'#ECEBED'}
+                    tintColor={'#ECEBED'}
+                    textInputStyle={styles.imputContainerStyle}
+                    keyboardType="numeric"
+                    containerStyle={{ marginTop: 7 }}
+                    handleTextChange={(code => {
+                        setOtpValue(code)
+                        if (code.length === 4) {
+                            ConfirmOtp(code)
+                        }
+                        if (code.length !== 4) {
+                            setOtpwrong(false)
+                            setIsExpired(false)
+                        }
+                    })}
                 />
+
                 {IsOtp2
                     ? <View style={{ justifyContent: 'center', alignItems: 'center', paddingTop: width * 0.07 }}>
                         <Text style={styles.resendText}>{t('common:Resend')} 00:{timerCount < 10 ? '0' : ''}{timerCount}</Text>
@@ -329,5 +352,17 @@ const styles = StyleSheet.create({
         color: COLORS.colorGreen,
         marginTop: 30,
 
-    }
+    },
+    imputContainerStyle: {
+        borderRadius: 8,
+        borderRadius: 8,
+        backgroundColor: COLORS.backgroundColor,
+        borderWidth: 1,
+        borderColor: '#ECEBED',
+        height: 48,
+        width: 48,
+        color: '#090A0A',
+        fontSize: 12,
+        fontWeight: 'bold',
+    },
 })
