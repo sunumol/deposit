@@ -31,6 +31,7 @@ const HeaderDashBoard = ({ navigation, notificationCounts }) => {
     }, [])
 
     async function LogoutApi() {
+        console.log("inside custid",custID)
         const data = {
             id: custID
         }
@@ -40,6 +41,8 @@ const HeaderDashBoard = ({ navigation, notificationCounts }) => {
                 navigation.navigate('LoginScreen')
                 AsyncStorage.removeItem('Token')
                 AsyncStorage.removeItem('CustomerId')
+            }else{
+                console.log("re",res)
             }
         }).catch((err) => {
             console.log('-------------------err', err?.response)
@@ -88,7 +91,7 @@ const HeaderDashBoard = ({ navigation, notificationCounts }) => {
                                 <Text style={styles.text2}>{t('common:No')}</Text>
                             </TouchableOpacity>
 
-                            <TouchableOpacity style={styles.ButtonContinue} onPress={LogoutApi}>
+                            <TouchableOpacity style={styles.ButtonContinue} onPress={()=>LogoutApi()}>
                                 <Text style={styles.textC}>{t('common:Yes')}</Text>
                             </TouchableOpacity>
                         </View>

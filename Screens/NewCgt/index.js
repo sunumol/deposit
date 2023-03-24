@@ -22,7 +22,10 @@ import { useRoute } from '@react-navigation/native';
 import { useFocusEffect } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import Cgt from './Components/Cgt';
+
 import CalendarStrips from './Components/Calender';
+import moment from 'moment';
+import { api } from '../../Services/Api';
 
 
 const NewCgt = ({ navigation, }) => {
@@ -30,11 +33,14 @@ const NewCgt = ({ navigation, }) => {
     console.log("route name",);
     const isDarkMode = true
     const { t } = useTranslation();
-    const [lang, setLang] = useState('')
-    const [BStatus, setBstatus] = useState(false)
+    const [lang, setLang] = useState('');
+    const [BStatus, setBstatus] = useState(false);
+    const [slotlist,setSlotlist] = useState([]);
+    const [ selectedDate,setSelectedDate] = useState(moment().format());
 
     useEffect(() => {
-        getData()
+        getData(),
+        getCGTslot()
     }, [])
 
     const getData = async () => {
@@ -46,6 +52,34 @@ const NewCgt = ({ navigation, }) => {
             console.log(e)
         }
     }
+
+
+    const callback =(value) =>{
+       // const date = moment(value).utc().format('DD-MM-YYYY')
+        setSelectedDate(value)
+        getCGTslot(value)
+     
+    }
+
+
+              // ------------------ get Slot Api Call Start ------------------
+              const getCGTslot = async (date) => {
+                console.log('api called',date)
+                 const data = {
+                     "employeeId": 1,
+                     "selectedDate":  moment(date ? date : selectedDate ).utc().format('DD-MM-YYYY')
+                 };
+                 await api.getCGTslot(data).then((res) => {
+                     console.log('------------------- CGT slot res', res)
+                      setSlotlist(res?.data?.body[0].sloatActivityList);
+                   
+         
+                 })
+                     .catch((err) => {
+                         console.log('-------------------err', err?.response)
+                     })
+             };
+             // ------------------ get slot Api Call End ------------------
 
     const handleGoBack = useCallback(() => {
         if (BStatus) {
@@ -67,6 +101,7 @@ const NewCgt = ({ navigation, }) => {
 
 
 
+
     return (
         <SafeAreaProvider>
             <SafeAreaView style={styles.container1} />
@@ -76,8 +111,8 @@ const NewCgt = ({ navigation, }) => {
             <View style={styles.ViewContent}>
           
            
-                <CalendarStrips />
-                <Cgt navigation={navigation} />
+                <CalendarStrips callback ={callback}/>
+                <Cgt navigation={navigation} data ={slotlist}  date ={selectedDate} />
               
                 {/* <DatePicker/> */}
 

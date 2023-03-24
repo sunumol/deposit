@@ -32,6 +32,7 @@ import { api } from '../../Services/Api';
 // --------------- Image Imports ---------------------
 import Resend from '../../assets/Images/resend.svg'
 import Logo from '../../assets/Images/svadhan.svg';
+import { useNavigationState } from '@react-navigation/native';
 
 const { height, width } = Dimensions.get('screen');
 
@@ -41,7 +42,8 @@ const LoginScreen = ({ navigation }) => {
     const isDarkMode = true;
     const scrollViewRef = useRef();
     const Screen ="LoginScreen";
-
+    const index = useNavigationState(state => state.index);
+console.log("index",index)
     const [OtpValue, setOtpValue] = useState('')
     const [PhoneNum, setPhoneNum] = useState(null)
     const [lang, setLang] = useState('')
@@ -125,7 +127,7 @@ const LoginScreen = ({ navigation }) => {
     useEffect(() => {
         const backHandler = BackHandler.addEventListener(
             'hardwareBackPress',
-            backAction
+            handleGoBack
         );
         return () => backHandler.remove();
     }, []);
@@ -139,7 +141,48 @@ const LoginScreen = ({ navigation }) => {
             console.log(e)
         }
     }
-    const backAction = () => {
+    const handleGoBack = () => {
+        console.log("exit app handle",IsOtp1)
+        setExitApp(0)
+        if (index==1) {
+            if(IsOtp1){
+                setExitApp(0);
+                setButton(false)
+                setPhoneNum(null)
+                setIsOtp1(false)
+                setOtp(false)
+                setMaxError(false)
+                //setIsExpired(false)
+                setTimeout(() => {
+                    setExitApp(0)
+                }, 3000);
+            }
+            else if (exitApp === 0) {
+                setButton(false)
+                setPhoneNum(null)
+                setIsOtp1(false)
+                setMaxError(false)
+                setExitApp(exitApp + 1);
+                setOtp(false)
+                //setIsExpired(false)
+                console.log("exit app intro", exitApp)
+                ToastAndroid.show("Press back again to exit.", ToastAndroid.SHORT);
+         
+            } else if (exitApp === 1) {
+                BackHandler.exitApp();
+                console.log("exit app else intro", exitApp)
+            }
+        
+            return true;
+        }
+    }
+
+    useEffect(()=>{
+        if(exitApp==0){
+            setExitApp(exitApp+1)
+        }
+    },[exitApp])
+    const backAction1 = () => {
         if (!ExitStatus) {
             if(IsOtp1){
                 setExitApp(0); 
@@ -373,12 +416,14 @@ const LoginScreen = ({ navigation }) => {
             const PinDate = await AsyncStorage.getItem('PinDate')
             setOtpValue('')
             if (Pin && PinDate) {
-
+                setOtp(false)
                 navigation.navigate('PinScreen')
             } else {
+                setOtp(false)
                 navigation.navigate('CreatePin')
             }
         } else {
+            setOtp(false)
             navigation.navigate('Permission')
         }
     };
@@ -434,7 +479,7 @@ const LoginScreen = ({ navigation }) => {
 
                         <View style={[styles.container, { marginTop: Dimensions.get('window').height * 0.05 }]}>
 
-                            <Text style={styles.Heading1} onPress={() => navigation.navigate('Profile')}>{t('common:Verify')}</Text>
+                            <Text style={styles.Heading1} onPress={() => navigation.navigate('NewLead')}>{t('common:Verify')}</Text>
 
                             <View style={styles.ViewInput}>
                                 <View style={{ justifyContent: 'center' }}>

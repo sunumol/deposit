@@ -66,9 +66,6 @@ export const api = {
     })
   },
 
-
-
-
   activitylistingscreenApi: data => {
     return axios.post(`${baseURL}getActivity`,data,{
       headers: {
@@ -105,5 +102,12 @@ export const api = {
   },
 
 
+  createCGT: data => {
+    return axios.post(`${baseURL}createOrUpdateCGT`,data,{
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+  },
 };
 

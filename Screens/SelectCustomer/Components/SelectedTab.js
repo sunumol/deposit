@@ -1,4 +1,3 @@
-;
 import React, { useEffect, useState } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { COLORS, FONTS } from '../../../Constants/Constants';
@@ -13,7 +12,36 @@ const MeetTab = (props) => {
 
     useEffect(() => {
         getData()
+        console.log('selected tab',props)
     }, [])
+
+
+    const  getRandomColor =()=> {
+        var letters = '0123456789ABCDEF';
+        var color = '#';
+        for (var i = 0; i < 3; i++) {
+          color += letters[Math.floor(Math.random() * 8)];
+        }
+        return color;
+      }
+    
+    
+      const getInitials = (name) => {
+      
+        let initials;
+        const nameSplit = name?.split(" ");
+         const nameLength = nameSplit?.length;
+        if (nameLength > 1) {
+            initials =
+                nameSplit[0].substring(0, 1) +
+                nameSplit[nameLength - 1].substring(0, 1);
+        } else if (nameLength === 1) {
+            initials = nameSplit[0].substring(0, 1);
+        } else return;
+    
+         return initials.toUpperCase();
+    };
+    
 
     const getData = async () => {
         try {
@@ -30,16 +58,16 @@ const MeetTab = (props) => {
                         style={styles.boxStyle} key={props.id}>
                         <View style={{ flex: 1, flexDirection: 'row' }}>
 
-                            <View style={[styles.circleStyle, { backgroundColor: '#B9BB70' }]}>
-                                <Text style={styles.circleText}>{props.item.short}</Text>
+                            <View style={[styles.circleStyle, { backgroundColor: getRandomColor() }]}>
+                                <Text style={styles.circleText}>{getInitials(props.item.name ? props.item.name : props.item.mobile)}</Text>
                             </View>
 
                             <View style={{ flexDirection: 'column', paddingLeft: 12, paddingTop: 5 }}>
-                                <Text style={styles.nameText}>{props.item.name}</Text>
+                                <Text style={styles.nameText}>{props.item.name ? props.item.name : props.item.mobile}</Text>
                                 <View style={{ flexDirection: 'row', }}>
-                                    <View style={{ paddingTop: 5, paddingRight: 1 }}>
+                                {props.item.text ? (    <View style={{ paddingTop: 5, paddingRight: 1 }}>
                                         <Icon1 name="location-outline" color={"black"} />
-                                    </View>
+                                    </View>):null}
                                     <Text style={[styles.idText, { paddingTop: 4 }]}>{props.item.text}</Text>
                                 </View>
                             </View>
@@ -49,7 +77,7 @@ const MeetTab = (props) => {
                         <View style={{ flexDirection: 'column', paddingTop: 5, alignItems: 'flex-end' }}>
                             <View style={{ flexDirection: 'row' }}>
                                 <Icon2 name="phone-in-talk-outline" color={"black"} size={15} />
-                                <Text style={[styles.numText, { paddingLeft: 6 }]}>{props.item.number}</Text>
+                                <Text style={[styles.numText, { paddingLeft: 6 }]}>{props.item.mobile}</Text>
                             </View>
 
                             <View style={[styles.leadContainer, { backgroundColor: COLORS.LightBlue }]}>

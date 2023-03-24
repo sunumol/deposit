@@ -70,6 +70,7 @@ const Profile = ({ navigation }) => {
     ];
     // ------------------ HomeScreen Api Call Start ------------------
     const HomeScreenApiCall = async () => {
+        console.log("inside api call")
         const data = {
             "employeeId": 1
         };
@@ -78,7 +79,7 @@ const Profile = ({ navigation }) => {
             SetNotificationCount(res?.data?.body)
         })
             .catch((err) => {
-                console.log('-------------------err', err?.response)
+                console.log('-------------------err notification', err)
             })
     };
     // ------------------ HomeScreen Api Call End ------------------
@@ -92,7 +93,7 @@ const Profile = ({ navigation }) => {
             <SafeAreaView style={styles.container1} />
             <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} backgroundColor={"#002B59"} />
 
-            <HeaderDashBoard navigation={navigation} notificationCounts={notificationCount}  />
+            <HeaderDashBoard navigation={navigation} notificationCounts={notificationCount} />
 
             <View style={styles.container2}>
                 <ScrollView showsVerticalScrollIndicator={false}>
@@ -111,7 +112,7 @@ const Profile = ({ navigation }) => {
                         keyExtractor={item => item.id}
                         horizontal={false}
                         numColumns={2}
-                      
+
                         columnWrapperStyle={{ justifyContent: 'space-between' }}
                         contentContainerStyle={{ padding: 20, }}
                     />

@@ -46,6 +46,8 @@ const SplashScreen = ({ navigation }) => {
         }
     };
 
+
+  
     return (
             <SafeAreaProvider>
                 <SafeAreaView style={styles.container} />
