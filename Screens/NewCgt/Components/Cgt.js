@@ -20,26 +20,18 @@ import { COLORS, FONTS } from '../../../Constants/Constants';
 const { height, width } = Dimensions.get('screen');
 // import moment from 'moment/moment';
 // import { useTranslation } from 'react-i18next';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
+import { api } from '../../../Services/Api';
 
 
-import {
-    addDays,
-    eachWeekOfInterval,
-    subDays,
-    eachDayOfInterval,
-    format,
-    isToday,
-    eachYearOfInterval,
-    eachMonthOfInterval,
-    addWeeks
-} from 'date-fns';
-//import Swiper from 'react-native-swiper'
-const Cgt = ({navigation}) => {
+
+const Cgt = ({navigation,data,date}) => {
+    console.log('cgt----->>>',date)
     const [status, setStatus] = useState(false);
     const weekDay = [];
     const year = [];
-   // const ref = React.useRef(PagerView);
-    const [currentDate, setCurrentDate] = useState(new Date());
+    const [slotlist,setSlotlist] = useState([]);
+    const [currentDate, setCurrentDate] = useState(date);
     const [DateStatus, setDateStatus] = useState(false)
     const [selectedItem1, setSelectedItem1] = useState()
     const Data = [
@@ -194,7 +186,6 @@ const Cgt = ({navigation}) => {
      
     ]
 
-
     const ChooseDate = (day) => {
         console.log("day selection...", day)
         setSelectedItem1(day)
@@ -209,23 +200,32 @@ const Cgt = ({navigation}) => {
         }
     }
 
+
+
+    
+
+
+
+
  useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
         setStatus(false)
+       console.log('CGT',slotlist)
+
       // do something
     });
 
     return unsubscribe;
+  
   }, [navigation]);
 
     const renderItem = ({ item }) => {
         return (
             <View style={{ justifyContent: 'space-around', margin: 5 }}>
-                <TouchableOpacity onPress={() => {item.id == 8 ? navigation.navigate('SelectCustomer') :item.id == 5 ? navigation.navigate('Activities'):console.log("hello")}
-               // setStatus(!status)
-            }
-                    style={[styles.Touch, { borderColor: item.bgcolor, backgroundColor: COLORS.colorBackground }]}>
-                    <Text style={[styles.timeText1, { color: item.color }]}>{item.slot}</Text>
+                <TouchableOpacity 
+                onPress={() => { item.availabilityStatu == "notAvailable" ? navigation.navigate('Activities',{data:item}): navigation.navigate('SelectCustomer',{data : item,date :currentDate}) }}
+                    style={[styles.Touch, { borderColor: item.availabilityStatu == "partiallyAvailable"  ? 'rgba(242, 153, 74, 1)': item.availabilityStatu == "fullyAvailable"  ? 'rgba(39, 174, 96, 1)':item.availabilityStatu == "fullyAllocated"  ? 'rgba(234, 64, 71, 1)':item.availabilityStatu == "notAvailable"  ? 'rgba(155, 81, 224, 1)':null, backgroundColor: COLORS.colorBackground }]}>
+                    <Text style={[styles.timeText1, { color: item.availabilityStatu == "partiallyAvailable"  ? 'rgba(242, 153, 74, 1)': item.availabilityStatu == "fullyAvailable"  ? 'rgba(39, 174, 96, 1)':item.availabilityStatu == "fullyAllocated"  ? 'rgba(234, 64, 71, 1)':item.availabilityStatu == "notAvailable"  ? 'rgba(155, 81, 224, 1)':null }]}>{item.time}</Text>
                 </TouchableOpacity>
             </View>
         )
@@ -238,7 +238,7 @@ const Cgt = ({navigation}) => {
 
             <View style={{ alignItems: 'center', justifyContent: 'center' ,marginBottom:10}}>
                 <FlatList
-                    data={Data}
+                    data={data}
                     style={{ marginTop: 10, }}
                     numColumns={3}
                     renderItem={renderItem}

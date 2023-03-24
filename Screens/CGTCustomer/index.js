@@ -6,7 +6,6 @@ import {
     StatusBar,
     SafeAreaView,
     Platform,
-    TextInput,
     ScrollView,
     Dimensions,
     TouchableOpacity
@@ -15,27 +14,41 @@ import React, { useCallback, useState, useEffect } from 'react'
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Statusbar from '../../Components/StatusBar';
 import { useFocusEffect } from '@react-navigation/native';
-import Header from '../../Components/RepayHeader';
-import { FONTS, COLORS } from '../../Constants/Constants';
-import Date from './Images/Date.svg';
-import Success from './Images/Success2.svg';
 import Icon1 from 'react-native-vector-icons/Ionicons'
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useRoute } from '@react-navigation/native';
+import moment from 'moment';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useDispatch } from 'react-redux';
+
+// ------------- Componenets Import ------------------------
+import Header from '../../Components/RepayHeader';
+import { FONTS, COLORS } from '../../Constants/Constants';
 import RejectModal from './Components/RejectModal';
-import Icon from 'react-native-vector-icons/AntDesign';
 import ErrorModal from './Components/ErrorModal';
 import ReasonModal from './Components/ReasonModal';
-import CreateTrustCircle from '../CreateTrustCircle';
+import { api } from '../../Services/Api';
+
+// ------------- Import Image --------
+import Date from './Images/Date.svg';
+
 const { height, width } = Dimensions.get('screen');
 
 const CgtCustomer = ({ navigation }) => {
+
     const isDarkMode = true;
-    const [text, onChangeText] = useState('');
+    const route = useRoute();
+
     const [ModalVisible, setModalVisible] = useState(false)
-    const [selectedItem, setSelectedItem] = useState()
-    const [ButtonStatus, setButtonStatus] = useState(false)
     const [ModalError, setModalError] = useState(false)
     const [ModalReason, setModalReason] = useState(false)
+
+    const [details, setDetails] = useState()
+    const [custID, setCustId] = useState()
+    const [rejectReason, setRejectReason] = useState()
+
+    // -----------Redux State ---------------------------------
+    const dispatch = useDispatch()
 
     const handleGoBack = useCallback(() => {
         navigation.goBack()
@@ -54,17 +67,77 @@ const CgtCustomer = ({ navigation }) => {
     useEffect(() => {
         if (ModalError == true) {
             const timer = setTimeout(() => {
-
                 setModalError(false)
                 setModalReason(false)
                 navigation.navigate('Profile')
-                //  console.log('This will run after 1 second!', ModalVisibles)
             }, 1000);
             return () => clearTimeout(timer);
         }
-
     }, [ModalError])
 
+    useEffect(() => {
+        getDetails()
+        AsyncStorage.getItem("CustomerId").then((value) => {
+            setCustId(value)
+        })
+    }, [])
+
+    // ------------------ GET Setails Cgt Api Call Start ------------------
+    const getDetails = async () => {
+        const data = {
+            "activityId": route.params.activityId
+        };
+        await api.getCGTDetails(data).then((res) => {
+            console.log('-------------------res', res?.data)
+            setDetails(res?.data?.body)
+        })
+            .catch((err) => {
+                console.log('-------------------err', err?.response)
+            })
+    };
+    // ------------------ GET Setails Cgt  Api Call End ------------------
+
+    // ------------------ Update Activity Confirm Api Call Start ------------------
+    const updateActivity = async () => {
+        const data = {
+            "activityStatus": "kyc verified",
+            "employeeId": Number(custID),
+            "activityId": route.params.activityId
+        };
+        await api.updateActivity(data).then((res) => {
+            console.log('-------------------res', res?.data)
+            if (res?.status) {
+                setModalVisible(true)
+                dispatch({
+                    type: 'SET_CGT_CUSTOMERdETAILS',
+                    payload: details,
+                  });
+            }
+        })
+            .catch((err) => {
+                console.log('-------------------err', err?.response)
+            })
+    };
+    // ------------------ Update Activity Confirm Api Call End ------------------
+
+    // ------------------ Update Activity Reject Api Call Start ------------------
+    const updateActivityReject = async () => {
+        const data = {
+            "activityStatus": rejectReason,
+            "employeeId": Number(custID),
+            "activityId": route.params.activityId
+        };
+        await api.updateActivity(data).then((res) => {
+            console.log('-------------------res', res?.data)
+            if (res?.status) {
+                setModalError(true)
+            }
+        })
+            .catch((err) => {
+                console.log('-------------------err', err?.response)
+            })
+    };
+    // ------------------ Update Activity Reject Api Call End ------------------
 
     return (
         <SafeAreaProvider>
@@ -77,8 +150,8 @@ const CgtCustomer = ({ navigation }) => {
                 <ScrollView showsVerticalScrollIndicator={false} >
                     <View style={styles.boxView}>
                         <View style={styles.contentView}>
-                            <Text style={styles.timeText}>12:30 PM</Text>
-                            <Text style={styles.dateText}>Wed, 12 Oct</Text>
+                            <Text style={styles.timeText}>{details?.cgtTime?.slice(0, -3)} PM</Text>
+                            <Text style={styles.dateText}>{details?.cgtDate ? moment(new Date(details?.cgtDate)).format("ddd, DD MMM") : ''}</Text>
                         </View>
                         <TouchableOpacity style={styles.editView} onPress={() => navigation.navigate('NewCgt')}>
                             <Date />
@@ -86,33 +159,6 @@ const CgtCustomer = ({ navigation }) => {
                         </TouchableOpacity>
                     </View>
 
-                    {ButtonStatus ?
-                        <View style={[styles.viewCard, { flex: 0, flexDirection: 'row' }]}>
-
-                            <View style={[styles.circleStyle, { backgroundColor: '#6979F8', marginLeft: width * 0.05 }]}>
-                                <Text style={styles.circleText}>AA</Text>
-                            </View>
-
-
-                            <View style={{ flexDirection: 'column', paddingLeft: 12, paddingTop: 5, flex: 1 }}>
-
-                                <Text style={styles.nameText}>Athira Anil</Text>
-
-
-                                <View style={{ flexDirection: 'row', }}>
-                                    <View style={{ paddingTop: 5, paddingRight: 1 }}>
-                                        <Icon1 name="location-outline" color={"black"} />
-                                    </View>
-                                    <Text style={[styles.idText, { paddingTop: 4 }]}>682555</Text>
-                                </View>
-                            </View>
-                            <View style={{ flexDirection: 'column', top: -8, alignItems: 'flex-end', marginRight: 15 }}>
-                                <View style={{ flexDirection: 'row' }}>
-                                    <Icon2 name="phone-in-talk-outline" color={"black"} size={15} />
-                                    <Text style={[styles.numText, { paddingLeft: 6 }]}>961XXXXX77</Text>
-                                </View>
-                            </View>
-                        </View> :
                         <View style={styles.searchBox}>
                             <View style={styles.boxStyle}>
                                 <View style={{ flex: 1, flexDirection: 'row' }}>
@@ -122,12 +168,12 @@ const CgtCustomer = ({ navigation }) => {
                                     </View>
 
                                     <View style={{ flexDirection: 'column', paddingLeft: 12, paddingTop: 5 }}>
-                                        <Text style={styles.nameText}>Athira Anil</Text>
+                                        <Text style={styles.nameText}>{details?.customerName}</Text>
                                         <View style={{ flexDirection: 'row', }}>
                                             <View style={{ paddingTop: 5, paddingRight: 1 }}>
                                                 <Icon1 name="location-outline" color={"black"} />
                                             </View>
-                                            <Text style={[styles.idText, { paddingTop: 4 }]}>682555</Text>
+                                            <Text style={[styles.idText, { paddingTop: 4 }]}>{details?.pin}</Text>
                                         </View>
                                     </View>
 
@@ -136,7 +182,7 @@ const CgtCustomer = ({ navigation }) => {
                                 <View style={{ flexDirection: 'column', paddingTop: 5, alignItems: 'flex-end' }}>
                                     <View style={{ flexDirection: 'row' }}>
                                         <Icon2 name="phone-in-talk-outline" color={"black"} size={15} />
-                                        <Text style={[styles.numText, { paddingLeft: 6 }]}>961XXXXX77</Text>
+                                        <Text style={[styles.numText, { paddingLeft: 6 }]}>{details?.mobileNumber}</Text>
                                     </View>
                                 </View>
 
@@ -144,75 +190,59 @@ const CgtCustomer = ({ navigation }) => {
                             <View style={styles.lineView} />
                             <View style={{ paddingHorizontal: 17, }}>
                                 <Text style={styles.headTextTitle}>Address</Text>
-                                <Text style={[styles.subText, { maxWidth: 200 }]}>Akshya Nagar 1st Block 1st Cross, Rammurthy nagar, Kochi-560016</Text>
+                                <Text style={[styles.subText, { maxWidth: 200 }]}>{details?.address}</Text>
                             </View>
                             <View style={styles.lineView} />
                             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 17, }}>
                                 <View style={{ flexDirection: 'column', flex: 1, marginRight: 10 }}>
                                     <Text style={styles.headTextTitle}>Aadhaar ID</Text>
-                                    <Text style={styles.subText}>4447XXXXXX22</Text>
+                                    <Text style={styles.subText}>{details?.aadharNumber}</Text>
                                 </View>
-                                {/* <Success height={23} width={24} /> */}
+
                             </View>
                             <View style={styles.lineView} />
                             <View style={{ paddingHorizontal: 17, }}>
                                 <Text style={styles.headTextTitle}>Voter ID</Text>
-                                <Text style={styles.subText}>TTUXXXXX66</Text>
+                                <Text style={styles.subText}>{details?.voterId}</Text>
                             </View>
                             <View style={styles.lineView} />
                             <View style={{ paddingHorizontal: 17, paddingBottom: 16 }}>
                                 <Text style={styles.headTextTitle}>Spouse Voter ID</Text>
-                                <Text style={styles.subText}>TTUXXXXX55</Text>
+                                <Text style={styles.subText}>{details?.spouseVoterId}</Text>
                             </View>
 
-                        </View>}
-
-
+                        </View>
 
                 </ScrollView>
 
-                {!ButtonStatus ?
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
 
                         <TouchableOpacity style={[styles.buttonView, { backgroundColor: COLORS.colorLight }]}
                             onPress={() => setModalReason(true)}>
                             <Text style={[styles.continueText, { color: COLORS.colorB }]}>Reject</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => setModalVisible(true)}
+                        <TouchableOpacity onPress={updateActivity}
                             style={[styles.buttonView, { backgroundColor: COLORS.colorB }]}>
                             <Text style={[styles.continueText, { color: COLORS.colorBackground }]}>Confirm</Text>
                         </TouchableOpacity>
-                    </View> :
-                    <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-
-                        <TouchableOpacity style={[styles.Button1, { backgroundColor: COLORS.colorB }]}
-                            onPress={() => navigation.navigate('ConfirmMembers')}
-                        >
-                            <Icon name="pluscircleo" size={15} color={"#FFFFFF"} />
-                            <Text style={[styles.text1, { color: COLORS.colorBackground, paddingLeft: width * 0.02 }]}>Add Trust Circle Member</Text>
-                        </TouchableOpacity>
-                    </View>}
+                    </View> 
+             
             </View>
-
 
             <RejectModal
                 onPress1={() => {
-                    setButtonStatus(true)
                     setModalVisible(!ModalVisible)
                 }}
                 ModalVisible={ModalVisible}
                 onPressOut={() => {
                     setModalVisible(!ModalVisible)
-                    setButtonStatus(true)
+                    navigation.navigate('CreateTrustCircle',{customerDetails:details})
                 }}
-                onPressClose={()=>{
+                onPressClose={() => {
                     setModalVisible(!ModalVisible)
-       
-     
                 }}
                 setModalVisible={setModalVisible}
             />
-
             <ErrorModal
                 ModalVisible={ModalError}
                 onPressOut={() => {
@@ -220,19 +250,16 @@ const CgtCustomer = ({ navigation }) => {
                     setModalReason(!ModalReason)
                     navigation.navigate('Profile')
                 }}
-              
                 setModalVisible={setModalError}
             />
-
             <ReasonModal
-                onPress1={() => {
-                    // setModalVisible(false)
-                    setModalError(true)
-                }}
+                onPress1={updateActivityReject}
                 ModalVisible={ModalReason}
                 onPressOut={() => setModalReason(!ModalReason)}
                 setModalVisible={setModalReason}
+                setRejectReason={setRejectReason}
             />
+
         </SafeAreaProvider>
     )
 }
@@ -293,13 +320,11 @@ const styles = StyleSheet.create({
         paddingLeft: 8
     },
     searchBox: {
-
         borderWidth: 1,
         borderColor: COLORS.colorBorder,
         borderRadius: 8,
         marginTop: 23
     },
-
     lineView: {
         borderWidth: 0.9,
         borderColor: COLORS.Gray6,
@@ -328,7 +353,6 @@ const styles = StyleSheet.create({
         fontWeight: '400',
     },
     buttonView: {
-
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 54,
@@ -339,7 +363,6 @@ const styles = StyleSheet.create({
     continueText: {
         fontSize: 14,
         fontFamily: FONTS.FontBold,
-
         letterSpacing: 0.64
     },
     boxStyle: {
@@ -385,8 +408,6 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.colorB,
         marginTop: 31,
         flexDirection: 'row',
-        // marginLeft: 12,
-        // marginRight: 12,
         borderRadius: 40,
         marginBottom: 20
     },
@@ -411,5 +432,4 @@ const styles = StyleSheet.create({
         fontFamily: FONTS.FontRegular,
         fontSize: 12
     }
-
 })

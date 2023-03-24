@@ -27,14 +27,16 @@ import Icon3 from 'react-native-vector-icons/Entypo';
 const { height, width } = Dimensions.get('screen');
 
 
-const Activities = ({ navigation }) => {
-    const route = useRoute();
-    console.log("route name", route.name);
+const Activities = ({ navigation ,data}) => {
+   const route = useRoute();
+    console.log("route name", data);
+   
     const isDarkMode = true
     const { t } = useTranslation();
     const [lang, setLang] = useState('')
     const [ModalVisible, setModalVisible] = useState(false)
     const [ModalVisible1, setModalVisible1] = useState(false)
+    const [list,setList] = useState(data.data)
 
 
     const Data = [
@@ -104,34 +106,63 @@ const Activities = ({ navigation }) => {
         }
     }
 
+    const  getRandomColor =()=> {
+        var letters = '0123456789ABCDEF';
+        var color = '#';
+        for (var i = 0; i < 3; i++) {
+          color += letters[Math.floor(Math.random() * 8)];
+        }
+        return color;
+      }
+    
+    
+      const getInitials = (name) => {
+      
+        let initials;
+        const nameSplit = name?.split(" ");
+         const nameLength = nameSplit?.length;
+        if (nameLength > 1) {
+            initials =
+                nameSplit[0].substring(0, 1) +
+                nameSplit[nameLength - 1].substring(0, 1);
+        } else if (nameLength === 1) {
+            initials = nameSplit[0].substring(0, 1);
+        } else return;
+    
+         return initials.toUpperCase();
+    };
+    
+
 
     return (
         <>
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={{ paddingTop: width * 0.03 }}>
 
-                    <Text style={styles.textTime}>09:00 AM (5)</Text>
+                    <Text style={styles.textTime}>{data.time} ({data.data.length})</Text>
 
                     <Text style={[styles.textActive, { paddingBottom: width * 0.03 }]}>CALL</Text>
 
-                    {Data.map((item) => {
+                    {list.map((item) => {
+                        console.log('------->>>>>>',item)
+                        if(item.ActivityType == 'CALL'){
                         return (
                             <View style={styles.viewCard}>
-                                <View style={[styles.circleStyle, { backgroundColor: item.color, marginLeft: width * 0.03 }]}>
-                                    <Text style={styles.circleText}>{item.Initial}</Text>
+                                <View style={[styles.circleStyle, { backgroundColor: getRandomColor(), marginLeft: width * 0.03 }]}>
+                                    <Text style={styles.circleText}>{getInitials(item.customerName ? item.customerName : item.mobileNumber)}</Text>
                                 </View>
 
                                 <View style={{ flexDirection: 'row',justifyContent:'space-between',flex:1}}>
                                     <View style={{ flexDirection: 'column', paddingLeft: 12, paddingTop: 5 }}>
 
-                                        <Text style={styles.nameText}>{item.name}</Text>
+                                        <Text style={styles.nameText}>{item.customerName ? item.customerName : item.mobileNumber}</Text>
 
 
                                         <View style={{ flexDirection: 'row', }}>
                                             <View style={{ paddingTop: 5, paddingRight: 1 }}>
                                                 <Icon1 name="location-outline" color={"black"} />
                                             </View>
-                                            <Text style={[styles.idText, { paddingTop: 4 }]}>{item.place}</Text>
+                                            <Text style={[styles.idText, { paddingTop: 4 }]}>{item.pin}</Text>
                                         </View>
 
 
@@ -139,9 +170,9 @@ const Activities = ({ navigation }) => {
 
                                     <View style={{ flexDirection: 'column', top: 0,alignItems:'flex-end',flex:1,paddingRight:width*0.04 }}>
 
-                                        <Text style={[styles.numText, {  }]}>{item.phone}</Text>
+                                        <Text style={[styles.numText, {  }]}>{item.mobileNumber}</Text>
                                         <View style={[styles.ViewExplain, { right: 0 }]}>
-                                            <Text style={styles.explainText}> Explain Trust Circle </Text>
+                                            <Text style={styles.explainText}> {item.purpose} </Text>
                                         </View>
                                     </View>
                                 </View>
@@ -156,30 +187,33 @@ const Activities = ({ navigation }) => {
                             </View>
 
                         )
+                            }
                     })}
                 </View>
 
                 <Text style={[styles.textActive, { paddingBottom: width * 0.03 }]}>CGT</Text>
 
-                {CGT.map((item) => {
+                {list.map((item) => {
+                    console.log('CGT listing activities',item.activityType)
+                    if(item.activityType == 'MEET'){
                     return (
                         <View style={styles.viewCard}>
                              <View style={[styles.circleStyle, { backgroundColor: "#A294C8", marginLeft: width * 0.03,alignItems:'center' }]}>
-                                <Text style={styles.circleText}>{item.Initial}</Text>
+                                <Text style={styles.circleText}>{getInitials(item.customerName ? item.customerName : item.mobileNumber)}</Text>
                             </View> 
 
                      
                              <View style={{ flexDirection: 'row' ,justifyContent:'space-between',flex:1,paddingRight:width*0.04}}>
                                 <View style={{ flexDirection: 'column', paddingLeft: 12, paddingTop: 5, }}>
 
-                                    <Text style={styles.nameText}>{item.name}</Text>
+                                    <Text style={styles.nameText}>{item.customerName ? item.customerName : item.mobileNumber}</Text>
 
 
                                     <View style={{ flexDirection: 'row', }}>
                                         <View style={{ paddingTop: 5, paddingRight: 1 }}>
                                             <Icon1 name="location-outline" color={"black"} />
                                         </View>
-                                        <Text style={[styles.idText, { paddingTop: 4 }]}>{item.place}</Text>
+                                        <Text style={[styles.idText, { paddingTop: 4 }]}>{item.pin}</Text>
                                     </View>
 
 
@@ -187,7 +221,7 @@ const Activities = ({ navigation }) => {
 
                                 <View style={{ flexDirection: 'column', top: 5,alignItems:'flex-end',flex:1 }}>
 
-                                    <Text style={[styles.numText, {}]}>{item.phone}</Text>
+                                    <Text style={[styles.numText, {}]}>{item.mobileNumber}</Text>
                                     <View style={[styles.ViewExplain, { backgroundColor: 'rgba(39, 174, 96, 0.1)', width: width * 0.27, marginLeft: width * 0.03 }]}>
                                         <Text style={[styles.explainText, { color: "#27AE60" }]}>Collect Payment</Text>
                                     </View>
@@ -196,6 +230,7 @@ const Activities = ({ navigation }) => {
 
                         </View>
                     )
+                    }
                 })}
 
 

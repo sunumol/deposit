@@ -23,9 +23,9 @@ import { useFocusEffect } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import Activities from './Components/Activity';
 
-const Activity = ({ navigation, }) => {
-    const route = useRoute();
-    console.log("route name",);
+const Activity = ({ navigation,route }) => {
+//const route = useRoute();
+    console.log("route name",route.params.data);
     const isDarkMode = true
     const { t } = useTranslation();
     const [lang, setLang] = useState('')
@@ -68,7 +68,7 @@ const Activity = ({ navigation, }) => {
             <Header  name="Activities" navigation={navigation} />
 
             <View style={styles.ViewContent}>
-               <Activities navigation={navigation}/>
+               <Activities navigation={navigation} data ={route?.params?.data}/>
             </View>
 
         </SafeAreaProvider>

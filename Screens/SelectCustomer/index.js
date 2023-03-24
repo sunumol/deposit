@@ -14,11 +14,19 @@ import SelectedTab from './Components/SelectedTab';
 import CgtModal from './Components/Modal';
 import SearchIcon from 'react-native-vector-icons/Feather'
 import { useTranslation } from 'react-i18next';
-const SelectCustomer = ({ navigation }) => {
+import { api } from '../../Services/Api';
+import moment from 'moment';
+
+
+
+
+const SelectCustomer = ({ navigation,route }) => {
   const isDarkMode = true;
   const [text, onChangeText] = useState('');
   const [selectedItem, setSelectedItem] = useState();
-  const [ModalVisible,setModalVisible] = useState(false)
+  const [ModalVisible,setModalVisible] = useState(false);
+  const [customerList,setCustomerList] = useState([]);
+  const [selectedDate,setSelectedDate] = useState(route?.params?.date)
   const { t } = useTranslation();
 
   const handleGoBack =()=> {
@@ -126,6 +134,65 @@ return true
     }
     }
 
+
+
+
+              // ------------------ get Customer List Api Call Start ------------------
+              const getCustomerList = async () => {
+             
+                 const data = {
+                     "employeeId": 1,
+                     "customerNameOrNumber": ''
+                 };
+                 await api.getCustomerList(data).then((res) => {
+                     console.log('------------------- customer list res', res.data.body)
+                    setCustomerList(res?.data?.body)
+                 })
+                     .catch((err) => {
+                         console.log('-------------------err', err?.response)
+                     })
+             };
+             // --
+
+
+
+              // ------------------ get Customer List Api Call Start ------------------
+              const createCGT = async () => {
+
+                let date = (moment(selectedDate).utc().format("DD-MM-YYYY"))
+                let selectedtime = route?.params?.data?.time
+
+                let time = selectedtime.slice(0,5);
+
+
+                
+          
+
+                console.log('schedule time',time)
+             
+                const data = {
+                  "employeeId":1,
+                  "customerId":selectedItem.id,
+                  "scheduleStartTime":date +" " + time
+              }
+                await api.createCGT(data).then((res) => {
+                    console.log('------------------- create CGT res', res.data.body)
+                  // setCustomerList(res?.data?.body)
+                   setModalVisible(true)
+                })
+                    .catch((err) => {
+                        console.log('-------------------err', err?.response)
+                    })
+            };
+            // --
+
+
+
+             useEffect(()=>{
+              getCustomerList()
+            
+             },[])
+
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container1} />
@@ -137,8 +204,8 @@ return true
         <ScrollView showsVerticalScrollIndicator={false} >
           <View style={styles.boxView}>
             <View style={styles.contentView}>
-              <Text style={styles.timeText}>10:30 AM</Text>
-              <Text style={styles.dateText}>Wed, 12 Oct</Text>
+              <Text style={styles.timeText}>{route?.params?.data.time}</Text>
+              <Text style={styles.dateText}>{moment(selectedDate).utc().format("MMM Do YY")}</Text>
             </View>
             
             < TouchableOpacity style={styles.editView} onPress={()=>navigation.navigate('NewCgt')}>
@@ -161,10 +228,10 @@ return true
             ?
             <>
               <Text style={styles.recentlyText}>{t('common:RecentCust')}</Text>
-              {data.map((item, index) =>
+              {customerList?.map((item, index) =>
                 <>
-                <TouchableOpacity onPress={()=>setSelectedItem(item)}>
-                  <Text style={styles.dataText}>{item.name}</Text>
+                <TouchableOpacity onPress={()=>{setSelectedItem(item),console}}>
+                  <Text style={styles.dataText}>{item.name ?  item.name : item.mobile}</Text>
                   </TouchableOpacity>
                   {index !== 6
                     ? <View style={styles.lineView} />
@@ -178,7 +245,7 @@ return true
           {text.length > 0 && !selectedItem
             ?
             <View style={{ borderWidth: 1, paddingTop: 12, paddingBottom: 22, borderColor: COLORS.colorBorder, marginTop: 10, borderRadius: 8 }}>
-              {searchList.map((item, index) =>
+              {customerList?.map((item, index) =>
                 <>
                   <TouchableOpacity style={{ flexDirection: 'row', paddingHorizontal: 15, }}
                     onPress={() => {
@@ -188,16 +255,16 @@ return true
                     <View style={{ flex: 1, flexDirection: 'row' }}>
 
                       <View style={{ flexDirection: 'column' }}>
-                        <Text style={styles.nameText}>{item.name}</Text>
+                        <Text style={styles.nameText}>{item.name ?  item.name : item.mobile}</Text>
                         <View style={{ flexDirection: 'row' }}>
-                          <View style={{ paddingTop: 5, paddingRight: 1 }}>
+                         {item?.pin ?( <View style={{ paddingTop: 5, paddingRight: 1 }}>
                             <Icon1 name="location-outline" color={"black"} />
-                          </View>
-                          <Text style={[styles.idText, { paddingTop: 4 }]}>686666</Text>
+                          </View>):null}
+                          <Text style={[styles.idText, { paddingTop: 4 }]}>{item.pin ? item.pin : null}</Text>
                         </View>
                       </View>
                     </View>
-                    <Text style={[styles.numText, { paddingLeft: 6 }]}>{item.number}</Text>
+                    <Text style={[styles.numText, { paddingLeft: 6 }]}>{item.mobile}</Text>
                   </TouchableOpacity>
 
                   {index !== 2
@@ -219,7 +286,10 @@ return true
         </ScrollView>
         {selectedItem
           ?
-          <TouchableOpacity style={styles.buttonView} onPress={()=>setModalVisible(true)}>
+          <TouchableOpacity style={styles.buttonView} 
+          onPress={()=>createCGT()}
+        //  onPress={()=>setModalVisible(true)}
+          >
             <Text style={styles.continueText}>{t('common:Confirm')}</Text>
           </TouchableOpacity>
           : null

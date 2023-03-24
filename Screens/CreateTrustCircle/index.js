@@ -6,81 +6,90 @@ import {
     StatusBar,
     SafeAreaView,
     Platform,
-    TextInput,
     ScrollView,
     Dimensions,
     TouchableOpacity
 } from 'react-native'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useState, useEffect } from 'react'
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import Statusbar from '../../Components/StatusBar';
 import { useFocusEffect } from '@react-navigation/native';
-import Header from '../../Components/RepayHeader';
-import { FONTS, COLORS } from '../../Constants/Constants';
-import Date from '../CGTCustomer/Images/Date.svg';
-import Success from '../CGTCustomer/Images/Success2.svg';
 import Icon1 from 'react-native-vector-icons/Ionicons'
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 import Icon from 'react-native-vector-icons/AntDesign';
-import Plus from '../../assets/image/Plus.svg';
-const { height, width } = Dimensions.get('screen');
+import { useRoute } from '@react-navigation/native';
+import moment from 'moment';
+import { useSelector } from 'react-redux';
+
+// ----------------- Component Import --------------------
+import Statusbar from '../../Components/StatusBar';
+import Header from '../../Components/RepayHeader';
+import { FONTS, COLORS } from '../../Constants/Constants';
 import TrustModal from './Components/TrustModal';
-const Data = [
-    {
-        name: 'Aparna CS',
-        short: 'AC',
-        color: '#219653',
-        phone: '777XXXXX11',
-        pincode: '682025'
-    },
-    {
-        name: 'Arya C',
-        short: 'AC',
-        color: '#A37373',
-        phone: '677XXXXX11',
-        pincode: '682025'
-    },
-    {
-        name: 'Anjali Jacob',
-        short: 'AJ',
-        color: '#218196',
-        phone: '777XXXXX11',
-        pincode: '682025'
-    },
-    {
-        name: 'Reshmi P',
-        short: 'RP',
-        color: '#696A89',
-        phone: '977XXXXX22',
-        pincode: '682025'
-    },
-]
+import { api } from '../../Services/Api';
+
+// --------------- Image Import -------------------
+import Date from '../CGTCustomer/Images/Date.svg';
+import Plus from '../../assets/image/Plus.svg';
+
+const { height, width } = Dimensions.get('screen');
 
 const CreateTrustCircle = ({ navigation }) => {
-    const isDarkMode = true;
-    const [text, onChangeText] = useState('');
-    const [ButtonStatus, setButtonStatus] = useState(false)
-    const [ModalVisible, setModalVisible] = useState(false)
-    const [selectedItem, setSelectedItem] = useState()
 
-    const [ModalError, setModalError] = useState(false)
-    const [ModalReason, setModalReason] = useState(false)
-    const [members, setMembers] = useState([Data[0]]);
+    const isDarkMode = true;
+    const routes = useRoute();
+
+    const [ModalVisible, setModalVisible] = useState(false)
+    const [tcLimit, setTCLimit] = useState();
+
+    // --------- Redux State -------------------------------------
+    const customerList = useSelector(state => state.customerList);
+    const customerID = useSelector(state => state.customerID);
+    const cgtCustomerDetails = useSelector(state => state.cgtCustomerDetails);
 
     const handleGoBack = useCallback(() => {
-        navigation.navigate('CGT')
+        navigation.navigate('CGT')// -----> Todo back navigation with activity ID
         return true; // Returning true from onBackPress denotes that we have handled the event
     }, [navigation]);
 
     useFocusEffect(
         React.useCallback(() => {
             BackHandler.addEventListener('hardwareBackPress', handleGoBack);
-
             return () =>
                 BackHandler.removeEventListener('hardwareBackPress', handleGoBack);
         }, [handleGoBack]),
     );
 
+    useEffect(() => {
+        getTCLimitDetails()
+    }, [customerList, customerID])
+
+    // ------------------ getTCLimitDetails Api Call Start ------------------
+    const getTCLimitDetails = async () => {
+        await api.getTCLimitCount().then((res) => {
+            console.log('-------------------res', res?.data)
+            setTCLimit(res?.data?.body)
+        }).catch((err) => {
+            console.log('-------------------err', err?.response)
+        })
+    };
+    // ------------------ HomeScreen Api Call End ------------------
+
+    // ------------------ getTCLimitDetails Api Call Start ------------------
+    const CreateTrustCircle = async () => {
+        const data = {
+            "primaryCustomerId": 1,
+            "memberIds": customerID
+        }
+        await api.createTrustCircles(data).then((res) => {
+            console.log('-------------------res', res?.data)
+            if (res?.status) {
+                setModalVisible(true)
+            }
+        }).catch((err) => {
+            console.log('-------------------err', err?.response)
+        })
+    };
+    // ------------------ HomeScreen Api Call End ------------------
 
     return (
         <SafeAreaProvider>
@@ -90,18 +99,23 @@ const CreateTrustCircle = ({ navigation }) => {
             <Header navigation={navigation} name="CGT" back={true} />
 
             <View style={styles.mainContainer}>
+
                 <ScrollView showsVerticalScrollIndicator={false} >
+
+                    {/* --------------------------------- Date Resedule Box  Start--------------------------------------------------------------------------------------------------------------------- */}
                     <View style={styles.boxView}>
                         <View style={styles.contentView}>
-                            <Text style={styles.timeText}>12:30 PM</Text>
-                            <Text style={styles.dateText}>Wed, 12 Oct</Text>
+                            <Text style={styles.timeText}>{cgtCustomerDetails?.cgtTime?.slice(0, -3)} PM</Text>
+                            <Text style={styles.dateText}>{cgtCustomerDetails?.cgtDate ? moment(new Date(cgtCustomerDetails?.cgtDate)).format("ddd, DD MMM") : ''}</Text>
                         </View>
                         <TouchableOpacity style={styles.editView}>
                             <Date />
                             <Text style={styles.changeText}>Reschedule CGT</Text>
                         </TouchableOpacity>
                     </View>
+                    {/* --------------------------------- Date Resedule Box  End--------------------------------------------------------------------------------------------------------------------- */}
 
+                    {/* --------------------------------- Customer Details Start--------------------------------------------------------------------------------------------------------------------- */}
 
                     <View style={[styles.viewCard, { flex: 1, flexDirection: 'row', }]}>
 
@@ -112,40 +126,43 @@ const CreateTrustCircle = ({ navigation }) => {
 
                         <View style={{ flexDirection: 'column', paddingLeft: 12, paddingTop: 5, flex: 1 }}>
 
-                            <Text style={styles.nameText}>Athira Anil</Text>
+                            <Text style={styles.nameText}>{cgtCustomerDetails?.customerName}</Text>
 
 
                             <View style={{ flexDirection: 'row', }}>
                                 <View style={{ paddingTop: 5, paddingRight: 1 }}>
                                     <Icon1 name="location-outline" color={"black"} />
                                 </View>
-                                <Text style={[styles.idText, { paddingTop: 4 }]}>682555</Text>
+                                <Text style={[styles.idText, { paddingTop: 4 }]}>{cgtCustomerDetails?.pin}</Text>
                             </View>
                         </View>
                         <View style={{ flexDirection: 'column', top: -8, alignItems: 'flex-end', marginRight: 14 }}>
                             <View style={{ flexDirection: 'row' }}>
                                 <Icon2 name="phone-in-talk-outline" color={"black"} size={15} />
-                                <Text style={[styles.numText, { paddingLeft: 6 }]}>961XXXXX77</Text>
+                                <Text style={[styles.numText, { paddingLeft: 6 }]}>{cgtCustomerDetails?.mobileNumber}</Text>
                             </View>
                         </View>
                     </View>
+                    {/* --------------------------------- Customer Details End--------------------------------------------------------------------------------------------------------------------- */}
 
-                    <View>
-                        <Text style={styles.Trust}>Trust Circle Members ({members.length})</Text>
-                    </View>
+                    {/* --------------------------------- Trust Circle Members Start--------------------------------------------------------------------------------------------------------------------- */}
+                    {customerList?.length > 0
+                        ? <View>
+                            <Text style={styles.Trust}>Trust Circle Members ({customerList?.length})</Text>
+                        </View> : null}
 
-                    {members.map((item) => {
+                    {customerList && customerList?.map((item) => {
                         return (
                             <View style={[styles.viewCard, { flex: 1, flexDirection: 'row', }]}>
 
-                                <View style={[styles.circleStyle, { backgroundColor: item.color, marginLeft: width * 0.05 }]}>
+                                <View style={[styles.circleStyle, { backgroundColor: 'green', marginLeft: width * 0.05 }]}>
                                     <Text style={styles.circleText}>{item.short}</Text>
                                 </View>
 
 
                                 <View style={{ flexDirection: 'column', paddingLeft: 12, paddingTop: 5, flex: 1 }}>
 
-                                    <Text style={styles.nameText}>{item.name}</Text>
+                                    <Text style={styles.nameText}>{item.customerName}</Text>
 
 
                                     <View style={{ flexDirection: 'row', }}>
@@ -164,8 +181,9 @@ const CreateTrustCircle = ({ navigation }) => {
                             </View>
                         )
                     })}
-                    {members.length === 1
-                        ? <TouchableOpacity style={styles.viewCard} onPress={() => setMembers(Data)}>
+
+                    {customerList?.length > 0 && customerList?.length !== tcLimit
+                        ? <TouchableOpacity style={styles.viewCard} onPress={() => navigation.navigate('ConfirmMembers')}>
 
                             <View style={{ marginLeft: width * 0.05 }}>
                                 <Plus />
@@ -173,16 +191,31 @@ const CreateTrustCircle = ({ navigation }) => {
                             <Text style={styles.AddText}>Add new member</Text>
                         </TouchableOpacity> : null}
 
+                    {/* --------------------------------- Trust Circle Members End--------------------------------------------------------------------------------------------------------------------- */}
+
                 </ScrollView>
 
+                {/* --------------------------------- Button Start--------------------------------------------------------------------------------------------------------------------- */}
 
                 <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                    <TouchableOpacity style={[styles.Button1,
-                    { backgroundColor: members.length === 4 ? COLORS.colorB : '#ECEBED' }]} onPress={() =>setModalVisible(true)}>
-{/* //{ set: true } */}
-                        <Text style={[styles.text1, { color: members.length === 4 ? COLORS.colorBackground : '#979C9E', paddingLeft: width * 0.02 }]}>Create Trust Circle</Text>
-                    </TouchableOpacity>
+                    {customerList?.length > 0
+                        ? <TouchableOpacity style={[styles.Button1,
+                        { backgroundColor: customerList?.length === tcLimit ? COLORS.colorB : '#ECEBED' }]} onPress={CreateTrustCircle}>
+                            <Text style={[styles.text1, { color: customerList?.length === tcLimit ? COLORS.colorBackground : '#979C9E', paddingLeft: width * 0.02 }]}>Create Trust Circle</Text>
+                        </TouchableOpacity>
+                        :
+                        <TouchableOpacity style={[styles.Button1, { backgroundColor: COLORS.colorB }]}
+                            onPress={() => navigation.navigate('ConfirmMembers')}
+                        >
+                            <Icon name="pluscircleo" size={15} color={"#FFFFFF"} />
+                            <Text style={[styles.text1, { color: COLORS.colorBackground, paddingLeft: width * 0.02 }]}>Add Trust Circle Member</Text>
+                        </TouchableOpacity>
+                    }
+
                 </View>
+
+                {/* --------------------------------- Button End--------------------------------------------------------------------------------------------------------------------- */}
+
             </View>
 
             <TrustModal
@@ -194,10 +227,10 @@ const CreateTrustCircle = ({ navigation }) => {
                 setModalVisible={setModalVisible}
                 onPress1={() => {
                     setModalVisible(false)
-                    navigation.navigate('DLESchedule',{ set: true })
-                }
-                }
+                    navigation.navigate('DLESchedule', { set: true })
+                }}
             />
+
         </SafeAreaProvider>
     )
 }
@@ -259,13 +292,11 @@ const styles = StyleSheet.create({
         paddingLeft: 8
     },
     searchBox: {
-
         borderWidth: 1,
         borderColor: COLORS.colorBorder,
         borderRadius: 8,
         marginTop: 23
     },
-
     lineView: {
         borderWidth: 0.9,
         borderColor: COLORS.Gray6,
@@ -294,7 +325,6 @@ const styles = StyleSheet.create({
         fontWeight: '400',
     },
     buttonView: {
-
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 54,
@@ -305,7 +335,6 @@ const styles = StyleSheet.create({
     continueText: {
         fontSize: 14,
         fontFamily: FONTS.FontBold,
-
         letterSpacing: 0.64
     },
     boxStyle: {
@@ -326,7 +355,6 @@ const styles = StyleSheet.create({
         color: COLORS.colorBackground,
         fontWeight: '600',
     },
-
     headTextTitle: {
         fontSize: 13,
         fontFamily: FONTS.FontSemiB,
@@ -346,8 +374,6 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.colorB,
         marginTop: 31,
         flexDirection: 'row',
-        // marginLeft: 12,
-        // marginRight: 12,
         borderRadius: 40,
         marginBottom: 20
     },
@@ -377,7 +403,6 @@ const styles = StyleSheet.create({
         color: '#1E293B',
         fontFamily: FONTS.FontSemiB,
         paddingTop: width * 0.05,
-
     },
     AddText: {
         fontSize: 12,
@@ -385,5 +410,4 @@ const styles = StyleSheet.create({
         fontFamily: FONTS.FontSemiB,
         paddingLeft: 12
     }
-
 })

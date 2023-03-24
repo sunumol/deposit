@@ -7,6 +7,10 @@ const initialState={
     createPin:'123',
     createDate:'12',
     ExpiryDate:'123',
+    
+    customerList:[],
+    customerID:[],
+    cgtCustomerDetails:'',
 }
 
 export const baseReducer = (state = initialState, action) => {
@@ -25,6 +29,21 @@ export const baseReducer = (state = initialState, action) => {
             return {
                 ...state, // return the updated state
                 ExpiryDate: action.payload  
+            }
+            case "SET_SELECTED_CUSTOMERLIST":  // for updating state
+            return {
+                ...state, // return the updated state
+                customerList: action.payload  
+            }
+            case "SET_SELECTED_CUSTOMERID":  // for updating state
+            return {
+                ...state, // return the updated state
+                customerID: action.payload  
+            }
+         case "SET_CGT_CUSTOMERdETAILS":  // for updating state
+            return {
+                ...state, // return the updated state
+                cgtCustomerDetails: action.payload  
             }
     
         default:

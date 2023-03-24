@@ -129,7 +129,7 @@ const ItemTabs = ({ navigation }) => {
     // ------------------ Activity Listing Api Call Start ------------------
     const ActivityListingApiCall = async () => {
         const data = {
-            "employeeId": 1
+            "employeeId": 9252
         };
         await api.activitylistingscreenApi(data).then((res) => {
             console.log('-------------------res', res?.data?.body)
@@ -138,7 +138,7 @@ const ItemTabs = ({ navigation }) => {
 
         })
             .catch((err) => {
-                console.log('-------------------err', err?.response)
+                console.log('-------------------err', err)
             })
     };
     // ------------------ Activity Api Call End ------------------
@@ -387,7 +387,7 @@ getData();
                                                         status={item.purpose}
                                                         setEnab={setEnab}
                                                         details={item}
-                                                        navigation={() => navigation.navigate('CGT')}
+                                                        navigation={() => navigation.navigate('CGT',{activityId:item.activityId})}
                                                     />
                                                 );
                                             }

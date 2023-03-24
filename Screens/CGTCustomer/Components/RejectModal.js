@@ -1,30 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Dimensions, Modal, StyleSheet, Text, TouchableOpacity, View, Image } from "react-native";
-import { COLORS, FONTS } from '../../../Constants/Constants';
 import { useTranslation } from 'react-i18next';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-const { height, width } = Dimensions.get('screen');
+
+import { COLORS, FONTS } from '../../../Constants/Constants';
+
 import Image1 from '../Images/check.svg';
 
+const { height, width } = Dimensions.get('screen');
 
-const RejectModal = ({ ModalVisible, onPressOut, onPress1, setModalVisible,onPressClose }) => {
-    const [state, setState] = useState(null);
+
+const RejectModal = ({ ModalVisible, onPressOut,onPressClose }) => {
+    
     const { t } = useTranslation();
-    const [Lang, setLang] = useState('')
-    const [BStatus, setBstatus] = useState(false)
-
-    useEffect(() => {
-        getData()
-    }, [])
-
-    const getData = async () => {
-        try {
-            const lang = await AsyncStorage.getItem('user-language')
-            setLang(lang)
-        } catch (e) {
-            console.log(e)
-        }
-    }
 
     return (
 
@@ -37,7 +24,6 @@ const RejectModal = ({ ModalVisible, onPressOut, onPress1, setModalVisible,onPre
         <TouchableOpacity onPressOut={onPressClose}
             style={{ backgroundColor: "#000000aa", flex: 1, alignItems: 'center', justifyContent: 'center', opacity: 5 }} >
             <View style={styles.ModalView1}>
-                {/*<Text style={styles.TextDelete}>{t('common:AreS1')} ?</Text>*/}
 
                 <View style={{ paddingTop: width * 0.07 }}>
                         <Image source={require('../Images/check.png')}
@@ -54,7 +40,6 @@ const RejectModal = ({ ModalVisible, onPressOut, onPress1, setModalVisible,onPre
                         <Text style={styles.buttonTextStyle}>{t('common:Okay')}</Text>
                     </TouchableOpacity>
               
-
             </View>
 
         </TouchableOpacity>

@@ -25,7 +25,7 @@ import Cgt from './Components/cgt'
 
 const CgtScreen = ({ navigation, }) => {
     const route = useRoute();
-    console.log("route name",);
+    console.log("route name",route.params.activityId);
     const isDarkMode = true
     const { t } = useTranslation();
     const [lang, setLang] = useState('')
@@ -70,7 +70,7 @@ const CgtScreen = ({ navigation, }) => {
             <Header navigation={navigation} name="CGT" />
 
             <View style={styles.ViewContent}>
-                <Cgt navigation={navigation} />
+                <Cgt navigation={navigation} activityId={route.params.activityId}/>
             </View>
 
         </SafeAreaProvider>
