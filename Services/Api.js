@@ -85,6 +85,15 @@ export const api = {
     })
   },
 
+  // ------------ Update Activity -----------------------
+  updateActivity: data => {
+    return axios.post(`${baseURL}updateActivity`, data, {
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+  },
+
   // ------------------ get Cgt Slot data ---------------------
   getCGTslot: data => {
     return axios.post(`${baseURL}getCGTSlot`, data, {
@@ -146,5 +155,14 @@ export const api = {
       }
     })
   },
+ 
+  rejectTrustCircleMembers: data => {
+    return axios.post(`${baseURL}verifyTcKyc`,data,{
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+  },
+  
 };
 

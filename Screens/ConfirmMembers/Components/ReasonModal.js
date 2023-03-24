@@ -1,9 +1,10 @@
-import React, { useState,useEffect } from "react";
+import React, { useState } from "react";
 import { Dimensions, Modal, StyleSheet, Text, TouchableOpacity, View, Pressable, } from "react-native";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { COLORS, FONTS } from '../../../Constants/Constants';
 import { useTranslation } from 'react-i18next';
-import { CheckBox } from 'react-native-elements';
+import { api } from '../../../Services/Api';
+
 const { height, width } = Dimensions.get('screen');
 
 const data = [
@@ -33,13 +34,13 @@ const data = [
         isChecked: false
     },
 ]
-const ReasonModal = ({ModalVisible, onPressOut,setModalVisible,onPress1,navigation}) => {
+const ReasonModal = ({ModalVisible, onPressOut,setModalVisible,onPress1,setRejectReason}) => {
     const { t } = useTranslation();
 
     const [Data, setData] = useState(data)
     const [Reason, setReason] = useState('')
     const [ButtonStatus, setButtonStatus] = useState(false)
-
+    const [Checked,setChecked] = useState('')
 
     const onCheck1 = (id) => {
         let reason = Data
@@ -48,11 +49,13 @@ const ReasonModal = ({ModalVisible, onPressOut,setModalVisible,onPress1,navigati
         setTimeout(() => {
             let FilterArray1 = Data.filter(item => item.isChecked == true)
             let FilterId1 = FilterArray1.map((item) => (item.id))
+            let Checked = FilterArray1.map((item)=>(item.isChecked))
             //let FilterId1 = FilterArray.slice(id)
 
-            console.log("FilterId.", FilterId1)
+            console.log("FilterId.",Checked)
             console.log("FilterArray.......", FilterArray1)
-           setReason(FilterId1)
+            setReason(FilterId1)
+            setChecked(Checked)
             if(FilterId1.length == 0){
                 setButtonStatus(false)
             }else{
@@ -63,16 +66,8 @@ const ReasonModal = ({ModalVisible, onPressOut,setModalVisible,onPress1,navigati
      
     }
 
-    useEffect(() => {
-        const unsubscribe = navigation.addListener('focus', () => {
-       setReason(null)
-          // do something
-        });
-    
-        return unsubscribe;
-      }, [navigation]);
 
-      
+    
 
     return (
 
@@ -80,8 +75,7 @@ const ReasonModal = ({ModalVisible, onPressOut,setModalVisible,onPress1,navigati
             animationType="slide"
             transparent={true}
             visible={ModalVisible}
-            onRequestClose={()=>{
-                onPressOut()
+            onRequestClose={()=>{onPressOut()
             setReason(null)}}
         >
             <View style={styles.mainContainer} >
@@ -96,13 +90,17 @@ const ReasonModal = ({ModalVisible, onPressOut,setModalVisible,onPress1,navigati
 
                         {Data.map((item, index) => {
                             return (
-                                <View style={{flexDirection:'column',}}> 
-                                <View style={{flexDirection: 'row', justifyContent: 'space-between', 
+                                <View style={{flexDirection:'column',}}>
+                                <View style={{ flexDirection: 'row', justifyContent: 'space-between', 
                                 paddingLeft: width * 0.06,paddingRight:width*0.06,alignItems:'center',marginBottom:width*0.05,marginTop:width*0.05 }}>
                                     <Text style={styles.TextTitle}>{item.Title}</Text>
-                                    <Pressable onPress={() => onCheck1(item.id)} >
+                                    <Pressable onPress={() => {
+                                        onCheck1(item.id)
+                                        setRejectReason(item.Title)
+                                        }} >
                                         <Icon name={item.isChecked ? 'checkbox-marked' : 'checkbox-blank-outline'} size={22} color={item.isChecked ? COLORS.colorB : '#DADADA'} />
                                     </Pressable>
+                                    
                                 </View>
                                 {item.id !==5 &&
                                 <View style={styles.lineView} />}
@@ -140,6 +138,14 @@ const styles = StyleSheet.create({
     },
     centeredView2: {
         justifyContent: "flex-end",
+    },
+    lineView2: {
+    //     borderBottomWidth: 0.7,
+    //     borderBottomColor: COLORS.colorB,
+   
+    //     opacity: 0.5,
+    //    marginLeft:100,
+    //    marginRight:100
     },
     modalView: {
         backgroundColor: "white",
@@ -187,10 +193,12 @@ const styles = StyleSheet.create({
         marginBottom: 10
     },
     lineView: {
-        borderWidth: 0.9,
+        borderWidth: 0.5,
         borderColor: COLORS.Gray6,
         backgroundColor: COLORS.Gray6,
-        opacity: 0.5
+        opacity: 0.5,
+    
+
     },
     TextTitle: {
         fontSize: 14,
@@ -208,21 +216,14 @@ const styles = StyleSheet.create({
         // marginLeft: 12,
         // marginRight: 12,
         borderRadius: 40,
-        marginBottom: 20
+        marginBottom: 15
     },
     text1: {
         fontFamily: FONTS.FontBold,
         fontSize: 14,
         fontWeight: '700'
     },
-    lineView: {
-        borderWidth: 0.5,
-        borderColor: COLORS.Gray6,
-        backgroundColor: COLORS.Gray6,
-        opacity: 0.5,
-    
-
-    },
+   
 
 });
 
