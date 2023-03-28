@@ -226,7 +226,7 @@ return true
          <View style={styles.boxView}>
            <View style={styles.contentView}>
              <Text style={styles.timeText}>{route?.params?.data.time}</Text>
-             <Text style={styles.dateText}>{moment(selectedDate).utc().format("MMM Do YY")}</Text>
+             <Text style={styles.dateText}>{moment(selectedDate).utc().format("ddd")},{moment(selectedDate).utc().format("DD MMM")}</Text>
            </View>
            
            < TouchableOpacity style={styles.editView} onPress={()=>navigation.navigate('NewCgt')}>

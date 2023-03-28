@@ -61,6 +61,7 @@ const CreateTrustCircle = ({ navigation }) => {
 
     useEffect(() => {
         getTCLimitDetails()
+        console.log("customerlist",customerList)
     }, [customerList, customerID])
 
     // ------------------ getTCLimitDetails Api Call Start ------------------
@@ -157,26 +158,26 @@ const CreateTrustCircle = ({ navigation }) => {
                             <View style={[styles.viewCard, { flex: 1, flexDirection: 'row', }]}>
 
                                 <View style={[styles.circleStyle, { backgroundColor: 'green', marginLeft: width * 0.05 }]}>
-                                    <Text style={styles.circleText}>{item.short}</Text>
+                                    <Text style={styles.circleText}>{item?.short}</Text>
                                 </View>
 
 
                                 <View style={{ flexDirection: 'column', paddingLeft: 12, paddingTop: 5, flex: 1 }}>
 
-                                    <Text style={styles.nameText}>{item.customerName}</Text>
+                                    <Text style={styles.nameText}>{item?.customerName}</Text>
 
 
                                     <View style={{ flexDirection: 'row', }}>
                                         <View style={{ paddingTop: 5, paddingRight: 1 }}>
                                             <Icon1 name="location-outline" color={"black"} />
                                         </View>
-                                        <Text style={[styles.idText, { paddingTop: 4 }]}>{item.pincode}</Text>
+                                        <Text style={[styles.idText, { paddingTop: 4 }]}>{item?.pin}</Text>
                                     </View>
                                 </View>
                                 <View style={{ flexDirection: 'column', top: -8, alignItems: 'flex-end', marginRight: 14 }}>
                                     <View style={{ flexDirection: 'row' }}>
                                         <Icon2 name="phone-in-talk-outline" color={"black"} size={15} />
-                                        <Text style={[styles.numText, { paddingLeft: 6 }]}>{item.phone}</Text>
+                                        <Text style={[styles.numText, { paddingLeft: 6 }]}>{item?.mobileNumber}</Text>
                                     </View>
                                 </View>
                             </View>
@@ -223,7 +224,7 @@ const CreateTrustCircle = ({ navigation }) => {
                 ModalVisible={ModalVisible}
                 onPressOut={() => {
                     setModalVisible(!ModalVisible)
-                    navigation.navigate('Activities')
+                    navigation.navigate('DLESchedule', { set: true })
                 }}
                 setModalVisible={setModalVisible}
                 onPress1={() => {

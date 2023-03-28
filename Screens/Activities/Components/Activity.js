@@ -25,18 +25,18 @@ import Icon1 from 'react-native-vector-icons/Ionicons'
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 import Icon3 from 'react-native-vector-icons/Entypo';
 const { height, width } = Dimensions.get('screen');
-
+import { useSelector } from 'react-redux';
 
 const Activities = ({ navigation ,data}) => {
    const route = useRoute();
-    console.log("route name", data);
-   
+   // console.log("route name", data);
+   // const slot = useSelector(state => state.slot)
     const isDarkMode = true
     const { t } = useTranslation();
     const [lang, setLang] = useState('')
     const [ModalVisible, setModalVisible] = useState(false)
     const [ModalVisible1, setModalVisible1] = useState(false)
-    const [list,setList] = useState(data.data)
+    const [list,setList] = useState(data?.data)
 
 
     const Data = [
@@ -139,11 +139,11 @@ const Activities = ({ navigation ,data}) => {
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={{ paddingTop: width * 0.03 }}>
 
-                    <Text style={styles.textTime}>{data.time} ({data.data.length})</Text>
+                    <Text style={styles.textTime}>{data?.time} ({data?.data?.length})</Text>
 
                     <Text style={[styles.textActive, { paddingBottom: width * 0.03 }]}>CALL</Text>
 
-                    {list.map((item) => {
+                    {list?.map((item) => {
                         console.log('------->>>>>>',item)
                         if(item.ActivityType == 'CALL'){
                         return (

@@ -26,7 +26,7 @@ import Cgt from './Components/Cgt';
 import CalendarStrips from './Components/Calender';
 import moment from 'moment';
 import { api } from '../../Services/Api';
-
+import { useDispatch } from 'react-redux';
 
 const NewCgt = ({ navigation, }) => {
     const route = useRoute();
@@ -38,7 +38,7 @@ const NewCgt = ({ navigation, }) => {
     const [slotlist,setSlotlist] = useState([]);
     const [enab,setEnab]=useState(false)
     const [ selectedDate,setSelectedDate] = useState(moment().format());
-
+    const dispatch = useDispatch()
     useEffect(() => {
         getData(),
         getCGTslot()
@@ -71,7 +71,11 @@ const NewCgt = ({ navigation, }) => {
                      "selectedDate":  moment(date ? date : selectedDate ).utc().format('DD-MM-YYYY')
                  };
                  await api.getCGTslot(data).then((res) => {
-                     console.log('------------------- CGT slot res', res)
+                    dispatch({
+                        type: 'SET_ACTIVITY',
+                        payload:res?.data?.body[0].sloatActivityList,
+                    });
+                     console.log('------------------- CGT slot res', res.data?.body[0].sloatActivityList)
                       setSlotlist(res?.data?.body[0].sloatActivityList);
                       setEnab(false)
                    

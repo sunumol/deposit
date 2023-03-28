@@ -12,6 +12,7 @@ const initialState={
     customerID:[],
     cgtCustomerDetails:'',
     activityId:'',
+    slot:[]
 }
 
 export const baseReducer = (state = initialState, action) => {
@@ -50,6 +51,11 @@ export const baseReducer = (state = initialState, action) => {
             return {
                 ...state, // return the updated state
                 activityId: action.payload  
+            }
+            case "SET_ACTIVITY":  // for updating state
+            return {
+                ...state, // return the updated state
+                slot: action.payload  
             }
     
         default:
