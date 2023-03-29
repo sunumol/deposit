@@ -25,7 +25,7 @@ import Activities from './Components/Activity';
 
 const Activity = ({ navigation,route }) => {
 //const route = useRoute();
-    console.log("route name",route.params.data);
+   
     const isDarkMode = true
     const { t } = useTranslation();
     const [lang, setLang] = useState('')

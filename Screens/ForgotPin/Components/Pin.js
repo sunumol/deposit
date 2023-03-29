@@ -108,6 +108,7 @@ const Pin = ({ navigation, conFirmDate }) => {
     async function ResendApiCall() {
         setIsExpired(false)
         otpInput2.current.clear()
+        setOtpwrong(false)
         setConDate(new Date().getTime())
         const data = {
             deviceId: deviceId,
@@ -209,7 +210,7 @@ const Pin = ({ navigation, conFirmDate }) => {
                     </>
                     :
                     <>
-                        <Text style={styles.textTit}>എസ്എംഎസ് വഴി  <Text style={[styles.textTit, { fontFamily: FONTS.FontBold }]}>{mobile?.replace(/^.{1}/g, '').replaceAt(2, "X").replaceAt(3, "X").replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X")} </Text>എന്ന</Text>
+                        <Text style={styles.textTit}>എസ്എംഎസ് വഴി  <Text style={[styles.textTit, { fontFamily: FONTS.FontBold }]}>{mobile?.replace(/^.{2}/g, '').replaceAt(2, "X").replaceAt(3, "X").replaceAt(4, "X").replaceAt(5, "X")} </Text>എന്ന</Text>
 
                         <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
 

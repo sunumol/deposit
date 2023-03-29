@@ -41,13 +41,13 @@ const ItemTabs = (props) => {
 
                 } else if (props.index === 2) {
                     props.navigation.navigate('NewLead')
-                } else if (props.index === 4) {
+                } else if (props.index === 5) {
                     //setModalVisible(true)
-                    props.navigation.navigate('NewCall')
+                    props.navigation.navigate('Dashboard')
                 } else if (props.index === 3) {
                     props.navigation.navigate('NewCgt')
 
-                } else if (props.index === 5) {
+                } else if (props.index === 4) {
                     props.navigation.navigate('Collect')
 
                 }
@@ -61,7 +61,7 @@ const ItemTabs = (props) => {
                 {props.notification
                     ? <View style={styles.badgeView}>
                         {props.index === 0 ?
-                            <Text style={[styles.badgeText,{color:'white'}]}>{props?.notificationCounts?.activityCount}</Text> : props.index === 5 ?
+                            <Text style={[styles.badgeText,{color:'white'}]}>{props?.notificationCounts?.activityCount}</Text> : props.index === 4 ?
                                 <Text style={[styles.badgeText,{color:'white'}]}>{props?.notificationCounts?.collectCount}</Text> : null}
                     </View> : null}
                 {console.log("pros pass", props.notificationCounts)}

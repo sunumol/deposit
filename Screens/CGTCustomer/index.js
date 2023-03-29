@@ -54,7 +54,9 @@ const CgtCustomer = ({ navigation }) => {
     const dispatch = useDispatch()
 
     const handleGoBack = useCallback(() => {
-        navigation.goBack()
+   
+            navigation.goBack()
+    
         return true; // Returning true from onBackPress denotes that we have handled the event
     }, [navigation]);
 
@@ -243,6 +245,7 @@ const CgtCustomer = ({ navigation }) => {
                 }}
                 onPressClose={() => {
                     setModalVisible(!ModalVisible)
+                    navigation.navigate('CreateTrustCircle')
                 }}
                 setModalVisible={setModalVisible}
             />

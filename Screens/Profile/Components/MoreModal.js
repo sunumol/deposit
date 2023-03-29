@@ -1,3 +1,4 @@
+
 import React, { useState,useEffect } from "react";
 import { Modal, StyleSheet, Text, TouchableOpacity, View, Dimensions, FlatList } from "react-native";
 import { COLORS, FONTS } from '../../../Constants/Constants';
@@ -12,12 +13,14 @@ import Image5 from '../assets/Frame.svg';
 import Image6 from '../assets/language.svg';
 import Image7 from '../assets/lock.svg';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { api } from "../../../Services/Api";
 const MoreModal = ({ ModalVisible, onPressOut, setModalVisible, setOtpValue, navigation }) => {
     const { t } = useTranslation();
     const [Lang, setLang] = useState('')
 
     useEffect(() => {
         getData()
+       // getBankData()
     }, [])
 
     const getData = async () => {
@@ -30,6 +33,21 @@ const MoreModal = ({ ModalVisible, onPressOut, setModalVisible, setOtpValue, nav
         }
     }
 
+      // ------------------ get Details Api call Start ------------------
+      async function getBankData() {
+        console.log('api called')
+        const data = {
+            id: 2
+        }
+        await api.BankAccount(data).then((res) => {
+            console.log(res.data.body, '----------------------------------->>>>>>>>>>>>>>>>>>>>>>')
+            navigation.navigate('AddBank1')
+        }).catch((err) => {
+            console.log(err, '----------------------------------->>>>>>>>>>>>>>>>>>>>>>')
+            navigation.navigate('AddBank2')
+        })
+    }
+    // ----------
     const Data = [
         {
             id: 1,
@@ -101,9 +119,52 @@ const MoreModal = ({ ModalVisible, onPressOut, setModalVisible, setOtpValue, nav
                         <View style={styles.Line} />
 
                         <View style={{ justifyContent: 'center' }}>
-                            <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginTop: width * 0.12,paddingLeft:width*0.05,paddingRight:width*0.05 }}>
-                      
-                            <View style={{ alignItems: 'center', justifyContent: 'center',paddingRight:Lang=='en' ? width*0.04:0, }}>
+                            <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginTop: width * 0.15, }}>
+                                <View style={{ alignItems: 'center', justifyContent: 'center',left:Lang == 'en' ? 0 : -3}} >
+                                    <TouchableOpacity style={styles.touch} onPress={() => {
+                                        setModalVisible(!ModalVisible)
+                                        getBankData()
+                                       // navigation.navigate('BankAccount')
+
+                                    }}>
+                                        <Image4 />
+                                    </TouchableOpacity>
+                                    <Text style={styles.text}>{t('common:BankAcct')}</Text>
+                                </View>
+
+                                <View style={{ alignItems: 'center', justifyContent: 'center',left:Lang == 'en' ? 0 : -12,
+                                }} >
+                                    <TouchableOpacity style={styles.touch} onPress={()=>navigation.navigate('Language')}>
+                                    <Image6 />
+                                    </TouchableOpacity>
+                                    <Text style={styles.text}>{t('common:Language')}</Text>
+                                </View>
+
+                                <View style={{ alignItems: 'center', justifyContent: 'center' ,left:Lang == 'en' ? 0 : -5}} >
+                                    <TouchableOpacity style={styles.touch}
+                                    onPress={() => {
+                                        setModalVisible(!ModalVisible)
+                                        navigation.navigate('ResePin')
+                                    }}>
+                                        <Image7 />
+                                    </TouchableOpacity>
+                                    <Text style={styles.text}>{t('common:MPIN')}</Text>
+                                </View>
+                            </View>
+
+                            <View style={{ flexDirection: 'row', justifyContent: 'space-around',
+                             marginTop: width * 0.08, marginBottom: 35 }}>
+                                <View style={{ alignItems: 'center', justifyContent: 'center' ,paddingLeft:Lang=='ml' ? width*0.01:-5}} >
+                                    <TouchableOpacity style={[styles.touch,{left:Lang == 'en' ? -2:0}]}  onPress={() => {
+                                        setModalVisible(!ModalVisible)
+                                        navigation.navigate('LoanHistory')
+                                    }}>
+                                        <Image5 />
+                                    </TouchableOpacity>
+                                    <Text style={styles.text}>{t('common:LoanHis')}</Text>
+                                </View>
+
+                                <View style={{ alignItems: 'center', justifyContent: 'center',paddingRight:Lang=='en' ? width*0.04:0, }}>
                                     <TouchableOpacity style={styles.touch} onPress={() => {
                                         setModalVisible(!ModalVisible)
                                         navigation.navigate('AboutUs')
@@ -113,38 +174,12 @@ const MoreModal = ({ ModalVisible, onPressOut, setModalVisible, setOtpValue, nav
                                     <Text style={styles.text}>{t('common:AboutUs')}</Text>
                                 </View>
 
-
                                 <View style={{ alignItems: 'center', justifyContent: 'center' ,paddingRight:Lang == 'en' ? width*0.03:0,}} >
                                     <TouchableOpacity style={styles.touch} onPress={()=>navigation.navigate('FAQ')}>
                                         <Image2 />
                                     </TouchableOpacity>
                                     <Text style={styles.text}>{t('common:FAQQ')}</Text>
                                 </View>
-                            
-
-                                <View style={{ alignItems: 'center', justifyContent: 'center' ,left:Lang == 'en' ? 0 : -5}} >
-                                    <TouchableOpacity style={styles.touch}
-                                    onPress={() => {
-                                        setModalVisible(!ModalVisible)
-                                        navigation.navigate('ChangeMPIN')
-                                    }}>
-                                        <Image7 />
-                                    </TouchableOpacity>
-                                    <Text style={styles.text}>{t('common:MPIN')}</Text>
-                                </View>
-                            </View>
-
-                            <View style={{ flexDirection: 'row', justifyContent:'flex-start',
-                             marginTop: width * 0.08, marginBottom: 35,paddingLeft:width*0.1 }}>
-                              <View style={{ alignItems:'flex-start', justifyContent:'flex-start' ,left:Lang == 'en' ? 0 : 5,
-                                }} >
-                                    <TouchableOpacity style={styles.touch} onPress={()=>navigation.navigate('Language')}>
-                                    <Image6 />
-                                    </TouchableOpacity>
-                                    <Text style={[styles.text,{left:Lang=='en' ? 5 :18}]}>{t('common:Language')}</Text>
-                                </View>
-                         
-
                             </View>
                         </View>
 

@@ -1,4 +1,4 @@
-import React, { useState,useCallback } from 'react';
+import React, { useState,useCallback ,useEffect} from 'react';
 import {
     StyleSheet,
     Text,
@@ -9,6 +9,7 @@ import {
     KeyboardAvoidingView,
     BackHandler,
     ScrollView,
+    ToastAndroid
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -16,7 +17,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
 import { addDays } from 'date-fns'
 import moment from 'moment'
-
+import { useRoute } from '@react-navigation/native';
 // --------------- Component Imports ---------------------
 import { COLORS, FONTS } from '../../Constants/Constants';
 import Statusbar from '../../Components/StatusBar';
@@ -31,27 +32,40 @@ const CreatePin = ({ navigation }) => {
     const isDarkMode = true;
     const { t } = useTranslation();
     const otpInput2 = React.createRef();
-
+    const routes = useRoute();
     const [error, setError] = useState(false);
     const [success, setSuccess] = useState(false)
     const [OtpValue, setOtpValue] = useState("")
+    const [exitApp,setExitApp] = useState(0)
 
     const clearText = () => {
         otpInput2.current.clear();
     }
 
-    const handleGoBack = useCallback(() => {
-        navigation.goBack()
-        return true; // Returning true from onBackPress denotes that we have handled the event
-    }, [navigation]);
+    useEffect(() => {
+        const backHandler = BackHandler.addEventListener(
+            'hardwareBackPress',
+            handleGoBack,
+        );
+        return () => backHandler.remove();
+    }, [exitApp]);
 
-    useFocusEffect(
-        React.useCallback(() => {
-            BackHandler.addEventListener('hardwareBackPress', handleGoBack);
-            return () =>
-                BackHandler.removeEventListener('hardwareBackPress', handleGoBack);
-        }, [handleGoBack]),
-    );
+    const handleGoBack = () => {
+        if (routes.name === "ResetPin") {
+            if (exitApp === 0) {
+                setExitApp(exitApp + 1);
+                console.log("exit app elig", exitApp)
+                ToastAndroid.show("Press back again to exit.", ToastAndroid.SHORT);
+            } else if (exitApp === 1) {
+                BackHandler.exitApp();
+                console.log("exit app else", exitApp)
+            }
+            setTimeout(() => {
+                setExitApp(0)
+            }, 3000);
+            return true;
+        }
+    }
 
     return (
         <SafeAreaProvider>

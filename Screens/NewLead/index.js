@@ -10,6 +10,8 @@ import {
     KeyboardAvoidingView,
     StatusBar,
     ScrollView,
+    TouchableWithoutFeedback,
+    TouchableHighlight,
     Dimensions,
     BackHandler
 } from 'react-native';
@@ -29,7 +31,8 @@ const NewLead = ({ navigation, }) => {
     const { t } = useTranslation();
     const [lang, setLang] = useState('')
     const [BStatus, setBstatus] = useState(false)
-
+    const [VillageStatus,setVillageStatus] = useState(false)
+    const [VStatus,setVStatus] = useState(false)
     useEffect(() => {
         getData()
     }, [])
@@ -61,6 +64,23 @@ const NewLead = ({ navigation, }) => {
             BackHandler.removeEventListener('hardwareBackPress', handleGoBack);
         }, [handleGoBack]),
       );
+    //   useEffect(()=>{
+     
+    //           setVillageStatus(false)
+    //           alert("hello usef")
+          
+    //       console.log("VILLAGE ",VillageStatus)
+    //   })
+
+      const OnstateUpdate = ()=>{
+          setTimeout(()=>{
+            setVillageStatus(false)
+           // alert("hello state")
+          },1000)
+          setVillageStatus(false)
+         // alert("hello state")
+          console.log("villate",VillageStatus)
+      }
     return (
         <SafeAreaProvider>
             <SafeAreaView style={styles.container1} />
@@ -68,9 +88,9 @@ const NewLead = ({ navigation, }) => {
 
             <Header navigation={navigation} name={t('common:NewLead')} />
             <View style={styles.ViewContent}>
-              
-            <NewLead1 BStatus={BStatus} setBstatus={setBstatus}/>
-            
+         <TouchableOpacity activeOpacity={1.0} onPress={()=>OnstateUpdate()}>
+            <NewLead1 BStatus={BStatus} setBstatus={setBstatus} setVillageStatus={setVillageStatus} VillageStatus={VillageStatus}/>
+          </TouchableOpacity>
             </View>
         
         </SafeAreaProvider>

@@ -22,7 +22,7 @@ import { api } from '../../Services/Api';
 import Activity from './assets/Activity.svg';
 import Calendar from './assets/Calendar.svg';
 import Collect from './assets/Collect.svg';
-import NewCall from './assets/NewCall.svg';
+import Dashboard from './assets/a.svg';
 import NewLead from './assets/NewLead.svg';
 import NewUser from './assets/NewUser.svg';
 
@@ -55,17 +55,18 @@ const Profile = ({ navigation }) => {
             image: <NewUser />,
             notification: false,
         },
+
         {
             id: '5',
-            title: t('common:NewCall'),
-            image: <NewCall />,
-            notification: false,
-        },
-        {
-            id: '6',
             title: t('common:Collect'),
             image: <Collect width={50} height={40} />,
             notification: true,
+        },
+        {
+            id: '6',
+            title:'Dashboard',
+            image: <Dashboard />,
+            notification: false,
         },
     ];
     // ------------------ HomeScreen Api Call Start ------------------

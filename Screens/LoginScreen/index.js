@@ -37,6 +37,7 @@ import OTPInputView from '../../Components/OTPInputView';
 import Resend from '../../assets/Images/resend.svg'
 import Logo from '../../assets/Images/svadhan.svg';
 
+
 const { height, width } = Dimensions.get('screen');
 
 const LoginScreen = ({ navigation }) => {
@@ -696,6 +697,13 @@ const styles = StyleSheet.create({
         color: COLORS.colorDark,
         fontWeight: '400',
         fontFamily: FONTS.FontRegular,
+    },
+    imputContainerStyle: {
+        borderWidth: 1,
+        height: 48,
+        width: 48,
+        fontSize: 12,
+        fontWeight: 'bold',
     },
     Line: {
         borderRightWidth: 1,

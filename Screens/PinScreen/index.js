@@ -228,7 +228,13 @@ const PinScreen = ({ navigation, }) => {
 
     }
     // ------------------ After 3 Err Api Call End ------------------
-
+    // useEffect(() => {
+    //     const unsubscribe = navigation.addListener('focus', () => {
+    //       setO
+        
+    //     });
+    //     return unsubscribe;
+    // }, [navigation]);
     return (
         <SafeAreaProvider>
             <SafeAreaView style={styles.container1} />

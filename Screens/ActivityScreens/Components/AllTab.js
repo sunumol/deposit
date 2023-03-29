@@ -35,7 +35,7 @@ const ItemTabs = ({ navigation }) => {
 
         };
         await api.activitylistingscreenApi(data).then((res) => {
-            console.log('-------------------res', res?.data?.body)
+            console.log('-------------------res all', res?.data?.body)
             setListing(res?.data?.body)
             setEnab(false)
 

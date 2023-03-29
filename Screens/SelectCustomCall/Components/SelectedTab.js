@@ -1,4 +1,4 @@
-;
+
 import React, { useEffect, useState } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { COLORS, FONTS } from '../../../Constants/Constants';

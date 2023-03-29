@@ -25,17 +25,19 @@ import LeadModal from './LeadModal';
 import ValidModal from './ValidModal';
 import { api } from '../../../Services/Api'
 
-const NewLead1 = ({ navigation }) => {
+const NewLead1 = ({ navigation,setVillageStatus,VillageStatus }) => {
+    console.log("status of village",setVillageStatus,VillageStatus)
     const { t } = useTranslation();
     const [Name, setName] = useState('')
     const [Mobile, setMobile] = useState('')
     const [Pincode, setPincode] = useState('')
     const [Village, setVillage] = useState('')
-    const [BStatus, setBstatus] = useState(false)
+    //const [BStatus, setBstatus] = useState(false)
     const [Button, setButton] = useState(false)
     const [ModalVisible, setModalVisible] = useState(false)
     const [VStatus, setVStatus] = useState(false)
     const [ValidModal1, setValidModal1] = useState(false)
+    const [Message,setMessage] = useState('')
     const [ResultError, setResultError] = useState(false)
 
     const [vilageList, setVillageList] = useState([])
@@ -47,17 +49,12 @@ const NewLead1 = ({ navigation }) => {
         Village: true,
     })
 
-    const onChangeVillage = (text) => {
-        setVillage(text)
-        if (text == 'Kakkanad') {
-            setBstatus(true)
-            setVillage(text)
-            setResultError(false)
-        } else {
-            setResultError(true)
+    useEffect(()=>{
+        if(VillageStatus==true){
+            setVillageStatus(false)
         }
-
-    }
+        console.log("inside village status",VillageStatus)
+    },[])
 
     const OnpressOut1 = () => {
         console.log("lead modal okay")
@@ -66,7 +63,8 @@ const NewLead1 = ({ navigation }) => {
         setVillage(null)
         setMobile(null)
         setPincode(null)
-        setBstatus(false)
+        setVillageStatus(false)
+       // setBstatus(false)
         setButton(false)
         setVStatus(false)
 
@@ -90,13 +88,32 @@ const NewLead1 = ({ navigation }) => {
         await api.getNewLeadVillage(data).then((res) => {
             console.log('-------------------res', res?.data?.body)
             setVillageList(res?.data?.body)
-            setBstatus(true)
+            setVillageStatus(true)
+            //setBstatus(true)
         })
             .catch((err) => {
                 console.log('-------------------err', err?.response)
             })
     }
-
+    const Validation = () => {
+        const firstDigitStr = String(Mobile)[0];
+        if (Mobile?.length != 10 || Mobile == "") {
+            setMessage('Please enter a valid mobile number')
+            setValidModal1(true)
+        } else if (firstDigitStr === '1' || firstDigitStr === '2' || firstDigitStr === '3' || firstDigitStr === '4' || firstDigitStr === '5' || firstDigitStr === '0') {
+            setMessage('Please enter a valid mobile number')
+            setValidModal1(true)
+        } else if (verifyPhone(Mobile)) {
+            setMessage('Please enter a valid mobile number')
+            setValidModal1(true)
+        } else if (!(/^\d{10}$/.test(Mobile))) {
+            setMessage('Please enter a valid mobile number')
+            setValidModal1(true)
+        }
+        else {
+            onSubmit()
+        }
+    }
     async function onSubmit() {
         const data = {
             "leadName": Name,
@@ -107,6 +124,7 @@ const NewLead1 = ({ navigation }) => {
         await api.createLead(data).then((res) => {
             if (res?.status == 200) {
                 if (res?.data?.body == 'This number is already registered') {
+                    setMessage('The number is already registered')
                     setValidModal1(true)
                 }
                 else if (res?.data?.body == 'Lead generated') {
@@ -119,17 +137,22 @@ const NewLead1 = ({ navigation }) => {
                 console.log('-------------------err', err?.response)
             })
     }
-
+  
+    const verifyPhone = (Phone) => {
+        var reg = /^([0-9])\1{9}$/;
+        return reg.test(Phone);
+    }
 
     return (
         <>
-
+    <View style={styles.ViewContent}>
 
             <KeyboardAvoidingView
                 behavior={Platform.OS === "ios" ? "padding" : null}
                 style={{ flex: 1, backgroundColor: 'white' }}>
                 <ScrollView showsVerticalScrollIndicator={false}>
-                    <View style={{ alignItems: 'center', justifyContent: 'center' }} >
+             
+                    <View style={{ alignItems: 'center', justifyContent: 'center' }}>
 
 
                         <TextInputBox
@@ -171,7 +194,7 @@ const NewLead1 = ({ navigation }) => {
                             maxLength={6}
                             onChangeText={(text) => {
                                // setPincode(text)
-                                if(text.length==6){
+                                if(text?.length==6){
                                     setPincode(text)
                                     setVStatus(true)
                                }
@@ -187,11 +210,12 @@ const NewLead1 = ({ navigation }) => {
                     </View>
 
                     {VStatus &&
-                        <View style={{ paddingTop: width * 0.05, }}>
+                        <View style={{ paddingTop: width * 0.05,}}>
                             <Text style={styles.TextName}>{t('common:Village')}</Text>
 
-                            <View style={[styles.textInput1, { flexDirection: 'row', }]} >
-                                {BStatus &&
+                            <View style={{alignItems:'center'}}>
+                            <View style={[styles.textInput1, { flexDirection: 'row', alignItems:'center',}]} >
+                                {VillageStatus &&
                                     <Image1 />}
                                 <TextInput
                                     value={Village}
@@ -200,23 +224,28 @@ const NewLead1 = ({ navigation }) => {
                                         setVillage(text)
                                         if (text == '') {
                                             setVillageList([])
-                                            setBstatus(false)
+                                            setVillageStatus(false)
+                                           // setBstatus(false)
                                             setButton(false)
                                         } else {
                                             getVillage(text)
                                         }
                                     }} />
                             </View>
-                            {vilageList.length > 0
-                                ? <View style={styles.ViewMapBranch1}>
-                                    {vilageList.map((item) => {
+                            {VillageStatus &&
+                            <View>
+                            {vilageList?.length > 0
+                                ?    <View style={{alignItems:'center'}}>
+                                <View style={styles.ViewMapBranch1}>
+                                    {vilageList?.map((item) => {
                                         return (
 
                                             <TouchableOpacity onPress={() => {
                                                 setVillage(item)
                                                 setButton(true)
                                                 setVillageList([])
-                                                setBstatus(false)
+                                                setVillageStatus(false)
+                                               // setBstatus(false)
                                             }}>
                                                 <View style={{ paddingTop: 8 }}>
 
@@ -229,25 +258,30 @@ const NewLead1 = ({ navigation }) => {
                                         )
                                     })}
                                 </View>
+                                </View>
                                 : null}
-                            {vilageList.length == 0 && BStatus ? <View style={[styles.ViewMapBranch, { height: width * 0.15, }]}>
+                             </View>}
+                             {VillageStatus &&
+                            <View>
+                            {vilageList?.length == 0 && VillageStatus  ? <View style={[styles.ViewMapBranch, { height: width * 0.15, }]}>
                                 <View style={{ paddingTop: width * 0.05 }}>
 
                                     <Text style={styles.ItemNameBranch}>No results found</Text>
 
                                 </View>
                             </View> : null}
-
+                            </View>}
+                            </View>
                         </View>}
-
-
+                       
                 </ScrollView>
             </KeyboardAvoidingView>
-            {/* Button ? setModalVisible(true) : setValidModal1(true) */}
+        
+       
             <TouchableOpacity
                 style={[styles.Button1, { backgroundColor: Button &&  Name?.length>=3  && Mobile?.length===10  && Pincode?.length===6 ? COLORS.colorB : '#ECEBED' }]}
                 disabled={Button && Name?.length>=3 && Mobile?.length===10 && Pincode?.length===6 ? false : true}
-                onPress={onSubmit}>
+                onPress={()=>Validation()}>
                 <Text style={[styles.text1, { color: Button && Name?.length>=3  && Mobile?.length===10  && Pincode?.length===6? COLORS.colorBackground : '#979C9E' }]}>{t('common:Confirm')}</Text>
             </TouchableOpacity>
 
@@ -257,11 +291,12 @@ const NewLead1 = ({ navigation }) => {
                 setModalVisible={setModalVisible} />
 
             <ValidModal
-                Validation={'The number is already registered'}
+                Validation={Message}
                 ModalVisible={ValidModal1}
                 onPressOut={() => setValidModal1(!ValidModal1)}
                 setModalVisible={setValidModal1}
             />
+        </View>
         </>
     )
 }
@@ -284,7 +319,8 @@ const styles = StyleSheet.create({
         fontFamily: FONTS.FontRegular,
         fontSize: 12,
         color: 'rgba(59, 61, 67, 1)',
-        paddingBottom: width * 0.02
+        paddingBottom: width * 0.02,
+        paddingLeft:6
     },
     textInput: {
         width: width * 0.9,
@@ -383,6 +419,7 @@ const styles = StyleSheet.create({
         fontSize: 12,
         fontFamily: FONTS.FontRegular
     },
+    
 })
 
 export default NewLead1;
