@@ -1,12 +1,13 @@
 
 import axios from 'axios';
 const baseURL = 'http://3.108.93.231:8383/'
+const baseURL2 = 'http://3.108.93.231:8686/'
 
 export const api = {
 
   // ---------------- get HomeScreen Api -----------------
   homeScreenApi: data => {
-    return axios.post(`${baseURL}getHomeDetails`, data, {
+    return axios.post(`${baseURL2}getHomeDetails`, data, {
       headers: {
         'Content-Type': 'application/json',
       }
@@ -15,7 +16,7 @@ export const api = {
 
   // ---------------- get NewLead Village Api -----------------
   getNewLeadVillage: data => {
-    return axios.post(`${baseURL}village`, data, {
+    return axios.post(`${baseURL2}village`, data, {
       headers: {
         'Content-Type': 'application/json',
       }
@@ -24,7 +25,7 @@ export const api = {
 
   // ---------------- New Lead Api -----------------
   createLead: data => {
-    return axios.post(`${baseURL}lead`, data, {
+    return axios.post(`${baseURL2}lead`, data, {
       headers: {
         'Content-Type': 'application/json',
       }
@@ -67,9 +68,28 @@ export const api = {
     })
   },
 
+    // ---------------- Get Forgot Api -----------------
+    getForgotOtp: data => {
+      return axios.post(`${baseURL}forgotPin`, data, {
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      })
+    },
+
+    // ---------------- Get Inavlid PinScreen APi call -----------------
+    invalidPinApi: data => {
+      return axios.get(`${baseURL}notifyCustomerForWrongPin/${data.id}`, {
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      })
+    },
+  
+
   // ---------------- Activity Screen Listing Api -----------------
   activitylistingscreenApi: data => {
-    return axios.post(`${baseURL}getActivity`, data, {
+    return axios.post(`${baseURL2}getActivity`, data, {
       headers: {
         'Content-Type': 'application/json',
       }
@@ -78,7 +98,7 @@ export const api = {
 
   // ------------ Update Activity -----------------------
   updateActivity: data => {
-    return axios.post(`${baseURL}updateActivity`, data, {
+    return axios.post(`${baseURL2}updateActivity`, data, {
       headers: {
         'Content-Type': 'application/json',
       }
@@ -87,7 +107,7 @@ export const api = {
 
   // ------------ Update Activity -----------------------
   updateActivity: data => {
-    return axios.post(`${baseURL}updateActivity`, data, {
+    return axios.post(`${baseURL2}updateActivity`, data, {
       headers: {
         'Content-Type': 'application/json',
       }
@@ -96,7 +116,7 @@ export const api = {
 
   // ------------------ get Cgt Slot data ---------------------
   getCGTslot: data => {
-    return axios.post(`${baseURL}getCGTSlot`, data, {
+    return axios.post(`${baseURL2}getCGTSlot`, data, {
       headers: {
         'Content-Type': 'application/json',
       }
@@ -105,7 +125,7 @@ export const api = {
 
   // ------------------ get Cgt Customet List data ---------------------
   getCustomerList: data => {
-    return axios.post(`${baseURL}getCustomerForEmployee`, data, {
+    return axios.post(`${baseURL2}getCustomerForEmployee`, data, {
       headers: {
         'Content-Type': 'application/json',
       }
@@ -114,7 +134,7 @@ export const api = {
 
   // ------------ CGT get Details ----------------------
   getCGTDetails: data => {
-    return axios.post(`${baseURL}getCgtDetails`, data, {
+    return axios.post(`${baseURL2}getCgtDetails`, data, {
       headers: {
         'Content-Type': 'application/json',
       }
@@ -123,7 +143,7 @@ export const api = {
 
   // ------------ CGT Members Details ----------------------
   getCGTDetailsTCMembers: data => {
-    return axios.post(`${baseURL}getCgtDetailsTrustCircleMember`, data, {
+    return axios.post(`${baseURL2}getCgtDetailsTrustCircleMember`, data, {
       headers: {
         'Content-Type': 'application/json',
       }
@@ -132,7 +152,7 @@ export const api = {
 
   // ------------ CGT TC Limit Details ----------------------
   getTCLimitCount: () => {
-    return axios.get(`${baseURL}getTcCount`, {
+    return axios.get(`${baseURL2}getTcCount`, {
       headers: {
         'Content-Type': 'application/json',
       }
@@ -141,7 +161,7 @@ export const api = {
 
   // --------------- createTrustCircle Verify ----------------------
   createTrustCircles: data => {
-    return axios.post(`${baseURL}createTrustCircle`, data, {
+    return axios.post(`${baseURL2}createTrustCircle`, data, {
       headers: {
         'Content-Type': 'application/json',
       }
@@ -149,7 +169,7 @@ export const api = {
   },
 
   createCGT: data => {
-    return axios.post(`${baseURL}createOrUpdateCGT`,data,{
+    return axios.post(`${baseURL2}createOrUpdateCGT`,data,{
       headers: {
         'Content-Type': 'application/json',
       }
@@ -157,7 +177,7 @@ export const api = {
   },
  
   rejectTrustCircleMembers: data => {
-    return axios.post(`${baseURL}verifyTcKyc`,data,{
+    return axios.post(`${baseURL2}verifyTcKyc`,data,{
       headers: {
         'Content-Type': 'application/json',
       }

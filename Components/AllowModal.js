@@ -21,20 +21,27 @@ const App = ({ ModalVisible, onPressOut, setModalVisible, setOtpValue, navigatio
                     style={styles.touchableStyle} >
                 </TouchableOpacity>
                 <View style={styles.centeredView2}>
+
                     <View style={styles.ModalView}>
+
                         <Text style={styles.textHead}>{t('common:Sms1')}</Text>
                         <Text style={styles.otpnumber}>{otpMessage}</Text>
                         <View style={{ flexDirection: 'row', marginTop: 25, marginBottom: 20 }}>
                             <TouchableOpacity style={styles.DenyTouch} onPress={() => {
                                setOtpFetch(false)
-                                setModalVisible(!ModalVisible)}}>
+                                setModalVisible(!ModalVisible)
+
+                            }
+                            }>
                                 <Text style={styles.DenyText}>{t('common:Deny')}</Text>
                             </TouchableOpacity>
 
                             <TouchableOpacity style={styles.allowTouch} onPress={() => {
                                 setOtpValue(otpMessage)
                                 setModalVisible(!ModalVisible)
-                                ConfirmOtp(otpMessage)}}>
+                                ConfirmOtp(otpMessage)
+                            }
+                            }>
                                 <Text style={styles.allowText}>{t('common:Allow1')}</Text>
                             </TouchableOpacity>
                         </View>

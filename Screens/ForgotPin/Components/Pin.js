@@ -6,42 +6,47 @@ import {
     Dimensions,
     TouchableOpacity
 } from 'react-native';
-import { FONTS } from '../../../Constants/Constants';
-const { height, width } = Dimensions.get('screen');
-//import OTPInputView from '@twotalltotems/react-native-otp-input';
-import AllowModal from '../../../Components/AllowModal';
 import { useTranslation } from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import OTPInputView from '../../../Components/OTPInputView';
 import SmsAndroid from 'react-native-get-sms-android';
-import axios from 'axios';
 import DeviceInfo from 'react-native-device-info';
 import { NetworkInfo } from 'react-native-network-info';
-import { api } from '../../../Services/Api';
-import Resend from '../../../assets/Images/resend.svg'
-import { COLORS } from '../../../Constants/Constants';
+import { useIsFocused } from '@react-navigation/native';
 
+// --------------- Component Import --------------------
+import { api } from '../../../Services/Api';
+import { COLORS } from '../../../Constants/Constants';
+import AllowModal from '../../../Components/AllowModal';
+import { FONTS } from '../../../Constants/Constants';
+import OTPInputView from '../../../Components/OTPInputView';
+
+// --------------- Image Import --------------------
+import Resend from '../../../assets/Images/resend.svg'
+
+const { height, width } = Dimensions.get('screen');
 
 const Pin = ({ navigation, conFirmDate }) => {
 
     const { t } = useTranslation();
+    const screenIsFocused = useIsFocused();
+    const otpInput2 = React.createRef();
 
     const [OtpValue, setOtpValue] = useState('')
     const [ModalVisible, setModalVisible] = useState(false)
     const [timerCount, setTimer] = useState(30)
-    const [IsOtp2, setIsOtp2] = useState(true)
-    const [otpStatus, setOtpStatus] = useState(true)
     const [lang, setLang] = useState('')
-
     const [fetOtp, setOtpFetch] = useState(false)
     const [otpMessage, setOtpMessage] = useState()
     const [Otpwrong, setOtpwrong] = useState(false)
+
     // --------------Device Configuration Start----------
     const [ipAdrress, setIPAddress] = useState();
     const [deviceId, setDeviceId] = useState();
     const [mobile, setMobile] = useState();
-    const [isExpired, setIsExpired] = useState()
+    const [isExpired, setIsExpired] = useState(false)
     const [conDate, setConDate] = useState()
+    const [maxError, setMaxError] = useState(false)
+    const [status, setStatus] = useState(true)
     // --------------Device Configuration End----------
 
     String.prototype.replaceAt = function (index, replacement) {
@@ -73,84 +78,74 @@ const Pin = ({ navigation, conFirmDate }) => {
         }
     }
 
+    // ------------------ Confirm Otp Api Call Start ------------------
     async function ConfirmOtp(otp) {
-
-        try {
-            let headers = {
-                'Content-Type': 'application/json',
-            }
-            let url = `http://3.108.93.231:8383/confirm`
-            let body = {
-                otp: otp,
-                mobNumber: mobile,
-            }
-            const res = await axios.post(url, body, { headers });
+        const data = {
+            otp: otp,
+            mobNumber: mobile,
+        }
+        await api.confirmLoginOtp(data).then((res) => {
             if (res?.data?.status) {
                 console.log(res?.data)
+                setStatus(false)
                 navigation.navigate('ResetPin')
                 setOtpFetch(false)
-
             } else {
                 console.log(res?.data)
             }
-
-        } catch (err) {
+        }).catch((err) => {
             console.log("err->", err?.response)
-
             if (err?.response?.data?.message === '“OTP has expired') {
                 setIsExpired(true)
             } else if (err?.response?.data?.message === 'You entered wrong OTP') {
                 setOtpwrong(true)
             }
-
-            // if (err?.response?.data?.message === 'You entered wrong OTP')
-
-        }
+        })
     }
+    // ------------------ Confirm Otp Api Call End ------------------
 
     // ------------------ Resend Api Call Start ------------------
     async function ResendApiCall() {
-        try {
-            let headers = {
-                'Content-Type': 'application/json',
-            }
-            let url = `http://3.108.93.231:8383/resendOtp`
-            let body = {
-                deviceId: deviceId,
-                geoLocation: {
-                    latitude: "10.0302",//Todo
-                    longitude: "76.33553"//Todo
-                },
-                mobile: mobile,
-                deviceIpAddress: ipAdrress,
-                simId: "11111",
-            }
-            const res = await axios.post(url, body, { headers });
+        setIsExpired(false)
+        otpInput2.current.clear()
+        setConDate(new Date().getTime())
+        const data = {
+            deviceId: deviceId,
+            geoLocation: {
+                latitude: "10.0302",//Todo
+                longitude: "76.33553"//Todo
+            },
+            mobile: mobile,
+            deviceIpAddress: ipAdrress,
+            simId: "11111",
+        }
+        await api.resendLoginOtp(data).then((res) => {
             if (res?.data?.status) {
                 console.log('----date', res?.data)
-                setConDate(new Date().getTime())
-                setIsOtp2(true)
+                setStatus(true)
+                setTimer(30)
+                setOtpFetch(true)
             } else {
                 console.log(res?.data)
             }
-
-        } catch (err) {
+        }).catch((err) => {
             console.log("err->", err.response)
-            if (err?.response?.data?.message) {
+            setStatus(false)
+            if (err?.response?.data?.message === 'Maximum number of OTPs are exceeded. Please try after 30 minutes.') {
                 setMaxError(true)
 
             }
-        }
-
+        })
     }
+    // ------------------ Resend Api Call End ----------------------
 
     useEffect(() => {
-        if (IsOtp2 && timerCount > 0) {
+        if (timerCount > 0) {
             setTimeout(() => setTimer(timerCount - 1), 1000);
         } else {
-            setIsOtp2(false)
+            setStatus(false)
         }
-    }, [timerCount, IsOtp2]);
+    }, [timerCount]);
 
     useEffect(() => {
         if (fetOtp) {
@@ -208,38 +203,26 @@ const Pin = ({ navigation, conFirmDate }) => {
                         <Text style={styles.textTit}>Please enter OTP sent to</Text>
 
                         <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                            <Text style={[styles.textTit, { fontFamily: FONTS.FontBold }]}>{mobile?.replace(/^.{2}/g, '').replaceAt(2, "X").replaceAt(3, "X").replaceAt(4, "X").replaceAt(5, "X")} </Text>
+                            <Text style={[styles.textTit, { fontFamily: FONTS.FontBold }]}>{mobile?.replace(/^.{1}/g, '').replaceAt(2, "X").replaceAt(3, "X").replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X")} </Text>
                             <Text style={styles.textTit}>via SMS</Text>
                         </View>
-                    </> : <>
-                        <Text style={styles.textTit}>എസ്എംഎസ് വഴി  <Text style={[styles.textTit, { fontFamily: FONTS.FontBold }]}>{mobile?.replace(/^.{2}/g, '').replaceAt(2, "X").replaceAt(3, "X").replaceAt(4, "X").replaceAt(5, "X")} </Text>എന്ന</Text>
+                    </>
+                    :
+                    <>
+                        <Text style={styles.textTit}>എസ്എംഎസ് വഴി  <Text style={[styles.textTit, { fontFamily: FONTS.FontBold }]}>{mobile?.replace(/^.{1}/g, '').replaceAt(2, "X").replaceAt(3, "X").replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X")} </Text>എന്ന</Text>
 
                         <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
 
                             <Text style={styles.textTit}> നമ്പറിലേക്ക് അയച്ച OTP നൽകുക</Text>
                         </View>
-                    </>}
+                    </>
+                }
                 <View style={styles.View1}>
                     <Text style={styles.otptext} >{t('common:EnterOtp')}</Text>
                 </View>
-                {/* <OTPInputView
-                    style={[styles.OtpInput, {}]}
-                    pinCount={4}
-                    code={OtpValue}
-                    onCodeChanged={otp => setOtpValue(otp)}
-                    autoFocusOnLoad={false}
-                    codeInputFieldStyle={{ color: '#090A0A', borderRadius: 8, backgroundColor: '#FFFFF', }}
-                    placeholderTextColor="black"
-                    onCodeFilled={(otp => {
-                        setOtpValue(otp)
-                        if (otp.length === 4) {
-                            ConfirmOtp(otp)
-                        }
-                    })}
-                /> */}
-
-<OTPInputView
+                <OTPInputView
                     autoFocus={true}
+                    ref={otpInput2}
                     inputCount={4}
                     inputCellLength={1}
                     offTintColor={'#ECEBED'}
@@ -259,41 +242,47 @@ const Pin = ({ navigation, conFirmDate }) => {
                     })}
                 />
 
-                {IsOtp2
-                    ? <View style={{ justifyContent: 'center', alignItems: 'center', paddingTop: width * 0.07 }}>
-                        <Text style={styles.resendText}>{t('common:Resend')} 00:{timerCount < 10 ? '0' : ''}{timerCount}</Text>
-                    </View> : <TouchableOpacity onPress={ResendApiCall} style={{ padding: 18 }}>
-                        <View style={{ flexDirection: 'row', }}>
-                            {/* <Icon name="reload1" size={20} style={{transform:lang == "en" ? [{ rotateY: '360deg' }] : [{ rotateX: '180deg' }]}} /> */}
-                            <Resend style={{ width: 9, height: 11, top: 3, marginRight: 6, }} resizeMode="contain" />
-
-                            <TouchableOpacity>
-                                <Text style={styles.TextResend1}>{t('common:Resend1')}</Text></TouchableOpacity>
+                {maxError === true ?
+                    <View style={{ marginTop: Dimensions.get('window').height * 0.03, }}>
+                        <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center', width: width * 0.8 }}>{t('common:Valid2')}</Text>
+                        <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center' }}>{t('common:Valid3')}</Text></View>
+                    : status === true ?
+                        <View style={{ justifyContent: 'center', alignItems: 'center', paddingTop: width * 0.07 }}>
+                            <Text style={styles.resendText}>{t('common:Resend')} 00:{timerCount < 10 ? '0' : ''}{timerCount}</Text>
                         </View>
-                    </TouchableOpacity>}
+                        :
+                        <TouchableOpacity onPress={() => ResendApiCall()} style={{ padding: 18 }}>
+                            <View style={{ flexDirection: 'row', }}>
+                                <Resend style={{ width: 9, height: 11, top: 3, marginRight: 6, }} resizeMode="contain" />
+                                <TouchableOpacity>
+                                    <Text style={styles.TextResend1} onPress={() => ResendApiCall()}>{t('common:Resend1')}</Text></TouchableOpacity>
+                            </View>
+                        </TouchableOpacity>}
 
-
-
-                {!otpStatus ?
-                    <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                        <Text style={styles.errrorText}>{t('common:otpValid')}</Text>
-                    </View> : null}
                 {isExpired
                     ? <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                         <Text style={styles.errrorText}>OTP has Expired</Text>
-                    </View> : null}
+                    </View>
+                    : null}
 
-                {Otpwrong ?
-                    <Text style={[styles.successText, { color: COLORS.colorRed }]}>{t('common:otpValid')}</Text> : null}
+                {Otpwrong
+                    ?
+                    <Text style={[styles.successText, { color: COLORS.colorRed }]}>{t('common:otpValid')}</Text>
+                    : null}
 
             </View>
-            <AllowModal ModalVisible={ModalVisible}
-                onPressOut={() => setModalVisible(!ModalVisible)}
-                setOtpValue={setOtpValue}
-                otpMessage={otpMessage}
-                setModalVisible={setModalVisible}
-                navigation={navigation}
-                ConfirmOtp={(data) => ConfirmOtp(data)} />
+            {screenIsFocused
+                ?
+                <AllowModal ModalVisible={ModalVisible}
+                    onPressOut={() => setModalVisible(!ModalVisible)}
+                    setOtpValue={setOtpValue}
+                    otpMessage={otpMessage}
+                    setModalVisible={setModalVisible}
+                    navigation={navigation}
+                    ConfirmOtp={(data) => ConfirmOtp(data)}
+                    setOtpFetch={setOtpFetch}
+                />
+                : null}
         </View>
     )
 }
@@ -312,10 +301,28 @@ const styles = StyleSheet.create({
         paddingTop: width * 0.07,
         paddingBottom: width * 0.03
     },
+    imputContainerStyle: {
+        borderRadius: 8,
+        borderRadius: 8,
+        backgroundColor: COLORS.backgroundColor,
+        borderWidth: 1,
+        borderColor: '#ECEBED',
+        height: 48,
+        width: 48,
+        color: '#090A0A',
+        fontSize: 12,
+        fontWeight: 'bold',
+    },
     resendText: {
         color: '#333333',
         fontFamily: FONTS.FontRegular,
         fontSize: 12
+    },
+    TextResend: {
+        fontSize: 12,
+        fontFamily: FONTS.FontMedium,
+        color: '#3B3D43',
+        fontWeight: '700'
     },
     otptext: {
         color: '#333333',
@@ -329,7 +336,6 @@ const styles = StyleSheet.create({
         borderRadius: 12,
         fontWeight: 'bold',
         color: "black",
-        //margin:5
     },
     errrorText: {
         fontSize: 14,
@@ -351,18 +357,5 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         color: COLORS.colorGreen,
         marginTop: 30,
-
-    },
-    imputContainerStyle: {
-        borderRadius: 8,
-        borderRadius: 8,
-        backgroundColor: COLORS.backgroundColor,
-        borderWidth: 1,
-        borderColor: '#ECEBED',
-        height: 48,
-        width: 48,
-        color: '#090A0A',
-        fontSize: 12,
-        fontWeight: 'bold',
-    },
+    }
 })

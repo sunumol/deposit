@@ -239,7 +239,7 @@ const CgtCustomer = ({ navigation }) => {
                 ModalVisible={ModalVisible}
                 onPressOut={() => {
                     setModalVisible(!ModalVisible)
-                    navigation.navigate('CreateTrustCircle', { customerDetails: details })
+                    navigation.navigate('CreateTrustCircle', { customerDetails: details,primaryCustomerId:details?.primaryCustomerId })
                 }}
                 onPressClose={() => {
                     setModalVisible(!ModalVisible)
