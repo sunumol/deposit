@@ -21,20 +21,27 @@ const App = ({ ModalVisible, onPressOut, setModalVisible, setOtpValue, navigatio
                     style={styles.touchableStyle} >
                 </TouchableOpacity>
                 <View style={styles.centeredView2}>
+
                     <View style={styles.ModalView}>
+
                         <Text style={styles.textHead}>{t('common:Sms1')}</Text>
                         <Text style={styles.otpnumber}>{otpMessage}</Text>
                         <View style={{ flexDirection: 'row', marginTop: 25, marginBottom: 20 }}>
                             <TouchableOpacity style={styles.DenyTouch} onPress={() => {
                                setOtpFetch(false)
-                                setModalVisible(!ModalVisible)}}>
+                                setModalVisible(!ModalVisible)
+
+                            }
+                            }>
                                 <Text style={styles.DenyText}>{t('common:Deny')}</Text>
                             </TouchableOpacity>
 
                             <TouchableOpacity style={styles.allowTouch} onPress={() => {
                                 setOtpValue(otpMessage)
                                 setModalVisible(!ModalVisible)
-                                ConfirmOtp(otpMessage)}}>
+                                ConfirmOtp(otpMessage)
+                            }
+                            }>
                                 <Text style={styles.allowText}>{t('common:Allow1')}</Text>
                             </TouchableOpacity>
                         </View>
@@ -65,9 +72,10 @@ const styles = StyleSheet.create({
         marginTop: 'auto',
         // height: height * 0.28,
         alignItems: 'center',
-        borderTopLeftRadius: 15,
-        borderTopRightRadius: 15,
-
+        // borderTopLeftRadius: 15,
+        // borderTopRightRadius: 15,
+        // borderBottomStartRadius: 30,
+        // borderBottomEndRadius: 30,
         // justifyContent: 'space-around',
         // padding: 15
     },

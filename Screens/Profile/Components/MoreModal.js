@@ -154,7 +154,7 @@ const MoreModal = ({ ModalVisible, onPressOut, setModalVisible, setOtpValue, nav
 
                             <View style={{ flexDirection: 'row', justifyContent: 'space-around',
                              marginTop: width * 0.08, marginBottom: 35 }}>
-                                <View style={{ alignItems: 'center', justifyContent: 'center' ,paddingLeft:Lang=='ml' ? width*0.01:-5}} >
+                                <View style={{ alignItems: 'center', justifyContent: 'center' ,paddingLeft:Lang=='ml' ? width*0.01:width*0.01}} >
                                     <TouchableOpacity style={[styles.touch,{left:Lang == 'en' ? -2:0}]}  onPress={() => {
                                         setModalVisible(!ModalVisible)
                                         navigation.navigate('LoanHistory')
@@ -164,7 +164,7 @@ const MoreModal = ({ ModalVisible, onPressOut, setModalVisible, setOtpValue, nav
                                     <Text style={styles.text}>{t('common:LoanHis')}</Text>
                                 </View>
 
-                                <View style={{ alignItems: 'center', justifyContent: 'center',paddingRight:Lang=='en' ? width*0.04:0, }}>
+                                <View style={{ alignItems: 'center', justifyContent: 'center',paddingRight:Lang=='en' ? width*0.0:-5, }}>
                                     <TouchableOpacity style={styles.touch} onPress={() => {
                                         setModalVisible(!ModalVisible)
                                         navigation.navigate('AboutUs')
@@ -174,7 +174,7 @@ const MoreModal = ({ ModalVisible, onPressOut, setModalVisible, setOtpValue, nav
                                     <Text style={styles.text}>{t('common:AboutUs')}</Text>
                                 </View>
 
-                                <View style={{ alignItems: 'center', justifyContent: 'center' ,paddingRight:Lang == 'en' ? width*0.03:0,}} >
+                                <View style={{ alignItems: 'center', justifyContent: 'center' ,paddingRight:Lang == 'en' ? width*0.01:0,}} >
                                     <TouchableOpacity style={styles.touch} onPress={()=>navigation.navigate('FAQ')}>
                                         <Image2 />
                                     </TouchableOpacity>
@@ -211,9 +211,10 @@ const styles = StyleSheet.create({
         marginTop: 'auto',
         // height: height * 0.28,
         // alignItems: 'center',
-        borderTopLeftRadius: 15,
-        borderTopRightRadius: 15,
-
+        // borderTopLeftRadius: 15,
+        // borderTopRightRadius: 15,
+        // borderBottomStartRadius: 30,
+        // borderBottomEndRadius: 30,
         //  justifyContent:'center',
 
         // padding: 15

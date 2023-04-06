@@ -3,11 +3,13 @@ import { StyleSheet, SafeAreaView ,PermissionsAndroid} from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+// --------------- Component Imports ---------------------
 import CustomStatusBar from './Component/CustomStatusbar';
 import Statusbar from '../../Components/StatusBar';
 import LinearGradient from 'react-native-linear-gradient';
 
 const SplashScreen = ({ navigation }) => {
+    
     const isDarkMode = true
 
     useEffect(() => {
@@ -46,8 +48,6 @@ const SplashScreen = ({ navigation }) => {
         }
     };
 
-
-  
     return (
             <SafeAreaProvider>
                 <SafeAreaView style={styles.container} />

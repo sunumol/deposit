@@ -1,28 +1,15 @@
-import React, { useState, useEffect } from "react";
-import { Dimensions, Modal, StyleSheet, Text, TouchableOpacity, View, Image } from "react-native";
-import { COLORS, FONTS } from '../../../Constants/Constants';
+import React from "react";
+import { Dimensions, Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useTranslation } from 'react-i18next';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+
+// ---------------- Component Imports -----------------------
+import { COLORS, FONTS } from '../../../Constants/Constants';
+
 const { height, width } = Dimensions.get('screen');
 
-const PinModal = ({ ModalVisible, onPressOut, setModalVisible,onPress ,navigation}) => {
-    const [state, setState] = useState(null);
+const PinModal = ({ ModalVisible, onPressOut, setModalVisible, navigation }) => {
+
     const { t } = useTranslation();
-    const [Lang, setLang] = useState('')
-    const [BStatus, setBstatus] = useState(false)
-
-    useEffect(() => {
-        getData()
-    }, [])
-
-    const getData = async () => {
-        try {
-            const lang = await AsyncStorage.getItem('user-language')
-            setLang(lang)
-        } catch (e) {
-            console.log(e)
-        }
-    }
 
     return (
 
@@ -32,26 +19,23 @@ const PinModal = ({ ModalVisible, onPressOut, setModalVisible,onPress ,navigatio
             visible={ModalVisible}
             onRequestClose={() => {
                 setModalVisible(!ModalVisible)
-            }}
-        >
+            }}>
             <View style={styles.mainContainer} >
-
                 <TouchableOpacity
                     onPressOut={onPressOut}
                     style={styles.touchableStyle} >
                 </TouchableOpacity>
 
                 <View style={styles.modalContainer}>
-                <Text style={[styles.textdesc1,
-                { paddingTop: width * 0.05, textAlign: 'center' }]}>{t('common:Pinexp')}</Text>
-                        <Text style={[styles.textdesc,
-                             { paddingTop: width * 0.02, textAlign: 'center' }]}>{t('common:Pinexp1')}</Text>
-                
+                    <Text style={[styles.textdesc1,
+                    { paddingTop: width * 0.05, textAlign: 'center' }]}>{t('common:Pinexp')}</Text>
+                    <Text style={[styles.textdesc,
+                    { paddingTop: width * 0.02, textAlign: 'center' }]}>{t('common:Pinexp1')}</Text>
 
-                    <TouchableOpacity style={styles.buttonStyle} onPress={()=>
-                    {
-                        navigation.navigate('ResetPin')
-                        setModalVisible(false)
+                    <TouchableOpacity style={styles.buttonStyle}
+                        onPress={() => {
+                            navigation.navigate('ChangePin')
+                            setModalVisible(false)
                         }}>
                         <Text style={styles.buttonTextStyle}>{t('common:Reset')}</Text>
                     </TouchableOpacity>
@@ -80,9 +64,8 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         alignItems: 'center',
         justifyContent: 'center',
-        paddingHorizontal:20
+        paddingHorizontal: 20
     },
-
     textStyle: {
         fontFamily: FONTS.FontRegular,
         color: COLORS.colorDark,

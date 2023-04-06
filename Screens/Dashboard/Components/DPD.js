@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     View,
     Image,
     Dimensions,
     StyleSheet,
     Text,
-    FlatList
+   ActivityIndicator
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 const { height, width } = Dimensions.get('screen');
@@ -13,10 +13,17 @@ import { FONTS, COLORS } from '../../../Constants/Constants';
 import Icon1 from 'react-native-vector-icons/AntDesign';
 import Icon2 from 'react-native-vector-icons/AntDesign';
 import DPDPriority from './DPDpriority';
+import { api } from '../../../Services/Api';
+
 
 const DPD = () => {
     const { t } = useTranslation();
-
+    const [EMPID, setEMPID] = useState('1')
+    const [Sort,setSort] = useState('arrear')
+    const [DpdData1, setDpdData1] = useState([])
+    const [CustomDetails,setCustomDetails] = useState([])
+    const [stateRefresh,setStateRefresh]=useState(false)
+    const [Status,setStatus] = useState(true)
     const Data = [
         {
             id: 1,
@@ -47,46 +54,135 @@ const DPD = () => {
             color: 'rgba(39, 174, 96, 1)'
         },
     ]
+    // <Icon2 name='arrowdown' size={14} color={item.color} style={{ marginTop: 5 }} />}
+    useEffect(() => {
+        getDPDOverview()
+    }, [stateRefresh])
 
+    const getDPDOverview = () => {
+        console.log("inside api",EMPID,Sort)
+        
+        api.DPDOverview(EMPID,Sort).then(result => {
+            if (result) {
+                console.log("avail....", result.data.body)
+                setDpdData1(result?.data?.body?.customerDpdDetails)
+                setCustomDetails(result?.data?.body?.customerDueDetails)
+                setStateRefresh(false)
+                setStatus(false)
+            }
+        })
+            .catch(err => {
+                console.log("DPD OVERVIEW---->", err);
+                setStatus(false)
+            });
+    }
     return (
-        <View style={{backgroundColor:COLORS.colorBackground,flex:1}}>
+        <>
+              {Status ?
+                <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1, }}>
+                    <ActivityIndicator size={30} color={COLORS.colorB} />
+                </View> :
+        <View style={{ backgroundColor: COLORS.colorBackground, flex: 1 }}>
 
             <View style={{ justifyContent: 'flex-start', marginTop: 10, marginLeft: 16 }}>
                 <Text style={styles.Target}>DPD Overview</Text>
             </View>
-            <View style={{ alignItems: 'center', justifyContent: 'space-between' }}>
-                <FlatList
-                    data={Data}
-                    keyExtractor={item => item.id}
-                    horizontal={false}
-                    numColumns={2}
-                    renderItem={({ item, index }) => {
-                        return (
-                            <View style={styles.Card}>
-                                <View style={{ flexDirection: 'row', marginTop: 12, }}>
-                                    <Text style={styles.NameText}>{item.Date1}</Text>
-                                </View>
+            <View style={{ alignItems: 'center', justifyContent: 'space-around', flexDirection: 'row' }}>
 
-                                <View style={{ top: 0 }}>
-                                    <Text style={styles.MonthText}>{item.Date2}</Text>
-                                </View>
+                <View style={styles.Card}>
+                    <View style={{ flexDirection: 'row', marginTop: 12, }}>
+                        <Text style={styles.NameText}>1-30</Text>
+                    </View>
 
-                                <View style={{ flexDirection: 'row', marginBottom: width * 0.025, top: -5, alignItems: 'center', justifyContent: 'center' }}>
-                                    {item?.id == 1 || item.id == 3 ?
-                                        <Icon1 name='arrowup' size={14} color={item.color} style={{ marginTop: 5 }} /> :
-                                        <Icon2 name='arrowdown' size={14} color={item.color} style={{ marginTop: 5 }} />}
-                                    <Text style={[styles.NameText, { color: item.color, }]}>{item.Date3}</Text>
-                                    <Text style={[styles.NameText, { fontFamily: FONTS.FontRegular, fontSize: 13, marginLeft: 5 }]}>last month</Text>
-                                </View>
+                    <View style={{ top: 0 }}>
+                        <Text style={styles.MonthText}>{DpdData1?.SEG_1_TO_30?.dpdCount}</Text>
+                    </View>
 
-                            </View>
-                        )
-                    }}
-                />
+                    <View style={{ flexDirection: 'row', marginBottom: width * 0.025, top: -5, alignItems: 'center', justifyContent: 'center' }}>
+                    {DpdData1?.SEG_1_TO_30?.dpdCount >= DpdData1?.SEG_1_TO_30?.changeInDpdCount ? 
+                        <Icon1 name='arrowup' size={14} color={'rgba(235, 87, 87, 1)'} style={{ marginTop: 5 }} />:
+                        <Icon2 name='arrowdown' size={14} color={'rgba(39, 174, 96, 1)'} style={{ marginTop: 5 }} />}
+
+                        <Text style={[styles.NameText,{color: DpdData1?.SEG_1_TO_30?.dpdCount >= DpdData1?.SEG_1_TO_30?.changeInDpdCount ? 'rgba(235, 87, 87, 1)':'rgba(39, 174, 96, 1)'}]}>{DpdData1?.SEG_1_TO_30?.changeInDpdCount}</Text>
+                        <Text style={[styles.NameText, { fontFamily: FONTS.FontRegular, fontSize: 13, marginLeft: 5 }]}>last month</Text>
+                    </View>
+
+
+                </View>
+
+                <View style={styles.Card}>
+                    <View style={{ flexDirection: 'row', marginTop: 12, }}>
+                        <Text style={styles.NameText}>31-60</Text>
+                    </View>
+
+                    <View style={{ top: 0 }}>
+                        <Text style={styles.MonthText}>{DpdData1?.SEG_31_TO_60?.dpdCount}</Text>
+                    </View>
+
+                    <View style={{ flexDirection: 'row', marginBottom: width * 0.025, top: -5, alignItems: 'center', justifyContent: 'center' }}>
+
+                    {DpdData1?.SEG_31_TO_60?.dpdCount >= DpdData1?.SEG_31_TO_60?.changeInDpdCount ? 
+                        <Icon1 name='arrowup' size={14} color={'rgba(235, 87, 87, 1)'} style={{ marginTop: 5 }} />:
+                        <Icon2 name='arrowdown' size={14} color={'rgba(39, 174, 96, 1)'} style={{ marginTop: 5 }} />}
+
+                        <Text style={[styles.NameText,{color: DpdData1?.SEG_31_TO_60?.dpdCount >= DpdData1?.SEG_31_TO_60?.changeInDpdCount ? 'rgba(235, 87, 87, 1)':'rgba(39, 174, 96, 1)'} ]}>{DpdData1?.SEG_31_TO_60?.changeInDpdCount}</Text>
+                        <Text style={[styles.NameText, { fontFamily: FONTS.FontRegular, fontSize: 13, marginLeft: 5 }]}>last month</Text>
+                    </View>
+
+
+                </View>
             </View>
-            <DPDPriority />
 
-        </View>
+            <View style={{ alignItems: 'center', justifyContent: 'space-around', flexDirection: 'row' }}>
+
+                <View style={styles.Card}>
+                    <View style={{ flexDirection: 'row', marginTop: 12, }}>
+                        <Text style={styles.NameText}>61-90</Text>
+                    </View>
+
+                    <View style={{ top: 0 }}>
+                        <Text style={styles.MonthText}>{DpdData1?.SEG_61_TO_90?.dpdCount}</Text>
+                    </View>
+
+                    <View style={{ flexDirection: 'row', marginBottom: width * 0.025, top: -5, alignItems: 'center', justifyContent: 'center' }}>
+                    {DpdData1?.SEG_61_TO_90?.dpdCount >= DpdData1?.SEG_61_TO_90?.changeInDpdCount ? 
+                        <Icon1 name='arrowup' size={14} color={'rgba(235, 87, 87, 1)'} style={{ marginTop: 5 }} />:
+                        <Icon2 name='arrowdown' size={14} color={'rgba(39, 174, 96, 1)'} style={{ marginTop: 5 }} />}
+      
+
+                        <Text style={[styles.NameText, {color: DpdData1?.SEG_61_TO_90?.dpdCount >= DpdData1?.SEG_61_TO_90?.changeInDpdCount ? 'rgba(235, 87, 87, 1)':'rgba(39, 174, 96, 1)'}]}>{DpdData1?.SEG_61_TO_90?.changeInDpdCount}</Text>
+                        <Text style={[styles.NameText, { fontFamily: FONTS.FontRegular, fontSize: 13, marginLeft: 5 }]}>last month</Text>
+                    </View>
+
+
+                </View>
+
+                <View style={styles.Card}>
+                    <View style={{ flexDirection: 'row', marginTop: 12, }}>
+                        <Text style={styles.NameText}>90 above</Text>
+                    </View>
+
+                    <View style={{ top: 0 }}>
+                        <Text style={styles.MonthText}>{DpdData1?.SEG_90_ABOVE?.dpdCount}</Text>
+                    </View>
+
+                    <View style={{ flexDirection: 'row', marginBottom: width * 0.025, top: -5, alignItems: 'center', justifyContent: 'center' }}>
+
+                    {DpdData1?.SEG_90_ABOVE?.dpdCount >= DpdData1?.SEG_90_ABOVE?.changeInDpdCount ? 
+                        <Icon1 name='arrowup' size={14} color={'rgba(235, 87, 87, 1)'} style={{ marginTop: 5 }} />:
+                        <Icon2 name='arrowdown' size={14} color={'rgba(39, 174, 96, 1)'} style={{ marginTop: 5 }} />}
+
+                        <Text style={[styles.NameText, { color: DpdData1?.SEG_90_ABOVE?.dpdCount >= DpdData1?.SEG_90_ABOVE?.changeInDpdCount ? 'rgba(235, 87, 87, 1)':'rgba(39, 174, 96, 1)', }]}>{DpdData1?.SEG_90_ABOVE?.changeInDpdCount}</Text>
+                        <Text style={[styles.NameText, { fontFamily: FONTS.FontRegular, fontSize: 13, marginLeft: 5 }]}>last month</Text>
+                    </View>
+
+
+                </View>
+            </View>
+            <DPDPriority  CustomDetails={CustomDetails} setStateRefresh={setStateRefresh} setSort={setSort}/>
+
+        </View>}
+        </>
     )
 }
 
@@ -126,7 +222,7 @@ const styles = StyleSheet.create({
         fontSize: 14,
         color: COLORS.colorDark,
         fontFamily: FONTS.FontMedium,
-
+        left: 2,
         marginTop: width * 0.01
     },
     MonthText: {

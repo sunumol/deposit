@@ -1,84 +1,44 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     StyleSheet,
-    Text,
     SafeAreaView,
     View,
-    TouchableOpacity,
-    TextInput,
-    Image,
-    KeyboardAvoidingView,
     StatusBar,
-    ScrollView,
     Dimensions,
     BackHandler,
     ToastAndroid
 } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { useRoute } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
+
+// ---------- Components Import --------------------------
+import Pin from './Components/Pin';
 import { COLORS, FONTS } from '../../Constants/Constants';
 import Statusbar from '../../Components/StatusBar';
 import Header from '../../Components/Header';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useRoute } from '@react-navigation/native';
-import { useFocusEffect } from '@react-navigation/native';
-import { useTranslation } from 'react-i18next';
-import Pin from './Components/Pin';
 
+const ForgotPin = ({ navigation, route }) => {
 
-const ForgotPin = ({ navigation,route }) => {
     const routes = useRoute();
-    console.log("route name", );
     const isDarkMode = true
     const { t } = useTranslation();
-    const [lang, setLang] = useState('')
-    const [BStatus, setBstatus] = useState(false)
-    const [exitApp,setExitApp] =  useState(0)
+
+    const [exitApp, setExitApp] = useState(0)
 
     useEffect(() => {
-        getData()
-       
-    }, [])
-
-    const getData = async () => {
-        try {
-            const lang = await AsyncStorage.getItem('user-language')
-            setLang(lang)
-
-        } catch (e) {
-            console.log(e)
-        }
-    }
-
-    // const handleGoBack = useCallback(() => {
-    //     if(BStatus){
-    //         setBstatus(false)
-    //     }else{
-    //         navigation.goBack()
-    //     }
-    //     return true; // Returning true from onBackPress denotes that we have handled the event
-    //   }, [navigation]);
-    
-    //   useFocusEffect(
-    //     React.useCallback(() => {
-    //       BackHandler.addEventListener('hardwareBackPress', handleGoBack);
-    
-    //       return () =>
-    //         BackHandler.removeEventListener('hardwareBackPress', handleGoBack);
-    //     }, [handleGoBack]),
-    //   );
-
-      useEffect(() => {
         const backHandler = BackHandler.addEventListener(
             'hardwareBackPress',
             handleGoBack,
         );
         return () => backHandler.remove();
     }, [exitApp]);
+
     const handleGoBack = () => {
         if (routes.name === "ForgotPin") {
             if (exitApp === 0) {
                 setExitApp(exitApp + 1);
-               // console.log("exit app intro", exitApp)
+                // console.log("exit app intro", exitApp)
                 ToastAndroid.show("Press back again to exit.", ToastAndroid.SHORT);
             } else if (exitApp === 1) {
                 BackHandler.exitApp();
@@ -91,7 +51,6 @@ const ForgotPin = ({ navigation,route }) => {
         }
     }
 
-
     return (
         <SafeAreaProvider>
             <SafeAreaView style={styles.container1} />
@@ -99,10 +58,9 @@ const ForgotPin = ({ navigation,route }) => {
 
             <Header navigation={navigation} name={t('common:ForgotPin')} />
             <View style={styles.ViewContent}>
-                <Pin navigation={navigation} conFirmDate ={route.params.conFirmdate}/>
-            
+                <Pin navigation={navigation} conFirmDate={route.params.conFirmdate} />
             </View>
-        
+
         </SafeAreaProvider>
     )
 }
@@ -117,7 +75,6 @@ const styles = StyleSheet.create({
         paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
     },
     ViewContent: {
-       // justifyContent: 'center',
         alignItems: 'center',
         flex: 1,
         backgroundColor: COLORS.colorBackground,

@@ -37,9 +37,12 @@ const CreateTrustCircle = ({ navigation }) => {
 
     const isDarkMode = true;
     const routes = useRoute();
-
+{console.log('------------->??>>>>>',routes)}
     const [ModalVisible, setModalVisible] = useState(false)
     const [tcLimit, setTCLimit] = useState();
+
+    const [tcLimitMin, setTCLimitMin] = useState(2); //-----> Todo
+    const [tcLimitMax, setTCLimitMax] = useState(4); //-----> Todo
 
     // --------- Redux State -------------------------------------
     const customerList = useSelector(state => state.customerList);
@@ -47,7 +50,7 @@ const CreateTrustCircle = ({ navigation }) => {
     const cgtCustomerDetails = useSelector(state => state.cgtCustomerDetails);
 
     const handleGoBack = useCallback(() => {
-        navigation.navigate('CGT')// -----> Todo back navigation with activity ID
+        navigation.navigate('CGT')
         return true; // Returning true from onBackPress denotes that we have handled the event
     }, [navigation]);
 
@@ -67,8 +70,14 @@ const CreateTrustCircle = ({ navigation }) => {
     // ------------------ getTCLimitDetails Api Call Start ------------------
     const getTCLimitDetails = async () => {
         await api.getTCLimitCount().then((res) => {
-            console.log('-------------------res', res?.data)
+           
+            console.log('----------------->>>>>>>>>>--res', res?.data)
+            
             setTCLimit(res?.data?.body)
+
+            // setTCLimitMin(res?.data?.body?.minimumCount)  -----> Todo
+            // setTCLimitMax(res?.data?.body?.maximumCount)  -----> Todo
+
         }).catch((err) => {
             console.log('-------------------err', err?.response)
         })
@@ -78,7 +87,7 @@ const CreateTrustCircle = ({ navigation }) => {
     // ------------------ getTCLimitDetails Api Call Start ------------------
     const CreateTrustCircle = async () => {
         const data = {
-            "primaryCustomerId": 1,
+            "primaryCustomerId": routes?.params?.primaryCustomerId,
             "memberIds": customerID
         }
         await api.createTrustCircles(data).then((res) => {
@@ -184,7 +193,7 @@ const CreateTrustCircle = ({ navigation }) => {
                         )
                     })}
 
-                    {customerList?.length > 0 && customerList?.length !== tcLimit
+                    {customerList?.length > 0 && customerList?.length !== tcLimitMax
                         ? <TouchableOpacity style={styles.viewCard} onPress={() => navigation.navigate('ConfirmMembers')}>
 
                             <View style={{ marginLeft: width * 0.05 }}>
@@ -202,8 +211,8 @@ const CreateTrustCircle = ({ navigation }) => {
                 <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                     {customerList?.length > 0
                         ? <TouchableOpacity style={[styles.Button1,
-                        { backgroundColor: customerList?.length === tcLimit ? COLORS.colorB : '#ECEBED' }]} onPress={CreateTrustCircle}>
-                            <Text style={[styles.text1, { color: customerList?.length === tcLimit ? COLORS.colorBackground : '#979C9E', paddingLeft: width * 0.02 }]}>Create Trust Circle</Text>
+                        { backgroundColor: customerList?.length >= tcLimitMin ? COLORS.colorB : '#ECEBED' }]} onPress={CreateTrustCircle}>
+                            <Text style={[styles.text1, { color: customerList?.length >= tcLimitMin ? COLORS.colorBackground : '#979C9E', paddingLeft: width * 0.02 }]}>Create Trust Circle</Text>
                         </TouchableOpacity>
                         :
                         <TouchableOpacity style={[styles.Button1, { backgroundColor: COLORS.colorB }]}

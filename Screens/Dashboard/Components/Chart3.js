@@ -5,66 +5,66 @@ import { BarChart } from 'react-native-gifted-charts';
 import { COLORS, FONTS } from '../../../Constants/Constants';
 const { height, width } = Dimensions.get('screen');
 
-const GroupedBars3 = () => {
+const GroupedBars3 = ({Summary}) => {
     const barData = [
         {
-            value: 66,
-            label: '    March',
+            value:Summary[0]?.leadToCustomersConversion,
+            label:'  '+Summary[0]?.month,
             spacing:6,
             labelWidth: 100,
           //  labelTextStyle: { color: 'gray',fontSize:12 },
             frontColor: 'rgba(88, 84, 247, 1)',
             topLabelComponent: () => (
 
-                <Text style={{ top: -6, fontSize: 10, color: 'rgba(128, 128, 128, 1)', fontFamily: FONTS.FontRegular, }}>66</Text>
+                <Text style={{ top: -6, fontSize: 10, color: 'rgba(128, 128, 128, 1)', fontFamily: FONTS.FontRegular, }}>{Summary[0]?.leadToCustomersConversion}</Text>
 
             )
 
         },
-        { value: 55, frontColor:'rgba(176, 195, 230, 1)' ,
+        { value:Summary[0]?.avgLeadToCustomersConversion, frontColor:'rgba(176, 195, 230, 1)' ,
         topLabelComponent: () => (
 
-            <Text style={{ top: -6, fontSize: 10, color: 'rgba(128, 128, 128, 1)', fontFamily: FONTS.FontRegular, }}>55</Text>
+            <Text style={{ top: -6, fontSize: 10, color: 'rgba(128, 128, 128, 1)', fontFamily: FONTS.FontRegular, }}>{Summary[0]?.avgLeadToCustomersConversion}</Text>
 
         )},
         {
-            value: 80,
-            label: '      April',
+            value:Summary[1]?.leadToCustomersConversion,
+            label:'  '+Summary[1]?.month,
             spacing: 6,
             labelWidth: 100,
            // labelTextStyle: { color: 'gray',fontSize:12 },
             frontColor: 'rgba(88, 84, 247, 1)',
             topLabelComponent: () => (
 
-                <Text style={{ top: -6, fontSize: 10, color: 'rgba(128, 128, 128, 1)', fontFamily: FONTS.FontRegular, }}>80</Text>
+                <Text style={{ top: -6, fontSize: 10, color: 'rgba(128, 128, 128, 1)', fontFamily: FONTS.FontRegular, }}>{Summary[1]?.leadToCustomersConversion}</Text>
 
             )
         },
-        { value: 55, frontColor:'rgba(176, 195, 230, 1)',
+        { value:Summary[1]?.avgLeadToCustomersConversion, frontColor:'rgba(176, 195, 230, 1)',
         topLabelComponent: () => (
 
-            <Text style={{ top: -6, fontSize: 10, color: 'rgba(128, 128, 128, 1)', fontFamily: FONTS.FontRegular, }}>55</Text>
+            <Text style={{ top: -6, fontSize: 10, color: 'rgba(128, 128, 128, 1)', fontFamily: FONTS.FontRegular, }}>{Summary[1]?.avgLeadToCustomersConversion}</Text>
 
         ) },
         {
-            value: 56,
-            label: '      May',
+            value:Summary[2]?.leadToCustomersConversion,
+            label:'    '+Summary[2]?.month,
             spacing: 6,
             labelWidth:100,
            // labelTextStyle: { color: 'gray',fontSize:12 ,},
             frontColor: 'rgba(88, 84, 247, 1)',
             topLabelComponent: () => (
 
-                <Text style={{ top: -6, fontSize: 10, color: 'rgba(128, 128, 128, 1)', fontFamily: FONTS.FontRegular, }}>56</Text>
+                <Text style={{ top: -6, fontSize: 10, color: 'rgba(128, 128, 128, 1)', fontFamily: FONTS.FontRegular, }}>{Summary[2]?.leadToCustomersConversion}</Text>
 
             )
         },
       
  
-        { value: 55,frontColor:'rgba(176, 195, 230, 1)' ,
+        { value:Summary[2]?.avgLeadToCustomersConversion,frontColor:'rgba(176, 195, 230, 1)' ,
         topLabelComponent: () => (
 
-            <Text style={{ top: -6, fontSize: 10, color: 'rgba(128, 128, 128, 1)', fontFamily: FONTS.FontRegular, }}>55</Text>
+            <Text style={{ top: -6, fontSize: 10, color: 'rgba(128, 128, 128, 1)', fontFamily: FONTS.FontRegular, }}>{Summary[2]?.avgLeadToCustomersConversion}</Text>
 
         )},
   
@@ -74,15 +74,23 @@ const GroupedBars3 = () => {
 
     const renderTitle = () => {
         return (
+            <>
+               {Summary[2]?.leadToCustomersConversion >= Summary[2]?.avgLeadToCustomersConversion ? 
             <View style={{ margin:15 }}>
-                <Text style={styles.TextData}>Yay! your <Text style={[styles.TextData, { fontFamily: FONTS.FontSemiB }]}>last 3 month’s</Text> loan client conversion </Text>
-                <Text style={styles.TextData}>is higher compared to the toppers</Text>
-            </View>
+                <Text style={styles.TextData}>Yay! Your <Text style={[styles.TextData, { fontFamily: FONTS.FontSemiB }]}>New Leads to Customers conversion</Text></Text>
+                <Text style={styles.TextData}>is among the top. Continue the good work</Text>
+            </View>:
+             <View style={{ margin:15 }}>
+             
+             <Text style={styles.TextData}>Hey! Improve your <Text style={[styles.TextData, { fontFamily: FONTS.FontSemiB }]}>New Leads to Customers conversion </Text>to increase your efficiency</Text>
+            
+         </View>}
+            </>
         )
     }
 
     return (
-        <View style={{alignItems:'center',justifyContent:'center'}}>
+        <View style={{alignItems:'center',justifyContent:'center',marginBottom:width*0.05}}>
         <View
             style={{
                 backgroundColor: COLORS.colorBackground,

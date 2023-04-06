@@ -55,21 +55,26 @@ const ActiveTab = (props) => {
         <>
         <TouchableOpacity 
         style={styles.boxStyle} 
-        key={props.id}
-        onPress={()=>setModalVisible(true)}>
+        key={props?.id}
+        // onPress={()=> props?.status == 'Conduct CGT' ? 
+        //  props.navigation.navigate('CGT'):
+        //  // props?.status === 'Leads Follow Up' ?
+        //    setModalVisible(true)}
+          // props?.status === 'Explain Trust Circle' ?  setModalVisible(true) : setModalVisible(true) }
+        >
             <View style={{ flex: 1, flexDirection: 'row' }}>
 
                 <View style={[styles.circleStyle, { backgroundColor: getRandomColor() }]}>
-                    <Text  style={styles.circleText}>{getInitials(props.name)}</Text>
+                    <Text  style={styles.circleText}>{getInitials(props?.name)}</Text>
                 </View>
 
                 <View style={{ flexDirection: 'column', paddingLeft: 12, paddingTop: 5 }}>
-                    <Text  style={styles.nameText}>{props.name}</Text>
+                    <Text  style={styles.nameText}>{props?.name}</Text>
                     <View style={{ flexDirection: 'row', }}>
                         <View style={{ paddingTop: 5, paddingRight: 1 }}>
                             <Icon1 name="location-outline" color={"black"} />
                         </View>
-                        <Text style={[styles.idText, { paddingTop: 4 }]}>{props.text}</Text>
+                        <Text style={[styles.idText, { paddingTop: 4 }]}>{props?.text}</Text>
                     </View>
                 </View>
 
@@ -78,24 +83,26 @@ const ActiveTab = (props) => {
             <View style={{ flexDirection: 'column', paddingTop: 5, alignItems: 'flex-end' }}>
             <View style={{flexDirection:'row'}}>
             <Icon2 name="phone-in-talk-outline" color={"black"} size={15}/>
-                <Text style={[styles.numText,{paddingLeft:6}]}>{props.phoneNumber}</Text>
+                <Text style={[styles.numText,{paddingLeft:6}]}>{props?.phoneNumber}</Text>
                 </View>
-                {props.status === 'Leads Follow Up' &&
-                    <View style={[styles.leadContainer, { backgroundColor: COLORS.LightYellow }]}>
+                {props?.status === 'Leads Follow Up' &&
+                    <TouchableOpacity onPress={()=>setModalVisible(true)}
+                    style={[styles.leadContainer, { backgroundColor: COLORS.LightYellow }]}>
                         <Text style={[styles.leadText, { color: COLORS.DarkYellow }]}>{t('common:LeadsFollowUp')}</Text>
-                    </View>
+                    </TouchableOpacity>
                 }
-                {props.status === 'Explain Trust Circle' &&
-                    <View style={[styles.leadContainer, { backgroundColor: COLORS.LightPurple }]}>
+                {props?.status === 'Explain Trust Circle' &&
+                      <TouchableOpacity onPress={()=>setModalVisible(true)}
+                     style={[styles.leadContainer, { backgroundColor: COLORS.LightPurple }]}>
                         <Text style={[styles.leadText, { color: COLORS.DarkPurple }]}>{t('common:ExplainTrustCircle')}</Text>
-                    </View>
+                    </TouchableOpacity>
                 }
                 {console.log(props)}
-                {props.status === 'Conduct CGT' &&
+                {props?.status === 'Conduct CGT' &&
                     <TouchableOpacity onPress={()=>{
                         dispatch({
                             type: 'SET_CGT_ACTIVITY_ID',
-                            payload: props.details.activityId,
+                            payload: props?.details?.activityId,
                           });
                         props.navigation.navigate('CGT')
 
@@ -104,18 +111,19 @@ const ActiveTab = (props) => {
                         <Text style={[styles.leadText, { color: COLORS.DarkBlue }]}>{t('common:ConductCGT')}</Text>
                     </TouchableOpacity>
                 }
-                {props.status === 'Collection' &&
-                    <View style={[styles.leadContainer, { backgroundColor: COLORS.LightGreen }]}>
+                {props?.status === 'Collection' &&
+                      <TouchableOpacity onPress={()=>setModalVisible(true)}
+                    style={[styles.leadContainer, { backgroundColor: COLORS.LightGreen }]}>
                         <Text style={[styles.leadText, { color: COLORS.DarkGreen }]}>{t('common:CollectionFollowUp')}</Text>
-                    </View>
+                    </TouchableOpacity>
                 }
             </View>
 
         </TouchableOpacity>
             <ActivityModal visible={modalVisible} 
             onPressOut={()=>setModalVisible(!modalVisible)} 
-            meet={props.status === 'Explain Trust Circle' ? false : true} 
-            details={props.details} setEnab={props.setEnab}
+            meet={props?.status === 'Explain Trust Circle' ? false : true} 
+            details={props?.details} setEnab={props?.setEnab}
             />
             </>
     )

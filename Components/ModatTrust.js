@@ -111,8 +111,8 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.2,
         elevation: 7,
         shadowRadius: 1,
-        borderTopStartRadius: 30,
-        borderTopEndRadius: 30,
+        // borderBottomStartRadius: 30,
+        // borderBottomEndRadius: 30,    
         width: Dimensions.get('window').width,
         paddingBottom: 9
     },

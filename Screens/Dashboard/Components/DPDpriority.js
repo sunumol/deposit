@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React, { useState } from 'react';
 import {
     View,
     Image,
@@ -18,10 +18,18 @@ import Icon3 from 'react-native-vector-icons/MaterialIcons';
 
 import ModalSort from './ModalSort';
 
-const DPDPriority = () => {
+export function numberWithCommas(x) {
+
+    return x?.toString().replace(/^[+-]?\d+/, function (int) {
+        return int.replace(/(\d)(?=(\d{3})+$)/g, '$1,');
+    });
+}
+
+const DPDPriority = ({CustomDetails,setStateRefresh,setSort}) => {
+  
     const { t } = useTranslation();
-    const [ModalVisible,setModalVisible] = useState(false)  
-    const [sorts, setSorts] = useState('')
+    const [ModalVisible, setModalVisible] = useState(false)
+    //const [sorts, setSorts] = useState('')
     const Customer = [
         {
             id: 1,
@@ -51,56 +59,85 @@ const DPDPriority = () => {
             color: 'rgba(148, 200, 150, 1)'
         },
     ]
+
+
+    const getRandomColor = () => {
+        var letters = '0123456789ABCDEF';
+        var color = '#';
+        for (var i = 0; i < 3; i++) {
+            color += letters[Math.floor(Math.random() * 8)];
+        }
+        return color;
+    }
+
+
+    const getInitials = (name) => {
+
+        let initials;
+        const nameSplit = name?.split(" ");
+        const nameLength = nameSplit?.length;
+        if (nameLength > 1) {
+            initials =
+                nameSplit[0].substring(0, 1) +
+                nameSplit[nameLength - 1].substring(0, 1);
+        } else if (nameLength === 1) {
+            initials = nameSplit[0].substring(0, 1);
+        } else return;
+
+        return initials.toUpperCase();
+    };
+
     return (
         <View>
 
 
-            <View style={{ flexDirection: 'row' ,justifyContent:'space-between',marginRight:width*0.05,marginTop:width*0.032}}>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginRight: width * 0.05, marginTop: width * 0.032 }}>
                 <Text style={styles.NameText}>Priority cases</Text>
 
                 <TouchableOpacity onPress={() => setModalVisible(true)}>
-                        <View style={{ flexDirection: 'row', }}>
-                            <Text style={styles.TextSort}>{t('common:Sort')}</Text>
-                            <Icon3
-                                name="keyboard-arrow-down"
-                                size={20}
-                                color={COLORS.colorB}
-                            />
-                        </View>
-                    </TouchableOpacity>
+                    <View style={{ flexDirection: 'row', }}>
+                        <Text style={styles.TextSort}>{t('common:Sort')}</Text>
+                        <Icon3
+                            name="keyboard-arrow-down"
+                            size={20}
+                            color={COLORS.colorB}
+                        />
+                    </View>
+                </TouchableOpacity>
 
             </View>
-  
-            <View style={{alignItems:'center'}}>
-                {Customer.map((item) => {
+
+            <View style={{ alignItems: 'center' }}>
+                {CustomDetails?.map((item) => {
                     return (
                         <View style={styles.CustomerCard}>
-                                 
-                            <View style={[styles.CardInit, { backgroundColor: item.color }]}>
-                                <Text style={styles.InitialText}>{item.Initial}</Text>
+
+                            <View style={[styles.CardInit, { backgroundColor: getRandomColor() }]}>
+                                <Text style={styles.InitialText}>{getInitials(item?.customerName)}</Text>
                             </View>
-                   
-                             
-                                <View style={{ flexDirection: 'column', marginLeft: width * 0.03 }}>
-                                    <Text style={styles.NameText1}>{item.Name}</Text>
-                                    <View style={{ flexDirection: 'row', }}>
-                                        <View style={{ paddingTop: 5, paddingRight: 1 }}>
-                                            <Icon1 name="location-outline" color={"black"} />
-                                        </View>
-                                        <Text style={[styles.NameText1, { paddingTop: 4, fontFamily: FONTS.FontRegular }]}>{item.Location}</Text>
+
+
+                            <View style={{ flexDirection: 'column', marginLeft: width * 0.03 }}>
+                                <Text style={styles.NameText1}>{item?.customerName}</Text>
+                                <View style={{ flexDirection: 'row', }}>
+                                    <View style={{ paddingTop: 5, paddingRight: 1 }}>
+                                        <Icon1 name="location-outline" color={"black"} />
                                     </View>
-                                    </View> 
-                                      <View style={{ flexDirection: 'column',alignItems:'flex-end',flex:1,marginRight:width*0.05
-                             }}>
-                                    <View style={{flexDirection:'row',}}>
-                                        <Image1 style={{marginTop:3}}/>
-                                        <Text style={[styles.DateText,{marginLeft:5}]}>{item.Date}</Text>
-                                    </View>
-                                    <Text style={[styles.DateText]}>{item.Amount}</Text>
-                                                   
-                            </View>  
-                            
-                   
+                                    <Text style={[styles.NameText1, { paddingTop: 4, fontFamily: FONTS.FontRegular }]}>{item?.village}</Text>
+                                </View>
+                            </View>
+                            <View style={{
+                                flexDirection: 'column', alignItems: 'flex-end', flex: 1, marginRight: width * 0.05
+                            }}>
+                                <View style={{ flexDirection: 'row', }}>
+                                    <Image1 style={{ marginTop: 3 }} />
+                                    <Text style={[styles.DateText, { marginLeft: 5 }]}>{item?.dpd}</Text>
+                                </View>
+                                <Text style={[styles.DateText]}>₹{numberWithCommas(item?.arrearsAmount)}</Text>
+
+                            </View>
+
+
                         </View>
                     )
                 })}
@@ -109,10 +146,11 @@ const DPDPriority = () => {
                 ModalVisible={ModalVisible}
                 onPressOut={() => setModalVisible(!ModalVisible)}
                 setModalVisible={setModalVisible}
-                setSortData={setSorts}
-               // sortFunction={Sort()}
+                setSortData={setSort}
+                setStateRefresh={setStateRefresh}
+            // sortFunction={Sort()}
             />
-        
+
         </View>
     )
 }
@@ -153,8 +191,8 @@ const styles = StyleSheet.create({
         fontSize: 14,
         color: COLORS.colorDark,
         fontFamily: FONTS.FontSemiB,
-        marginLeft: width*0.05,
-        marginBottom:10,
+        marginLeft: width * 0.05,
+        marginBottom: 10,
         marginTop: width * 0.01
     },
     MonthText: {

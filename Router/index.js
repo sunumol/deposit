@@ -63,7 +63,7 @@ export default function Router() {
       }}>
         <Stack.Screen name="SplashScreen" component={SplashScreen} />
         <Stack.Screen name="IntroScreen" component={netInfo.isConnected ? IntroScreens : NetWorkError} />
-        <Stack.Screen name="LoginScreen" component={netInfo.isConnected ? LoginScreen : NetWorkError} />
+        <Stack.Screen name="LoginScreen" component={LoginScreen} />
         <Stack.Screen name="Permission" component={netInfo.isConnected ? Permission : NetWorkError} />
         <Stack.Screen name="CreatePin" component={netInfo.isConnected ? CreatePin : NetWorkError} />
         <Stack.Screen name="Profile" component={netInfo.isConnected ? Profile : NetWorkError} />

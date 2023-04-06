@@ -1,7 +1,7 @@
 
 ;
 import React, { useEffect, useState } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity,Dimensions } from 'react-native';
 import { COLORS, FONTS } from '../../../../Constants/Constants';
 import { useTranslation } from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -9,8 +9,9 @@ import Icon1 from 'react-native-vector-icons/Ionicons'
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 import ActivityModal from '../components/ActiveModal';
 import { useDispatch } from 'react-redux';
-
+const { height, width } = Dimensions.get('screen');
 const MeetTab = (props) => {
+    
     const { t } = useTranslation();
     const [Lang, setLang] = useState('')
     const [modalVisible, setModalVisible] = useState(false)
@@ -65,30 +66,35 @@ const MeetTab = (props) => {
 
     return (
         <>
-            <View style={{ marginBottom: 0 }}>
-                <Text style={[styles.timeDropStyle, { paddingTop: props.time ? 18 : 0 }]}>{props.time}</Text>
-                {props.data.map((item, index) => {
+            <View style={{ marginBottom:5}}>
+                <Text style={[styles.timeDropStyle, { paddingTop: props?.time ? 18 : 0 }]}>{props?.time}</Text>
+                {props?.data?.map((item, index) => {
+                  
                     return (
                         <TouchableOpacity
                             onPress={() => {
-                                setModalVisible(true)
                                 setDetails(item)
+                                dispatch({
+                                    type: 'SET_CGT_ACTIVITY_ID',
+                                    payload: props?.details?.activityId,
+                                  });
+                                item?.purpose === 'Conduct CGT' ? props.navigation.navigate('CGT'):setModalVisible(true)
                             }}
-                            style={[styles.boxStyle, { marginTop: props.time ? 10 : 0 }]} key={props.id}>
+                            style={[styles.boxStyle, { marginTop: props?.time ? 10 : 0 }]} key={props?.id}>
                             <View style={{ flex: 1, flexDirection: 'row' }}>
 
                                 <View style={[styles.circleStyle, { backgroundColor: getRandomColor()}]}>
                                     {/* <Text numberOfLines={1} style={styles.circleText}>{(item.customerName)}</Text> */}
-                                    <Text numberOfLines={1} style={styles.circleText}>{getInitials(item.customerName)}</Text>
+                                    <Text numberOfLines={1} style={styles.circleText}>{getInitials(item?.customerName)}</Text>
                                 </View>
 
                                 <View style={{ flexDirection: 'column', paddingLeft: 12, paddingTop: 5 }}>
-                                    <Text style={styles.nameText}>{item.customerName}</Text>
+                                    <Text style={styles.nameText}>{item?.customerName}</Text>
                                     <View style={{ flexDirection: 'row', }}>
                                         <View style={{ paddingTop: 5, paddingRight: 1 }}>
                                             <Icon1 name="location-outline" color={"black"} />
                                         </View>
-                                        <Text style={[styles.idText, { paddingTop: 4 }]}>{item.pin}</Text>
+                                        <Text style={[styles.idText, { paddingTop: 4 }]}>{item?.pin}</Text>
                                         {/* <TouchableOpacity onPress={()=>props.navigation.navigate('DetailCheck')}>
                            
                                 </TouchableOpacity> */}
@@ -100,30 +106,70 @@ const MeetTab = (props) => {
                             <View style={{ flexDirection: 'column', paddingTop: 5, alignItems: 'flex-end' }}>
                                 <View style={{ flexDirection: 'row' }}>
                                     <Icon2 name="phone-in-talk-outline" color={"black"} size={15} />
-                                    <Text style={[styles.numText, { paddingLeft: 6 }]}>{item.mobileNumber}</Text>
+                                    <Text style={[styles.numText, { paddingLeft: 6 }]}>{item?.mobileNumber}</Text>
                                 </View>
-                                {item.status == "Conduct DLE"
+                                {/* {item?.purpose == "Conduct DLE"
                                     ? <TouchableOpacity
                                         onPress={() => props.navigation.navigate('DetailCheck')}
                                         style={[styles.leadContainer, { backgroundColor: 'rgba(186, 134, 205, 0.1)' }]}>
                                         <Text style={[styles.leadText, { color: '#F2994A' }]}>Conduct DLE</Text>
                                     </TouchableOpacity>
-                                    : <TouchableOpacity style={[styles.leadContainer, { backgroundColor: props.meet ? COLORS.LightBlue : COLORS.LightPurple }]} onPress={()=>{
+                                    : item?.purpose == "Conduct CGT"?
+                                    <TouchableOpacity style={[styles.leadContainer, { backgroundColor: props?.meet ? COLORS.LightBlue : COLORS.LightPurple }]} onPress={()=>{
                                         dispatch({
                                             type: 'SET_CGT_ACTIVITY_ID',
-                                            payload: item.activityId,
+                                            payload: item?.activityId,
                                           });
                                           props.navigation.navigate('CGT')
                                     } }>
-                                        <Text style={[styles.leadText, { color: props.meet ? COLORS.DarkBlue : COLORS.DarkPurple }]}>{props.meet ? t('common:ConductCGT') : t('common:ExplainTrustCircle')}</Text>
-                                    </TouchableOpacity>}
+                                        <Text style={[styles.leadText, { color: props?.meet ? COLORS.DarkBlue : COLORS.DarkPurple }]}>{item?.purpose ? t('common:ConductCGT') : t('common:ExplainTrustCircle')}</Text>
+                                    </TouchableOpacity>:null} */}
+                               {item?.purpose === 'Leads Follow Up' &&
+                               <TouchableOpacity onPress={()=>setModalVisible(true)}
+                               style={[styles.leadContainer, { backgroundColor: COLORS.LightYellow }]}>
+                                   <Text style={[styles.leadText, { color: COLORS.DarkYellow }]}>{t('common:LeadsFollowUp')}</Text>
+                               </TouchableOpacity>}
+                               {item?.purpose === 'Explain Trust Circle' &&
+                      <TouchableOpacity onPress={()=>setModalVisible(true)}
+                     style={[styles.leadContainer, { backgroundColor: COLORS.LightPurple }]}>
+                        <Text style={[styles.leadText, { color: COLORS.DarkPurple }]}>{t('common:ExplainTrustCircle')}</Text>
+                    </TouchableOpacity>
+                }
+                      {item?.purpose === 'Conduct CGT' &&
+                    <TouchableOpacity onPress={()=>{
+                        dispatch({
+                            type: 'SET_CGT_ACTIVITY_ID',
+                            payload: props?.details?.activityId,
+                          });
+                        props.navigation.navigate('CGT')
+
+                    }}
+                    style={[styles.leadContainer, { backgroundColor: COLORS.LightBlue }]}>
+                        <Text style={[styles.leadText, { color: COLORS.DarkBlue }]}>{t('common:ConductCGT')}</Text>
+                    </TouchableOpacity>
+                }
+                   {item?.purpose  === 'Collection' &&
+                      <TouchableOpacity onPress={()=>setModalVisible(true)}
+                    style={[styles.leadContainer, { backgroundColor: COLORS.LightGreen }]}>
+                        <Text style={[styles.leadText, { color: COLORS.DarkGreen }]}>{t('common:CollectionFollowUp')}</Text>
+                    </TouchableOpacity>
+                }
+                                    {/* <TouchableOpacity style={[styles.leadContainer, { backgroundColor: props?.meet ? COLORS.LightBlue : COLORS.LightPurple }]} onPress={()=>{
+                                        dispatch({
+                                            type: 'SET_CGT_ACTIVITY_ID',
+                                            payload: item?.activityId,
+                                          });
+                                          props.navigation.navigate('CGT')
+                                    } }>
+                                        <Text style={[styles.leadText, { color: props?.meet ? COLORS.DarkBlue : COLORS.DarkPurple }]}>{props?.meet ? t('common:ConductCGT') : t('common:ExplainTrustCircle')}</Text>
+                                    </TouchableOpacity>} */}
 
                             </View>
 
                         </TouchableOpacity>
                     )
                 })}
-                <ActivityModal visible={modalVisible} onPressOut={() => setModalVisible(!modalVisible)} meet={props.meet} details={details} setEnab={props.setEnab}/>
+                <ActivityModal visible={modalVisible} onPressOut={() => setModalVisible(!modalVisible)} meet={props.meet} details={details} setEnab={props?.setEnab}/>
             </View>
         </>
     )

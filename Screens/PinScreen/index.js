@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     StyleSheet,
     Text,
@@ -11,21 +11,21 @@ import {
     ToastAndroid
 } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-//import OTPInputView from '@twotalltotems/react-native-otp-input';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios from 'axios';
 import DeviceInfo from 'react-native-device-info';
 import { NetworkInfo } from 'react-native-network-info';
 import { useRoute } from '@react-navigation/native';
 import { addDays } from 'date-fns'
-import moment from 'moment'
-import OTPInputView from '../../Components/OTPInputView';
+
+// ----------- Componenet Import ------------------------
 import { COLORS, FONTS } from '../../Constants/Constants';
 import Statusbar from '../../Components/StatusBar';
-import { useFocusEffect } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import PinModal from './Components/PinModal';
+import { api } from '../../Services/Api';
+import OTPInputView from '../../Components/OTPInputView';
 
+// ----------- Image Import ------------------------
 import Svadhan from '../../assets/image/AgentLogo.svg';
 
 const { height, width } = Dimensions.get('screen');
@@ -35,11 +35,12 @@ const PinScreen = ({ navigation, }) => {
     const isDarkMode = true
     const routes = useRoute();
     const { t } = useTranslation();
+    const otpInput2 = React.createRef();
 
     const [OtpValue, setOtpValue] = useState('')
     const [ModalVisible, setModalVisible] = useState(false)
     const [error, setError] = useState(false)
-    const otpInput2 = React.createRef();
+    const [maxError, setMaxError] = useState(false)
     const [exitApp, setExitApp] = useState(0);
 
     // --------------Device Configuration Start----------
@@ -48,10 +49,11 @@ const PinScreen = ({ navigation, }) => {
     const [mobile, setMobile] = useState();
     const [custID, setCustId] = useState()
     const [invalidState, setInvalidState] = useState(1)
+    const [userName, setUserName] = useState()
+    const [status, setStatus] = useState(false)
     // --------------Device Configuration End----------
 
     useEffect(() => {
-        getData()
         NetworkInfo.getIPV4Address().then(ipv4Address => {
             console.log(ipv4Address);
             setIPAddress(ipv4Address)
@@ -63,16 +65,32 @@ const PinScreen = ({ navigation, }) => {
         // -------------- Get DeviceInfo End ----------
     }, [])
 
+    useEffect(() => {
+        getData()
+    }, [userName])
+
+    useEffect(() => {
+        return navigation.addListener("focus", () => {
+            setOtpValue('');
+            setMaxError(false)
+
+        });
+    }, [navigation]);
+
     const getData = async () => {
         try {
             const Phone = await AsyncStorage.getItem('Mobile')
             const id = await AsyncStorage.getItem('CustomerId')
+            const userName = await AsyncStorage.getItem('userName')
+            console.log("userName", AsyncStorage.getItem('userName'))
+            setUserName(userName)
             setMobile(Phone)
             setCustId(id)
         } catch (e) {
             console.log(e)
         }
     }
+
     useEffect(() => {
         const backHandler = BackHandler.addEventListener(
             'hardwareBackPress',
@@ -80,6 +98,17 @@ const PinScreen = ({ navigation, }) => {
         );
         return () => backHandler.remove();
     }, [exitApp]);
+
+    useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+            setStatus(false),
+                setError(false),
+                setOtpValue('')
+
+
+        });
+        return unsubscribe;
+    }, [navigation]);
 
     const handleGoBack = () => {
         if (routes.name === "PinScreen") {
@@ -120,6 +149,7 @@ const PinScreen = ({ navigation, }) => {
             if (Difference_In_Days && Difference_In_Days > 0 && Difference_In_Days < 91) {
                 if (Pin === code) {
                     navigation.navigate('Profile')
+                    setMaxError(false);
                 } else {
                     setError(true)
                     setInvalidState(invalidState + 1)
@@ -150,60 +180,52 @@ const PinScreen = ({ navigation, }) => {
 
     // ------------------ Resend Api Call Start ------------------
     async function forgotApiCall() {
-        try {
-            let headers = {
-                'Content-Type': 'application/json',
-            }
-            let url = `http://3.108.93.231:8383/forgotPin`
-            let body = {
-                deviceId: deviceId,
-                geoLocation: {
-                    latitude: "10.0302",//Todo
-                    longitude: "76.33553"//Todo
-                },
-                mobile: '+' + mobile,
-                deviceIpAddress: ipAdrress,
-                simId: "11111",
-                "otpReason": "FORGOT_PIN"
-            }
-
-            console.log("data print", body)
-            const res = await axios.post(url, body, { headers });
+        const data = {
+            deviceId: deviceId,
+            geoLocation: {
+                latitude: "10.0302",//Todo
+                longitude: "76.33553"//Todo
+            },
+            mobile: mobile,
+            deviceIpAddress: ipAdrress,
+            simId: "11111",
+            "otpReason": "FORGOT_PIN"
+        }
+        await api.getForgotOtp(data).then((res) => {
             if (res?.data?.status) {
                 console.log('response Login Api', res.data)
                 navigation.navigate('ForgotPin', { conFirmdate: new Date().getTime() })
             } else {
                 console.log(res?.data)
+                // setStatus(true)
             }
-
-        } catch (err) {
-            console.log("err->", err.response)
-        }
+        }).catch((err) => {
+            console.log("err PRINT->", err.response)
+            if (err?.response?.data?.message == "Maximum number of OTPs are exceeded. Please try after 30 minutes.") {
+                setMaxError(true)
+            }
+        })
     }
     // ------------------ Login Api Call End ------------------
 
     // ------------------ After 3 Err Api Call Start------------------
     async function invalidOtpApi() {
-        try {
-            let headers = {
-                'Content-Type': 'application/json',
-            }
-            const data = {
-                id: custID,
-            }
-            let url = `http://3.108.93.231:8383/notifyCustomerForWrongPin/${data.id}`
-
-            const res = await axios.get(url, { headers });
+        const data = {
+            id: custID,
+        }
+        await api.invalidPinApi(data).then((res) => {
             if (res?.data?.status) {
                 console.log('response Login Api', res.data)
                 setInvalidState(1)
-
             } else {
-                console.log(res?.data)
+                console.log("error text", res?.data)
+                // setInvalidState(3)
             }
-        } catch (err) {
-            console.log("err->", err.response)
-        }
+        }).catch((err) => {
+            console.log("err->", err)
+            // setInvalidState(3)
+        })
+
     }
     // ------------------ After 3 Err Api Call End ------------------
     // useEffect(() => {
@@ -219,32 +241,15 @@ const PinScreen = ({ navigation, }) => {
             <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
 
             <View style={styles.ViewContent}>
+
                 <ImageBackground source={require('./Images/bg.png')}
                     style={styles.Linear}>
-
                     <Svadhan width={350} height={80} resizeMode='contain' style={{ top: -10 }} />
-
-                    <Text style={styles.Text1}>{t('common:Hi')}, Athira Anil</Text>
+                    <Text style={styles.Text1}>{t('common:Hi')}, {userName}</Text>
                 </ImageBackground>
 
                 <View style={styles.ViewPin}>
-                    <Text style={styles.PinTEXT} onPress={() => setModalVisible(true)}>{t('common:PleaseEnterPIN')}</Text>
-
-                    {/* <OTPInputView
-                        ref={otpInput2}
-                        style={[styles.OtpInput, {}]}
-                        pinCount={4}
-                        code={OtpValue}
-                        onCodeChanged={otp => setOtpValue(otp)}
-                        autoFocusOnLoad={false}
-                        codeInputFieldStyle={{ color: '#090A0A', borderRadius: 8, backgroundColor: '#FFFFF', }}
-                        placeholderTextColor="black"
-                        onCodeFilled={(code => {
-                            if (code.length === 4) {
-                                getPinCheck(code)
-                            }
-                        })}
-                    /> */}
+                    <Text style={styles.PinTEXT}>{t('common:PleaseEnterPIN')}</Text>
                     <OTPInputView
                         ref={otpInput2}
                         autoFocus={true}
@@ -265,13 +270,24 @@ const PinScreen = ({ navigation, }) => {
                             }
                         })}
                     />
-                    <Text style={styles.TextF} onPress={forgotApiCall}>{t('common:ForgotPIN')}</Text>
-
+                    <Text style={styles.TextF} onPress={() => forgotApiCall()}>{t('common:ForgotPIN')}</Text>
                 </View>
+
                 {error
                     ? <View style={{ justifyContent: 'center' }}>
-                        <Text style={styles.errrorText}>Invalid PIN</Text>
-                    </View> : null}
+                        <Text style={styles.errrorText}>{t('common:InvalidPin')}</Text>
+                    </View>
+                    : null}
+                {maxError
+                    ? <View style={{ justifyContent: 'center', marginHorizontal: 16 }}>
+                        <Text style={styles.errrorText}>{"Maximum number of OTPs are exceeded. Please try after 30 minutes"}</Text>
+                    </View>
+                    : null}
+
+                {status ?
+                    <View style={{ marginTop: Dimensions.get('window').height * 0.03, }}>
+                        <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center', width: width * 0.8 }}>{t('common:Valid2')}</Text>
+                        <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center' }}>{t('common:Valid3')}</Text></View> : null}
             </View>
 
             <PinModal ModalVisible={ModalVisible}
@@ -312,6 +328,18 @@ const styles = StyleSheet.create({
         fontWeight: '800',
         color: "#1A051D",
         paddingTop: 31
+    },
+    imputContainerStyle: {
+        borderRadius: 8,
+        borderRadius: 8,
+        backgroundColor: COLORS.backgroundColor,
+        borderWidth: 1,
+        borderColor: '#ECEBED',
+        height: 48,
+        width: 48,
+        color: '#090A0A',
+        fontSize: 12,
+        fontWeight: 'bold',
     },
     viewHead: {
         marginTop: Dimensions.get('window').height * 0.02,
@@ -357,20 +385,8 @@ const styles = StyleSheet.create({
         color: '#1A051D',
         fontFamily: FONTS.FontRegular,
         paddingBottom: width * 0.02,
-        ontSize: 14,
+        fontSize: 14,
         paddingTop: width * 0.065
-    },
-    imputContainerStyle: {
-        borderRadius: 8,
-        borderRadius: 8,
-        backgroundColor: COLORS.backgroundColor,
-        borderWidth: 1,
-        borderColor: '#ECEBED',
-        height: 48,
-        width: 48,
-        color: '#090A0A',
-        fontSize: 12,
-        fontWeight: 'bold',
     },
     TextF: {
         color: '#1A051D',
