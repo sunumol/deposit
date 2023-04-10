@@ -4,6 +4,8 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { COLORS, FONTS } from '../../../Constants/Constants';
 import { useTranslation } from 'react-i18next';
 import { CheckBox } from 'react-native-elements';
+import { useSelector } from "react-redux";
+import { api } from "../../../Services/Api";
 const { height, width } = Dimensions.get('screen');
 
 const data = [
@@ -40,8 +42,11 @@ const ReasonModal = ({ModalVisible, onPressOut,setModalVisible,onPress1}) => {
     const [Reason, setReason] = useState('')
     const [ButtonStatus, setButtonStatus] = useState(false)
     const [Checked,setChecked] = useState('')
+    const activityId = useSelector(state => state.activityId);
+
 
     const onCheck1 = (id) => {
+        console.log('On check',id)
         let reason = Data
         let index = reason.findIndex(o => o.id === id)
         reason[index].isChecked = !reason[index].isChecked;
@@ -49,11 +54,12 @@ const ReasonModal = ({ModalVisible, onPressOut,setModalVisible,onPress1}) => {
             let FilterArray1 = Data.filter(item => item.isChecked == true)
             let FilterId1 = FilterArray1.map((item) => (item.id))
             let Checked = FilterArray1.map((item)=>(item.isChecked))
+            let activity = FilterArray1.map((item)=> (item.Title))
             //let FilterId1 = FilterArray.slice(id)
 
             console.log("FilterId.",Checked)
-            console.log("FilterArray.......", FilterArray1)
-            setReason(FilterId1)
+            console.log("FilterArray.......", activity[0])
+            setReason(activity[0])
             setChecked(Checked)
             if(FilterId1.length == 0){
                 setButtonStatus(false)
@@ -64,6 +70,27 @@ const ReasonModal = ({ModalVisible, onPressOut,setModalVisible,onPress1}) => {
 
      
     }
+
+
+
+
+    // ------------------ get Conduct DLE basic detail Village Api Call Start ------------------
+    const updateRejection = async () => {
+        console.log('api called for rejection')
+        const data = {
+            "activityStatus":Reason,
+            "employeeId":1,
+            "activityId":activityId
+        }
+        await api.updateActivity(data).then((res) => {
+            console.log('-------------------res get Village', res?.data?.body)
+            onPress1()
+            onPressOut()
+        }).catch((err) => {
+            console.log('-------------------err get Village', err?.response)
+        })
+    };
+    // ------------------ HomeScreen Api Call End ------------------
 
     return (
 
@@ -104,7 +131,7 @@ const ReasonModal = ({ModalVisible, onPressOut,setModalVisible,onPress1}) => {
                         <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                             <TouchableOpacity style={[styles.Button1,
                             { backgroundColor: ButtonStatus ? COLORS.colorB : '#ECEBED' }]}
-                            onPress={()=>ButtonStatus ? onPress1() : console.log("hello")}>
+                            onPress={()=>ButtonStatus ? updateRejection(): console.log("hello")}>
 
                                 <Text style={[styles.text1, { color: ButtonStatus ?
                                      COLORS.colorBackground : '#979C9E', paddingLeft: width * 0.02 }]}>Submit</Text>

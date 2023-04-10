@@ -93,6 +93,7 @@ const DetailChecks = ({ navigation, details }) => {
             setVillagenamedata([])
             setBstatus(false)
             setChecked(false)
+            setVillagename('')
         } else {
 
             setVillagename(text)
@@ -507,6 +508,7 @@ const DetailChecks = ({ navigation, details }) => {
                     navigation.navigate('Profile')
                 }}
                 setModalVisible={setModalError}
+                navigation={navigation} 
             />
 
             <ReasonModal
@@ -518,6 +520,10 @@ const DetailChecks = ({ navigation, details }) => {
                 onPressOut={() => setModalReason(!ModalReason)}
                 setModalVisible={setModalReason}
             />
+
+
+
+
             <RoadAccessModal
                 onPress1={(value) => {
                     console.log('====>>Road', value.Title)

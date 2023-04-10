@@ -6,7 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const { height, width } = Dimensions.get('screen');
 import Image1 from '../../CGTCustomer/Images/error.svg';
 
-const ErrorModal = ({ ModalVisible, onPressOut,onPress1 }) => {
+const ErrorModal = ({ ModalVisible, onPressOut,onPress1,navigation }) => {
     const [state, setState] = useState(null);
     const { t } = useTranslation();
     const [Lang, setLang] = useState('')
@@ -14,6 +14,9 @@ const ErrorModal = ({ ModalVisible, onPressOut,onPress1 }) => {
 
     useEffect(() => {
         getData()
+        setTimeout(() => {
+            navigation.navigate('Profile ')
+        }, 1000);
     }, [])
 
     const getData = async () => {
