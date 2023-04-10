@@ -218,6 +218,286 @@ export const api = {
       }
     })
   },
+
+    // ------------------ get tcdetaile data ---------------------
+    getDLEschedule: data => {
+      return axios.post(`${baseURL2}getTcDetails`, data, {
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      })
+    },
+  
+    // ------------------ Schedule DLE ---------------------
+    ScheduleDLE: data => {
+      return axios.post(`${baseURL2}scheduleDle`, data, {
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      })
+    },
+    // ------------------ Conduct DLE  basic detail---------------------
+    ConductDLEbasicdetail: data => {
+      return axios.post(`${baseURL2}conductDleBasicDetail`, data, {
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      })
+    },
+  
+    // ------------------ get Village list---------------------
+    getVillage: data => {
+      return axios.post(`${baseURL2}village`, data, {
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      })
+    },
+  
+  
+    // ------------------ get post office list---------------------
+    getpostoffice: data => {
+      return axios.post(`${baseURL2}postOffice`, data, {
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      })
+    },
+  
+    // ------------------ save basic DLE details---------------------
+    savebasicdetail: data => {
+  
+      return axios.post(`${baseURL2}saveOrUpdateBasicDetails`, data, {
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      })
+    },
+  
+  
+    // ------------------ get Spouse details---------------------
+    getSpousedetail: data => {
+  
+      return axios.post(`${baseURL2}getSpouseDetail`, data, {
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      })
+    },
+  
+  
+  
+    // ------------------ get Residence owner details---------------------
+    getResidenceowner: data => {
+  
+      return axios.post(`${baseURL2}getCurrentResidenceOwner`, data, {
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      })
+    },
+  
+  
+    // ------------------ upload file image---------------------
+    uploadFile: data => {
+  
+      return axios.post(`${baseURL2}uploadFile`, data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Accept: "application/json",
+        },
+  
+      })
+    },
+  
+  
+  
+  
+    // ------------------ save and update Residence Owner  details---------------------
+    UpdateResidenceowner: data => {
+  
+      console.log('Residence save',data)
+  
+      return axios.post(`${baseURL2}saveOrUpdateCurrentResidenceOwner`, data, {
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      })
+    },
+  
+  
+  
+    // ------------------ get Continue Gurantor details---------------------
+    getCGdetails: data => {
+  
+      return axios.post(`${baseURL2}getCGDetails`, data, {
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      })
+    },
+  
+  
+    // ------------------ verify Continue Gurantor details---------------------
+    verifyCG: data => {
+  
+      return axios.post(`${baseURL2}verifyContinuingGuarantor`, data, {
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      })
+    },
+  
+  
+    // ------------------ verify  OTP Continue Gurantor details---------------------
+    verifyCGOTP: data => {
+  
+      return axios.post(`${baseURL2}verifyCGOtp`, data, {
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      })
+    },
+  
+  
+  
+    // ------------------  get CG voter id details---------------------
+    getCGvoterid: data => {
+  
+      return axios.post(`${baseURL2}getCCVoterId`, data, {
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      })
+    },
+  
+  
+    // ------------------  save CG voter id details---------------------
+    saveCGvoterid: data => {
+  
+      return axios.post(`${baseURL2}saveCGVoterIds`, data, {
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      })
+    },
+  
+  
+  
+    // ------------------  getVehicleDetails details---------------------
+    getVehicleDetails: data => {
+  
+      return axios.post(`${baseURL2}getVehicleDetails`, data, {
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      })
+    },
+  
+  
+  
+    // ------------------  fetchVehicleDetailsForDle details---------------------
+    fetchVehicleDetailsForDle: data => {
+  
+      return axios.post(`${baseURL2}fetchVehicleDetailsForDle`, data, {
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      })
+    },
+  
+  
+    // ------------------  save VehicleDetails details---------------------
+    saveVehicleDetails: data => {
+  
+      return axios.post(`${baseURL2}saveOrUpdateVehicleDetails`, data, {
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      })
+    },
+  
+  
+    // ------------------  save getEnergyUtilities details---------------------
+    getEnergyUtilities: data => {
+  
+      return axios.post(`${baseURL2}getEnergyUtilities`, data, {
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      })
+    },
+  
+  
+  
+    // ------------------  save EnergyUtilities details---------------------
+    saveEnergyUtilities: data => {
+  
+      return axios.post(`${baseURL2}saveOrUpdateEnergyUtilities`, data, {
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      })
+    },
+  
+  
+  
+    // ------------------  save getIncomeDetails details---------------------
+    getIncomeDetails: data => {
+  
+      return axios.post(`${baseURL2}getIncomeDetails`, data, {
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      })
+    },
+  
+  
+  
+    // ------------------  save IncomeDetails details---------------------
+    saveIncomeDetails: data => {
+  
+      return axios.post(`${baseURL2}saveOrUpdateIncomeDetails`, data, {
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      })
+    },
+  
+  
+  
+    // ------------------   getHousePhoto details---------------------
+    getHousePhoto: data => {
+  
+      return axios.post(`${baseURL2}getHousePhoto`, data, {
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      })
+    },
+  
+  
+  
+      // ------------------   saveOrUpdateHousePhoto details---------------------
+      saveHousePhoto: data => {
+  
+        return axios.post(`${baseURL2}saveOrUpdateHousePhoto`, data, {
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        })
+      },
+  
+  
+          // ------------------   getDlePageNumber details---------------------
+          getDlePageNumber: data => {
+  
+            return axios.post(`${baseURL2}getDlePageNumber`, data, {
+              headers: {
+                'Content-Type': 'application/json',
+              }
+            })
+          },
   
 };
 

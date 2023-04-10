@@ -1,18 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Dimensions, Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { COLORS, FONTS } from '../../../Constants/Constants';
 import { useTranslation } from 'react-i18next';
 
-const OwnerModal = ({ ModalVisible, onPressOut,setModalVisible,setPurpose,
-   }) => {
+const OwnerModal = ({ visible, onPressOut,setModalVisible,setRelation,setPurpose,setStatus}) => {
     const { t } = useTranslation();
+   // console.log("setRelation....",setRelation)
+
+
     return (
 
         <Modal
             animationType="slide"
             transparent={true}
-            visible={ModalVisible}
+            visible={visible}
             onRequestClose={onPressOut}
         >
             <View style={styles.mainContainer} >
@@ -26,13 +28,13 @@ const OwnerModal = ({ ModalVisible, onPressOut,setModalVisible,setPurpose,
                         <View style={styles.lineView} />
                         <TouchableOpacity style={styles.textTouch}
                             onPress={() => {
-                                setPurpose('Self')
-                            
-                                setModalVisible(!ModalVisible)
-                             
+                               // setRelation("Self")
+                              // setStatus(true)
+                                setPurpose('Customer')
+                                setModalVisible(!visible)
                             }
                             }>
-                            <Text style={styles.modalText}>Self</Text>
+                            <Text style={styles.modalText}>Customer</Text>
                             <View style={{ paddingRight: 10 }}>
                                 <Icon
                                     name="checkbox-blank-circle-outline"
@@ -43,46 +45,11 @@ const OwnerModal = ({ ModalVisible, onPressOut,setModalVisible,setPurpose,
                         </TouchableOpacity >
                         <View style={styles.lineView} />
                         <TouchableOpacity style={styles.textTouch} onPress={() => {
-                            setPurpose("Children")
-                            setModalVisible(!ModalVisible)
-                        
+                            setPurpose("Spouse")
+                            setModalVisible(!visible)
                         }
                         }>
-                            <Text style={styles.modalText}>Children</Text>
-                            <View style={{ paddingRight: 10 }}>
-                                <Icon
-                                    name="checkbox-blank-circle-outline"
-                                    color={COLORS.DSMuted}
-                                    size={18}
-                                />
-                            </View>
-                        </TouchableOpacity>
-
-                        <View style={styles.lineView} />
-                        <TouchableOpacity style={styles.textTouch} onPress={() => {
-                            setPurpose("Parents")
-                            setModalVisible(!ModalVisible)
-                        
-                        }
-                        }>
-                            <Text style={styles.modalText}>Parents</Text>
-                            <View style={{ paddingRight: 10 }}>
-                                <Icon
-                                    name="checkbox-blank-circle-outline"
-                                    color={COLORS.DSMuted}
-                                    size={18}
-                                />
-                            </View>
-                        </TouchableOpacity>
-
-                        <View style={styles.lineView} />
-                        <TouchableOpacity style={styles.textTouch} onPress={() => {
-                            setPurpose("Parents in Law")
-                            setModalVisible(!ModalVisible)
-                        
-                        }
-                        }>
-                            <Text style={styles.modalText}>Parents in Law</Text>
+                            <Text style={styles.modalText}>Spouse</Text>
                             <View style={{ paddingRight: 10 }}>
                                 <Icon
                                     name="checkbox-blank-circle-outline"
@@ -92,8 +59,14 @@ const OwnerModal = ({ ModalVisible, onPressOut,setModalVisible,setPurpose,
                             </View>
                         </TouchableOpacity>
                      
-                  
 
+
+           
+            
+
+
+            
+            
             
 
                     </View>
@@ -159,6 +132,7 @@ const styles = StyleSheet.create({
         marginLeft: 25,
         marginTop: 22,
         marginBottom: 15
+     
     },
     lineView: {
         borderWidth: 0.5,

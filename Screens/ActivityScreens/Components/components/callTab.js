@@ -1,7 +1,7 @@
 
 ;
 import React, { useEffect, useState } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity,Dimensions } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { COLORS, FONTS } from '../../../../Constants/Constants';
 import { useTranslation } from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -9,47 +9,47 @@ import Icon1 from 'react-native-vector-icons/Ionicons'
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 import ActivityModal from '../components/ActiveModal';
 import { useDispatch } from 'react-redux';
-const { height, width } = Dimensions.get('screen');
+import { api } from '../../../../Services/Api';
+
 const MeetTab = (props) => {
-    
     const { t } = useTranslation();
     const [Lang, setLang] = useState('')
     const [modalVisible, setModalVisible] = useState(false)
     const [details, setDetails] = useState()
-    const [enab,setEnab]=useState(false)
+    const [enab, setEnab] = useState(false)
     const dispatch = useDispatch()
 
     useEffect(() => {
         getData()
-       
+
     }, [])
 
 
- const  getRandomColor =()=> {
-    var letters = '0123456789ABCDEF';
-    var color = '#';
-    for (var i = 0; i < 3; i++) {
-      color += letters[Math.floor(Math.random() * 8)];
+    const getRandomColor = () => {
+        var letters = '0123456789ABCDEF';
+        var color = '#';
+        for (var i = 0; i < 3; i++) {
+            color += letters[Math.floor(Math.random() * 8)];
+        }
+        return color;
     }
-    return color;
-  }
 
 
-  const getInitials = (name) => {
-  
-    let initials;
-    const nameSplit = name?.split(" ");
-     const nameLength = nameSplit?.length;
-    if (nameLength > 1) {
-        initials =
-            nameSplit[0].substring(0, 1) +
-            nameSplit[nameLength - 1].substring(0, 1);
-    } else if (nameLength === 1) {
-        initials = nameSplit[0].substring(0, 1);
-    } else return;
+    const getInitials = (name) => {
 
-     return initials.toUpperCase();
-};
+        let initials;
+        const nameSplit = name?.split(" ");
+        const nameLength = nameSplit?.length;
+        if (nameLength > 1) {
+            initials =
+                nameSplit[0].substring(0, 1) +
+                nameSplit[nameLength - 1].substring(0, 1);
+        } else if (nameLength === 1) {
+            initials = nameSplit[0].substring(0, 1);
+        } else return;
+
+        return initials.toUpperCase();
+    };
 
 
 
@@ -64,40 +64,80 @@ const MeetTab = (props) => {
 
 
 
+
+    // ------------------getDlePageNumberdetail ------------------
+
+    const getDlePageNumber = async (id) => {
+        console.log('api called')
+
+        const data = {
+            "activityId": id,
+
+
+        }
+        await api.getDlePageNumber(data).then((res) => {
+            console.log('-------------------res getDlePageNumber', res?.data?.body)
+            if (res?.status) {
+                if (res?.data?.body == 1) {
+                    props.navigation.navigate('DetailCheck')
+                } else if (res?.data?.body == 2) {
+                    props.navigation.navigate('ResidenceOwner')
+                } else if (res?.data?.body == 3) {
+                    props.navigation.navigate('ContinuingGuarantor')
+                } else if (res?.data?.body == 4) {
+                    props.navigation.navigate('UploadVid')
+                } else if (res?.data?.body == 5) {
+                    props.navigation.navigate('EnergyUtility')
+                } else if (res?.data?.body == 5) {
+                    props.navigation.navigate('VehicleOwn')
+                } else if (res?.data?.body == 6) {
+                        props.navigation.navigate('IncomeDetails', { relationShip: 'Customer' })
+                    } else if (res?.data?.body == 7) {
+                        props.navigation.navigate('IncomeDetails', { relationShip: 'Spouse' })
+                    } else if (res?.data?.body == 8) {
+                        props.navigation.navigate('HousePhoto')
+
+                    }
+                //props.navigation.navigate('DetailCheck')
+            }
+        }).catch((err) => {
+            console.log('-------------------err  getDlePageNumber', err)
+        })
+    };
+    // ------------------ ------------------
+
+
+
     return (
         <>
-            <View style={{ marginBottom:5}}>
-                <Text style={[styles.timeDropStyle, { paddingTop: props?.time ? 18 : 0 }]}>{props?.time}</Text>
-                {props?.data?.map((item, index) => {
-                  
+            <View style={{ marginBottom: 0 }}>
+                <Text style={[styles.timeDropStyle, { paddingTop: props.time ? 18 : 0 }]}>{props.time}</Text>
+                {props.data.map((item, index) => {
+
                     return (
                         <TouchableOpacity
                             onPress={() => {
+                                setModalVisible(true)
                                 setDetails(item)
-                                dispatch({
-                                    type: 'SET_CGT_ACTIVITY_ID',
-                                    payload: props?.details?.activityId,
-                                  });
-                                item?.purpose === 'Conduct CGT' ? props.navigation.navigate('CGT'):setModalVisible(true)
                             }}
-                            style={[styles.boxStyle, { marginTop: props?.time ? 10 : 0 }]} key={props?.id}>
+                            style={[styles.boxStyle, { marginTop: props.time ? 10 : 0 }]} key={props.id}>
                             <View style={{ flex: 1, flexDirection: 'row' }}>
 
-                                <View style={[styles.circleStyle, { backgroundColor: getRandomColor()}]}>
+                                <View style={[styles.circleStyle, { backgroundColor: getRandomColor() }]}>
                                     {/* <Text numberOfLines={1} style={styles.circleText}>{(item.customerName)}</Text> */}
-                                    <Text numberOfLines={1} style={styles.circleText}>{getInitials(item?.customerName)}</Text>
+                                    <Text numberOfLines={1} style={styles.circleText}>{getInitials(item.customerName)}</Text>
                                 </View>
 
                                 <View style={{ flexDirection: 'column', paddingLeft: 12, paddingTop: 5 }}>
-                                    <Text style={styles.nameText}>{item?.customerName}</Text>
+                                    <Text style={styles.nameText}>{item.customerName}</Text>
                                     <View style={{ flexDirection: 'row', }}>
                                         <View style={{ paddingTop: 5, paddingRight: 1 }}>
                                             <Icon1 name="location-outline" color={"black"} />
                                         </View>
-                                        <Text style={[styles.idText, { paddingTop: 4 }]}>{item?.pin}</Text>
-                                        {/* <TouchableOpacity onPress={()=>props.navigation.navigate('DetailCheck')}>
-                           
-                                </TouchableOpacity> */}
+                                        <Text style={[styles.idText, { paddingTop: 4 }]}>{item.pin}</Text>
+                                        <TouchableOpacity onPress={() => props.navigation.navigate('DetailCheck')}>
+
+                                        </TouchableOpacity>
                                     </View>
                                 </View>
 
@@ -106,70 +146,36 @@ const MeetTab = (props) => {
                             <View style={{ flexDirection: 'column', paddingTop: 5, alignItems: 'flex-end' }}>
                                 <View style={{ flexDirection: 'row' }}>
                                     <Icon2 name="phone-in-talk-outline" color={"black"} size={15} />
-                                    <Text style={[styles.numText, { paddingLeft: 6 }]}>{item?.mobileNumber}</Text>
+                                    <Text style={[styles.numText, { paddingLeft: 6 }]}>{item.mobileNumber}</Text>
                                 </View>
-                                {/* {item?.purpose == "Conduct DLE"
+                                {item.purpose == "Conduct DLE"
                                     ? <TouchableOpacity
-                                        onPress={() => props.navigation.navigate('DetailCheck')}
+                                        onPress={() => {
+                                            dispatch({
+                                                type: 'SET_CGT_ACTIVITY_ID',
+                                                payload: item.activityId,
+                                            });
+                                            getDlePageNumber(item.activityId)
+                                        }}
                                         style={[styles.leadContainer, { backgroundColor: 'rgba(186, 134, 205, 0.1)' }]}>
                                         <Text style={[styles.leadText, { color: '#F2994A' }]}>Conduct DLE</Text>
                                     </TouchableOpacity>
-                                    : item?.purpose == "Conduct CGT"?
-                                    <TouchableOpacity style={[styles.leadContainer, { backgroundColor: props?.meet ? COLORS.LightBlue : COLORS.LightPurple }]} onPress={()=>{
+                                    : <TouchableOpacity style={[styles.leadContainer, { backgroundColor: props.meet ? COLORS.LightBlue : COLORS.LightPurple }]} onPress={() => {
                                         dispatch({
                                             type: 'SET_CGT_ACTIVITY_ID',
-                                            payload: item?.activityId,
-                                          });
-                                          props.navigation.navigate('CGT')
-                                    } }>
-                                        <Text style={[styles.leadText, { color: props?.meet ? COLORS.DarkBlue : COLORS.DarkPurple }]}>{item?.purpose ? t('common:ConductCGT') : t('common:ExplainTrustCircle')}</Text>
-                                    </TouchableOpacity>:null} */}
-                               {item?.purpose === 'Leads Follow Up' &&
-                               <TouchableOpacity onPress={()=>setModalVisible(true)}
-                               style={[styles.leadContainer, { backgroundColor: COLORS.LightYellow }]}>
-                                   <Text style={[styles.leadText, { color: COLORS.DarkYellow }]}>{t('common:LeadsFollowUp')}</Text>
-                               </TouchableOpacity>}
-                               {item?.purpose === 'Explain Trust Circle' &&
-                      <TouchableOpacity onPress={()=>setModalVisible(true)}
-                     style={[styles.leadContainer, { backgroundColor: COLORS.LightPurple }]}>
-                        <Text style={[styles.leadText, { color: COLORS.DarkPurple }]}>{t('common:ExplainTrustCircle')}</Text>
-                    </TouchableOpacity>
-                }
-                      {item?.purpose === 'Conduct CGT' &&
-                    <TouchableOpacity onPress={()=>{
-                        dispatch({
-                            type: 'SET_CGT_ACTIVITY_ID',
-                            payload: props?.details?.activityId,
-                          });
-                        props.navigation.navigate('CGT')
-
-                    }}
-                    style={[styles.leadContainer, { backgroundColor: COLORS.LightBlue }]}>
-                        <Text style={[styles.leadText, { color: COLORS.DarkBlue }]}>{t('common:ConductCGT')}</Text>
-                    </TouchableOpacity>
-                }
-                   {item?.purpose  === 'Collection' &&
-                      <TouchableOpacity onPress={()=>setModalVisible(true)}
-                    style={[styles.leadContainer, { backgroundColor: COLORS.LightGreen }]}>
-                        <Text style={[styles.leadText, { color: COLORS.DarkGreen }]}>{t('common:CollectionFollowUp')}</Text>
-                    </TouchableOpacity>
-                }
-                                    {/* <TouchableOpacity style={[styles.leadContainer, { backgroundColor: props?.meet ? COLORS.LightBlue : COLORS.LightPurple }]} onPress={()=>{
-                                        dispatch({
-                                            type: 'SET_CGT_ACTIVITY_ID',
-                                            payload: item?.activityId,
-                                          });
-                                          props.navigation.navigate('CGT')
-                                    } }>
-                                        <Text style={[styles.leadText, { color: props?.meet ? COLORS.DarkBlue : COLORS.DarkPurple }]}>{props?.meet ? t('common:ConductCGT') : t('common:ExplainTrustCircle')}</Text>
-                                    </TouchableOpacity>} */}
+                                            payload: item.activityId,
+                                        });
+                                        props.navigation.navigate('CGT')
+                                    }}>
+                                        <Text style={[styles.leadText, { color: props.meet ? COLORS.DarkBlue : COLORS.DarkPurple }]}>{props.meet ? t('common:ConductCGT') : t('common:ExplainTrustCircle')}</Text>
+                                    </TouchableOpacity>}
 
                             </View>
 
                         </TouchableOpacity>
                     )
                 })}
-                <ActivityModal visible={modalVisible} onPressOut={() => setModalVisible(!modalVisible)} meet={props.meet} details={details} setEnab={props?.setEnab}/>
+                <ActivityModal visible={modalVisible} onPressOut={() => setModalVisible(!modalVisible)} meet={props.meet} details={details} setEnab={props.setEnab} />
             </View>
         </>
     )

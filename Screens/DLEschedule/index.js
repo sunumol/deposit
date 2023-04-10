@@ -23,18 +23,21 @@ import { useFocusEffect } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import DLE from './Components/DLE';
 import CGTModal from './Components/CGTModal';
+import { api } from '../../Services/Api';
 
-const DLESchedule = ({ navigation }) => {
-    const route = useRoute();
-    console.log("route name",);
+const DLESchedule = ({ navigation,route}) => {
+    //const route = useRoute();
+    console.log("route name=======>",route?.params);
     const isDarkMode = true
     const { t } = useTranslation();
     const [lang, setLang] = useState('')
     const [BStatus, setBstatus] = useState(false)
+    const [tcdetail,setTcdetail] = useState('')
     const [ModalVisible1, setModalVisible1] = useState(false)
 
     useEffect(() => {
         getData()
+        getDLEschedule()
     }, [])
 
     const getData = async () => {
@@ -46,6 +49,28 @@ const DLESchedule = ({ navigation }) => {
             console.log(e)
         }
     }
+
+
+            // ------------------ get Slot Api Call Start ------------------
+            const getDLEschedule = async () => {
+                console.log('api called')
+                 const data = {
+                    //"employeeId": route?.params?.customerID,
+                     "customerId":1
+                 };
+                 await api.getDLEschedule(data).then((res) => {
+                 
+                     console.log('------------------- DLE res', res?.data?.body)
+                     setTcdetail(res?.data?.body)
+                    
+                   
+         
+                 })
+                     .catch((err) => {
+                         console.log('-------------------err', err?.response)
+                     })
+             };
+             // 
 
     const handleGoBack = useCallback(() => {
 
@@ -71,7 +96,9 @@ const DLESchedule = ({ navigation }) => {
 
             <View style={styles.ViewContent}>
                 {/* <Text style={{color:'red'}} onPress={()=>setModalVisible1(true)}>MODAL</Text> */}
-                <DLE navigation={navigation} set={route.params.set} />
+             {  tcdetail && <DLE navigation={navigation}
+                 set={route?.params?.set} 
+                 list ={tcdetail}/>}
             </View>
             <CGTModal
 

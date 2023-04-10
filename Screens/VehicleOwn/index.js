@@ -24,9 +24,9 @@ import { useTranslation } from 'react-i18next';
 import Vehicles from './Components/Vehicles';
 
 
-const VehicleOwn = ({ navigation, }) => {
-    const route = useRoute();
-    console.log("route name",);
+const VehicleOwn = ({ navigation, route }) => {
+   // const route = useRoute();
+   // console.log("route name",route?.params?.vehicle);
     const isDarkMode = true
     const { t } = useTranslation();
     const [lang, setLang] = useState('')
@@ -69,7 +69,7 @@ const VehicleOwn = ({ navigation, }) => {
             <Header name="Vehicles Owned" navigation={navigation} />
 
             <View style={styles.ViewContent}>
-                <Vehicles navigation={navigation} />
+                <Vehicles navigation={navigation} vehicle ={route?.params?.vehicle} />
             </View>
 
         </SafeAreaProvider>

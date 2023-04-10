@@ -28,9 +28,11 @@ const { height, width } = Dimensions.get('screen');
 const Energy = ({ navigation }) => {
     const [ButtonS, setButtonS] = useState(false)
   
-    useEffect(() => {
-        setTimeout(() => setButtonS(true), 3000);
-    }, [])
+    // useEffect(() => {
+    //     setTimeout(() => setButtonS(true)
+    //    // navigation.navigate('HousePhoto')
+    //     , 3000);
+    // }, [])
 
     return (
 
@@ -52,10 +54,14 @@ const Energy = ({ navigation }) => {
 
                 </ScrollView>
                 <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                    <TouchableOpacity style={[styles.buttonView, { backgroundColor: ButtonS ? COLORS.colorB : 'rgba(224, 224, 224, 1)' }]}
-                        onPress={() => setButtonS(true)}>
-                        <Text style={[styles.continueText, { color: ButtonS ? COLORS.colorBackground : '#979C9E' }]}>Proceed</Text>
-                    </TouchableOpacity>
+                   {ButtonS ? <TouchableOpacity style={[styles.buttonView, { backgroundColor: COLORS.colorB  }]}
+                        onPress={() => navigation.navigate('HousePhoto')}>
+                        <Text style={[styles.continueText, { color: COLORS.colorBackground}]}>Proceed</Text>
+                    </TouchableOpacity>:
+                     <TouchableOpacity style={[styles.buttonView, { backgroundColor:  'rgba(224, 224, 224, 1)' }]}
+                     onPress={() => setButtonS(true)}>
+                     <Text style={[styles.continueText, { color: '#979C9E' }]}>Proceed</Text>
+                 </TouchableOpacity>}
                 </View>
             </View>
 

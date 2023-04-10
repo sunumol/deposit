@@ -29,13 +29,13 @@ import Icon1 from 'react-native-vector-icons/Entypo'
 import { api } from '../../Services/Api';
 import { useSelector } from 'react-redux';
 
-const IncomeDetails = ({ navigation,route }) => {
-    console.log('IncomeD=====>>',route?.params?.relationShip)
+const IncomeDetailsSpouse = ({ navigation, }) => {
+
     const isDarkMode = true
     const { t } = useTranslation();
     const [lang, setLang] = useState('')
     const [statusChange, setStatusChange] = useState(false)
-    const [relationShip,setRelationship] =useState('Customer')
+    const [relationShip,setRelationship] =useState('Spouse')
     const [Amount, setAmount] = useState('')
     const [ModalVisible, setModalVisible] = useState(false)
     const [Purpose, setPurpose] = useState('')
@@ -52,10 +52,11 @@ const IncomeDetails = ({ navigation,route }) => {
     const [incomedetailfield,setIncomedetailfield] =useState('')
     const activityId = useSelector(state => state.activityId);
 
+
     useEffect(() => {
         getData()
        // setRelationship(route?.params?.relationShip)
-        getIncomeDetails('Customer')
+        getIncomeDetails()
 console.log("statecha nge.....",StateChange1)
     }, [])
 
@@ -124,7 +125,7 @@ console.log("statecha nge.....",StateChange1)
         console.log('api called')
 
         const data = {
-          "activityId": activityId,
+           "activityId": activityId,
             "relationShip": relationShip
 
         }
@@ -161,13 +162,8 @@ console.log("statecha nge.....",StateChange1)
             }
             await api.saveIncomeDetails(data).then((res) => {
                 console.log('-------------------res saveIncomeDetails', res?.data?.body)
-                if (res?.status) {
-                    if(res?.data?.body == 'MARRIED'){
-                       navigation.navigate('IncomeDetailsSpouse')
-                    }else{
-                        navigation.navigate('DebitDetails')  
-                    }
-                   // navigation.navigate('DebitDetails')
+                if (res?.status) {    
+                 navigation.navigate('Proceed')
                 }
             }).catch((err) => {
                 console.log('-------------------err saveIncomeDetails', err?.response)
@@ -270,7 +266,7 @@ console.log("statecha nge.....",StateChange1)
                             </View>
                         </View> 
                 </ScrollView>
-             
+              
                     <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                         <TouchableOpacity style={[styles.buttonView, { backgroundColor: Buttons ? COLORS.colorB : 'rgba(224, 224, 224, 1)' }]}
                             onPress={() => ButtonClick()}>
@@ -291,7 +287,7 @@ console.log("statecha nge.....",StateChange1)
     )
 }
 
-export default IncomeDetails;
+export default IncomeDetailsSpouse;
 
 
 const styles = StyleSheet.create({

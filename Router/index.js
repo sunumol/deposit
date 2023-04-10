@@ -24,7 +24,7 @@ import CreateTrustCircle from '../Screens/CreateTrustCircle';
 import Activities from '../Screens/Activities';
 import ConfirmMembers from '../Screens/ConfirmMembers';
 import ContinuingGuarantor from '../Screens/ContinuingGuarantor';
-
+import UploadVid from '../Screens/UploadVid/UploadVid'
 import SelectCustomerCall from '../Screens/SelectCustomCall';
 import AboutUs from '../Screens/AboutUs';
 import FAQ from '../Screens/FAQ';
@@ -36,6 +36,7 @@ import DLESchedule from '../Screens/DLEschedule';
 import DetailCheck from '../Screens/DetailedCheck';
 import CustomerDetails from '../Screens/CustomerDetails';
 import ResidenceOwner from '../Screens/ResidenceOwner';
+import HousePhoto from '../Screens/HousePhoto';
 import ScheduleMeet from '../Screens/ScheduleMeet';
 import Collect from '../Screens/Collect';
 import AddVehicle from '../Screens/AddVehicle';
@@ -43,8 +44,10 @@ import VehicleOwn from '../Screens/VehicleOwn';
 import WhiteGoodsOwner from '../Screens/WhiteGoodsOwner';
 import EnergyUtility from '../Screens/EnergyUtility'; 
 import IncomeDetails from '../Screens/IncomeDetails';
+import IncomeDetailsSpouse from '../Screens/IncomeDetailsSpouse';
 import DebitDetails from '../Screens/DebitDetails';
 import Proceed from '../Screens/Proceed';
+import DLECompleted from '../Screens/HousePhoto/Components/DLECompleted';
 import Collection from '../Screens/Collection';
 import LoanDetailsCollect from '../Screens/LoanDetailsCollect';
 import Dashboard from '../Screens/Dashboard';
@@ -63,7 +66,7 @@ export default function Router() {
       }}>
         <Stack.Screen name="SplashScreen" component={SplashScreen} />
         <Stack.Screen name="IntroScreen" component={netInfo.isConnected ? IntroScreens : NetWorkError} />
-        <Stack.Screen name="LoginScreen" component={LoginScreen} />
+        <Stack.Screen name="LoginScreen" component={netInfo.isConnected ? LoginScreen : NetWorkError} />
         <Stack.Screen name="Permission" component={netInfo.isConnected ? Permission : NetWorkError} />
         <Stack.Screen name="CreatePin" component={netInfo.isConnected ? CreatePin : NetWorkError} />
         <Stack.Screen name="Profile" component={netInfo.isConnected ? Profile : NetWorkError} />
@@ -92,6 +95,8 @@ export default function Router() {
         <Stack.Screen name="DLESchedule" component={netInfo.isConnected ? DLESchedule : NetWorkError} />
         <Stack.Screen name="DetailCheck" component={netInfo.isConnected ? DetailCheck : NetWorkError} />
         <Stack.Screen name="ResidenceOwner" component={netInfo.isConnected ? ResidenceOwner : NetWorkError} />
+        <Stack.Screen name="HousePhoto" component={netInfo.isConnected ? HousePhoto : NetWorkError} />
+        <Stack.Screen name="DLECompleted" component={netInfo.isConnected ? DLECompleted : NetWorkError} />
         <Stack.Screen name="CustomerDetails" component={netInfo.isConnected ? CustomerDetails: NetWorkError} />
         <Stack.Screen name="ScheduleMeet" component={netInfo.isConnected ? ScheduleMeet : NetWorkError} />
         <Stack.Screen name="Collect" component={netInfo.isConnected ? Collect : NetWorkError} />
@@ -100,12 +105,14 @@ export default function Router() {
         <Stack.Screen name="WhiteGoodsOwner" component={netInfo.isConnected ? WhiteGoodsOwner : NetWorkError} />
         <Stack.Screen name="EnergyUtility" component={netInfo.isConnected ? EnergyUtility : NetWorkError} />
         <Stack.Screen name="IncomeDetails" component={netInfo.isConnected ? IncomeDetails : NetWorkError} />
+        <Stack.Screen name="IncomeDetailsSpouse" component={netInfo.isConnected ? IncomeDetailsSpouse : NetWorkError} />
         <Stack.Screen name="DebitDetails" component={netInfo.isConnected ? DebitDetails : NetWorkError} />
         <Stack.Screen name="Proceed" component={netInfo.isConnected ? Proceed : NetWorkError} />
         <Stack.Screen name="Collection" component={netInfo.isConnected ? Collection : NetWorkError} />
         <Stack.Screen name="LoanDetailsCollect" component={netInfo.isConnected ?LoanDetailsCollect:NetWorkError} />
         <Stack.Screen name="Dashboard" component={netInfo.isConnected ? Dashboard : NetWorkError} />
         <Stack.Screen name="SelectCustomerNewCgt" component={netInfo.isConnected ? SelectCustomerNewCgt : NetWorkError} />
+        <Stack.Screen name="UploadVid" component={netInfo.isConnected ?UploadVid: NetWorkError} />
    </Stack.Navigator>
     </NavigationContainer>
   );

@@ -11,7 +11,8 @@ import {
     StatusBar,
     ScrollView,
     Dimensions,
-    BackHandler
+    BackHandler,
+    Alert
 } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { COLORS, FONTS } from '../../../Constants/Constants';
@@ -24,12 +25,16 @@ import { t } from 'i18next';
 import ApprovalModal from './ApprovalModal';
 import { set } from 'date-fns';
 import ModalSchedule from '../../../Components/ModalSchedule';
+import ModalDLESchedule from '../../../Components/ModalDLESchedule';
 const { height, width } = Dimensions.get('screen');
 
-const DLE = ({ navigation, set }) => {
+const DLE = ({ navigation, set, list }) => {
+    console.log('====>>>', list)
     const isDarkMode = true;
     const [lang, setLang] = useState('')
+    const [ModalVisible, setModalVisible] = useState(false)
     const [ModalVisible1, setModalVisible1] = useState(false)
+    const [ModalVisible2, setModalVisible2] = useState(false)
     const [status, setStatus] = useState(false)
 
     useEffect(() => {
@@ -121,22 +126,47 @@ const DLE = ({ navigation, set }) => {
             width: width * 0.35
         },
     ]
+
+    const getRandomColor = () => {
+        var letters = '0123456789ABCDEF';
+        var color = '#';
+        for (var i = 0; i < 3; i++) {
+            color += letters[Math.floor(Math.random() * 8)];
+        }
+        return color;
+    }
+
+
+    const getInitials = (name) => {
+
+        let initials;
+        const nameSplit = name?.split(" ");
+        const nameLength = nameSplit?.length;
+        if (nameLength > 1) {
+            initials =
+                nameSplit[0].substring(0, 1) +
+                nameSplit[nameLength - 1].substring(0, 1);
+        } else if (nameLength === 1) {
+            initials = nameSplit[0].substring(0, 1);
+        } else return;
+
+        return initials.toUpperCase();
+    };
+
+
+
     return (
 
         <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1, marginTop: 15 }}>
             <ScrollView showsVerticalScrollIndicator={false}>
-                {Data.map((item) => {
+                {list?.map((item) => {
                     return (
-                        <View style={[styles.viewCard, { borderColor: !status ? 'white' : status && item.id == 3 ? COLORS.colorB : 'white', borderWidth: 2 }]}>
-                            <View style={[styles.circleStyle, { backgroundColor: !status ? item.color : status && item.id == 3 ? COLORS.colorB : item.color, marginLeft: width * 0.03 }]}>
-                                {!status ?
-                                    <Text style={styles.circleText}>{item.Initial}</Text> :
-                                    status && item.id == 3 ?
-                                        <Icon4 name='check' size={20} color={COLORS.colorBackground} /> :
-                                        <Text style={styles.circleText}>{item.Initial}</Text>}
-                                {/* // !status && item.id == 3 ?
-                                // <Text style={styles.circleText}>{item.Initial }</Text>:
-                                // <Icon4 name='check' size={20} color={COLORS.colorBackground}/>} */}
+                        <View style={[styles.viewCard, { borderColor: 'white', borderWidth: 2 }]}>
+
+
+                            <View style={[styles.circleStyle, { backgroundColor: getRandomColor() }]}>
+                                {/* <Text numberOfLines={1} style={styles.circleText}>{(item.customerName)}</Text> */}
+                                <Text numberOfLines={1} style={styles.circleText}>{getInitials(item.name)}</Text>
                             </View>
 
                             <View style={{ flexDirection: 'row', justifyContent: 'space-between', flex: 1 }}>
@@ -149,7 +179,7 @@ const DLE = ({ navigation, set }) => {
                                         <View style={{ paddingTop: 5, paddingRight: 1 }}>
                                             <Icon1 name="location-outline" color={"black"} />
                                         </View>
-                                        <Text style={[styles.idText, { paddingTop: 4 }]}>{item.Pincode}</Text>
+                                        <Text style={[styles.idText, { paddingTop: 4 }]}>{item.villageOrPin}</Text>
                                     </View>
 
 
@@ -157,11 +187,11 @@ const DLE = ({ navigation, set }) => {
 
                                 <View style={{ flexDirection: 'column', top: 0, alignItems: 'flex-end', flex: 1, paddingRight: width * 0.04 }}>
 
-                                    <Text style={[styles.numText, {}]}>{item.number}</Text>
-                                    <TouchableOpacity onPress={() => {navigation.navigate('ScheduleMeet')}}
-                                        // item.id === 5 ? setModalVisible1(true) : setStatus(!status) }}
-                                        style={[styles.ViewExplain, { right: 0, backgroundColor: item.backgroundColor, width: item.width }]}>
-                                        <Text style={[styles.explainText, { color: item.color1 }]}>{item.Status}</Text>
+                                    <Text style={[styles.numText, {}]}>{item.mobileNumber}</Text>
+                                    <TouchableOpacity onPress={() => { item.dleScheduleStatus == "Conduct DLE" ? setModalVisible2(true) : item.dleScheduleStatus == "TC approval pending" ? setModalVisible(true) : navigation.navigate('ScheduleMeet') }}
+
+                                        style={[styles.ViewExplain, { right: 0, backgroundColor: item.dleScheduleStatus == "Conduct DLE" ? "rgba(186, 134, 205, 0.1)" : item.dleScheduleStatus == "TC approval pending" ? "rgba(39, 174, 96, 0.1)" : "rgba(155, 81, 224, 0.1)", width: item.width }]}>
+                                        <Text style={[styles.explainText, { marginHorizontal: 7, marginVertical: 1, color: item.dleScheduleStatus == "Conduct DLE" ? "rgba(242, 153, 74, 1)" : item.dleScheduleStatus == "TC approval pending" ? "rgba(39, 174, 96, 1)" : "rgba(155, 81, 224, 1)" }]}>{item.dleScheduleStatus}</Text>
                                     </TouchableOpacity>
                                 </View>
                             </View>
@@ -179,20 +209,46 @@ const DLE = ({ navigation, set }) => {
                     <Text style={[styles.textB, { color: COLORS.colorBackground }]}>Schedule DLE</Text>
                 </TouchableOpacity>
             </View> : null}
-            {/* <ApprovalModal ModalVisible={ModalVisible1}
-                 onPressOut={() => {
-                 setModalVisible1(false)}}
+
+
+
+
+            <ApprovalModal
+                ModalVisible={ModalVisible}
+                onPressOut={() => {
+                    setModalVisible(false)
+                }}
                 //navigation.navigate('NewCgt')}}
-               
-                 navigation={navigation}
-              //  onPressOut={() => setModalVisible(!ModalVisible)}
-                setModalVisible={setModalVisible1} /> */}
+
+                navigation={navigation}
+                //  onPressOut={() => setModalVisible(!ModalVisible)}
+                setModalVisible={setModalVisible}
+                list={list} />
+
+
+
+
             <ModalSchedule
+               
                 ModalVisible={ModalVisible1}
                 setModalVisible={setModalVisible1}
                 onPressOut={() => {
                     setModalVisible1(false)
-                    
+                    setModalVisible(true)
+                }}
+                navigation={navigation} />
+
+
+
+
+            <ModalDLESchedule
+                Press={()=>setModalVisible(true)}
+                ModalVisible={ModalVisible2}
+                setModalVisible={setModalVisible2}
+                onPressOut={() => {
+                    setModalVisible2(false)
+                   
+
                 }}
                 navigation={navigation} />
         </View>
@@ -328,6 +384,8 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         alignItems: 'center',
         justifyContent: 'center',
+        marginLeft: width * 0.03,
+        marginTop: width * 0.03
     },
     circleText: {
         fontSize: 18,

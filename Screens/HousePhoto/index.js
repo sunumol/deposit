@@ -21,54 +21,20 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRoute } from '@react-navigation/native';
 import { useFocusEffect } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
-import DetailChecks from './Components/DetailChecks';
-import { api } from '../../Services/Api';
-import { useSelector } from 'react-redux';
-import ModalSave from '../../Components/ModalSave';
-import ReasonModal from './Components/ReasonModal';
+import House from './Components/House'
 
 
-
-const DetailCheck = ({ navigation,route }) => {
-    console.log('====>>Activity id',route?.params?.data)
-   // const route = useRoute();
-        
+const ResidenceOwner = ({ navigation, }) => {
+    const route = useRoute();
+    console.log("route name",);
     const isDarkMode = true
     const { t } = useTranslation();
     const [lang, setLang] = useState('')
     const [BStatus, setBstatus] = useState(false)
-    const [basicdetail, setBasicdetail] = useState('')
-    const [ModalVisible,setModalVisible] = useState(false)
-    const [ModalReason,setModalReason] = useState(false)
-
-   // const [activityId,setActivityId] = useState(route?.params?.data)
-   const activityId = useSelector(state => state.activityId);
-
+    const [state,setState] = useState()
     useEffect(() => {
         getData()
-getConductDLEbasicdetail()
     }, [])
-
-
-
-     // ------------------ get Conduct DLE basic detail start Api Call Start ------------------
-     const getConductDLEbasicdetail = async () => {
-        console.log('api called')
-        const data = {
-           "activityId": activityId
- 
-        
-        }
-        await api.ConductDLEbasicdetail(data).then((res) => {
-            console.log('-------------------res ConductDLEbasicdetail12', res)
-            if (res?.status) {
-                setBasicdetail(res?.data?.body)
-            }
-        }).catch((err) => {
-            console.log('-------------------err ConductDLEbasicdetail', err?.response)
-        })
-    };
-    // ------------------ HomeScreen Api Call End ------------------
 
     const getData = async () => {
         try {
@@ -82,8 +48,8 @@ getConductDLEbasicdetail()
 
     const handleGoBack = useCallback(() => {
 
-       // navigation.goBack()
-            setModalVisible(true)
+        navigation.goBack()
+
         return true; // Returning true from onBackPress denotes that we have handled the event
     }, [navigation]);
 
@@ -92,7 +58,6 @@ getConductDLEbasicdetail()
             BackHandler.addEventListener('hardwareBackPress', handleGoBack);
 
             return () =>
-            
                 BackHandler.removeEventListener('hardwareBackPress', handleGoBack);
         }, [handleGoBack]),
     );
@@ -101,43 +66,17 @@ getConductDLEbasicdetail()
             <SafeAreaView style={styles.container1} />
             <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
 
-            <Header name="Detailed Eligibility Check" navigation={navigation} />
+            <Header name="House Photo Capture" navigation={navigation} setState={state} />
 
             <View style={styles.ViewContent}>
-                <DetailChecks navigation={navigation} details ={basicdetail} />
+                <House navigation={navigation} setState={setState}  />
             </View>
-
-
-            <ModalSave
-                Press ={()=>{
-                    setModalVisible(false),
-                    setModalReason(true)
-                }}
-                ModalVisible={ModalVisible}
-                setModalVisible={setModalVisible}
-                onPressOut={() => {
-                    setModalVisible(false)
-                   
-
-                }}
-                navigation={navigation} />
-
-
-<ReasonModal
-                onPress1={() => {
-                    // setModalVisible(false)
-                    setModalError(true)
-                }}
-                ModalVisible={ModalReason}
-                onPressOut={() => setModalReason(!ModalReason)}
-                setModalVisible={setModalReason}
-            />
 
         </SafeAreaProvider>
     )
 }
 
-export default DetailCheck;
+export default ResidenceOwner;
 
 
 const styles = StyleSheet.create({

@@ -10,7 +10,8 @@ import {
     Image,
     ScrollView,
     Dimensions,
-    TouchableOpacity
+    TouchableOpacity,
+    Alert
 } from 'react-native'
 import React, { useCallback, useState, useEffect } from 'react'
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -24,9 +25,14 @@ import Purpose from '../../SelectCustomCall/Components/Purpose';
 const { height, width } = Dimensions.get('screen');
 import OwnerModal from './OwnerModal';
 import Image1 from '../../../assets/Images/cakes.svg';
+import { api } from '../../../Services/Api';
+import ErrorModal from './ErrorModal';
+import { useSelector } from 'react-redux';
+
+
 const Vehicle = ({ navigation }) => {
 
-
+    const activityId = useSelector(state => state.activityId);
 
     useEffect(() => {
         const willFocusSubscription = navigation.addListener('focus', () => {
@@ -34,7 +40,7 @@ const Vehicle = ({ navigation }) => {
             setSearchStatus2(false)
             setSearchStatus(false)
             setNumbers('')
-            console.log("search status.....",SearchStatus)
+            console.log("search status.....", SearchStatus)
 
         });
         return willFocusSubscription;
@@ -53,7 +59,11 @@ const Vehicle = ({ navigation }) => {
     const [Purpose, setPurpose] = useState('')
     const [SearchStatus, setSearchStatus] = useState(false)
     const [SearchStatus2, setSearchStatus2] = useState(false)
+    const [spousedetail,setSpousedetail] = useState('')
     const [Status, setStatus] = useState(false)
+    const [ModalVisible1, setModalVisible1] = useState(false)
+    const [searchvehicledata, setSearchvehicledata] = useState('')
+
     const toggleCheckbox = () => setChecked(!checked);
 
     const Data = [
@@ -79,24 +89,84 @@ const Vehicle = ({ navigation }) => {
         }
     ]
 
-    const StatusChange1 = () => {
 
-        if (numbers.length > 0) {
-            setSearchStatus(true)
-            setStatus(true)
-            console.log("search.....", SearchStatus)
-        } else {
-            setSearchStatus(false)
-            setStatus(true)
-            console.log("search rt.....", SearchStatus)
+    useEffect(() => {
+
+        console.log("purpose print....", Purpose)
+
+        setPurpose(Purpose)
+
+        // setRelation(Relation)
+
+
+        //setStatus(true)
+    }, [Purpose])
+
+
+
+    useEffect(()=>{
+
+        getSpousedetail();
+
+    },[])
+
+
+    // ------------------spouse detail ------------------
+
+    const getSpousedetail = async () => {
+        console.log('api called')
+
+        const data = {
+               "activityId": activityId
+      
+
         }
+        await api.getSpousedetail(data).then((res) => {
+            console.log('-------------------res spousedetail', res)
+            if (res?.status) {
+                setSpousedetail(res?.data?.body)
+            }
+        }).catch((err) => {
+            console.log('-------------------err spousedetail', err?.response)
+        })
+    };
+    // ------------------ ------------------
 
-    }
+
+
+
+
+
+
+
+     // ------------------get fetchVehicleDetailsForDle detail ------------------
+
+     const fetchVehicleDetailsForDle = async () => {
+        console.log('api called')
+
+        const data = {
+            "activityId": activityId,
+            "relationShip": Purpose,
+            "vehicleNumber": numbers
+        }
+        await api.fetchVehicleDetailsForDle(data).then((res) => {
+            console.log('-------------------res fetchVehicleDetailsForDle', res?.data?.body)
+            if (res?.status) {
+                setSearchvehicledata(res?.data?.body)
+                setSearchStatus2(true)
+            }
+        }).catch((err) => {
+            console.log('-------------------err fetchVehicleDetailsForDle', err?.response)
+        })
+    };
+
+
     const StatusChange2 = () => {
 
         if (numbers.length > 0) {
-            setSearchStatus2(true)
+            //setSearchStatus2(true)
             setStatus(true)
+            fetchVehicleDetailsForDle()
             console.log("search.....", SearchStatus)
         } else {
             setSearchStatus2(false)
@@ -111,19 +181,17 @@ const Vehicle = ({ navigation }) => {
             setNumbers(num)
 
         } else {
-
+            setModalError(true)
             // ToastAndroid.show(t('common:Valid'), ToastAndroid.SHORT);
         }
     }
 
-    const GetStateChange = () => {
-        setModalReason(true)
-        setPurpose('')
-        setNumbers('')
-        setStatus(false)
-        setSearchStatus(false)
-        setSearchStatus2(false)
-    }
+
+
+
+
+
+
     return (
 
         <>
@@ -134,89 +202,76 @@ const Vehicle = ({ navigation }) => {
                     </View>
 
                     <TouchableOpacity style={styles.SelectBox} onPress={() => {
-                        setModalReason(true)
-                        setPurpose('')
-                        setNumbers('')
-                        setStatus(false)
-                        setSearchStatus(false)
-                        setSearchStatus2(false)
+                        setModalVisible1(true)
                     }} >
-                        {!Purpose ? <Text style={styles.textSelect}>Select</Text> :
-                            <Text style={[styles.textSelect], { color: '#1A051D', marginLeft: 8 }}>{Purpose}</Text>}
 
-                        {/* <Icon1 name="chevron-down" size={18} color={'#808080'} style={{ marginRight: 10 }} /> */}
+                        <Text style={[styles.textSelect, { color: '#1A051D', marginLeft: 8 }]}>{Purpose ? Purpose : 'Select'}</Text>
+
+                        <Icon1 name="chevron-down" size={18} color={'#808080'} style={{ marginRight: 10 }} />
                     </TouchableOpacity>
                     <View>
                         <Text style={[styles.TextOwner, { marginTop: 10 }]}>Enter the vehicle number</Text>
                     </View>
-
-                    <TouchableOpacity style={styles.SelectBox}>
-
-                        <TextInput
-
-                            placeholder='KL34E3278'
-                            placeholderTextColor='#808080'
-                            value={numbers}
-                            //maxLength={10}
-                            style={styles.Num}
-                            placeholderTextColor="#808080"
-
-                            onChangeText={(text) => {
-                                OnchangeNumbers(text)
+                    {Purpose ?
+                        <TouchableOpacity style={styles.SelectBox}>
 
 
-                            }
+                            <TextInput
+                                readOnly={true}
 
-                            }
+                                // placeholder='KL34E3278'
+                                placeholderTextColor='#808080'
+                                value={numbers}
+                                //maxLength={10}
+                                style={styles.Num}
+                                //placeholderTextColor="#808080"
 
-                        // keyboardType="numeric"
-                        />
-                        {Purpose === 'Self' || Purpose === 'Children' ?
-                            <TouchableOpacity style={styles.SearhView} onPress={() => numbers?.length > 0 ? StatusChange1() : console.log("null")}>
-                                <Search />
-                            </TouchableOpacity> :
+                                onChangeText={(text) => {
+                                    OnchangeNumbers(text)
+
+
+                                }
+
+                                }
+
+                            // keyboardType="numeric"
+                            />
+
                             <TouchableOpacity style={styles.SearhView} onPress={() => numbers?.length > 0 ? StatusChange2() : console.log("null")}>
                                 <Search />
-                            </TouchableOpacity>}
-                    </TouchableOpacity>
+                            </TouchableOpacity>
+                        </TouchableOpacity>
+                        :
+                        <View style={styles.SelectBox1}>
 
-                    {SearchStatus2 ?
 
-                        <View style={styles.containerBox}>
-                            <View style={{ flex: 1, flexDirection: 'row' }}>
-                                <View style={styles.circleView}>
-                                    <Text style={styles.shortText}>AA</Text>
-                                </View>
-                                <View style={{ flexDirection: 'column', flex: 1, marginLeft: 12 }}>
-                                    <Text style={styles.nameText}>Athira Anil</Text>
-                                    <Text style={styles.underText}>Daily wage labourer</Text>
-                                </View>
-                                <View style={{ flexDirection: 'row', }}>
 
-                                    <Text style={styles.dateText}>Customer</Text>
-                                </View>
+                            <View style={styles.SearhView} >
+                                <Search />
                             </View>
-                        </View> : SearchStatus &&
+                        </View>}
+
+                    {(SearchStatus2 && Purpose == "Spouse") &&
                         <View style={styles.containerBox}>
                             <View style={{ flex: 1, flexDirection: 'row' }}>
                                 <View style={[styles.circleView, { backgroundColor: 'rgba(206, 116, 143, 1)' }]}>
                                     <Text style={styles.shortText}>AK</Text>
                                 </View>
                                 <View style={{ flexDirection: 'column', flex: 1, marginLeft: 12 }}>
-                                    <Text style={styles.nameText}>Anil Kumar</Text>
-                                    <Text style={styles.underText}>Daily wage labourer</Text>
+                                    <Text style={styles.nameText}>{spousedetail?.name}</Text>
+                                    <Text style={styles.underText}>{spousedetail?.occupation}</Text>
                                 </View>
 
 
                                 <View style={{ flexDirection: 'row', }}>
-                                <Image1 width={11} height={11} top={3}/>
-                                    <Text style={styles.dateText}>12/10/1972</Text>
+                                    <Image1 width={11} height={11} top={3} />
+                                    <Text style={styles.dateText}>{spousedetail?.dateOfBirth}</Text>
                                 </View>
 
                             </View>
                         </View>}
 
-                    {SearchStatus2 ?
+                    {SearchStatus2 &&
 
 
                         <View>
@@ -227,7 +282,7 @@ const Vehicle = ({ navigation }) => {
                                 }}>
                                     <View style={{ flexDirection: 'column', flex: 1, alignItems: 'flex-start' }}>
                                         <Text style={styles.owner}>Owner name</Text>
-                                        <Text style={styles.NameStyle}>Athira Anil</Text>
+                                        <Text style={styles.NameStyle}>{searchvehicledata?.ownersName}</Text>
                                     </View>
                                     <View style={{ flexDirection: 'column', flex: 1, alignItems: 'center', left: -9 }}>
                                         {Data.map((item) => {
@@ -240,14 +295,14 @@ const Vehicle = ({ navigation }) => {
                                     </View>
                                     <View style={{ flexDirection: 'column', flex: 1, left: -25 }}>
                                         <Text style={styles.owner}>Vehicle Number</Text>
-                                        <Text style={styles.NameStyle}>KL34E3278</Text>
+                                        <Text style={styles.NameStyle}>{searchvehicledata?.vehicleNumber}</Text>
                                     </View>
                                 </View>
 
                                 <View style={{ flexDirection: 'row', justifyContent: 'space-around', paddingTop: width * 0.05 }}>
                                     <View style={{ flexDirection: 'column', marginLeft: width * 0.055 }}>
                                         <Text style={styles.owner}>Model</Text>
-                                        <Text style={styles.NameStyle}>Maruti Suzuki Alto</Text>
+                                        <Text style={styles.NameStyle}>{searchvehicledata?.model}</Text>
                                     </View>
 
                                     <View style={{ flexDirection: 'column', alignItems: 'center', flex: 1, left: -15 }}>
@@ -261,7 +316,7 @@ const Vehicle = ({ navigation }) => {
                                     </View>
                                     <View style={{ flexDirection: 'column', flex: 1, left: -28 }}>
                                         <Text style={styles.owner}>Year</Text>
-                                        <Text style={styles.NameStyle}>2017</Text>
+                                        <Text style={styles.NameStyle}>{searchvehicledata?.year}</Text>
                                     </View>
                                 </View>
                                 <View style={{
@@ -273,68 +328,8 @@ const Vehicle = ({ navigation }) => {
                                     >
                                         <Text style={[styles.continueText, { color: COLORS.colorB }]}>Reject</Text>
                                     </TouchableOpacity>
-                                    <TouchableOpacity onPress={() => navigation.navigate('VehicleOwn')}
-                                        style={[styles.buttonView1, { backgroundColor: COLORS.colorB }]}>
-                                        <Text style={[styles.continueText, { color: COLORS.colorBackground }]}>Confirm</Text>
-                                    </TouchableOpacity>
-                                </View>
-                            </View>
-                        </View> : SearchStatus && <View>
-                            <View style={styles.containerBox1}>
-                                <View style={{
-                                    flexDirection: 'row', justifyContent: 'space-around',
-                                    paddingTop: width * 0.05, marginLeft: width * 0.05
-                                }}>
-                                    <View style={{ flexDirection: 'column', flex: 1, alignItems: 'flex-start' }}>
-                                        <Text style={styles.owner}>Owner name</Text>
-                                        <Text style={styles.NameStyle}>Anil Kumar</Text>
-                                    </View>
-                                    <View style={{ flexDirection: 'column', flex: 1, alignItems: 'center', left: -9 }}>
-                                        {Data.map((item) => {
-                                            return (
-                                                <View style={{ flexDirection: 'column', }}>
-                                                    <Text style={{ fontSize: 6, color: "#C4C4C4" }}>{item.label}</Text>
-                                                </View>
-                                            )
-                                        })}
-                                    </View>
-                                    <View style={{ flexDirection: 'column', flex: 1, left: -25 }}>
-                                        <Text style={styles.owner}>Vehicle Number</Text>
-                                        <Text style={styles.NameStyle}>KL34E3278</Text>
-                                    </View>
-                                </View>
-
-                                <View style={{ flexDirection: 'row', justifyContent: 'space-around', paddingTop: width * 0.05 }}>
-                                    <View style={{ flexDirection: 'column', marginLeft: width * 0.055 }}>
-                                        <Text style={styles.owner}>Model</Text>
-                                        <Text style={styles.NameStyle}>Maruti Suzuki Alto</Text>
-                                    </View>
-
-                                    <View style={{ flexDirection: 'column', alignItems: 'center', flex: 1, left: -15 }}>
-                                        {Data.map((item) => {
-                                            return (
-                                                <View style={{ flexDirection: 'column', }}>
-                                                    <Text style={{ fontSize: 6, color: "#C4C4C4" }}>{item.label}</Text>
-                                                </View>
-                                            )
-                                        })}
-                                    </View>
-                                    <View style={{ flexDirection: 'column', flex: 1, left: -28 }}>
-                                        <Text style={styles.owner}>Year</Text>
-                                        <Text style={styles.NameStyle}>2017</Text>
-                                    </View>
-                                </View>
-                                <View style={{
-                                    flexDirection: 'row', justifyContent: 'space-between', marginTop: width * 0.05,
-                                    paddingLeft: 20, paddingRight: 20
-                                }}>
-
-                                    <TouchableOpacity style={[styles.buttonView1, { backgroundColor: 'rgba(229, 231, 250, 1)' }]}
-                                    >
-                                        <Text style={[styles.continueText, { color: COLORS.colorB }]}>Reject</Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity onPress={() => {navigation.navigate('VehicleOwn')
-                                     setSearchStatus2(false)}}
+                                    {console.log('~~~~~>>>',searchvehicledata)}
+                                    <TouchableOpacity onPress={() =>  navigation.navigate('VehicleOwn',{vehicle:searchvehicledata})}
                                         style={[styles.buttonView1, { backgroundColor: COLORS.colorB }]}>
                                         <Text style={[styles.continueText, { color: COLORS.colorBackground }]}>Confirm</Text>
                                     </TouchableOpacity>
@@ -355,15 +350,22 @@ const Vehicle = ({ navigation }) => {
             </View>
 
             <OwnerModal
-                onPress1={() => {
-                    // setModalVisible(false)
-                    //setModalError(true)
-                }}
-                ModalVisible={ModalReason}
+                visible={ModalVisible1}
+
                 setPurpose={setPurpose}
-                onPressOut={() => setModalReason(!ModalReason)}
-                setModalVisible={setModalReason}
+                setModalVisible={setModalVisible1}
+                setStatus={setStatus}
+                onPressOut={() => setModalVisible1(!ModalVisible1)}
             />
+            <ErrorModal
+                ModalVisible={ModalError}
+                onPressOut={() => {
+                    setModalError(!ModalError)
+
+                }}
+                setModalVisible={setModalError}
+            />
+
 
 
         </>
@@ -434,6 +436,19 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flexDirection: 'row',
         justifyContent: 'space-between',
+        marginTop: width * 0.02,
+        marginBottom: width * 0.02
+    },
+    SelectBox1: {
+        backgroundColor: '#FCFCFC',
+        borderRadius: 8,
+        borderWidth: 1,
+        width: width * 0.89,
+        height: width * 0.12,
+        borderColor: 'rgba(236, 235, 237, 1)',
+        alignItems: 'flex-end',
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
         marginTop: width * 0.02,
         marginBottom: width * 0.02
     },

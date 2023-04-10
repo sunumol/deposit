@@ -1,46 +1,38 @@
 import React, { useState } from "react";
 import { Dimensions, Modal, StyleSheet, Text, TouchableOpacity, View, Pressable, } from "react-native";
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Icon1 from 'react-native-vector-icons/Fontisto'
 import { COLORS, FONTS } from '../../../Constants/Constants';
 import { useTranslation } from 'react-i18next';
-import { api } from '../../../Services/Api';
-
+import { CheckBox } from 'react-native-elements';
 const { height, width } = Dimensions.get('screen');
 
 const data = [
     {
         id: 1,
-        Title: 'Suspected fraud',
+        Title: 'No road access',
         isChecked: false
     },
     {
         id: 2,
-        Title: 'Non cooperative',
+        Title: 'Two wheeler',
         isChecked: false
     },
     {
         id: 3,
-        Title: 'Submitted wrong data',
+        Title: 'Four wheeler',
         isChecked: false
     },
-    {
-        id: 4,
-        Title: 'KYC mismatch',
-        isChecked: false
-    },
-    {
-        id: 5,
-        Title: 'Others',
-        isChecked: false
-    },
+  
 ]
-const ReasonModal = ({ModalVisible, onPressOut,setModalVisible,onPress1,setRejectReason}) => {
+const RoadAccessModal = ({ModalVisible, onPressOut,setModalVisible,onPress1}) => {
     const { t } = useTranslation();
 
     const [Data, setData] = useState(data)
-    const [Reason, setReason] = useState('')
+    const [type, setType] = useState('')
     const [ButtonStatus, setButtonStatus] = useState(false)
     const [Checked,setChecked] = useState('')
+    const [selectedItem1, setSelectedItem1] = useState()
+    const [Id,setId] = useState('')
 
     const onCheck1 = (id) => {
         let reason = Data
@@ -54,7 +46,7 @@ const ReasonModal = ({ModalVisible, onPressOut,setModalVisible,onPress1,setRejec
 
             console.log("FilterId.",Checked)
             console.log("FilterArray.......", FilterArray1)
-            setReason(FilterId1)
+            setType(FilterArray1)
             setChecked(Checked)
             if(FilterId1.length == 0){
                 setButtonStatus(false)
@@ -65,9 +57,17 @@ const ReasonModal = ({ModalVisible, onPressOut,setModalVisible,onPress1,setRejec
 
      
     }
-
-
-    
+    const _choosen = (selectedItem1) => {
+    console.log('selecting====>>',selectedItem1)
+        setSelectedItem1(selectedItem1)
+        setId(selectedItem1.id)
+        setType(selectedItem1)
+        if(selectedItem1.length == 0){
+            setButtonStatus(false)
+        }else{
+            setButtonStatus(true)
+        }
+    }
 
     return (
 
@@ -76,7 +76,7 @@ const ReasonModal = ({ModalVisible, onPressOut,setModalVisible,onPress1,setRejec
             transparent={true}
             visible={ModalVisible}
             onRequestClose={()=>{onPressOut()
-            setReason(null)}}
+            setType(null)}}
         >
             <View style={styles.mainContainer} >
                 <TouchableOpacity
@@ -85,20 +85,17 @@ const ReasonModal = ({ModalVisible, onPressOut,setModalVisible,onPress1,setRejec
                 </TouchableOpacity>
                 <View style={styles.centeredView2}>
                     <View style={styles.modalView}>
-                        <Text style={styles.modalTextHead}>Reason for reject</Text>
+                        <Text style={styles.modalTextHead}>Access road type</Text>
 
 
-                        {Data.map((item, index) => {
+                        {/* {Data.map((item, index) => {
                             return (
                                 <View style={{flexDirection:'column',}}>
                                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', 
                                 paddingLeft: width * 0.06,paddingRight:width*0.06,alignItems:'center',marginBottom:width*0.05,marginTop:width*0.05 }}>
                                     <Text style={styles.TextTitle}>{item.Title}</Text>
-                                    <Pressable onPress={() => {
-                                        onCheck1(item.id)
-                                        setRejectReason(item.Title)
-                                        }} >
-                                        <Icon name={item.isChecked ? 'checkbox-marked' : 'checkbox-blank-outline'} size={22} color={item.isChecked ? COLORS.colorB : '#DADADA'} />
+                                    <Pressable onPress={() => onCheck1(item.id)} >
+                                        <Icon1 name={item.isChecked ? 'radio-btn-active' : 'radio-btn-passive'} size={22} color={item.isChecked ? COLORS.colorB : '#DADADA'} />
                                     </Pressable>
                                     
                                 </View>
@@ -106,12 +103,32 @@ const ReasonModal = ({ModalVisible, onPressOut,setModalVisible,onPress1,setRejec
                                 <View style={styles.lineView} />}
                                 </View>
                             )
-                        })}
+                        })} */}
+
+
+                        {Data.map((item) => {
+                        const isSelected1 = (selectedItem1 === item);
+                        return (
+                            <View style={{ flexDirection: 'row', justifyContent: 'space-between', 
+                                paddingLeft: width * 0.06,paddingRight:width*0.06,alignItems:'center',marginBottom:width*0.05,marginTop:width*0.05 }}>
+                                  <Text style={styles.TextTitle}>{item.Title}</Text>
+                                {isSelected1 ?
+                                    <TouchableOpacity onPress={() => _choosen(item)}
+                                    >
+                                        <Icon1 name="radio-btn-active" size={22} color={COLORS.colorB} />
+                                    </TouchableOpacity> :
+                                    <TouchableOpacity onPress={() => _choosen(item)}>
+                                        <Icon1 name="radio-btn-passive" size={22} color={'rgba(229, 231, 250, 1)'} />
+                                    </TouchableOpacity>}
+                             
+                            </View>
+                        )
+                    })}
 
                         <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                             <TouchableOpacity style={[styles.Button1,
                             { backgroundColor: ButtonStatus ? COLORS.colorB : '#ECEBED' }]}
-                            onPress={()=>ButtonStatus ? onPress1() : console.log("hello")}>
+                            onPress={()=>ButtonStatus ? onPress1(type) : console.log("hello")}>
 
                                 <Text style={[styles.text1, { color: ButtonStatus ?
                                      COLORS.colorBackground : '#979C9E', paddingLeft: width * 0.02 }]}>Submit</Text>
@@ -154,8 +171,8 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.1,
         elevation: 5,
         shadowRadius: 2,
-        borderTopStartRadius: 30,
-        borderTopEndRadius: 30,
+        // borderTopStartRadius: 30,
+        // borderTopEndRadius: 30,
         width: Dimensions.get('window').width,
         paddingBottom: 7
         // height:Dimensions.get('window').height*0.3
@@ -227,4 +244,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default ReasonModal;
+export default RoadAccessModal;

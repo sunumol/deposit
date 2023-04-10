@@ -22,9 +22,11 @@ import { useRoute } from '@react-navigation/native';
 import { useFocusEffect } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import Cgt from './Components/Cgt';
-
+import { api } from '../../Services/Api';
 import CalendarStrips from './Components/Calender';
-
+import moment from 'moment';
+import DLEModal from './Components/DLEModal';
+const { height, width } = Dimensions.get('screen');
 
 const ScheduleMeet = ({ navigation, }) => {
     const route = useRoute();
@@ -33,6 +35,8 @@ const ScheduleMeet = ({ navigation, }) => {
     const { t } = useTranslation();
     const [lang, setLang] = useState('')
     const [BStatus, setBstatus] = useState(false)
+    const [selectedDate, setSelectedDate] = useState('')
+    const [ModalVisible, setModalVisible] = useState(false)
 
     useEffect(() => {
         getData()
@@ -65,7 +69,33 @@ const ScheduleMeet = ({ navigation, }) => {
                 BackHandler.removeEventListener('hardwareBackPress', handleGoBack);
         }, [handleGoBack]),
     );
+    const callback = (value) => {
+        // const date = moment(value).utc().format('DD-MM-YYYY')
+        setSelectedDate(value)
+        ScheduleDLE(value)
 
+
+    }
+
+    // ------------------ get Slot Api Call Start ------------------
+    const ScheduleDLE = async (date) => {
+        console.log('api called')
+        const data = {
+            "customerId": 1,
+            "tcMemberId": 11177,
+            "scheduleDate": moment(date ? date : selectedDate).utc().format('DD-MM-YYYY')
+        };
+        await api.ScheduleDLE(data).then((res) => {
+
+            console.log('------------------- Schedule DLE res', res.data)
+                setModalVisible(true)
+
+        })
+            .catch((err) => {
+                console.log('-------------------err', err?.response)
+            })
+    };
+    // ------------------ get slot Api Call End ------------------
 
 
     return (
@@ -75,12 +105,34 @@ const ScheduleMeet = ({ navigation, }) => {
 
             <Header navigation={navigation} name={"Schedule Meeting"} />
             <View style={styles.ViewContent}>
-          
-           
-                <CalendarStrips />
-                <Cgt navigation={navigation} />
-              
-                {/* <DatePicker/> */}
+
+
+                <CalendarStrips callback={callback} />
+                {/* <Cgt navigation={navigation} /> */}
+
+
+                <View style={{ alignItems: 'center', justifyContent: 'center', bottom: 10, position: 'absolute', left: 25 }}>
+                    {selectedDate
+                        ? <TouchableOpacity style={[styles.Button1,
+                        { backgroundColor: COLORS.colorB }]} onPress={() => ScheduleDLE()}>
+                            <Text style={[styles.text1, { color: COLORS.colorBackground, paddingLeft: width * 0.02 }]}>Continue</Text>
+                        </TouchableOpacity>
+                        :
+                        <View style={[styles.Button1, { backgroundColor: '#ECEBED' }]} >
+                            <Text style={[styles.text1, { color: '#979C9E', paddingLeft: width * 0.02 }]}>Continue</Text>
+                        </View>
+                    }
+
+                </View>
+
+                <DLEModal
+
+                    ModalVisible={ModalVisible}
+                    onPressOut={() => {
+                        setModalVisible(false)
+                    }}
+                    navigation={navigation}
+                    setModalVisible={setModalVisible} />
 
 
             </View>
@@ -114,6 +166,11 @@ const styles = StyleSheet.create({
         textAlign: 'justify',
         color: "#1A051D",
     },
+    text1: {
+        fontFamily: FONTS.FontBold,
+        fontSize: 14,
+        fontWeight: '700'
+    },
     Head: {
         fontFamily: FONTS.FontExtraBold,
         fontSize: 18,
@@ -125,5 +182,16 @@ const styles = StyleSheet.create({
         marginTop: Dimensions.get('window').height * 0.02,
         marginBottom: 0,
         marginLeft: 21
-    }
+    },
+    Button1: {
+        width: width * 0.87,
+        height: 48,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: COLORS.colorB,
+        marginTop: 31,
+        flexDirection: 'row',
+        borderRadius: 40,
+        marginBottom: 20
+    },
 })

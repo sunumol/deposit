@@ -1,5 +1,5 @@
 import {
-  StyleSheet, Text, View, StatusBar, SafeAreaView, Platform,
+  StyleSheet, Text, View, StatusBar, SafeAreaView, Platform,Alert,
   TextInput, TouchableOpacity, Dimensions, ScrollView, KeyboardAvoidingView, Image
 } from 'react-native'
 import React, { useState, useEffect, useRef } from 'react'
@@ -10,22 +10,142 @@ import Statusbar from '../../Components/StatusBar';
 import Icon1 from 'react-native-vector-icons/Entypo'
 import Call from '../../assets/image/calls.svg';
 const { height, width } = Dimensions.get('screen');
-import OTPInputView from '@twotalltotems/react-native-otp-input';
 import { useTranslation } from 'react-i18next';
 import Image1 from '../../assets/Images/cakes.svg';
+import { api } from '../../Services/Api';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import ErrorModal from './components/ErrorModal';
+import RelationModal from './components/RelationModal';
+import Resend from '../../assets/Images/resend.svg'
+import OTPInputView from '../../Components/OTPInputView'
+import { useSelector } from 'react-redux';
+const ContinuingGuarantor = ({ navigation, route }) => {
 
-const ContinuingGuarantor = ({ navigation }) => {
   const isDarkMode = true;
   const { t } = useTranslation();
+  const otpInput2 = React.createRef();
+  const Pin =  AsyncStorage.getItem('Mobile')
   const [number, onChangeNumber] = useState()
+  const [relation,setRelation] =useState()
+  const [Purpose, setPurpose] = useState(null)
+  const [Purposes, setPurposes] = useState(null)
+  const [customerNumber,setCustomerNumber] =useState('')
+  const [spousedetail,setSpousedetail] = useState('')
+  const [invalidotp,setInvalidotp] = useState(false)
+  const [cgdetail,setCgdetail] = useState('')
   const [OtpValue, setOtpValue] = useState('')
   const [timerCount, setTimer] = useState(30)
   const [IsOtp1, setIsOtp1] = useState(false)
   const [Bstatus, setBstatus] = useState(false)
   const [IsOtp2, setIsOtp2] = useState(true)
+  const [ModalError, setModalError] = useState(false)
+  const [ModalVisible1,setModalVisible1] = useState(false)
+  const [status, setStatus] = useState(false)
 
+
+  const [fetOtp, setOtpFetch] = useState(false)
+    const [otpMessage, setOtpMessage] = useState()
+    const [ModalVisibleError, setModalVisibleError] = useState(false)
+    const [maxError, setMaxError] = useState(false)
+    const [otp, setOtp] = useState(false)
+
+    const activityId = useSelector(state => state.activityId);
+
+
+
+  const getData = async () => {
+    try {
+        const mob = await AsyncStorage.getItem('Mobile')
+        setCustomerNumber(mob)
+       
+    } catch (e) {
+        console.log('mob',e)
+    }
+}
+
+
+useEffect (()=>{
+  getCGdetails()
+},[])
+
+
+
+
+useEffect(() => {
+
+
+
+  setPurpose(Purpose)
+  setPurposes(Purposes)
+  //setRelation(Purposes)
+if(Purposes){
+  console.log('purpose relation',Purposes) 
+  setRelation(Purposes)
+}
+
+  //setStatus(true)
+}, [Purposes, relation])
+
+
+useEffect(()=>{
+  if(route?.params?.relation == "Spouse"){
+    setRelation('Spouse')
+    getSpousedetail()
+  }
+},[])
+
+useEffect(() => {
+  if (!OtpValue) {
+      setOtp(false)
+  }
+}, [OtpValue])
+
+useEffect(() => {
+  setMaxError(false)
+}, [])
+
+
+useEffect(() => {
+  if (IsOtp1 && timerCount > 0) {
+      setTimeout(() => setTimer(timerCount - 1), 1000);
+  } else {
+      setStatus(false)
+  }
+}, [timerCount, IsOtp1]);
+
+
+
+const getOtp = () => {
+  //bug fixing privacy policy and tc back navigation
+  if (IsOtp1 && timerCount === 0) {
+      setTimeout(() => {
+          setIsOtp1(true)
+          setStatus(true)
+          setTimer(30)
+      }, 1000)
+     
+      setIsOtp1(true)
+      setStatus(true)
+      setTimer(30)
+  } else {
+      setTimeout(() => {
+          setIsOtp1(true)
+          setStatus(true)
+      }, 1000)
+     
+      setIsOtp1(true)
+      setStatus(true)
+  }
+}
+const CountDownResend = () => {
+  setTimer(30)
+  setStatus(true)
+  setIsOtp1(true)
+}
 
   useEffect(() => {
+  
+    getData();
     if (number) {
       let interval = setInterval(() => {
         setTimer(lastTimerCount => {
@@ -33,22 +153,177 @@ const ContinuingGuarantor = ({ navigation }) => {
           return lastTimerCount - 1
         })
       }, 1000)
-      console.log(interval)
+      //console.log(interval)
       if (timerCount === 0) {
 
-        console.log("timer count useEffect", timerCount)
+      //  console.log("timer count useEffect", timerCount)
       }//each count lasts for a second
       //cleanup the interval on complete
       return () => clearInterval(interval)
     }
+   
+   /// getSpousedetail()
   }, [number]);
+
+    // ------------------spouse detail ------------------
+
+    const getSpousedetail = async () => {
+      console.log('api called SPOUSE')
+
+      const data = {
+             "activityId": activityId
+        
+
+      }
+      await api.getSpousedetail(data).then((res) => {
+          console.log('-------------------res spousedetail', res)
+          if (res?.status) {
+              setSpousedetail(res?.data?.body)
+          }
+      }).catch((err) => {
+          console.log('-------------------err spousedetail', err?.response)
+      })
+  };
+  // ------------------ ------------------
+
+
+    // ------------------get CG detail ------------------
+
+    const getCGdetails = async () => {
+      console.log('api called GET')
+
+      const data = {
+             "activityId": activityId
+         
+
+      }
+      await api.getCGdetails(data).then((res) => {
+          console.log('-------------------res getCGdetails', res)
+          if (res?.status) {
+            setCgdetail(res?.data?.body)
+            if(res?.data?.body?.relationShip == 'Spouse'){
+              getSpousedetail()
+              console.log('12323434======???????')
+              setRelation('Spouse')
+            }
+          }
+      }).catch((err) => {
+          console.log('-------------------err getCGdetails', err?.response)
+      })
+  };
+  // ------------------ ------------------
+
+
+    // ------------------verifyCG detail ------------------
+
+    const verifyCG = async (mobnumber) => {
+   //   console.log('api called')
+
+      const data = {
+        "activityId":activityId,
+        "mobileNumber":"+91"+mobnumber,
+        "name":"",
+        "relationShip":relation
+    
+    }
+      await api.verifyCG(data).then((res) => {
+          console.log('-------------------res verifyCG', res)
+          if (res?.status) {
+            setMaxError(false)
+            setOtpFetch(true)
+            setIsOtp1(true)
+            getOtp();
+            setTimer(30)
+          
+          }
+      }).catch((err) => {
+          console.log('-------------------err verifyCG', err?.response)
+          if (err?.response?.data?.message === 'Maximum number of OTPs are exceeded. Please try after 30 minutes.') {
+            setOtpFetch(false)
+            setIsOtp1(true)
+            setStatus(false)
+            setMaxError(true)
+        } else {
+            setMaxError(false)
+        }
+      })
+  };
+  // ------------------ ------------------
+
+
+   // ------------------verifyCG detail ------------------
+
+   const ResendOtp = async (mobnumber) => {
+    //   console.log('api called')
+    setInvalidotp(false)
+    otpInput2.current.clear()
+       const data = {
+         "activityId":activityId,
+         "mobileNumber":"+91"+mobnumber,
+         "name":"",
+         "relationShip":relation
+     
+     }
+       await api.verifyCG(data).then((res) => {
+           console.log('-------------------res verifyCG', res)
+           if (res?.status) {
+           
+           }
+       }).catch((err) => {
+           console.log('-------------------err verifyCG', err?.response)
+       })
+   };
+   // ------------------ ------------------
+
+
+
+    // ------------------verifyCG detail ------------------
+
+    const verifyCGOTP = async (mobnumber) => {
+      console.log('api called')
+
+      const data = {
+        "activityId":activityId,
+          "otp": OtpValue
+    
+    }
+      await api.verifyCGOTP(data).then((res) => {
+          console.log('-------------------res verifyCG', res)
+          if (res?.status) {
+            setMaxError(false)
+            setOtpFetch(false)
+            setIsOtp1(false)
+            setOtpFetch(false)
+            navigation.navigate('UploadVid') 
+          }
+      }).catch((err) => {
+          console.log('-------------------err verifyCG', err?.response?.data?.message)
+          if(err?.response?.data?.message == 'You entered wrong OTP' ){
+            setInvalidotp(true)
+            setOtp(true)
+          }
+          
+      })
+  };
+  // ------------------ ------------------
+
+
+
 
 
 
   const OnchangeNumbers = (num) => {
+    console.log('%%%5',"91"+num,customerNumber)
     if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(num) || num === '') {
+      if("91"+num == customerNumber){
+        setModalError(true)
+        onChangeNumber('')
+      }else{
       onChangeNumber(num)
-
+      verifyCG(num)
+      setOtpValue('')
+     
+      }
     } else {
 
       // ToastAndroid.show(t('common:Valid'), ToastAndroid.SHORT);
@@ -69,30 +344,31 @@ const ContinuingGuarantor = ({ navigation }) => {
         <KeyboardAvoidingView style={{ flex: 1 }}
           {...(Platform.OS === 'ios' && { behavior: 'position' })}
         >
+          {console.log('relation=====',relation)}
           <ScrollView ref={scrollViewRef}
             onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: true })}>
             <View style={{ flex: 1 }}>
               <Text style={styles.headerText}>Relationship with Customer</Text>
-              <View style={styles.dropDown}>
-                <Text style={styles.spouseText}>Spouse</Text>
+              <TouchableOpacity onPress={()=>setModalVisible1(true)} style={styles.dropDown}>
+                <Text style={styles.spouseText}>{relation ? relation :'Select'}</Text>
                 <Icon1 name="chevron-down" size={18} color={'#808080'} />
-              </View>
-              <View style={styles.containerBox}>
+              </TouchableOpacity>
+            {relation == 'Spouse' ?  <View style={styles.containerBox}>
                 <View style={{ flex: 1, flexDirection: 'row' }}>
                   <View style={styles.circleView}>
                     <Text style={styles.shortText}>AK</Text>
                   </View>
                   <View style={{ flexDirection: 'column', flex: 1, marginLeft: 12 }}>
-                    <Text style={styles.nameText}>Anil Kumar</Text>
-                    <Text style={styles.underText}>Daily wage labourer</Text>
+                    <Text style={styles.nameText}>{spousedetail?.name}</Text>
+                    <Text style={styles.underText}>{spousedetail?.occupation}</Text>
                   </View>
                   <View style={{ flexDirection: 'row', left: -5 }}>
 
                     <Image1 width={11} height={11} top={3} />
-                    <Text style={styles.dateText}>12/10/1972</Text>
+                    <Text style={styles.dateText}>{spousedetail?.dateOfBirth}</Text>
                   </View>
                 </View>
-              </View>
+              </View>:null}
               <Text style={styles.mobileText}>Mobile Number</Text>
               <View style={styles.inPutStyle}>
                 <TextInput
@@ -103,7 +379,7 @@ const ContinuingGuarantor = ({ navigation }) => {
                   style={styles.textIn1}
                   onChangeText={(text) => {
                     OnchangeNumbers(text)
-                    setOtpValue('')
+                    // setOtpValue('')
                   }
 
                   }
@@ -115,48 +391,103 @@ const ContinuingGuarantor = ({ navigation }) => {
                     <Call width={16} height={16} />
                   </View>}
               </View>
+
+
+
+{/* #################################################################### */}
+
               {number?.length === 10 &&
                 <View style={styles.ViewOtp}>
                   <Text style={styles.textOtp} onPress={() => navigation.navigate('PreClosure')}>{t('common:EnterOtp')} </Text>
 
                   <OTPInputView
-                    style={[styles.OtpInput, {}]}
-                    pinCount={4}
-                    code={OtpValue}
+      ref={otpInput2}
+      autoFocus={true}
+      inputCount={4}
+      inputCellLength={1}
+      offTintColor={!otp ? "lightgrey" : "red"}
+      tintColor={!otp ? "lightgrey" : "red"}
+      textInputStyle={[styles.imputContainerStyle, { color: '#090A0A', borderRadius: 8, backgroundColor: '#FCFCFC', borderColor: !otp ? "lightgrey" : "red" }]}
+      keyboardType="numeric"
+      containerStyle={{ marginTop: 7 }}
+      handleTextChange={(code => {
+          setOtpValue(code)
+          if (code.length === 4) {
+            if (code == '1091') {
+              navigation.navigate('Permission')
+              // setOtp(false)
+            }
+            else {
+              console.log("otp value//...", OtpValue)
+              // setOtp(true)
+              // setCount(1)
+            }
+          }
+      })}
 
-                    onCodeChanged={otp => setOtpValue(otp)}
-                    // code={this.state.code} //You can supply this prop or not. The component will be used as a controlled / uncontrolled component respectively.
-                    // onCodeChanged = {code => { this.setState({code})}}
-                    autoFocusOnLoad={false}
-                    codeInputFieldStyle={{ color: '#090A0A', borderRadius: 8, backgroundColor: '#FCFCFC', }}
-                    placeholderTextColor="black"
-                    onCodeFilled={(code => {
-
-                      if (code && code == '1091') {
-                        navigation.navigate('Permission')
-                        // setOtp(false)
-                      }
-                      else {
-                        console.log("otp value//...", OtpValue)
-                        // setOtp(true)
-                        // setCount(1)
-                      }
-                    })}
+                    
                   />
+                    {invalidotp ?
+                                <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 12, marginBottom: 5 }}>
+                                    <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center' }}>{t('common:otpValid')}</Text>
+                                </View> : null}
 
 
-
-                  <View style={{ marginTop: Dimensions.get('window').height * 0.03 }}>
+                { timerCount> 0 ? <View style={{ marginTop: Dimensions.get('window').height * 0.03 }}>
                     <Text style={styles.TextResend}>{t('common:Resend')} 00:{timerCount < 10 ? '0' : ''}{timerCount}</Text>
-                  </View>
-                </View>}
+                  </View>: <TouchableOpacity onPress={()=>ResendOtp()} style={{ marginTop: Dimensions.get('window').height * 0.03,flexDirection:'row' }}>
+                  <Resend style={{ width: 9, height: 11, top: 3, marginRight: 6, }} resizeMode="contain" />
+                    <Text style={styles.TextResend1}>{t('common:Resend1')}</Text>
+                  </TouchableOpacity>}
+
+
+
+
+                </View>
+                 
+                }
+
+
+{/* ############################################################################ */}
+
+
+
+                            {maxError ?
+                                <View style={{ marginTop: Dimensions.get('window').height * 0.03, }}>
+                                    <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center', width: width * 0.8,marginRight:20 }}>{t('common:Valid2')}</Text>
+                                    <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center' }}>{t('common:Valid3')}</Text></View>
+                                : null}
+
 
 
               <Call />
             </View>
           </ScrollView>
 
-          <TouchableOpacity onPress={() => OtpValue?.length === 4 && number?.length === 10 ? navigation.navigate('AddVehicle') : console.log("geki")}
+
+          <RelationModal
+                visible={ModalVisible1}
+                setRelation={setRelation}
+                setPurposes={setPurposes}
+                setModalVisible={setModalVisible1}
+                setStatus={setStatus}
+                onPressOut={() => setModalVisible1(!ModalVisible1)}
+            // navigation={navigation}
+
+            />
+
+
+
+          <ErrorModal
+                ModalVisible={ModalError}
+                onPressOut={() => {
+                    setModalError(!ModalError)
+                  
+                }}
+                setModalVisible={setModalError}
+            />
+
+          <TouchableOpacity onPress={() => OtpValue?.length === 4 && number?.length === 10 ? verifyCGOTP() : console.log("geki")}
             style={[styles.buttonView, { backgroundColor: OtpValue?.length === 4 && number?.length === 10 ? COLORS.colorB : '#E0E0E0' }]}>
             <Text style={[styles.continueText, { color: OtpValue?.length === 4 && number?.length === 10 ? COLORS.colorBackground : COLORS.colorWhite3 }]}>Continue</Text>
           </TouchableOpacity>
@@ -203,6 +534,13 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.FontRegular,
     color: COLORS.colorDark,
   },
+  imputContainerStyle: {
+    borderWidth: 1,
+    height: 48,
+    width: 48,
+    fontSize: 12,
+    fontWeight: 'bold',
+},
   inPutStyle: {
     borderWidth: 1,
     borderColor: COLORS.colorBorder,
@@ -307,7 +645,10 @@ const styles = StyleSheet.create({
   textIn1: {
     fontSize: 14,
     color: '#1A051D',
-    fontFamily: FONTS.FontRegular
+    fontFamily: FONTS.FontRegular,
+    
+    width: width * 0.7
+
   },
   CallView: {
     width: 35,
@@ -330,6 +671,13 @@ const styles = StyleSheet.create({
 
     //margin:5
   },
+  TextResend1: {
+    fontSize: 12,
+    color: COLORS.colorB,
+    fontFamily: FONTS.FontExtraBold,
+    fontWeight: 'bold',
+    marginTop:2
+},
 
 
 })

@@ -24,17 +24,19 @@ const RelationModal = ({ visible, onPressOut,setModalVisible,setRelation,setPurp
                 </TouchableOpacity>
                 <View style={styles.centeredView2}>
                     <View style={styles.modalView}>
+                    <View style={styles.modalView1}>
                         <Text style={styles.modalTextHead}>Select Relation</Text>
+                        </View>
                         <View style={styles.lineView} />
                         <TouchableOpacity style={styles.textTouch}
                             onPress={() => {
                                // setRelation("Self")
                               // setStatus(true)
-                                setPurposes('Self')
+                                setPurposes('Son')
                                 setModalVisible(!visible)
                             }
                             }>
-                            <Text style={styles.modalText}>Self</Text>
+                            <Text style={styles.modalText}>Son</Text>
                             <View style={{ paddingRight: 10 }}>
                                 <Icon
                                     name="checkbox-blank-circle-outline"
@@ -45,11 +47,11 @@ const RelationModal = ({ visible, onPressOut,setModalVisible,setRelation,setPurp
                         </TouchableOpacity >
                         <View style={styles.lineView} />
                         <TouchableOpacity style={styles.textTouch} onPress={() => {
-                            setPurposes("Spouse")
+                            setPurposes("Daughter")
                             setModalVisible(!visible)
                         }
                         }>
-                            <Text style={styles.modalText}>Spouse</Text>
+                            <Text style={styles.modalText}>Daughter</Text>
                             <View style={{ paddingRight: 10 }}>
                                 <Icon
                                     name="checkbox-blank-circle-outline"
@@ -60,11 +62,11 @@ const RelationModal = ({ visible, onPressOut,setModalVisible,setRelation,setPurp
                         </TouchableOpacity>
                         <View style={styles.lineView} />
                         <TouchableOpacity style={styles.textTouch} onPress={() => {
-                            setPurposes("Son")
+                            setPurposes("Son-in-law")
                             setModalVisible(!visible)
                         }
                         }>
-                            <Text style={styles.modalText}>Son</Text>
+                            <Text style={styles.modalText}>Son-in-law</Text>
                             <View style={{ paddingRight: 10 }}>
                                 <Icon
                                     name="checkbox-blank-circle-outline"
@@ -77,11 +79,11 @@ const RelationModal = ({ visible, onPressOut,setModalVisible,setRelation,setPurp
                   
                         <View style={styles.lineView} />
                         <TouchableOpacity style={styles.textTouch} onPress={() => {
-                             setPurposes('Daughter')
+                             setPurposes('Daughter-in-law')
                             setModalVisible(!visible)
                         }
                         }>
-                            <Text style={styles.modalText}>Daughter</Text>
+                            <Text style={styles.modalText}>Daughter-in-law</Text>
                             <View style={{ paddingRight: 10 }}>
                                 <Icon
                                     name="checkbox-blank-circle-outline"
@@ -91,43 +93,6 @@ const RelationModal = ({ visible, onPressOut,setModalVisible,setRelation,setPurp
                             </View>
                             
                         </TouchableOpacity>
-
-
-                        <View style={styles.lineView} />
-                        <TouchableOpacity style={styles.textTouch} onPress={() => {
-                             setPurposes('Father')
-                            setModalVisible(!visible)
-                        }
-                        }>
-                            <Text style={styles.modalText}>Father</Text>
-                            <View style={{ paddingRight: 10 }}>
-                                <Icon
-                                    name="checkbox-blank-circle-outline"
-                                    color={COLORS.DSMuted}
-                                    size={18}
-                                />
-                            </View>
-                            
-                        </TouchableOpacity>
-            
-
-                        <View style={styles.lineView} />
-                        <TouchableOpacity style={styles.textTouch} onPress={() => {
-                             setPurposes('Mother')
-                            setModalVisible(!visible)
-                        }
-                        }>
-                            <Text style={styles.modalText}>Mother</Text>
-                            <View style={{ paddingRight: 10 }}>
-                                <Icon
-                                    name="checkbox-blank-circle-outline"
-                                    color={COLORS.DSMuted}
-                                    size={18}
-                                />
-                            </View>
-                            
-                        </TouchableOpacity>
-            
 
 
                         <View style={styles.lineView} />
@@ -148,7 +113,6 @@ const RelationModal = ({ visible, onPressOut,setModalVisible,setRelation,setPurp
                         </TouchableOpacity>
             
 
-
                         <View style={styles.lineView} />
                         <TouchableOpacity style={styles.textTouch} onPress={() => {
                              setPurposes('Mother-in-law')
@@ -156,6 +120,149 @@ const RelationModal = ({ visible, onPressOut,setModalVisible,setRelation,setPurp
                         }
                         }>
                             <Text style={styles.modalText}>Mother-in-law</Text>
+                            <View style={{ paddingRight: 10 }}>
+                                <Icon
+                                    name="checkbox-blank-circle-outline"
+                                    color={COLORS.DSMuted}
+                                    size={18}
+                                />
+                            </View>
+                            
+                        </TouchableOpacity>
+            
+
+
+                        <View style={styles.lineView} />
+                        <TouchableOpacity style={styles.textTouch} onPress={() => {
+                             setPurposes('Father')
+                            setModalVisible(!visible)
+                        }
+                        }>
+                            <Text style={styles.modalText}>Father</Text>
+                            <View style={{ paddingRight: 10 }}>
+                                <Icon
+                                    name="checkbox-blank-circle-outline"
+                                    color={COLORS.DSMuted}
+                                    size={18}
+                                />
+                            </View>
+                            
+                        </TouchableOpacity>
+            
+
+
+                        <View style={styles.lineView} />
+                        <TouchableOpacity style={styles.textTouch} onPress={() => {
+                             setPurposes('Mother')
+                            setModalVisible(!visible)
+                        }
+                        }>
+                            <Text style={styles.modalText}>Mother</Text>
+                            <View style={{ paddingRight: 10 }}>
+                                <Icon
+                                    name="checkbox-blank-circle-outline"
+                                    color={COLORS.DSMuted}
+                                    size={18}
+                                />
+                            </View>
+                            
+                        </TouchableOpacity>
+
+
+                        <View style={styles.lineView} />
+                        <TouchableOpacity style={styles.textTouch} onPress={() => {
+                             setPurposes('Uncle')
+                            setModalVisible(!visible)
+                        }
+                        }>
+                            <Text style={styles.modalText}>Uncle</Text>
+                            <View style={{ paddingRight: 10 }}>
+                                <Icon
+                                    name="checkbox-blank-circle-outline"
+                                    color={COLORS.DSMuted}
+                                    size={18}
+                                />
+                            </View>
+                            
+                        </TouchableOpacity>
+
+                        <View style={styles.lineView} />
+                        <TouchableOpacity style={styles.textTouch} onPress={() => {
+                             setPurposes('Aunt')
+                            setModalVisible(!visible)
+                        }
+                        }>
+                            <Text style={styles.modalText}>Aunt</Text>
+                            <View style={{ paddingRight: 10 }}>
+                                <Icon
+                                    name="checkbox-blank-circle-outline"
+                                    color={COLORS.DSMuted}
+                                    size={18}
+                                />
+                            </View>
+                            
+                        </TouchableOpacity>
+
+
+                        <View style={styles.lineView} />
+                        <TouchableOpacity style={styles.textTouch} onPress={() => {
+                             setPurposes('Nephew')
+                            setModalVisible(!visible)
+                        }
+                        }>
+                            <Text style={styles.modalText}>Nephew</Text>
+                            <View style={{ paddingRight: 10 }}>
+                                <Icon
+                                    name="checkbox-blank-circle-outline"
+                                    color={COLORS.DSMuted}
+                                    size={18}
+                                />
+                            </View>
+                            
+                        </TouchableOpacity>
+
+
+                        <View style={styles.lineView} />
+                        <TouchableOpacity style={styles.textTouch} onPress={() => {
+                             setPurposes('Niece')
+                            setModalVisible(!visible)
+                        }
+                        }>
+                            <Text style={styles.modalText}>Niece</Text>
+                            <View style={{ paddingRight: 10 }}>
+                                <Icon
+                                    name="checkbox-blank-circle-outline"
+                                    color={COLORS.DSMuted}
+                                    size={18}
+                                />
+                            </View>
+                            
+                        </TouchableOpacity>
+
+                        <View style={styles.lineView} />
+                        <TouchableOpacity style={styles.textTouch} onPress={() => {
+                             setPurposes('Male Cousin')
+                            setModalVisible(!visible)
+                        }
+                        }>
+                            <Text style={styles.modalText}>Male Cousin</Text>
+                            <View style={{ paddingRight: 10 }}>
+                                <Icon
+                                    name="checkbox-blank-circle-outline"
+                                    color={COLORS.DSMuted}
+                                    size={18}
+                                />
+                            </View>
+                            
+                        </TouchableOpacity>
+
+                        <View style={styles.lineView} />
+                        <TouchableOpacity style={styles.textTouch} onPress={() => {
+                             setPurposes('Female Cousin')
+                            setModalVisible(!visible)
+                        }
+                        }>
+                            <Text style={styles.modalText}>Female Cousin</Text>
                             <View style={{ paddingRight: 10 }}>
                                 <Icon
                                     name="checkbox-blank-circle-outline"
@@ -201,8 +308,16 @@ const styles = StyleSheet.create({
         paddingBottom: 7
         // height:Dimensions.get('window').height*0.3
     },
+    modalView1: {
+        backgroundColor: "white",
+        shadowColor: "#000",
+        justifyContent:'center',
+        alignItems:'center',
+        paddingBottom: 7
+        
+    },
     textTouch: {
-        paddingVertical: 20,
+        paddingVertical: 15,
         paddingHorizontal: 25,
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -228,9 +343,10 @@ const styles = StyleSheet.create({
         textAlign: 'left',
         fontFamily: FONTS.FontSemiB,
         fontSize: 15,
-        marginLeft: 25,
+       // marginLeft: 25,
         marginTop: 22,
-        marginBottom: 15
+        marginBottom: 15,
+   
      
     },
     lineView: {

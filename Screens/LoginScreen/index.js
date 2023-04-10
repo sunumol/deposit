@@ -474,7 +474,7 @@ const LoginScreen = ({ navigation }) => {
                             </View>
 
                             <View style={[styles.container, { marginTop: Dimensions.get('window').height * 0.05 }]}>
-                                <Text style={styles.Heading1} onPress={() => navigation.navigate('Profile')}>{t('common:Verify')}</Text>
+                                <Text style={styles.Heading1}>{t('common:Verify')}</Text>
 
                                 <View style={styles.ViewInput}>
                                     <View style={{ justifyContent: 'center' }}>

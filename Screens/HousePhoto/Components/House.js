@@ -19,94 +19,52 @@ import { useFocusEffect } from '@react-navigation/native';
 import Header from '../../../Components/RepayHeader';
 import { FONTS, COLORS } from '../../../Constants/Constants';
 import { useDispatch } from 'react-redux';
-import Icon1 from 'react-native-vector-icons/Entypo'
+import Icon1 from 'react-native-vector-icons/AntDesign';
 import Icon2 from 'react-native-vector-icons/Entypo';
 import Search from 'react-native-vector-icons/Feather';
 import Media from '../../../assets/image/media.svg';
 import Media1 from '../../../assets/image/Media2.svg'
 const { height, width } = Dimensions.get('screen');
-import OwnerModal from './OwnerModal';
-import RelationModal from './RelationModal';
+import DeleteModal from './DeleteModal';
 import ImagePicker from 'react-native-image-crop-picker';
 import Image2 from '../../../assets/Images/cakes.svg';
 import { api } from '../../../Services/Api';
 import { useSelector } from 'react-redux';
-
 
 const DetailChecks = ({ navigation, setState }) => {
 
     const isDarkMode = true;
     const [text, onChangeText] = useState('');
     const activityId = useSelector(state => state.activityId);
-    const [ModalVisible, setModalVisible] = useState(false)
-    const [ModalVisible1, setModalVisible1] = useState(false)
-    const [selectedItem, setSelectedItem] = useState()
-    const [ButtonStatus, setButtonStatus] = useState(false)
-    const [ModalError, setModalError] = useState(false)
-    const [ModalReason, setModalReason] = useState(false)
+    const [ModalVisible2, setModalVisible2] = useState(false)
+
     const [checked, setChecked] = useState(false);
     const toggleCheckbox = () => setChecked(!checked);
-    const [Purpose, setPurpose] = useState(null)
-    const [Purposes, setPurposes] = useState(null)
-    const [imageStatus, setImageStatus] = useState(false)
-    const [Relation, setRelation] = useState('')
+
     const [Image1, setImage] = useState('')
     const [Imageurl, setImageurl] = useState('')
     const [status, setStatus] = useState(false)
     const [UploadStatus, setUploadStatus] = useState(false)
     const [NameStatus, setNamestatus] = useState(false)
-    const [spousedetail, setSpousedetail] = useState('')
-    const [ownersName,setOwnersName] = useState('')
 
-
-    const [ImagesFSet, setImagesFSet] = useState()
-    const [ImagesBSet, setImagesBSet] = useState()
+    const [delf,setDelf] = useState(false)
+    const { height, width } = Dimensions.get('screen');
 
     useEffect(() => {
 
-        getResidenceowner()
+        getHousePhoto()
     }, [])
 
 
-    useEffect(() => {
-
-        console.log("purpose print....", Purposes)
-        setState(Purpose)
-        setPurpose(Purpose)
-        setPurposes(Purposes)
-        setRelation(Relation)
+ 
 
 
-        //setStatus(true)
-    }, [Purpose, Relation])
-
-
-        // ------------------spouse detail ------------------
-
-        const getSpousedetail = async () => {
-            console.log('api called')
-
-            const data = {
-                   "activityId": activityId
-              
-
-            }
-            await api.getSpousedetail(data).then((res) => {
-                console.log('-------------------res spousedetail', res)
-                if (res?.status) {
-                    setSpousedetail(res?.data?.body)
-                }
-            }).catch((err) => {
-                console.log('-------------------err spousedetail', err?.response)
-            })
-        };
-        // ------------------ ------------------
 
 
 
     // ------------------get residence owner detail ------------------
 
-    const getResidenceowner = async () => {
+    const getHousePhoto = async () => {
         console.log('api called')
 
         const data = {
@@ -114,24 +72,14 @@ const DetailChecks = ({ navigation, setState }) => {
         
 
         }
-        await api.getResidenceowner(data).then((res) => {
-            console.log('-------------------res Residence owner', res?.data?.body)
+        await api.getHousePhoto(data).then((res) => {
+            console.log('-------------------get house photo', res?.data?.body)
             if (res?.status) {
-               setPurposes(res?.data?.body?.relationShipWithCustomer)
-               setPurpose(res?.data?.body?.ownerShipProofType)
-               setImage(res?.data?.body?.imageUrl)
-               if(res?.data?.body?.relationShipWithCustomer != 'Spouse'){
-                setOwnersName(res?.data?.body?.ownersName)
-               }
-            
-               if(res?.data?.body?.ownerShipProofType){
-                setImageStatus(true)
-                setUploadStatus(false)
-               }
-               getSpousedetail()
+            setImage(res?.data?.body)
+            setDelf(true) 
             }
         }).catch((err) => {
-            console.log('-------------------err Residence Owner', err?.response)
+            console.log('-------------------err get house', err?.response)
         })
     };
     // ------------------ ------------------
@@ -141,31 +89,21 @@ const DetailChecks = ({ navigation, setState }) => {
 
         // ------------------save and update residence owner detail ------------------
 
-        const UpdateResidenceowner = async () => {
+        const saveHousePhoto = async () => {
             console.log('api called')
     
             const data = {
                 "activityId": activityId,
-                "ownerShipProofType": Purpose == 'Electricity Bill' ? 'ELECTRICITY_BILL' : Purpose == 'Water Bill' ? 'WATER_BILL' : 'BUILDING_TAX_RECEIPT',
                 "imageUrl": Image1,
-                "relationShipWithCustomer": Purposes,
-                "ownersName": ownersName ? ownersName :spousedetail?.name 
+             
             }
-            await api.UpdateResidenceowner(data).then((res) => {
-                console.log('-------------------res  update Residence owner', res)
+            await api.saveHousePhoto(data).then((res) => {
+                console.log('-------------------res  update house photo', res)
                 if (res?.status) {
-                    if(Purposes == 'Spouse'){
-                    navigation.navigate('ContinuingGuarantor') 
-                   //navigation.navigate('ContinuingGuarantor',{relation:'Spouse'}) 
-
-                    }else{
-                        //navigation.navigate('ContinuingGuarantor',{relation:'other'})  
-                        navigation.navigate('ContinuingGuarantor')  
-
-                    }
+                   navigation.navigate('DLECompleted')
                 }
             }).catch((err) => {
-                console.log('-------------------err  update Residence Owner', err?.response)
+                console.log('-------------------err  update House photo', err?.response)
             })
         };
         // ------------------ ------------------
@@ -181,9 +119,27 @@ const DetailChecks = ({ navigation, setState }) => {
             console.log("IMAGE", image.path);
             setImage(image.path)
             setUploadStatus(false)
+            setDelf(true) 
             uploadFile(image.path, image)
         });
     }
+
+
+    const DeleteImageModal = () => {
+        
+        setModalVisible2(true)
+   
+    }
+
+    const DeleteImage = () => {
+       
+
+            setModalVisible2(false)
+            setDelf(false)
+            setImage("")
+   
+    }
+
 
 
     async function uploadFile(imagevalue, image) {
@@ -212,118 +168,65 @@ const DetailChecks = ({ navigation, setState }) => {
         <View style={styles.mainContainer}>
 
             <ScrollView>
-                <View>
-                    <Text style={styles.proof}>Ownership proof type</Text>
-                </View>
+               
 
-                <TouchableOpacity style={styles.SelectBox} onPress={() => setModalVisible(true)}>
-                    {!Purpose ? <Text style={styles.textSelect}>Select</Text> :
-                        <Text style={[styles.textSelect, { color: '#1A051D', marginLeft: 8 }]}>{Purpose}</Text>}
-                    <Icon1 name="chevron-down" size={18} color={'#808080'} style={{ marginRight: 10 }} />
-                </TouchableOpacity>
+            
 
-                <TouchableOpacity style={styles.UploadCard}  onPress={() =>{ Purpose ? UploadImage():null}} >
+                <TouchableOpacity style={styles.UploadCard}  onPress={() =>{  UploadImage()}} >
 
 
-                    {!imageStatus ?
-                        <View style={{ alignItems: 'flex-start', flex: 1, marginLeft: 25 }}>
-                            <TouchableOpacity >
-                                <Media1 width={30} height={30} />
-                            </TouchableOpacity>
-                        </View> : UploadStatus ?
                             <View style={{ alignItems: 'flex-start', flex: 1, marginLeft: 25 }}>
-                                <TouchableOpacity >
+                                
                                     <Media width={30} height={30} />
-                                </TouchableOpacity>
-                            </View> : <TouchableOpacity   style={{ alignItems: 'flex-start', flex: 1, marginLeft: 10 }}>
-                                <Image source={{ uri:   Image1 }} style={{ width: 55, height: 65, borderRadius: 6 }} />
-                                </TouchableOpacity>}
+                               
+                            </View> 
                     <View style={styles.Line} />
                     <View style={{ flexDirection: 'column', left: -20 }}>
                         <Text style={[styles.UploadText, { color: NameStatus ? '#1A051D' : '#808080' }]}>Upload photo</Text>
-                        <Text style={styles.Prooftext}>Proof of ownership</Text>
+                        <Text style={styles.Prooftext}>Upload photo of the house</Text>
                     </View>
 
                     <View style={{ flex: 1, alignItems: 'flex-end' }}>
                         <Icon2 name="chevron-right" size={18} color={'#808080'} style={{ marginRight: 15 }} />
                     </View>
                 </TouchableOpacity>
-                <View>
-                    <Text style={styles.proof}>Relationship with Customer</Text>
-                </View>
-                <TouchableOpacity style={styles.SelectBox} onPress={() => { setModalVisible1(true), getSpousedetail() }} >
-                    {Purposes === null ? <Text style={styles.textSelect}>Select</Text> :
-                        <Text style={[styles.textSelect, { color: '#1A051D', marginLeft: 8 }]}>{Purposes}</Text>}
-                    <Icon1 name="chevron-down" size={18} color={'#808080'} style={{ marginRight: 10 }} />
-                </TouchableOpacity>
 
 
-                {Purposes == 'Spouse' ?
-                    <View style={styles.containerBox}>
-                        <View style={{ flex: 1, flexDirection: 'row' }}>
-                            <View style={styles.circleView}>
-                                <Text style={styles.shortText}>AK</Text>
-                            </View>
+                {delf ?
+                            <View style={{ justifyContent: 'center', alignItems: 'center', paddingBottom: 11.5 }}>
+                                <TouchableOpacity onPress={() => DeleteImageModal()}  >
+                                    <Icon1 name="closecircleo" color="#BDBDBD" size={25} />
+                                </TouchableOpacity></View> :
+                                 <View style={{ justifyContent: 'center', alignItems: 'center', paddingBottom: 11.5, }}>
+                                <TouchableOpacity onPress={() => DeleteImageModal()}  >
+                                    <Icon1 name="closecircleo" color="#FFFFFF" size={25} />
+                                </TouchableOpacity></View>}
 
-                            <View style={{ flexDirection: 'column', flex: 1, marginLeft: 12 }}>
-                                <Text style={styles.nameText}>{spousedetail?.name}</Text>
-                                <Text style={styles.underText}>{spousedetail?.occupation}</Text>
-                            </View>
-                            <View style={{ flexDirection: 'row', }}>
-                                <Image2 width={11} height={11} top={3} />
-                                <Text style={styles.dateText}>{spousedetail?.dateOfBirth}</Text>
-                            </View>
-                        </View>
-                    </View> :
-                  Purposes ?
-                      <>
-                        <View>
-                    <Text style={styles.proof}>Name</Text>
-                </View>
-                     <View style={styles.SelectBox}>
-                          <TextInput
-                                        value={ownersName}
-                                        style={styles.TextInputBranch}
-                                        onChangeText={(text) => setOwnersName(text)}
-                                        // onFocus={() => setPstatus(false)}
-                                        // onKeyPress={() => setPstatus(false)}
 
-                                    />
-                    </View> 
-                    </>:null
-                
-                    }
+
+                               <View   style={{ alignItems: 'center', flex: 1,  marginHorizontal:width * 0.3 }}>
+                                <Image source={{ uri:   Image1 }} style={{ width: width * 0.5, height: width * 0.5, borderRadius: 6 }} />
+                                </View>
+              
+        
+
+
 
             </ScrollView>
 
             <View style={{ position: 'absolute', left: 0, right: 0, bottom: 0, alignItems: 'center', justifyContent: 'center' }}>
-                <TouchableOpacity onPress={() => (Purpose && Purposes && Image1) ? UpdateResidenceowner(    ) : console.log("helo")}
-                    style={[styles.Button1, { backgroundColor: (Purpose && Purposes && Image1) ? COLORS.colorB : 'rgba(224, 224, 224, 1)' }]}
+                <TouchableOpacity onPress={() => Image1 ? saveHousePhoto() : console.log("helo")}
+                    style={[styles.Button1, { backgroundColor:  Image1 ? COLORS.colorB : 'rgba(224, 224, 224, 1)' }]}
                 >
-                    <Text style={[styles.text1, { color: (Purpose && Purposes && Image1) ? COLORS.colorBackground : '#979C9E' }]}>Continue</Text>
+                    <Text style={[styles.text1, { color:  Image1 ? COLORS.colorBackground : '#979C9E' }]}>Continue</Text>
                 </TouchableOpacity>
             </View>
-            <OwnerModal
-                visible={ModalVisible}
-                setPurpose={setPurpose}
-                setUploadStatus={setUploadStatus}
-                setModalVisible={setModalVisible}
-                setImageStatus={setImageStatus}
-                setNamestatus={setNamestatus}
-                onPressOut={() => setModalVisible(!ModalVisible)}
-            // navigation={navigation}
-
-            />
-            <RelationModal
-                visible={ModalVisible1}
-                setRelation={setRelation}
-                setPurposes={setPurposes}
-                setModalVisible={setModalVisible1}
-                setStatus={setStatus}
-                onPressOut={() => setModalVisible1(!ModalVisible1)}
-            // navigation={navigation}
-
-            />
+            <DeleteModal
+                ModalVisible={ModalVisible2}
+                navigation={navigation}
+                DeleteImage={DeleteImage}
+                onPressOut={() => setModalVisible2(!ModalVisible2)}
+                setModalVisible2={setModalVisible2} />
         </View>
 
 
