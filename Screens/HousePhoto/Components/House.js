@@ -31,7 +31,7 @@ import Image2 from '../../../assets/Images/cakes.svg';
 import { api } from '../../../Services/Api';
 import { useSelector } from 'react-redux';
 
-const DetailChecks = ({ navigation, setState }) => {
+const DetailChecks = ({ navigation, setState,setImagedata1 }) => {
 
     const isDarkMode = true;
     const [text, onChangeText] = useState('');
@@ -74,8 +74,10 @@ const DetailChecks = ({ navigation, setState }) => {
         }
         await api.getHousePhoto(data).then((res) => {
             console.log('-------------------get house photo', res?.data?.body)
-            if (res?.status) {
+            if (res?.data?.body) {
+                console.log('555')
             setImage(res?.data?.body)
+            setImagedata1(res?.data?.body)
             setDelf(true) 
             }
         }).catch((err) => {
@@ -118,6 +120,7 @@ const DetailChecks = ({ navigation, setState }) => {
         }).then(image => {
             console.log("IMAGE", image.path);
             setImage(image.path)
+            
             setUploadStatus(false)
             setDelf(true) 
             uploadFile(image.path, image)
@@ -156,6 +159,7 @@ const DetailChecks = ({ navigation, setState }) => {
             if (res?.status) {
                 setImageurl(res?.data[0]?.body)
                 setImage(res?.data[0]?.body)
+                setImagedata1(res?.data[0]?.body)
             }
         }).catch((err) => {
             console.log('-------------------err file upload', err)
@@ -191,21 +195,18 @@ const DetailChecks = ({ navigation, setState }) => {
                     </View>
                 </TouchableOpacity>
 
-
+{console.log('6666',delf)}
                 {delf ?
                             <View style={{ justifyContent: 'center', alignItems: 'center', paddingBottom: 11.5 }}>
                                 <TouchableOpacity onPress={() => DeleteImageModal()}  >
                                     <Icon1 name="closecircleo" color="#BDBDBD" size={25} />
                                 </TouchableOpacity></View> :
-                                 <View style={{ justifyContent: 'center', alignItems: 'center', paddingBottom: 11.5, }}>
-                                <TouchableOpacity onPress={() => DeleteImageModal()}  >
-                                    <Icon1 name="closecircleo" color="#FFFFFF" size={25} />
-                                </TouchableOpacity></View>}
+                              null}
 
 
 
                                <View   style={{ alignItems: 'center', flex: 1,  marginHorizontal:width * 0.3 }}>
-                                <Image source={{ uri:   Image1 }} style={{ width: width * 0.5, height: width * 0.5, borderRadius: 6 }} />
+                                <Image source={{ uri:Image1 ? Image1 :null }} style={{ width: width * 0.5, height: width * 0.5, borderRadius: 6 }} />
                                 </View>
               
         

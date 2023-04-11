@@ -88,13 +88,13 @@ const MeetTab = (props) => {
                     props.navigation.navigate('UploadVid')
                 } else if (res?.data?.body == 5) {
                     props.navigation.navigate('EnergyUtility')
-                } else if (res?.data?.body == 5) {
-                    props.navigation.navigate('VehicleOwn')
                 } else if (res?.data?.body == 6) {
+                    props.navigation.navigate('VehicleOwn')
+                } else if (res?.data?.body == 7) {
                         props.navigation.navigate('IncomeDetails', { relationShip: 'Customer' })
-                    } else if (res?.data?.body == 7) {
-                        props.navigation.navigate('IncomeDetails', { relationShip: 'Spouse' })
                     } else if (res?.data?.body == 8) {
+                        props.navigation.navigate('IncomeDetails', { relationShip: 'Spouse' })
+                    } else if (res?.data?.body == 9) {
                         props.navigation.navigate('HousePhoto')
 
                     }
@@ -155,7 +155,9 @@ const MeetTab = (props) => {
                                                 type: 'SET_CGT_ACTIVITY_ID',
                                                 payload: item.activityId,
                                             });
-                                            getDlePageNumber(item.activityId)
+                                            
+                                            props.navigation.navigate('Proceed')
+                                           // getDlePageNumber(item.activityId)
                                         }}
                                         style={[styles.leadContainer, { backgroundColor: 'rgba(186, 134, 205, 0.1)' }]}>
                                         <Text style={[styles.leadText, { color: '#F2994A' }]}>Conduct DLE</Text>

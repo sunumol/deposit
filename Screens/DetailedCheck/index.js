@@ -26,7 +26,7 @@ import { api } from '../../Services/Api';
 import { useSelector } from 'react-redux';
 import ModalSave from '../../Components/ModalSave';
 import ReasonModal from './Components/ReasonModal';
-
+import ErrorModal from './Components/ErrorModal';
 
 
 const DetailCheck = ({ navigation,route }) => {
@@ -40,7 +40,12 @@ const DetailCheck = ({ navigation,route }) => {
     const [basicdetail, setBasicdetail] = useState('')
     const [ModalVisible,setModalVisible] = useState(false)
     const [ModalReason,setModalReason] = useState(false)
-
+    const [ModalError, setModalError] = useState(false)
+    const [villagename, setVillagename] = useState('')
+    const [roadstatus, setRoadStatus] = useState('')
+    const [postofficename, setPostofficename] = useState('')
+    const [landmarkname, setLandmarkname] = useState('false')
+    const [reason,setReason] = useState('')
    // const [activityId,setActivityId] = useState(route?.params?.data)
    const activityId = useSelector(state => state.activityId);
 
@@ -48,6 +53,32 @@ const DetailCheck = ({ navigation,route }) => {
         getData()
 getConductDLEbasicdetail()
     }, [])
+
+
+
+
+      // ------------------ get Conduct DLE basic detail Village Api Call Start ------------------
+      const updateRejection = async () => {
+        console.log('api called for rejection')
+        const data = {
+            "activityStatus":'Submitted wrong data',
+            "employeeId":1,
+            "activityId":activityId
+        }
+        await api.updateActivity(data).then((res) => {
+            console.log('-------------------res get Village', res)
+            setModalError(true)
+            setModalReason(false)
+            setTimeout(() => {
+                navigation.navigate('Profile')  
+            }, 1000);
+          
+        }).catch((err) => {
+            console.log('-------------------err get Village', err)
+        })
+    };
+    // ------------------ HomeScreen Api Call End ------------------
+
 
 
 
@@ -69,6 +100,33 @@ getConductDLEbasicdetail()
         })
     };
     // ------------------ HomeScreen Api Call End ------------------
+
+
+
+     // ------------------ get Conduct DLE basic detail Village Api Call Start ------------------
+     const onsubmit = async (value) => {
+        
+        console.log('api called',villagename)
+        const data =  {
+            "customerId": basicdetail?.customerId,
+            "customerName": basicdetail?.customerName,
+            "address": basicdetail?.address,
+            "district": basicdetail?.district,
+            "village": villagename ? villagename : basicdetail?.village ,
+            "accessRoadType":roadstatus ? roadstatus : basicdetail?.accessRoadType,
+            "postOffice": postofficename ? postofficename : basicdetail?.postOffice,
+            "landMark": landmarkname ? landmarkname : basicdetail?.landMark,
+            "pin": basicdetail?.pin
+        }
+        await api.savebasicdetail(data).then((res) => {
+            console.log('-------------------res update', res?.data)
+            if (res?.status) {
+                navigation.navigate('Profile') 
+            }
+        }).catch((err) => {
+            console.log('-------------------err update', err?.response)
+        })
+    };
 
     const getData = async () => {
         try {
@@ -101,18 +159,19 @@ getConductDLEbasicdetail()
             <SafeAreaView style={styles.container1} />
             <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
 
-            <Header name="Detailed Eligibility Check" navigation={navigation} />
+            <Header name="Detailed Eligibility Check" navigation={navigation} onPress={handleGoBack} />
 
             <View style={styles.ViewContent}>
-                <DetailChecks navigation={navigation} details ={basicdetail} />
+                <DetailChecks navigation={navigation} details ={basicdetail} setVillagename1={setVillagename} setPostoffice1={setPostofficename} setLandmarkname1={setLandmarkname} setRoadStatus1={setRoadStatus}/>
             </View>
-
 
             <ModalSave
                 Press ={()=>{
                     setModalVisible(false),
                     setModalReason(true)
+               
                 }}
+                Press1={()=>{onsubmit(),setModalVisible(false)}}
                 ModalVisible={ModalVisible}
                 setModalVisible={setModalVisible}
                 onPressOut={() => {
@@ -123,14 +182,25 @@ getConductDLEbasicdetail()
                 navigation={navigation} />
 
 
-<ReasonModal
+            <ReasonModal
                 onPress1={() => {
-                    // setModalVisible(false)
-                    setModalError(true)
+                     updateRejection()
+                   // setModalError(true)
                 }}
                 ModalVisible={ModalReason}
                 onPressOut={() => setModalReason(!ModalReason)}
                 setModalVisible={setModalReason}
+            />
+
+
+            <ErrorModal
+                ModalVisible={ModalError}
+                onPressOut={() => {
+                    setModalError(!ModalError)
+                    setModalReason(!ModalReason)
+                }}
+                setModalVisible={setModalError}
+                navigation={navigation} 
             />
 
         </SafeAreaProvider>

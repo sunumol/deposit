@@ -11,7 +11,7 @@ import {
     Dimensions,
     TouchableOpacity
 } from 'react-native'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Statusbar from '../../../Components/StatusBar';
 import { useFocusEffect } from '@react-navigation/native';
@@ -24,12 +24,13 @@ import Search from 'react-native-vector-icons/Feather';
 import ErrorModal from './ErrorModal';
 import ReasonModal from './ReasonModal';
 import RoadAccessModal from './RoadAccessModal';
+import ModalSave from '../../../Components/ModalSave';
 import { api } from '../../../Services/Api';
 
 const { height, width } = Dimensions.get('screen');
 
-const DetailChecks = ({ navigation, details }) => {
-    console.log('????===>>123', details)
+const DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLandmarkname1,setRoadStatus1 }) => {
+    console.log('????===>>123', )
 
     const isDarkMode = true;
     const [text, onChangeText] = useState('');
@@ -56,8 +57,7 @@ const DetailChecks = ({ navigation, details }) => {
         setChecked(false)  
         }
     }
-
-
+  
 
     const  getRandomColor =()=> {
         var letters = '0123456789ABCDEF';
@@ -97,6 +97,7 @@ const DetailChecks = ({ navigation, details }) => {
         } else {
 
             setVillagename(text)
+            setVillagename1(text)
         }
         setVillagename(text)
     }
@@ -129,8 +130,10 @@ const DetailChecks = ({ navigation, details }) => {
         } else {
 
             setLandmarkname(text)
+            setLandmarkname1(text)
         }
         setLandmarkname(text)
+        setLandmarkname1(text)
     }
 
 
@@ -195,7 +198,8 @@ const DetailChecks = ({ navigation, details }) => {
         await api.savebasicdetail(data).then((res) => {
             console.log('-------------------res update', res?.data)
             if (res?.status) {
-                navigation.navigate('CustomerDetails') 
+               // navigation.navigate('CustomerDetails') 
+               navigation.navigate('VehicleOwn') 
             }
         }).catch((err) => {
             console.log('-------------------err update', err?.response)
@@ -319,6 +323,7 @@ const DetailChecks = ({ navigation, details }) => {
                                                         // setBranchStatus(false)
                                                         // setSearchStatus(true)
                                                         setVillagename(item)
+                                                        setVillagename1(item)
                                                         // setBankBranchNameId(item.id)
                                                         // setCloseBranch(true)
                                                         // setDetailsStatus(false)
@@ -410,6 +415,7 @@ const DetailChecks = ({ navigation, details }) => {
                                                         // setBranchStatus(false)
                                                         // setSearchStatus(true)
                                                         setPostofficename(item)
+                                                        setPostoffice1(item)
                                                         // setBankBranchNameId(item.id)
                                                         // setCloseBranch(true)
                                                         // setDetailsStatus(false)
@@ -489,10 +495,10 @@ const DetailChecks = ({ navigation, details }) => {
                     paddingLeft: 10, paddingRight: 10
                 }}>
 
-                    <TouchableOpacity style={[styles.buttonView, { backgroundColor: 'rgba(229, 231, 250, 1)' }]}
+                    {/* <TouchableOpacity style={[styles.buttonView, { backgroundColor: 'rgba(229, 231, 250, 1)' }]}
                         onPress={() => setModalReason(true)}>
                         <Text style={[styles.continueText, { color: COLORS.colorB }]}>Reject</Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                     <TouchableOpacity onPress={() => checked ? onsubmit() : console.log('')}
                         style={[styles.buttonView, { backgroundColor: checked ? COLORS.colorB : 'rgba(236, 235, 237, 1)' }]}>
                         <Text style={[styles.continueText, { color: checked ? COLORS.colorBackground : '#979C9E' }]}>Confirm</Text>
@@ -500,7 +506,7 @@ const DetailChecks = ({ navigation, details }) => {
                 </View>
 
             </ScrollView>
-            <ErrorModal
+            {/* <ErrorModal
                 ModalVisible={ModalError}
                 onPressOut={() => {
                     setModalError(!ModalError)
@@ -519,7 +525,7 @@ const DetailChecks = ({ navigation, details }) => {
                 ModalVisible={ModalReason}
                 onPressOut={() => setModalReason(!ModalReason)}
                 setModalVisible={setModalReason}
-            />
+            /> */}
 
 
 
@@ -528,6 +534,7 @@ const DetailChecks = ({ navigation, details }) => {
                 onPress1={(value) => {
                     console.log('====>>Road', value.Title)
                     setRoadStatus(value.Title)
+                    setRoadStatus1(value.Title)
                     setModalReason1(false)
                     // setModalError(true)
                 }}
@@ -535,6 +542,10 @@ const DetailChecks = ({ navigation, details }) => {
                 onPressOut={() => setModalReason1(!ModalReason)}
                 setModalVisible={setModalReason1}
             />
+
+
+
+        
 
         </View>
 
@@ -694,7 +705,7 @@ const styles = StyleSheet.create({
         borderRadius: 54,
         height: 48,
         marginBottom: 20,
-        width: '48%'
+        width: '88%'
     },
     continueText: {
         fontSize: 14,
@@ -777,7 +788,7 @@ const styles = StyleSheet.create({
         borderRadius: 54,
         height: 48,
         marginBottom: 20,
-        width: '48%'
+        width: '100%'
     },
     continueText: {
         fontSize: 14,

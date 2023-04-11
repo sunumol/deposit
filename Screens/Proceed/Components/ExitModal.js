@@ -1,20 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { Dimensions, Modal, StyleSheet, Text, TouchableOpacity, View, Image } from "react-native";
+import { Dimensions, Modal, StyleSheet, Text, TouchableOpacity, View, BackHandler } from "react-native";
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { COLORS, FONTS } from '../../../Constants/Constants';
 import { useTranslation } from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 const { height, width } = Dimensions.get('screen');
-import Image1 from '../../CGTCustomer/Images/error.svg';
+import Image1 from '../../../assets/image/excm.svg';
 
-const ErrorModal = ({ ModalVisible, onPressOut,onPress1,navigation }) => {
+const ExitModal = ({ ModalVisible, onPressOut, setModalVisible, navigation }) => {
     const [state, setState] = useState(null);
     const { t } = useTranslation();
     const [Lang, setLang] = useState('')
-    const [BStatus, setBstatus] = useState(false)
 
     useEffect(() => {
         getData()
-      
     }, [])
 
     const getData = async () => {
@@ -25,7 +24,6 @@ const ErrorModal = ({ ModalVisible, onPressOut,onPress1,navigation }) => {
             console.log(e)
         }
     }
-    
 
     return (
 
@@ -33,28 +31,32 @@ const ErrorModal = ({ ModalVisible, onPressOut,onPress1,navigation }) => {
             animationType="fade"
             transparent={true}
             visible={ModalVisible}
-            onRequestClose={onPressOut}
+            onRequestClose={() => {
+                setModalVisible(!ModalVisible)
+            }}
         >
             <View style={styles.mainContainer} >
-
                 <TouchableOpacity
-                  
+                    onPressOut={onPressOut}
                     style={styles.touchableStyle} >
                 </TouchableOpacity>
-
                 <View style={styles.modalContainer}>
-                    <View style={{ paddingTop: width * 0.0 }}>
-                        <Image1 width={190} height={90}/>
-              
+                    <View style={{ paddingTop: width * 0.06 }}>
+                        <Image1 />
                     </View>
 
-                    <View style={{ paddingTop: width * 0.01 }}>
-                      
-                        <Text style={styles.textdesc}>Rejected</Text>
-                    </View>
+                    <Text style={[styles.textdesc, { paddingTop: width * 0.04, textAlign: 'center' }]}>Do you want to exit?
+                    </Text>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingTop: 22, paddingBottom: 22 }}>
+                        <TouchableOpacity style={[styles.ButtonContinue, { marginRight: 10 }]} onPress={() => setModalVisible(false)}>
+                            <Text style={styles.textC}>{t('common:No')}</Text>
+                        </TouchableOpacity>
 
+                        <TouchableOpacity style={styles.ButtonCancel} onPress={() => navigation.navigate('Profile')}>
+                            <Text style={styles.text2}>{t('common:Yes')}</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
-
                 <TouchableOpacity
                     onPressOut={onPressOut}
                     style={styles.touchableStyle} >
@@ -73,10 +75,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     modalContainer: {
-        width: Dimensions.get('window').width * 0.68,
-        height: Dimensions.get('window').width * 0.45,
+        width: Dimensions.get('window').width * 0.9,
+        height: Dimensions.get('window').width * 0.46,
         backgroundColor: COLORS.colorBackground,
-        borderRadius: 20,
+        borderRadius: 8,
         alignItems: 'center',
         justifyContent: 'center'
     },
@@ -90,12 +92,12 @@ const styles = StyleSheet.create({
     },
     buttonStyle: {
         backgroundColor: COLORS.colorB,
-        width: Dimensions.get('window').width * 0.30,
-        height: 48,
+        width: Dimensions.get('window').width * 0.36,
+        height: 46,
         borderRadius: 54,
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: width * 0.06,
+        marginTop: width * 0.04,
         marginBottom: 21
     },
     buttonTextStyle: {
@@ -132,12 +134,41 @@ const styles = StyleSheet.create({
     },
     textdesc: {
         fontSize: 14,
-        //paddingTop: width * 0.02,
-        textAlign: 'center',
-        color: "#3B3D43",
-        fontFamily: FONTS.FontBold,
+        color: "#1A051D",
+        fontFamily: FONTS.FontRegular,
+    },
+    text2: {
+        color: COLORS.colorB,
+        fontFamily: FONTS.FontMedium,
+        fontSize: 16
+    },
+    ButtonCancel: {
+        width: 138,
+        height: 48,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#00387426',
+        borderRadius: 48,
+
+    },
+    ButtonContinue: {
+        backgroundColor: COLORS.colorB,
+        width: 138,
+        height: 48,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 48,
+
+    },
+
+    textC: {
+        fontFamily: FONTS.FontRegular,
+        fontWeight: 'bold',
+        fontSize: 14,
+        opacity: 5,
+        color: COLORS.colorBackground
     },
 
 });
 
-export default ErrorModal;
+export default ExitModal;

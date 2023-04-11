@@ -33,7 +33,7 @@ import { api } from '../../../Services/Api';
 import { useSelector } from 'react-redux';
 
 
-const DetailChecks = ({ navigation, setState }) => {
+const DetailChecks = ({ navigation, setState,proofType1,imageUrl1,relation1,relative1 }) => {
 
     const isDarkMode = true;
     const [text, onChangeText] = useState('');
@@ -73,7 +73,9 @@ const DetailChecks = ({ navigation, setState }) => {
         console.log("purpose print....", Purposes)
         setState(Purpose)
         setPurpose(Purpose)
+        proofType1(Purpose)
         setPurposes(Purposes)
+        relation1(Purposes)
         setRelation(Relation)
 
 
@@ -122,6 +124,7 @@ const DetailChecks = ({ navigation, setState }) => {
                setImage(res?.data?.body?.imageUrl)
                if(res?.data?.body?.relationShipWithCustomer != 'Spouse'){
                 setOwnersName(res?.data?.body?.ownersName)
+                relative1(res?.data?.body?.ownersName)
                }
             
                if(res?.data?.body?.ownerShipProofType){
@@ -200,6 +203,7 @@ const DetailChecks = ({ navigation, setState }) => {
             if (res?.status) {
                 setImageurl(res?.data[0]?.body)
                 setImage(res?.data[0]?.body)
+                imageUrl1(res?.data[0]?.body)
             }
         }).catch((err) => {
             console.log('-------------------err file upload', err)
@@ -284,7 +288,7 @@ const DetailChecks = ({ navigation, setState }) => {
                           <TextInput
                                         value={ownersName}
                                         style={styles.TextInputBranch}
-                                        onChangeText={(text) => setOwnersName(text)}
+                                        onChangeText={(text) =>{ setOwnersName(text),relative1(text)}}
                                         // onFocus={() => setPstatus(false)}
                                         // onKeyPress={() => setPstatus(false)}
 

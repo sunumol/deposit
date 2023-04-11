@@ -28,6 +28,9 @@ const { height, width } = Dimensions.get('screen');
 import Icon1 from 'react-native-vector-icons/Entypo'
 import { api } from '../../Services/Api';
 import { useSelector } from 'react-redux';
+import ModalSave from '../../Components/ModalSave';
+import ReasonModal from '../DetailedCheck/Components/ReasonModal';
+import ErrorModal from '../DetailedCheck/Components/ErrorModal';
 
 const IncomeDetailsSpouse = ({ navigation, }) => {
 
@@ -51,13 +54,15 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
     const [incomedetail,setIncomedetail] =useState('')
     const [incomedetailfield,setIncomedetailfield] =useState('')
     const activityId = useSelector(state => state.activityId);
-
+    const [ModalVisible1,setModalVisible1] = useState(false)
+    const [ModalReason,setModalReason] = useState(false)
+    const [ModalError, setModalError] = useState(false)
 
     useEffect(() => {
         getData()
        // setRelationship(route?.params?.relationShip)
         getIncomeDetails()
-console.log("statecha nge.....",StateChange1)
+            console.log("statecha nge.....",Purpose)
     }, [])
 
     const getData = async () => {
@@ -72,20 +77,21 @@ console.log("statecha nge.....",StateChange1)
 
     const handleGoBack = useCallback(() => {
 
-        navigation.goBack()
-
-        return true; // Returning true from onBackPress denotes that we have handled the event
-    }, [navigation]);
-
-    useFocusEffect(
-        React.useCallback(() => {
-            BackHandler.addEventListener('hardwareBackPress', handleGoBack);
-
-            return () =>
-                BackHandler.removeEventListener('hardwareBackPress', handleGoBack);
-        }, [handleGoBack]),
-    );
-
+        // navigation.goBack()
+             setModalVisible1(true)
+         return true; // Returning true from onBackPress denotes that we have handled the event
+     }, [navigation]);
+ 
+     useFocusEffect(
+         React.useCallback(() => {
+             BackHandler.addEventListener('hardwareBackPress', handleGoBack);
+ 
+             return () =>
+             
+                 BackHandler.removeEventListener('hardwareBackPress', handleGoBack);
+         }, [handleGoBack]),
+     );
+ 
     const ButtonClick = () => {
     
         if (Amount !== '' && Avg !== '' && Month !== '') {
@@ -108,7 +114,8 @@ console.log("statecha nge.....",StateChange1)
     }, [MonthsCustom, Purpose, Salary])
 
     useEffect(() => {
-        if (Amount === '' || Avg === '' || Month === '') {
+        console.log('month',Amount,Avg,Purpose)
+        if (Amount === null || Avg === null || Purpose === null) {
             setButtons(false)
         } else {
             setButtons(true)
@@ -117,6 +124,26 @@ console.log("statecha nge.....",StateChange1)
     
 
 
+      // ------------------ get Conduct DLE basic detail Village Api Call Start ------------------
+      const updateRejection = async () => {
+        console.log('api called for rejection')
+        const data = {
+            "activityStatus":'Submitted wrong data',
+            "employeeId":1,
+            "activityId":activityId
+        }
+        await api.updateActivity(data).then((res) => {
+            console.log('-------------------res get Village', res)
+            setModalError(true)
+            setModalReason(false)
+            setTimeout(() => {
+                navigation.navigate('Profile')  
+            }, 1000);
+          
+        }).catch((err) => {
+            console.log('-------------------err get Village', err)
+        })
+    };
 
 
        // ------------------getIncomeDetails detail ------------------
@@ -136,6 +163,7 @@ console.log("statecha nge.....",StateChange1)
                 setIncomedetailfield(res?.data?.body?.incomeDetailsFieldHeadders)
                 setAmount(res?.data?.body?.field1)
                 setMonth(res?.data?.body?.field2)
+                setPurpose(res?.data?.body?.field2)
                 setAvg(res?.data?.body?.field3)
             }
         }).catch((err) => {
@@ -156,7 +184,7 @@ console.log("statecha nge.....",StateChange1)
                 "activityId": activityId,
                 "relationShip": relationShip,
                 "field1": Amount,
-                "field2": Month,
+                "field2": Purpose,
                 "field3": Avg
     
             }
@@ -181,8 +209,8 @@ console.log("statecha nge.....",StateChange1)
             <SafeAreaView style={styles.container1} />
             <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
 
-            {/* <Header name="Income Details" navigation={navigation} setStatusChange={statusChange} setStatusChange1={setStatusChange}/> */}
-            <View style={styles.Header}>
+            <Header name="Income Details" navigation={navigation} onPress={handleGoBack} />
+            {/* <View style={styles.Header}>
             <View style={{ left: 15, alignItems: 'center', justifyContent: 'center', top: -3 }}>
                 <TouchableOpacity onPress={() => { StateChange1 === false ? navigation.goBack() : setStateChange1(false) }} style={{ padding: 0 }}>
         
@@ -203,7 +231,7 @@ console.log("statecha nge.....",StateChange1)
             </View>
 
             <View></View>
-        </View>
+        </View> */}
             <View style={styles.ViewContent}>
                 {/* <Details navigation={navigation} setStatusChange={setStatusChange} setStatusChange2={statusChange} /> */}
                 <View style={styles.mainContainer}>
@@ -230,11 +258,11 @@ console.log("statecha nge.....",StateChange1)
                                 <Text style={styles.TextElect}>{incomedetailfield?.field1}</Text>
                             </View>
                             <View style={styles.SelectBox}>
-                                <Text style={[styles.RS, { color: Amount === '' ? '#808080' : '#1A051D' }]}>₹</Text>
+                              
                                 <TextInput
                                     style={[{
                                         fontSize: 14, color: '#1A051D',
-                                        fontFamily: FONTS.FontRegular, left: 5
+                                        fontFamily: FONTS.FontRegular, left: 15,width:'95%'
                                     }]}
                                     value={Amount?.toString()}
                                     keyboardType={'number-pad'}
@@ -246,11 +274,16 @@ console.log("statecha nge.....",StateChange1)
                                 <Text style={styles.TextElect}>{incomedetailfield?.field2}</Text>
                             </View>
                             <View style={styles.SelectBox}>
-                                <TextInput
+                            <TouchableOpacity style={[styles.SelectBox,{justifyContent:'space-between'}]} onPress={() => setModalVisible(true)}>
+                                <Text style={[styles.textSelect]}>{Purpose ? Purpose :'Select'}</Text>
+
+                                <Icon1 name="chevron-down" size={18} color={'#808080'} style={{ marginRight: 10 }} />
+                            </TouchableOpacity>
+                                {/* <TextInput
                                     style={[{ fontSize: 14, color: '#1A051D', fontFamily: FONTS.FontRegular, left: 5 }]}
                                     value={Month?.toString()}
                                     keyboardType={'number-pad'}
-                                    onChangeText={(text) => setMonth(text)} />
+                                    onChangeText={(text) => setMonth(text)} /> */}
                             </View>
 
                             <View>
@@ -259,14 +292,14 @@ console.log("statecha nge.....",StateChange1)
                             <View style={styles.SelectBox}>
                                 <Text style={[styles.RS, { color: Avg === '' ? '#808080' : '#1A051D' }]}>₹</Text>
                                 <TextInput
-                                    style={[{ fontSize: 14, color: '#1A051D', fontFamily: FONTS.FontRegular, left: 5 }]}
+                                    style={[{ fontSize: 14, color: '#1A051D', fontFamily: FONTS.FontRegular, left: 5,width:'95%' }]}
                                     value={Avg?.toString()}
                                     keyboardType={'number-pad'}
                                     onChangeText={(text) => setAvg(text)} />
                             </View>
                         </View> 
                 </ScrollView>
-              
+              {console.log('878787',Buttons)}
                     <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                         <TouchableOpacity style={[styles.buttonView, { backgroundColor: Buttons ? COLORS.colorB : 'rgba(224, 224, 224, 1)' }]}
                             onPress={() => ButtonClick()}>
@@ -281,6 +314,45 @@ console.log("statecha nge.....",StateChange1)
                 setPurpose={setPurpose}
                 setModalVisible={setModalVisible}
                 onPressOut={() => setModalVisible(!ModalVisible)}
+            />
+
+
+<ModalSave
+                Press ={()=>{
+                    setModalVisible1(false),
+                    setModalReason(true)
+               
+                }}
+                Press1={()=>{saveIncomeDetails(),setModalVisible1(false)}}
+                ModalVisible={ModalVisible1}
+                setModalVisible={setModalVisible1}
+                onPressOut={() => {
+                    setModalVisible1(false)
+                   
+
+                }}
+                navigation={navigation} />
+
+
+            <ReasonModal
+                onPress1={() => {
+                     updateRejection()
+                   // setModalError(true)
+                }}
+                ModalVisible={ModalReason}
+                onPressOut={() => setModalReason(!ModalReason)}
+                setModalVisible={setModalReason}
+            />
+
+
+            <ErrorModal
+                ModalVisible={ModalError}
+                onPressOut={() => {
+                    setModalError(!ModalError)
+                    setModalReason(!ModalReason)
+                }}
+                setModalVisible={setModalError}
+                navigation={navigation} 
             />
 
         </SafeAreaProvider>
@@ -339,6 +411,12 @@ const styles = StyleSheet.create({
         marginTop: 10,
         marginBottom: 16,
         left: -5
+    },
+    textSelect: {
+        fontSize: 14,
+        color: 'rgba(128, 128, 128, 1)',
+        fontFamily: FONTS.FontRegular,
+        marginLeft: 15
     },
 
     TextElect: {

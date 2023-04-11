@@ -2,7 +2,7 @@ import {
   StyleSheet, Text, View, StatusBar, SafeAreaView, Platform,Alert,
   TextInput, TouchableOpacity, Dimensions, ScrollView, KeyboardAvoidingView, Image
 } from 'react-native'
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef,useCallback } from 'react'
 import Header from '../../Components/RepayHeader';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { COLORS, FONTS } from '../../Constants/Constants';
@@ -19,6 +19,13 @@ import RelationModal from './components/RelationModal';
 import Resend from '../../assets/Images/resend.svg'
 import OTPInputView from '../../Components/OTPInputView'
 import { useSelector } from 'react-redux';
+import ErrorModal1 from './components/ErrorModal1';
+import ReasonModal from '../DetailedCheck/Components/ReasonModal';
+import ModalSave from '../../Components/ModalSave';
+
+
+
+
 const ContinuingGuarantor = ({ navigation, route }) => {
 
   const isDarkMode = true;
@@ -50,7 +57,9 @@ const ContinuingGuarantor = ({ navigation, route }) => {
     const [otp, setOtp] = useState(false)
 
     const activityId = useSelector(state => state.activityId);
-
+    const [ModalVisible,setModalVisible] = useState(false)
+    const [ModalReason,setModalReason] = useState(false)
+    const [ModalError1, setModalError1] = useState(false)
 
 
   const getData = async () => {
@@ -62,7 +71,22 @@ const ContinuingGuarantor = ({ navigation, route }) => {
         console.log('mob',e)
     }
 }
+const handleGoBack = useCallback(() => {
 
+  // navigation.goBack()
+       setModalVisible(true)
+   return true; // Returning true from onBackPress denotes that we have handled the event
+}, [navigation]);
+
+useFocusEffect(
+   React.useCallback(() => {
+       BackHandler.addEventListener('hardwareBackPress', handleGoBack);
+
+       return () =>
+       
+           BackHandler.removeEventListener('hardwareBackPress', handleGoBack);
+   }, [handleGoBack]),
+);
 
 useEffect (()=>{
   getCGdetails()
@@ -142,6 +166,31 @@ const CountDownResend = () => {
   setStatus(true)
   setIsOtp1(true)
 }
+
+
+
+
+      // ------------------ get Conduct DLE basic detail Village Api Call Start ------------------
+      const updateRejection = async () => {
+        console.log('api called for rejection')
+        const data = {
+            "activityStatus":'Submitted wrong data',
+            "employeeId":1,
+            "activityId":activityId
+        }
+        await api.updateActivity(data).then((res) => {
+            console.log('-------------------res get Village', res)
+            setModalError(true)
+            setModalReason(false)
+            setTimeout(() => {
+                navigation.navigate('Profile')  
+            }, 1000);
+          
+        }).catch((err) => {
+            console.log('-------------------err get Village', err)
+        })
+    };
+    // ------------------ HomeScreen Api Call End ------------------
 
   useEffect(() => {
   
@@ -337,7 +386,7 @@ const CountDownResend = () => {
       <SafeAreaView style={styles.container1} />
       <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} backgroundColor={"#002B59"} />
 
-      <Header navigation={navigation} name={"Continuing Guarantor"} />
+      <Header navigation={navigation} name={"Continuing Guarantor"}  onPress={handleGoBack} />
 
       <View style={styles.mainContainer}>
 
@@ -485,6 +534,47 @@ const CountDownResend = () => {
                   
                 }}
                 setModalVisible={setModalError}
+            />
+
+
+
+
+<ModalSave
+                Press ={()=>{
+                    setModalVisible(false),
+                    setModalReason(true)
+               
+                }}
+                Press1={()=>{onsubmit(),setModalVisible(false)}}
+                ModalVisible={ModalVisible}
+                setModalVisible={setModalVisible}
+                onPressOut={() => {
+                    setModalVisible(false)
+                   
+
+                }}
+                navigation={navigation} />
+
+
+            <ReasonModal
+                onPress1={() => {
+                     updateRejection()
+                   // setModalError(true)
+                }}
+                ModalVisible={ModalReason}
+                onPressOut={() => setModalReason(!ModalReason)}
+                setModalVisible={setModalReason}
+            />
+
+
+            <ErrorModal1
+                ModalVisible={ModalError1}
+                onPressOut={() => {
+                    setModalError(!ModalError1)
+                    setModalReason(!ModalReason)
+                }}
+                setModalVisible={setModalError1}
+                navigation={navigation} 
             />
 
           <TouchableOpacity onPress={() => OtpValue?.length === 4 && number?.length === 10 ? verifyCGOTP() : console.log("geki")}

@@ -19,7 +19,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import Header from '../../../Components/RepayHeader';
 import { FONTS, COLORS } from '../../../Constants/Constants';
 import Search from '../../../assets/image/search2.svg'
-import Icon1 from 'react-native-vector-icons/Entypo'; 
+import Icon1 from 'react-native-vector-icons/Entypo';
 import ImagePicker from 'react-native-image-crop-picker';
 import { api } from '../../../Services/Api';
 import { useSelector } from 'react-redux';
@@ -30,7 +30,7 @@ import { useSelector } from 'react-redux';
 const { height, width } = Dimensions.get('screen');
 
 const Vehicles = ({ navigation, vehicle }) => {
-  //  console.log('Vehicles list',{vehicle})
+    console.log('Vehicles list',  vehicle )
 
     const isDarkMode = true;
     const [text, onChangeText] = useState('');
@@ -43,7 +43,8 @@ const Vehicles = ({ navigation, vehicle }) => {
     const [numbers, setNumbers] = useState('')
     const [number, setNumber] = useState(false)
     const [SearchStatus, setSearchStatus] = useState(false)
-    const [vehicleslist,setvehicleslist] =useState([vehicle])
+    const [vehicleslist, setvehicleslist] = useState([vehicle])
+    const [mergedList, setmergedList] = useState([])
     const toggleCheckbox = () => setChecked(!checked);
     const activityId = useSelector(state => state.activityId);
 
@@ -87,56 +88,62 @@ const Vehicles = ({ navigation, vehicle }) => {
         }
     ]
 
+    useEffect(()=>{
+    setvehicleslist([vehicle])
+    },[])
 
+    // useEffect(() => {
+    //     setmergedList([])
+    //     if (vehicle || vehicleslist) {
+    //         const data = vehicle.concat(vehicleslist);
+    //         // mergedList.push({...vehicle,...vehicleslist })
+    //         console.log('length=======', data)
+    //     }
+    // }, [vehicle, vehicleslist])
 
 
     const getVehicleDetails = async () => {
-        console.log('api called')
+        console.log('api called', activityId)
 
         const data = {
             "activityId": activityId,
-      
+
         }
         await api.getVehicleDetails(data).then((res) => {
             console.log('-------------------res getVehicleDetails', res?.data?.body)
-            if (res?.status) {
-             setvehicleslist(res?.data?.body)
-
-
-             var tempo = vehicleslist;
-          
-             tempo = tempo.concat(res?.data?.body);
-         
-      
-             setvehicleslist([...tempo]);
-             
+            if (res?.data?.body) {
+                let temp = vehicleslist
+                temp  = temp.concat(res?.data?.body)
+                setvehicleslist([...temp])
+            }else{
+                setvehicleslist(vehicle)
             }
         }).catch((err) => {
-            console.log('-------------------err getVehicleDetails', err?.response)
+            console.log('-------------------err getVehicleDetails', err)
         })
     };
-{console.log('=====>>>>',vehicleslist)}
+    // {console.log('=====>>>>',vehicleslist)}
 
-        // ------------------get fetchVehicleDetailsForDle detail ------------------
+    // ------------------get fetchVehicleDetailsForDle detail ------------------
 
-        const saveVehicleDetails = async () => {
-            console.log('api called')
-    
-            const data = vehicleslist
-            await api.saveVehicleDetails(data).then((res) => {
-                console.log('-------------------res fetchVehicleDetailsForDle', res?.data?.body)
-                if (res?.status) {
-                    navigation.navigate('EnergyUtility')
-                }
-            }).catch((err) => {
-                console.log('-------------------err fetchVehicleDetailsForDle', err?.response)
-            })
-        };
+    const saveVehicleDetails = async () => {
+        console.log('api called1')
+
+        const data = vehicleslist
+        await api.saveVehicleDetails(data).then((res) => {
+            console.log('-------------------res fetchVehicleDetailsForDle', res?.data?.body)
+            if (res?.status) {
+                navigation.navigate('EnergyUtility')
+            }
+        }).catch((err) => {
+            console.log('-------------------err fetchVehicleDetailsForDle', err?.response)
+        })
+    };
 
 
-useEffect(()=>{
-getVehicleDetails()
-},[])
+    useEffect(() => {
+        getVehicleDetails()
+    }, [])
 
 
     return (
@@ -149,7 +156,10 @@ getVehicleDetails()
                         <Text style={styles.vehText}>Vehicles owned (2)</Text>
                     </View>
                     <View>
+
+                        {console.log('99999',vehicleslist)}
                         {vehicleslist ? vehicleslist.map((item) => {
+                            console.log('90909',item)
                             return (
                                 <View style={styles.containerBox1}>
                                     <View style={{
@@ -157,21 +167,21 @@ getVehicleDetails()
                                         paddingTop: width * 0.04, marginLeft: width * 0.05
                                     }}>
                                         <View style={{ flexDirection: 'column', flex: 1, alignItems: 'flex-start' }}>
-                                            <Text style={styles.TextOwner}>{item.ownersName}</Text>
-                                            <Text style={[styles.TextOwner, { paddingTop: 5, width: width * 0.35 }]}>{item.model}</Text>
+                                            <Text style={styles.TextOwner}>{item?.ownersName}</Text>
+                                            <Text style={[styles.TextOwner, { paddingTop: 5, width: width * 0.35 }]}>{item?.model}</Text>
                                         </View>
                                         <View style={{ flexDirection: 'column', flex: 1, alignItems: 'center', left: -9 }}>
                                             {Data.map((item) => {
                                                 return (
                                                     <View style={{ flexDirection: 'column', }}>
-                                                        <Text style={{ fontSize: 6, color: "#C4C4C4" }}>{item.model}</Text>
+                                                        <Text style={{ fontSize: 6, color: "#C4C4C4" }}>{item?.label}</Text>
                                                     </View>
                                                 )
                                             })}
                                         </View>
                                         <View style={{ flexDirection: 'column', flex: 1, left: -25 }}>
-                                            <Text style={styles.TextOwner}>{item.vehicleNumber}</Text>
-                                            <Text style={[styles.TextOwner, { paddingTop: 5 }]}>{item.year}</Text>
+                                            <Text style={styles.TextOwner}>{item?.vehicleNumber}</Text>
+                                            <Text style={[styles.TextOwner, { paddingTop: 5 }]}>{item?.year}</Text>
                                         </View>
                                     </View>
 
@@ -183,7 +193,7 @@ getVehicleDetails()
 
                     <View style={{ alignItems: 'flex-end' }}>
                         <TouchableOpacity style={[styles.buttonView1, { backgroundColor: 'rgba(0, 56, 116, 0.1)' }]}
-                       onPress={()=>navigation.navigate('AddVehicle')} >
+                            onPress={() => navigation.navigate('AddVehicle')} >
                             <Icon1 name="plus" size={18} color={COLORS.colorB} />
                             <Text style={[styles.continueText, { color: COLORS.colorB, marginLeft: 5 }]}>Add New</Text>
                         </TouchableOpacity>
@@ -192,7 +202,7 @@ getVehicleDetails()
                 </ScrollView>
 
                 <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                    <TouchableOpacity style={[styles.buttonView, { backgroundColor: COLORS.colorB }]} onPress={()=>saveVehicleDetails()}>
+                    <TouchableOpacity style={[styles.buttonView, { backgroundColor: COLORS.colorB }]} onPress={() => saveVehicleDetails()}>
                         <Text style={[styles.continueText, { color: COLORS.colorBackground }]}>Continue</Text>
                     </TouchableOpacity>
                 </View>
