@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { COLORS, FONTS } from '../../../Constants/Constants';
 import { useTranslation } from 'react-i18next';
 
-const CreditModal = ({ visible, onPressOut,setModalVisible,setPurpose,
+const CreditModal = ({ visible, onPressOut,setModalVisible,setPurpose
    }) => {
     const { t } = useTranslation();
     return (
@@ -27,7 +27,6 @@ const CreditModal = ({ visible, onPressOut,setModalVisible,setPurpose,
                         <TouchableOpacity style={styles.textTouch}
                             onPress={() => {
                                 setPurpose('Bank Account')
-                            
                                 setModalVisible(!visible)
                              
                             }
@@ -43,7 +42,7 @@ const CreditModal = ({ visible, onPressOut,setModalVisible,setPurpose,
                         </TouchableOpacity >
                         <View style={styles.lineView} />
                         <TouchableOpacity style={styles.textTouch} onPress={() => {
-                            setPurpose("Cash")
+                            setPurpose('Cash')
                             setModalVisible(!visible)
                         
                         }
@@ -90,8 +89,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.1,
         elevation: 5,
         shadowRadius: 2,
-        borderBottomStartRadius: 30,
-        borderBottomEndRadius: 30,
+    
         width: Dimensions.get('window').width,
         paddingBottom: 7
         // height:Dimensions.get('window').height*0.3

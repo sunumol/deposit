@@ -150,13 +150,30 @@ const Vehicle = ({ navigation }) => {
             "vehicleNumber": numbers
         }
         await api.fetchVehicleDetailsForDle(data).then((res) => {
-            console.log('-------------------res fetchVehicleDetailsForDle', res?.data?.body)
+            console.log('-------------------res fetchVehicleDetailsForDle123', res?.data?.body)
             if (res?.status) {
                 setSearchvehicledata(res?.data?.body)
                 setSearchStatus2(true)
             }
         }).catch((err) => {
             console.log('-------------------err fetchVehicleDetailsForDle', err?.response)
+        })
+    };
+
+
+       // ------------------get fetchVehicleDetailsForDle detail ------------------
+
+       const saveVehicleDetails = async () => {
+        console.log('api called1')
+
+        const data = searchvehicledata
+        await api.saveVehicleDetails(data).then((res) => {
+            console.log('-------------------res fetchVehicleDetailsForDle1', res?.data?.body)
+            if (res?.status) {
+                navigation.navigate('VehicleOwn',{vehicle:searchvehicledata})
+            }
+        }).catch((err) => {
+            console.log('-------------------err fetchVehicleDetailsForDle1', err?.response)
         })
     };
 
@@ -288,7 +305,7 @@ const Vehicle = ({ navigation }) => {
                                         {Data.map((item) => {
                                             return (
                                                 <View style={{ flexDirection: 'column', }}>
-                                                    <Text style={{ fontSize: 6, color: "#C4C4C4" }}>{item.label}</Text>
+                                                    <Text style={{ fontSize: 6, color: "#C4C4C4" }}>{item?.label}</Text>
                                                 </View>
                                             )
                                         })}
@@ -309,7 +326,7 @@ const Vehicle = ({ navigation }) => {
                                         {Data.map((item) => {
                                             return (
                                                 <View style={{ flexDirection: 'column', }}>
-                                                    <Text style={{ fontSize: 6, color: "#C4C4C4" }}>{item.label}</Text>
+                                                    <Text style={{ fontSize: 6, color: "#C4C4C4" }}>{item?.label}</Text>
                                                 </View>
                                             )
                                         })}
@@ -329,7 +346,7 @@ const Vehicle = ({ navigation }) => {
                                         <Text style={[styles.continueText, { color: COLORS.colorB }]}>Reject</Text>
                                     </TouchableOpacity>
                                     {console.log('~~~~~>>>',searchvehicledata)}
-                                    <TouchableOpacity onPress={() =>  navigation.navigate('VehicleOwn',{vehicle:searchvehicledata})}
+                                    <TouchableOpacity onPress={() => navigation.navigate('VehicleOwn',{vehicle:searchvehicledata})}
                                         style={[styles.buttonView1, { backgroundColor: COLORS.colorB }]}>
                                         <Text style={[styles.continueText, { color: COLORS.colorBackground }]}>Confirm</Text>
                                     </TouchableOpacity>
@@ -340,9 +357,9 @@ const Vehicle = ({ navigation }) => {
                 </ScrollView>
 
                 {!Status &&
-                    <View style={{ alignItems: 'center', justifyContent: 'center', marginBottom: 20 }}>
+                    <TouchableOpacity onPress={()=>navigation.navigate('EnergyUtility')} style={{ alignItems: 'center', justifyContent: 'center', marginBottom: 20 }}>
                         <Text style={styles.skip}>Skip</Text>
-                    </View>}
+                    </TouchableOpacity>}
                 {!Status &&
                     <TouchableOpacity style={[styles.buttonView, { backgroundColor: number ? COLORS.colorB : '#E0E0E0' }]}>
                         <Text style={[styles.continueText, { color: number ? COLORS.colorBackground : COLORS.colorWhite3 }]}>Continue</Text>

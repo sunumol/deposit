@@ -6,7 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const { height, width } = Dimensions.get('screen');
 import Image1 from '../../CGTCustomer/Images/error.svg';
 
-const ErrorModal = ({ ModalVisible, onPressOut,onPress1,navigation }) => {
+const ErrorModal1 = ({ ModalVisible, onPressOut,onPress1,navigation }) => {
     const [state, setState] = useState(null);
     const { t } = useTranslation();
     const [Lang, setLang] = useState('')
@@ -140,4 +140,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default ErrorModal;
+export default ErrorModal1;

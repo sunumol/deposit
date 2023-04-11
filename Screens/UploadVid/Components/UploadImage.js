@@ -24,7 +24,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import ToastModal from '../../../Components/ToastModal';
 import { useSelector } from 'react-redux';
 
-const UploadImage = ({ navigation, id }) => {
+const UploadImage = ({ navigation, id ,setFrontimage,setBackimage}) => {
     const [ImagesF, setImagesF] = useState(null)
     const [ImagesB, setImagesB] = useState(null)
     const [ImagesF1, setImagesF1] = useState(null)
@@ -179,8 +179,10 @@ const UploadImage = ({ navigation, id }) => {
                 if (res?.status) {
                     setImagesF(res?.data?.body?.cgFrontImage)
                     setImagesF1(res?.data?.body?.cgFrontImage)
+                    setFrontimage(res?.data?.body?.cgFrontImage)
                     setImagesB(res?.data?.body?.cgBackImage)
                     setImagesB1(res?.data?.body?.cgBackImage)
+                    setBackimage(res?.data?.body?.cgBackImage)
                     if(res?.data?.body?.cgFrontImage){
                         setDelf(true) 
                     }
@@ -211,6 +213,7 @@ const UploadImage = ({ navigation, id }) => {
                 console.log('-------------------res voter upload front', res?.data[0]?.body)
                 if (res?.status) {
                     setImagesF1(res?.data[0]?.body)
+                    setFrontimage(res?.data[0]?.body)
                 }
             }).catch((err) => {
                 console.log('-------------------err voter upload back', err)
@@ -233,6 +236,7 @@ const UploadImage = ({ navigation, id }) => {
                 console.log('-------------------res voter upload back', res?.data[0]?.body)
                 if (res?.status) {
                     setImagesB1(res?.data[0]?.body)
+                    setBackimage(res?.data[0]?.body)
                 }
             }).catch((err) => {
                 console.log('-------------------err voter upload back', err)

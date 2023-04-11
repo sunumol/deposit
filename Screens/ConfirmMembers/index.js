@@ -49,6 +49,7 @@ const ConfirmMembers = ({ navigation }) => {
   const [data, setData] = useState()
 
   const OnchangeNumber = (num) => {
+    console.log('qqqq-----',num)
     if (/^[^!-\/:-@\.,[-`{-~]+$/.test(num) || num === '') {
       onChangeText(num)
       getCustomerLists(num)
@@ -76,12 +77,15 @@ const ConfirmMembers = ({ navigation }) => {
     return unsubscribe;
   }, [navigation]);
 
-  useEffect(() => {
-    getCustomerLists('')
-  }, []);
+  // useEffect(() => {
+  //   getCustomerLists('')
+  // }, []);
 
   // ------------------ get Slot Api Call Start ------------------
   const getTCDetails = async (id) => {
+console.log('get tc details',id)
+
+
     const data = {
       "customerId": Number(id)
     };
@@ -89,13 +93,16 @@ const ConfirmMembers = ({ navigation }) => {
       console.log('------------------- CGT slot res', res?.data?.body)
       setDataSelected(res?.data?.body)
     }).catch((err) => {
-      console.log('-------------------err', err?.response)
+      console.log('-------------------err246', err?.response)
     })
   };
   // ------------------ get slot Api Call End ------------------
 
   // ------------------ get Slot Api Call Start ------------------
   const getCustomerLists = async (phone) => {
+
+
+    console.log('List------>>',phone)
     const data = {
       "employeeId": 1,
       "customerNameOrNumber": phone
@@ -104,7 +111,7 @@ const ConfirmMembers = ({ navigation }) => {
       console.log('------------------- CGT slot res', res)
       setData(res?.data?.body)
     }).catch((err) => {
-      console.log('-------------------err', err?.response)
+      console.log('-------------------err123', err?.response)
     })
   };
   // ------------------ get slot Api Call End ------------------getCustomerList
@@ -118,13 +125,13 @@ const ConfirmMembers = ({ navigation }) => {
       "tcMemberIds": []
     };
     await api.rejectTrustCircleMembers(data).then((res) => {
-      console.log('-------------------res', res?.data)
+      console.log('-------------------res789', res?.data)
       if (res?.status) {
         setModalError(true)
       }
     })
       .catch((err) => {
-        console.log('-------------------err', err?.response)
+        console.log('-------------------err789', err?.response)
       })
   };
   // ------------------ Update Activity Reject Api Call End ------------------

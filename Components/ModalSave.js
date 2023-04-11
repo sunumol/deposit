@@ -7,7 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const { height, width } = Dimensions.get('screen');
 import Image1 from '../assets/image/excm.svg';
 
-const ModalSave = ({ ModalVisible, onPressOut, setModalVisible, navigation ,Press}) => {
+const ModalSave = ({ ModalVisible, onPressOut, setModalVisible, navigation ,Press,Press1}) => {
     const [state, setState] = useState(null);
     const { t } = useTranslation();
     const [Lang, setLang] = useState('')
@@ -52,14 +52,14 @@ const ModalSave = ({ ModalVisible, onPressOut, setModalVisible, navigation ,Pres
                     <TouchableOpacity style={[styles.ButtonCancel, { marginRight: 10 }]} onPress={() => navigation.navigate('Profile')}>
                             <Text style={styles.text2}>Discard</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={[styles.ButtonContinue, { marginRight: 10 }]} onPress={() => navigation.navigate('Profile')}>
+                        <TouchableOpacity style={[styles.ButtonContinue, { marginRight: 10 }]} onPress={() => {Press1()}}>
                             <Text style={styles.textC}>Save</Text>
                         </TouchableOpacity>
                      
                        
                     </View>
                     <TouchableOpacity onPress={() => Press()}>
-                    <Text style={[styles.textdesc, { paddingTop: width * 0.04, textAlign: 'center',color:'red' ,fontWeight:'bold',marginVertical:10}]}>Reject Member
+                    <Text style={[styles.textdesc, { paddingTop: width * 0.04, textAlign: 'center',color:'red' ,fontWeight:'bold',marginTop:5}]}>Reject Member
                     </Text>
                     </TouchableOpacity>
                 </View>
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
     },
     modalContainer: {
         width: Dimensions.get('window').width * 0.9,
-        height: Dimensions.get('window').width * 0.52,
+        height: Dimensions.get('window').width * 0.55,
         backgroundColor: COLORS.colorBackground,
         borderRadius: 8,
         alignItems: 'center',
