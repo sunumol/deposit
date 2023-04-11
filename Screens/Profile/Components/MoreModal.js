@@ -119,50 +119,12 @@ const MoreModal = ({ ModalVisible, onPressOut, setModalVisible, setOtpValue, nav
                         <View style={styles.Line} />
 
                         <View style={{ justifyContent: 'center' }}>
-                            <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginTop: width * 0.15, }}>
-                                <View style={{ alignItems: 'center', justifyContent: 'center',left:Lang == 'en' ? 0 : -3}} >
-                                    <TouchableOpacity style={styles.touch} onPress={() => {
-                                        setModalVisible(!ModalVisible)
-                                        getBankData()
-                                       // navigation.navigate('BankAccount')
-
-                                    }}>
-                                        <Image4 />
-                                    </TouchableOpacity>
-                                    <Text style={styles.text}>{t('common:BankAcct')}</Text>
-                                </View>
-
-                                <View style={{ alignItems: 'center', justifyContent: 'center',left:Lang == 'en' ? 0 : -12,
-                                }} >
-                                    <TouchableOpacity style={styles.touch} onPress={()=>navigation.navigate('Language')}>
-                                    <Image6 />
-                                    </TouchableOpacity>
-                                    <Text style={styles.text}>{t('common:Language')}</Text>
-                                </View>
-
-                                <View style={{ alignItems: 'center', justifyContent: 'center' ,left:Lang == 'en' ? 0 : -5}} >
-                                    <TouchableOpacity style={styles.touch}
-                                    onPress={() => {
-                                        setModalVisible(!ModalVisible)
-                                        navigation.navigate('ResePin')
-                                    }}>
-                                        <Image7 />
-                                    </TouchableOpacity>
-                                    <Text style={styles.text}>{t('common:MPIN')}</Text>
-                                </View>
-                            </View>
+                     
 
                             <View style={{ flexDirection: 'row', justifyContent: 'space-around',
                              marginTop: width * 0.08, marginBottom: 35 }}>
-                                <View style={{ alignItems: 'center', justifyContent: 'center' ,paddingLeft:Lang=='ml' ? width*0.01:width*0.01}} >
-                                    <TouchableOpacity style={[styles.touch,{left:Lang == 'en' ? -2:0}]}  onPress={() => {
-                                        setModalVisible(!ModalVisible)
-                                        navigation.navigate('LoanHistory')
-                                    }}>
-                                        <Image5 />
-                                    </TouchableOpacity>
-                                    <Text style={styles.text}>{t('common:LoanHis')}</Text>
-                                </View>
+                       
+              
 
                                 <View style={{ alignItems: 'center', justifyContent: 'center',paddingRight:Lang=='en' ? width*0.0:-5, }}>
                                     <TouchableOpacity style={styles.touch} onPress={() => {
@@ -180,7 +142,19 @@ const MoreModal = ({ ModalVisible, onPressOut, setModalVisible, setOtpValue, nav
                                     </TouchableOpacity>
                                     <Text style={styles.text}>{t('common:FAQQ')}</Text>
                                 </View>
+
+                                <View style={{ alignItems: 'center', justifyContent: 'center' ,left:Lang == 'en' ? 0 : -5}} >
+                                    <TouchableOpacity style={styles.touch}
+                                    onPress={() => {
+                                        setModalVisible(!ModalVisible)
+                                        navigation.navigate('ResetPin')
+                                    }}>
+                                        <Image7 />
+                                    </TouchableOpacity>
+                                    <Text style={styles.text}>{t('common:MPIN')}</Text>
+                                </View>
                             </View>
+                            
                         </View>
 
                     </View>

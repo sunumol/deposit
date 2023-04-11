@@ -112,7 +112,9 @@ const App = ({ visible, onPressOut, meet, details ,setEnab}) => {
                                         marginRight: 10
                                     }}>
 
+                                    <TouchableOpacity>
                                     <Text style={styles.textStyle}>{item.title}</Text>
+                                    </TouchableOpacity>
                                     {enableContinue && id && item.id === id
                                         ? <Enable width={18} height={18} onPress={() => {
                                             setEnableContinue(false)

@@ -29,35 +29,35 @@ import ReasonModal from './Components/ReasonModal';
 
 
 
-const DetailCheck = ({ navigation,route }) => {
-    console.log('====>>Activity id',route?.params?.data)
-   // const route = useRoute();
-        
+const DetailCheck = ({ navigation, route }) => {
+    console.log('====>>Activity id', route?.params?.data)
+    // const route = useRoute();
+
     const isDarkMode = true
     const { t } = useTranslation();
     const [lang, setLang] = useState('')
     const [BStatus, setBstatus] = useState(false)
     const [basicdetail, setBasicdetail] = useState('')
-    const [ModalVisible,setModalVisible] = useState(false)
-    const [ModalReason,setModalReason] = useState(false)
+    const [ModalVisible, setModalVisible] = useState(false)
+    const [ModalReason, setModalReason] = useState(false)
 
-   // const [activityId,setActivityId] = useState(route?.params?.data)
-   const activityId = useSelector(state => state.activityId);
+    // const [activityId,setActivityId] = useState(route?.params?.data)
+    const activityId = useSelector(state => state.activityId);
 
     useEffect(() => {
         getData()
-getConductDLEbasicdetail()
+        getConductDLEbasicdetail()
     }, [])
 
 
 
-     // ------------------ get Conduct DLE basic detail start Api Call Start ------------------
-     const getConductDLEbasicdetail = async () => {
+    // ------------------ get Conduct DLE basic detail start Api Call Start ------------------
+    const getConductDLEbasicdetail = async () => {
         console.log('api called')
         const data = {
-           "activityId": activityId
- 
-        
+            "activityId": activityId
+
+
         }
         await api.ConductDLEbasicdetail(data).then((res) => {
             console.log('-------------------res ConductDLEbasicdetail12', res)
@@ -82,8 +82,8 @@ getConductDLEbasicdetail()
 
     const handleGoBack = useCallback(() => {
 
-       // navigation.goBack()
-            setModalVisible(true)
+        // navigation.goBack()
+        setModalVisible(true)
         return true; // Returning true from onBackPress denotes that we have handled the event
     }, [navigation]);
 
@@ -92,7 +92,7 @@ getConductDLEbasicdetail()
             BackHandler.addEventListener('hardwareBackPress', handleGoBack);
 
             return () =>
-            
+
                 BackHandler.removeEventListener('hardwareBackPress', handleGoBack);
         }, [handleGoBack]),
     );
@@ -104,26 +104,26 @@ getConductDLEbasicdetail()
             <Header name="Detailed Eligibility Check" navigation={navigation} />
 
             <View style={styles.ViewContent}>
-                <DetailChecks navigation={navigation} details ={basicdetail} />
+                <DetailChecks navigation={navigation} details={basicdetail} />
             </View>
 
 
             <ModalSave
-                Press ={()=>{
+                Press={() => {
                     setModalVisible(false),
-                    setModalReason(true)
+                        setModalReason(true)
                 }}
                 ModalVisible={ModalVisible}
                 setModalVisible={setModalVisible}
                 onPressOut={() => {
                     setModalVisible(false)
-                   
+
 
                 }}
                 navigation={navigation} />
 
 
-<ReasonModal
+            <ReasonModal
                 onPress1={() => {
                     // setModalVisible(false)
                     setModalError(true)

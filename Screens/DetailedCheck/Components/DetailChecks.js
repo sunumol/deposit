@@ -49,31 +49,31 @@ const DetailChecks = ({ navigation, details }) => {
     const [postofficename, setPostofficename] = useState(details?.postOffice);
     const [PStatus, setPstatus] = useState(false);
     const [postofficenamedata, setPostofficenamedata] = useState('');
-    const toggleCheckbox = () =>{
-        if((villagename || details?.village) && (postofficename || details?.postOffice) && (landmarkname || details ?.landMark) && (roadstatus || details?.accessRoadType)){
-        setChecked(!checked)
-        }else{
-        setChecked(false)  
+    const toggleCheckbox = () => {
+        if ((villagename || details?.village) && (postofficename || details?.postOffice) && (landmarkname || details?.landMark) && (roadstatus || details?.accessRoadType)) {
+            setChecked(!checked)
+        } else {
+            setChecked(false)
         }
     }
 
 
 
-    const  getRandomColor =()=> {
+    const getRandomColor = () => {
         var letters = '0123456789ABCDEF';
         var color = '#';
         for (var i = 0; i < 3; i++) {
-          color += letters[Math.floor(Math.random() * 8)];
+            color += letters[Math.floor(Math.random() * 8)];
         }
         return color;
-      }
-    
-    
-      const getInitials = (name) => {
-      
+    }
+
+
+    const getInitials = (name) => {
+
         let initials;
         const nameSplit = name?.split(" ");
-         const nameLength = nameSplit?.length;
+        const nameLength = nameSplit?.length;
         if (nameLength > 1) {
             initials =
                 nameSplit[0].substring(0, 1) +
@@ -81,8 +81,8 @@ const DetailChecks = ({ navigation, details }) => {
         } else if (nameLength === 1) {
             initials = nameSplit[0].substring(0, 1);
         } else return;
-    
-         return initials.toUpperCase();
+
+        return initials.toUpperCase();
     };
 
     const searchvillagename = (text) => {
@@ -97,7 +97,7 @@ const DetailChecks = ({ navigation, details }) => {
 
             setVillagename(text)
         }
-        setVillagename(text)
+        //setVillagename(text)
     }
 
 
@@ -114,22 +114,22 @@ const DetailChecks = ({ navigation, details }) => {
 
             setPostofficename(text)
         }
-        setPostofficename(text)
+        //setPostofficename(text)
     }
 
 
 
     const searchlandmarkname = (text) => {
         console.log('landmark NAME ===>>>', text)
-        if (text.length == '') {
+        if (text?.length == '') {
             setLandmarkname([])
-        
+
             setChecked(false)
         } else {
 
             setLandmarkname(text)
         }
-        setLandmarkname(text)
+       // setLandmarkname(text)
     }
 
 
@@ -178,15 +178,15 @@ const DetailChecks = ({ navigation, details }) => {
 
     // ------------------ get Conduct DLE basic detail Village Api Call Start ------------------
     const onsubmit = async (value) => {
-        
+
         console.log('api called')
-        const data =  {
+        const data = {
             "customerId": details?.customerId,
             "customerName": details?.customerName,
             "address": details?.address,
             "district": details?.district,
-            "village": villagename ? villagename : details?.village ,
-            "accessRoadType":roadstatus ? roadstatus : details?.accessRoadType,
+            "village": villagename ? villagename : details?.village,
+            "accessRoadType": roadstatus ? roadstatus : details?.accessRoadType,
             "postOffice": postofficename ? postofficename : details?.postOffice,
             "landMark": landmarkname ? landmarkname : details?.landMark,
             "pin": details?.pin
@@ -194,7 +194,7 @@ const DetailChecks = ({ navigation, details }) => {
         await api.savebasicdetail(data).then((res) => {
             console.log('-------------------res update', res?.data)
             if (res?.status) {
-                navigation.navigate('CustomerDetails') 
+                navigation.navigate('CustomerDetails')
             }
         }).catch((err) => {
             console.log('-------------------err update', err?.response)
@@ -273,7 +273,7 @@ const DetailChecks = ({ navigation, details }) => {
                     <View style={{ paddingHorizontal: 17, flexDirection: 'row' }}>
 
 
-                        <View style={{ flex: 0.7,marginTop:width* 0.04  }}>
+                        <View style={{ flex: 0.7, marginTop: width * 0.04 }}>
                             <Text style={styles.headTextTitle}>Village</Text>
                         </View>
                         {/* <TouchableOpacity style={styles.borderVillage} onPress={()=>setStatus(true)}>
@@ -293,15 +293,16 @@ const DetailChecks = ({ navigation, details }) => {
                             <View style={[styles.textInput, { flexDirection: 'row' }]}>
 
 
-                                <View style={{ flexDirection: 'row' }}>
+                                <View style={styles.borderVillage}>
                                     <TextInput
                                         value={villagename ? villagename : details?.village}
-                                        style={styles.TextInputBranch}
+                                        style={[styles.TextInputBranch], { width: width * 0.48, color: 'rgba(26, 5, 29, 1)', fontSize: 12, left: -4 }}
                                         onChangeText={(text) => searchvillagename(text)}
                                         onFocus={() => setBstatus(false)}
                                         onKeyPress={() => setBstatus(false)}
 
                                     />
+                                    <Search name="search" size={17} style={{ marginRight: 15 }} color={'#1A051D'} />
 
                                 </View>
                             </View>
@@ -358,12 +359,12 @@ const DetailChecks = ({ navigation, details }) => {
 
                     <View style={styles.lineView} />
                     <View style={{ paddingHorizontal: 17, flexDirection: 'row' }}>
-                        <View style={{ flex: 0.7 ,marginTop:width* 0.02 }}>
+                        <View style={{ flex: 0.7, marginTop: width * 0.02 }}>
                             <Text style={styles.headTextTitle}>Access road type</Text>
                         </View>
                         <View style={{ flex: 2 }}>
                             <TouchableOpacity style={styles.SelectBox} onPress={() => setModalReason1(true)}>
-                                <Text style={[styles.textSelect, { color: !roadstatus ? '#808080' : '#1A051D' }]}>{roadstatus ? roadstatus :(details?.accessRoadType ? details?.accessRoadType :'Select') }</Text>
+                                <Text style={[styles.textSelect, { color: !roadstatus ? '#808080' : '#1A051D' }]}>{roadstatus ? roadstatus : (details?.accessRoadType ? details?.accessRoadType : 'Select')}</Text>
 
                                 <Icon1 name="chevron-down" size={18} color={'#808080'} style={{ marginRight: 10 }} />
                             </TouchableOpacity>
@@ -373,7 +374,7 @@ const DetailChecks = ({ navigation, details }) => {
 
                     <View style={styles.lineView} />
                     <View style={{ paddingHorizontal: 17, flexDirection: 'row' }}>
-                        <View style={{ flex: 0.7,marginTop:width* 0.04  }}>
+                        <View style={{ flex: 0.7, marginTop: width * 0.04 }}>
                             <Text style={styles.headTextTitle}>Post Office</Text>
                         </View>
                         <View style={{ flex: 2 }}>
@@ -384,7 +385,7 @@ const DetailChecks = ({ navigation, details }) => {
                             <View style={[styles.textInput, { flexDirection: 'row' }]}>
 
 
-                                <View style={{ flexDirection: 'row' }}>
+                                <View style={styles.borderVillage}>
                                     <TextInput
                                         value={postofficename ? postofficename : details?.postOffice}
                                         style={styles.TextInputBranch}
@@ -393,7 +394,7 @@ const DetailChecks = ({ navigation, details }) => {
                                         onKeyPress={() => setPstatus(false)}
 
                                     />
-
+                                    <Search name="search" size={17} style={{ marginRight: 15 }} color={'#1A051D'} />
                                 </View>
                             </View>
 
@@ -437,7 +438,7 @@ const DetailChecks = ({ navigation, details }) => {
 
                     <View style={styles.lineView} />
                     <View style={{ paddingHorizontal: 17, paddingBottom: 16, flexDirection: 'row' }}>
-                        <View style={{ flex: 0.7,marginTop:width* 0.04 }}>
+                        <View style={{ flex: 0.7, marginTop: width * 0.04 }}>
                             <Text style={styles.headTextTitle}>Landmark</Text>
                         </View>
                         <View style={{ flex: 2 }}>
@@ -445,12 +446,13 @@ const DetailChecks = ({ navigation, details }) => {
 
 
                                 <View style={{ flexDirection: 'row' }}>
-                                    {console.log('lan====',details?.landMark)}
+                                    {console.log('lan====', details?.landMark)}
                                     <TextInput
                                         value={landmarkname ? landmarkname : details?.landMark}
                                         style={styles.TextInputBranch}
+                                        maxLength={60}
                                         onChangeText={(text) => searchlandmarkname(text)}
-                                       
+
 
                                     />
 
@@ -520,13 +522,13 @@ const DetailChecks = ({ navigation, details }) => {
             />
             <RoadAccessModal
                 onPress1={(value) => {
-                    console.log('====>>Road', value.Title)
-                    setRoadStatus(value.Title)
+                    console.log('====>>Road', value?.Title)
+                    setRoadStatus(value?.Title)
                     setModalReason1(false)
                     // setModalError(true)
                 }}
                 ModalVisible={ModalReason1}
-                onPressOut={() => setModalReason1(!ModalReason)}
+                onPressOut={() => setModalReason1(!ModalReason1)}
                 setModalVisible={setModalReason1}
             />
 
@@ -545,7 +547,7 @@ const styles = StyleSheet.create({
     textInput: {
         width: width * 0.60,
         height: width * 0.12,
-        backgroundColor: "#FFFFFF",
+        backgroundColor: "rgba(252, 252, 252, 1)",
         borderRadius: 8,
         borderWidth: 1,
         borderColor: 'rgba(236, 235, 237, 1)',
@@ -591,14 +593,15 @@ const styles = StyleSheet.create({
         marginLeft: 15
     },
     borderVillage: {
-        borderRadius: 8,
-        borderWidth: 1,
-        width: width * 0.80,
-        height: width * 0.12,
-        borderColor: 'rgba(236, 235, 237, 1)',
-        marginTop: width * 0.02,
+        // borderRadius: 8,
+        // borderWidth: 1,
+        /// width: width * 0.80,
+        // height: width * 0.12,
+        //borderColor: 'rgba(236, 235, 237, 1)',
+        //marginTop: width * 0.02,
+        //backgroundColor:'red',
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        justifyContent: 'space-around',
         alignItems: 'center',
 
     },
@@ -780,12 +783,13 @@ const styles = StyleSheet.create({
         letterSpacing: 0.64
     },
     TextInputBranch: {
-        color: "#1A051D",
+        color: 'rgba(26, 5, 29, 1)',
         fontSize: 12,
         fontFamily: FONTS.FontRegular,
-        paddingLeft: width * 0.02,
-        width: width * 0.78,
-        height: width * 0.08
+        paddingLeft: width * 0.0,
+        width: width * 0.48,
+        // backgroundColor:'red'
+        //height: width * 0.08
     },
     ViewBankMap: {
         width: width * 0.6,
