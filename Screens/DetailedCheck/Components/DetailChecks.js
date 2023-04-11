@@ -198,8 +198,8 @@ const DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,s
         await api.savebasicdetail(data).then((res) => {
             console.log('-------------------res update', res?.data)
             if (res?.status) {
-               // navigation.navigate('CustomerDetails') 
-               navigation.navigate('VehicleOwn') 
+                navigation.navigate('CustomerDetails') 
+              // navigation.navigate('VehicleOwn') 
             }
         }).catch((err) => {
             console.log('-------------------err update', err?.response)

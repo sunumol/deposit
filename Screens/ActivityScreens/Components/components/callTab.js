@@ -156,8 +156,8 @@ const MeetTab = (props) => {
                                                 payload: item.activityId,
                                             });
                                             
-                                            props.navigation.navigate('Proceed')
-                                           // getDlePageNumber(item.activityId)
+                                           
+                                            getDlePageNumber(item.activityId)
                                         }}
                                         style={[styles.leadContainer, { backgroundColor: 'rgba(186, 134, 205, 0.1)' }]}>
                                         <Text style={[styles.leadText, { color: '#F2994A' }]}>Conduct DLE</Text>
