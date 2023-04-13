@@ -53,7 +53,7 @@ const LoanDetailsCollect = ({ navigation }) => {
         <SafeAreaProvider>
             <SafeAreaView style={styles.container1} />
             <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} backgroundColor={'#002B59'} />
-            <Header name={t('common:LoanDetails')}  navigation={navigation} />
+            <Header name={t('common:LoanDetails')}  navigation={navigation} onPress={handleGoBack} />
 
             <View style={styles.mainContainer}>
                 <DetailBox />

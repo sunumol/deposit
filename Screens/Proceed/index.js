@@ -71,7 +71,7 @@ const Proceed = ({ navigation, }) => {
             <SafeAreaView style={styles.container1} />
             <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
 
-            <Header navigation={navigation} />
+            <Header navigation={navigation} onPress={handleGoBack} />
 
             <View style={styles.ViewContent}>
                 <Proceeds navigation={navigation} />

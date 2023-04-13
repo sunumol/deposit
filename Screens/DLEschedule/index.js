@@ -92,7 +92,7 @@ const DLESchedule = ({ navigation,route}) => {
             <SafeAreaView style={styles.container1} />
             <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
 
-            <Header name="Schedule DLE Check" navigation={navigation} popup={true} />
+            <Header name="Schedule DLE Check" navigation={navigation} popup={true} onPress={handleGoBack} />
 
             <View style={styles.ViewContent}>
                 {/* <Text style={{color:'red'}} onPress={()=>setModalVisible1(true)}>MODAL</Text> */}

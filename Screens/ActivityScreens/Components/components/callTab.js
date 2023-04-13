@@ -112,19 +112,31 @@ const MeetTab = (props) => {
         <>
             <View style={{ marginBottom: 0 }}>
                 <Text style={[styles.timeDropStyle, { paddingTop: props.time ? 18 : 0 }]}>{props.time}</Text>
-                {props.data.map((item, index) => {
+          
+                {props?.data?.map((item, index) => {
 
                     return (
                         <TouchableOpacity
                             onPress={() => {
-                                setModalVisible(true)
+                             
+                                if(item.purpose == "Conduct DLE" ){
+                                    dispatch({
+                                        type: 'SET_CGT_ACTIVITY_ID',
+                                        payload: item.activityId,
+                                    });
+                                    
+                                   
+                                    setDetails(item)
+                                    getDlePageNumber(item.activityId)
+                                } else{
+                                    setModalVisible(true)
                                 setDetails(item)
+                                }
                             }}
                             style={[styles.boxStyle, { marginTop: props.time ? 10 : 0 }]} key={props.id}>
                             <View style={{ flex: 1, flexDirection: 'row' }}>
 
                                 <View style={[styles.circleStyle, { backgroundColor: getRandomColor() }]}>
-                                    {/* <Text numberOfLines={1} style={styles.circleText}>{(item.customerName)}</Text> */}
                                     <Text numberOfLines={1} style={styles.circleText}>{getInitials(item.customerName)}</Text>
                                 </View>
 

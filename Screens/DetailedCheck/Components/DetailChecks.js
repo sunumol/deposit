@@ -26,11 +26,13 @@ import ReasonModal from './ReasonModal';
 import RoadAccessModal from './RoadAccessModal';
 import ModalSave from '../../../Components/ModalSave';
 import { api } from '../../../Services/Api';
+import { Checkbox } from 'react-native-paper';
 
 const { height, width } = Dimensions.get('screen');
 
-const DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLandmarkname1,setRoadStatus1 }) => {
-    console.log('????===>>123', )
+const 
+DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLandmarkname1,setRoadStatus1 }) => {
+    console.log('????===>>123',details )
 
     const isDarkMode = true;
     const [text, onChangeText] = useState('');
@@ -40,7 +42,7 @@ const DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,s
     const [ModalError, setModalError] = useState(false)
     const [roadstatus, setRoadStatus] = useState(details?.accessRoadType)
     const [poststatus, setPostStatus] = useState(false)
-    const [landmarkname, setLandmarkname] = useState('')
+    const [landmarkname, setLandmarkname] = useState(details?.landmarkname)
     const [ModalReason, setModalReason] = useState(false)
     const [ModalReason1, setModalReason1] = useState(false)
     const [checked, setChecked] = useState(false);
@@ -51,13 +53,24 @@ const DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,s
     const [PStatus, setPstatus] = useState(false);
     const [postofficenamedata, setPostofficenamedata] = useState('');
     const toggleCheckbox = () => {
-        if ((villagename || details?.village) && (postofficename || details?.postOffice) && (landmarkname || details?.landMark) && (roadstatus || details?.accessRoadType)) {
-            setChecked(!checked)
+        console.log('66666',villagename ,postofficename,landmarkname,roadstatus)
+        // if ((villagename || details?.village) && (postofficename || details?.postOffice) && (landmarkname || details?.landMark) && (roadstatus || details?.accessRoadType)) {
+       
+        if (villagename && postofficename  && landmarkname.length > 0  && roadstatus) {
+            setChecked(true)
         } else {
             setChecked(false)
         }
     }
   
+
+    useEffect(()=>{
+        setVillagename(details?.village)
+        setPostofficename(details?.postOffice)
+        setLandmarkname(details?.landMark)
+        setRoadStatus( details?.accessRoadType)
+
+    },[details])
 
     const getRandomColor = () => {
         var letters = '0123456789ABCDEF';
@@ -89,11 +102,12 @@ const DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,s
         console.log('VILLAGE NAME ===>>>', text)
         // setVillagename(text)
         getVillage(text)
-        if (text.length == '') {
+        if (text == '') {
             setVillagenamedata([])
             setBstatus(false)
             setChecked(false)
             setVillagename('')
+            
         } else {
 
             setVillagename(text)
@@ -108,13 +122,15 @@ const DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,s
         console.log('Post office NAME ===>>>', text)
         // setVillagename(text)
         getpostoffice(text)
-        if (text.length == '') {
+        if (text == '') {
             setPostofficenamedata([])
             setPstatus(false)
             setChecked(false)
+            setPostofficename('')
         } else {
 
             setPostofficename(text)
+            setPostoffice1(text)
         }
         //setPostofficename(text)
     }
@@ -132,8 +148,7 @@ const DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,s
             setLandmarkname(text)
             setLandmarkname1(text)
         }
-        setLandmarkname(text)
-        setLandmarkname1(text)
+  
     }
 
 
@@ -214,7 +229,7 @@ const DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,s
                     <View style={styles.boxStyle}>
                         <View style={{ flex: 1, flexDirection: 'row' }}>
 
-                            <View style={[styles.circleStyle, { backgroundColor: getRandomColor() }]}>
+                            <View style={[styles.circleStyle, { backgroundColor: 'rgba(105, 121, 248, 1)' }]}>
                                 <Text style={styles.circleText}>{getInitials(details?.customerName)}</Text>
                             </View>
 
@@ -233,7 +248,7 @@ const DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,s
                         <View style={{ flexDirection: 'column', paddingTop: 5, alignItems: 'flex-end' }}>
                             <View style={{ flexDirection: 'row' }}>
                                 <Icon2 name="phone-in-talk-outline" color={"black"} size={15} />
-                                <Text style={[styles.numText, { paddingLeft: 6 }]}>961XXXXX77</Text>
+                                <Text style={[styles.numText, { paddingLeft: 6 }]}>{details?.mobile}</Text>
                             </View>
                         </View>
 
@@ -300,9 +315,10 @@ const DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,s
 
                                 <View style={styles.borderVillage}>
                                     <TextInput
-                                        value={villagename ? villagename : details?.village}
-                                        style={[styles.TextInputBranch], { width: width * 0.48, color: 'rgba(26, 5, 29, 1)', fontSize: 12, left: -4 }}
+                                        value={villagename ? villagename : ''}
+                                        style={[styles.TextInputBranch, { width: width * 0.48, color: 'rgba(26, 5, 29, 1)', fontSize: 12, left: -4 }]}
                                         onChangeText={(text) => searchvillagename(text)}
+                                        maxLength={25}
                                         onFocus={() => setBstatus(false)}
                                         onKeyPress={() => setBstatus(false)}
 
@@ -317,7 +333,7 @@ const DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,s
                                     {villagenamedata.length > 0
                                         ? <>
                                             {villagenamedata.map((item) => {
-                                                console.log('pppp====>>>', item)
+                                            
                                                 return (
                                                     <TouchableOpacity onPress={() => {
                                                         setBstatus(false)
@@ -340,7 +356,7 @@ const DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,s
                                             })}
                                         </> :
                                         <View style={styles.ViewBankMap}>
-                                            <Text style={styles.BankText}>No matches found</Text>
+                                            <Text style={styles.ItemNameBranch}>No matches found</Text>
                                         </View>}
                                 </View>) : null
 
@@ -393,9 +409,10 @@ const DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,s
 
                                 <View style={styles.borderVillage}>
                                     <TextInput
-                                        value={postofficename ? postofficename : details?.postOffice}
+                                        value={postofficename ? postofficename : null}
                                         style={styles.TextInputBranch}
                                         onChangeText={(text) => searchpostofficename(text)}
+                                        maxLength={25}
                                         onFocus={() => setPstatus(false)}
                                         onKeyPress={() => setPstatus(false)}
 
@@ -432,7 +449,7 @@ const DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,s
                                             })}
                                         </> :
                                         <View style={styles.ViewBankMap}>
-                                            <Text style={styles.BankText}>No matches found</Text>
+                                            <Text style={styles.ItemNameBranch}>No matches found</Text>
                                         </View>}
                                 </View>) : null
 
@@ -457,7 +474,8 @@ const DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,s
                                     <TextInput
                                         value={landmarkname ? landmarkname : details?.landMark}
                                         style={styles.TextInputBranch}
-                                        maxLength={60}
+                                        numberOfLines={2}
+                                        maxLength={40}
                                         onChangeText={(text) => searchlandmarkname(text)}
 
 
@@ -621,6 +639,12 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
         alignItems: 'center',
 
+    },
+    ItemNameBranch:{
+        paddingLeft: width * 0.02,
+        color: "#1A051D",
+        fontSize: 12,
+        fontFamily: FONTS.FontRegular
     },
     mainContainer: {
         flex: 1,

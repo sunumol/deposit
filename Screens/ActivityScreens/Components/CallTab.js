@@ -90,8 +90,8 @@ const ItemTabs = ({ props, navigation }) => {
             "activityType": "CALL"
         };
         await api.activitylistingscreenApi(data).then((res) => {
-            console.log('-------------------res call', res?.data?.body)
-            setListing(res?.data?.body)
+            console.log('-------------------res call', res?.data?.body?.nonSlottedActivities)
+            setListing(res?.data?.body?.slottedActivities)
             setEnab(false)
         })
             .catch((err) => {

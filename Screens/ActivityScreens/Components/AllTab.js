@@ -15,7 +15,8 @@ const { height, width } = Dimensions.get('screen');
 import { useTranslation } from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import DropTab from '../Components/components/dropTab'
+import DropTab from '../Components/components/dropTab';
+import MeetTab from './components/callTab';
 import { api } from '../../../Services/Api';
 import moment from 'moment';
 
@@ -24,7 +25,9 @@ import moment from 'moment';
 const ItemTabs = ({ navigation }) => {
     const { t } = useTranslation();
     const [Lang, setLang] = useState('')
-    const [listing, setListing] = useState()
+    const [slottedlisting, setSlottedListing] = useState()
+    const [nonslottedActivities, setNonslottedActivities] = useState()
+    const [dleopen,setDleopen] = useState(false)
     const [enab,setEnab]=useState(false)
 
 
@@ -36,7 +39,9 @@ const ItemTabs = ({ navigation }) => {
         };
         await api.activitylistingscreenApi(data).then((res) => {
             console.log('-------------------res all', res?.data?.body)
-            setListing(res?.data?.body)
+           
+            setSlottedListing(res?.data?.body?.slottedActivities)
+            setNonslottedActivities(res?.data?.body?.nonSlottedActivities)
             setEnab(false)
 
         })
@@ -50,7 +55,7 @@ const ItemTabs = ({ navigation }) => {
 
     React.useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
-        
+        setDleopen(false)
            ActivityListingApiCall()
        
           
@@ -80,15 +85,71 @@ getData();
         <ScrollView style={{ flex: 1, backgroundColor: COLORS.colorBackground }}>
             <View style={{ paddingHorizontal: 20, marginBottom: 10 }}>
 
-                {listing?.map((item, index) => {
+
+
+
+    
                 
+                        <>
+                        <TouchableOpacity 
+                           onPress={() => {
+                            setDleopen(!dleopen)
+                        }}
+                         style={[styles.containerTab, { backgroundColor: ' rgba(155, 81, 224, 0.1) '  }]}>
+                                <View style={{ flex: 1 }}>
+                                    <Text style={styles.timeText1}>DLE Activities</Text>
+                                </View>
+                                <View style={{ justifyContent: 'flex-end', flexDirection: 'row', alignItems: 'center' }}>
+                                    <View style={styles.badgeContainer}>
+                                        <Text style={styles.badgeText}>{nonslottedActivities?.length}</Text>
+                                    </View>
+                                    <TouchableOpacity
+                                        onPress={() => {
+                                     setDleopen(!dleopen)
+                                        }}
+                                    >
+                                        <Icon name={dleopen ? "chevron-up" : "chevron-down"}
+                                            color={COLORS.colorB}
+                                            size={25}
+                                            style={{ paddingLeft: 13 }}
+
+                                        />
+                                    </TouchableOpacity>
+                                </View>
+                            </TouchableOpacity> 
+                            {dleopen
+                                ?
+                                <>
+
+                                    <View>
+                             
+                                    { nonslottedActivities ?  ( <MeetTab
+                               // id={id}
+                                data={nonslottedActivities}
+                                time={'DLE Activities'}
+                                setEnab={setEnab}
+                                meet={true}
+                                navigation={navigation}
+                            />) : null }
+
+                                    </View>
+                                  
+
+                                </> : null}
+
+
+                        </>
+              
+
+                {slottedlisting?.map((item, index) => {      
                     return (
                         <>
                          { item.data.length > 0 ?  <TouchableOpacity 
                            onPress={() => {
-                            const nextList = [...listing];
+                            const nextList = [...slottedlisting];
                             nextList[index].open = !nextList[index].open;
-                            setListing(nextList);
+                            setSlottedListing(nextList);
+                            setDleopen(false)
                         }}
                          style={[styles.containerTab, { backgroundColor: item.open ? 'rgba(242, 242, 242, 0.5)' : COLORS.backgroundColor }]}>
                                 <View style={{ flex: 1 }}>
@@ -100,9 +161,10 @@ getData();
                                     </View>
                                     <TouchableOpacity
                                         onPress={() => {
-                                            const nextList = [...listing];
+                                            const nextList = [...slottedlisting];
                                             nextList[index].open = !nextList[index].open;
-                                            setListing(nextList);
+                                            setSlottedListing(nextList);
+                                            setDleopen(false)
                                         }}
                                     >
                                         <Icon name={item.open ? "chevron-up" : "chevron-down"}
@@ -214,6 +276,11 @@ const styles = StyleSheet.create({
         fontSize: 14,
         fontFamily: FONTS.FontSemiB,
         color: COLORS.colorB,
+    },
+    timeText1:{
+fontSize:14,
+fontFamily:FONTS.FontSemiB,
+color:"rgba(155, 81, 224, 1)"
     },
     timeDropStyle: {
         fontSize: 11,

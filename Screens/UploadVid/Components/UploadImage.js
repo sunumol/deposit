@@ -194,7 +194,7 @@ const UploadImage = ({ navigation, id ,setFrontimage,setBackimage}) => {
                 
                 }
             }).catch((err) => {
-                console.log('-------------------err  voter id CG', err?.response)
+                console.log('-------------------err  voter id CG', err)
             })
         };
         // ------------------ ------------------
@@ -271,7 +271,7 @@ const UploadImage = ({ navigation, id ,setFrontimage,setBackimage}) => {
             }
         })
             .catch((err) => {
-                console.log('-------------------err CG voter id upload', err?.response?.status)
+                console.log('-------------------err CG voter id upload', err)
                 if (err?.response?.data?.message === 'Could not read the details.Please upload a new image.' || err?.response?.data?.message === 'Could not verify the ID details. Please upload a new image.'
                     || err?.response?.status == 400) {
                     setErrorVisible(true)

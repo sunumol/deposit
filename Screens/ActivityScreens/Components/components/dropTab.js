@@ -85,20 +85,20 @@ const ActiveTab = (props) => {
             <Icon2 name="phone-in-talk-outline" color={"black"} size={15}/>
                 <Text style={[styles.numText,{paddingLeft:6}]}>{props?.phoneNumber}</Text>
                 </View>
-                {props?.status === 'Leads Follow Up' &&
+                {props?.details?.purpose === 'Leads Follow Up' &&
                     <TouchableOpacity onPress={()=>setModalVisible(true)}
                     style={[styles.leadContainer, { backgroundColor: COLORS.LightYellow }]}>
                         <Text style={[styles.leadText, { color: COLORS.DarkYellow }]}>{t('common:LeadsFollowUp')}</Text>
                     </TouchableOpacity>
                 }
-                {props?.status === 'Explain Trust Circle' &&
+                {props?.details?.purpose === 'Explain Trust Circle' &&
                       <TouchableOpacity onPress={()=>setModalVisible(true)}
                      style={[styles.leadContainer, { backgroundColor: COLORS.LightPurple }]}>
                         <Text style={[styles.leadText, { color: COLORS.DarkPurple }]}>{t('common:ExplainTrustCircle')}</Text>
                     </TouchableOpacity>
                 }
-                {console.log(props)}
-                {props?.status === 'Conduct CGT' &&
+         
+                {props?.details?.purpose === 'Conduct CGT' &&
                     <TouchableOpacity onPress={()=>{
                         dispatch({
                             type: 'SET_CGT_ACTIVITY_ID',
@@ -111,10 +111,10 @@ const ActiveTab = (props) => {
                         <Text style={[styles.leadText, { color: COLORS.DarkBlue }]}>{t('common:ConductCGT')}</Text>
                     </TouchableOpacity>
                 }
-                {props?.status === 'Collection' &&
+                {props?.details?.purpose === 'Conduct DLE' &&
                       <TouchableOpacity onPress={()=>setModalVisible(true)}
                     style={[styles.leadContainer, { backgroundColor: COLORS.LightGreen }]}>
-                        <Text style={[styles.leadText, { color: COLORS.DarkGreen }]}>{t('common:CollectionFollowUp')}</Text>
+                        <Text style={[styles.leadText, { color: COLORS.DarkGreen }]}>Conduct DLE</Text>
                     </TouchableOpacity>
                 }
             </View>

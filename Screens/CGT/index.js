@@ -68,7 +68,7 @@ const CgtScreen = ({ navigation,route }) => {
             <SafeAreaView style={styles.container1} />
             <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
 
-            <Header navigation={navigation} name="CGT" />
+            <Header navigation={navigation} name="CGT"  onPress={handleGoBack}/>
 
             <View style={styles.ViewContent}>
                 <Cgt navigation={navigation} activityId={activityId}  />

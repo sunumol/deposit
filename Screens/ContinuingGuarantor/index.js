@@ -1,9 +1,9 @@
 import {
   StyleSheet, Text, View, StatusBar, SafeAreaView, Platform,Alert,
-  TextInput, TouchableOpacity, Dimensions, ScrollView, KeyboardAvoidingView, Image
+  TextInput, TouchableOpacity, Dimensions, ScrollView, KeyboardAvoidingView, Image,  BackHandler,
 } from 'react-native'
 import React, { useState, useEffect, useRef,useCallback } from 'react'
-import Header from '../../Components/RepayHeader';
+import Header from '../../Components/Header';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { COLORS, FONTS } from '../../Constants/Constants';
 import Statusbar from '../../Components/StatusBar';
@@ -22,7 +22,7 @@ import { useSelector } from 'react-redux';
 import ErrorModal1 from './components/ErrorModal1';
 import ReasonModal from '../DetailedCheck/Components/ReasonModal';
 import ModalSave from '../../Components/ModalSave';
-
+import { useFocusEffect } from '@react-navigation/native';
 
 
 
@@ -286,7 +286,7 @@ const CountDownResend = () => {
           
           }
       }).catch((err) => {
-          console.log('-------------------err verifyCG', err?.response)
+          console.log('-------------------err verifyCG', err)
           if (err?.response?.data?.message === 'Maximum number of OTPs are exceeded. Please try after 30 minutes.') {
             setOtpFetch(false)
             setIsOtp1(true)
@@ -308,7 +308,7 @@ const CountDownResend = () => {
     otpInput2.current.clear()
        const data = {
          "activityId":activityId,
-         "mobileNumber":"+91"+mobnumber,
+         "mobileNumber":"+91"+number,
          "name":"",
          "relationShip":relation
      
@@ -370,6 +370,7 @@ const CountDownResend = () => {
       }else{
       onChangeNumber(num)
       verifyCG(num)
+      onChangeNumber(num)
       setOtpValue('')
      
       }
@@ -386,7 +387,7 @@ const CountDownResend = () => {
       <SafeAreaView style={styles.container1} />
       <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} backgroundColor={"#002B59"} />
 
-      <Header navigation={navigation} name={"Continuing Guarantor"}  onPress={handleGoBack} />
+      <Header navigation={navigation} name="Continuing Guarantor"  onPress={handleGoBack} />
 
       <View style={styles.mainContainer}>
 

@@ -76,7 +76,7 @@ console.log('====',details)
                         <View style={styles.boxStyle}>
                             <View style={{ flex: 1, flexDirection: 'row' }}>
 
-                                <View style={[styles.circleStyle, { backgroundColor: getRandomColor() }]}>
+                                <View style={[styles.circleStyle, { backgroundColor:'rgba(105, 121, 248, 1)'}]}>
                                     <Text style={styles.circleText}>{getInitials(details?.customerName)}</Text>
                                 </View>
 
@@ -86,7 +86,7 @@ console.log('====',details)
                                         <View style={{ paddingTop: 5, paddingRight: 1 }}>
                                             <Icon1 name="location-outline" color={"black"} />
                                         </View>
-                                        <Text style={[styles.idText, { paddingTop: 4 }]}>686677</Text>
+                                        <Text style={[styles.idText, { paddingTop: 4 }]}>{details?.pin}</Text>
                                     </View>
                                 </View>
 
@@ -95,25 +95,25 @@ console.log('====',details)
                             <View style={{ flexDirection: 'column', paddingTop: 5, alignItems: 'flex-end' }}>
                                 <View style={{ flexDirection: 'row' }}>
                                     <Icon2 name="phone-in-talk-outline" color={"black"} size={15} />
-                                    <Text style={[styles.numText, { paddingLeft: 6 }]}>961XXXXX77</Text>
+                                    <Text style={[styles.numText, { paddingLeft: 6 }]}>{details?.mobile}</Text>
                                 </View>
                             </View>
 
                         </View>
                         <View style={styles.lineView} />
                         <View style={{ paddingHorizontal: 17,flexDirection:'row' }}>
-                        <View style={{ flex: 0.7,marginTop:width * 0.009 }}>
+                        <View style={{ flex: 1,marginTop:width * 0.009 }}>
                             <Text style={styles.headTextTitle}>Address</Text>
                         </View>
-                        <View style={{ flex: 2 }}>
-                            <Text style={[styles.subText, { maxWidth: 200 }]}>{details?.address ? details?.address : '-'}</Text>
+                        <View style={{ flex: 2 ,flexWrap:'wrap'}}>
+                            <Text style={[styles.subText, { maxWidth: 200 }]}>{details?.address ? details?.address : '-'} </Text>
                         </View>
                            
                         </View>
                         <View style={styles.lineView} />
                         <View style={{ paddingHorizontal: 17, }}>
                             <View style={{ flexDirection: 'row', flex: 1 }}>
-                            <View style={{ flex: 0.7,marginTop:width * 0.009 }}>
+                            <View style={{ flex: 1,marginTop:width * 0.0009 }}>
                             <Text style={styles.headTextTitle}>District</Text>
                             </View>
                             <View style={{ flex: 2 }}>
@@ -125,7 +125,7 @@ console.log('====',details)
 
                             <View style={styles.lineView} />
                             <View style={{ flexDirection: 'row', flex: 1, marginRight: 10 }}>
-                            <View style={{ flex: 0.7,marginTop:width * 0.009 }}> 
+                            <View style={{ flex: 1,marginTop:width * 0.009 }}> 
                                 <Text style={styles.headTextTitle}>Village</Text>
                             </View>
                             <View style={{ flex: 2 }}>
@@ -140,11 +140,38 @@ console.log('====',details)
 
                         <View style={styles.lineView} />
                         <View style={{ paddingHorizontal: 17, paddingBottom: 16,flex:1,flexDirection:'row'}}>
-                        <View style={{ flex: 0.7 ,marginTop:width * 0.009}}>
+                        <View style={{ flex: 1 ,marginTop:width * 0.0065,paddingRight:20}}>
                         <Text style={styles.headTextTitle}>Access road type</Text>
                          </View>
-                        <View style={{ flex: 2 }}> 
-                        <Text style={styles.subText}>{details?.accessRoadType}</Text></View>
+                        <View style={{ flex: 2}}> 
+                        <Text style={styles.subText}>{details?.accessRoadType}</Text>
+                        </View>
+                          
+                            
+                        </View>
+
+
+                        <View style={styles.lineView} />
+                        <View style={{ paddingHorizontal: 17, paddingBottom: 16,flex:1,flexDirection:'row'}}>
+                        <View style={{ flex:1 ,marginTop:width * 0.0065}}>
+                        <Text style={styles.headTextTitle}>Post Office</Text>
+                         </View>
+                         <View style={{ flex: 2 }}>
+                        <Text style={styles.subText}>{details?.postOffice}</Text>
+                        </View>
+                          
+                            
+                        </View>
+
+
+                        <View style={styles.lineView} />
+                        <View style={{ paddingHorizontal: 17, paddingBottom: 16,flex:1,flexDirection:'row'}}>
+                        <View style={{ flex: 1 ,marginTop:width * 0.0065}}>
+                        <Text style={styles.headTextTitle}>Landmark</Text>
+                         </View>
+                         <View style={{ flex: 2 }}>
+                        <Text style={styles.subText}>{details?.landMark}</Text>
+                        </View>
                           
                             
                         </View>
@@ -159,7 +186,7 @@ console.log('====',details)
 
                     <View style={styles.containerBox}>
                         <View style={{ flex: 1, flexDirection: 'row' }}>
-                            <View style={[styles.circleView,{backgroundColor:getRandomColor()}]}>
+                            <View style={[styles.circleView,{backgroundColor:'rgba(117, 181, 195, 1)'}]}>
                                 <Text style={styles.shortText}>{getInitials(spouse?.name)}</Text>
                             </View>
                             <View style={{ flexDirection: 'column', flex: 1, marginLeft: 12 }}>

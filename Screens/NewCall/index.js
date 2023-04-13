@@ -73,7 +73,7 @@ const NewCall = ({ navigation, }) => {
             <SafeAreaView style={styles.container1} />
             <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
 
-            <Header navigation={navigation} name={"New Call"} />
+            <Header navigation={navigation} name={"New Call"} onPress={handleGoBack} />
             <View style={styles.ViewContent}>
           
            

@@ -29,10 +29,10 @@ import ReasonModal from './Components/ReasonModal';
 import ErrorModal from './Components/ErrorModal';
 
 
-const DetailCheck = ({ navigation, route }) => {
-    console.log('====>>Activity id', route?.params?.data)
-    // const route = useRoute();
-
+const DetailCheck = ({ navigation,route }) => {
+    console.log('====>>Activity id',route?.params?.data)
+   // const route = useRoute();
+        
     const isDarkMode = true
     const { t } = useTranslation();
     const [lang, setLang] = useState('')
@@ -51,7 +51,7 @@ const DetailCheck = ({ navigation, route }) => {
 
     useEffect(() => {
         getData()
-        getConductDLEbasicdetail()
+getConductDLEbasicdetail()
     }, [])
 
 
@@ -84,11 +84,11 @@ const DetailCheck = ({ navigation, route }) => {
 
      // ------------------ get Conduct DLE basic detail start Api Call Start ------------------
      const getConductDLEbasicdetail = async () => {
-        console.log('api called')
+        console.log('api called',activityId)
         const data = {
-            "activityId": activityId
-
-
+           "activityId": activityId
+ 
+        
         }
         await api.ConductDLEbasicdetail(data).then((res) => {
             console.log('-------------------res ConductDLEbasicdetail12', res)
@@ -140,8 +140,8 @@ const DetailCheck = ({ navigation, route }) => {
 
     const handleGoBack = useCallback(() => {
 
-        // navigation.goBack()
-        setModalVisible(true)
+       // navigation.goBack()
+            setModalVisible(true)
         return true; // Returning true from onBackPress denotes that we have handled the event
     }, [navigation]);
 
@@ -150,10 +150,15 @@ const DetailCheck = ({ navigation, route }) => {
             BackHandler.addEventListener('hardwareBackPress', handleGoBack);
 
             return () =>
-
+            
                 BackHandler.removeEventListener('hardwareBackPress', handleGoBack);
         }, [handleGoBack]),
     );
+
+
+
+
+
     return (
         <SafeAreaProvider>
             <SafeAreaView style={styles.container1} />
@@ -166,7 +171,7 @@ const DetailCheck = ({ navigation, route }) => {
             </View>
 
             <ModalSave
-                Press={() => {
+                Press ={()=>{
                     setModalVisible(false),
                     setModalReason(true)
                
@@ -176,7 +181,7 @@ const DetailCheck = ({ navigation, route }) => {
                 setModalVisible={setModalVisible}
                 onPressOut={() => {
                     setModalVisible(false)
-
+                   
 
                 }}
                 navigation={navigation} />

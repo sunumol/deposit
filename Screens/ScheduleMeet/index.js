@@ -103,7 +103,7 @@ const ScheduleMeet = ({ navigation, }) => {
             <SafeAreaView style={styles.container1} />
             <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
 
-            <Header navigation={navigation} name={"Schedule Meeting"} />
+            <Header navigation={navigation} name={"Schedule Meeting"} onPress={handleGoBack} />
             <View style={styles.ViewContent}>
 
 

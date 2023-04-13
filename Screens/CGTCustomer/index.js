@@ -150,7 +150,7 @@ const CgtCustomer = ({ navigation, route }) => {
             <SafeAreaView style={styles.container1} />
             <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} backgroundColor={"#002B59"} />
 
-            <Header navigation={navigation} name="CGT" />
+            <Header navigation={navigation} name="CGT" onPress={handleGoBack} />
 
             <View style={styles.mainContainer}>
                 <ScrollView showsVerticalScrollIndicator={false} >

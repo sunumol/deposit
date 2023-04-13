@@ -100,7 +100,7 @@ const CreateTrustCircle = ({ navigation,route }) => {
             <SafeAreaView style={styles.container1} />
             <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} backgroundColor={"#002B59"} />
 
-            <Header navigation={navigation} name="CGT" back={true} />
+            <Header navigation={navigation} name="CGT" back={true} onPress={handleGoBack} />
 
             <View style={styles.mainContainer}>
 

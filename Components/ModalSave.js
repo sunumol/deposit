@@ -32,7 +32,7 @@ const ModalSave = ({ ModalVisible, onPressOut, setModalVisible, navigation ,Pres
             transparent={true}
             visible={ModalVisible}
             onRequestClose={() => {
-                setModalVisible(!ModalVisible)
+                onPressOut()
             }}
         >
             <View style={styles.mainContainer} >
@@ -77,13 +77,20 @@ const styles = StyleSheet.create({
     mainContainer: {
         backgroundColor: "#000000aa",
         flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center'
+    
+    
+    },
+    touchableStyle: {
+        flex: 1,
+        height: Dimensions.get('window').height,
+       
+   
     },
     modalContainer: {
         width: Dimensions.get('window').width * 0.9,
         height: Dimensions.get('window').width * 0.55,
         backgroundColor: COLORS.colorBackground,
+        marginHorizontal:Dimensions.get('window').width * 0.05,
         borderRadius: 8,
         alignItems: 'center',
         justifyContent: 'center'

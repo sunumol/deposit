@@ -141,7 +141,7 @@ console.log('get tc details',id)
       <SafeAreaView style={styles.container1} />
       <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} backgroundColor={"#002B59"} />
 
-      <Header navigation={navigation} name="Confirm Member" />
+      <Header navigation={navigation} name="Confirm Member"  onPress={handleGoBack}/>
 
       <View style={styles.mainContainer}>
         <ScrollView showsVerticalScrollIndicator={false} >

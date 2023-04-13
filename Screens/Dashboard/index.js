@@ -49,7 +49,7 @@ const Dashboard= ({ navigation, }) => {
         <SafeAreaView style={styles.container1} />
         <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} backgroundColor={"#002B59"} />
 
-        <Header navigation={navigation} name={'Dashboard'} />
+        <Header navigation={navigation} name={'Dashboard'}onPress={handleGoBack} />
 
 
         <Tab.Navigator

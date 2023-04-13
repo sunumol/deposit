@@ -177,8 +177,8 @@ const DetailChecks = ({ navigation, setState,proofType1,imageUrl1,relation1,rela
 
         //Choose Image from gallery
         ImagePicker.openPicker({
-            width: 300,
-            height: 200,
+            //width: 300,
+           // height: 200,
             cropping: true
         }).then(image => {
             console.log("IMAGE", image.path);
@@ -507,11 +507,12 @@ const styles = StyleSheet.create({
     },
     TextInputBranch: {
         color: "#1A051D",
-        fontSize: 12,
+        fontSize: 14,
         fontFamily: FONTS.FontRegular,
         paddingLeft: width * 0.02,
-        width: width * 0.78,
-        height: width * 0.08
+        width: width * 0.88,
+        height: width * 0.11,
+     
     },
 
 

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Dimensions, Modal, StyleSheet, Text, TouchableOpacity, View, Pressable, } from "react-native";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { COLORS, FONTS } from '../../../Constants/Constants';
@@ -44,6 +44,11 @@ const ReasonModal = ({ModalVisible, onPressOut,setModalVisible,onPress1,setReaso
     const [Checked,setChecked] = useState('')
     const activityId = useSelector(state => state.activityId);
 
+
+    useEffect(()=>{
+            setReason('')
+            setChecked('')
+    },[])
 
     const onCheck1 = (id) => {
         console.log('On check',id)
@@ -124,6 +129,10 @@ const ReasonModal = ({ModalVisible, onPressOut,setModalVisible,onPress1,setReaso
 
 
                 </View>
+                <TouchableOpacity
+                    onPressOut={onPressOut}
+                    style={styles.touchableStyle} >
+                </TouchableOpacity>
             </View>
         </Modal>
 
@@ -134,14 +143,15 @@ const styles = StyleSheet.create({
     mainContainer: {
         backgroundColor: "#000000aa",
         flex: 1,
-        justifyContent:'center',
-        alignItems:'center'
+
     },
     touchableStyle: {
-       // flex: 1,
-//height: Dimensions.get('window').height,
+        flex: 1,
+        height: Dimensions.get('window').height,
+       
     },
     centeredView2: {
+        paddingLeft:25
        // justifyContent: "flex-end",
     },
     lineView2: {
