@@ -13,9 +13,8 @@ import { useTranslation } from 'react-i18next';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRoute } from '@react-navigation/native';
-import { addDays } from 'date-fns'
-import moment from 'moment'
-
+import ModalExitApp from '../../Components/ModalExitApp';
+import { useFocusEffect } from '@react-navigation/native';
 import { COLORS, FONTS } from '../../Constants/Constants';
 import Statusbar from '../../Components/StatusBar';
 import Header2 from '../../Components/Header2';
@@ -32,35 +31,27 @@ const CreatePin = ({ navigation}) => {
     const [lang, setLang] = useState('')
     const [exitApp, setExitApp] = useState(0);
     const [error, setError] = useState(false);
-   
+    const [modalExitAppVisible, setModalExitAppVisible] = useState(false);
     const clearText = () => {
         otpInput2.current.clear();
     }
 
-    useEffect(() => {
-        const backHandler = BackHandler.addEventListener(
-            'hardwareBackPress',
-            handleGoBack,
-        );
-        return () => backHandler.remove();
-    }, [exitApp]);
 
-    const handleGoBack = () => {
-        if (routes.name === "CreatePin") {
-            if (exitApp === 0) {
-                setExitApp(exitApp + 1);
-                console.log("exit app create pin", exitApp)
-                ToastAndroid.show("Press back again to exit.", ToastAndroid.SHORT);
-            } else if (exitApp === 1) {
-                BackHandler.exitApp();
-                console.log("exit app else", exitApp)
-            }
-            setTimeout(() => {
-                setExitApp(0)
-            }, 3000);
-            return true;
-        }
-    }
+    const backAction = () => {
+        setModalExitAppVisible(true)
+        return true;
+    };
+
+    useFocusEffect(
+        React.useCallback(() => {
+            BackHandler.addEventListener("hardwareBackPress", backAction);
+
+            return () => {
+                console.log("I am removed from stack")
+                BackHandler.removeEventListener("hardwareBackPress", backAction);
+            };
+        }, [])
+    );
 
     useEffect(() => {
         getData()
@@ -122,7 +113,11 @@ const CreatePin = ({ navigation}) => {
                     : null}
 
             </View>
-
+            <ModalExitApp
+                ModalVisible={modalExitAppVisible}
+                onPressOut={() => setModalExitAppVisible(!modalExitAppVisible)}
+                setModalExitAppVisible={setModalExitAppVisible}
+            />
         </SafeAreaProvider>
     )
 }

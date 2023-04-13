@@ -14,11 +14,12 @@ import {
 import { useTranslation } from 'react-i18next';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import ModalExitApp from '../../Components/ModalExitApp';
+import { useFocusEffect } from '@react-navigation/native';
 // --------------- Component Imports ---------------------
 import { COLORS, FONTS } from '../../Constants/Constants';
 import Statusbar from '../../Components/StatusBar';
-import { useFocusEffect } from '@react-navigation/native';
+
 import OTPTextInput from './Components/OtpPin'
 import Header from '../../Components/RepayHeader';
 
@@ -36,7 +37,7 @@ const ChangeMPIN = ({ navigation }) => {
     const [error, setError] = useState(false);
     const [errorOldPin, setErrorOldPin] = useState(false);
     const [pinSet, setPinSet] = useState()
-
+    const [modalExitAppVisible, setModalExitAppVisible] = useState(false);
     const clearText = () => {
         otpInput2.current.clear();
     }
@@ -57,17 +58,20 @@ const ChangeMPIN = ({ navigation }) => {
         }
     }
 
-    const handleGoBack = useCallback(() => {
-        navigation.goBack()
-        return true; // Returning true from onBackPress denotes that we have handled the event
-    }, [navigation]);
+    const backAction = () => {
+        setModalExitAppVisible(true)
+        return true;
+    };
 
     useFocusEffect(
         React.useCallback(() => {
-            BackHandler.addEventListener('hardwareBackPress', handleGoBack);
-            return () =>
-                BackHandler.removeEventListener('hardwareBackPress', handleGoBack);
-        }, [handleGoBack]),
+            BackHandler.addEventListener("hardwareBackPress", backAction);
+
+            return () => {
+                console.log("I am removed from stack")
+                BackHandler.removeEventListener("hardwareBackPress", backAction);
+            };
+        }, [])
     );
 
 
@@ -80,7 +84,7 @@ const ChangeMPIN = ({ navigation }) => {
                 <SafeAreaView style={styles.container1} />
                 <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} backgroundColor={"#002B59"} />
 
-                <Header navigation={navigation} name={t('common:ResetPin')}  onPress={handleGoBack}/>
+                <Header navigation={navigation} name={t('common:ResetPin')} onPress={handleGoBack} />
 
                 <View style={styles.container}>
                     <ScrollView>
@@ -142,6 +146,11 @@ const ChangeMPIN = ({ navigation }) => {
                 </View>
 
 
+                <ModalExitApp
+                    ModalVisible={modalExitAppVisible}
+                    onPressOut={() => setModalExitAppVisible(!modalExitAppVisible)}
+                    setModalExitAppVisible={setModalExitAppVisible}
+                />
             </KeyboardAvoidingView>
 
         </SafeAreaProvider>

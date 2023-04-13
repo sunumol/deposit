@@ -11,7 +11,8 @@ import {
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { useRoute } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
-
+import ModalExitApp from '../../Components/ModalExitApp';
+import { useFocusEffect } from '@react-navigation/native';
 // ---------- Components Import --------------------------
 import Pin from './Components/Pin';
 import { COLORS, FONTS } from '../../Constants/Constants';
@@ -23,17 +24,10 @@ const ForgotPin = ({ navigation, route }) => {
     const routes = useRoute();
     const isDarkMode = true
     const { t } = useTranslation();
-
+    const [modalExitAppVisible, setModalExitAppVisible] = useState(false);
     const [exitApp, setExitApp] = useState(0)
 
-    useEffect(() => {
-        const backHandler = BackHandler.addEventListener(
-            'hardwareBackPress',
-            handleGoBack,
-        );
-        return () => backHandler.remove();
-    }, [exitApp]);
-
+   
     const handleGoBack = () => {
         if (routes.name === "ForgotPin") {
             if (exitApp === 0) {
@@ -51,16 +45,36 @@ const ForgotPin = ({ navigation, route }) => {
         }
     }
 
+    const backAction = () => {
+        setModalExitAppVisible(true)
+        return true;
+    };
+
+    useFocusEffect(
+        React.useCallback(() => {
+            BackHandler.addEventListener("hardwareBackPress", backAction);
+
+            return () => {
+                console.log("I am removed from stack")
+                BackHandler.removeEventListener("hardwareBackPress", backAction);
+            };
+        }, [])
+    );
     return (
         <SafeAreaProvider>
             <SafeAreaView style={styles.container1} />
             <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
 
-            <Header navigation={navigation} name={t('common:ForgotPin')} onPress={handleGoBack} />
+            <Header navigation={navigation} name={t('common:ForgotPin')} onPress={backAction} />
             <View style={styles.ViewContent}>
                 <Pin navigation={navigation} conFirmDate={route.params.conFirmdate} />
             </View>
 
+            <ModalExitApp
+                ModalVisible={modalExitAppVisible}
+                onPressOut={() => setModalExitAppVisible(!modalExitAppVisible)}
+                setModalExitAppVisible={setModalExitAppVisible}
+            />
         </SafeAreaProvider>
     )
 }

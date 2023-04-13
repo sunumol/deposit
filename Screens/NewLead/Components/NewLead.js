@@ -215,8 +215,8 @@ const NewLead1 = ({ navigation,setVillageStatus,VillageStatus }) => {
 
                             <View style={{alignItems:'center'}}>
                             <View style={[styles.textInput1, { flexDirection: 'row', alignItems:'center',}]} >
-                                {VillageStatus &&
-                                    <Image1 />}
+                               
+                                    <Image1 />
                                 <TextInput
                                     value={Village}
                                     style={styles.TextInputBranch}

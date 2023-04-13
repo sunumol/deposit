@@ -32,7 +32,8 @@ import ToastModal from '../../Components/ToastModal';
 import { api } from '../../Services/Api';
 import NetWorkError from '../NetWorkError';
 import OTPInputView from '../../Components/OTPInputView';
-
+import ModalExitApp from '../../Components/ModalExitApp';
+import { useFocusEffect } from '@react-navigation/native';
 // --------------- Image Imports ---------------------
 import Resend from '../../assets/Images/resend.svg'
 import Logo from '../../assets/Images/svadhan.svg';
@@ -41,9 +42,9 @@ import Logo from '../../assets/Images/svadhan.svg';
 const { height, width } = Dimensions.get('screen');
 
 const LoginScreen = ({ navigation }) => {
-    
+
     const index = useNavigationState(state => state.index);
-    
+
     const { t } = useTranslation();
     const isDarkMode = true;
     const scrollViewRef = useRef();
@@ -71,13 +72,14 @@ const LoginScreen = ({ navigation }) => {
     const [permissions, setPermissions] = useState(false)
     const [condirmDate, setConfirmDate] = useState()
     const [fetOtp, setOtpFetch] = useState(false)
-     // --------------Device Configuration End----------
+    // --------------Device Configuration End----------
 
     const [otpMessage, setOtpMessage] = useState()
     const [message, setMessage] = useState()
     const [ModalVisibleError, setModalVisibleError] = useState(false)
     const [maxError, setMaxError] = useState(false)
-   
+    const [modalExitAppVisible, setModalExitAppVisible] = useState(false);
+
 
     useEffect(() => {
 
@@ -147,49 +149,32 @@ const LoginScreen = ({ navigation }) => {
         }
     }
 
-    useEffect(() => {
-        const backHandler = BackHandler.addEventListener(
-            'hardwareBackPress',
-            handleGoBack,
-        );
-        return () => backHandler.remove();
-    }, [exitApp]);
 
-    const handleGoBack = () => {
-        console.log("exit app handle", IsOtp1)
-        setExitApp(0)
-        if (index == 2 || index == 1) {
-            if (IsOtp1) {
-                setExitApp(0);
-                setButton(false)
-                setPhoneNum(null)
-                setIsOtp1(false)
-                setOtp(false)
-                setMaxError(false)
-                setIsExpired(false)
-                setTimeout(() => {
-                    setExitApp(0)
-                }, 3000);
-            }
-            else if (exitApp === 0) {
-                setButton(false)
-                setPhoneNum(null)
-                setIsOtp1(false)
-                setMaxError(false)
-                setExitApp(exitApp + 1);
-                setOtp(false)
-                setIsExpired(false)
-                console.log("exit app intro", exitApp)
-                ToastAndroid.show("Press back again to exit.", ToastAndroid.SHORT);
 
-            } else if (exitApp === 1) {
-                BackHandler.exitApp();
-                console.log("exit app else intro", exitApp)
-            }
-
+    const backAction = () => {
+        console.log('-----------------------------------oir[pe[rgop[og[p------------',IsOtp1)
+        if(IsOtp1){
+            navigation.reset({
+                index: 0,
+                routes: [{name: 'LoginScreen'}],
+            });
+            return true;
+        }else{
+            setModalExitAppVisible(true)
             return true;
         }
-    }
+      
+    };
+    useFocusEffect(
+       
+        React.useCallback(() => {
+            BackHandler.addEventListener("hardwareBackPress", backAction);
+            return () => {
+                console.log("I am removed from stack")
+                BackHandler.removeEventListener("hardwareBackPress", backAction);
+            };
+        }, [IsOtp1])
+    );
 
     const verifyPhone = (Phone) => {
         var reg = /^([0-9])\1{9}$/;
@@ -257,7 +242,7 @@ const LoginScreen = ({ navigation }) => {
             console.log("restricted values", num, PhoneNum)
         }
     }
-   
+
     // ------------------ Login Api Call Start ------------------
     async function LoginApiCall() {
         otpInput2?.current?.clear()
@@ -635,6 +620,11 @@ const LoginScreen = ({ navigation }) => {
                                     ModalVisible={ModalVisibleError}
                                     onPressOut={() => setModalVisibleError(!ModalVisibleError)}
                                     setModalVisible={setModalVisibleError}
+                                />
+                                     <ModalExitApp
+                                    ModalVisible={modalExitAppVisible}
+                                    onPressOut={() => setModalExitAppVisible(!modalExitAppVisible)}
+                                    setModalExitAppVisible={setModalExitAppVisible}
                                 />
 
                             </View>

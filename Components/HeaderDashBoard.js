@@ -38,10 +38,14 @@ const HeaderDashBoard = ({ navigation, notificationCounts }) => {
         await api.logoutApi(data).then((res) => {
             if (res?.status == 200) {
                 console.log(res)
-                navigation.navigate('LoginScreen')
-                AsyncStorage.removeItem('Token')
-                AsyncStorage.removeItem('CustomerId')
+                // navigation.navigate('LoginScreen')
+                // AsyncStorage.removeItem('Token')
+                // AsyncStorage.removeItem('CustomerId')
                 setModalVisible(false)
+                navigation.reset({
+                    index: 0,
+                    routes: [{name: 'PinScreen'}],
+                });
             }else{
                 console.log("re",res)
             }
@@ -88,12 +92,12 @@ const HeaderDashBoard = ({ navigation, notificationCounts }) => {
 
                         <Text style={[styles.TextDelete1, { textAlign: 'center' }]}>{t('common:LogoutMsg')}</Text>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingTop: 22, paddingBottom: 22 }}>
-                            <TouchableOpacity style={[styles.ButtonCancel, { marginRight: 10 }]} onPress={() => setModalVisible(false)}>
-                                <Text style={styles.text2}>{t('common:No')}</Text>
+                            <TouchableOpacity style={[styles.ButtonCancel, { marginRight: 10 }]} onPress={()=>LogoutApi()}  >
+                                <Text style={styles.text2}>{t('common:Yes')}</Text>
                             </TouchableOpacity>
 
-                            <TouchableOpacity style={styles.ButtonContinue} onPress={()=>LogoutApi()}>
-                                <Text style={styles.textC}>{t('common:Yes')}</Text>
+                            <TouchableOpacity style={styles.ButtonContinue} onPress={() => setModalVisible(false)}>
+                                <Text style={styles.textC}>{t('common:No')}</Text>
                             </TouchableOpacity>
                         </View>
 

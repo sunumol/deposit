@@ -128,9 +128,17 @@ const MeetTab = (props) => {
                                    
                                     setDetails(item)
                                     getDlePageNumber(item.activityId)
-                                } else{
+                                } else if (item?.purpose == 'Conduct CGT'){
+                                    dispatch({
+                                        type: 'SET_CGT_ACTIVITY_ID',
+                                        payload: item.activityId,
+                                    });
+                                    props.navigation.navigate('CGT')
+                                
+                                
+                                }else{
                                     setModalVisible(true)
-                                setDetails(item)
+                                    setDetails(item)
                                 }
                             }}
                             style={[styles.boxStyle, { marginTop: props.time ? 10 : 0 }]} key={props.id}>
@@ -162,27 +170,17 @@ const MeetTab = (props) => {
                                 </View>
                                 {item.purpose == "Conduct DLE"
                                     ? <TouchableOpacity
-                                        onPress={() => {
-                                            dispatch({
-                                                type: 'SET_CGT_ACTIVITY_ID',
-                                                payload: item.activityId,
-                                            });
-                                            
-                                           
-                                            getDlePageNumber(item.activityId)
-                                        }}
+                                        
                                         style={[styles.leadContainer, { backgroundColor: 'rgba(186, 134, 205, 0.1)' }]}>
                                         <Text style={[styles.leadText, { color: '#F2994A' }]}>Conduct DLE</Text>
                                     </TouchableOpacity>
-                                    : <TouchableOpacity style={[styles.leadContainer, { backgroundColor: props.meet ? COLORS.LightBlue : COLORS.LightPurple }]} onPress={() => {
-                                        dispatch({
-                                            type: 'SET_CGT_ACTIVITY_ID',
-                                            payload: item.activityId,
-                                        });
-                                        props.navigation.navigate('CGT')
-                                    }}>
-                                        <Text style={[styles.leadText, { color: props.meet ? COLORS.DarkBlue : COLORS.DarkPurple }]}>{props.meet ? t('common:ConductCGT') : t('common:ExplainTrustCircle')}</Text>
-                                    </TouchableOpacity>}
+                                    :item.purpose == 'Conduct CGT' ? 
+                                     <TouchableOpacity style={[styles.leadContainer, { backgroundColor: props.meet ? COLORS.LightBlue : COLORS.LightPurple }]}>
+                                        <Text style={[styles.leadText, { color: props.meet ? COLORS.DarkBlue : COLORS.DarkPurple }]}>{t('common:ConductCGT')}</Text>
+                                    </TouchableOpacity>:
+                                          <TouchableOpacity style={[styles.leadContainer, { backgroundColor: props.meet ? COLORS.LightBlue : COLORS.LightPurple }]}>
+                                          <Text style={[styles.leadText, { color: props.meet ? COLORS.DarkBlue : COLORS.DarkPurple }]}>{t('common:ExplainTrustCircle')}</Text>
+                                      </TouchableOpacity>}
 
                             </View>
 
