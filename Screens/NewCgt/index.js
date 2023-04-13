@@ -130,7 +130,7 @@ const NewCgt = ({ navigation, }) => {
             <SafeAreaView style={styles.container1} />
             <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
 
-            <Header navigation={navigation} name={"New CGT"}  activity = {true} />
+            <Header navigation={navigation} name={"New CGT"}  activity = {true} onPress={handleGoBack} />
             <View style={styles.ViewContent}>
           
            

@@ -56,7 +56,7 @@ const ForgotPin = ({ navigation, route }) => {
             <SafeAreaView style={styles.container1} />
             <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
 
-            <Header navigation={navigation} name={t('common:ForgotPin')} />
+            <Header navigation={navigation} name={t('common:ForgotPin')} onPress={handleGoBack} />
             <View style={styles.ViewContent}>
                 <Pin navigation={navigation} conFirmDate={route.params.conFirmdate} />
             </View>

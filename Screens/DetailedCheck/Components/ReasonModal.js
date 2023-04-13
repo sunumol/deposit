@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Dimensions, Modal, StyleSheet, Text, TouchableOpacity, View, Pressable, } from "react-native";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { COLORS, FONTS } from '../../../Constants/Constants';
 import { useTranslation } from 'react-i18next';
 import { CheckBox } from 'react-native-elements';
+import { useSelector } from "react-redux";
+import { api } from "../../../Services/Api";
 const { height, width } = Dimensions.get('screen');
 
 const data = [
@@ -33,15 +35,23 @@ const data = [
         isChecked: false
     },
 ]
-const ReasonModal = ({ModalVisible, onPressOut,setModalVisible,onPress1}) => {
+const ReasonModal = ({ModalVisible, onPressOut,setModalVisible,onPress1,setReason1}) => {
     const { t } = useTranslation();
 
     const [Data, setData] = useState(data)
     const [Reason, setReason] = useState('')
     const [ButtonStatus, setButtonStatus] = useState(false)
     const [Checked,setChecked] = useState('')
+    const activityId = useSelector(state => state.activityId);
+
+
+    useEffect(()=>{
+            setReason('')
+            setChecked('')
+    },[])
 
     const onCheck1 = (id) => {
+        console.log('On check',id)
         let reason = Data
         let index = reason.findIndex(o => o.id === id)
         reason[index].isChecked = !reason[index].isChecked;
@@ -49,11 +59,12 @@ const ReasonModal = ({ModalVisible, onPressOut,setModalVisible,onPress1}) => {
             let FilterArray1 = Data.filter(item => item.isChecked == true)
             let FilterId1 = FilterArray1.map((item) => (item.id))
             let Checked = FilterArray1.map((item)=>(item.isChecked))
+            let activity = FilterArray1.map((item)=> (item.Title))
             //let FilterId1 = FilterArray.slice(id)
 
             console.log("FilterId.",Checked)
-            console.log("FilterArray.......", FilterArray1)
-            setReason(FilterId1)
+            console.log("FilterArray.......", activity[0])
+            setReason(activity[0])
             setChecked(Checked)
             if(FilterId1.length == 0){
                 setButtonStatus(false)
@@ -65,6 +76,10 @@ const ReasonModal = ({ModalVisible, onPressOut,setModalVisible,onPress1}) => {
      
     }
 
+
+
+
+  
     return (
 
         <Modal
@@ -104,7 +119,7 @@ const ReasonModal = ({ModalVisible, onPressOut,setModalVisible,onPress1}) => {
                         <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                             <TouchableOpacity style={[styles.Button1,
                             { backgroundColor: ButtonStatus ? COLORS.colorB : '#ECEBED' }]}
-                            onPress={()=>ButtonStatus ? onPress1() : console.log("hello")}>
+                            onPress={()=>ButtonStatus ? onPress1(): console.log("hello")}>
 
                                 <Text style={[styles.text1, { color: ButtonStatus ?
                                      COLORS.colorBackground : '#979C9E', paddingLeft: width * 0.02 }]}>Submit</Text>
@@ -114,6 +129,10 @@ const ReasonModal = ({ModalVisible, onPressOut,setModalVisible,onPress1}) => {
 
 
                 </View>
+                <TouchableOpacity
+                    onPressOut={onPressOut}
+                    style={styles.touchableStyle} >
+                </TouchableOpacity>
             </View>
         </Modal>
 
@@ -123,14 +142,17 @@ const ReasonModal = ({ModalVisible, onPressOut,setModalVisible,onPress1}) => {
 const styles = StyleSheet.create({
     mainContainer: {
         backgroundColor: "#000000aa",
-        flex: 1
+        flex: 1,
+
     },
     touchableStyle: {
         flex: 1,
         height: Dimensions.get('window').height,
+       
     },
     centeredView2: {
-        justifyContent: "flex-end",
+        paddingLeft:25
+       // justifyContent: "flex-end",
     },
     lineView2: {
     //     borderBottomWidth: 0.7,
@@ -147,9 +169,9 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.1,
         elevation: 5,
         shadowRadius: 2,
-        borderTopStartRadius: 30,
-        borderTopEndRadius: 30,
-        width: Dimensions.get('window').width,
+        // borderTopStartRadius: 30,
+        // borderTopEndRadius: 30,
+        width: Dimensions.get('window').width * 0.89,
         paddingBottom: 7
         // height:Dimensions.get('window').height*0.3
     },

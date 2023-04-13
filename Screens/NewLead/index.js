@@ -86,7 +86,7 @@ const NewLead = ({ navigation, }) => {
             <SafeAreaView style={styles.container1} />
             <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
 
-            <Header navigation={navigation} name={t('common:NewLead')} />
+            <Header navigation={navigation} name={t('common:NewLead')} onPress={handleGoBack}/>
             <View style={styles.ViewContent}>
          <TouchableOpacity activeOpacity={1.0} onPress={()=>OnstateUpdate()}>
             <NewLead1 BStatus={BStatus} setBstatus={setBstatus} setVillageStatus={setVillageStatus} VillageStatus={VillageStatus}/>

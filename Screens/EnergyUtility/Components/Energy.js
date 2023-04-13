@@ -12,7 +12,7 @@ import {
     Dimensions,
     TouchableOpacity
 } from 'react-native'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Statusbar from '../../../Components/StatusBar';
 import { useFocusEffect } from '@react-navigation/native';
@@ -20,15 +20,98 @@ import Header from '../../../Components/RepayHeader';
 import { FONTS, COLORS } from '../../../Constants/Constants';
 import Icon1 from 'react-native-vector-icons/Entypo'
 import EnergyModal from './EnergyModal';
-
+import { api } from '../../../Services/Api';
+import { useSelector } from 'react-redux';
 const { height, width } = Dimensions.get('screen');
 
 const Energy = ({ navigation }) => {
-    const [Amount, setAmount] = useState('1,500')
+    const [Amount, setAmount] = useState('')
     const [ModalVisible, setModalVisible] = useState(false)
     const [Purpose, setPurpose] = useState('')
     const [days, setDays] = useState('')
+    const [utilities,setUtilities] = useState('') 
+    const [relationShip,setRelationship] = useState('')
+    const activityId = useSelector(state => state.activityId);
 
+
+    useEffect(()=>{
+        getEnergyUtilities()
+        getSpousedetail()
+    },[])
+      // ------------------spouse detail ------------------
+
+      const getSpousedetail = async () => {
+        console.log('api called')
+
+        const data = {
+               "activityId": activityId
+           
+
+        }
+        await api.getSpousedetail(data).then((res) => {
+            console.log('-------------------res spousedetail', res)
+            if (res?.status) {
+               //setRelationship('Spouse')
+               setRelationship('Customer')
+            }
+        }).catch((err) => {
+            console.log('-------------------err spousedetail', err?.response)
+            setRelationship('Customer')
+        })
+    };
+    // ------------------ ------------------
+
+
+        // ------------------getEnergyUtilities detail ------------------
+
+        const getEnergyUtilities = async () => {
+            console.log('api called')
+    
+            const data = {
+                   "activityId": activityId
+                
+    
+            }
+            await api.getEnergyUtilities(data).then((res) => {
+                console.log('-------------------res getEnergyUtilities', res?.data?.body?.averageElectrictyBill)
+                if (res?.status) {
+                    setUtilities(res?.data?.body)
+                    setAmount(res?.data?.body?.averageElectrictyBill)
+                    setPurpose(res?.data?.body?.cookingFuelType)
+                    setDays(res?.data?.body?.cylinderLastingDays)
+                }
+            }).catch((err) => {
+                console.log('-------------------err getEnergyUtilities', err?.response)
+            })
+        };
+        // ------------------ ------------------
+
+
+
+// ------------------getEnergyUtilities detail ------------------
+
+const saveEnergyUtilities = async () => {
+    console.log('api called')
+
+    const data = {
+        "activityId": activityId,
+        "customerId": utilities.customerId,
+        "energyUtilityId": utilities.energyUtilityId,
+        "averageElectrictyBill": Amount,
+        "cookingFuelType": Purpose,
+        "cylinderLastingDays":days
+
+    }
+    await api.saveEnergyUtilities(data).then((res) => {
+        console.log('-------------------res saveEnergyUtilities', res)
+        if (res?.status) {
+            navigation.navigate('IncomeDetails',{relationShip: relationShip})
+        }
+    }).catch((err) => {
+        console.log('-------------------err saveEnergyUtilities', err?.response)
+    })
+};
+// ------------------ ------------------
 
 
     return (
@@ -36,22 +119,16 @@ const Energy = ({ navigation }) => {
         <>
             <View style={styles.mainContainer}>
                 <ScrollView>
+                 
                     <View>
-                        <Text style={styles.TextElect}>Electricity connection available</Text>
+                        <Text style={styles.TextElect}>Average electricity bill amount</Text>
                     </View>
-                    <TouchableOpacity style={[styles.SelectBox1, { backgroundColor: '#ECEBED' }]} >
-                        <Text style={styles.textSelect}>Yes</Text>
-                        {/* <Text style={[styles.textSelect],{color:'#1A051D',marginLeft:8}}>{Relation}</Text>} */}
-                        {/* <Icon1 name="chevron-down" size={18} color={'#808080'} style={{ marginRight: 10 }} /> */}
-                    </TouchableOpacity>
-                    <View>
-                        <Text style={styles.TextElect}>Average bill amount</Text>
-                    </View>
+                  
                     <View style={styles.SelectBox}>
                         <Text style={[styles.RS, { color: Amount === '' ? '#808080' : '#1A051D' }]}>₹</Text>
                         <TextInput
-                            style={[{ fontSize: 14, color: '#1A051D', fontFamily: FONTS.FontRegular, left: 5 }]}
-                            value={Amount}
+                            style={[{ fontSize: 14, color: '#000', fontFamily: FONTS.FontRegular, left: 5, width: width * 0.84, }]}
+                            value={Amount?.toString()}
                             keyboardType={'number-pad'}
                             onChangeText={(text) => setAmount(text)} />
                     </View>
@@ -62,29 +139,29 @@ const Energy = ({ navigation }) => {
                     <TouchableOpacity style={styles.SelectBox1} onPress={() => setModalVisible(true)} >
                         {!Purpose ?
                             <Text style={styles.textSelect}>Select</Text> :
-                            <Text style={[styles.textSelect], { color: '#1A051D', marginLeft: 8 }}>{Purpose}</Text>}
+                            <Text style={[styles.textSelect, { color: '#1A051D', marginLeft: 8 }]}>{Purpose}</Text>}
                         {/* <Icon1 name="chevron-down" size={18} color={'#808080'} style={{ marginRight: 10 }} /> */}
                     </TouchableOpacity>
 
-                    {Purpose &&
+                    {(Purpose == 'LPG Cylinder' || Purpose == 'LPG Cylender') &&
                         <View>
                             <Text style={styles.TextElect}>Average days a cylinder will last</Text>
                         </View>}
 
-                    {Purpose &&
+                    {(Purpose == 'LPG Cylinder'|| Purpose == 'LPG Cylender' ) &&
                         <View style={styles.SelectBox}>
                             <TextInput
                                 placeholder="Enter number of days"
                                 placeholderTextColor={"#808080"}
                                 style={[{ fontSize: 14, color: '#1A051D', fontFamily: FONTS.FontRegular, left: 5, width: width * 0.5 }]}
-                                value={days}
+                                value={days?.toString()}
                                 keyboardType={'number-pad'}
                                 onChangeText={(text) => setDays(text)} />
                         </View>}
                 </ScrollView>
                 <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                     <TouchableOpacity style={[styles.buttonView, { backgroundColor: COLORS.colorB }]}
-                        onPress={() => navigation.navigate('IncomeDetails')}>
+                        onPress={() =>saveEnergyUtilities()}>
                         <Text style={[styles.continueText, { color: COLORS.colorBackground }]}>Continue</Text>
                     </TouchableOpacity>
                 </View>

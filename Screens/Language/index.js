@@ -52,7 +52,7 @@ const Language = ({ navigation, route }) => {
             <SafeAreaView style={styles.container1} />
             <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
 
-            <Header name={t('common:SelectLang')} navigation={navigation} />
+            <Header name={t('common:SelectLang')} navigation={navigation} onPress={handleGoBack} />
             <View style={styles.container2}>
            <Selection/>
             </View>

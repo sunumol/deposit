@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     View,
     Image,
@@ -13,10 +13,14 @@ import Image1 from '../../../assets/image/Frame.svg';
 import Image2 from '../../../assets/image/Group.svg';
 import Icon1 from 'react-native-vector-icons/AntDesign';
 import TargetLoad from './TargetLoader';
+import { api } from '../../../Services/Api';
+
 
 const Target = () => {
     const { t } = useTranslation();
-
+    const [EMPID, setEMPID] = useState('1')
+    const [Target, setTarget] = useState([])
+    const [Percentage,setPercentage] = useState('')
     const Data = [
         {
             id: 1,
@@ -33,41 +37,77 @@ const Target = () => {
             Date: '01'
         },
     ]
+
+    useEffect(() => {
+        getTarget()
+    }, [])
+
+
+    const getTarget = () => {
+        console.log("inside api")
+        api.DashBoardTarget(EMPID).then(result => {
+            if (result) {
+               // console.log("avail....", result.data)
+                setTarget(result?.data?.body)
+                setPercentage(result?.data?.body?.loanTargetCompletionPercentage)
+
+            }
+        })
+            .catch(err => {
+                console.log("banner 3333 ---->", err);
+
+            });
+    }
+
     return (
-        <View style={{backgroundColor:COLORS.colorBackground,flex:1}}>
+        <View style={{ backgroundColor: COLORS.colorBackground, flex: 1 }}>
 
-            <TargetLoad />
-            <View style={{marginTop:width*0.05}}>
-            <View style={{ justifyContent: 'flex-start', marginLeft: 16 }}>
-                <Text style={styles.Target}>Pending target</Text>
+            <TargetLoad  Target={Percentage}/>
+            <View style={{ marginTop: width * 0.05 }}>
+                <View style={{ justifyContent: 'flex-start', marginLeft: 16 }}>
+                    <Text style={styles.Target}>Pending target</Text>
+                </View>
+
+            
             </View>
 
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between', margin: 16 }}>
-                {Data.map((item) => {
-                    return (
-                        <View style={styles.Card}>
-
-                            <View style={{ flexDirection: 'row', marginTop: 12, marginLeft: 12, marginRight: 12 }}>
-                                <View style={styles.CircleView}>
-                                    {item.id === 1 ? <Image2 width={22} height={22} /> : <Image1 width={22} height={22} />}
-                                </View>
-
-                                <Text style={styles.NameText}>{item.Name}</Text>
+            <View style={{flexDirection:'row',justifyContent:'space-around',margin:10,top:5}}>
+            <View style={styles.Card}>
+            <View style={{ flexDirection: 'row', marginTop: 12, marginLeft: 12, marginRight: 12 }}>
+                            <View style={styles.CircleView}>
+                                <Image2 width={22} height={22} />
                             </View>
-
-                            <View style={{ marginLeft: width * 0.15, top: -5 }}>
-                                <Text style={styles.MonthText}>{item.Month}</Text>
-                            </View>
-
-                            <View style={{ flexDirection: 'row', marginBottom: width * 0.025, marginLeft: width * 0.1, top: -5 }}>
-                                <Icon1 name='arrowup' size={14} color={'rgba(39, 174, 96, 1)'} style={{ marginTop: 5 }} />
-                                <Text style={[styles.NameText, { color: 'rgba(39, 174, 96, 1)', }]}>{item.Date}</Text>
-                                <Text style={[styles.NameText, { fontFamily: FONTS.FontRegular, left: 5 }]}>last month</Text>
-                            </View>
+                              <Text style={styles.NameText}>Customers</Text>
                         </View>
-                    )
-                })}
-            </View>
+                        <View style={{ marginLeft: width * 0.15, top: -5 }}>
+                            <Text style={styles.MonthText}>{Target?.pendingCustomerOnboardingCount}</Text>
+                        </View>
+
+                        <View style={{ flexDirection: 'row', marginBottom: width * 0.025, marginLeft: width * 0.1, top: -5 }}>
+                            <Icon1 name='arrowup' size={14} color={'rgba(39, 174, 96, 1)'} style={{ marginTop: 5 }} />
+                            <Text style={[styles.NameText, { color: 'rgba(39, 174, 96, 1)', }]}>{Target?.changeInCustomerOnboardingCount}</Text>
+                            <Text style={[styles.NameText, { fontFamily: FONTS.FontRegular, left: 5 }]}>last month</Text>
+                        </View>
+                        
+                </View>
+
+                <View style={styles.Card}>
+                <View style={{ flexDirection: 'row', marginTop: 12, marginLeft: 12, marginRight: 12 }}>
+                        <View style={styles.CircleView}>
+                            <Image1 width={22} height={22} />
+                        </View>
+
+                        <Text style={styles.NameText}>Loans</Text>
+                    </View>
+                    <View style={{ marginLeft: width * 0.15, top: -5 }}>
+                        <Text style={styles.MonthText}>{Target?.pendingLoansCount}</Text>
+                    </View>
+                    <View style={{ flexDirection: 'row', marginBottom: width * 0.025, marginLeft: width * 0.1, top: -5 }}>
+                        <Icon1 name='arrowup' size={14} color={'rgba(39, 174, 96, 1)'} style={{ marginTop: 5 }} />
+                        <Text style={[styles.NameText, { color: 'rgba(39, 174, 96, 1)', }]}>{Target?.changeInLoansCount}</Text>
+                        <Text style={[styles.NameText, { fontFamily: FONTS.FontRegular, left: 5 }]}>last month</Text>
+                    </View>
+                </View>
             </View>
         </View>
     )

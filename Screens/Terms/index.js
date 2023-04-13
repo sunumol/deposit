@@ -56,7 +56,7 @@ const Terms = ({ navigation }) => {
             <SafeAreaView style={styles.container1} />
             <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
 
-            <Header navigation={navigation}name={t('common:Terms1')}
+            <Header navigation={navigation}name={t('common:Terms1')} onPress={handleGoBack}
              />
            <ScrollView>
             <View style={styles.ViewContent}>

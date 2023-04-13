@@ -12,7 +12,7 @@ import {
     Dimensions,
     TouchableOpacity
 } from 'react-native'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Statusbar from '../../../Components/StatusBar';
 import { useFocusEffect } from '@react-navigation/native';
@@ -23,11 +23,12 @@ import Icon1 from 'react-native-vector-icons/Ionicons'
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 import Search from 'react-native-vector-icons/Feather';
 import Image1 from '../../../assets/Images/cakes.svg';
+import { api } from '../../../Services/Api';
 
 const { height, width } = Dimensions.get('screen');
 
-const Details = ({ navigation }) => {
-
+const Details = ({ navigation,details,spouse }) => {
+console.log('====',details)
     const isDarkMode = true;
     const [text, onChangeText] = useState('');
     const [ModalVisible, setModalVisible] = useState(false)
@@ -36,8 +37,34 @@ const Details = ({ navigation }) => {
     const [ModalError, setModalError] = useState(false)
     const [ModalReason, setModalReason] = useState(false)
     const [checked, setChecked] = useState(false);
+  
     const toggleCheckbox = () => setChecked(!checked);
 
+    const  getRandomColor =()=> {
+        var letters = '0123456789ABCDEF';
+        var color = '#';
+        for (var i = 0; i < 3; i++) {
+          color += letters[Math.floor(Math.random() * 8)];
+        }
+        return color;
+      }
+    
+    
+      const getInitials = (name) => {
+      
+        let initials;
+        const nameSplit = name?.split(" ");
+         const nameLength = nameSplit?.length;
+        if (nameLength > 1) {
+            initials =
+                nameSplit[0].substring(0, 1) +
+                nameSplit[nameLength - 1].substring(0, 1);
+        } else if (nameLength === 1) {
+            initials = nameSplit[0].substring(0, 1);
+        } else return;
+    
+         return initials.toUpperCase();
+    };
 
 
     return (
@@ -49,17 +76,17 @@ const Details = ({ navigation }) => {
                         <View style={styles.boxStyle}>
                             <View style={{ flex: 1, flexDirection: 'row' }}>
 
-                                <View style={[styles.circleStyle, { backgroundColor: '#6979F8' }]}>
-                                    <Text style={styles.circleText}>AA</Text>
+                                <View style={[styles.circleStyle, { backgroundColor:'rgba(105, 121, 248, 1)'}]}>
+                                    <Text style={styles.circleText}>{getInitials(details?.customerName)}</Text>
                                 </View>
 
                                 <View style={{ flexDirection: 'column', paddingLeft: 12, paddingTop: 5 }}>
-                                    <Text style={styles.nameText}>Athira Anil</Text>
+                                    <Text style={styles.nameText}>{details?.customerName}</Text>
                                     <View style={{ flexDirection: 'row', }}>
                                         <View style={{ paddingTop: 5, paddingRight: 1 }}>
                                             <Icon1 name="location-outline" color={"black"} />
                                         </View>
-                                        <Text style={[styles.idText, { paddingTop: 4 }]}>686677</Text>
+                                        <Text style={[styles.idText, { paddingTop: 4 }]}>{details?.pin}</Text>
                                     </View>
                                 </View>
 
@@ -68,57 +95,111 @@ const Details = ({ navigation }) => {
                             <View style={{ flexDirection: 'column', paddingTop: 5, alignItems: 'flex-end' }}>
                                 <View style={{ flexDirection: 'row' }}>
                                     <Icon2 name="phone-in-talk-outline" color={"black"} size={15} />
-                                    <Text style={[styles.numText, { paddingLeft: 6 }]}>961XXXXX77</Text>
+                                    <Text style={[styles.numText, { paddingLeft: 6 }]}>{details?.mobile}</Text>
                                 </View>
                             </View>
 
                         </View>
                         <View style={styles.lineView} />
-                        <View style={{ paddingHorizontal: 17, }}>
+                        <View style={{ paddingHorizontal: 17,flexDirection:'row' }}>
+                        <View style={{ flex: 1,marginTop:width * 0.009 }}>
                             <Text style={styles.headTextTitle}>Address</Text>
-                            <Text style={[styles.subText, { maxWidth: 200 }]}>Akshya Nagar 1st Block 1st Cross, Rammurthy nagar, Kochi-560016</Text>
+                        </View>
+                        <View style={{ flex: 2 ,flexWrap:'wrap'}}>
+                            <Text style={[styles.subText, { maxWidth: 200 }]}>{details?.address ? details?.address : '-'} </Text>
+                        </View>
+                           
                         </View>
                         <View style={styles.lineView} />
-                        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 17, }}>
-                            <View style={{ flexDirection: 'column', flex: 1, marginRight: 10 }}>
-                                <Text style={styles.headTextTitle}>District</Text>
-                                <Text style={styles.subText}>Ernakulam</Text>
+                        <View style={{ paddingHorizontal: 17, }}>
+                            <View style={{ flexDirection: 'row', flex: 1 }}>
+                            <View style={{ flex: 1,marginTop:width * 0.0009 }}>
+                            <Text style={styles.headTextTitle}>District</Text>
                             </View>
-                            <View style={{ flexDirection: 'column', flex: 1, marginRight: 10 }}>
+                            <View style={{ flex: 2 }}>
+                            <Text style={styles.subText}>{details?.district}</Text>
+                            </View>
+                                
+                              
+                            </View>
+
+                            <View style={styles.lineView} />
+                            <View style={{ flexDirection: 'row', flex: 1, marginRight: 10 }}>
+                            <View style={{ flex: 1,marginTop:width * 0.009 }}> 
                                 <Text style={styles.headTextTitle}>Village</Text>
-                                <Text style={styles.subText}>Thrikkakara North</Text>
+                            </View>
+                            <View style={{ flex: 2 }}>
+                                 <Text style={styles.subText}>{details?.village}</Text>
+                                 </View>
+                               
+                               
                             </View>
                             {/* <Success height={23} width={24} /> */}
                         </View>
 
 
                         <View style={styles.lineView} />
-                        <View style={{ paddingHorizontal: 17, paddingBottom: 16 }}>
-                            <Text style={styles.headTextTitle}>Access road type</Text>
-                            <Text style={styles.subText}>Four-wheeler</Text>
+                        <View style={{ paddingHorizontal: 17, paddingBottom: 16,flex:1,flexDirection:'row'}}>
+                        <View style={{ flex: 1 ,marginTop:width * 0.0065,paddingRight:20}}>
+                        <Text style={styles.headTextTitle}>Access road type</Text>
+                         </View>
+                        <View style={{ flex: 2}}> 
+                        <Text style={styles.subText}>{details?.accessRoadType}</Text>
+                        </View>
+                          
+                            
+                        </View>
+
+
+                        <View style={styles.lineView} />
+                        <View style={{ paddingHorizontal: 17, paddingBottom: 16,flex:1,flexDirection:'row'}}>
+                        <View style={{ flex:1 ,marginTop:width * 0.0065}}>
+                        <Text style={styles.headTextTitle}>Post Office</Text>
+                         </View>
+                         <View style={{ flex: 2 }}>
+                        <Text style={styles.subText}>{details?.postOffice}</Text>
+                        </View>
+                          
+                            
+                        </View>
+
+
+                        <View style={styles.lineView} />
+                        <View style={{ paddingHorizontal: 17, paddingBottom: 16,flex:1,flexDirection:'row'}}>
+                        <View style={{ flex: 1 ,marginTop:width * 0.0065}}>
+                        <Text style={styles.headTextTitle}>Landmark</Text>
+                         </View>
+                         <View style={{ flex: 2 }}>
+                        <Text style={styles.subText}>{details?.landMark}</Text>
+                        </View>
+                          
+                            
                         </View>
 
                     </View>
 
+                    {spouse ?
+                    <> 
                     <View style={{ marginTop: width * 0.05 }}>
                         <Text style={styles.TextSp}>Spouse details</Text>
                     </View>
 
                     <View style={styles.containerBox}>
                         <View style={{ flex: 1, flexDirection: 'row' }}>
-                            <View style={styles.circleView}>
-                                <Text style={styles.shortText}>AK</Text>
+                            <View style={[styles.circleView,{backgroundColor:'rgba(117, 181, 195, 1)'}]}>
+                                <Text style={styles.shortText}>{getInitials(spouse?.name)}</Text>
                             </View>
                             <View style={{ flexDirection: 'column', flex: 1, marginLeft: 12 }}>
-                                <Text style={styles.nameText}>Anil Kumar</Text>
-                                <Text style={styles.underText}>Daily wage labourer</Text>
+                                <Text style={styles.nameText}>{spouse?.name}</Text>
+                                <Text style={styles.underText}>{spouse?.occupation}</Text>
                             </View>
                             <View style={{ flexDirection: 'row', }}>
                             <Image1 width={11} height={11} top={3}/>
-                                <Text style={styles.dateText}>12/10/1972</Text>
+                                <Text style={styles.dateText}>{spouse?.dateOfBirth}</Text>
                             </View>
                         </View>
                     </View>
+                    </>:null}
                 </ScrollView>
 
                 <View style={{ alignItems: 'center', justifyContent: 'center' }}>
@@ -399,7 +480,7 @@ const styles = StyleSheet.create({
     circleView: {
         width: 40,
         height: 40,
-        backgroundColor: '#CE748F',
+       
         borderRadius: 20,
         alignItems: 'center',
         justifyContent: 'center',

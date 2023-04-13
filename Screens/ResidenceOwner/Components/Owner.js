@@ -18,7 +18,7 @@ import Statusbar from '../../../Components/StatusBar';
 import { useFocusEffect } from '@react-navigation/native';
 import Header from '../../../Components/RepayHeader';
 import { FONTS, COLORS } from '../../../Constants/Constants';
-
+import { useDispatch } from 'react-redux';
 import Icon1 from 'react-native-vector-icons/Entypo'
 import Icon2 from 'react-native-vector-icons/Entypo';
 import Search from 'react-native-vector-icons/Feather';
@@ -28,12 +28,16 @@ const { height, width } = Dimensions.get('screen');
 import OwnerModal from './OwnerModal';
 import RelationModal from './RelationModal';
 import ImagePicker from 'react-native-image-crop-picker';
-import Image2 from '../../../assets/Images/cakes.svg'
+import Image2 from '../../../assets/Images/cakes.svg';
+import { api } from '../../../Services/Api';
+import { useSelector } from 'react-redux';
 
-const DetailChecks = ({ navigation, setState }) => {
+
+const DetailChecks = ({ navigation, setState,proofType1,imageUrl1,relation1,relative1 }) => {
 
     const isDarkMode = true;
     const [text, onChangeText] = useState('');
+    const activityId = useSelector(state => state.activityId);
     const [ModalVisible, setModalVisible] = useState(false)
     const [ModalVisible1, setModalVisible1] = useState(false)
     const [selectedItem, setSelectedItem] = useState()
@@ -47,32 +51,165 @@ const DetailChecks = ({ navigation, setState }) => {
     const [imageStatus, setImageStatus] = useState(false)
     const [Relation, setRelation] = useState('')
     const [Image1, setImage] = useState('')
-    const [status,setStatus] =  useState(false)
+    const [Imageurl, setImageurl] = useState('')
+    const [status, setStatus] = useState(false)
     const [UploadStatus, setUploadStatus] = useState(false)
-    const [NameStatus,setNamestatus] = useState(false)
+    const [NameStatus, setNamestatus] = useState(false)
+    const [spousedetail, setSpousedetail] = useState('')
+    const [ownersName,setOwnersName] = useState('')
+
+
+    const [ImagesFSet, setImagesFSet] = useState()
+    const [ImagesBSet, setImagesBSet] = useState()
+
+    useEffect(() => {
+
+        getResidenceowner()
+    }, [])
+
+
     useEffect(() => {
 
         console.log("purpose print....", Purposes)
         setState(Purpose)
         setPurpose(Purpose)
+        proofType1(Purpose)
         setPurposes(Purposes)
+        relation1(Purposes)
         setRelation(Relation)
+
+
         //setStatus(true)
-    }, [Purpose,Relation])
+    }, [Purpose, Relation])
+
+
+        // ------------------spouse detail ------------------
+
+        const getSpousedetail = async () => {
+            console.log('api called')
+
+            const data = {
+                   "activityId": activityId
+              
+
+            }
+            await api.getSpousedetail(data).then((res) => {
+                console.log('-------------------res spousedetail', res)
+                if (res?.status) {
+                    setSpousedetail(res?.data?.body)
+                }
+            }).catch((err) => {
+                console.log('-------------------err spousedetail', err?.response)
+            })
+        };
+        // ------------------ ------------------
+
+
+
+    // ------------------get residence owner detail ------------------
+
+    const getResidenceowner = async () => {
+        console.log('api called')
+
+        const data = {
+               "activityId": activityId
+        
+
+        }
+        await api.getResidenceowner(data).then((res) => {
+            console.log('-------------------res Residence owner', res?.data?.body)
+            if (res?.status) {
+               setPurposes(res?.data?.body?.relationShipWithCustomer)
+               setPurpose(res?.data?.body?.ownerShipProofType)
+               setImage(res?.data?.body?.imageUrl)
+               if(res?.data?.body?.relationShipWithCustomer != 'Spouse'){
+                setOwnersName(res?.data?.body?.ownersName)
+                relative1(res?.data?.body?.ownersName)
+               }
+            
+               if(res?.data?.body?.ownerShipProofType){
+                setImageStatus(true)
+                setUploadStatus(false)
+               }
+               getSpousedetail()
+            }
+        }).catch((err) => {
+            console.log('-------------------err Residence Owner', err?.response)
+        })
+    };
+    // ------------------ ------------------
+
+
+
+
+        // ------------------save and update residence owner detail ------------------
+
+        const UpdateResidenceowner = async () => {
+            console.log('api called')
+    
+            const data = {
+                "activityId": activityId,
+                "ownerShipProofType": Purpose == 'Electricity Bill' ? 'ELECTRICITY_BILL' : Purpose == 'Water Bill' ? 'WATER_BILL' : 'BUILDING_TAX_RECEIPT',
+                "imageUrl": Image1,
+                "relationShipWithCustomer": Purposes,
+                "ownersName": ownersName ? ownersName :spousedetail?.name 
+            }
+            await api.UpdateResidenceowner(data).then((res) => {
+                console.log('-------------------res  update Residence owner', res)
+                if (res?.status) {
+                    if(Purposes == 'Spouse'){
+                    navigation.navigate('ContinuingGuarantor') 
+                   //navigation.navigate('ContinuingGuarantor',{relation:'Spouse'}) 
+
+                    }else{
+                        //navigation.navigate('ContinuingGuarantor',{relation:'other'})  
+                        navigation.navigate('ContinuingGuarantor')  
+
+                    }
+                }
+            }).catch((err) => {
+                console.log('-------------------err  update Residence Owner', err?.response)
+            })
+        };
+        // ------------------ ------------------
 
     const UploadImage = () => {
 
         //Choose Image from gallery
         ImagePicker.openPicker({
-            width: 300,
-            height: 200,
+            //width: 300,
+           // height: 200,
             cropping: true
         }).then(image => {
             console.log("IMAGE", image.path);
             setImage(image.path)
             setUploadStatus(false)
+            uploadFile(image.path, image)
         });
     }
+
+
+    async function uploadFile(imagevalue, image) {
+        console.log('api called')
+        let data = new FormData();
+        data.append('multipartFile', {
+            name: 'aaa.jpg',
+            type: image.mime,
+            uri: imagevalue
+        })
+
+        await api.uploadFile(data).then((res) => {
+            console.log('-------------------res file upload', res?.data[0]?.body)
+            if (res?.status) {
+                setImageurl(res?.data[0]?.body)
+                setImage(res?.data[0]?.body)
+                imageUrl1(res?.data[0]?.body)
+            }
+        }).catch((err) => {
+            console.log('-------------------err file upload', err)
+        })
+    };
+    // ------------------ HomeScreen Api Call End ------------------
     return (
 
 
@@ -85,11 +222,11 @@ const DetailChecks = ({ navigation, setState }) => {
 
                 <TouchableOpacity style={styles.SelectBox} onPress={() => setModalVisible(true)}>
                     {!Purpose ? <Text style={styles.textSelect}>Select</Text> :
-                        <Text style={[styles.textSelect],{color:'#1A051D',marginLeft:8}}>{Purpose}</Text>}
-                    {/* <Icon1 name="chevron-down" size={18} color={'#808080'} style={{ marginRight: 10 }} /> */}
+                        <Text style={[styles.textSelect, { color: '#1A051D', marginLeft: 8 }]}>{Purpose}</Text>}
+                    <Icon1 name="chevron-down" size={18} color={'#808080'} style={{ marginRight: 10 }} />
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.UploadCard}>
+                <TouchableOpacity style={styles.UploadCard}  onPress={() =>{ Purpose ? UploadImage():null}} >
 
 
                     {!imageStatus ?
@@ -99,11 +236,12 @@ const DetailChecks = ({ navigation, setState }) => {
                             </TouchableOpacity>
                         </View> : UploadStatus ?
                             <View style={{ alignItems: 'flex-start', flex: 1, marginLeft: 25 }}>
-                                <TouchableOpacity onPress={() => UploadImage()}>
+                                <TouchableOpacity >
                                     <Media width={30} height={30} />
                                 </TouchableOpacity>
-                            </View> : <View style={{ alignItems: 'flex-start', flex: 1, marginLeft: 10 }}>
-                                <Image source={{ uri: Image1 }} style={{ width: 55, height: 65, borderRadius: 6 }} /></View>}
+                            </View> : <TouchableOpacity   style={{ alignItems: 'flex-start', flex: 1, marginLeft: 10 }}>
+                                <Image source={{ uri:   Image1 }} style={{ width: 55, height: 65, borderRadius: 6 }} />
+                                </TouchableOpacity>}
                     <View style={styles.Line} />
                     <View style={{ flexDirection: 'column', left: -20 }}>
                         <Text style={[styles.UploadText, { color: NameStatus ? '#1A051D' : '#808080' }]}>Upload photo</Text>
@@ -117,38 +255,56 @@ const DetailChecks = ({ navigation, setState }) => {
                 <View>
                     <Text style={styles.proof}>Relationship with Customer</Text>
                 </View>
-                <TouchableOpacity style={styles.SelectBox} onPress={() => setModalVisible1(true)} >
-                {Purposes === null ? <Text style={styles.textSelect}>Select</Text> :
-                        <Text style={[styles.textSelect],{color:'#1A051D',marginLeft:8}}>{Purposes}</Text>}
-                    {/* <Icon1 name="chevron-down" size={18} color={'#808080'} style={{ marginRight: 10 }} /> */}
+                <TouchableOpacity style={styles.SelectBox} onPress={() => { setModalVisible1(true), getSpousedetail() }} >
+                    {Purposes === null ? <Text style={styles.textSelect}>Select</Text> :
+                        <Text style={[styles.textSelect, { color: '#1A051D', marginLeft: 8 }]}>{Purposes}</Text>}
+                    <Icon1 name="chevron-down" size={18} color={'#808080'} style={{ marginRight: 10 }} />
                 </TouchableOpacity>
 
 
-              {Purposes !== null ?
-              <View style={styles.containerBox}>
-                     <View style={{ flex: 1, flexDirection: 'row' }}>
-                     <View style={styles.circleView}>
-                            <Text style={styles.shortText}>AK</Text>
-                        </View>
+                {Purposes == 'Spouse' ?
+                    <View style={styles.containerBox}>
+                        <View style={{ flex: 1, flexDirection: 'row' }}>
+                            <View style={styles.circleView}>
+                                <Text style={styles.shortText}>AK</Text>
+                            </View>
 
-                        <View style={{ flexDirection: 'column', flex: 1, marginLeft: 12 }}>
-                            <Text style={styles.nameText}>Anil Kumar</Text>
-                            <Text style={styles.underText}>Daily wage labourer</Text>
+                            <View style={{ flexDirection: 'column', flex: 1, marginLeft: 12 }}>
+                                <Text style={styles.nameText}>{spousedetail?.name}</Text>
+                                <Text style={styles.underText}>{spousedetail?.occupation}</Text>
+                            </View>
+                            <View style={{ flexDirection: 'row', }}>
+                                <Image2 width={11} height={11} top={3} />
+                                <Text style={styles.dateText}>{spousedetail?.dateOfBirth}</Text>
+                            </View>
                         </View>
-                        <View style={{ flexDirection: 'row', }}>
-                        <Image2 width={11} height={11} top={3}/>
-                            <Text style={styles.dateText}>12/10/1972</Text>
-                        </View>
-                        </View>
-              </View>:null}
-                        
+                    </View> :
+                  Purposes ?
+                      <>
+                        <View>
+                    <Text style={styles.proof}>Name</Text>
+                </View>
+                     <View style={styles.SelectBox}>
+                          <TextInput
+                                        value={ownersName}
+                                        style={styles.TextInputBranch}
+                                        onChangeText={(text) =>{ setOwnersName(text),relative1(text)}}
+                                        // onFocus={() => setPstatus(false)}
+                                        // onKeyPress={() => setPstatus(false)}
+
+                                    />
+                    </View> 
+                    </>:null
+                
+                    }
+
             </ScrollView>
 
             <View style={{ position: 'absolute', left: 0, right: 0, bottom: 0, alignItems: 'center', justifyContent: 'center' }}>
-                <TouchableOpacity onPress={()=>Purposes !== '' ? navigation.navigate('ContinuingGuarantor'):console.log("helo")}
-                style={[styles.Button1, { backgroundColor:Purposes !== '' ? COLORS.colorB : 'rgba(224, 224, 224, 1)' }]}
+                <TouchableOpacity onPress={() => (Purpose && Purposes && Image1) ? UpdateResidenceowner(    ) : console.log("helo")}
+                    style={[styles.Button1, { backgroundColor: (Purpose && Purposes && Image1) ? COLORS.colorB : 'rgba(224, 224, 224, 1)' }]}
                 >
-                    <Text style={[styles.text1, { color:Purposes !== '' ? COLORS.colorBackground : '#979C9E' }]}>Continue</Text>
+                    <Text style={[styles.text1, { color: (Purpose && Purposes && Image1) ? COLORS.colorBackground : '#979C9E' }]}>Continue</Text>
                 </TouchableOpacity>
             </View>
             <OwnerModal
@@ -164,7 +320,8 @@ const DetailChecks = ({ navigation, setState }) => {
             />
             <RelationModal
                 visible={ModalVisible1}
-                setRelation={setRelation} setPurposes={setPurposes}
+                setRelation={setRelation}
+                setPurposes={setPurposes}
                 setModalVisible={setModalVisible1}
                 setStatus={setStatus}
                 onPressOut={() => setModalVisible1(!ModalVisible1)}
@@ -347,6 +504,15 @@ const styles = StyleSheet.create({
         color: COLORS.colorDark,
         marginRight: 12,
         marginLeft: 5
+    },
+    TextInputBranch: {
+        color: "#1A051D",
+        fontSize: 14,
+        fontFamily: FONTS.FontRegular,
+        paddingLeft: width * 0.02,
+        width: width * 0.88,
+        height: width * 0.11,
+     
     },
 
 

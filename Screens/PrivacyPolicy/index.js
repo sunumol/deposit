@@ -59,7 +59,7 @@ const Privacy = ({ navigation }) => {
             <SafeAreaView style={styles.container1} />
             <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
      
-            <Header navigation={navigation} name={t('common:PrivacyHead')}/>
+            <Header navigation={navigation} name={t('common:PrivacyHead')}  onPress={handleGoBack}/>
             <ScrollView style={{flex:1,paddingBottom:20}}>
             <View style={styles.ViewContent}>
                 <Text style={styles.text}>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable.</Text>

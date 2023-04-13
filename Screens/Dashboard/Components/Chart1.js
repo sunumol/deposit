@@ -1,75 +1,85 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+
 import { View, Text, StyleSheet, Dimensions } from 'react-native';
 import { BarChart } from 'react-native-gifted-charts';
 // import { styles } from 'react-native-gifted-charts/src/BarChart/styles';
 import { COLORS, FONTS } from '../../../Constants/Constants';
 const { height, width } = Dimensions.get('screen');
 
-const GroupedBars1 = () => {
+const GroupedBars1 = ({ Summary }) => {
+    console.log("summary print...", Summary[0]?.month)
+
+    function kFormatter(num) {
+        return Math.abs(num) > 999 ? Math.sign(num) * ((Math.abs(num) / 1000).toFixed(1)) + 'k' : Math.sign(num) * Math.abs(num)
+    }
+
     const barData = [
+
         {
-            value: 17,
-            label: '    March',
+            value: Summary[0]?.incentive,
+            label: '  ' + Summary[0]?.month,
             spacing: 6,
             labelWidth: 100,
+
             //  labelTextStyle: { color: 'gray',fontSize:12 },
             frontColor: 'rgba(88, 84, 247, 1)',
             topLabelComponent: () => (
 
-                <Text style={{ top: -6, fontSize: 10, color: 'rgba(128, 128, 128, 1)', fontFamily: FONTS.FontRegular, }}>17k</Text>
+                <Text style={{ top: -6, fontSize: 10, color: 'rgba(128, 128, 128, 1)', fontFamily: FONTS.FontRegular, }}>{kFormatter(Summary[0]?.incentive)}</Text>
 
             )
 
         },
         {
-            value: 12, frontColor: 'rgba(176, 195, 230, 1)',
+            value: Summary[0]?.avgIncentive, frontColor: 'rgba(176, 195, 230, 1)', height: 40,
             topLabelComponent: () => (
 
-                <Text style={{ top: -6, fontSize: 10, color: 'rgba(128, 128, 128, 1)', fontFamily: FONTS.FontRegular, }}>12k</Text>
+                <Text style={{ top: -6, fontSize: 10, color: 'rgba(128, 128, 128, 1)', fontFamily: FONTS.FontRegular, }}>{kFormatter(Summary[0]?.avgIncentive)}</Text>
 
             )
         },
         {
-            value: 15,
-            label: '      April',
+            value: Summary[1]?.incentive,
+            label: '  ' + Summary[1]?.month,
             spacing: 6,
             labelWidth: 100,
-            // labelTextStyle: { color: 'gray',fontSize:12 },
+
             frontColor: 'rgba(88, 84, 247, 1)',
             topLabelComponent: () => (
 
-                <Text style={{ top: -6, fontSize: 10, color: 'rgba(128, 128, 128, 1)', fontFamily: FONTS.FontRegular, }}>15k</Text>
+                <Text style={{ top: -6, fontSize: 10, color: 'rgba(128, 128, 128, 1)', fontFamily: FONTS.FontRegular, }}>{kFormatter(Summary[1]?.incentive)}</Text>
 
             )
         },
         {
-            value: 13, frontColor: 'rgba(176, 195, 230, 1)',
+            value: Summary[1]?.avgIncentive, frontColor: 'rgba(176, 195, 230, 1)',
             topLabelComponent: () => (
 
-                <Text style={{ top: -6, fontSize: 10, color: 'rgba(128, 128, 128, 1)', fontFamily: FONTS.FontRegular, }}>13k</Text>
+                <Text style={{ top: -6, fontSize: 10, color: 'rgba(128, 128, 128, 1)', fontFamily: FONTS.FontRegular, }}>{kFormatter(Summary[1]?.avgIncentive)}</Text>
 
             )
         },
         {
-            value: 16,
-            label: '      May',
+            value: Summary[2]?.incentive,
+            label: '    ' + Summary[2]?.month,
             spacing: 6,
             labelWidth: 100,
+
             // labelTextStyle: { color: 'gray',fontSize:12 ,},
             frontColor: 'rgba(88, 84, 247, 1)',
             topLabelComponent: () => (
 
-                <Text style={{ top: -6, fontSize: 10, color: 'rgba(128, 128, 128, 1)', fontFamily: FONTS.FontRegular, }}>16k</Text>
+                <Text style={{ top: -6, fontSize: 10, color: 'rgba(128, 128, 128, 1)', fontFamily: FONTS.FontRegular, }}>{kFormatter(Summary[2]?.incentive)}</Text>
 
             )
         },
 
 
         {
-            value: 13, frontColor: 'rgba(176, 195, 230, 1)',
+            value: Summary[2]?.avgIncentive, frontColor: 'rgba(176, 195, 230, 1)',
             topLabelComponent: () => (
 
-                <Text style={{ top: -6, fontSize: 10, color: 'rgba(128, 128, 128, 1)', fontFamily: FONTS.FontRegular, }}>13k</Text>
+                <Text style={{ top: -6, fontSize: 10, color: 'rgba(128, 128, 128, 1)', fontFamily: FONTS.FontRegular, }}>{kFormatter(Summary[2]?.avgIncentive)}</Text>
 
             )
         },
@@ -78,12 +88,32 @@ const GroupedBars1 = () => {
 
     ];
 
+    useEffect(() => {
+        console.log("calculation", 0.75 * 13000)
+    }, [])
+
     const renderTitle = () => {
         return (
-            <View style={{ margin: 15 }}>
-                <Text style={styles.TextData}>Yay! your <Text style={[styles.TextData, { fontFamily: FONTS.FontSemiB }]}>last 3 month’s incentive</Text> is</Text>
-                <Text style={styles.TextData}>higher compared to the toppers</Text>
-            </View>
+            <>
+                {Summary[2]?.incentive < 0.75 * Summary[2]?.avgIncentive ?
+                   <View style={{ margin: 15, }}>
+                   <Text style={styles.TextData}>Hey! Please focus on improving your <Text style={[styles.TextData, { fontFamily: FONTS.FontSemiB }]}>monthly
+                       earnings.</Text> All the best</Text>
+               </View>
+                       :
+
+                        Summary[2]?.incentive > 0.75 * Summary[2]?.avgIncentive && Summary[2]?.incentive < Summary[2]?.avgIncentive ?
+                        <Text style={styles.TextData}>Hi! Please try harder to earn
+                        like the toppers</Text>  :
+
+                            Summary[2]?.incentive >= Summary[2]?.avgIncentive ?
+                                <View style={{ margin: 15, }}>
+                                    <Text style={styles.TextData}>Congrats! Your <Text style={[styles.TextData, { fontFamily: FONTS.FontSemiB }]}>monthly earnings </Text>are in</Text>
+                                    <Text style={styles.TextData}>the top 10%. Do more to stay there!</Text>
+                                </View> : null}
+
+
+            </>
         )
     }
 
@@ -117,7 +147,8 @@ const GroupedBars1 = () => {
                     hideRules
                     yAxisLabelTexts={[' ', '5k', '10k', '15k', '20k']}
                     showYAxisIndices
-                    yAxisIndicesColor={'red'}
+                    //barStyle={{height:160,width:20}}
+                    // yAxisIndicesColor={'red'}
                     yAxisIndicesHeight={1}
                     yAxisIndicesWidth={2}
                     xAxisIndicesColor={'#E5E7FA'}
@@ -128,7 +159,7 @@ const GroupedBars1 = () => {
                     yAxisTextStyle={{ color: 'gray' }}
                     xAxisLabelTextStyle={{ color: 'rgba(128, 128, 128, 1)', fontSize: 12, fontFamily: FONTS.FontRegular, }}
                     noOfSections={4}
-                    maxValue={20}
+                    maxValue={20000}
                     height={100}
                     initialSpacing={22}
                     width={width * 0.72}

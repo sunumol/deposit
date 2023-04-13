@@ -75,6 +75,7 @@ const GroupedBars4 = () => {
     const renderTitle = () => {
         return (
             <View style={{ margin:15 }}>
+                
                 <Text style={styles.TextData}>Uh-oh! your <Text style={[styles.TextData, { fontFamily: FONTS.FontSemiB }]}>last 3 month’s leads to customer</Text></Text>
                 <Text style={[styles.TextData,{ fontFamily: FONTS.FontSemiB }]}>conversion <Text style={styles.TextData}>is low compared to the toppers</Text></Text>
             </View>

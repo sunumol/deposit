@@ -22,6 +22,7 @@ import { useRoute } from '@react-navigation/native';
 import { useFocusEffect } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import Proceeds from './Components/Proceed';
+import ExitModal from './Components/ExitModal';
 
 
 const Proceed = ({ navigation, }) => {
@@ -31,6 +32,7 @@ const Proceed = ({ navigation, }) => {
     const { t } = useTranslation();
     const [lang, setLang] = useState('')
     const [BStatus, setBstatus] = useState(false)
+    const [ModalVisible,setModalVisible] = useState(false)
 
 
     useEffect(() => {
@@ -49,30 +51,41 @@ const Proceed = ({ navigation, }) => {
 
     const handleGoBack = useCallback(() => {
 
-        navigation.navigate('NewCgt')
-
-        return true; // Returning true from onBackPress denotes that we have handled the event
-    }, [navigation]);
-
-    useFocusEffect(
-        React.useCallback(() => {
-            BackHandler.addEventListener('hardwareBackPress', handleGoBack);
-
-            return () =>
-                BackHandler.removeEventListener('hardwareBackPress', handleGoBack);
-        }, [handleGoBack]),
-    );
+        // navigation.goBack()
+             setModalVisible(true)
+         return true; // Returning true from onBackPress denotes that we have handled the event
+     }, [navigation]);
+ 
+     useFocusEffect(
+         React.useCallback(() => {
+             BackHandler.addEventListener('hardwareBackPress', handleGoBack);
+ 
+             return () =>
+             
+                 BackHandler.removeEventListener('hardwareBackPress', handleGoBack);
+         }, [handleGoBack]),
+     );
+ 
     return (
         <SafeAreaProvider>
             <SafeAreaView style={styles.container1} />
             <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
 
-            <Header navigation={navigation} />
+            <Header navigation={navigation} onPress={handleGoBack} />
 
             <View style={styles.ViewContent}>
                 <Proceeds navigation={navigation} />
 
             </View>
+
+            <ExitModal
+                ModalVisible={ModalVisible}
+                onPressOut={() => {
+                  setModalVisible(!ModalVisible)
+                }}
+                setModalVisible={setModalVisible}
+                navigation={navigation} 
+            />
 
         </SafeAreaProvider>
     )

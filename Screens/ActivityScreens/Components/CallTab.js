@@ -16,12 +16,12 @@ import CallTab from '../Components/components/callTab';
 import { api } from '../../../Services/Api';
 
 
-const ItemTabs = ({props,navigation}) => {
+const ItemTabs = ({ props, navigation }) => {
     const { t } = useTranslation();
     const [Lang, setLang] = useState('')
     const [ModalVisible1, setModalVisible1] = useState(false)
-    const [listing,setListing] = useState ([])
-    const [enab,setEnab]=useState(false)
+    const [listing, setListing] = useState([])
+    const [enab, setEnab] = useState(false)
     const [meetData, setMeetData] = useState([
         {
             id: 1,
@@ -87,11 +87,11 @@ const ItemTabs = ({props,navigation}) => {
     const ActivityListingApiCall = async () => {
         const data = {
             "employeeId": 1,
-            "activityType":"CALL"
+            "activityType": "CALL"
         };
         await api.activitylistingscreenApi(data).then((res) => {
-            console.log('-------------------res call', res?.data?.body)
-            setListing(res?.data?.body)
+            console.log('-------------------res call', res?.data?.body?.nonSlottedActivities)
+            setListing(res?.data?.body?.slottedActivities)
             setEnab(false)
         })
             .catch((err) => {
@@ -105,21 +105,21 @@ const ItemTabs = ({props,navigation}) => {
 
     React.useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
-        
-           ActivityListingApiCall()
-       
-        });
-getData();
-        return unsubscribe;
-    }, [navigation,enab]);
 
-    {console.log('====fkjkfjkjfkjrf',enab)}
-    
+            ActivityListingApiCall()
+
+        });
+        getData();
+        return unsubscribe;
+    }, [navigation, enab]);
+
+    { console.log('====fkjkfjkjfkjrf', enab) }
+
     useEffect(() => {
-           ActivityListingApiCall()
+        ActivityListingApiCall()
     }, [enab]);
 
- 
+
 
     const getData = async () => {
         try {
@@ -132,20 +132,21 @@ getData();
     }
     return (
         <ScrollView style={{ flex: 1, backgroundColor: COLORS.colorBackground }}>
-            <View style={{ paddingHorizontal: 20 }}>
+            <View style={{ paddingHorizontal: 20, marginBottom: 20 }}>
 
                 {
                     listing.map((item, index) => {
-                 
+
                         return (
                             <>
-                           {item?.data.length > 0 ?  (<CallTab
-                                id={item.id}
-                                time={item.time}
-                                data={item.data} 
-                                setEnab={setEnab}
-                                meet={false}/>) : null}
-                                </>
+                                {item?.data.length > 0 ? (<CallTab
+                                    id={item.id}
+                                    time={item.time}
+                                    data={item.data}
+                                    setEnab={setEnab}
+                                    navigation={navigation}
+                                    meet={false} />) : null}
+                            </>
                         )
                     })
                 }

@@ -13,6 +13,7 @@ import { api } from "../../../../Services/Api";
 
 const App = ({ visible, onPressOut, meet, details ,setEnab}) => {
     const { t } = useTranslation();
+    console.log("details of active modal",details)
     const [enableContinue, setEnableContinue] = useState(false)
     const [id, setId] = useState()
     const [data, setData] = useState([
@@ -111,7 +112,9 @@ const App = ({ visible, onPressOut, meet, details ,setEnab}) => {
                                         marginRight: 10
                                     }}>
 
+                                    <TouchableOpacity>
                                     <Text style={styles.textStyle}>{item.title}</Text>
+                                    </TouchableOpacity>
                                     {enableContinue && id && item.id === id
                                         ? <Enable width={18} height={18} onPress={() => {
                                             setEnableContinue(false)
@@ -156,8 +159,10 @@ const styles = StyleSheet.create({
     modalContainer: {
         width: '100%',
         backgroundColor: COLORS.colorBackground,
-        borderTopLeftRadius: 30,
-        borderTopRightRadius: 30
+        // borderTopLeftRadius: 30,
+        // borderTopRightRadius: 30
+        // borderBottomStartRadius: 30,
+        // borderBottomEndRadius: 30,
     },
     statusText: {
         fontSize: 14,

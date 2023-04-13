@@ -54,38 +54,64 @@ import { PieChart } from "react-native-gifted-charts";
 const { height, width } = Dimensions.get('screen');
 import Pie from 'react-native-pie';
 const pieData = [
-    {value: 70, color: 'rgba(0, 56, 116, 0.1)',},
-    {value: 30, color: 'rgba(0, 56, 116, 1)'}
+    { value: 70, color: 'rgba(0, 56, 116, 0.1)', },
+    { value: 30, color: 'rgba(0, 56, 116, 1)' }
 ];
 
 const graphicColor = ['rgba(0, 56, 116, 1)', 'rgba(0, 56, 116, 0.1)'];
 
-const TargetLoader = () => {
+const TargetLoader = ({ Target }) => {
+    console.log("target", Target)
     const { t } = useTranslation();
 
- 
+    const pieData = [
+        { value: 100 - Target, color: 'rgba(0, 56, 116, 0.1)', },
+        { value: Target, color: 'rgba(0, 56, 116, 1)' }
+    ];
+
     return (
-        <View style={{flexDirection:'row',}}>
+        <View style={{ flexDirection: 'row', }}>
 
-            <View style={{marginTop:20,marginLeft:16}}>
-            <PieChart
-                donut
-                radius={35}
-                innerRadius={25}
-                data={pieData}
-               
-                centerLabelComponent={() => {
-                return <Text style={{fontSize: 14,color:COLORS.colorDark}}>20%</Text>;
-                }}
-            />
+            <View style={{ marginTop: 20, marginLeft: 16 }}>
+                <PieChart
+                    donut
+                    radius={35}
+                    innerRadius={25}
+                    data={pieData}
+
+                    centerLabelComponent={() => {
+                        return <Text style={{ fontSize: 14, color: COLORS.colorDark }}>{Target}%</Text>
+                    }}
+                />
             </View>
-            <View style={{marginTop:width*0.08,left:10}}>
-                     <Text style={styles.goalText}>Monthly Goal</Text>
-                     <Text style={styles.Desc1}>Great start <Text style={[styles.Desc1,{fontFamily:FONTS.FontSemiB}]}>Athira,</Text> let’s find 25 more</Text>
-                    <Text style={styles.Desc1}>loans to reach your milestone</Text>
-                 </View>
+            <View style={{ marginTop: width * 0.08, left: 10 }}>
+                <Text style={styles.goalText}>Monthly Goal</Text>
+                {Target == 0.0 ?
+                    <View>
+                        <Text style={styles.Desc1}>Hi<Text style={[styles.Desc1, { fontFamily: FONTS.FontSemiB }]}> Athira, </Text>
+                            achieve <Text style={[styles.Desc1, { fontFamily: FONTS.FontSemiB }]}>y</Text> loans</Text>
+                        <Text style={styles.Desc1}>to reach target</Text>
+                    </View> : Target > 0 && Target < 80 ?
+                        <View>
+                            <Text style={styles.Desc1}>Hi<Text style={[styles.Desc1, { fontFamily: FONTS.FontSemiB }]}> Athira, </Text>
+                                convert <Text style={[styles.Desc1, { fontFamily: FONTS.FontSemiB }]}>y</Text> more loans to</Text>
+                            <Text style={styles.Desc1}>achieve target</Text>
+                        </View> : Target >= 80 && Target < 100 ?
+                          <View>
+                          <Text style={styles.Desc1}>Hi <Text style={[styles.Desc1, { fontFamily: FONTS.FontSemiB }]}> Athira, </Text>
+                              only <Text style={[styles.Desc1, { fontFamily: FONTS.FontSemiB }]}>y</Text> more loans to </Text>
+                          <Text style={styles.Desc1}>go to reach target</Text>
+                      </View>:Target >= 100 ? 
+                         <View>
+                         <Text style={styles.Desc1}>Congrats<Text style={[styles.Desc1, { fontFamily: FONTS.FontSemiB }]}> Athira, </Text>
+                         for achieving</Text>
+                         <Text style={styles.Desc1}>target</Text>
+                    
+                     </View>:null
+                        }
+            </View>
 
-             
+
             {/* <Pie
               radius={80}
               innerRadius={75}
@@ -104,7 +130,7 @@ const TargetLoader = () => {
                 60%
               </Text>
             </View> */}
-         
+
         </View>
     )
 }

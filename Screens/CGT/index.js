@@ -20,8 +20,9 @@ import { useTranslation } from 'react-i18next';
 import Cgt from './Components/cgt'
 import { useSelector } from 'react-redux';
 
-const CgtScreen = ({ navigation, }) => {
-    const route = useRoute();
+const CgtScreen = ({ navigation,route }) => {
+
+   // const route = useRoute();
     const isDarkMode = true
     const { t } = useTranslation();
     const [lang, setLang] = useState('')
@@ -32,6 +33,7 @@ const CgtScreen = ({ navigation, }) => {
 
     useEffect(() => {
         getData()
+      
     }, [])
 
     const getData = async () => {
@@ -66,10 +68,10 @@ const CgtScreen = ({ navigation, }) => {
             <SafeAreaView style={styles.container1} />
             <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
 
-            <Header navigation={navigation} name="CGT" />
+            <Header navigation={navigation} name="CGT"  onPress={handleGoBack}/>
 
             <View style={styles.ViewContent}>
-                <Cgt navigation={navigation} activityId={activityId} />
+                <Cgt navigation={navigation} activityId={activityId}  />
             </View>
 
         </SafeAreaProvider>

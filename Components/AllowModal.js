@@ -72,9 +72,10 @@ const styles = StyleSheet.create({
         marginTop: 'auto',
         // height: height * 0.28,
         alignItems: 'center',
-        borderTopLeftRadius: 15,
-        borderTopRightRadius: 15,
-
+        // borderTopLeftRadius: 15,
+        // borderTopRightRadius: 15,
+        // borderBottomStartRadius: 30,
+        // borderBottomEndRadius: 30,
         // justifyContent: 'space-around',
         // padding: 15
     },

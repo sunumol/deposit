@@ -65,7 +65,7 @@ const Activity = ({ navigation,route }) => {
             <SafeAreaView style={styles.container1} />
             <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
 
-            <Header  name="Activities" navigation={navigation} />
+            <Header  name="Activities" navigation={navigation}  onPress={handleGoBack}/>
 
             <View style={styles.ViewContent}>
                <Activities navigation={navigation} data ={route?.params?.data}/>

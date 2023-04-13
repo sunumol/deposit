@@ -35,7 +35,7 @@ const ProfileScreen = ({ navigation }) => {
             <SafeAreaView style={styles.container1} />
             <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} backgroundColor="#002B59" />
 
-            <Header name={t('common:Profile')} navigation={navigation} />
+            <Header name={t('common:Profile')} navigation={navigation} onPress={handleGoBack} />
             <View style={styles.mainContainer}>
                 <View style={styles.boxShadow}>
                     <View style={{

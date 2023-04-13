@@ -20,7 +20,9 @@ const ItemTabs = ({navigation}) => {
     const { t } = useTranslation();
     const [Lang, setLang] = useState('')
     const [ModalVisible1, setModalVisible1] = useState(false)
-    const [listing,setListing] = useState ([])
+    const [slottedlisting,setSlottedListing] = useState ([])
+    const [nonSlottedActivities,setNonslottedListing] = useState ([])
+
     const [enab,setEnab]=useState(false)
     const [meetData, setMeetData] = useState([
        // {
@@ -139,8 +141,9 @@ const ItemTabs = ({navigation}) => {
             "activityType":"MEET"
         };
         await api.activitylistingscreenApi(data).then((res) => {
-            console.log('-------------------res meet', res?.data?.body)
-            setListing(res?.data?.body)
+            console.log('-------------------res meet', res?.data?.body?.slottedActivities)
+            setSlottedListing(res?.data?.body?.slottedActivities)
+            setNonslottedListing(res?.data?.body?.nonSlottedActivities)
             setEnab(false)
         })
             .catch((err) => {
@@ -177,10 +180,21 @@ getData();
     }
     return (
         <ScrollView style={{ flex: 1, backgroundColor: COLORS.colorBackground }}>
+
+{console.log('333',nonSlottedActivities.length)}
             <View style={{ paddingHorizontal: 20 ,marginBottom:10}}>
+                <>
+                { nonSlottedActivities ?  ( <MeetTab
+                               // id={id}
+                                data={nonSlottedActivities}
+                                time={'DLE Activities'}
+                                setEnab={setEnab}
+                                meet={true}
+                                navigation={navigation}
+                            />) : null }
                 {
-                    listing.map((item, index) => {
-                     
+                    slottedlisting.map((item, index) => {
+                  
                         return (
                             <>
                         { item.data.length ?  ( <MeetTab
@@ -195,6 +209,7 @@ getData();
                         )
                     })
                 }
+                </>
             </View>
         </ScrollView>
     )

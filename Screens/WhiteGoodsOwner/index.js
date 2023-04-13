@@ -66,7 +66,7 @@ const WhiteGoodsOwner = ({ navigation, }) => {
             <SafeAreaView style={styles.container1} />
             <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
 
-            <Header name="White Goods owned" navigation={navigation} />
+            <Header name="White Goods owned" navigation={navigation} onPress={handleGoBack}/>
 
             <View style={styles.ViewContent}>
                 <Goods navigation={navigation} />

@@ -35,10 +35,10 @@ import { useSelector } from 'react-redux';
 
 const { height, width } = Dimensions.get('screen');
 
-const CgtCustomer = ({ navigation }) => {
+const CgtCustomer = ({ navigation, route }) => {
 
     const isDarkMode = true;
-    const route = useRoute();
+   // const route = useRoute();
 
     const [ModalVisible, setModalVisible] = useState(false)
     const [ModalError, setModalError] = useState(false)
@@ -81,6 +81,7 @@ const CgtCustomer = ({ navigation }) => {
     }, [ModalError])
 
     useEffect(() => {
+        console.log('Activity id======>>>>>>',activityId),
         getDetails()
         AsyncStorage.getItem("CustomerId").then((value) => {
             setCustId(value)
@@ -93,11 +94,11 @@ const CgtCustomer = ({ navigation }) => {
             "activityId": activityId
         };
         await api.getCGTDetails(data).then((res) => {
-            console.log('-------------------res', res?.data)
+            console.log('-------------------res123', res?.data)
             setDetails(res?.data?.body)
         })
             .catch((err) => {
-                console.log('-------------------err', err?.response)
+                console.log('-------------------err123', err?.response)
             })
     };
     // ------------------ GET Setails Cgt  Api Call End ------------------
@@ -110,7 +111,7 @@ const CgtCustomer = ({ navigation }) => {
             "activityId": activityId
         };
         await api.updateActivity(data).then((res) => {
-            console.log('-------------------res', res?.data)
+            console.log('-------------------res246', res?.data)
             if (res?.status) {
                 setModalVisible(true)
                 dispatch({
@@ -120,7 +121,7 @@ const CgtCustomer = ({ navigation }) => {
             }
         })
             .catch((err) => {
-                console.log('-------------------err', err?.response)
+                console.log('-------------------err246', err?.response)
             })
     };
     // ------------------ Update Activity Confirm Api Call End ------------------
@@ -133,13 +134,13 @@ const CgtCustomer = ({ navigation }) => {
             "activityId": activityId
         };
         await api.updateActivity(data).then((res) => {
-            console.log('-------------------res', res?.data)
+            console.log('-------------------res789', res?.data)
             if (res?.status) {
                 setModalError(true)
             }
         })
             .catch((err) => {
-                console.log('-------------------err', err?.response)
+                console.log('-------------------err789', err?.response)
             })
     };
     // ------------------ Update Activity Reject Api Call End ------------------
@@ -149,7 +150,7 @@ const CgtCustomer = ({ navigation }) => {
             <SafeAreaView style={styles.container1} />
             <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} backgroundColor={"#002B59"} />
 
-            <Header navigation={navigation} name="CGT" />
+            <Header navigation={navigation} name="CGT" onPress={handleGoBack} />
 
             <View style={styles.mainContainer}>
                 <ScrollView showsVerticalScrollIndicator={false} >
@@ -241,11 +242,11 @@ const CgtCustomer = ({ navigation }) => {
                 ModalVisible={ModalVisible}
                 onPressOut={() => {
                     setModalVisible(!ModalVisible)
-                    navigation.navigate('CreateTrustCircle', { customerDetails: details,primaryCustomerId:details?.primaryCustomerId })
+                    navigation.navigate('CreateTrustCircle', { customerDetails: details})
                 }}
                 onPressClose={() => {
                     setModalVisible(!ModalVisible)
-                    navigation.navigate('CreateTrustCircle')
+                    navigation.navigate('CreateTrustCircle', { customerDetails: details})
                 }}
                 setModalVisible={setModalVisible}
             />

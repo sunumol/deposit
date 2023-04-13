@@ -15,15 +15,15 @@ import Icon1 from 'react-native-vector-icons/MaterialIcons';
 import { useTranslation } from 'react-i18next';
 const { height, width } = Dimensions.get('screen');
 
-const ModalSort = ({ ModalVisible, onPressOut, setModalVisible, setSortData,sortFunction }) => {
+const ModalSort = ({ ModalVisible, onPressOut, setModalVisible, setSortData,setStateRefresh}) => {
     const [checked, setChecked] = React.useState('first');
     const { t } = useTranslation();
     // console.log("setSort.....", setSortData,checked)
 
-useEffect(()=>{
-    setSortData(checked)
-    // console.log("setSort.....", setSortData,checked)
-},[checked])
+// useEffect(()=>{
+//    // setSortData(checked)
+//     // console.log("setSort.....", setSortData,checked)
+// },[checked])
   
     return (
         <Modal
@@ -51,8 +51,9 @@ useEffect(()=>{
                                         status={checked === 'first' ? 'checked' : 'unchecked'}
                                         onPress={() => {
                                             setChecked('first')
-                                            setSortData('first')
+                                            setSortData('arrear')
                                             setModalVisible(false)
+                                            setStateRefresh(true)
                                             //sortFunction
                                         }}
                                     />
@@ -69,8 +70,9 @@ useEffect(()=>{
                                         status={checked === 'second' ? 'checked' : 'unchecked'}
                                         onPress={() => {
                                             setChecked('second')
-                                            setSortData('second')
+                                            setSortData('dpd')
                                             setModalVisible(false)
+                                            setStateRefresh(true)
                                            // sortFunction
                                         }
                                         }
@@ -97,7 +99,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         marginRight: width * 0.05,
         //padding: 21,
-        borderRadius: 8
+        borderRadius: 8,
+        marginTop:width*0.02
 
     },
     ModalsubView: {

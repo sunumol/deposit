@@ -7,7 +7,7 @@ import Icon1 from 'react-native-vector-icons/SimpleLineIcons'
 import { set } from 'lodash';
 import { format } from 'date-fns';
 
-const CalendarStrips = () => {
+const CalendarStrips = ({callback}) => {
   const [Month, setMonth] = useState(new Date())
   const [StartDay, setStartDay] = useState(new Date())
   const [Maxdate, setMaxDate] = useState(new Date())
@@ -24,13 +24,15 @@ const CalendarStrips = () => {
   const [currentDate, setCurrentDate] = useState('')
   const [MonthState, setMonthState] = useState('')
   const [state, setState] = useState('')
-
+  const [selectedDate, setSelectedDate] = useState('')
 
 
 
   //------------------------------------------------------- SetState ----------------------------------------
-  const [selectedDate, setSelectedDate] = useState(new Date())
+ 
 
+
+  const handleCallBack = (value) => callback(value)
 
 
   useEffect(() => {
@@ -59,7 +61,7 @@ const CalendarStrips = () => {
 
 
   const onDateSelected = (selectedDate) => {
-    console.log("selecteddATE....", selectedDate)
+   // console.log("selecteddATE....", selectedDate)
   }
 
 
@@ -192,7 +194,7 @@ const CalendarStrips = () => {
       next = new Date(today.getFullYear(), today?.getMonth() + 1, 1);
     }
     setStartDay(next)
-    setSelectedDate(next)
+    //setSelectedDate(next)
     // setMonth(next)
     console.log("------", next);
 
@@ -201,13 +203,13 @@ const CalendarStrips = () => {
   const DecrementMonth = () => {
 
     setStartDay(new Date())
-    setSelectedDate(new Date())
+   // setSelectedDate(new Date())
 
   }
 
   useEffect(() => {
     console.log("mAXdaTE....", Maxdate)
-    new Date(Maxdate.setMonth(Month?.getMonth() + 1));
+   // new Date(Maxdate.setMonth(Month?.getMonth() + 1));
 
     const Format1 = moment(Maxdate).format("MMMM YYYY")
     setFormat(Format1)
@@ -317,7 +319,8 @@ const CalendarStrips = () => {
                 borderWidth: 0.5,
                 backgroundColor: moment(selectedDate).format('DD-MM-YYYY') === moment(item.date).format('DD-MM-YYYY') ? COLORS.colorB : COLORS.colorBackground
               }}
-              onPress={() => setSelectedDate(item.date)}>
+              onPress={() => {setSelectedDate(item.date),  handleCallBack(item?.date._d)}}
+              >
               <Text
                 style={{
                   color: moment(selectedDate).format('DD-MM-YYYY') === moment(item.date).format('DD-MM-YYYY') ? COLORS.colorBackground : '#171930',
@@ -326,7 +329,7 @@ const CalendarStrips = () => {
                   fontFamily: FONTS.FontRegular
                 }}>{moment(item.date).format('DD-MM-YYYY') === moment(new Date()).format('DD-MM-YYYY') ? 'Today' : moment(item.date).format('ddd')}</Text>
               <Text style={{ color: moment(selectedDate).format('DD-MM-YYYY') === moment(item.date).format('DD-MM-YYYY') ? COLORS.colorBackground : '#171930', fontSize: 15, fontFamily: FONTS.FontSemiB }}>{moment(item.date).format('DD').replace(/\b0/g, '')}</Text>
-              {console.log('-----------------', item, '---------------------')}
+             
 
             </TouchableOpacity>
           )

@@ -26,15 +26,19 @@ import Details from './Components/Details';
 import CreditModal from './Components/CreditModal';
 const { height, width } = Dimensions.get('screen');
 import Icon1 from 'react-native-vector-icons/Entypo'
+import { api } from '../../Services/Api';
+import { useSelector } from 'react-redux';
+import ModalSave from '../../Components/ModalSave';
+import ReasonModal from '../DetailedCheck/Components/ReasonModal';
+import ErrorModal from '../DetailedCheck/Components/ErrorModal';
 
-const IncomeDetails = ({ navigation, }) => {
-    const route = useRoute();
-
+const IncomeDetails = ({ navigation,route }) => {
+    console.log('IncomeD=====>>',route?.params?.relationShip)
     const isDarkMode = true
     const { t } = useTranslation();
     const [lang, setLang] = useState('')
     const [statusChange, setStatusChange] = useState(false)
-
+    const [relationShip,setRelationship] =useState('Customer')
     const [Amount, setAmount] = useState('')
     const [ModalVisible, setModalVisible] = useState(false)
     const [Purpose, setPurpose] = useState('')
@@ -47,10 +51,20 @@ const IncomeDetails = ({ navigation, }) => {
     const [Salary, setSalary] = useState('')
     const [StateChange1, setStateChange1] = useState(false)
     const [ButtonSP, setButtonSP] = useState(false)
+    const [incomedetail,setIncomedetail] =useState('')
+    const [incomedetailfield,setIncomedetailfield] =useState('')
+    const activityId = useSelector(state => state.activityId);
 
+
+
+    const [ModalVisible1,setModalVisible1] = useState(false)
+    const [ModalReason,setModalReason] = useState(false)
+    const [ModalError, setModalError] = useState(false)
 
     useEffect(() => {
         getData()
+       // setRelationship(route?.params?.relationShip)
+        getIncomeDetails('Customer')
 console.log("statecha nge.....",StateChange1)
     }, [])
 
@@ -66,25 +80,27 @@ console.log("statecha nge.....",StateChange1)
 
     const handleGoBack = useCallback(() => {
 
-        navigation.goBack()
-
-        return true; // Returning true from onBackPress denotes that we have handled the event
-    }, [navigation]);
-
-    useFocusEffect(
-        React.useCallback(() => {
-            BackHandler.addEventListener('hardwareBackPress', handleGoBack);
-
-            return () =>
-                BackHandler.removeEventListener('hardwareBackPress', handleGoBack);
-        }, [handleGoBack]),
-    );
+        // navigation.goBack()
+             setModalVisible1(true)
+         return true; // Returning true from onBackPress denotes that we have handled the event
+     }, [navigation]);
+ 
+     useFocusEffect(
+         React.useCallback(() => {
+             BackHandler.addEventListener('hardwareBackPress', handleGoBack);
+ 
+             return () =>
+             
+                 BackHandler.removeEventListener('hardwareBackPress', handleGoBack);
+         }, [handleGoBack]),
+     );
 
     const ButtonClick = () => {
     
         if (Amount !== '' && Avg !== '' && Month !== '') {
             setStateChange1(true)
            // setStatusChange(true)
+           saveIncomeDetails()
 
         } else {
             setStateChange1(false)
@@ -107,13 +123,124 @@ console.log("statecha nge.....",StateChange1)
             setButtons(true)
         }
     }, [Amount, Avg, Month])
+    
+
+
+
+
+       // ------------------getIncomeDetails detail ------------------
+
+       const getIncomeDetails = async () => {
+        console.log('api called')
+
+        const data = {
+          "activityId": activityId,
+            "relationShip": relationShip
+
+        }
+        await api.getIncomeDetails(data).then((res) => {
+            console.log('-------------------res getIncomeDetails', res?.data?.body?.incomeDetailsFieldHeadders)
+            if (res?.status) {
+                setIncomedetail(res?.data?.body)
+                setIncomedetailfield(res?.data?.body?.incomeDetailsFieldHeadders)
+                setAmount(res?.data?.body?.field1)
+                setMonth(res?.data?.body?.field2)
+                setAvg(res?.data?.body?.field3)
+            }
+        }).catch((err) => {
+            console.log('-------------------err getIncomeDetails', err?.response)
+        })
+    };
+    // ------------------ ------------------
+
+
+      // ------------------ get Conduct DLE basic detail Village Api Call Start ------------------
+      const updateRejection = async () => {
+        console.log('api called for rejection')
+        const data = {
+            "activityStatus":'Submitted wrong data',
+            "employeeId":1,
+            "activityId":activityId
+        }
+        await api.updateActivity(data).then((res) => {
+            console.log('-------------------res get Village', res)
+            setModalError(true)
+            setModalReason(false)
+            setTimeout(() => {
+                navigation.navigate('Profile')  
+            }, 1000);
+          
+        }).catch((err) => {
+            console.log('-------------------err get Village', err)
+        })
+    };
+
+
+           // ------------------saveIncomeDetails detail ------------------
+
+           const saveIncomeDetails = async () => {
+            console.log('api called')
+    
+            const data = {
+                "activityId": activityId,
+                "relationShip": relationShip,
+                "field1": Amount,
+                "field2": Month,
+                "field3": Avg
+    
+            }
+            await api.saveIncomeDetails(data).then((res) => {
+                console.log('-------------------res saveIncomeDetails', res?.data?.body)
+                if (res?.status) {
+                    if(res?.data?.body == 'MARRIED'){
+                       navigation.navigate('IncomeDetailsSpouse')
+                    }else{
+                        navigation.navigate('DebitDetails')  
+                    }
+                   // navigation.navigate('DebitDetails')
+                }
+            }).catch((err) => {
+                console.log('-------------------err saveIncomeDetails', err?.response)
+            })
+        };
+        // ------------------ ------------------
+
+
+        const  getRandomColor =()=> {
+            var letters = '0123456789ABCDEF';
+            var color = '#';
+            for (var i = 0; i < 3; i++) {
+              color += letters[Math.floor(Math.random() * 8)];
+            }
+            return color;
+          }
+        
+        
+          const getInitials = (name) => {
+          
+            let initials;
+            const nameSplit = name?.split(" ");
+             const nameLength = nameSplit?.length;
+            if (nameLength > 1) {
+                initials =
+                    nameSplit[0].substring(0, 1) +
+                    nameSplit[nameLength - 1].substring(0, 1);
+            } else if (nameLength === 1) {
+                initials = nameSplit[0].substring(0, 1);
+            } else return;
+        
+             return initials.toUpperCase();
+        };
+
+
+
     return (
         <SafeAreaProvider>
             <SafeAreaView style={styles.container1} />
             <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
 
-            {/* <Header name="Income Details" navigation={navigation} setStatusChange={statusChange} setStatusChange1={setStatusChange}/> */}
-            <View style={styles.Header}>
+            <Header name="Income Details" navigation={navigation} onPress={handleGoBack}  />
+            {/* <View style={styles.Header}>
             <View style={{ left: 15, alignItems: 'center', justifyContent: 'center', top: -3 }}>
                 <TouchableOpacity onPress={() => { StateChange1 === false ? navigation.goBack() : setStateChange1(false) }} style={{ padding: 0 }}>
         
@@ -122,7 +249,7 @@ console.log("statecha nge.....",StateChange1)
             </View>
 
             <View style={{ left: lang == 'en' ? -10 : 5 }}>
-                <Text style={[styles.textPrivacy], {
+                <Text style={[styles.textPrivacy, {
                     fontSize: 16, color: COLORS.colorBackground,
 
                     fontFamily: FONTS.FontRegular,
@@ -130,138 +257,80 @@ console.log("statecha nge.....",StateChange1)
                     marginTop: 10,
                     marginBottom: 16,
                     left: -5
-                }}>Income Details</Text>
+                }]}>Income Details</Text>
             </View>
 
             <View></View>
-        </View>
+        </View> */}
             <View style={styles.ViewContent}>
                 {/* <Details navigation={navigation} setStatusChange={setStatusChange} setStatusChange2={statusChange} /> */}
                 <View style={styles.mainContainer}>
                 <ScrollView>
-                    {!StateChange1 ?
+                 
                         <View style={styles.containerBox}>
                             <View style={{ flex: 1, flexDirection: 'row' }}>
-                                <View style={styles.circleView}>
-                                    <Text style={styles.shortText}>AA</Text>
+                                <View style={[styles.circleView,{backgroundColor:getRandomColor()}]}>
+                                    <Text style={styles.shortText}>{getInitials(incomedetail?.name)}</Text>
                                 </View>
                                 <View style={{ flexDirection: 'column', flex: 1, marginLeft: 12 }}>
-                                    <Text style={styles.nameText}>Athira Anil</Text>
-                                    <Text style={styles.underText}>Daily wage labourer</Text>
+                                    <Text style={styles.nameText}>{incomedetail?.name}</Text>
+                                    <Text style={styles.underText}>{incomedetail?.occupation}</Text>
                                 </View>
                                 <View style={{ flexDirection: 'row', left: -5 }}>
-                                    <Text style={styles.dateText}>Customer</Text>
+                                    <Text style={styles.dateText}>{relationShip}</Text>
                                 </View>
                             </View>
-                        </View> :
+                        </View> 
 
-
-                        <View style={styles.containerBox}>
-                            <View style={{ flex: 1, flexDirection: 'row' }}>
-                                <View style={[styles.circleView, { backgroundColor: 'rgba(200, 148, 148, 1)' }]}>
-                                    <Text style={styles.shortText}>AK</Text>
-                                </View>
-                                <View style={{ flexDirection: 'column', flex: 1, marginLeft: 12 }}>
-                                    <Text style={styles.nameText}>Anil Kumar</Text>
-                                    <Text style={styles.underText}>Salaried employee</Text>
-                                </View>
-                                <View style={{ flexDirection: 'row', left: -5 }}>
-                                    <Text style={styles.dateText}>Spouse</Text>
-                                </View>
-                            </View>
-                        </View>}
-
-                    {!StateChange1 ?
+                 
                         <View>
                             <View>
-                                <Text style={styles.TextElect}>Highest monthly income earned in last 12 months</Text>
+                                <Text style={styles.TextElect}>{incomedetailfield?.field1}</Text>
                             </View>
                             <View style={styles.SelectBox}>
                                 <Text style={[styles.RS, { color: Amount === '' ? '#808080' : '#1A051D' }]}>₹</Text>
                                 <TextInput
                                     style={[{
                                         fontSize: 14, color: '#1A051D',
-                                        fontFamily: FONTS.FontRegular, left: 5
+                                        fontFamily: FONTS.FontRegular, left: 5,width:'95%'
                                     }]}
-                                    value={Amount}
+                                    value={Amount?.toString()}
                                     keyboardType={'number-pad'}
                                     //label={'₹'}
                                     onChangeText={(text) => setAmount(text)} />
                             </View>
 
                             <View>
-                                <Text style={styles.TextElect}>No. of months in last 12 months with similar income (Within 10% of highest)</Text>
+                                <Text style={styles.TextElect}>{incomedetailfield?.field2}</Text>
                             </View>
                             <View style={styles.SelectBox}>
                                 <TextInput
-                                    style={[{ fontSize: 14, color: '#1A051D', fontFamily: FONTS.FontRegular, left: 5 }]}
-                                    value={Month}
+                                    style={[{ fontSize: 14, color: '#1A051D', fontFamily: FONTS.FontRegular, left: 5,width:'95%' }]}
+                                    value={Month?.toString()}
                                     keyboardType={'number-pad'}
                                     onChangeText={(text) => setMonth(text)} />
                             </View>
 
                             <View>
-                                <Text style={styles.TextElect}>Average monthly income in remaining months</Text>
+                                <Text style={styles.TextElect}>{incomedetailfield?.field3}</Text>
                             </View>
                             <View style={styles.SelectBox}>
                                 <Text style={[styles.RS, { color: Avg === '' ? '#808080' : '#1A051D' }]}>₹</Text>
                                 <TextInput
-                                    style={[{ fontSize: 14, color: '#1A051D', fontFamily: FONTS.FontRegular, left: 5 }]}
-                                    value={Avg}
+                                    style={[{ fontSize: 14, color: '#1A051D', fontFamily: FONTS.FontRegular, left: 5 ,width:'95%'}]}
+                                    value={Avg?.toString()}
                                     keyboardType={'number-pad'}
                                     onChangeText={(text) => setAvg(text)} />
                             </View>
-                        </View> :
-                        <View>
-                            <View>
-                                <Text style={styles.TextElect}>No. of months continuously employed with current employer</Text>
-                            </View>
-                            <View style={styles.SelectBox}>
-                                <TextInput
-                                    style={[{ fontSize: 14, color: '#1A051D', fontFamily: FONTS.FontRegular, left: 5 }]}
-                                    value={MonthsCustom}
-                                    keyboardType={'number-pad'}
-                                    //label={'₹'}
-                                    onChangeText={(text) => setMonthCustom(text)} />
-                            </View>
-
-                            <View>
-                                <Text style={styles.TextElect}>Salary credit method</Text>
-                            </View>
-                            <TouchableOpacity style={styles.SelectBox1} onPress={() => setModalVisible(true)} >
-                                {!Purpose ?
-                                    <Text style={styles.textSelect}>Select</Text> :
-                                    <Text style={[styles.textSelect], { color: '#1A051D', marginLeft: 8 }}>{Purpose}</Text>}
-                                {/* <Icon1 name="chevron-down" size={18} color={'#808080'} style={{ marginRight: 10 }} /> */}
-                            </TouchableOpacity>
-
-                            <View>
-                                <Text style={styles.TextElect}>Net monthly salary</Text>
-                            </View>
-                            <View style={styles.SelectBox}>
-                                <Text style={[styles.RS, { color: Salary === '' ? '#808080' : '#1A051D' }]}>₹</Text>
-                                <TextInput
-                                    keyboardType={'number-pad'}
-                                    style={[{ fontSize: 14, color: '#1A051D', fontFamily: FONTS.FontRegular, left: 5 }]}
-                                    value={Salary}
-                                    onChangeText={(text) => setSalary(text)} />
-                            </View>
-                        </View>}
+                        </View> 
                 </ScrollView>
-                {!StateChange1 ?
+             
                     <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                         <TouchableOpacity style={[styles.buttonView, { backgroundColor: Buttons ? COLORS.colorB : 'rgba(224, 224, 224, 1)' }]}
                             onPress={() => ButtonClick()}>
                             <Text style={[styles.continueText, { color: Buttons ? COLORS.colorBackground : '#979C9E' }]}>Continue</Text>
                         </TouchableOpacity>
-                    </View> :
-
-                    <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                        <TouchableOpacity style={[styles.buttonView, { backgroundColor: ButtonSP ? COLORS.colorB : 'rgba(224, 224, 224, 1)' }]}
-                            onPress={() => ButtonSP ? navigation.navigate('DebitDetails') : console.log("helo")}>
-                            <Text style={[styles.continueText, { color: ButtonSP ? COLORS.colorBackground : '#979C9E' }]}>Continue</Text>
-                        </TouchableOpacity>
-                    </View>}
+                    </View> 
             </View>
             </View>
 
@@ -270,6 +339,43 @@ console.log("statecha nge.....",StateChange1)
                 setPurpose={setPurpose}
                 setModalVisible={setModalVisible}
                 onPressOut={() => setModalVisible(!ModalVisible)}
+            />
+             <ModalSave
+                Press ={()=>{
+                    setModalVisible1(false),
+                    setModalReason(true)
+               
+                }}
+                Press1={()=>{saveIncomeDetails(),setModalVisible1(false)}}
+                ModalVisible={ModalVisible1}
+                setModalVisible={setModalVisible1}
+                onPressOut={() => {
+                    setModalVisible1(false)
+                   
+
+                }}
+                navigation={navigation} />
+
+
+            <ReasonModal
+                onPress1={() => {
+                     updateRejection()
+                   // setModalError(true)
+                }}
+                ModalVisible={ModalReason}
+                onPressOut={() => setModalReason(!ModalReason)}
+                setModalVisible={setModalReason}
+            />
+
+
+            <ErrorModal
+                ModalVisible={ModalError}
+                onPressOut={() => {
+                    setModalError(!ModalError)
+                    setModalReason(!ModalReason)
+                }}
+                setModalVisible={setModalError}
+                navigation={navigation} 
             />
 
         </SafeAreaProvider>
@@ -416,7 +522,7 @@ const styles = StyleSheet.create({
     circleView: {
         width: 40,
         height: 40,
-        backgroundColor: 'rgba(158, 200, 148, 1)',
+     
         borderRadius: 20,
         alignItems: 'center',
         justifyContent: 'center'

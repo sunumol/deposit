@@ -22,6 +22,11 @@ import { useRoute } from '@react-navigation/native';
 import { useFocusEffect } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import Details from './Components/Details';
+import { api } from '../../Services/Api';
+import { useSelector } from 'react-redux';
+import ModalSave from '../../Components/ModalSave';
+import ErrorModal from './Components/ErrorModal';
+import ReasonModal from './Components/ReasonModal';
 
 
 const CustomerDetails= ({ navigation, }) => {
@@ -31,9 +36,18 @@ const CustomerDetails= ({ navigation, }) => {
     const { t } = useTranslation();
     const [lang, setLang] = useState('')
     const [BStatus, setBstatus] = useState(false)
+    const [basicdetail,setBasicdetail] = useState('')
+    const [spousedetail,setSpousedetail] = useState('')
+    const [ModalVisible,setModalVisible] =useState(false)
+    const [ModalReason,setModalReason] = useState(false)
+    const [ModalError, setModalError] = useState(false)
+    const activityId = useSelector(state => state.activityId);
+
 
     useEffect(() => {
         getData()
+        getConductDLEbasicdetail()
+        console.log('ASDFDFD=====???',activityId)
     }, [])
 
     const getData = async () => {
@@ -46,30 +60,138 @@ const CustomerDetails= ({ navigation, }) => {
         }
     }
 
+  
     const handleGoBack = useCallback(() => {
-        navigation.goBack()
+            console.log('handle---------')
+        // navigation.goBack()
+             setModalVisible(true)
+         return true; // Returning true from onBackPress denotes that we have handled the event
+     }, [navigation]);
+ 
+     useFocusEffect(
+         React.useCallback(() => {
+             BackHandler.addEventListener('hardwareBackPress', handleGoBack);
+ 
+             return () =>
+             
+                 BackHandler.removeEventListener('hardwareBackPress', handleGoBack);
+         }, [handleGoBack]),
+     );
 
-        return true; // Returning true from onBackPress denotes that we have handled the event
-    }, [navigation]);
+      // ------------------ get Conduct DLE basic detail Village Api Call Start ------------------
+      const updateRejection = async () => {
+        console.log('api called for rejection')
+        const data = {
+            "activityStatus":'Submitted wrong data',
+            "employeeId":1,
+            "activityId":activityId
+        }
+        await api.updateActivity(data).then((res) => {
+            console.log('-------------------res get Village', res)
+            setModalError(true)
+            setModalReason(false)
+            setTimeout(() => {
+                navigation.navigate('Profile')  
+            }, 1000);
+          
+        }).catch((err) => {
+            console.log('-------------------err get Village', err)
+        })
+    };
+    // ------------------ HomeScreen Api Call End ------------------
 
-    useFocusEffect(
-        React.useCallback(() => {
-            BackHandler.addEventListener('hardwareBackPress', handleGoBack);
+     // ------------------ get Conduct DLE basic detail start Api Call Start ------------------
+     const getConductDLEbasicdetail = async () => {
+        console.log('api called')
+        const data = {
+          "activityId": activityId
+        
+        }
+        await api.ConductDLEbasicdetail(data).then((res) => {
+            console.log('-------------------res ConductDLEbasicdetail======????', res)
+            if (res?.status) {
+                setBasicdetail(res?.data?.body)
+            }
+        }).catch((err) => {
+            console.log('-------------------err ConductDLEbasicdetail', err?.response)
+        })
+    };
+    // ------------------ HomeScreen Api Call End ------------------
 
-            return () =>
-                BackHandler.removeEventListener('hardwareBackPress', handleGoBack);
-        }, [handleGoBack]),
-    );
+
+    useEffect(()=>{
+        getSpousedetail()
+    },[])
+
+
+     // ------------------ get spouse det Api Call Start ------------------
+     const getSpousedetail = async () => {
+        console.log('api called')
+        const data = {
+           "activityId": activityId
+     
+        
+        }
+        await api.getSpousedetail(data).then((res) => {
+            console.log('-------------------res spousedetail', res)
+            if (res?.status) {
+                setSpousedetail(res?.data?.body)
+            }
+        }).catch((err) => {
+            console.log('-------------------err spousedetail', err?.response)
+        })
+    };
+    // ------------------ HomeScreen Api Call End ------------------
+
     return (
         <SafeAreaProvider>
             <SafeAreaView style={styles.container1} />
             <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
 
-            <Header name="Customer Details" navigation={navigation} />
+            <Header name="Detailed Eligibility Check" navigation={navigation} onPress={handleGoBack}/>
 
             <View style={styles.ViewContent}>
-              <Details navigation={navigation}/>
+              <Details navigation={navigation} details={basicdetail} spouse={spousedetail}/>
             </View>
+
+
+            <ModalSave
+                Press ={()=>{
+                    setModalVisible(false),
+                    setModalReason(true)
+               
+                }}
+                Press1={()=>{onsubmit(),setModalVisible(false)}}
+                ModalVisible={ModalVisible}
+                setModalVisible={setModalVisible}
+                onPressOut={() => {
+                    setModalVisible(false)
+                   
+
+                }}
+                navigation={navigation} />
+
+
+            <ReasonModal
+                onPress1={() => {
+                     updateRejection()
+                   // setModalError(true)
+                }}
+                ModalVisible={ModalReason}
+                onPressOut={() => setModalReason(!ModalReason)}
+                setModalVisible={setModalReason}
+            />
+
+
+            <ErrorModal
+                ModalVisible={ModalError}
+                onPressOut={() => {
+                    setModalError(!ModalError)
+                    setModalReason(!ModalReason)
+                }}
+                setModalVisible={setModalError}
+                navigation={navigation} 
+            />
 
         </SafeAreaProvider>
     )

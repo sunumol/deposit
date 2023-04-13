@@ -22,9 +22,9 @@ import { useTranslation } from 'react-i18next';
 const { height, width } = Dimensions.get('screen');
 
 
-const Cgt = ({ navigation,activityId }) => {
-    const route = useRoute();
-    console.log("route name", route.name);
+const Cgt = ({ navigation,activityId,customerId}) => {
+   // const route = useRoute();
+    console.log("route name======>>>>>", activityId,customerId  );
     const isDarkMode = true
     const { t } = useTranslation();
     const [lang, setLang] = useState('')
@@ -97,7 +97,7 @@ const Cgt = ({ navigation,activityId }) => {
                 </View>
             </ScrollView>
             <View style={styles.ViewButton} >
-                <TouchableOpacity style={styles.Button1} onPress={() => navigation.navigate('CgtCustomer',{activityId,activityId})}>
+                <TouchableOpacity style={styles.Button1} onPress={() => navigation.navigate('CgtCustomer',{activityId:activityId,customerId:customerId})}>
                     <Text style={styles.textConfirm}>{t('common:Confirm')}</Text>
                 </TouchableOpacity>
             </View>

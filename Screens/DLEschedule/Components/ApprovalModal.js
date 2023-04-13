@@ -7,7 +7,7 @@ const { height, width } = Dimensions.get('screen');
 import Image1 from '../../../assets/image/warning.svg';
 import Icon1 from 'react-native-vector-icons/Octicons';
 
-const ApprovalModal = ({ ModalVisible, onPressOut, setModalVisible, onPress, navigation }) => {
+const ApprovalModal = ({ ModalVisible, onPressOut, setModalVisible, onPress, navigation ,list}) => {
     const [state, setState] = useState(null);
     const { t } = useTranslation();
     const [Lang, setLang] = useState('')
@@ -15,6 +15,7 @@ const ApprovalModal = ({ ModalVisible, onPressOut, setModalVisible, onPress, nav
 
     useEffect(() => {
         getData()
+        console.log('-----jkkjjj',list)
     }, [])
 
     const getData = async () => {
@@ -53,19 +54,26 @@ const ApprovalModal = ({ ModalVisible, onPressOut, setModalVisible, onPress, nav
                         <Text style={styles.appText}>Waiting for Trust Circle Approval by:</Text>
                     </View>
                     <View style={{ flexDirection: 'column' }}>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Icon1 name="dot-fill" size={10} color={'#1A051D'} style={{ marginTop: 5 }} />
-                            <Text style={styles.name}>Aiswarya Cherian</Text>
-                        </View>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Icon1 name="dot-fill" size={10} color={'#1A051D'} style={{ marginTop: 5 }} />
-
-                            <Text style={styles.name}>Reshmi Parackal</Text>
-                        </View>
+                        {list.map((item,index)=>{
+                            if(item.dleScheduleStatus === 'TC approval pending'){
+                                return(
+                                    <View style={{ flexDirection: 'row' }}>
+                                    <Icon1 name="dot-fill" size={10} color={'#1A051D'} style={{ marginTop: 5 }} />
+                                    <Text style={styles.name}>{item.name}</Text>
+                                   </View>
+                                        )
+                            }
+                          
+                       
+                        })
+                    }
+                       
+                       
 
                     </View>
                     <TouchableOpacity style={styles.buttonStyle} onPress={() => {
                         onPressOut()
+                        
                         navigation.navigate('DLESchedule')
                     }}>
                         <Text style={styles.buttonTextStyle}>{t('common:Okay')}</Text>

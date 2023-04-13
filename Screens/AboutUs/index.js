@@ -59,7 +59,7 @@ const AboutUs = ({ navigation }) => {
 
             <SafeAreaView style={styles.container1} />
             <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-            <Header navigation={navigation} name={t('common:AboutUs')} />
+            <Header navigation={navigation} name={t('common:AboutUs')} onPress={handleGoBack} />
 
             <ScrollView>
                 <View style={styles.ViewContent}>

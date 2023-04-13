@@ -22,16 +22,29 @@ import { useRoute } from '@react-navigation/native';
 import { useFocusEffect } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import Vehicles from './Components/Vehicles';
+import { api } from '../../Services/Api';
+import ModalSave from '../../Components/ModalSave';
+import ErrorModal from '../DetailedCheck/Components/ErrorModal';
+import ReasonModal from '../DetailedCheck/Components/ReasonModal';
+import { useSelector } from 'react-redux';
 
 
-const VehicleOwn = ({ navigation, }) => {
-    const route = useRoute();
-    console.log("route name",);
+
+
+const VehicleOwn = ({ navigation, route }) => {
+   // const route = useRoute();
+   // console.log("route name",route?.params?.vehicle);
     const isDarkMode = true
     const { t } = useTranslation();
     const [lang, setLang] = useState('')
     const [BStatus, setBstatus] = useState(false)
+    const activityId = useSelector(state => state.activityId);
+    const [ModalVisible,setModalVisible] = useState(false)
+    const [ModalReason,setModalReason] = useState(false)
+    const [ModalError, setModalError] = useState(false)
 
+
+    
     useEffect(() => {
         getData()
     }, [])
@@ -48,29 +61,94 @@ const VehicleOwn = ({ navigation, }) => {
 
     const handleGoBack = useCallback(() => {
 
-        navigation.goBack()
+        // navigation.goBack()
+             setModalVisible(true)
+         return true; // Returning true from onBackPress denotes that we have handled the event
+     }, [navigation]);
+ 
+     useFocusEffect(
+         React.useCallback(() => {
+             BackHandler.addEventListener('hardwareBackPress', handleGoBack);
+ 
+             return () =>
+             
+                 BackHandler.removeEventListener('hardwareBackPress', handleGoBack);
+         }, [handleGoBack]),
+     );
 
-        return true; // Returning true from onBackPress denotes that we have handled the event
-    }, [navigation]);
 
-    useFocusEffect(
-        React.useCallback(() => {
-            BackHandler.addEventListener('hardwareBackPress', handleGoBack);
+      // ------------------ get Conduct DLE basic detail Village Api Call Start ------------------
+      const updateRejection = async () => {
+        console.log('api called for rejection')
+        const data = {
+            "activityStatus":'Submitted wrong data',
+            "employeeId":1,
+            "activityId":activityId
+        }
+        await api.updateActivity(data).then((res) => {
+            console.log('-------------------res get Village', res)
+            setModalError(true)
+            setModalReason(false)
+            setTimeout(() => {
+                navigation.navigate('Profile')  
+            }, 1000);
+          
+        }).catch((err) => {
+            console.log('-------------------err get Village', err)
+        })
+    };
 
-            return () =>
-                BackHandler.removeEventListener('hardwareBackPress', handleGoBack);
-        }, [handleGoBack]),
-    );
+
     return (
         <SafeAreaProvider>
             <SafeAreaView style={styles.container1} />
             <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
 
-            <Header name="Vehicles Owned" navigation={navigation} />
+            <Header name="Vehicles Owned" navigation={navigation} onPress={handleGoBack}/>
 
             <View style={styles.ViewContent}>
-                <Vehicles navigation={navigation} />
+                <Vehicles navigation={navigation} vehicle ={route?.params?.vehicle} />
             </View>
+
+
+
+            <ModalSave
+                Press ={()=>{
+                    setModalVisible(false),
+                    setModalReason(true)
+               
+                }}
+                Press1={()=>{onsubmit(),setModalVisible(false)}}
+                ModalVisible={ModalVisible}
+                setModalVisible={setModalVisible}
+                onPressOut={() => {
+                    setModalVisible(false)
+                   
+
+                }}
+                navigation={navigation} />
+
+
+            <ReasonModal
+                onPress1={() => {
+                     updateRejection()
+                   // setModalError(true)
+                }}
+                ModalVisible={ModalReason}
+                onPressOut={() => setModalReason(!ModalReason)}
+                setModalVisible={setModalReason}
+            />
+
+
+            <ErrorModal
+                ModalVisible={ModalError}
+                onPressOut={() => {
+                    setModalError(!ModalError)
+                    setModalReason(!ModalReason)
+                }}
+                setModalVisible={setModalError}
+                navigation={navigation} 
+            />
 
         </SafeAreaProvider>
     )
