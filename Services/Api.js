@@ -1,7 +1,10 @@
 
 import axios from 'axios';
+
+// --------- Base URL Start------------------
 const baseURL = 'http://3.108.93.231:8383/'
 const baseURL2 = 'http://3.108.93.231:8686/'
+// --------- Base URL End--------------------
 
 export const api = {
 
@@ -68,24 +71,23 @@ export const api = {
     })
   },
 
-    // ---------------- Get Forgot Api -----------------
-    getForgotOtp: data => {
-      return axios.post(`${baseURL}forgotPin`, data, {
-        headers: {
-          'Content-Type': 'application/json',
-        }
-      })
-    },
+  // ---------------- Get Forgot Api -----------------
+  getForgotOtp: data => {
+    return axios.post(`${baseURL}forgotPin`, data, {
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+  },
 
-    // ---------------- Get Inavlid PinScreen APi call -----------------
-    invalidPinApi: data => {
-      return axios.get(`${baseURL}notifyCustomerForWrongPin/${data.id}`, {
-        headers: {
-          'Content-Type': 'application/json',
-        }
-      })
-    },
-  
+  // ---------------- Get Inavlid PinScreen APi call -----------------
+  invalidPinApi: data => {
+    return axios.get(`${baseURL}notifyCustomerForWrongPin/${data.id}`, {
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+  },
 
   // ---------------- Activity Screen Listing Api -----------------
   activitylistingscreenApi: data => {
@@ -168,21 +170,23 @@ export const api = {
     })
   },
 
+  // --------------- create CGT ----------------------
   createCGT: data => {
-    return axios.post(`${baseURL2}createOrUpdateCGT`,data,{
+    return axios.post(`${baseURL2}createOrUpdateCGT`, data, {
       headers: {
         'Content-Type': 'application/json',
       }
     })
   },
- 
+
+  // --------------- Reject TrustCircle Members ----------------------
   rejectTrustCircleMembers: data => {
-    return axios.post(`${baseURL2}verifyTcKyc`,data,{
+    return axios.post(`${baseURL2}verifyTcKyc`, data, {
       headers: {
         'Content-Type': 'application/json',
       }
     })
   },
-  
+
 };
 
