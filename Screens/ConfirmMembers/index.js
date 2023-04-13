@@ -187,7 +187,7 @@ console.log('get tc details',id)
             {text.length > 0 && !selectedItem
               ?
               <View style={{ borderWidth: 1, paddingTop: 12, paddingBottom: 22, borderColor: COLORS.colorBorder, marginTop: 10, borderRadius: 8 }}>
-                {data.map((item, index) =>
+                {data?.map((item, index) =>
                   <>
                     {console.log(item, "-------")}
                     <TouchableOpacity style={{ flexDirection: 'row', paddingHorizontal: 15, }}
@@ -389,4 +389,3 @@ const styles = StyleSheet.create({
     letterSpacing: 0.64
   }
 })
-
