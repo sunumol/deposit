@@ -248,7 +248,10 @@ const LoginScreen = ({ navigation }) => {
         if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(num) || num === '') {
             setPhoneNum(num)
             setButton(true)
+            setMaxError(false)
             setOtpclick(true)
+            otpInput2?.current?.clear()
+            setIsExpired(false)
         } else {
             setModalVisible1(true)
             console.log("restricted values", num, PhoneNum)
@@ -257,6 +260,7 @@ const LoginScreen = ({ navigation }) => {
    
     // ------------------ Login Api Call Start ------------------
     async function LoginApiCall() {
+        otpInput2?.current?.clear()
         setConfirmDate(new Date().getTime())
         const data = {
             deviceId: DeviceId,
@@ -284,7 +288,7 @@ const LoginScreen = ({ navigation }) => {
                 if (err?.response?.data?.message === 'the device ID is already existing in the DB.') {
                     setModalVisibleError(true)
                     setMaxError(false)
-                    setMessage('This Mobile is already registered with us.')
+                    setMessage('This mobile is already registered with us. We are therefore unable to proceed further.')
                 } else if (err?.response?.data?.message === 'Maximum number of OTPs are exceeded. Please try after 30 minutes.') {
                     setOtpFetch(false)
                     setIsOtp1(true)
@@ -403,7 +407,9 @@ const LoginScreen = ({ navigation }) => {
     const isGrantedPermissions = async (register) => {
         const camera = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.CAMERA)
         const Location = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION)
-        if (camera && Location) {
+        const Sms = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.READ_SMS)
+        const phoneStorage = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE)
+        if (camera && Location && Sms && phoneStorage) {
             const Pin = await AsyncStorage.getItem('Pin')
             const PinDate = await AsyncStorage.getItem('PinDate')
             setOtpValue('')
@@ -442,7 +448,7 @@ const LoginScreen = ({ navigation }) => {
                 CountDownResend()
                 setOtpFetch(true)
                 setMaxError(false)
-
+                setOtpclick(false)
             } else {
                 console.log(res?.data)
             }
