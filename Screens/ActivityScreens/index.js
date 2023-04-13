@@ -1,4 +1,4 @@
-import React,{useCallback} from 'react';
+import React,{useCallback,useEffect} from 'react';
 import {
     StatusBar,
     Platform,
@@ -18,11 +18,13 @@ import MeetTab from './Components/MeetTab';
 import CallTab from './Components/CallTab';
 import { useFocusEffect } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
+import { useDispatch } from 'react-redux';
 
 const Activityscreens = ({ navigation }) => {
     const isDarkMode = true;
     const Tab = createMaterialTopTabNavigator();
     const { t } = useTranslation();
+    const dispatch = useDispatch()
     
     const handleGoBack = useCallback(() => {
         navigation.goBack()
@@ -37,6 +39,21 @@ const Activityscreens = ({ navigation }) => {
             BackHandler.removeEventListener('hardwareBackPress', handleGoBack);
         }, [handleGoBack]),
       );
+
+      useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+            dispatch({
+                type: 'SET_SELECTED_CUSTOMERLIST',
+                payload: [],
+              });
+              dispatch({
+                type: 'SET_SELECTED_CUSTOMERID',
+                payload: [],
+              });
+        });
+        return unsubscribe;
+      }, [navigation]);
+
     return (
         <SafeAreaProvider>
             <SafeAreaView style={styles.container1} />

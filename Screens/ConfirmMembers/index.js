@@ -55,7 +55,7 @@ const ConfirmMembers = ({ navigation }) => {
       getCustomerLists(num)
     }
   }
-
+{console.log('============redux customer id ',selectedItem)}
   useEffect(() => {
     if (ModalError == true) {
       const timer = setTimeout(() => {
@@ -83,9 +83,6 @@ const ConfirmMembers = ({ navigation }) => {
 
   // ------------------ get Slot Api Call Start ------------------
   const getTCDetails = async (id) => {
-console.log('get tc details',id)
-
-
     const data = {
       "customerId": Number(id)
     };
@@ -164,14 +161,12 @@ console.log('get tc details',id)
                 <Text style={styles.recentlyText}>Recently added customers</Text>
                 {data?.map((item, index) =>
                   <>
-                    {console.log('-----', item)}
+                    {console.log('---id available selected--', item?.id)}
                     <TouchableOpacity onPress={() => {
-                      const data = [...customerID]
-                      data.push(item?.id)
-                      setSelectedItem(data)
-
-                      getTCDetails(item?.id)
-                      setDataSelectedID(item?.id)
+                     getTCDetails(item?.id)
+                     const datas = [...customerID]
+                     datas.push(item?.id)
+                     setSelectedItem(datas)
                     }}>
                       <Text style={styles.dataText}>{item.name}</Text>
                     </TouchableOpacity>
@@ -187,14 +182,16 @@ console.log('get tc details',id)
             {text.length > 0 && !selectedItem
               ?
               <View style={{ borderWidth: 1, paddingTop: 12, paddingBottom: 22, borderColor: COLORS.colorBorder, marginTop: 10, borderRadius: 8 }}>
-                {data.map((item, index) =>
+                {data?.map((item, index) =>
                   <>
                     {console.log(item, "-------")}
                     <TouchableOpacity style={{ flexDirection: 'row', paddingHorizontal: 15, }}
                       onPress={() => {
-                        setSelectedItem(item)
                         onChangeText('')
                         getTCDetails(item?.id)
+                        const datas = [...customerID]
+                        datas.push(item?.id)
+                        setSelectedItem(datas)
                       }}>
                       <View style={{ flex: 1, flexDirection: 'row' }}>
 

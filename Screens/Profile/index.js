@@ -5,20 +5,23 @@ import {
     StyleSheet,
     SafeAreaView,
     View,
-    TouchableOpacity,
     FlatList,
     ScrollView,
-    Text
 } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Statusbar from '../../Components/StatusBar';
+import { useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
+
+// ----------------- Components Imports -----------------------
 import { FONTS, COLORS } from '../../Constants/Constants';
 import HeaderDashBoard from '../../Components/HeaderDashBoard';
 import BottomTabs from './Components/BottomTab';
 import ItemTabs from './Components/ItemTab';
-import { useTranslation } from 'react-i18next';
 import { api } from '../../Services/Api';
 
+
+// ------- Image Imports --------------------
 import Activity from './assets/Activity.svg';
 import Calendar from './assets/Calendar.svg';
 import Collect from './assets/Collect.svg';
@@ -27,7 +30,10 @@ import NewLead from './assets/NewLead.svg';
 import NewUser from './assets/NewUser.svg';
 
 const Profile = ({ navigation }) => {
+    
     const { t } = useTranslation();
+    const dispatch = useDispatch()
+
     const [notificationCount, SetNotificationCount] = useState()
     const isDarkMode = true;
     const DATA = [
@@ -88,6 +94,21 @@ const Profile = ({ navigation }) => {
     useEffect(() => {
         HomeScreenApiCall()
     }, []);
+
+    useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+            dispatch({
+                type: 'SET_SELECTED_CUSTOMERLIST',
+                payload: [],
+              });
+              dispatch({
+                type: 'SET_SELECTED_CUSTOMERID',
+                payload: [],
+              });
+        });
+        return unsubscribe;
+      }, [navigation]);
+    
 
     return (
         <SafeAreaProvider>
