@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
     },
     modalContainer: {
         width: Dimensions.get('window').width * 0.82,
-        height: Dimensions.get('window').width * 0.61,
+       // height: Dimensions.get('window').width * 0.61,
         backgroundColor: COLORS.colorBackground,
         borderRadius: 20,
         alignItems: 'center',

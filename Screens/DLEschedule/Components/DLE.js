@@ -158,10 +158,10 @@ const DLE = ({ navigation, set, list }) => {
     return (
 
         <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1, marginTop: 15 }}>
-            <ScrollView showsVerticalScrollIndicator={false}>
+            <ScrollView showsVerticalScrollIndicator={false} style={{marginBottom:70}}>
                 {list?.map((item) => {
                     return (
-                        <View style={[styles.viewCard, { borderColor: 'white', borderWidth: 2 }]}>
+                        <TouchableOpacity  onPress={() => { item.dleScheduleStatus == "Conduct DLE" ? setModalVisible2(true) : item.dleScheduleStatus == "TC approval pending" ? setModalVisible(true) : navigation.navigate('ScheduleMeet') }} style={[styles.viewCard, { borderColor: 'white', borderWidth: 2 }]}>
 
 
                             <View style={[styles.circleStyle, { backgroundColor: getRandomColor() }]}>
@@ -188,15 +188,15 @@ const DLE = ({ navigation, set, list }) => {
                                 <View style={{ flexDirection: 'column', top: 0, alignItems: 'flex-end', flex: 1, paddingRight: width * 0.04 }}>
 
                                     <Text style={[styles.numText, {}]}>{item.mobileNumber}</Text>
-                                    <TouchableOpacity onPress={() => { item.dleScheduleStatus == "Conduct DLE" ? setModalVisible2(true) : item.dleScheduleStatus == "TC approval pending" ? setModalVisible(true) : navigation.navigate('ScheduleMeet') }}
+                                    <View
 
                                         style={[styles.ViewExplain, { right: 0, backgroundColor: item.dleScheduleStatus == "Conduct DLE" ? "rgba(186, 134, 205, 0.1)" : item.dleScheduleStatus == "TC approval pending" ? "rgba(39, 174, 96, 0.1)" : "rgba(155, 81, 224, 0.1)", width: item.width }]}>
                                         <Text style={[styles.explainText, { marginHorizontal: 7, marginVertical: 1, color: item.dleScheduleStatus == "Conduct DLE" ? "rgba(242, 153, 74, 1)" : item.dleScheduleStatus == "TC approval pending" ? "rgba(39, 174, 96, 1)" : "rgba(155, 81, 224, 1)" }]}>{item.dleScheduleStatus}</Text>
-                                    </TouchableOpacity>
+                                    </View>
                                 </View>
                             </View>
 
-                        </View>
+                        </TouchableOpacity>
 
                     )
                 })}

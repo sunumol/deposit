@@ -56,7 +56,7 @@ const CalendarStrips = ({callback}) => {
       setNewDate(Moment)
     }, 1000)
     setNewDate(Moment)
-    //console.log("new date.....", Moment, NewDate)
+    console.log("new date.....", StartDay)
   })
 
 
