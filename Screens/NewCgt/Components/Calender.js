@@ -134,67 +134,18 @@ const CalendarStrips = ({ callback }) => {
             <Icon1 name="arrow-left" size={14} color={"#171930"} />}
         </TouchableOpacity>
 
-        {/* <TouchableOpacity onPress={() => nextPress()}>
-          <Icon1 name="arrow-left" size={14} color={"#171930"} />
-        </TouchableOpacity> */}
+ 
 
         <View style={{}}>
-          {/* {selectedDate ? 
-            <Text style={styles.YearText}>{moment(selectedDate).format("MMMM")} '{moment(selectedDate).format("YY")}</Text>: */}
+
           <Text style={styles.YearText}>{moment(Month).format("MMMM")} '{moment(Month).format("YY")}</Text>
         </View>
-        {/* <TouchableOpacity onPress={() => backPress()}>
-          <Icon1 name="arrow-right" size={14} color={"#171930"} />
-        </TouchableOpacity> */}
+  
         <TouchableOpacity onPress={() => IncrementMonth()}>
           <Icon1 name="arrow-right" size={14} color={"#171930"} />
         </TouchableOpacity>
       </View>
-      {/* <View style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal: 10 }}>
-        <TouchableOpacity onPress={() => backPress()}>
-          <Icon1 name="arrow-left" size={14} color={"#171930"} />
-        </TouchableOpacity>
-        <FlatList
-          horizontal={true}
-          ref={flatListRef}
-          data={dateList}
-          showsHorizontalScrollIndicator={false}
-          onEndReached={(distanceFromEnd)=>{
-            console.log(distanceFromEnd)
-            setEnabled(true)}}
-          renderItem={(item, index) => {
-            return (
-              <TouchableOpacity
-                style={{
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flex: 1,
-                  marginHorizontal: 5,
-                  borderRadius: 10,
-                  width: width,
-                  height: 65,
-                  borderColor: moment(initialDate).format('DD-MM-YYYY') === moment(item.item).format('DD-MM-YYYY') ? COLORS.colorB : '#E5E8EB',
-                  borderWidth: 0.5,
-                  backgroundColor: moment(initialDate).format('DD-MM-YYYY') === moment(item.item).format('DD-MM-YYYY') ? COLORS.colorB : COLORS.colorBackground
-                }}
-                onPress={() => setInitialDate(item.item)}>
-                {console.log(item.item, '---------------------------------------------------------')}
-                <Text
-                  style={{
-                    color: moment(initialDate).format('DD-MM-YYYY') === moment(item.item).format('DD-MM-YYYY') ? COLORS.colorBackground : '#171930',
-                    fontSize: width / 5,
-                    textTransform: 'capitalize',
-                    fontFamily: FONTS.FontRegular
-                  }}>{moment(item.item).format('DD-MM-YYYY') === moment(new Date()).format('DD-MM-YYYY') ? 'Today' : moment(item.item).format('ddd')}</Text>
-                <Text style={{ color: moment(initialDate).format('DD-MM-YYYY') === moment(item.item).format('DD-MM-YYYY') ? COLORS.colorBackground : '#171930', fontSize: width / 2.9, fontFamily: FONTS.FontSemiB }}>{moment(item.item).format('DD').replace(/\b0/g, '')}</Text>
-              </TouchableOpacity>
-            )
-          }}
-        />
-        <TouchableOpacity onPress={() => nextPress()}>
-          <Icon1 name="arrow-right" size={14} color={"#171930"} style={{opacity:enable?0.4:1}}/>
-        </TouchableOpacity>
-      </View> */}
+   
 
       <CalendarStrip
         calendarAnimation={{ type: 'sequence', duration: 30 }}

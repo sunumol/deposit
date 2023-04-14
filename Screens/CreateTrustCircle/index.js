@@ -95,6 +95,21 @@ const CreateTrustCircle = ({ navigation,route }) => {
     };
     // ------------------ HomeScreen Api Call End ------------------
 
+    const getInitials = (name) => {
+
+        let initials;
+        const nameSplit = name?.split(" ");
+        const nameLength = nameSplit?.length;
+        if (nameLength > 1) {
+            initials =
+                nameSplit[0].substring(0, 1) +
+                nameSplit[nameLength - 1].substring(0, 1);
+        } else if (nameLength === 1) {
+            initials = nameSplit[0].substring(0, 1);
+        } else return;
+
+        return initials.toUpperCase();
+    };
     return (
         <SafeAreaProvider>
             <SafeAreaView style={styles.container1} />
@@ -124,7 +139,7 @@ const CreateTrustCircle = ({ navigation,route }) => {
                     <View style={[styles.viewCard, { flex: 1, flexDirection: 'row', }]}>
 
                         <View style={[styles.circleStyle, { backgroundColor: '#6979F8', marginLeft: width * 0.05 }]}>
-                            <Text style={styles.circleText}>AA</Text>
+                            <Text style={styles.circleText}>{getInitials(cgtCustomerDetails?.customerName)}</Text>
                         </View>
 
 
@@ -161,7 +176,7 @@ const CreateTrustCircle = ({ navigation,route }) => {
                             <View style={[styles.viewCard, { flex: 1, flexDirection: 'row', }]}>
 
                                 <View style={[styles.circleStyle, { backgroundColor: 'green', marginLeft: width * 0.05 }]}>
-                                    <Text style={styles.circleText}>{item?.short}</Text>
+                                    <Text style={styles.circleText}>{getInitials(item?.customerName)}</Text>
                                 </View>
 
 

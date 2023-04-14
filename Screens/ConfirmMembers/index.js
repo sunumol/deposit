@@ -49,13 +49,13 @@ const ConfirmMembers = ({ navigation }) => {
   const [data, setData] = useState()
 
   const OnchangeNumber = (num) => {
-    console.log('qqqq-----',num)
+    console.log('qqqq-----', num)
     if (/^[^!-\/:-@\.,[-`{-~]+$/.test(num) || num === '') {
       onChangeText(num)
       getCustomerLists(num)
     }
   }
-{console.log('============redux customer id ',selectedItem)}
+  { console.log('============redux customer id ', selectedItem) }
   useEffect(() => {
     if (ModalError == true) {
       const timer = setTimeout(() => {
@@ -99,7 +99,7 @@ const ConfirmMembers = ({ navigation }) => {
   const getCustomerLists = async (phone) => {
 
 
-    console.log('List------>>',phone)
+    console.log('List------>>', phone)
     const data = {
       "employeeId": 1,
       "customerNameOrNumber": phone
@@ -138,7 +138,7 @@ const ConfirmMembers = ({ navigation }) => {
       <SafeAreaView style={styles.container1} />
       <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} backgroundColor={"#002B59"} />
 
-      <Header navigation={navigation} name="Confirm Member"  onPress={handleGoBack}/>
+      <Header navigation={navigation} name="Confirm Member" onPress={handleGoBack} />
 
       <View style={styles.mainContainer}>
         <ScrollView showsVerticalScrollIndicator={false} >
@@ -163,10 +163,10 @@ const ConfirmMembers = ({ navigation }) => {
                   <>
                     {console.log('---id available selected--', item?.id)}
                     <TouchableOpacity onPress={() => {
-                     getTCDetails(item?.id)
-                     const datas = [...customerID]
-                     datas.push(item?.id)
-                     setSelectedItem(datas)
+                      getTCDetails(item?.id)
+                      const datas = [...customerID]
+                      datas.push(item?.id)
+                      setSelectedItem(datas)
                     }}>
                       <Text style={styles.dataText}>{item.name}</Text>
                     </TouchableOpacity>
@@ -182,10 +182,21 @@ const ConfirmMembers = ({ navigation }) => {
             {text.length > 0 && !selectedItem
               ?
               <View style={{ borderWidth: 1, paddingTop: 12, paddingBottom: 22, borderColor: COLORS.colorBorder, marginTop: 10, borderRadius: 8 }}>
+             
+
+
+                {data?.length < 1 && <Text style={{
+                  fontSize: 14,
+                  fontFamily: FONTS.FontRegular,
+                  color: COLORS.colorDark,
+                  fontWeight: '400', paddingHorizontal: 10,paddingTop:5
+                }}>No Matches Found</Text>}
+
+
                 {data?.map((item, index) =>
                   <>
                     {console.log(item, "-------")}
-                    <TouchableOpacity style={{ flexDirection: 'row', paddingHorizontal: 15, }}
+                    <TouchableOpacity style={{ flexDirection: 'row', paddingHorizontal: 15 }}
                       onPress={() => {
                         onChangeText('')
                         getTCDetails(item?.id)
@@ -205,7 +216,7 @@ const ConfirmMembers = ({ navigation }) => {
                           </View>
                         </View>
                       </View>
-                      <Text style={[styles.numText, { paddingLeft: 6 }]}>{item?.mobile}</Text>
+                      <Text style={[styles.numText, { paddingLeft: 6 }]}>{item?.mobile ?.replace(/^.{0}/g, '').replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X").replaceAt(8, "X")}</Text>
                     </TouchableOpacity>
 
                     {index !== data?.length - 1
