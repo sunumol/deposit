@@ -163,11 +163,11 @@ const NewLead1 = ({ navigation,setVillageStatus,VillageStatus }) => {
 
                             // edit={AccStatus}
                             onChangeText={(text) => {
-                                if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(text) || text === '') {
+                                if (/^[^!-\/:-@\.,[-`{-~]+$/.test(text) || text === '') {
                                     setName(text)
                         
                                 } else {
-                                    ToastAndroid.show(t('common:Valid'), ToastAndroid.SHORT);
+                                    ToastAndroid.show("Please enter a valid name ", ToastAndroid.SHORT);
                                 }
                                 
                             }}
@@ -203,7 +203,7 @@ const NewLead1 = ({ navigation,setVillageStatus,VillageStatus }) => {
                                    // setVStatus(true)
                                 }
                                 else {
-                                    ToastAndroid.show(t('common:Valid'), ToastAndroid.SHORT);
+                                    ToastAndroid.show('Please enter a valid pincode', ToastAndroid.SHORT);
                                 }
                             }}
                         />

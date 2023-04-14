@@ -101,17 +101,29 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
     const searchvillagename = (text) => {
         console.log('VILLAGE NAME ===>>>', text)
         // setVillagename(text)
-        getVillage(text)
-        if (text == '') {
+       
+    
+        if (text === ""){
             setVillagenamedata([])
             setBstatus(false)
             setChecked(false)
             setVillagename('')
+            console.log("text special",text)
             
-        } else {
-
+        }
+       else if (!(/^[^!-\/:-@\.,[-`{-~ ]+$/.test(text)) ){
+            setVillagenamedata([])
+            setBstatus(false)
+            setChecked(false)
+       
+            console.log("text special",text)
+            
+        }
+         else {
+            console.log("text special",text)
             setVillagename(text)
             setVillagename1(text)
+            getVillage(text)
         }
         //setVillagename(text)
     }
@@ -121,14 +133,19 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
     const searchpostofficename = (text) => {
         console.log('Post office NAME ===>>>', text)
         // setVillagename(text)
-        getpostoffice(text)
+       
         if (text == '') {
             setPostofficenamedata([])
             setPstatus(false)
             setChecked(false)
             setPostofficename('')
-        } else {
-
+        } else if (!(/^[^!-\/:-@\.,[-`{-~ ]+$/.test(text)) ){
+            setPostofficenamedata([])
+            setPstatus(false)
+            setChecked(false)
+        }
+        else {
+            getpostoffice(text)
             setPostofficename(text)
             setPostoffice1(text)
         }
@@ -139,14 +156,18 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
 
     const searchlandmarkname = (text) => {
         console.log('landmark NAME ===>>>', text)
-        if (text?.length == '') {
-            setLandmarkname([])
-
-            setChecked(false)
-        } else {
-
+        if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(text) || text === ''){
             setLandmarkname(text)
             setLandmarkname1(text)
+            console.log("inside this land",text)
+        }
+  
+         else {
+            //setLandmarkname()
+            console.log("inside this land else",text)
+            setChecked(false)
+            // setLandmarkname(text)
+            // setLandmarkname1(text)
         }
   
     }
@@ -409,7 +430,7 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
 
                                 <View style={styles.borderVillage}>
                                     <TextInput
-                                        value={postofficename ? postofficename : null}
+                                        value={postofficename}
                                         style={styles.TextInputBranch}
                                         onChangeText={(text) => searchpostofficename(text)}
                                         maxLength={25}
@@ -472,7 +493,7 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
                                 <View style={{ flexDirection: 'row' }}>
                                     {console.log('lan====', details?.landMark)}
                                     <TextInput
-                                        value={landmarkname ? landmarkname : details?.landMark}
+                                        value={landmarkname}
                                         style={styles.TextInputBranch}
                                         numberOfLines={2}
                                         maxLength={40}

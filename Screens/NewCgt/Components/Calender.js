@@ -7,7 +7,7 @@ import { COLORS, FONTS } from '../../../Constants/Constants';
 import Icon1 from 'react-native-vector-icons/SimpleLineIcons'
 const width = Dimensions.get('window').width * 0.15
 
-const CalendarStrips = ({callback}) => {
+const CalendarStrips = ({ callback }) => {
 
 
 
@@ -21,7 +21,8 @@ const CalendarStrips = ({callback}) => {
   const flatListRef = useRef(FlatList);
   const [index, setIndex] = useState(0)
   const [enable, setEnabled] = useState(false)
-  const [ArrowEnable,setArrowEnable] =  useState(false)
+  const [ArrowEnable, setArrowEnable] = useState(false)
+  const [NewDate,setNewDate] = useState(new Date())
 
 
   useEffect(() => {
@@ -29,12 +30,12 @@ const CalendarStrips = ({callback}) => {
     console.log(dates, dates.length)
     setDateList(dates)
     setInitialDate(dates[0])
-   
+
   }, []);
 
 
   const handleCallBack = (value) => callback(value)
- 
+
   const nextPress = () => {
     if (!enable) {
       flatListRef?.current?.scrollToIndex({
@@ -101,21 +102,25 @@ const CalendarStrips = ({callback}) => {
   }
 
   const onWeekChanged = (start, end) => {
-    console.log("start end.....", start)
+ 
     const Data = end.toString()
     console.log("end print", Data)
     const Moment = moment(Data).utc().format('MMMM YYYY')
     console.log('?Momemnt.....', Moment)
     setMonth(Data)
-   // setSelectedDate(Data)
+    console.log("Month display",moment(NewDate).format("MMMM YYYY"),Moment)
+    // setSelectedDate(Data)
     if (moment(selectedDate).format('MMMM YYYY') !== moment(end).format('MMMM YYYY')) {
       IncrementMonth()
       setArrowEnable(true)
     }
+    // else if(Moment ==  moment(NewDate).format("MMMM YYYY")){
+    //   setArrowEnable(false)
+    // }
 
   }
 
-  
+
 
   return (
     <View style={styles.container}>
@@ -123,10 +128,10 @@ const CalendarStrips = ({callback}) => {
         flexDirection: 'row', marginTop: 25, justifyContent: 'space-between',
         marginLeft: 15, marginRight: 15
       }}>
-   
-              <TouchableOpacity onPress={() => DecrementMonth()}>
-              {ArrowEnable&&
-          <Icon1 name="arrow-left" size={14} color={"#171930"} />}
+
+        <TouchableOpacity onPress={() => DecrementMonth()}>
+          {ArrowEnable &&
+            <Icon1 name="arrow-left" size={14} color={"#171930"} />}
         </TouchableOpacity>
 
         {/* <TouchableOpacity onPress={() => nextPress()}>
@@ -141,7 +146,7 @@ const CalendarStrips = ({callback}) => {
         {/* <TouchableOpacity onPress={() => backPress()}>
           <Icon1 name="arrow-right" size={14} color={"#171930"} />
         </TouchableOpacity> */}
-           <TouchableOpacity onPress={() => IncrementMonth()}>
+        <TouchableOpacity onPress={() => IncrementMonth()}>
           <Icon1 name="arrow-right" size={14} color={"#171930"} />
         </TouchableOpacity>
       </View>
@@ -217,22 +222,24 @@ const CalendarStrips = ({callback}) => {
                 flex: 1,
                 marginHorizontal: 5,
                 borderRadius: 10,
-                borderColor: moment(selectedDate).format('DD-MM-YYYY') === moment(item.date).format('DD-MM-YYYY') ? COLORS.colorB : '#E5E8EB',
+                borderColor: moment(selectedDate).format('DD-MM-YYYY') === moment(item?.date).format('DD-MM-YYYY') ? COLORS.colorB : '#E5E8EB',
                 borderWidth: 0.5,
-                backgroundColor: moment(selectedDate).format('DD-MM-YYYY') === moment(item.date).format('DD-MM-YYYY') ? COLORS.colorB : COLORS.colorBackground
+                backgroundColor: moment(selectedDate).format('DD-MM-YYYY') === moment(item?.date).format('DD-MM-YYYY') ? COLORS.colorB : COLORS.colorBackground
               }}
-              onPress={() => {setSelectedDate(item?.date._d),
-              handleCallBack(item?.date._d),
-              setMonth(item?.date._d),
-              console.log("selct date",item?.date._d)}}>
+              onPress={() => {
+                setSelectedDate(item?.date._d),
+                handleCallBack(item?.date._d),
+                setMonth(item?.date._d),
+                console.log("selct date", item?.date._d)
+              }}>
               <Text
                 style={{
-                  color: moment(selectedDate).format('DD-MM-YYYY') === moment(item.date).format('DD-MM-YYYY') ? COLORS.colorBackground : '#171930',
+                  color: moment(selectedDate).format('DD-MM-YYYY') === moment(item?.date).format('DD-MM-YYYY') ? COLORS.colorBackground : '#171930',
                   fontSize: 11,
                   textTransform: 'capitalize',
                   fontFamily: FONTS.FontRegular
-                }}>{moment(item.date).format('DD-MM-YYYY') === moment(new Date()).format('DD-MM-YYYY') ? 'Today' : moment(item.date).format('ddd')}</Text>
-              <Text style={{ color: moment(selectedDate).format('DD-MM-YYYY') === moment(item.date).format('DD-MM-YYYY') ? COLORS.colorBackground : '#171930', fontSize: 15, fontFamily: FONTS.FontSemiB }}>{moment(item.date).format('DD').replace(/\b0/g, '')}</Text>
+                }}>{moment(item?.date).format('DD-MM-YYYY') === moment(new Date()).format('DD-MM-YYYY') ? 'Today' : moment(item?.date).format('ddd')}</Text>
+              <Text style={{ color: moment(selectedDate).format('DD-MM-YYYY') === moment(item?.date).format('DD-MM-YYYY') ? COLORS.colorBackground : '#171930', fontSize: 15, fontFamily: FONTS.FontSemiB }}>{moment(item?.date).format('DD').replace(/\b0/g, '')}</Text>
             </TouchableOpacity>
           )
         }}

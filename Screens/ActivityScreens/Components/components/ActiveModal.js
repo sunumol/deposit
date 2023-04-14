@@ -47,9 +47,11 @@ const App = ({ visible, onPressOut, meet, details ,setEnab}) => {
 
             };
             await api.updateActivity(data).then((res) => {
-                console.log('-------------------res update', res.data.body)
+                console.log('-------------------res update', res?.data)
+                // if(res)
                 onPressOut();
                 setEnab(true)
+                setEnableContinue(false)
           
             })
                 .catch((err) => {
