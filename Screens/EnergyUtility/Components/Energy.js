@@ -51,8 +51,8 @@ const Energy = ({ navigation }) => {
         await api.getSpousedetail(data).then((res) => {
             console.log('-------------------res spousedetail', res)
             if (res?.status) {
-               //setRelationship('Spouse')
-               setRelationship('Customer')
+               setRelationship('Spouse')
+              // setRelationship('Customer')
             }
         }).catch((err) => {
             console.log('-------------------err spousedetail', err?.response)
