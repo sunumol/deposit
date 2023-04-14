@@ -8,31 +8,31 @@ const { height, width } = Dimensions.get('screen');
 const GroupedBars3 = ({Summary}) => {
     const barData = [
         {
-            value:Summary[0]?.leadToCustomersConversion,
-            label:'  '+Summary[0]?.month,
+            value:Summary[2]?.leadToCustomersConversion,
+            label:'   '+Summary[2]?.month,
             spacing:6,
             labelWidth: 100,
-          //  labelTextStyle: { color: 'gray',fontSize:12 },
+            labelTextStyle: { color: 'gray',fontSize:12 ,textTransform:'capitalize'},
             frontColor: 'rgba(88, 84, 247, 1)',
             topLabelComponent: () => (
 
-                <Text style={{ top: -6, fontSize: 10, color: 'rgba(128, 128, 128, 1)', fontFamily: FONTS.FontRegular, }}>{Summary[0]?.leadToCustomersConversion}</Text>
+                <Text style={{ top: -6, fontSize: 10, color: 'rgba(128, 128, 128, 1)', fontFamily: FONTS.FontRegular, }}>{Summary[2]?.leadToCustomersConversion}</Text>
 
             )
 
         },
-        { value:Summary[0]?.avgLeadToCustomersConversion, frontColor:'rgba(176, 195, 230, 1)' ,
+        { value:Summary[2]?.avgLeadToCustomersConversion, frontColor:'rgba(176, 195, 230, 1)' ,
         topLabelComponent: () => (
 
-            <Text style={{ top: -6, fontSize: 10, color: 'rgba(128, 128, 128, 1)', fontFamily: FONTS.FontRegular, }}>{Summary[0]?.avgLeadToCustomersConversion}</Text>
+            <Text style={{ top: -6, fontSize: 10, color: 'rgba(128, 128, 128, 1)', fontFamily: FONTS.FontRegular, }}>{Summary[2]?.avgLeadToCustomersConversion}</Text>
 
         )},
         {
             value:Summary[1]?.leadToCustomersConversion,
-            label:'  '+Summary[1]?.month,
+            label:'   '+Summary[1]?.month,
             spacing: 6,
             labelWidth: 100,
-           // labelTextStyle: { color: 'gray',fontSize:12 },
+            labelTextStyle: { color: 'gray',fontSize:12 ,textTransform:'capitalize'},
             frontColor: 'rgba(88, 84, 247, 1)',
             topLabelComponent: () => (
 
@@ -47,24 +47,24 @@ const GroupedBars3 = ({Summary}) => {
 
         ) },
         {
-            value:Summary[2]?.leadToCustomersConversion,
-            label:'    '+Summary[2]?.month,
+            value:Summary[0]?.leadToCustomersConversion,
+            label:'    '+Summary[0]?.month,
             spacing: 6,
             labelWidth:100,
-           // labelTextStyle: { color: 'gray',fontSize:12 ,},
+            labelTextStyle: { color: 'gray',fontSize:12 ,textTransform:'capitalize'},
             frontColor: 'rgba(88, 84, 247, 1)',
             topLabelComponent: () => (
 
-                <Text style={{ top: -6, fontSize: 10, color: 'rgba(128, 128, 128, 1)', fontFamily: FONTS.FontRegular, }}>{Summary[2]?.leadToCustomersConversion}</Text>
+                <Text style={{ top: -6, fontSize: 10, color: 'rgba(128, 128, 128, 1)', fontFamily: FONTS.FontRegular, }}>{Summary[0]?.leadToCustomersConversion}</Text>
 
             )
         },
       
  
-        { value:Summary[2]?.avgLeadToCustomersConversion,frontColor:'rgba(176, 195, 230, 1)' ,
+        { value:Summary[0]?.avgLeadToCustomersConversion,frontColor:'rgba(176, 195, 230, 1)' ,
         topLabelComponent: () => (
 
-            <Text style={{ top: -6, fontSize: 10, color: 'rgba(128, 128, 128, 1)', fontFamily: FONTS.FontRegular, }}>{Summary[2]?.avgLeadToCustomersConversion}</Text>
+            <Text style={{ top: -6, fontSize: 10, color: 'rgba(128, 128, 128, 1)', fontFamily: FONTS.FontRegular, }}>{Summary[0]?.avgLeadToCustomersConversion}</Text>
 
         )},
   
@@ -75,7 +75,7 @@ const GroupedBars3 = ({Summary}) => {
     const renderTitle = () => {
         return (
             <>
-               {Summary[2]?.leadToCustomersConversion >= Summary[2]?.avgLeadToCustomersConversion ? 
+               {Summary[0]?.leadToCustomersConversion >= Summary[0]?.avgLeadToCustomersConversion ? 
             <View style={{ margin:15 }}>
                 <Text style={styles.TextData}>Yay! Your <Text style={[styles.TextData, { fontFamily: FONTS.FontSemiB }]}>New Leads to Customers conversion</Text></Text>
                 <Text style={styles.TextData}>is among the top. Continue the good work</Text>

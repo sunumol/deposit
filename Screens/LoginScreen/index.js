@@ -153,21 +153,21 @@ const LoginScreen = ({ navigation }) => {
 
 
     const backAction = () => {
-        console.log('-----------------------------------oir[pe[rgop[og[p------------',IsOtp1)
-        if(IsOtp1){
+        console.log('-----------------------------------oir[pe[rgop[og[p------------', IsOtp1)
+        if (IsOtp1) {
             navigation.reset({
                 index: 0,
-                routes: [{name: 'LoginScreen'}],
+                routes: [{ name: 'LoginScreen' }],
             });
             return true;
-        }else{
+        } else {
             setModalExitAppVisible(true)
             return true;
         }
-      
+
     };
     useFocusEffect(
-       
+
         React.useCallback(() => {
             BackHandler.addEventListener("hardwareBackPress", backAction);
             return () => {
@@ -187,6 +187,8 @@ const LoginScreen = ({ navigation }) => {
 
         const firstDigitStr = String(PhoneNum)[0];
         if (PhoneNum?.length != 10 || PhoneNum == "") {
+            setButton(true)
+            setOtpclick(true)
             setModalVisible1(true)
         } else if (firstDigitStr === '1' || firstDigitStr === '2' || firstDigitStr === '3' || firstDigitStr === '4' || firstDigitStr === '5' || firstDigitStr === '0') {
             setModalVisible1(true)
@@ -236,7 +238,7 @@ const LoginScreen = ({ navigation }) => {
             setButton(true)
             setMaxError(false)
             setOtpclick(true)
-            otpInput2?.current?.clear()
+            otpInput2?.current?.setValue('')
             setIsExpired(false)
         } else {
             setModalVisible1(true)
@@ -269,7 +271,7 @@ const LoginScreen = ({ navigation }) => {
                 setTimer(30)
             }
         }).catch((err) => {
-            console.log("err->", err?.response)
+            console.log("err->", err?.response?.data?.message)
             if (err?.message !== 'Network Error') {
                 if (err?.response?.data?.message === 'the device ID is already existing in the DB.') {
                     setModalVisibleError(true)
@@ -280,7 +282,13 @@ const LoginScreen = ({ navigation }) => {
                     setIsOtp1(true)
                     setStatus(false)
                     setMaxError(true)
-                } else {
+                } else if (err?.response?.data?.message === 'Please enter valid agent mobile number') {
+                    setModalVisible1(true)
+                    setButton(true)
+                    setOtpclick(true)
+                    setPhoneNum('')
+                }
+                else {
                     setMaxError(false)
                 }
 
@@ -349,7 +357,10 @@ const LoginScreen = ({ navigation }) => {
     // -------------------------------- Fetch Message From device End -------------------------------------------
 
     // ------------------ Confirm Otp Api Call Start ------------------
-    async function ConfirmOtp(otp) {
+    async function ConfirmOtp(otp, allow) {
+        if (allow === "allow") {
+            otpInput2?.current?.setValue(otp)
+        }
         const data = {
             otp: otp,
             mobNumber: '+91' + PhoneNum,
@@ -359,21 +370,21 @@ const LoginScreen = ({ navigation }) => {
             if (res?.data?.status) {
                 setMaxError(false)
                 setOtpFetch(false)
-                setPhoneNum(null)
-                setOtpValue('')
-                setButton(true)
+                
+                //setOtpValue('')
+               // setButton(true)
                 setOtp(false)
                 setConfirmDate(null)
                 console.log("succuss", res?.data?.customerId)
                 AsyncStorage.setItem('Mobile', '+91' + PhoneNum);
                 AsyncStorage.setItem('CustomerId', JSON.stringify(res?.data?.customerId));
-                
-                    isGrantedPermissions(res?.data?.status)
-                    AsyncStorage.setItem('Token', 'dXNlckBleGFtcGxlLmNvbTpzZWNyZXQ=');
-                    AsyncStorage.setItem('userName', res?.data?.customerName);
-                    console.log("username", res?.data?.customerName)
-                    
-              
+
+                isGrantedPermissions(res?.data?.status)
+                AsyncStorage.setItem('Token', 'dXNlckBleGFtcGxlLmNvbTpzZWNyZXQ=');
+                AsyncStorage.setItem('userName', res?.data?.customerName);
+                console.log("username", res?.data?.customerName)
+
+
             } else {
                 console.log(res?.data)
             }
@@ -562,11 +573,12 @@ const LoginScreen = ({ navigation }) => {
                                         containerStyle={{ marginTop: 7 }}
                                         handleTextChange={(code => {
                                             setOtpValue(code)
+                                       
                                             if (code.length === 4) {
                                                 ConfirmOtp(code)
-                                            }
-                                            if (code.length === '') {
+                                            }else{
                                                 setOtp(false)
+                                                setIsExpired(false)
                                             }
                                         })} /> : null}
 
@@ -604,7 +616,7 @@ const LoginScreen = ({ navigation }) => {
                                         otpMessage={otpMessage}
                                         setModalVisible={setModalVisible}
                                         navigation={navigation}
-                                        ConfirmOtp={(data) => ConfirmOtp(data)}
+                                        ConfirmOtp={(data) => ConfirmOtp(data, "allow")}
                                         setOtpFetch={setOtpFetch}
                                     /> : null}
 
@@ -621,7 +633,7 @@ const LoginScreen = ({ navigation }) => {
                                     onPressOut={() => setModalVisibleError(!ModalVisibleError)}
                                     setModalVisible={setModalVisibleError}
                                 />
-                                     <ModalExitApp
+                                <ModalExitApp
                                     ModalVisible={modalExitAppVisible}
                                     onPressOut={() => setModalExitAppVisible(!modalExitAppVisible)}
                                     setModalExitAppVisible={setModalExitAppVisible}

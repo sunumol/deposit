@@ -31,6 +31,7 @@ const SelectCustomerNewCgt = ({ navigation,route }) => {
  const [selectedDate,setSelectedDate] = useState(route?.params?.date)
  const [enab,setEnab]=useState(false)
  const [searchvalue, setsearchvalue] = useState('')
+
  const { t } = useTranslation();
 
  const handleGoBack =()=> {
@@ -129,10 +130,11 @@ return true
 
    const OnchangeNumber = (num) => {
     setSelectedItem(null)
+    console.log("num value print",typeof(num),parseInt(num))
        if (/^[^!-\/:-@\.,[-`{-~]+$/.test(num) || num === '') {
+   
            onChangeText(num)
-          
-
+    
            let searchword = num ;
                  
            setsearchvalue(num);
@@ -240,6 +242,7 @@ return true
              placeholderTextColor={'#808080'}
              onChangeText={(text)=>OnchangeNumber(text)}
              value={text}
+             maxLength={25}
              style={{ flex: 1,color:COLORS.colorDark,fontSize:14,fontFamily:FONTS.FontMedium }}
             
            />
