@@ -26,6 +26,7 @@ import OTPTextInput from './Components/OtpPin'
 
 // --------------- Image Imports ---------------------
 import Reset from './Images/Reset.svg'
+import ModalExitApp from '../../Components/ModalExitApp';
 
 const CreatePin = ({ navigation }) => {
 
@@ -37,35 +38,26 @@ const CreatePin = ({ navigation }) => {
     const [success, setSuccess] = useState(false)
     const [OtpValue, setOtpValue] = useState("")
     const [exitApp,setExitApp] = useState(0)
-
+    const [modalExitAppVisible, setModalExitAppVisible] = useState(false);
     const clearText = () => {
         otpInput2.current.clear();
     }
 
-    useEffect(() => {
-        const backHandler = BackHandler.addEventListener(
-            'hardwareBackPress',
-            handleGoBack,
-        );
-        return () => backHandler.remove();
-    }, [exitApp]);
+    const backAction = () => {
+        setModalExitAppVisible(true)
+        return true;
+    };
 
-    const handleGoBack = () => {
-        if (routes.name === "ResetPin") {
-            if (exitApp === 0) {
-                setExitApp(exitApp + 1);
-                console.log("exit app elig", exitApp)
-                ToastAndroid.show("Press back again to exit.", ToastAndroid.SHORT);
-            } else if (exitApp === 1) {
-                BackHandler.exitApp();
-                console.log("exit app else", exitApp)
-            }
-            setTimeout(() => {
-                setExitApp(0)
-            }, 3000);
-            return true;
-        }
-    }
+    useFocusEffect(
+        React.useCallback(() => {
+            BackHandler.addEventListener("hardwareBackPress", backAction);
+
+            return () => {
+                console.log("I am removed from stack")
+                BackHandler.removeEventListener("hardwareBackPress", backAction);
+            };
+        }, [])
+    );
 
     return (
         <SafeAreaProvider>
@@ -76,7 +68,7 @@ const CreatePin = ({ navigation }) => {
                 <SafeAreaView style={styles.container1} />
                 <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} backgroundColor={"#002B59"} />
 
-                <Header navigation={navigation} name={t('common:ResetPin')} onPress={handleGoBack} />
+                <Header navigation={navigation} name={t('common:ResetPin')} onPress={backAction} />
 
                 <View style={styles.container}>
                     <ScrollView>
@@ -134,7 +126,11 @@ const CreatePin = ({ navigation }) => {
 
                     </ScrollView>
                 </View>
-
+                <ModalExitApp
+                ModalVisible={modalExitAppVisible}
+                onPressOut={() => setModalExitAppVisible(!modalExitAppVisible)}
+                setModalExitAppVisible={setModalExitAppVisible}
+            />
             </KeyboardAvoidingView>
 
         </SafeAreaProvider>

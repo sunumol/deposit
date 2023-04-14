@@ -10,7 +10,7 @@ import Disable from '../../Images/disable.svg'
 import Enable from '../../Images/enable.svg'
 import { Colors } from "react-native/Libraries/NewAppScreen";
 import { api } from "../../../../Services/Api";
-
+const { height, width } = Dimensions.get('screen');
 const App = ({ visible, onPressOut, meet, details ,setEnab}) => {
     const { t } = useTranslation();
     console.log("details of active modal",details)
@@ -70,6 +70,22 @@ const App = ({ visible, onPressOut, meet, details ,setEnab}) => {
         console.log('activity',value)
     }
 
+    const getInitials = (name) => {
+      
+        let initials;
+        const nameSplit = name?.split(" ");
+         const nameLength = nameSplit?.length;
+        if (nameLength > 1) {
+            initials =
+                nameSplit[0].substring(0, 1) +
+                nameSplit[nameLength - 1].substring(0, 1);
+        } else if (nameLength === 1) {
+            initials = nameSplit[0].substring(0, 1);
+        } else return;
+    
+         return initials.toUpperCase();
+    };
+
     return (
         <Modal isVisible={visible}
             onBackButtonPress={onPressOut}
@@ -81,7 +97,7 @@ const App = ({ visible, onPressOut, meet, details ,setEnab}) => {
                     <View style={{ flexDirection: 'row', paddingHorizontal: 20, paddingTop: 20, marginBottom: 30 }}>
                         <View style={{ flex: 1, flexDirection: 'row' }}>
                             <View style={[styles.circleStyle, { backgroundColor: '#94BCC8'}]}>
-                                <Text numberOfLines={1} style={styles.circleText}>{details?.customerName}</Text>
+                                <Text numberOfLines={1} style={styles.circleText}>{getInitials(details?.customerName)}</Text>
                             </View>
 
                             <View style={{ flexDirection: 'column', paddingLeft: 12, paddingTop: 5 }}>
@@ -112,9 +128,9 @@ const App = ({ visible, onPressOut, meet, details ,setEnab}) => {
                                         marginRight: 10
                                     }}>
 
-                                    <TouchableOpacity>
+                                   
                                     <Text style={styles.textStyle}>{item.title}</Text>
-                                    </TouchableOpacity>
+                                 
                                     {enableContinue && id && item.id === id
                                         ? <Enable width={18} height={18} onPress={() => {
                                             setEnableContinue(false)
@@ -169,7 +185,8 @@ const styles = StyleSheet.create({
         fontFamily: FONTS.FontBold,
         color: COLORS.colorBlack,
         textAlign: 'center',
-        paddingTop: 20
+        paddingTop: 20,
+     
     },
     circleStyle: {
         width: 50,

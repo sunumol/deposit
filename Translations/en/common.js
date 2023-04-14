@@ -109,7 +109,7 @@ export default {
     'PinError': 'PIN does not match',
     'MonthRepay': 'Monthly Loan Repayment',
     'UploadSpId1': "Your spouse guarantees your loan. Please capture your spouse's voter ID to know your eligibility",
-    'LogoutMsg': 'Are you sure, you want to logout ?',
+    'LogoutMsg': 'Are you sure you want to logout?',
     'GetStart': 'Get Started',
     'Placeholder': "Enter mobile number",
     'Valid': 'Please enter a valid mobile number',

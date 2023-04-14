@@ -101,8 +101,8 @@ console.log('====',details)
 
                         </View>
                         <View style={styles.lineView} />
-                        <View style={{ paddingHorizontal: 17,flexDirection:'row' }}>
-                        <View style={{ flex: 1,marginTop:width * 0.009 }}>
+                        <View style={{ paddingLeft: 15,paddingRight:25,flexDirection:'row' }}>
+                        <View style={{ flex: 1.2,marginTop:width * 0.009 }}>
                             <Text style={styles.headTextTitle}>Address</Text>
                         </View>
                         <View style={{ flex: 2 ,flexWrap:'wrap'}}>
@@ -113,7 +113,7 @@ console.log('====',details)
                         <View style={styles.lineView} />
                         <View style={{ paddingHorizontal: 17, }}>
                             <View style={{ flexDirection: 'row', flex: 1 }}>
-                            <View style={{ flex: 1,marginTop:width * 0.0009 }}>
+                            <View style={{ flex: 1.2,marginTop:width * 0.0009 }}>
                             <Text style={styles.headTextTitle}>District</Text>
                             </View>
                             <View style={{ flex: 2 }}>
@@ -123,9 +123,12 @@ console.log('====',details)
                               
                             </View>
 
-                            <View style={styles.lineView} />
-                            <View style={{ flexDirection: 'row', flex: 1, marginRight: 10 }}>
-                            <View style={{ flex: 1,marginTop:width * 0.009 }}> 
+                       
+                            {/* <Success height={23} width={24} /> */}
+                        </View>
+                        <View style={styles.lineView} />
+                            <View style={{ paddingLeft: 15,paddingRight:25,flexDirection:'row'}}>
+                            <View style={{ flex: 1.2,marginTop:width * 0.009 }}> 
                                 <Text style={styles.headTextTitle}>Village</Text>
                             </View>
                             <View style={{ flex: 2 }}>
@@ -134,14 +137,12 @@ console.log('====',details)
                                
                                
                             </View>
-                            {/* <Success height={23} width={24} /> */}
-                        </View>
-
 
                         <View style={styles.lineView} />
-                        <View style={{ paddingHorizontal: 17, paddingBottom: 16,flex:1,flexDirection:'row'}}>
-                        <View style={{ flex: 1 ,marginTop:width * 0.0065,paddingRight:20}}>
-                        <Text style={styles.headTextTitle}>Access road type</Text>
+                        <View style={{ paddingLeft: 15,paddingRight:25, paddingBottom: 16,flex:1,flexDirection:'row'}}>
+                        <View style={{ flex: 1.2 ,marginTop:width * 0.0065}}>
+                        <Text style={styles.headTextTitle}>Access road</Text>
+                        <Text style={styles.headTextTitle}>type</Text>
                          </View>
                         <View style={{ flex: 2}}> 
                         <Text style={styles.subText}>{details?.accessRoadType}</Text>
@@ -152,8 +153,8 @@ console.log('====',details)
 
 
                         <View style={styles.lineView} />
-                        <View style={{ paddingHorizontal: 17, paddingBottom: 16,flex:1,flexDirection:'row'}}>
-                        <View style={{ flex:1 ,marginTop:width * 0.0065}}>
+                        <View style={{ paddingLeft: 15,paddingRight:25, paddingBottom: 16,flex:1,flexDirection:'row'}}>
+                        <View style={{ flex:1.2 ,marginTop:width * 0.0065}}>
                         <Text style={styles.headTextTitle}>Post Office</Text>
                          </View>
                          <View style={{ flex: 2 }}>
@@ -165,8 +166,8 @@ console.log('====',details)
 
 
                         <View style={styles.lineView} />
-                        <View style={{ paddingHorizontal: 17, paddingBottom: 16,flex:1,flexDirection:'row'}}>
-                        <View style={{ flex: 1 ,marginTop:width * 0.0065}}>
+                        <View style={{ paddingLeft: 15,paddingRight:25, paddingBottom: 16,flex:1,flexDirection:'row'}}>
+                        <View style={{ flex: 1.2 ,marginTop:width * 0.0065}}>
                         <Text style={styles.headTextTitle}>Landmark</Text>
                          </View>
                          <View style={{ flex: 2 }}>

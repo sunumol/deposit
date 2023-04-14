@@ -24,7 +24,8 @@ import { useTranslation } from 'react-i18next';
 import PinModal from './Components/PinModal';
 import { api } from '../../Services/Api';
 import OTPInputView from '../../Components/OTPInputView';
-
+import ModalExitApp from '../../Components/ModalExitApp';
+import { useFocusEffect } from '@react-navigation/native';
 // ----------- Image Import ------------------------
 import Svadhan from '../../assets/image/AgentLogo.svg';
 
@@ -42,7 +43,7 @@ const PinScreen = ({ navigation, }) => {
     const [error, setError] = useState(false)
     const [maxError, setMaxError] = useState(false)
     const [exitApp, setExitApp] = useState(0);
-
+    const [modalExitAppVisible, setModalExitAppVisible] = useState(false);
     // --------------Device Configuration Start----------
     const [ipAdrress, setIPAddress] = useState();
     const [deviceId, setDeviceId] = useState();
@@ -91,13 +92,21 @@ const PinScreen = ({ navigation, }) => {
         }
     }
 
-    useEffect(() => {
-        const backHandler = BackHandler.addEventListener(
-            'hardwareBackPress',
-            handleGoBack,
-        );
-        return () => backHandler.remove();
-    }, [exitApp]);
+    const backAction = () => {
+        setModalExitAppVisible(true)
+        return true;
+    };
+
+    useFocusEffect(
+        React.useCallback(() => {
+            BackHandler.addEventListener("hardwareBackPress", backAction);
+
+            return () => {
+                console.log("I am removed from stack")
+                BackHandler.removeEventListener("hardwareBackPress", backAction);
+            };
+        }, [])
+    );
 
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
@@ -110,22 +119,7 @@ const PinScreen = ({ navigation, }) => {
         return unsubscribe;
     }, [navigation]);
 
-    const handleGoBack = () => {
-        if (routes.name === "PinScreen") {
-            if (exitApp === 0) {
-                setExitApp(exitApp + 1);
-                console.log("exit app elig", exitApp)
-                ToastAndroid.show("Press back again to exit.", ToastAndroid.SHORT);
-            } else if (exitApp === 1) {
-                BackHandler.exitApp();
-                console.log("exit app else", exitApp)
-            }
-            setTimeout(() => {
-                setExitApp(0)
-            }, 3000);
-            return true;
-        }
-    }
+
 
     const getPinCheck = async (code) => {
         try {
@@ -231,7 +225,7 @@ const PinScreen = ({ navigation, }) => {
     // useEffect(() => {
     //     const unsubscribe = navigation.addListener('focus', () => {
     //       setO
-        
+
     //     });
     //     return unsubscribe;
     // }, [navigation]);
@@ -275,7 +269,7 @@ const PinScreen = ({ navigation, }) => {
 
                 {error
                     ? <View style={{ justifyContent: 'center' }}>
-                        <Text style={styles.errrorText}>{t('common:InvalidPin')}</Text>
+                        <Text style={styles.errrorText}>Invalid PIN</Text>
                     </View>
                     : null}
                 {maxError
@@ -295,6 +289,12 @@ const PinScreen = ({ navigation, }) => {
                 onPressOut={() => setModalVisible(!ModalVisible)}
                 setModalVisible={setModalVisible}
                 navigation={navigation} />
+
+            <ModalExitApp
+                ModalVisible={modalExitAppVisible}
+                onPressOut={() => setModalExitAppVisible(!modalExitAppVisible)}
+                setModalExitAppVisible={setModalExitAppVisible}
+            />
         </SafeAreaProvider>
     )
 }

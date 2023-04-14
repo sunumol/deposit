@@ -10,7 +10,7 @@ import {
     PermissionsAndroid,
     StatusBar,
     BackHandler,
-    ToastAndroid
+
 } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
@@ -21,7 +21,7 @@ import { useNavigationState } from '@react-navigation/native';
 import { COLORS, FONTS } from '../../Constants/Constants';
 import Statusbar from '../../Components/StatusBar';
 import Header2 from '../../Components/Header2';
-
+import ModalExitApp from '../../Components/ModalExitApp';
 // ---------------- Image Import ----------------------------
 import File from './assets/file.svg';
 import Camera from './assets/cam.svg';
@@ -29,6 +29,7 @@ import Location from './assets/loc.svg';
 import SMS from './assets/sms.svg';
 import Micro from './assets/mic.svg';
 import ToastModal from '../../Components/ToastModal';
+import { useFocusEffect } from '@react-navigation/native';
 
 const Data = [
     {
@@ -79,14 +80,15 @@ const Data = [
 
 ]
 const Permission = ({ navigation }) => {
-   
+
     const { t } = useTranslation();
     const isDarkMode = true;
     const [lang, setLang] = useState('')
-    const [ModalVisible1,setModalVisible1] =  useState(false)
-    const [exitApp,setExitApp] = useState(0)
+    const [ModalVisible1, setModalVisible1] = useState(false)
+    const [exitApp, setExitApp] = useState(0)
+    const [modalExitAppVisible, setModalExitAppVisible] = useState(false);
     const index = useNavigationState(state => state.index);
-    console.log("index of introscreen",index)
+    console.log("index of introscreen", index)
     useEffect(() => {
         getData()
     }, [])
@@ -101,41 +103,34 @@ const Permission = ({ navigation }) => {
         }
     }
 
-    useEffect(() => {
-        const backHandler = BackHandler.addEventListener(
-            'hardwareBackPress',
-            handleGoBack,
-        );
-        return () => backHandler.remove();
-    }, [exitApp]);
-    const handleGoBack = () => {
-        if (index==1 || index ==2) {
-            if (exitApp === 0) {
-                setExitApp(exitApp + 1);
-               // console.log("exit app intro", exitApp)
-                ToastAndroid.show("Press back again to exit.", ToastAndroid.SHORT);
-         
-            } else if (exitApp === 1) {
-                BackHandler.exitApp();
-                console.log("exit app else intro", exitApp)
-            }
-            setTimeout(() => {
-                setExitApp(0)
-            }, 3000);
-            return true;
-        }
-    }
+    const backAction = () => {
+        setModalExitAppVisible(true)
+        return true;
+    };
 
+    useFocusEffect(
+        React.useCallback(() => {
+            BackHandler.addEventListener("hardwareBackPress", backAction);
+
+            return () => {
+                console.log("I am removed from stack")
+                BackHandler.removeEventListener("hardwareBackPress", backAction);
+            };
+        }, [])
+    );
     const requestCameraPermission = async () => {
-       
+
         try {
 
             const granted = await PermissionsAndroid.requestMultiple([
                 PermissionsAndroid.PERMISSIONS.CAMERA,
-                PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
+                PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+                PermissionsAndroid.PERMISSIONS.READ_SMS,
+                PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+
             ]);
 
-            if (granted['android.permission.CAMERA'] === PermissionsAndroid.RESULTS.GRANTED && granted['android.permission.ACCESS_FINE_LOCATION'] === PermissionsAndroid.RESULTS.GRANTED) {
+            if (granted['android.permission.CAMERA'] === PermissionsAndroid.RESULTS.GRANTED && granted['android.permission.ACCESS_FINE_LOCATION'] === PermissionsAndroid.RESULTS.GRANTED && granted['android.permission.READ_SMS'] === PermissionsAndroid.RESULTS.GRANTED && granted['android.permission.WRITE_EXTERNAL_STORAGE'] === PermissionsAndroid.RESULTS.GRANTED ) {
                 Geolocation.getCurrentPosition(
                     position => {
                         console.log(position);
@@ -148,13 +143,13 @@ const Permission = ({ navigation }) => {
                     },
                     { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 },
                 );
-                    const Pin = await AsyncStorage.getItem('Pin')
-                    const PinDate = await AsyncStorage.getItem('PinDate')
-                    if (Pin && PinDate) {
-                        navigation.navigate('PinScreen')
-                    } else {
-                        navigation.navigate('CreatePin')
-                    }
+                const Pin = await AsyncStorage.getItem('Pin')
+                const PinDate = await AsyncStorage.getItem('PinDate')
+                if (Pin && PinDate) {
+                    navigation.navigate('PinScreen')
+                } else {
+                    navigation.navigate('CreatePin')
+                }
             } else {
                 setModalVisible1(true)
             }
@@ -188,7 +183,7 @@ const Permission = ({ navigation }) => {
                     {Data.map((item, index) => {
                         return (
                             <View key={index} style={styles.Card}>
-                                <View style={{ flex: 1, flexDirection: 'row', marginTop: 10,marginBottom:20 }}>
+                                <View style={{ flex: 1, flexDirection: 'row', marginTop: 10, marginBottom: 20 }}>
 
                                     {item.id == 1 ?
                                         <File
@@ -220,7 +215,7 @@ const Permission = ({ navigation }) => {
                                                         width={item.width}
                                                         height={item.height} />}
 
-                                    <View style={{flex:1, flexDirection: 'column', paddingHorizontal: 15.5, }}>
+                                    <View style={{ flex: 1, flexDirection: 'column', paddingHorizontal: 15.5, }}>
                                         <Text style={styles.title}>{lang == "en" ? item.title1 : item.title2}</Text>
                                         <Text style={[styles.Desc, { fontSize: lang == 'en' ? 12 : 10 }]}>{lang == "en" ? item.description1 : item.description2}</Text>
                                     </View>
@@ -246,6 +241,11 @@ const Permission = ({ navigation }) => {
                 setModalVisible={setModalVisible1}
             />
 
+            <ModalExitApp
+                ModalVisible={modalExitAppVisible}
+                onPressOut={() => setModalExitAppVisible(!modalExitAppVisible)}
+                setModalExitAppVisible={setModalExitAppVisible}
+            />
         </SafeAreaProvider>
     )
 }
@@ -288,7 +288,7 @@ const styles = StyleSheet.create({
         color: COLORS.colorBlack,
         // maxWidth: 230,
         marginTop: 5,
-        marginRight:20
+        marginRight: 20
     },
     Image: {
         marginLeft: 19,

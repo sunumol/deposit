@@ -7,6 +7,7 @@ import {
     View,
     FlatList,
     ScrollView,
+    BackHandler
 } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Statusbar from '../../Components/StatusBar';
@@ -22,6 +23,8 @@ import { api } from '../../Services/Api';
 
 
 // ------- Image Imports --------------------
+import ModalExitApp from '../../Components/ModalExitApp';
+import { useFocusEffect } from '@react-navigation/native';
 import Activity from './assets/Activity.svg';
 import Calendar from './assets/Calendar.svg';
 import Collect from './assets/Collect.svg';
@@ -35,6 +38,7 @@ const Profile = ({ navigation }) => {
     const dispatch = useDispatch()
 
     const [notificationCount, SetNotificationCount] = useState()
+    const [modalExitAppVisible, setModalExitAppVisible] = useState(false);
     const isDarkMode = true;
     const DATA = [
         {
@@ -110,6 +114,21 @@ const Profile = ({ navigation }) => {
       }, [navigation]);
     
 
+    const backAction = () => {
+        setModalExitAppVisible(true)
+        return true;
+    };
+
+    useFocusEffect(
+        React.useCallback(() => {
+            BackHandler.addEventListener("hardwareBackPress", backAction);
+
+            return () => {
+                console.log("I am removed from stack")
+                BackHandler.removeEventListener("hardwareBackPress", backAction);
+            };
+        }, [])
+    );
     return (
         <SafeAreaProvider>
             <SafeAreaView style={styles.container1} />
@@ -146,6 +165,11 @@ const Profile = ({ navigation }) => {
                 </ScrollView>
             </View>
             <BottomTabs navigation={navigation} />
+            <ModalExitApp
+                ModalVisible={modalExitAppVisible}
+                onPressOut={() => setModalExitAppVisible(!modalExitAppVisible)}
+                setModalExitAppVisible={setModalExitAppVisible}
+            />
         </SafeAreaProvider>
     );
 }

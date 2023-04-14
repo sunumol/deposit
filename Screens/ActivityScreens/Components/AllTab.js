@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import {
     View,
@@ -27,7 +26,9 @@ const ItemTabs = ({ navigation }) => {
     const [Lang, setLang] = useState('')
     const [slottedlisting, setSlottedListing] = useState()
     const [nonslottedActivities, setNonslottedActivities] = useState()
+    const [collectiondata, setCollectiondata] = useState()
     const [dleopen,setDleopen] = useState(false)
+    const [collectionopen,setCollectionopen] = useState(false)
     const [enab,setEnab]=useState(false)
 
 
@@ -56,6 +57,7 @@ const ItemTabs = ({ navigation }) => {
     React.useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
         setDleopen(false)
+        setCollectionopen(false)
            ActivityListingApiCall()
        
           
@@ -86,7 +88,55 @@ getData();
             <View style={{ paddingHorizontal: 20, marginBottom: 10 }}>
 
 
+            <>
+                        <TouchableOpacity 
+                           onPress={() => {
+                            setCollectionopen(!collectionopen)
+                        }}
+                         style={[styles.containerTab, { backgroundColor: collectionopen ? 'rgba(242, 242, 242, 0.5)' : COLORS.backgroundColor }]}>
+                                <View style={{ flex: 1 }}>
+                                    <Text style={{color: 'rgba(242, 153, 74, 1)',fontSize:14,fontFamily:FONTS.FontSemiB}}>Collection Follows up </Text>
+                                </View>
+                                <View style={{ justifyContent: 'flex-end', flexDirection: 'row', alignItems: 'center' }}>
+                                    <View style={styles.badgeContainer}>
+                                        <Text style={styles.badgeText}>{collectiondata?.length}</Text>
+                                    </View>
+                                    <TouchableOpacity
+                                        onPress={() => {
+                                     setCollectionopen(!collectionopen)
+                                        }}
+                                    >
+                                        <Icon name={collectionopen ? "chevron-up" : "chevron-down"}
+                                            color={COLORS.colorB}
+                                            size={25}
+                                            style={{ paddingLeft: 13 }}
 
+                                        />
+                                    </TouchableOpacity>
+                                </View>
+                            </TouchableOpacity> 
+                            {collectionopen
+                                ?
+                                <>
+
+                                    <View>
+                             
+                                    { collectiondata ?  ( <MeetTab
+                               // id={id}
+                                data={collectiondata}
+                                time={'Collection Follow up'}
+                                setEnab={setEnab}
+                                meet={true}
+                                navigation={navigation}
+                            />) : null }
+
+                                    </View>
+                                  
+
+                                </> : null}
+
+
+                        </>
 
     
                 
@@ -150,6 +200,7 @@ getData();
                             nextList[index].open = !nextList[index].open;
                             setSlottedListing(nextList);
                             setDleopen(false)
+                            setCollectionopen(false)
                         }}
                          style={[styles.containerTab, { backgroundColor: item.open ? 'rgba(242, 242, 242, 0.5)' : COLORS.backgroundColor }]}>
                                 <View style={{ flex: 1 }}>
@@ -165,6 +216,7 @@ getData();
                                             nextList[index].open = !nextList[index].open;
                                             setSlottedListing(nextList);
                                             setDleopen(false)
+                                            setCollectionopen(false)
                                         }}
                                     >
                                         <Icon name={item.open ? "chevron-up" : "chevron-down"}
