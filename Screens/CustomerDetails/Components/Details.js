@@ -192,7 +192,28 @@ console.log('====',details)
                             </View>
                             <View style={{ flexDirection: 'column', flex: 1, marginLeft: 12 }}>
                                 <Text style={styles.nameText}>{spouse?.name}</Text>
-                                <Text style={styles.underText}>{spouse?.occupation}</Text>
+                            
+
+
+
+
+
+                                {spouse?.occupation == 'DAILY_WAGE_LABOURER,'?
+                    <Text style={styles.underText}>Daily Wage Labourer</Text>:
+                    spouse?.occupation == 'SALARIED_EMPLOYEE'?
+                    <Text style={styles.underText}>Salaried Employee</Text>:
+                    spouse?.occupation == 'BUSINESS_SELF_EMPLOYED'?
+                    <Text style={styles.underText}>Business Self Employed</Text>:
+                    <Text style={styles.underText}>Farmer</Text>}
+
+
+
+
+
+
+
+
+
                             </View>
                             <View style={{ flexDirection: 'row', }}>
                             <Image1 width={11} height={11} top={3}/>
