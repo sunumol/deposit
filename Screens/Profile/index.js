@@ -5,19 +5,24 @@ import {
     StyleSheet,
     SafeAreaView,
     View,
-    TouchableOpacity,
     FlatList,
     ScrollView,
     BackHandler
 } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Statusbar from '../../Components/StatusBar';
+import { useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
+
+// ----------------- Components Imports -----------------------
 import { FONTS, COLORS } from '../../Constants/Constants';
 import HeaderDashBoard from '../../Components/HeaderDashBoard';
 import BottomTabs from './Components/BottomTab';
 import ItemTabs from './Components/ItemTab';
-import { useTranslation } from 'react-i18next';
 import { api } from '../../Services/Api';
+
+
+// ------- Image Imports --------------------
 import ModalExitApp from '../../Components/ModalExitApp';
 import { useFocusEffect } from '@react-navigation/native';
 import Activity from './assets/Activity.svg';
@@ -28,7 +33,10 @@ import NewLead from './assets/NewLead.svg';
 import NewUser from './assets/NewUser.svg';
 
 const Profile = ({ navigation }) => {
+    
     const { t } = useTranslation();
+    const dispatch = useDispatch()
+
     const [notificationCount, SetNotificationCount] = useState()
     const [modalExitAppVisible, setModalExitAppVisible] = useState(false);
     const isDarkMode = true;
@@ -90,6 +98,21 @@ const Profile = ({ navigation }) => {
     useEffect(() => {
         HomeScreenApiCall()
     }, []);
+
+    useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+            dispatch({
+                type: 'SET_SELECTED_CUSTOMERLIST',
+                payload: [],
+              });
+              dispatch({
+                type: 'SET_SELECTED_CUSTOMERID',
+                payload: [],
+              });
+        });
+        return unsubscribe;
+      }, [navigation]);
+    
 
     const backAction = () => {
         setModalExitAppVisible(true)

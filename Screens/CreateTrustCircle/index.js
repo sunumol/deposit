@@ -45,7 +45,8 @@ const CreateTrustCircle = ({ navigation,route }) => {
     const customerList = useSelector(state => state.customerList);
     const customerID = useSelector(state => state.customerID);
     const cgtCustomerDetails = useSelector(state => state.cgtCustomerDetails);
-
+    const [minLimit,setMinLimit] = useState()
+    const [maxLimit,setMaxLimit] = useState()
     const handleGoBack = useCallback(() => {
         navigation.navigate('CGT')// -----> Todo back navigation with activity ID
         return true; // Returning true from onBackPress denotes that we have handled the event
@@ -61,16 +62,15 @@ const CreateTrustCircle = ({ navigation,route }) => {
 
     useEffect(() => {
         getTCLimitDetails()
-  
-     
-    
-    }, [customerList, customerID])
+    }, [customerList,customerID])
 
     // ------------------ getTCLimitDetails Api Call Start ------------------
     const getTCLimitDetails = async () => {
         await api.getTCLimitCount().then((res) => {
             console.log('-------------------res limit', res?.data)
-            setTCLimit(res?.data?.body)
+            // setTCLimit(res?.data?.body)
+            setMinLimit(res?.data?.body?.minimumCount)
+            setMaxLimit(res?.data?.body?.maximumCount)
         }).catch((err) => {
             console.log('-------------------err', err?.response)
         })
@@ -85,7 +85,7 @@ const CreateTrustCircle = ({ navigation,route }) => {
             "memberIds": customerID
         }
         await api.createTrustCircles(data).then((res) => {
-            console.log('-------------------res create', res?.data)
+            console.log('-------------------res create', res)
             if (res?.status) {
                 setModalVisible(true)
             }
@@ -187,7 +187,7 @@ const CreateTrustCircle = ({ navigation,route }) => {
                         )
                     })}
 
-                    {customerList?.length > 0 && customerList?.length !== tcLimit
+                    {customerList?.length > 0 && customerList?.length <= maxLimit
                         ? <TouchableOpacity style={styles.viewCard} onPress={() => navigation.navigate('ConfirmMembers')}>
 
                             <View style={{ marginLeft: width * 0.05 }}>
@@ -201,12 +201,11 @@ const CreateTrustCircle = ({ navigation,route }) => {
                 </ScrollView>
 
                 {/* --------------------------------- Button Start--------------------------------------------------------------------------------------------------------------------- */}
-
                 <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                     {customerList?.length > 0
                         ? <TouchableOpacity style={[styles.Button1,
-                        { backgroundColor: customerList?.length === tcLimit ? COLORS.colorB : '#ECEBED' }]} onPress={()=>customerList?.length === tcLimit ? CreateTrustCircle(): null}>
-                            <Text style={[styles.text1, { color: customerList?.length === tcLimit ? COLORS.colorBackground : '#979C9E', paddingLeft: width * 0.02 }]}>Create Trust Circle</Text>
+                        { backgroundColor: customerList?.length >= minLimit ? COLORS.colorB : '#ECEBED' }]} onPress={()=>customerList?.length >= minLimit? CreateTrustCircle(): null}>
+                            <Text style={[styles.text1, { color: customerList?.length >= minLimit? COLORS.colorBackground : '#979C9E', paddingLeft: width * 0.02 }]}>Create Trust Circle</Text>
                         </TouchableOpacity>
                         :
                         <TouchableOpacity style={[styles.Button1, { backgroundColor: COLORS.colorB }]}
