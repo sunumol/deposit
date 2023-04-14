@@ -1,12 +1,13 @@
-import React from "react";
+import React,{useState} from "react";
 import { Dimensions, Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Icon1 from 'react-native-vector-icons/Fontisto'
 import { COLORS, FONTS } from '../../../Constants/Constants';
 import { useTranslation } from 'react-i18next';
 
 const OwnerModal = ({ visible, onPressOut,setModalVisible,setPurpose,setNamestatus,
     setUploadStatus,setImageStatus}) => {
     const { t } = useTranslation();
+    const [owner,setOwner] = useState('')
     return (
 
         <Modal
@@ -26,7 +27,8 @@ const OwnerModal = ({ visible, onPressOut,setModalVisible,setPurpose,setNamestat
                         <View style={styles.lineView} />
                         <TouchableOpacity style={styles.textTouch}
                             onPress={() => {
-                                setPurpose('Electricity Bill')
+                                setPurpose('ELECTRICITY_BILL')
+                                setOwner('ELECTRICITY_BILL')
                                 setUploadStatus(true)
                                 setModalVisible(!visible)
                                 setImageStatus(true)
@@ -35,16 +37,19 @@ const OwnerModal = ({ visible, onPressOut,setModalVisible,setPurpose,setNamestat
                             }>
                             <Text style={styles.modalText}>Electricity Bill</Text>
                             <View style={{ paddingRight: 10 }}>
-                                <Icon
-                                    name="checkbox-blank-circle-outline"
-                                    color={COLORS.DSMuted}
-                                    size={18}
-                                />
+                            { owner == 'ELECTRICITY_BILL'
+                                ?  
+                                <Icon1 name="radio-btn-active" size={18} color={COLORS.colorB} /> 
+                                :
+                                <Icon1 name="radio-btn-passive" size={18} color={'rgba(229, 231, 250, 1)'} />
+                        
+                                }
                             </View>
                         </TouchableOpacity >
                         <View style={styles.lineView} />
                         <TouchableOpacity style={styles.textTouch} onPress={() => {
-                            setPurpose("Water bill")
+                            setPurpose("WATER_BILL")
+                            setOwner('WATER_BILL')
                             setModalVisible(!visible)
                             setUploadStatus(true)
                             setImageStatus(true)
@@ -53,16 +58,19 @@ const OwnerModal = ({ visible, onPressOut,setModalVisible,setPurpose,setNamestat
                         }>
                             <Text style={styles.modalText}>Water bill</Text>
                             <View style={{ paddingRight: 10 }}>
-                                <Icon
-                                    name="checkbox-blank-circle-outline"
-                                    color={COLORS.DSMuted}
-                                    size={18}
-                                />
+                            { owner == 'WATER_BILL'
+                                ?  
+                                <Icon1 name="radio-btn-active" size={18} color={COLORS.colorB} /> 
+                                :
+                                <Icon1 name="radio-btn-passive" size={18} color={'rgba(229, 231, 250, 1)'} />
+                        
+                                }
                             </View>
                         </TouchableOpacity>
                         <View style={styles.lineView} />
                         <TouchableOpacity style={styles.textTouch} onPress={() => {
-                            setPurpose('Building Tax Receipt')
+                            setPurpose('BUILDING_TAX_RECEIPT')
+                            setOwner('BUILDING_TAX_RECEIPT')
                             setModalVisible(!visible)
                             setUploadStatus(true)
                             setImageStatus(true)
@@ -71,11 +79,13 @@ const OwnerModal = ({ visible, onPressOut,setModalVisible,setPurpose,setNamestat
                         }>
                             <Text style={styles.modalText}>Building Tax Receipt</Text>
                             <View style={{ paddingRight: 10 }}>
-                                <Icon
-                                    name="checkbox-blank-circle-outline"
-                                    color={COLORS.DSMuted}
-                                    size={18}
-                                />
+                            { owner == 'BUILDING_TAX_RECEIPT'
+                                ?  
+                                <Icon1 name="radio-btn-active" size={18} color={COLORS.colorB} /> 
+                                :
+                                <Icon1 name="radio-btn-passive" size={18} color={'rgba(229, 231, 250, 1)'} />
+                        
+                                }
                             </View>
                         </TouchableOpacity>
                   

@@ -10,7 +10,8 @@ import {
     ScrollView,
     Dimensions,
     TouchableOpacity,
-    Image
+    Image,
+    Pressable
 } from 'react-native'
 import React, { useCallback, useState, useEffect } from 'react'
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -149,7 +150,7 @@ const DetailChecks = ({ navigation, setState,proofType1,imageUrl1,relation1,rela
     
             const data = {
                 "activityId": activityId,
-                "ownerShipProofType": Purpose == 'Electricity Bill' ? 'ELECTRICITY_BILL' : Purpose == 'Water Bill' ? 'WATER_BILL' : 'BUILDING_TAX_RECEIPT',
+                "ownerShipProofType": Purpose,
                 "imageUrl": Image1,
                 "relationShipWithCustomer": Purposes,
                 "ownersName": ownersName ? ownersName :spousedetail?.name 
@@ -221,27 +222,36 @@ const DetailChecks = ({ navigation, setState,proofType1,imageUrl1,relation1,rela
                 </View>
 
                 <TouchableOpacity style={styles.SelectBox} onPress={() => setModalVisible(true)}>
-                    {!Purpose ? <Text style={styles.textSelect}>Select</Text> :
-                        <Text style={[styles.textSelect, { color: '#1A051D', marginLeft: 8 }]}>{Purpose}</Text>}
+
+
+                    {Purpose == 'ELECTRICITY_BILL'?
+                    <Text style={[styles.textSelect, { color: '#1A051D', marginLeft: 8 }]}>Electricity Bill</Text>:
+                    Purpose == 'WATER_BILL'?
+                    <Text style={[styles.textSelect, { color: '#1A051D', marginLeft: 8 }]}>Water Bill</Text>:
+                    Purpose == 'BUILDING_TAX_RECEIPT'?
+                    <Text style={[styles.textSelect, { color: '#1A051D', marginLeft: 8 }]}>Building Tax Receipt</Text>:
+                 
+                    <Text style={[styles.textSelect, { color: '#1A051D', marginLeft: 8 }]}>Select</Text>}
+                 
                     <Icon1 name="chevron-down" size={18} color={'#808080'} style={{ marginRight: 10 }} />
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.UploadCard}  onPress={() =>{ Purpose ? UploadImage():null}} >
+                <Pressable style={styles.UploadCard}  onPress={() =>{ Purpose ? UploadImage():null}} >
 
 
                     {!imageStatus ?
                         <View style={{ alignItems: 'flex-start', flex: 1, marginLeft: 25 }}>
-                            <TouchableOpacity >
+                            <View >
                                 <Media1 width={30} height={30} />
-                            </TouchableOpacity>
+                            </View>
                         </View> : UploadStatus ?
                             <View style={{ alignItems: 'flex-start', flex: 1, marginLeft: 25 }}>
-                                <TouchableOpacity >
+                                <View >
                                     <Media width={30} height={30} />
-                                </TouchableOpacity>
-                            </View> : <TouchableOpacity   style={{ alignItems: 'flex-start', flex: 1, marginLeft: 10 }}>
+                                </View>
+                            </View> : <View   style={{ alignItems: 'flex-start', flex: 1, marginLeft: 10 }}>
                                 <Image source={{ uri:   Image1 }} style={{ width: 55, height: 65, borderRadius: 6 }} />
-                                </TouchableOpacity>}
+                                </View>}
                     <View style={styles.Line} />
                     <View style={{ flexDirection: 'column', left: -20 }}>
                         <Text style={[styles.UploadText, { color: NameStatus ? '#1A051D' : '#808080' }]}>Upload photo</Text>
@@ -251,7 +261,7 @@ const DetailChecks = ({ navigation, setState,proofType1,imageUrl1,relation1,rela
                     <View style={{ flex: 1, alignItems: 'flex-end' }}>
                         <Icon2 name="chevron-right" size={18} color={'#808080'} style={{ marginRight: 15 }} />
                     </View>
-                </TouchableOpacity>
+                </Pressable>
                 <View>
                     <Text style={styles.proof}>Relationship with Customer</Text>
                 </View>
@@ -271,7 +281,13 @@ const DetailChecks = ({ navigation, setState,proofType1,imageUrl1,relation1,rela
 
                             <View style={{ flexDirection: 'column', flex: 1, marginLeft: 12 }}>
                                 <Text style={styles.nameText}>{spousedetail?.name}</Text>
-                                <Text style={styles.underText}>{spousedetail?.occupation}</Text>
+                                {spousedetail?.occupation == 'DAILY_WAGE_LABOURER,'?
+                    <Text style={styles.underText}>Daily Wage Labourer</Text>:
+                    spousedetail?.occupation == 'SALARIED_EMPLOYEE'?
+                    <Text style={styles.underText}>Salaried Employee</Text>:
+                    spousedetail?.occupation == 'BUSINESS_SELF_EMPLOYED'?
+                    <Text style={styles.underText}>Business Self Employed</Text>:
+                    <Text style={styles.underText}>Farmer</Text>}
                             </View>
                             <View style={{ flexDirection: 'row', }}>
                                 <Image2 width={11} height={11} top={3} />
@@ -301,10 +317,10 @@ const DetailChecks = ({ navigation, setState,proofType1,imageUrl1,relation1,rela
             </ScrollView>
 
             <View style={{ position: 'absolute', left: 0, right: 0, bottom: 0, alignItems: 'center', justifyContent: 'center' }}>
-                <TouchableOpacity onPress={() => (Purpose && Purposes && Image1 ) ? UpdateResidenceowner(    ) : console.log("helo")}
-                    style={[styles.Button1, { backgroundColor: (Purpose && Purposes && Image1 ) ? COLORS.colorB : 'rgba(224, 224, 224, 1)' }]}
+                <TouchableOpacity onPress={() => (Purpose && Purposes == 'Spouse' ? Purposes : ownersName && Image1 ) ? UpdateResidenceowner(    ) : console.log("helo")}
+                    style={[styles.Button1, { backgroundColor: (Purpose && Purposes == 'Spouse' ? Purposes : ownersName  && Image1 ) ? COLORS.colorB : 'rgba(224, 224, 224, 1)' }]}
                 >
-                    <Text style={[styles.text1, { color: (Purpose && Purposes && Image1 ) ? COLORS.colorBackground : '#979C9E' }]}>Continue</Text>
+                    <Text style={[styles.text1, { color: (Purpose && Purposes == 'Spouse' ? Purposes : ownersName  && Image1 ) ? COLORS.colorBackground : '#979C9E' }]}>Continue</Text>
                 </TouchableOpacity>
             </View>
             <OwnerModal

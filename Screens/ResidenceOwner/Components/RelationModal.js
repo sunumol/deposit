@@ -1,12 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Dimensions, Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Icon1 from 'react-native-vector-icons/Fontisto'
 import { COLORS, FONTS } from '../../../Constants/Constants';
 import { useTranslation } from 'react-i18next';
 
 const RelationModal = ({ visible, onPressOut,setModalVisible,setRelation,setPurposes,setStatus}) => {
     const { t } = useTranslation();
-   // console.log("setRelation....",setRelation)
+    const [relate,setRelate] = useState('')
+ console.log("setRelation....",relate)
 
 
     return (
@@ -32,45 +34,54 @@ const RelationModal = ({ visible, onPressOut,setModalVisible,setRelation,setPurp
                               // setStatus(true)
                                 setPurposes('Self')
                                 setModalVisible(!visible)
+                                setRelate('Self')
                             }
                             }>
                             <Text style={styles.modalText}>Self</Text>
                             <View style={{ paddingRight: 10 }}>
-                                <Icon
-                                    name="checkbox-blank-circle-outline"
-                                    color={COLORS.DSMuted}
-                                    size={18}
-                                />
+                               { relate == 'Self'
+                                ?  
+                                <Icon1 name="radio-btn-active" size={18} color={COLORS.colorB} /> 
+                                :
+                                <Icon1 name="radio-btn-passive" size={18} color={'rgba(229, 231, 250, 1)'} />
+                        
+                                }
                             </View>
                         </TouchableOpacity >
                         <View style={styles.lineView} />
                         <TouchableOpacity style={styles.textTouch} onPress={() => {
                             setPurposes("Spouse")
                             setModalVisible(!visible)
+                            setRelate('Spouse')
                         }
                         }>
                             <Text style={styles.modalText}>Spouse</Text>
                             <View style={{ paddingRight: 10 }}>
-                                <Icon
-                                    name="checkbox-blank-circle-outline"
-                                    color={COLORS.DSMuted}
-                                    size={18}
-                                />
+                            { relate == 'Spouse'
+                                ?  
+                                <Icon1 name="radio-btn-active" size={18} color={COLORS.colorB} /> 
+                                :
+                                <Icon1 name="radio-btn-passive" size={18} color={'rgba(229, 231, 250, 1)'} />
+                        
+                                }
                             </View>
                         </TouchableOpacity>
                         <View style={styles.lineView} />
                         <TouchableOpacity style={styles.textTouch} onPress={() => {
                             setPurposes("Son")
                             setModalVisible(!visible)
+                            setRelate('Son')
                         }
                         }>
                             <Text style={styles.modalText}>Son</Text>
                             <View style={{ paddingRight: 10 }}>
-                                <Icon
-                                    name="checkbox-blank-circle-outline"
-                                    color={COLORS.DSMuted}
-                                    size={18}
-                                />
+                            { relate == 'Son'
+                                ?  
+                                <Icon1 name="radio-btn-active" size={18} color={COLORS.colorB} /> 
+                                :
+                                <Icon1 name="radio-btn-passive" size={18} color={'rgba(229, 231, 250, 1)'} />
+                        
+                                }
                             </View>
                             
                         </TouchableOpacity>
@@ -78,16 +89,19 @@ const RelationModal = ({ visible, onPressOut,setModalVisible,setRelation,setPurp
                         <View style={styles.lineView} />
                         <TouchableOpacity style={styles.textTouch} onPress={() => {
                              setPurposes('Daughter')
+                             setRelate('Daughter')
                             setModalVisible(!visible)
                         }
                         }>
                             <Text style={styles.modalText}>Daughter</Text>
                             <View style={{ paddingRight: 10 }}>
-                                <Icon
-                                    name="checkbox-blank-circle-outline"
-                                    color={COLORS.DSMuted}
-                                    size={18}
-                                />
+                            { relate == 'Daughter'
+                                ?  
+                                <Icon1 name="radio-btn-active" size={18} color={COLORS.colorB} /> 
+                                :
+                                <Icon1 name="radio-btn-passive" size={18} color={'rgba(229, 231, 250, 1)'} />
+                        
+                                }
                             </View>
                             
                         </TouchableOpacity>
@@ -96,16 +110,19 @@ const RelationModal = ({ visible, onPressOut,setModalVisible,setRelation,setPurp
                         <View style={styles.lineView} />
                         <TouchableOpacity style={styles.textTouch} onPress={() => {
                              setPurposes('Father')
+                             setRelate('Father')
                             setModalVisible(!visible)
                         }
                         }>
                             <Text style={styles.modalText}>Father</Text>
                             <View style={{ paddingRight: 10 }}>
-                                <Icon
-                                    name="checkbox-blank-circle-outline"
-                                    color={COLORS.DSMuted}
-                                    size={18}
-                                />
+                            { relate == 'Father'
+                                ?  
+                                <Icon1 name="radio-btn-active" size={18} color={COLORS.colorB} /> 
+                                :
+                                <Icon1 name="radio-btn-passive" size={18} color={'rgba(229, 231, 250, 1)'} />
+                        
+                                }
                             </View>
                             
                         </TouchableOpacity>
@@ -114,16 +131,19 @@ const RelationModal = ({ visible, onPressOut,setModalVisible,setRelation,setPurp
                         <View style={styles.lineView} />
                         <TouchableOpacity style={styles.textTouch} onPress={() => {
                              setPurposes('Mother')
+                             setRelate('Mother')
                             setModalVisible(!visible)
                         }
                         }>
                             <Text style={styles.modalText}>Mother</Text>
                             <View style={{ paddingRight: 10 }}>
-                                <Icon
-                                    name="checkbox-blank-circle-outline"
-                                    color={COLORS.DSMuted}
-                                    size={18}
-                                />
+                            { relate == 'Mother'
+                                ?  
+                                <Icon1 name="radio-btn-active" size={18} color={COLORS.colorB} /> 
+                                :
+                                <Icon1 name="radio-btn-passive" size={18} color={'rgba(229, 231, 250, 1)'} />
+                        
+                                }
                             </View>
                             
                         </TouchableOpacity>
@@ -133,16 +153,19 @@ const RelationModal = ({ visible, onPressOut,setModalVisible,setRelation,setPurp
                         <View style={styles.lineView} />
                         <TouchableOpacity style={styles.textTouch} onPress={() => {
                              setPurposes('Father-in-law')
+                             setRelate('Father-in-law')
                             setModalVisible(!visible)
                         }
                         }>
                             <Text style={styles.modalText}>Father-in-law</Text>
                             <View style={{ paddingRight: 10 }}>
-                                <Icon
-                                    name="checkbox-blank-circle-outline"
-                                    color={COLORS.DSMuted}
-                                    size={18}
-                                />
+                            { relate == 'Father-in-law'
+                                ?  
+                                <Icon1 name="radio-btn-active" size={18} color={COLORS.colorB} /> 
+                                :
+                                <Icon1 name="radio-btn-passive" size={18} color={'rgba(229, 231, 250, 1)'} />
+                        
+                                }
                             </View>
                             
                         </TouchableOpacity>
@@ -152,16 +175,19 @@ const RelationModal = ({ visible, onPressOut,setModalVisible,setRelation,setPurp
                         <View style={styles.lineView} />
                         <TouchableOpacity style={styles.textTouch} onPress={() => {
                              setPurposes('Mother-in-law')
+                             setRelate('Mother-in-law')
                             setModalVisible(!visible)
                         }
                         }>
                             <Text style={styles.modalText}>Mother-in-law</Text>
                             <View style={{ paddingRight: 10 }}>
-                                <Icon
-                                    name="checkbox-blank-circle-outline"
-                                    color={COLORS.DSMuted}
-                                    size={18}
-                                />
+                            { relate == 'Mother-in-law'
+                                ?  
+                                <Icon1 name="radio-btn-active" size={18} color={COLORS.colorB} /> 
+                                :
+                                <Icon1 name="radio-btn-passive" size={18} color={'rgba(229, 231, 250, 1)'} />
+                        
+                                }
                             </View>
                             
                         </TouchableOpacity>
