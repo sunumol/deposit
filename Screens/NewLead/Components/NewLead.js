@@ -160,10 +160,11 @@ const NewLead1 = ({ navigation,setVillageStatus,VillageStatus }) => {
                             name={t('common:Name')}
                             value={Name}
                             color={"#1A051D"}
-
+                            maxLength={40}
+                            keyboardType1={'email-address'}
                             // edit={AccStatus}
                             onChangeText={(text) => {
-                                if (/^[^!-\/:-@\.,[-`{-~]+$/.test(text) || text === '') {
+                                if (/^[^!-\/:-@\.,[-`{-~1234567890₹~`|•√π÷×¶∆€¥$¢^°={}%©®™✓]+$/.test(text) || text === '') {
                                     setName(text)
                         
                                 } else {
@@ -194,14 +195,20 @@ const NewLead1 = ({ navigation,setVillageStatus,VillageStatus }) => {
                             maxLength={6}
                             onChangeText={(text) => {
                                // setPincode(text)
-                                if(text?.length==6){
+                          
+                               if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(text) || text === '') {
                                     setPincode(text)
+                                    console.log("pincode",text)
+                                    setPincode(text)
+                                   
+                                   if(text?.length === 6){
                                     setVStatus(true)
-                               }
-                                else if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(text) || text === '') {
-                                    setPincode(text)
-                                   // setVStatus(true)
+                                   }
                                 }
+                            //      else if(text?.length==6){
+                            //         setPincode(text)
+                            //         setVStatus(true)
+                            //    }
                                 else {
                                     ToastAndroid.show('Please enter a valid pincode', ToastAndroid.SHORT);
                                 }
@@ -219,6 +226,7 @@ const NewLead1 = ({ navigation,setVillageStatus,VillageStatus }) => {
                                     <Image1 />
                                 <TextInput
                                     value={Village}
+                                 
                                     style={styles.TextInputBranch}
                                     onChangeText={(text) => {
                                         setVillage(text)
@@ -279,10 +287,10 @@ const NewLead1 = ({ navigation,setVillageStatus,VillageStatus }) => {
         
        
             <TouchableOpacity
-                style={[styles.Button1, { backgroundColor: Button &&  Name?.length>=3  && Mobile?.length===10  && Pincode?.length===6 ? COLORS.colorB : '#ECEBED' }]}
-                disabled={Button && Name?.length>=3 && Mobile?.length===10 && Pincode?.length===6 ? false : true}
+                style={[styles.Button1, { backgroundColor: Button &&  Name?.length>=3  && Mobile?.length===10  && Pincode?.length===6 && Village ? COLORS.colorB : '#ECEBED' }]}
+                disabled={Button && Name?.length>=3 && Mobile?.length===10 && Pincode?.length===6 && Village? false : true}
                 onPress={()=>Validation()}>
-                <Text style={[styles.text1, { color: Button && Name?.length>=3  && Mobile?.length===10  && Pincode?.length===6? COLORS.colorBackground : '#979C9E' }]}>{t('common:Confirm')}</Text>
+                <Text style={[styles.text1, { color: Button && Name?.length>=3  && Mobile?.length===10  && Pincode?.length===6 && Village? COLORS.colorBackground : '#979C9E' }]}>{t('common:Confirm')}</Text>
             </TouchableOpacity>
 
             <LeadModal ModalVisible={ModalVisible}

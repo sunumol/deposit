@@ -157,8 +157,9 @@ const DLE = ({ navigation, set, list }) => {
 
     return (
 
-        <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1, marginTop: 15 }}>
+        <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1, marginTop: 0 }}>
             <ScrollView showsVerticalScrollIndicator={false}>
+                <View style={{marginBottom:width*0.25}}>
                 {list?.map((item) => {
                     return (
                         <View style={[styles.viewCard, { borderColor: 'white', borderWidth: 2 }]}>
@@ -200,6 +201,7 @@ const DLE = ({ navigation, set, list }) => {
 
                     )
                 })}
+                </View>
             </ScrollView>
 
             {!set ? <View style={{ alignItems: 'center', justifyContent: 'center', position: 'absolute', left: 0, right: 0, bottom: 0, marginBottom: 20 }}>
@@ -366,7 +368,7 @@ const styles = StyleSheet.create({
         width: width * 0.86,
         borderRadius: 6,
         height: width * 0.20,
-        marginBottom: width * 0.03,
+        //marginBottom: width * 0.03,
         alignItems: 'center',
         flexDirection: 'row',
         shadowColor: '#000000',
@@ -376,7 +378,7 @@ const styles = StyleSheet.create({
         shadowRadius: 7,
         marginLeft: 5,
         marginRight: 5,
-        marginTop: 5
+        marginTop: width * 0.04
     },
     circleStyle: {
         width: 40,
@@ -423,7 +425,7 @@ const styles = StyleSheet.create({
         width: width * 0.32,
         // backgroundColor:'red',
         borderRadius: 3,
-        height: width * 0.06,
+       // height: width * 0.06,
         alignItems: 'center',
         justifyContent: 'center'
 

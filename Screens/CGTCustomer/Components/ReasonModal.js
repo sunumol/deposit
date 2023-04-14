@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { Dimensions, Modal, StyleSheet, Text, TouchableOpacity, View, Pressable, } from "react-native";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { COLORS, FONTS } from '../../../Constants/Constants';
 import { useTranslation } from 'react-i18next';
-import { api } from '../../../Services/Api';
+
+
 
 const { height, width } = Dimensions.get('screen');
 
@@ -48,11 +49,11 @@ const ReasonModal = ({ModalVisible, onPressOut,setModalVisible,onPress1,setRejec
         reason[index].isChecked = !reason[index].isChecked;
         setTimeout(() => {
             let FilterArray1 = Data.filter(item => item.isChecked == true)
-            let FilterId1 = FilterArray1.map((item) => (item.id))
+            let FilterId1 = FilterArray1.map((item) => (item.Title))
             let Checked = FilterArray1.map((item)=>(item.isChecked))
             //let FilterId1 = FilterArray.slice(id)
 
-            console.log("FilterId.",Checked)
+            console.log("FilterId.",FilterId1)
             console.log("FilterArray.......", FilterArray1)
             setReason(FilterId1)
             setChecked(Checked)
@@ -66,7 +67,14 @@ const ReasonModal = ({ModalVisible, onPressOut,setModalVisible,onPress1,setRejec
      
     }
 
-
+useEffect(()=>{
+  
+    Data.forEach(function (item) {
+        item.isChecked= false
+    })
+    
+    console.log("data",Data)
+},[])
     
 
     return (

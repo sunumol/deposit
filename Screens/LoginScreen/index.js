@@ -136,6 +136,7 @@ const LoginScreen = ({ navigation }) => {
         } else {
             setStatus(false)
             setButton(true)
+            setOtpclick(true)
         }
     }, [timerCount, IsOtp1]);
 
@@ -366,14 +367,13 @@ const LoginScreen = ({ navigation }) => {
                 console.log("succuss", res?.data?.customerId)
                 AsyncStorage.setItem('Mobile', '+91' + PhoneNum);
                 AsyncStorage.setItem('CustomerId', JSON.stringify(res?.data?.customerId));
-                if (res?.data?.register) {
+                
                     isGrantedPermissions(res?.data?.status)
                     AsyncStorage.setItem('Token', 'dXNlckBleGFtcGxlLmNvbTpzZWNyZXQ=');
                     AsyncStorage.setItem('userName', res?.data?.customerName);
                     console.log("username", res?.data?.customerName)
-                } else {
-                    navigation.navigate('Permission')
-                }
+                    
+              
             } else {
                 console.log(res?.data)
             }

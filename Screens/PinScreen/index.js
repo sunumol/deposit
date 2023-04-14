@@ -50,7 +50,7 @@ const PinScreen = ({ navigation, }) => {
     const [mobile, setMobile] = useState();
     const [custID, setCustId] = useState()
     const [invalidState, setInvalidState] = useState(1)
-    const [userName, setUserName] = useState()
+    const [userName, setUserName] = useState('Athira')
     const [status, setStatus] = useState(false)
     // --------------Device Configuration End----------
 
@@ -82,8 +82,8 @@ const PinScreen = ({ navigation, }) => {
         try {
             const Phone = await AsyncStorage.getItem('Mobile')
             const id = await AsyncStorage.getItem('CustomerId')
-            const userName = await AsyncStorage.getItem('userName')
-            console.log("userName", AsyncStorage.getItem('userName'))
+           // const userName = await AsyncStorage.getItem('userName')
+            console.log("userName", userName)
             setUserName(userName)
             setMobile(Phone)
             setCustId(id)

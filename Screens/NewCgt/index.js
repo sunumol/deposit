@@ -66,6 +66,7 @@ const NewCgt = ({ navigation, }) => {
               // ------------------ get Slot Api Call Start ------------------
               const getCGTslot = async (date) => {
                 console.log('api called',date)
+                console.log("selectedDate",selectedDate)
                  const data = {
                      "employeeId": 1,
                      "selectedDate":  moment(date ? date : selectedDate ).utc().format('DD-MM-YYYY')
@@ -75,6 +76,7 @@ const NewCgt = ({ navigation, }) => {
                         type: 'SET_ACTIVITY',
                         payload:res?.data?.body[0].sloatActivityList,
                     });
+                    console.log("data print",data)
                      console.log('------------------- CGT slot res', res.data?.body[0].sloatActivityList)
                       setSlotlist(res?.data?.body[0].sloatActivityList);
                       setEnab(false)

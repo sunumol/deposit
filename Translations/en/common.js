@@ -431,7 +431,7 @@ export default {
 
     //Exit Modal
 
-    'ExitModal': 'Are you sure you want to exit ? ',
+    'ExitModal': 'Are you sure you want to exit? ',
 
     //  -------------------- PreClosure -------------------
     'PreClose': 'Pre-close loan',

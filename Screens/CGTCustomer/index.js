@@ -134,6 +134,7 @@ const CgtCustomer = ({ navigation, route }) => {
             "activityId": activityId
         };
         await api.updateActivity(data).then((res) => {
+            console.log("rejectreason",rejectReason)
             console.log('-------------------res789', res?.data)
             if (res?.status) {
                 setModalError(true)

@@ -19,7 +19,8 @@ const SplashScreen = ({ navigation }) => {
     const getData = async () => {
         try {
           const Token = await AsyncStorage.getItem('Token')
-          console.log('--------Token',Token)
+         const user = await AsyncStorage.getItem('userName')
+          console.log('--------Token',Token,user)
           if (Token) {
             isGrantedPermissions()
           } else {
