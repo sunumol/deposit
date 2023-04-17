@@ -14,7 +14,9 @@ import SelectTab from './Components/SelectTab';
 import ReasonModal from './Components/ReasonModal';
 import ErrorModal from './Components/ErrorModal';
 import { api } from '../../Services/Api'
-
+    String.prototype.replaceAt = function (index, replacement) {
+        return this.substring(0, index) + replacement + this.substring(index + replacement.length);
+    }
 const ConfirmMembers = ({ navigation }) => {
 
   const isDarkMode = true;
@@ -32,7 +34,9 @@ const ConfirmMembers = ({ navigation }) => {
   const dispatch = useDispatch()
   const customerList = useSelector(state => state.customerList);
   const customerID = useSelector(state => state.customerID);
-
+  String.prototype.replaceAt = function (index, replacement) {
+    return this.substring(0, index) + replacement + this.substring(index + replacement.length);
+}
   const handleGoBack = useCallback(() => {
     navigation.navigate('CreateTrustCircle')
     return true; // Returning true from onBackPress denotes that we have handled the event
@@ -216,7 +220,7 @@ const ConfirmMembers = ({ navigation }) => {
                           </View>
                         </View>
                       </View>
-                      <Text style={[styles.numText, { paddingLeft: 6 }]}>{item?.mobile ?.replace(/^.{0}/g, '').replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X").replaceAt(8, "X")}</Text>
+                      <Text style={[styles.numText, { paddingLeft: 6 }]}>{item?.mobile?.replace(/^.{0}/g, '').replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X").replaceAt(8, "X")}</Text>
                     </TouchableOpacity>
 
                     {index !== data?.length - 1
