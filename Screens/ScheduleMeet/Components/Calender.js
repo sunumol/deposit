@@ -14,7 +14,7 @@ const CalendarStrips = ({ callback }) => {
   //------------------------------------------------------- SetState ----------------------------------------
   const [Month, setMonth] = useState(new Date())
   const [StartDay, setStartDay] = useState(new Date())
-  const [selectedDate, setSelectedDate] = useState(new Date())
+  const [selectedDate, setSelectedDate] = useState('')
   const [endDate, setEndDate] = useState(new Date(new Date().setDate(new Date().getDate() + 29)))
   const [dateList, setDateList] = useState([])
   const [initialDate, setInitialDate] = useState()
@@ -91,13 +91,13 @@ const CalendarStrips = ({ callback }) => {
     } else {
       next = new Date(today.getFullYear(), today?.getMonth() + 1, 1);
     }
-    setStartDay(next)
+   // setStartDay(next)
     setSelectedDate(next)
     console.log("------", next);
   }
 
   const DecrementMonth = () => {
-    setStartDay(new Date())
+    //setStartDay(new Date())
     setSelectedDate(new Date())
   }
 
@@ -145,38 +145,22 @@ const CalendarStrips = ({ callback }) => {
 
 
       <CalendarStrip
-        scrollable={true}
-        scrollerPaging={true}
-        // customDatesStyles={customDatesStyles}
-        style={{ height: 100, paddingTop: 0, paddingBottom: 0 }}
-        onWeekChanged={onWeekChanged}
-        calendarHeaderStyle={{ color: '#171930' }}
-        dateNumberStyle={{ color: '#171930', fontSize: 15, }}
-        dateNameStyle={{ color: '#171930', fontSize: 15, textTransform: 'capitalize', fontFamily: FONTS.FontRegular }}
-        iconContainer={{ flex: 0.1 }}
-        highlightDateNameStyle={{ fontSize: 12, color: COLORS.colorBackground, textTransform: 'capitalize', fontFamily: FONTS.FontRegular }}
-        highlightDateNumberStyle={{ fontSize: 12, color: COLORS.colorBackground, fontFamily: FONTS.FontSemiB }}
-        highlightDateContainerStyle={{ backgroundColor: COLORS.colorB, width: 40, height: 50, borderRadius: 8 }}
-        selectedDate={StartDay}
-        //selectedDate={StartDay !== StartDay ?  StartDay : StartDay}
-        // iconLeftStyle={<Icon1 name="arrow-left" size={14} color={"#171930"} />}
-        //  iconRightStyle={   <Icon1 name="arrow-right" size={14} color={"#171930"} style={{ marginRight: 15, width: 20, height: 15,color:"#171930"}} />}
-        iconLeftStyle={{ fontSize: 15, marginLeft: 15, width: 20, height: 15, color: "#171930" }}
-        iconRightStyle={{ marginRight: 15, width: 20, height: 15, color: "#171930" }}
-        onDateSelected={onDateSelected}
-        maxDate={new Date(new Date().setDate(new Date().getDate() + 30))}
-        showMonth={false}
-        minDate={new Date()}
-        rightSelector={true}
-        Type={'parallel'}
-        scrollToOnSetSelectedDate={selectedDate}
-        //leftSelector={}
-        //minDate={StartDay}
-        //calendarHeaderFormat={moment().format('MMM YY')}
-        //startingDate={moment()}
-        // minDate={StartDay !== StartDay ? setTimeout(() => {
-        //   StartDay
-        // }, (1000)):alert(StartDay)}
+         calendarAnimation={{ type: 'sequence', duration: 30 }}
+         scrollable={true}
+         scrollerPaging={true}
+         style={{ height: 100, paddingTop: 0, paddingBottom: 0 }}
+         onWeekChanged={onWeekChanged}
+         iconContainer={{ flex: 0.1 }}
+        // selectedDate={StartDay}
+         iconLeftStyle={{ fontSize: 15, marginLeft: 15, width: 20, height: 15, color: "#171930" }}
+         iconRightStyle={{ marginRight: 15, width: 20, height: 15, color: "#171930" }}
+         maxDate={endDate}
+         showMonth={false}
+         minDate={new Date()}
+         rightSelector={true}
+         Type={'parallel'}
+         scrollToOnSetSelectedDate={true}
+         useIsoWeekday={false}
         dayComponent={(item) => {
           return (
             <TouchableOpacity

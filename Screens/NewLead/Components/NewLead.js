@@ -115,6 +115,7 @@ const NewLead1 = ({ navigation,setVillageStatus,VillageStatus }) => {
         }
     }
     async function onSubmit() {
+        setResultError(false)
         const data = {
             "leadName": Name,
             "mobileNumber": Mobile,
@@ -185,6 +186,7 @@ const NewLead1 = ({ navigation,setVillageStatus,VillageStatus }) => {
                             onChangeText={(text) => {
                                 OnchangeNumber(text)
                             }}
+                            onFocus={false}
                         />
 
                         <TextInputBox
