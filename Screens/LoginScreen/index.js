@@ -271,7 +271,7 @@ const LoginScreen = ({ navigation }) => {
                 setTimer(30)
             }
         }).catch((err) => {
-            console.log("err->", err?.response?.data?.message)
+            console.log("err Login->", err,DeviceId)
             if (err?.message !== 'Network Error') {
                 if (err?.response?.data?.message === 'the device ID is already existing in the DB.') {
                     setModalVisibleError(true)

@@ -39,7 +39,7 @@ const NewLead1 = ({ navigation,setVillageStatus,VillageStatus }) => {
     const [ValidModal1, setValidModal1] = useState(false)
     const [Message,setMessage] = useState('')
     const [ResultError, setResultError] = useState(false)
-
+    const [VillageEnable,setVillageEnable] =  useState(false)
     const [vilageList, setVillageList] = useState([])
 
     const [error, setError] = useState({
@@ -230,7 +230,9 @@ const NewLead1 = ({ navigation,setVillageStatus,VillageStatus }) => {
                                     style={styles.TextInputBranch}
                                     onChangeText={(text) => {
                                         setVillage(text)
+                                        setVillageEnable(false)
                                         if (text == '') {
+                                            
                                             setVillageList([])
                                             setVillageStatus(false)
                                            // setBstatus(false)
@@ -250,6 +252,7 @@ const NewLead1 = ({ navigation,setVillageStatus,VillageStatus }) => {
 
                                             <TouchableOpacity onPress={() => {
                                                 setVillage(item)
+                                                setVillageEnable(true)
                                                 setButton(true)
                                                 setVillageList([])
                                                 setVillageStatus(false)
@@ -287,10 +290,10 @@ const NewLead1 = ({ navigation,setVillageStatus,VillageStatus }) => {
         
        
             <TouchableOpacity
-                style={[styles.Button1, { backgroundColor: Button &&  Name?.length>=3  && Mobile?.length===10  && Pincode?.length===6 && Village ? COLORS.colorB : '#ECEBED' }]}
-                disabled={Button && Name?.length>=3 && Mobile?.length===10 && Pincode?.length===6 && Village? false : true}
+                style={[styles.Button1, { backgroundColor: Button &&  Name?.length>=3  && Mobile?.length===10  && Pincode?.length===6 && VillageEnable ? COLORS.colorB : '#ECEBED' }]}
+                disabled={Button && Name?.length>=3 && Mobile?.length===10 && Pincode?.length===6 && VillageEnable? false : true}
                 onPress={()=>Validation()}>
-                <Text style={[styles.text1, { color: Button && Name?.length>=3  && Mobile?.length===10  && Pincode?.length===6 && Village? COLORS.colorBackground : '#979C9E' }]}>{t('common:Confirm')}</Text>
+                <Text style={[styles.text1, { color: Button && Name?.length>=3  && Mobile?.length===10  && Pincode?.length===6 && VillageEnable? COLORS.colorBackground : '#979C9E' }]}>{t('common:Confirm')}</Text>
             </TouchableOpacity>
 
             <LeadModal ModalVisible={ModalVisible}

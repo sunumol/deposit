@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useCallback } from 'react';
 import {
     StyleSheet,
     SafeAreaView,
@@ -28,7 +28,7 @@ const ForgotPin = ({ navigation, route }) => {
     const [exitApp, setExitApp] = useState(0)
 
    
-    const handleGoBack = () => {
+    const handleGoBack1 = () => {
         if (routes.name === "ForgotPin") {
             if (exitApp === 0) {
                 setExitApp(exitApp + 1);
@@ -49,6 +49,10 @@ const ForgotPin = ({ navigation, route }) => {
         setModalExitAppVisible(true)
         return true;
     };
+    const handleGoBack = useCallback(() => {
+        navigation.goBack()
+        return true; // Returning true from onBackPress denotes that we have handled the event
+    }, [navigation]);
 
     useFocusEffect(
         React.useCallback(() => {
@@ -65,7 +69,7 @@ const ForgotPin = ({ navigation, route }) => {
             <SafeAreaView style={styles.container1} />
             <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
 
-            <Header navigation={navigation} name={t('common:ForgotPin')} onPress={backAction} />
+            <Header navigation={navigation} name={t('common:ForgotPin')} onPress={handleGoBack} />
             <View style={styles.ViewContent}>
                 <Pin navigation={navigation} conFirmDate={route.params.conFirmdate} />
             </View>

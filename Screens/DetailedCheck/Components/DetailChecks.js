@@ -111,7 +111,7 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
             console.log("text special",text)
             
         }
-       else if (!(/^[^!-\/:-@\.,[-`{-~ ]+$/.test(text)) ){
+       else if (!(/^[^!-\/:-@\.,[-`{-~]+$/.test(text)) ){
             setVillagenamedata([])
             setBstatus(false)
             setChecked(false)
@@ -139,7 +139,7 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
             setPstatus(false)
             setChecked(false)
             setPostofficename('')
-        } else if (!(/^[^!-\/:-@\.,[-`{-~ ]+$/.test(text)) ){
+        } else if (!(/^[^!-\/:-@\.,[-`{-~]+$/.test(text)) ){
             setPostofficenamedata([])
             setPstatus(false)
             setChecked(false)
@@ -156,7 +156,7 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
 
     const searchlandmarkname = (text) => {
         console.log('landmark NAME ===>>>', text)
-        if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(text) || text === ''){
+        if (/^[^!-\/:-@\.,[-`{-~]+$/.test(text) || text === ''){
             setLandmarkname(text)
             setLandmarkname1(text)
             console.log("inside this land",text)

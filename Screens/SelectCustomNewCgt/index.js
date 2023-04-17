@@ -1,6 +1,6 @@
 
 import { StyleSheet, Text, View, BackHandler, StatusBar,
-  SafeAreaView, Platform, TextInput, ScrollView, TouchableOpacity } from 'react-native'
+  SafeAreaView, Platform, TextInput, ScrollView, TouchableOpacity,Dimensions } from 'react-native'
 import React, { useCallback, useState,useEffect } from 'react'
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Statusbar from '../../Components/StatusBar';
@@ -17,7 +17,7 @@ import SearchIcon from 'react-native-vector-icons/Feather'
 import { useTranslation } from 'react-i18next';
 import { api } from '../../Services/Api';
 import moment from 'moment';
-
+const { height, width } = Dimensions.get('screen');
 
 
 
@@ -228,7 +228,7 @@ return true
          <View style={styles.boxView}>
            <View style={styles.contentView}>
              <Text style={styles.timeText}>{route?.params?.data.time}</Text>
-             <Text style={styles.dateText}>{moment(selectedDate).utc().format("ddd")},{moment(selectedDate).utc().format("DD MMM")}</Text>
+             <Text style={styles.dateText}>{moment(selectedDate).utc().format("ddd")}, {moment(selectedDate).utc().format("DD MMM")}</Text>
            </View>
            
            < TouchableOpacity style={styles.editView} onPress={()=>navigation.navigate('NewCgt')}>
@@ -266,9 +266,10 @@ return true
            </>
            : null
          }
-         {text?.length > 0 && !selectedItem
+         <View style={{paddingBottom:15}}>
+         {customerList?.length > 0 && !selectedItem
            ?
-           <View style={{ borderWidth: 1, paddingTop: 12, paddingBottom: 22, borderColor: COLORS.colorBorder, marginTop: 10, borderRadius: 8 }}>
+           <View style={{ borderWidth: 1, paddingTop: 12, paddingBottom: 12, borderColor: COLORS.colorBorder, marginTop: 10, borderRadius: 8 }}>
              {customerList?.map((item, index) =>
                <>
                  <TouchableOpacity style={{ flexDirection: 'row', paddingHorizontal: 15, }}
@@ -291,24 +292,25 @@ return true
                    <Text style={[styles.numText, { paddingLeft: 6 }]}>{item?.mobile.replace(/^.{0}/g, '').replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X")}</Text>
                  </TouchableOpacity>
 
-                 {index !== 2
+                 {customerList?.length -1 !== index
                    ? <View style={styles.lineView} />
                    : null
                  }
                </>
              )}
 
-             {
-               customerList && (
-                 <View>
-                         <Text style={[styles.nameText,{padding:10}]}>No match Found</Text>
-                 </View>
-               )
-             }
+          
            </View>
            : null
          }
-    
+         </View>
+       {
+               customerList?.length === 0 && (
+                 <View style={styles.ViewMapBranch}>
+                         <Text style={[styles.nameText,{padding:10}]}>No results Found</Text>
+                 </View>
+               )
+             }
          {selectedItem
            ? <SelectedTab item={selectedItem} setEnab={setEnab}/>
            : null
@@ -415,7 +417,7 @@ const styles = StyleSheet.create({
    color: COLORS.colorDark,
  },
  lineView: {
-   borderWidth: 0.9,
+   borderWidth: 0.6,
    borderColor: COLORS.Gray6,
    backgroundColor: COLORS.Gray6,
    opacity: 0.5,
@@ -454,6 +456,18 @@ const styles = StyleSheet.create({
    fontFamily: FONTS.FontBold,
    color: COLORS.colorBackground,
    letterSpacing: 0.64
- }
+ },
+ ViewMapBranch: {
+  width: width * 0.89,
+  height: width * 0.15,
+  borderWidth: 1,
+  paddingLeft: width * 0.01,
+  borderColor: 'rgba(236, 235, 237, 1)',
+  borderRadius: 8,
+  marginTop: width * 0.025,
+  backgroundColor: '#FCFCFC',
+  alignItems:'flex-start',
+  justifyContent:'center'
+},
 
 })

@@ -120,7 +120,13 @@ const CalendarStrips = ({ callback }) => {
 
   }
 
-
+  // useEffect(()=>{
+  //   if(moment(item.date).format('DD-MM-YYYY') === moment(new Date()).format('DD-MM-YYYY')){
+  //     console.log("today")
+  //   }else{
+  //     console.log("not today")
+  //   }
+  // },[])
 
   return (
     <View style={styles.container}>
@@ -165,6 +171,7 @@ const CalendarStrips = ({ callback }) => {
         scrollToOnSetSelectedDate={true}
         useIsoWeekday={false}
         dayComponent={(item) => {
+          console.log("item date week",item?.date?.format('DD-MM-YYYY'))
           return (
             <TouchableOpacity
               style={{
@@ -173,9 +180,9 @@ const CalendarStrips = ({ callback }) => {
                 flex: 1,
                 marginHorizontal: 5,
                 borderRadius: 10,
-                borderColor: moment(selectedDate).format('DD-MM-YYYY') === moment(item?.date).format('DD-MM-YYYY') ? COLORS.colorB : '#E5E8EB',
+                borderColor: moment(selectedDate).format('DD-MM-YYYY') === moment(item?.date).format('DD-MM-YYYY') || moment(item?.date).format('DD-MM-YYYY') === moment(new Date()).format('DD-MM-YYYY')? COLORS.colorB : '#E5E8EB',
                 borderWidth: 0.5,
-                backgroundColor: moment(selectedDate).format('DD-MM-YYYY') === moment(item?.date).format('DD-MM-YYYY') ? COLORS.colorB : COLORS.colorBackground
+                backgroundColor: moment(selectedDate).format('DD-MM-YYYY') === moment(item?.date).format('DD-MM-YYYY') || moment(item?.date).format('DD-MM-YYYY') === moment(new Date()).format('DD-MM-YYYY') ? COLORS.colorB : COLORS.colorBackground
               }}
               onPress={() => {
                 setSelectedDate(item?.date._d),
@@ -185,12 +192,13 @@ const CalendarStrips = ({ callback }) => {
               }}>
               <Text
                 style={{
-                  color: moment(selectedDate).format('DD-MM-YYYY') === moment(item?.date).format('DD-MM-YYYY') ? COLORS.colorBackground : '#171930',
+                  color: moment(selectedDate).format('DD-MM-YYYY') === moment(item?.date).format('DD-MM-YYYY') || moment(item?.date).format('DD-MM-YYYY') === moment(new Date()).format('DD-MM-YYYY') ?
+                   COLORS.colorBackground : '#171930' ,
                   fontSize: 11,
                   textTransform: 'capitalize',
                   fontFamily: FONTS.FontRegular
                 }}>{moment(item?.date).format('DD-MM-YYYY') === moment(new Date()).format('DD-MM-YYYY') ? 'Today' : moment(item?.date).format('ddd')}</Text>
-              <Text style={{ color: moment(selectedDate).format('DD-MM-YYYY') === moment(item?.date).format('DD-MM-YYYY') ? COLORS.colorBackground : '#171930', fontSize: 15, fontFamily: FONTS.FontSemiB }}>{moment(item?.date).format('DD').replace(/\b0/g, '')}</Text>
+              <Text style={{ color: moment(selectedDate).format('DD-MM-YYYY') === moment(item?.date).format('DD-MM-YYYY') || moment(item?.date).format('DD-MM-YYYY') === moment(new Date()).format('DD-MM-YYYY') ? COLORS.colorBackground : '#171930', fontSize: 15, fontFamily: FONTS.FontSemiB }}>{moment(item?.date).format('DD').replace(/\b0/g, '')}</Text>
             </TouchableOpacity>
           )
         }}

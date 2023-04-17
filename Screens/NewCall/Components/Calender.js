@@ -1,9 +1,10 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef,useEffect } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import CalendarStrip from 'react-native-calendar-strip';
 import moment from 'moment'
 import { COLORS, FONTS } from '../../../Constants/Constants';
 import Icon1 from 'react-native-vector-icons/SimpleLineIcons'
+
 
 const CalendarStrips = () => {
 
@@ -44,6 +45,7 @@ const CalendarStrips = () => {
     }
 
   }
+
 
   return (
     <View style={styles.container}>

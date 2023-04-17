@@ -14,30 +14,30 @@ const MeetTab = (props) => {
 
     useEffect(() => {
         getData()
-        console.log('selected tab',props)
+        console.log('selected tab', props)
     }, [])
 
 
     // String.prototype.replaceAt = function (index, replacement) {
     //     return this.substring(0, index) + replacement + this.substring(index + replacement.length);
     // }
-    const  getRandomColor =()=> {
+    const getRandomColor = () => {
         var letters = '0123456789ABCDEF';
         var color = '#';
         for (var i = 0; i < 3; i++) {
-          color += letters[Math.floor(Math.random() * 8)];
+            color += letters[Math.floor(Math.random() * 8)];
         }
         return color;
-      }
-    
-      String.prototype.replaceAt = function (index, replacement) {
+    }
+
+    String.prototype.replaceAt = function (index, replacement) {
         return this.substring(0, index) + replacement + this.substring(index + replacement.length);
-      }
-      const getInitials = (name) => {
-      
+    }
+    const getInitials = (name) => {
+
         let initials;
         const nameSplit = name?.split(" ");
-         const nameLength = nameSplit?.length;
+        const nameLength = nameSplit?.length;
         if (nameLength > 1) {
             initials =
                 nameSplit[0].substring(0, 1) +
@@ -45,10 +45,10 @@ const MeetTab = (props) => {
         } else if (nameLength === 1) {
             initials = nameSplit[0].substring(0, 1);
         } else return;
-    
-         return initials.toUpperCase();
+
+        return initials.toUpperCase();
     };
-    
+
 
     const getData = async () => {
         try {
@@ -59,42 +59,42 @@ const MeetTab = (props) => {
         }
     }
     return (
-       
-                    <View
-                       
-                        style={styles.boxStyle} key={props.id}>
-                        <View style={{ flex: 1, flexDirection: 'row' }}>
 
-                            <View style={[styles.circleStyle, { backgroundColor: getRandomColor() }]}>
-                                <Text style={styles.circleText}>{getInitials(props.item.name ? props.item.name : props.item.mobile)}</Text>
-                            </View>
+        <View
 
-                            <View style={{ flexDirection: 'column', paddingLeft: 12, paddingTop: 5 }}>
-                                <Text style={styles.nameText}>{props?.item?.name ? props?.item?.name : props?.item?.mobile}</Text>
-                                <View style={{ flexDirection: 'row', }}>
-                                {props.item?.pin ? (    <View style={{ paddingTop: 5, paddingRight: 1 }}>
-                                        <Icon1 name="location-outline" color={"black"} />
-                                    </View>):null}
-                                    <Text style={[styles.idText, { paddingTop: 4 }]}>{props?.item?.pin}</Text>
-                                </View>
-                            </View>
+            style={styles.boxStyle} key={props.id}>
+            <View style={{ flex: 1, flexDirection: 'row' }}>
 
-                        </View>
+                <View style={[styles.circleStyle, { backgroundColor: getRandomColor() }]}>
+                    <Text style={styles.circleText}>{getInitials(props.item.name ? props.item.name : props.item.mobile)}</Text>
+                </View>
 
-                        <View style={{ flexDirection: 'column', paddingTop: 5, alignItems: 'flex-end' }}>
-                            <View style={{ flexDirection: 'row' }}>
-                                <Icon2 name="phone-in-talk-outline" color={"black"} size={15} />
-                                <Text style={[styles.numText, { paddingLeft: 6 }]}>{props?.item?.mobile.replace(/^.{0}/g, '').replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X")}</Text>
-                            </View>
-
-                            <View style={[styles.leadContainer, { backgroundColor: COLORS.LightBlue }]}>
-                                <Text style={[styles.leadText, { color: COLORS.DarkBlue }]}>{t('common:ConductCGT')}</Text>
-                            </View>
-
-                        </View>
-
+                <View style={{ flexDirection: 'column', paddingLeft: 12, paddingTop: 5 }}>
+                    <Text style={styles.nameText}>{props?.item?.name ? props?.item?.name : props?.item?.mobile}</Text>
+                    <View style={{ flexDirection: 'row', }}>
+                        {props.item?.pin ? (<View style={{ paddingTop: 5, paddingRight: 1 }}>
+                            <Icon1 name="location-outline" color={"black"} />
+                        </View>) : null}
+                        <Text style={[styles.idText, { paddingTop: 4 }]}>{props?.item?.pin}</Text>
                     </View>
-              
+                </View>
+
+            </View>
+
+            <View style={{ flexDirection: 'column', paddingTop: 5, alignItems: 'flex-end' }}>
+                <View style={{ flexDirection: 'row' }}>
+                    <Icon2 name="phone-in-talk-outline" color={"black"} size={15} />
+                    <Text style={[styles.numText, { paddingLeft: 6 }]}>{props?.item?.mobile.replace(/^.{0}/g, '').replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X")}</Text>
+                </View>
+
+                <View style={[styles.leadContainer, { backgroundColor: COLORS.LightBlue }]}>
+                    <Text style={[styles.leadText, { color: COLORS.DarkBlue }]}>{t('common:ConductCGT')}</Text>
+                </View>
+
+            </View>
+
+        </View>
+
     )
 }
 

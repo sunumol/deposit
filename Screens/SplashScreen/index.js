@@ -32,8 +32,10 @@ const SplashScreen = ({ navigation }) => {
       }
       
       const isGrantedPermissions = async () => {
-        const camera = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.CAMERA)
-        const Location = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION)
+        const camera = await PermissionsAndroid?.check(PermissionsAndroid?.PERMISSIONS?.CAMERA)
+        const Location = await PermissionsAndroid?.check(PermissionsAndroid?.PERMISSIONS?.ACCESS_FINE_LOCATION)
+        console.log("hello")
+        alert("helolo")
         if (camera && Location) {
             const Pin = await AsyncStorage.getItem('Pin')
             const PinDate = await AsyncStorage.getItem('PinDate')
