@@ -27,7 +27,7 @@ import { api } from '../../../Services/Api';
 
 
 const Cgt = ({navigation,data,date}) => {
-    console.log('cgt----->>>',date)
+    console.log('',date)
     const [status, setStatus] = useState(false);
     const weekDay = [];
     const year = [];

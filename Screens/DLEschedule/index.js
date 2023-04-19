@@ -16,7 +16,7 @@ import {
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { COLORS, FONTS } from '../../Constants/Constants';
 import Statusbar from '../../Components/StatusBar';
-import Header from '../../Components/RepayHeader';
+import Header from '../../Components/Header';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRoute } from '@react-navigation/native';
 import { useFocusEffect } from '@react-navigation/native';
@@ -92,7 +92,7 @@ const DLESchedule = ({ navigation,route}) => {
             <SafeAreaView style={styles.container1} />
             <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
 
-            <Header name="Schedule DLE Check" navigation={navigation} popup={true} onPress={handleGoBack} />
+            <Header name="Schedule DLE Check" navigation={navigation} onPress={handleGoBack} />
 
             <View style={styles.ViewContent}>
                 {/* <Text style={{color:'red'}} onPress={()=>setModalVisible1(true)}>MODAL</Text> */}

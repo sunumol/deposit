@@ -62,7 +62,7 @@ const Vehicle = ({ navigation }) => {
     const [spousedetail,setSpousedetail] = useState('')
     const [Status, setStatus] = useState(false)
     const [ModalVisible1, setModalVisible1] = useState(false)
-    const [searchvehicledata, setSearchvehicledata] = useState('')
+    const [searchvehicledata, setSearchvehicledata] = useState({})
 
     const toggleCheckbox = () => setChecked(!checked);
 
@@ -166,14 +166,14 @@ const Vehicle = ({ navigation }) => {
        const saveVehicleDetails = async () => {
         console.log('api called1')
 
-        const data = searchvehicledata
+        const data = [searchvehicledata]
         await api.saveVehicleDetails(data).then((res) => {
-            console.log('-------------------res fetchVehicleDetailsForDle1', res?.data?.body)
+            console.log('-------------------res save vehicle', res?.data?.body)
             if (res?.status) {
-                navigation.navigate('VehicleOwn',{vehicle:searchvehicledata})
+                navigation.navigate('VehicleOwn')
             }
         }).catch((err) => {
-            console.log('-------------------err fetchVehicleDetailsForDle1', err?.response)
+            console.log('-------------------err save vehicle', err?.response)
         })
     };
 
@@ -357,7 +357,7 @@ const Vehicle = ({ navigation }) => {
                                         <Text style={[styles.continueText, { color: COLORS.colorB }]}>Reject</Text>
                                     </TouchableOpacity>
                                     {console.log('~~~~~>>>',searchvehicledata)}
-                                    <TouchableOpacity onPress={() => navigation.navigate('VehicleOwn',{vehicle:searchvehicledata})}
+                                    <TouchableOpacity onPress={() => saveVehicleDetails()}
                                         style={[styles.buttonView1, { backgroundColor: COLORS.colorB }]}>
                                         <Text style={[styles.continueText, { color: COLORS.colorBackground }]}>Confirm</Text>
                                     </TouchableOpacity>

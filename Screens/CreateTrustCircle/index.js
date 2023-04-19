@@ -62,6 +62,8 @@ const CreateTrustCircle = ({ navigation,route }) => {
 
     useEffect(() => {
         getTCLimitDetails()
+        getTclist()
+        console.log('======>>>>+++++',customerID)
     }, [customerList,customerID])
 
     // ------------------ getTCLimitDetails Api Call Start ------------------
@@ -91,6 +93,24 @@ const CreateTrustCircle = ({ navigation,route }) => {
             }
         }).catch((err) => {
             console.log('-------------------err', err?.response)
+        })
+    };
+    // ------------------ HomeScreen Api Call End ------------------
+
+
+
+    const getTclist = async () => {
+        console.log('api called')
+        const data = {
+            "employeeId":1,
+            "customerNameOrNumber":"",
+            "addedTcIds":customerID
+        }
+        await api.getCustomerListForTc(data).then((res) => {
+            console.log('-------------------res getCustomerListForTc', res)
+            
+        }).catch((err) => {
+            console.log('-------------------getCustomerListForTc', err?.response)
         })
     };
     // ------------------ HomeScreen Api Call End ------------------

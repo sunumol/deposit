@@ -159,12 +159,12 @@ const DetailChecks = ({ navigation, setState,proofType1,imageUrl1,relation1,rela
                 console.log('-------------------res  update Residence owner', res)
                 if (res?.status) {
                     if(Purposes == 'Spouse'){
-                    navigation.navigate('ContinuingGuarantor') 
-                   //navigation.navigate('ContinuingGuarantor',{relation:'Spouse'}) 
+                    //navigation.navigate('ContinuingGuarantor') 
+                   navigation.navigate('ContinuingGuarantor',{relation:'Spouse'}) 
 
                     }else{
-                        //navigation.navigate('ContinuingGuarantor',{relation:'other'})  
-                        navigation.navigate('ContinuingGuarantor')  
+                        navigation.navigate('ContinuingGuarantor',{relation:'other'})  
+                       // navigation.navigate('ContinuingGuarantor')  
 
                     }
                 }

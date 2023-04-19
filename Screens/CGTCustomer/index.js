@@ -146,6 +146,21 @@ const CgtCustomer = ({ navigation, route }) => {
     };
     // ------------------ Update Activity Reject Api Call End ------------------
 
+    const getInitials = (name) => {
+
+        let initials;
+        const nameSplit = name?.split(" ");
+        const nameLength = nameSplit?.length;
+        if (nameLength > 1) {
+            initials =
+                nameSplit[0].substring(0, 1) +
+                nameSplit[nameLength - 1].substring(0, 1);
+        } else if (nameLength === 1) {
+            initials = nameSplit[0].substring(0, 1);
+        } else return;
+
+        return initials.toUpperCase();
+    };
     return (
         <SafeAreaProvider>
             <SafeAreaView style={styles.container1} />
@@ -160,7 +175,7 @@ const CgtCustomer = ({ navigation, route }) => {
                             <Text style={styles.timeText}>{details?.cgtTime?.slice(0, -3)} PM</Text>
                             <Text style={styles.dateText}>{details?.cgtDate ? moment(new Date(details?.cgtDate)).format("ddd, DD MMM") : ''}</Text>
                         </View>
-                        <TouchableOpacity style={styles.editView} onPress={() => navigation.navigate('NewCgt')}>
+                        <TouchableOpacity style={styles.editView} onPress={() => navigation.navigate('NewCgt',{reschedule:details})}>
                             <Date />
                             <Text style={styles.changeText}>Reschedule CGT</Text>
                         </TouchableOpacity>
@@ -171,7 +186,7 @@ const CgtCustomer = ({ navigation, route }) => {
                             <View style={{ flex: 1, flexDirection: 'row' }}>
 
                                 <View style={[styles.circleStyle, { backgroundColor: '#6979F8' }]}>
-                                    <Text style={styles.circleText}>AA</Text>
+                                    <Text style={styles.circleText}>{getInitials(details?.customerName)}</Text>
                                 </View>
 
                                 <View style={{ flexDirection: 'column', paddingLeft: 12, paddingTop: 5 }}>

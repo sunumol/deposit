@@ -311,8 +311,8 @@ const styles = StyleSheet.create({
     modalView1: {
         backgroundColor: "white",
         shadowColor: "#000",
-        justifyContent:'center',
-        alignItems:'center',
+        justifyContent:'flex-start',
+        paddingHorizontal: Dimensions.get('window').width*0.06,
         paddingBottom: 7
         
     },

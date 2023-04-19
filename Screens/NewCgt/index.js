@@ -28,9 +28,9 @@ import moment from 'moment';
 import { api } from '../../Services/Api';
 import { useDispatch } from 'react-redux';
 
-const NewCgt = ({ navigation, }) => {
-    const route = useRoute();
-    console.log("route name",);
+const NewCgt = ({ navigation,route }) => {
+  //  const route = useRoute();
+    console.log("route name=======================>>>>>>>>>>>>>>>>>>",route?.params?.reschedule);
     const isDarkMode = true
     const { t } = useTranslation();
     const [lang, setLang] = useState('');
