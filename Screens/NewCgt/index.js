@@ -28,12 +28,13 @@ import CalendarStrips from './Components/Calender';
 import moment from 'moment';
 import { api } from '../../Services/Api';
 import { useDispatch, useSelector } from 'react-redux';
+import CalenderModal from './Components/CalenderModal';
+import CgtModal from '../SelectCustomNewCgt/Components/Modal';
 
+const NewCgt = ({ navigation, date, route }) => {
+    // const route = useRoute();
 
-const NewCgt = ({ navigation, date }) => {
-    const route = useRoute();
-
-    console.log("rEDUX DATA", date);
+    console.log("rEDUX DATA", route?.params?.reschedule);
     const isDarkMode = true
     const [CgtDate, setCgtDate] = useState('')
     const { t } = useTranslation();
@@ -44,23 +45,25 @@ const NewCgt = ({ navigation, date }) => {
     const [selectedDate, setSelectedDate] = useState(moment().format());
     const [NewDates, setNewDates] = useState(new Date())
     const cgtdate = useSelector(state => state?.NewcgtSlot)
-    const [status,setStatus] = useState(true)
-   
+    const [status, setStatus] = useState(true)
+    const [ModalVisible1, setModalVisible1] = useState(false)
+    const [ModalVisible, setModalVisible] = useState(false)
+    const [reschedulecgt, setReschedulecgt] = useState('')
     const dispatch = useDispatch()
 
     useEffect(() => {
         getData(),
-       // getCGTslot()
+            // getCGTslot()
 
-        //  setCgtDate(useSelector(state => state?.NewcgtSlot));
-        console.log("slectedDATE data pass", NewDates)
+            //  setCgtDate(useSelector(state => state?.NewcgtSlot));
+            console.log("slectedDATE data pass", NewDates)
     }, [])
 
     const getData = async () => {
         try {
             const lang = await AsyncStorage.getItem('user-language')
-           const Cgtdate = await AsyncStorage.getItem('DATECGT')
-           console.log("cgtdate async",Cgtdate)
+            const Cgtdate = await AsyncStorage.getItem('DATECGT')
+            console.log("cgtdate async", Cgtdate)
             setLang(lang)
             //setNewDates(Cgtdate)
             getCGTslot_callback(Cgtdate)
@@ -73,18 +76,18 @@ const NewCgt = ({ navigation, date }) => {
         React.useCallback(() => {
             getData()
 
-           // const Cgtdate =  AsyncStorage.getItem('DATECGT')
-          console.log('Screen was focused',NewDates);
-          
-          // Do something when the screen is focused
-          return () => {
-            console.log('Screen was focused');
-            // Do something when the screen is unfocused
-            // Useful for cleanup functions
-          };
+            // const Cgtdate =  AsyncStorage.getItem('DATECGT')
+            console.log('Screen was focused', NewDates);
+
+            // Do something when the screen is focused
+            return () => {
+                console.log('Screen was focused');
+                // Do something when the screen is unfocused
+                // Useful for cleanup functions
+            };
         }, [])
-      );
-    
+    );
+
 
     const callback = (value) => {
         console.log("callback called", value)
@@ -94,11 +97,11 @@ const NewCgt = ({ navigation, date }) => {
         getCGTslot()
         console.log("date of passing", NewDates)
     }
- 
+
     // ------------------ get Slot Api Call Start ------------------
     const getCGTslot = async (date) => {
         // console.log("function set",date)
-        console.log('api called', NewDates)
+        console.log('api called1234', NewDates)
         //console.log("selectedDate", selectedDate)
         const data = {
             "employeeId": 1,
@@ -110,11 +113,11 @@ const NewCgt = ({ navigation, date }) => {
                 payload: res?.data?.body[0].sloatActivityList,
             });
             console.log("data print", NewDates)
-            console.log('------------------- CGT slot res', res.data?.body[0].sloatActivityList)
+            console.log('------------------- CGT slot res', res)
             setSlotlist(res?.data?.body[0].sloatActivityList);
             setStatus(false)
             setEnab(false)
-            
+
 
 
         })
@@ -126,34 +129,34 @@ const NewCgt = ({ navigation, date }) => {
     // ------------------ get slot Api Call End ------------------
 
 
-        // ------------------ get Slot Api Call Start ------------------
-        const getCGTslot_callback = async (cgtdate) => {
-            // console.log("function set",date)
-            console.log('api called',cgtdate,NewDates)
-            //console.log("selectedDate", selectedDate)
-            const data = {
-                "employeeId": 1,
-                "selectedDate": moment(cgtdate?cgtdate:NewDates).utc().format('DD-MM-YYYY')
-            };
-            await api.getCGTslot(data).then((res) => {
-                dispatch({
-                    type: 'SET_ACTIVITY',
-                    payload: res?.data?.body[0].sloatActivityList,
-                });
-                console.log("data print", NewDates)
-                console.log('------------------- CGT slot res', res.data?.body[0].sloatActivityList)
-                setSlotlist(res?.data?.body[0].sloatActivityList);
-                setStatus(false)
-                setEnab(false)
-                
-    
-    
-            })
-                .catch((err) => {
-                    console.log('-------------------err slot', err?.response)
-                    setStatus(false)
-                })
+    // ------------------ get Slot Api Call Start ------------------
+    const getCGTslot_callback = async (cgtdate) => {
+        // console.log("function set",date)
+        console.log('api called', cgtdate, NewDates)
+        //console.log("selectedDate", selectedDate)
+        const data = {
+            "employeeId": 1,
+            "selectedDate": moment(cgtdate ? cgtdate : NewDates).utc().format('DD-MM-YYYY')
         };
+        await api.getCGTslot(data).then((res) => {
+            dispatch({
+                type: 'SET_ACTIVITY',
+                payload: res?.data?.body[0].sloatActivityList,
+            });
+            console.log("data print", NewDates)
+            console.log('------------------- CGT slot res', res)
+            setSlotlist(res?.data?.body[0].sloatActivityList);
+            setStatus(false)
+            setEnab(false)
+
+
+
+        })
+            .catch((err) => {
+                console.log('-------------------err slot', err?.response)
+                setStatus(false)
+            })
+    };
 
     const handleGoBack = useCallback(() => {
         if (BStatus) {
@@ -174,9 +177,47 @@ const NewCgt = ({ navigation, date }) => {
     );
 
 
+    // ------------------ get Customer List Api Call Start ------------------
+    const createCGT = async () => {
+
+
+
+
+        let date = (moment(selectedDate).utc().format("DD-MM-YYYY"))
+        // let selectedtime = route?.params?.data?.time
+        let selectedtime = moment(route?.params?.data?.time, ["h:mm A"]).format("HH:mm");
+        let time = selectedtime.slice(0, 5);
+
+
+
+
+
+        console.log('schedule time========>>>>>', route?.params?.date, time)
+
+        const data = {
+            "employeeId": 1,
+            "customerId": reschedulecgt.primaryCustomerId,
+            "scheduleStartTime": moment(route?.params?.date).format("DD-MM-YYYY") + " " + time
+        }
+        await api.createCGT(data).then((res) => {
+            console.log('------------------- create CGT res', res)
+            // setCustomerList(res?.data?.body)
+            setModalVisible(true)
+            setEnab(true)
+        })
+            .catch((err) => {
+                console.log('-------------------err', err?.response)
+            })
+    };
+    // --
 
 
     { console.log('====fkjkfjkjfkjrf', enab) }
+
+
+    useEffect(() => {
+        setReschedulecgt(route?.params?.rescheduledata)
+    }, [route?.params?.rescheduledata])
 
     useEffect(() => {
         getCGTslot()
@@ -185,6 +226,7 @@ const NewCgt = ({ navigation, date }) => {
     useEffect(() => {
         getCGTslot(NewDates)
         console.log("API CALLED")
+       
     }, [NewDates]);
 
     useEffect(() => {
@@ -202,18 +244,40 @@ const NewCgt = ({ navigation, date }) => {
             <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
 
             <Header navigation={navigation} name={"New CGT"} activity={true} onPress={handleGoBack} />
-            {status ? 
-                <View style={{alignItems:'center',justifyContent:'center',flex:1,}}>
-                <ActivityIndicator size={30} color={COLORS.colorB}/>
-                </View>:
-            <View style={styles.ViewContent}>
-                <CalendarStrips callback={callback} setNewDates={setNewDates} NewDates={NewDates} getCGTslot={()=>getCGTslot()} />
-                <Cgt navigation={navigation} data={slotlist} date={NewDates} setEnab={setEnab} />
+            {status ?
+                <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1, }}>
+                    <ActivityIndicator size={30} color={COLORS.colorB} />
+                </View> :
+                <View style={styles.ViewContent}>
+                    <CalendarStrips callback={callback} setNewDates={setNewDates} NewDates={NewDates} getCGTslot={() => getCGTslot()} />
+                    <Cgt navigation={navigation} data={slotlist} date={NewDates} setEnab={setEnab} setModalVisible1={setModalVisible1} rescheduledata={route?.params?.reschedule} slotlistrefresh={getCGTslot} />
 
-                {/* <DatePicker/> */}
+                    {/* <DatePicker/> */}
 
 
-            </View>}
+                    <CalenderModal
+                        ModalVisible={ModalVisible1}
+                        onPress1={() => {
+                            setModalVisible1(false)
+
+                        }}
+                        onPressOut={() => {
+                            setModalVisible1(!ModalVisible1)
+                        }}
+                        setModalVisible={setModalVisible1}
+                    />
+
+                    <CgtModal ModalVisible={ModalVisible}
+                        onPressOut={() => {
+                            setModalVisible(false)
+                            //  navigation.navigate('NewCgt')
+                        }}
+
+                        navigation={navigation}
+                        //  onPressOut={() => setModalVisible(!ModalVisible)}
+                        setModalVisible={setModalVisible} />
+
+                </View>}
 
         </SafeAreaProvider>
     )
