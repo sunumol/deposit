@@ -154,19 +154,7 @@ const PinScreen = ({ navigation, }) => {
                 }
             } else {
                 setModalVisible(!ModalVisible)
-            }
-
-            if (Pin === code) {
-                navigation.navigate('Profile')
-            } else {
-                setError(true)
-                // clearText()
-                setInvalidState(invalidState + 1)
-                if (invalidState === 4) {
-                    invalidOtpApi()
-                }
-                console.log('invalidState', invalidState)
-            }
+            }   
         } catch (e) {
             console.log(e)
         }

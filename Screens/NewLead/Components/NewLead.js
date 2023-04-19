@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState,useRef } from 'react';
 import {
     View,
     Image,
@@ -41,7 +41,11 @@ const NewLead1 = ({ navigation,setVillageStatus,VillageStatus }) => {
     const [ResultError, setResultError] = useState(false)
     const [VillageEnable,setVillageEnable] =  useState(false)
     const [vilageList, setVillageList] = useState([])
-
+    const [isFocused, setIsFocused] = useState(false);
+    const [addressFocus, setAddressFocus] = useState(false);
+    const [addressFocus1, setAddressFocus1] = useState(false);
+    const adddressRef = useRef();
+    const MobileRef = useRef();
     const [error, setError] = useState({
         Name: true,
         Mobile: true,
@@ -130,6 +134,7 @@ const NewLead1 = ({ navigation,setVillageStatus,VillageStatus }) => {
                 }
                 else if (res?.data?.body == 'Lead generated') {
                     setModalVisible(true)
+                    setIsFocused(false)
                 }
             }
             console.log('-------------------res', res)
@@ -157,12 +162,18 @@ const NewLead1 = ({ navigation,setVillageStatus,VillageStatus }) => {
 
 
                         <TextInputBox
+                          returnKeyType="next"
+                            ref={adddressRef}
                             //pointerEvents="none"
                             name={t('common:Name')}
                             value={Name}
                             color={"#1A051D"}
                             maxLength={40}
                             keyboardType1={'email-address'}
+                            onFocus={() => setAddressFocus(true)}
+                            onBlur={() => setAddressFocus(false)}
+                            
+                            onSubmitEditing={() => MobileRef.current.focus()}
                             // edit={AccStatus}
                             onChangeText={(text) => {
                                 if (/^[^!-\/:-@\.,[-`{-~1234567890₹~`|•√π÷×¶∆€¥$¢^°={}%©®™✓]+$/.test(text) || text === '') {
@@ -178,6 +189,7 @@ const NewLead1 = ({ navigation,setVillageStatus,VillageStatus }) => {
 
 
                         <TextInputBox
+                        ref={MobileRef}
                             name={t('common:SmartPhone')}
                             value={Mobile}
                             keyboardType1={'numeric'}
@@ -186,7 +198,9 @@ const NewLead1 = ({ navigation,setVillageStatus,VillageStatus }) => {
                             onChangeText={(text) => {
                                 OnchangeNumber(text)
                             }}
-                            onFocus={false}
+                            onFocus={() => setAddressFocus1(true)}
+                            onBlur={() => setAddressFocus1(false)}
+                            onSubmitEditing={() => MobileRef.current.focus()}
                         />
 
                         <TextInputBox
@@ -196,6 +210,7 @@ const NewLead1 = ({ navigation,setVillageStatus,VillageStatus }) => {
                             color={"#1A051D"}
                             maxLength={6}
                             onChangeText={(text) => {
+                                setVillage('')
                                // setPincode(text)
                           
                                if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(text) || text === '') {

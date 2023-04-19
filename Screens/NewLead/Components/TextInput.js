@@ -11,8 +11,8 @@ import { FONTS } from "../../../Constants/Constants";
 
 const { height, width } = Dimensions.get('screen');
 
-const TextInputBox = ({ name, value, onChangeText, onFocus, onBlur,
-    secureTextEntry, backgroundColor1, keyboardType1, color, edit,maxLength }) => {
+const TextInputBox = ({ name, value, onChangeText, onFocus, onBlur,ref,
+    secureTextEntry, backgroundColor1, keyboardType1, color, edit,maxLength,blurOnSubmit,onSubmitEditing }) => {
 
     return (
         <SafeAreaView>
@@ -30,12 +30,16 @@ const TextInputBox = ({ name, value, onChangeText, onFocus, onBlur,
                     placeholder={''}
                     placeholderTextColor="#808080"
                     returnKeyType="done"
+                   // ref={ref}
                     //maxLength={10}
                     //autoFocus={true}
-                    onFocus={onFocus}
-                    onBlur={onBlur}
+                   // blurOnSubmit={false}
+                  //  onFocus={onFocus}
+                  //  onBlur={onBlur}
+                   // onSubmitEditing={onSubmitEditing}
                     secureTextEntry={secureTextEntry}
                     keyboardType={keyboardType1}
+            
                     onChangeText={onChangeText} />
 
             </View>

@@ -12,7 +12,8 @@ const initialState={
     customerID:[],
     cgtCustomerDetails:'',
     activityId:'',
-    slot:[]
+    slot:[],
+    NewcgtSlot:''
 }
 
 export const baseReducer = (state = initialState, action) => {
@@ -57,7 +58,12 @@ export const baseReducer = (state = initialState, action) => {
                 ...state, // return the updated state
                 slot: action.payload  
             }
-    
+            case  "SET_CREATE_DATE_CGT":  // for updating state
+            return {
+                ...state, // return the updated state
+                NewcgtSlot: action.payload  
+            }
+           
         default:
             return state;
 

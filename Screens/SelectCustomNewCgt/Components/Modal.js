@@ -7,7 +7,7 @@ const { height, width } = Dimensions.get('screen');
 import Image1 from '../../NewLead/assets/tick.svg';
 
 
-const CgtModal = ({ ModalVisible, onPressOut, setModalVisible,onPress,navigation }) => {
+const CgtModal = ({ ModalVisible, onPressOut, setModalVisible, onPress, navigation,}) => {
     const [state, setState] = useState(null);
     const { t } = useTranslation();
     const [Lang, setLang] = useState('')
@@ -37,29 +37,37 @@ const CgtModal = ({ ModalVisible, onPressOut, setModalVisible,onPress,navigation
                 navigation.navigate('NewCgt')
             }}
         >
-       <TouchableOpacity onPressOut={onPressOut}
-            style={{ backgroundColor: "#000000aa", flex: 1, alignItems: 'center', justifyContent: 'center', opacity: 5 }} >
-
-         
-
-                <View style={styles.modalContainer}>
-                    <View style={{paddingTop:width*0.08}}>
-                        <Image1 />
-                    </View>
-
-                    
-                        <Text style={[styles.textdesc,
-                             { paddingTop: width * 0.02, textAlign: 'center' }]}>{t('common:CgtDesc')}</Text>
-                
-
-                    <TouchableOpacity style={styles.buttonStyle} onPress={()=>{onPressOut()
-                    navigation.navigate('NewCgt')}}>
-                        <Text style={styles.buttonTextStyle}>{t('common:Okay')}</Text>
-                    </TouchableOpacity>
+            <View style={styles.mainContainer}>
+            <TouchableOpacity onPressOut={onPressOut}
+                style={{ backgroundColor: "#000000aa", flex: 1, alignItems: 'center', justifyContent: 'center', opacity: 5 }}
+                 >
+            </TouchableOpacity>
+            <View style={styles.modalContainer}>
+                <View style={{ paddingTop: width * 0.08 }}>
+                    <Image1 />
                 </View>
+                <Text style={[styles.textdesc,
+                { paddingTop: width * 0.02, textAlign: 'center' }]}>{t('common:CgtDesc')}</Text>
 
+                <TouchableOpacity style={styles.buttonStyle} onPress={() => {
+                    onPressOut()
+                    // navigation.reset({
+                    //     index: 0,
+                    //     routes: [{name: 'NewCgt'}],
+                    // });
+                    
+                   navigation.navigate('NewCgt')
+                }}>
+                    <Text style={styles.buttonTextStyle}>{t('common:Okay')}</Text>
                 </TouchableOpacity>
+            </View>
+
+            <TouchableOpacity onPressOut={onPressOut}
+                style={{ backgroundColor: "#000000aa", flex: 1, alignItems: 'center', justifyContent: 'center', opacity: 5 }} >
+            </TouchableOpacity>
+            </View>
         </Modal>
+
 
     );
 };
@@ -68,8 +76,8 @@ const styles = StyleSheet.create({
     mainContainer: {
         backgroundColor: "#000000aa",
         flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center'
+         alignItems: 'center',
+         justifyContent: 'center'
     },
     modalContainer: {
         width: Dimensions.get('window').width * 0.82,

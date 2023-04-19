@@ -46,7 +46,7 @@ const Activity = ({ navigation,route }) => {
     }
 
     const handleGoBack = useCallback(() => {
-    
+        AsyncStorage.removeItem('DATECGT')
             navigation.navigate('NewCgt')
         
         return true; // Returning true from onBackPress denotes that we have handled the event

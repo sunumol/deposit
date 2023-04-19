@@ -20,7 +20,7 @@ import HeaderDashBoard from '../../Components/HeaderDashBoard';
 import BottomTabs from './Components/BottomTab';
 import ItemTabs from './Components/ItemTab';
 import { api } from '../../Services/Api';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // ------- Image Imports --------------------
 import ModalExitApp from '../../Components/ModalExitApp';
@@ -33,7 +33,7 @@ import NewLead from './assets/NewLead.svg';
 import NewUser from './assets/NewUser.svg';
 
 const Profile = ({ navigation }) => {
-    
+
     const { t } = useTranslation();
     const dispatch = useDispatch()
 
@@ -74,7 +74,7 @@ const Profile = ({ navigation }) => {
         },
         {
             id: '6',
-            title:'Dashboard',
+            title: 'Dashboard',
             image: <Dashboard />,
             notification: false,
         },
@@ -97,6 +97,7 @@ const Profile = ({ navigation }) => {
 
     useEffect(() => {
         HomeScreenApiCall()
+        console.log("call api")
     }, []);
 
     useEffect(() => {
@@ -104,15 +105,15 @@ const Profile = ({ navigation }) => {
             dispatch({
                 type: 'SET_SELECTED_CUSTOMERLIST',
                 payload: [],
-              });
-              dispatch({
+            });
+            dispatch({
                 type: 'SET_SELECTED_CUSTOMERID',
                 payload: [],
-              });
+            });
         });
         return unsubscribe;
-      }, [navigation]);
-    
+    }, [navigation]);
+
 
     const backAction = () => {
         setModalExitAppVisible(true)
@@ -129,6 +130,15 @@ const Profile = ({ navigation }) => {
             };
         }, [])
     );
+
+    React.useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+            HomeScreenApiCall()
+            AsyncStorage.removeItem('DATECGT')
+        });
+        return unsubscribe;
+    }, []);
+    
     return (
         <SafeAreaProvider>
             <SafeAreaView style={styles.container1} />

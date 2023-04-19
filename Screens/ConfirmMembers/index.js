@@ -81,9 +81,9 @@ const ConfirmMembers = ({ navigation }) => {
     return unsubscribe;
   }, [navigation]);
 
-  // useEffect(() => {
-  //   getCustomerLists('')
-  // }, []);
+  useEffect(() => {
+    getCustomerLists()
+  }, []);
 
   // ------------------ get Slot Api Call Start ------------------
   const getTCDetails = async (id) => {
@@ -154,6 +154,7 @@ const ConfirmMembers = ({ navigation }) => {
                   placeholderTextColor={"#808080"}
                   onChangeText={(text) => OnchangeNumber(text)}
                   value={text}
+                  maxLength={25}
                   style={{ flex: 1, color: COLORS.colorDark, fontSize: 14, fontFamily: FONTS.FontMedium }}
 
                 />
@@ -185,7 +186,7 @@ const ConfirmMembers = ({ navigation }) => {
             }
             {text.length > 0 && !selectedItem
               ?
-              <View style={{ borderWidth: 1, paddingTop: 12, paddingBottom: 22, borderColor: COLORS.colorBorder, marginTop: 10, borderRadius: 8 }}>
+              <View style={{ borderWidth: 1, paddingTop: 12, paddingBottom: 15, borderColor: COLORS.colorBorder, marginTop: 10, borderRadius: 8 }}>
              
 
 
@@ -194,7 +195,7 @@ const ConfirmMembers = ({ navigation }) => {
                   fontFamily: FONTS.FontRegular,
                   color: COLORS.colorDark,
                   fontWeight: '400', paddingHorizontal: 10,paddingTop:5
-                }}>No Matches Found</Text>}
+                }}>No results Found</Text>}
 
 
                 {data?.map((item, index) =>
@@ -360,7 +361,7 @@ const styles = StyleSheet.create({
     color: COLORS.colorDark,
   },
   lineView: {
-    borderWidth: 0.9,
+    borderWidth: 0.6,
     borderColor: COLORS.Gray6,
     backgroundColor: COLORS.Gray6,
     opacity: 0.5,

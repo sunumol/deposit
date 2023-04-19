@@ -357,10 +357,7 @@ const LoginScreen = ({ navigation }) => {
     // -------------------------------- Fetch Message From device End -------------------------------------------
 
     // ------------------ Confirm Otp Api Call Start ------------------
-    async function ConfirmOtp(otp, allow) {
-        if (allow === "allow") {
-            otpInput2?.current?.setValue(otp)
-        }
+    async function ConfirmOtp(otp) {
         const data = {
             otp: otp,
             mobNumber: '+91' + PhoneNum,
@@ -616,7 +613,7 @@ const LoginScreen = ({ navigation }) => {
                                         otpMessage={otpMessage}
                                         setModalVisible={setModalVisible}
                                         navigation={navigation}
-                                        ConfirmOtp={(data) => ConfirmOtp(data, "allow")}
+                                        ConfirmOtp={(data) =>otpInput2?.current?.setValue(data)}
                                         setOtpFetch={setOtpFetch}
                                     /> : null}
 

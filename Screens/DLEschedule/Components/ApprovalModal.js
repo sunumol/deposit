@@ -35,6 +35,7 @@ const ApprovalModal = ({ ModalVisible, onPressOut, setModalVisible, onPress, nav
             visible={ModalVisible}
             onRequestClose={() => {
                 setModalVisible(!ModalVisible)
+                AsyncStorage.removeItem('DATECGT')
                 navigation.navigate('NewCgt')
             }}
         >

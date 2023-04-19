@@ -23,10 +23,10 @@ const { height, width } = Dimensions.get('screen');
 // import { useTranslation } from 'react-i18next';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { api } from '../../../Services/Api';
+import { useDispatch } from 'react-redux';
 
 
-
-const Cgt = ({navigation,data,date}) => {
+const Cgt = ({navigation,date,data}) => {
     console.log('cgt----->>>',date)
     const [status, setStatus] = useState(false);
     const weekDay = [];
@@ -36,7 +36,7 @@ const Cgt = ({navigation,data,date}) => {
     const [DateStatus, setDateStatus] = useState(false)
     const [selectedItem1, setSelectedItem1] = useState()
     const [enab,setEnab]=useState(false)
-
+    const dispatch = useDispatch()
 
     const ChooseDate = (day) => {
         console.log("day selection...", day)
@@ -53,12 +53,6 @@ const Cgt = ({navigation,data,date}) => {
     }
 
 
-
-    
-
-
-
-
  useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
         setStatus(false)
@@ -71,11 +65,15 @@ const Cgt = ({navigation,data,date}) => {
   
   }, [navigation]);
 
+
+
     const renderItem = ({ item }) => {
         return (
             <View style={{ justifyContent: 'space-around', margin: 5 }}>
                 <TouchableOpacity 
-                onPress={() => { item.availabilityStatu == "notAvailable" ? navigation.navigate('Activities',{data:item}): navigation.navigate('SelectCustomerNewCgt',{data : item,date :date}) }}
+                onPress={() => { item.availabilityStatu == "notAvailable" ? navigation.navigate('Activities',{data:item}):
+                 navigation.navigate('SelectCustomerNewCgt',{data : item,date :date,
+                }) }}
                     style={[styles.Touch, { borderColor: item.availabilityStatu == "partiallyAvailable"  ? 'rgba(242, 153, 74, 1)': item.availabilityStatu == "fullyAvailable"  ? 'rgba(39, 174, 96, 1)':item.availabilityStatu == "fullyAllocated"  ? 'rgba(234, 64, 71, 1)':item.availabilityStatu == "notAvailable"  ? 'rgba(155, 81, 224, 1)':null, backgroundColor: COLORS.colorBackground }]}>
                     <Text style={[styles.timeText1, { color: item.availabilityStatu == "partiallyAvailable"  ? 'rgba(242, 153, 74, 1)': item.availabilityStatu == "fullyAvailable"  ? 'rgba(39, 174, 96, 1)':item.availabilityStatu == "fullyAllocated"  ? 'rgba(234, 64, 71, 1)':item.availabilityStatu == "notAvailable"  ? 'rgba(155, 81, 224, 1)':null }]}>{item.time}</Text>
                 </TouchableOpacity>
