@@ -8,7 +8,6 @@ import {
     Dimensions,
     BackHandler,
     ImageBackground,
-    ToastAndroid
 } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -42,29 +41,13 @@ const PinScreen = ({ navigation, }) => {
     const [ModalVisible, setModalVisible] = useState(false)
     const [error, setError] = useState(false)
     const [maxError, setMaxError] = useState(false)
-    const [exitApp, setExitApp] = useState(0);
     const [modalExitAppVisible, setModalExitAppVisible] = useState(false);
     // --------------Device Configuration Start----------
-    const [ipAdrress, setIPAddress] = useState();
-    const [deviceId, setDeviceId] = useState();
-    const [mobile, setMobile] = useState();
     const [custID, setCustId] = useState()
     const [invalidState, setInvalidState] = useState(1)
     const [userName, setUserName] = useState()
     const [status, setStatus] = useState(false)
     // --------------Device Configuration End----------
-
-    useEffect(() => {
-        NetworkInfo.getIPV4Address().then(ipv4Address => {
-            console.log(ipv4Address);
-            setIPAddress(ipv4Address)
-        });
-        // -------------- Get DeviceInfo start----------
-        DeviceInfo.getUniqueId().then((uniqueId) => {
-            setDeviceId(uniqueId)
-        });
-        // -------------- Get DeviceInfo End ----------
-    }, [])
 
     useEffect(() => {
         getData()
@@ -80,12 +63,10 @@ const PinScreen = ({ navigation, }) => {
 
     const getData = async () => {
         try {
-            const Phone = await AsyncStorage.getItem('Mobile')
             const id = await AsyncStorage.getItem('CustomerId')
             const userName = await AsyncStorage.getItem('userName')
             console.log("userName", AsyncStorage.getItem('userName'))
             setUserName(userName)
-            setMobile(Phone)
             setCustId(id)
         } catch (e) {
             console.log(e)
@@ -172,36 +153,6 @@ const PinScreen = ({ navigation, }) => {
         }
     }
 
-    // ------------------ Resend Api Call Start ------------------
-    async function forgotApiCall() {
-        const data = {
-            deviceId: deviceId,
-            geoLocation: {
-                latitude: "10.0302",//Todo
-                longitude: "76.33553"//Todo
-            },
-            mobile: mobile,
-            deviceIpAddress: ipAdrress,
-            simId: "11111",
-            "otpReason": "FORGOT_PIN"
-        }
-        await api.getForgotOtp(data).then((res) => {
-            if (res?.data?.status) {
-                console.log('response Login Api', res.data)
-                navigation.navigate('ForgotPin', { conFirmdate: new Date().getTime() })
-            } else {
-                console.log(res?.data)
-                // setStatus(true)
-            }
-        }).catch((err) => {
-            console.log("err PRINT->", err.response)
-            if (err?.response?.data?.message == "Maximum number of OTPs are exceeded. Please try after 30 minutes.") {
-                setMaxError(true)
-            }
-        })
-    }
-    // ------------------ Login Api Call End ------------------
-
     // ------------------ After 3 Err Api Call Start------------------
     async function invalidOtpApi() {
         const data = {
@@ -264,7 +215,11 @@ const PinScreen = ({ navigation, }) => {
                             }
                         })}
                     />
-                    <Text style={styles.TextF} onPress={() => forgotApiCall()}>{t('common:ForgotPIN')}</Text>
+                    <Text style={styles.TextF}  
+                    onPress={() => {
+                        otpInput2?.current?.clear()
+                        navigation.navigate('ForgotPin')  
+                    }}>{t('common:ForgotPIN')}</Text>
                 </View>
 
                 {error
