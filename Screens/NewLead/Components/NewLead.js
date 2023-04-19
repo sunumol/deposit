@@ -7,6 +7,7 @@ import {
     StyleSheet,
     Text,
     FlatList,
+    Keyboard,
     TouchableWithoutFeedback,
     TouchableOpacity,
     TextInput,
@@ -119,7 +120,7 @@ const NewLead1 = ({ navigation,setVillageStatus,VillageStatus }) => {
         }
     }
     async function onSubmit() {
-        setResultError(false)
+        setResultError(true)
         const data = {
             "leadName": Name,
             "mobileNumber": Mobile,
@@ -198,9 +199,7 @@ const NewLead1 = ({ navigation,setVillageStatus,VillageStatus }) => {
                             onChangeText={(text) => {
                                 OnchangeNumber(text)
                             }}
-                            onFocus={() => setAddressFocus1(true)}
-                            onBlur={() => setAddressFocus1(false)}
-                            onSubmitEditing={() => MobileRef.current.focus()}
+                            onBlur={()=>true}
                         />
 
                         <TextInputBox

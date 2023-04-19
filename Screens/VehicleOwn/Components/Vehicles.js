@@ -43,7 +43,7 @@ const Vehicles = ({ navigation, vehicle }) => {
     const [numbers, setNumbers] = useState('')
     const [number, setNumber] = useState(false)
     const [SearchStatus, setSearchStatus] = useState(false)
-    const [vehicleslist, setvehicleslist] = useState([vehicle])
+    const [vehicleslist, setvehicleslist] = useState([])
     const [mergedList, setmergedList] = useState([])
     const toggleCheckbox = () => setChecked(!checked);
     const activityId = useSelector(state => state.activityId);
@@ -110,8 +110,9 @@ const Vehicles = ({ navigation, vehicle }) => {
 
         }
         await api.getVehicleDetails(data).then((res) => {
-            console.log('-------------------res getVehicleDetails', res?.data?.body)
+            console.log('-------------------res getVehicleDetails', res?.data?.body?.length)
             if (res?.data?.body) {
+                setNumbers(res?.data?.body?.length)
                 let temp = vehicleslist
                 temp  = temp.concat(res?.data?.body)
                 setvehicleslist([...temp])
@@ -122,7 +123,7 @@ const Vehicles = ({ navigation, vehicle }) => {
             console.log('-------------------err getVehicleDetails', err)
         })
     };
-    // {console.log('=====>>>>',vehicleslist)}
+     {console.log('=====>>>>',vehicleslist)}
 
     // ------------------get fetchVehicleDetailsForDle detail ------------------
 
@@ -153,11 +154,11 @@ const Vehicles = ({ navigation, vehicle }) => {
                 <ScrollView>
 
                     <View>
-                        <Text style={styles.vehText}>Vehicles owned (2)</Text>
+                        <Text style={styles.vehText}>Vehicles owned ({numbers})</Text>
                     </View>
                     <View>
 
-                        {console.log('99999',vehicleslist)}
+                        {console.log('99999',vehicleslist?.length)}
                         {vehicleslist ? vehicleslist.map((item) => {
                             console.log('90909',item)
                             return (

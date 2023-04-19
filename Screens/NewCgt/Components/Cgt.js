@@ -26,8 +26,9 @@ import { api } from '../../../Services/Api';
 import { useDispatch } from 'react-redux';
 
 
-const Cgt = ({navigation,date,data}) => {
-    console.log('cgt----->>>',date)
+
+const Cgt = ({navigation,data,date}) => {
+    console.log('',date)
     const [status, setStatus] = useState(false);
     const weekDay = [];
     const year = [];

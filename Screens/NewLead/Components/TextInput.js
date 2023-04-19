@@ -6,13 +6,14 @@ import {
     Text,
     TextInput,
     View,
+    Keyboard
 } from "react-native";
 import { FONTS } from "../../../Constants/Constants";
 
 const { height, width } = Dimensions.get('screen');
 
-const TextInputBox = ({ name, value, onChangeText, onFocus, onBlur,ref,
-    secureTextEntry, backgroundColor1, keyboardType1, color, edit,maxLength,blurOnSubmit,onSubmitEditing }) => {
+const TextInputBox = ({ name, value, onChangeText, onFocus, onBlur,blurOnSubmit,onSubmitEditing,
+    secureTextEntry, backgroundColor1, keyboardType1, color, edit,maxLength }) => {
 
     return (
         <SafeAreaView>
@@ -21,6 +22,7 @@ const TextInputBox = ({ name, value, onChangeText, onFocus, onBlur,ref,
                 <Text style={styles.TextName}>{name}</Text>
 
                 <TextInput
+        
                     style={[styles.textInput, {
                         backgroundColor: backgroundColor1,
                         color: color, borderColor: edit ? 'red' : 'rgba(236, 235, 237, 1)'
@@ -32,11 +34,10 @@ const TextInputBox = ({ name, value, onChangeText, onFocus, onBlur,ref,
                     returnKeyType="done"
                    // ref={ref}
                     //maxLength={10}
-                    //autoFocus={true}
-                   // blurOnSubmit={false}
-                  //  onFocus={onFocus}
-                  //  onBlur={onBlur}
-                   // onSubmitEditing={onSubmitEditing}
+                    onSubmitEditing={Keyboard.dismiss}
+                    // onFocus={onFocus}
+                    onBlur={onBlur}
+                   
                     secureTextEntry={secureTextEntry}
                     keyboardType={keyboardType1}
             

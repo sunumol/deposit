@@ -31,6 +31,7 @@ const Energy = ({ navigation }) => {
     const [days, setDays] = useState('')
     const [utilities,setUtilities] = useState('') 
     const [relationShip,setRelationship] = useState('')
+    const [Buttons, setButtons] = useState(false)
     const activityId = useSelector(state => state.activityId);
 
 
@@ -113,7 +114,22 @@ const saveEnergyUtilities = async () => {
 };
 // ------------------ ------------------
 
+useEffect(() => {
+    console.log('Use.....', Amount, days, Purpose)
 
+    if(Purpose == 'LPG Cylinder'){
+         if ((Amount === ''||Amount ===  null) || (Purpose === ''||Purpose === null )|| (days === ''|| days ===  null)) {
+        setButtons(false)
+    } else {
+        setButtons(true)
+    }}else{
+        if ((Amount === ''|| Amount ===  null) || (Purpose === ''|| Purpose === null )) {
+            setButtons(false)
+        } else {
+            setButtons(true)
+        } 
+    }
+}, [Amount, days, Purpose])
     return (
 
         <>
@@ -160,7 +176,7 @@ const saveEnergyUtilities = async () => {
                         </View>}
                 </ScrollView>
                 <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                    <TouchableOpacity style={[styles.buttonView, { backgroundColor: COLORS.colorB }]}
+                    <TouchableOpacity style={[styles.buttonView, { backgroundColor: Buttons ? COLORS.colorB: 'rgba(224, 224, 224, 1)' }]}
                         onPress={() =>saveEnergyUtilities()}>
                         <Text style={[styles.continueText, { color: COLORS.colorBackground }]}>Continue</Text>
                     </TouchableOpacity>

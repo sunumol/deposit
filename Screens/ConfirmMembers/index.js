@@ -25,7 +25,7 @@ const ConfirmMembers = ({ navigation }) => {
   const [selectedItem, setSelectedItem] = useState();
   const [dataSelected, setDataSelected] = useState();
   const [dataSelectedID, setDataSelectedID] = useState();
-
+const [tccustomerlist,setTccustomerlist] = useState();
   const [ModalError, setModalError] = useState(false)
   const [ModalReason, setModalReason] = useState(false)
   const [rejectReason, setRejectReason] = useState()
@@ -59,6 +59,13 @@ const ConfirmMembers = ({ navigation }) => {
       getCustomerLists(num)
     }
   }
+  useEffect(()=>{
+    getCustomerLists()
+  },[])
+
+
+
+
   { console.log('============redux customer id ', selectedItem) }
   useEffect(() => {
     if (ModalError == true) {
@@ -82,7 +89,8 @@ const ConfirmMembers = ({ navigation }) => {
   }, [navigation]);
 
   useEffect(() => {
-    getCustomerLists()
+    getTCDetails(customerList)
+    getTclist()
   }, []);
 
   // ------------------ get Slot Api Call Start ------------------
@@ -136,7 +144,22 @@ const ConfirmMembers = ({ navigation }) => {
       })
   };
   // ------------------ Update Activity Reject Api Call End ------------------
-
+  const getTclist = async () => {
+    console.log('api called')
+    const data = {
+        "employeeId":1,
+        "customerNameOrNumber":"",
+        "addedTcIds":customerID
+    }
+    await api.getCustomerListForTc(data).then((res) => {
+        console.log('-------------------res getCustomerListForTc', res?.data?.body)
+        if (res?.status) {
+        setTccustomerlist(res?.data?.body)
+        }
+    }).catch((err) => {
+        console.log('-------------------getCustomerListForTc', err?.response)
+    })
+};
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container1} />
@@ -160,13 +183,13 @@ const ConfirmMembers = ({ navigation }) => {
                 />
                 <SearchIcon color={"#808080"} name="search" size={18} style={{ right: 5 }} />
               </View> : null}
-            {text.length === 0 && !selectedItem
+            {text?.length === 0 && !selectedItem
               ?
               <>
                 <Text style={styles.recentlyText}>Recently added customers</Text>
-                {data?.map((item, index) =>
+                {tccustomerlist?.map((item, index) =>
                   <>
-                    {console.log('---id available selected--', item?.id)}
+                    {console.log('---id available selected1--', item )}
                     <TouchableOpacity onPress={() => {
                       getTCDetails(item?.id)
                       const datas = [...customerID]
@@ -175,7 +198,7 @@ const ConfirmMembers = ({ navigation }) => {
                     }}>
                       <Text style={styles.dataText}>{item.name}</Text>
                     </TouchableOpacity>
-                    {index !== data.length - 1
+                    {index !== tccustomerlist?.length - 1
                       ? <View style={styles.lineView} />
                       : null
                     }

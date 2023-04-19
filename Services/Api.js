@@ -171,6 +171,16 @@ export const api = {
     })
   },
 
+
+    // --------------- Trust curcle added members ----------------------
+    getCustomerListForTc: data => {
+      return axios.post(`${baseURL2}getCustomerListForTc`, data, {
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      })
+    },
+
   // --------------- create CGT ----------------------
   createCGT: data => {
     return axios.post(`${baseURL2}createOrUpdateCGT`, data, {

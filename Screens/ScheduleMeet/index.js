@@ -28,9 +28,9 @@ import moment from 'moment';
 import DLEModal from './Components/DLEModal';
 const { height, width } = Dimensions.get('screen');
 
-const ScheduleMeet = ({ navigation, }) => {
-    const route = useRoute();
-    console.log("route name",);
+const ScheduleMeet = ({ navigation,route }) => {
+   // const route = useRoute();
+    console.log("route name",route?.params?.id);
     const isDarkMode = true
     const { t } = useTranslation();
     const [lang, setLang] = useState('')
@@ -72,18 +72,18 @@ const ScheduleMeet = ({ navigation, }) => {
     const callback = (value) => {
         // const date = moment(value).utc().format('DD-MM-YYYY')
         setSelectedDate(value)
-        ScheduleDLE(value)
+       // ScheduleDLE(value)
 
 
     }
 
     // ------------------ get Slot Api Call Start ------------------
-    const ScheduleDLE = async (date) => {
+    const ScheduleDLE = async () => {
         console.log('api called')
         const data = {
             "customerId": 1,
-            "tcMemberId": 11177,
-            "scheduleDate": moment(date ? date : selectedDate).utc().format('DD-MM-YYYY')
+            "tcMemberId": route?.params?.id,
+            "scheduleDate": moment( selectedDate).utc().format('DD-MM-YYYY')
         };
         await api.ScheduleDLE(data).then((res) => {
 
