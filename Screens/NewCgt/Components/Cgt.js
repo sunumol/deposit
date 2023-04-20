@@ -24,18 +24,24 @@ const { height, width } = Dimensions.get('screen');
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { api } from '../../../Services/Api';
 import { useDispatch } from 'react-redux';
+import {CalenderModal} from './CalenderModal'
+import CgtModal from '../../SelectCustomNewCgt/Components/Modal';
+import moment from 'moment';
 
 
 
-const Cgt = ({navigation,data,date}) => {
-    console.log('',date)
+
+
+const Cgt = ({navigation,data,date,setModalVisible1,rescheduledata,slotlistrefresh}) => {
+    console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~',reschedulecgt)
     const [status, setStatus] = useState(false);
     const weekDay = [];
     const year = [];
     const [slotlist,setSlotlist] = useState([]);
     const [currentDate, setCurrentDate] = useState(date);
-    const [DateStatus, setDateStatus] = useState(false)
+    const [reschedulecgt, setReschedulecgt] = useState('')
     const [selectedItem1, setSelectedItem1] = useState()
+    const [ModalVisible, setModalVisible] = useState(false)
     const [enab,setEnab]=useState(false)
     const dispatch = useDispatch()
 
@@ -52,7 +58,7 @@ const Cgt = ({navigation,data,date}) => {
           navigation.navigate('SelectCustomer')
         }
     }
-
+useEffect(()=>{setReschedulecgt(rescheduledata)},[rescheduledata])
 
  useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
@@ -66,15 +72,69 @@ const Cgt = ({navigation,data,date}) => {
   
   }, [navigation]);
 
+  const createCGT = async (time) => {
 
 
-    const renderItem = ({ item }) => {
+
+
+    let date1 = (moment(date).utc().format("DD-MM-YYYY"))
+    // let selectedtime = route?.params?.data?.time
+        let selectedtime = moment(time.time, ["h:mm A"]).format("HH:mm");
+    let time1 = selectedtime.slice(0, 5);
+
+
+
+
+
+    console.log('schedule time123========>>>>>', date1, time1)
+
+    const data = {
+        "employeeId": 1,
+        "customerId": reschedulecgt.primaryCustomerId,
+        "scheduleStartTime": date1 + " " + time1
+    }
+    await api.createCGT(data).then((res) => {
+        console.log('------------------- create CGT res', res)
+        // setCustomerList(res?.data?.body)
+        setModalVisible(true)
+        setEnab(true)
+    })
+        .catch((err) => {
+            console.log('-------------------err', err?.response)
+        })
+};
+
+    const renderItem = ({ item ,index}) => {
         return (
             <View style={{ justifyContent: 'space-around', margin: 5 }}>
                 <TouchableOpacity 
-                onPress={() => { item.availabilityStatu == "notAvailable" ? navigation.navigate('Activities',{data:item}):
-                 navigation.navigate('SelectCustomerNewCgt',{data : item,date :date,
-                }) }}
+                // onPress={() => { item.availabilityStatu == "notAvailable" ? navigation.navigate('Activities',{data:item}):
+                //  navigation.navigate('SelectCustomerNewCgt',{data : item,date :date,
+                // }) }}
+                onPress={() => { 
+
+                    if(reschedulecgt){
+
+                        if(data[index+1]?.availabilityStatu == "notAvailable" || data[index]?.time == "06:30 PM"   ){
+                            setModalVisible1(true)
+                         }else{
+                            createCGT(item)
+                         }
+
+                    
+                    }else{
+                        if(data[index+1]?.availabilityStatu == "notAvailable" || data[index]?.time == "06:30 PM"   ){
+                            setModalVisible1(true)
+                         }else{
+                             item.availabilityStatu == "notAvailable" ? navigation.navigate('Activities',{data:item}):
+                      navigation.navigate('SelectCustomerNewCgt',{data : item,date :date,
+                     })
+                         }
+
+                    }
+                 
+                
+                     }}
                     style={[styles.Touch, { borderColor: item.availabilityStatu == "partiallyAvailable"  ? 'rgba(242, 153, 74, 1)': item.availabilityStatu == "fullyAvailable"  ? 'rgba(39, 174, 96, 1)':item.availabilityStatu == "fullyAllocated"  ? 'rgba(234, 64, 71, 1)':item.availabilityStatu == "notAvailable"  ? 'rgba(155, 81, 224, 1)':null, backgroundColor: COLORS.colorBackground }]}>
                     <Text style={[styles.timeText1, { color: item.availabilityStatu == "partiallyAvailable"  ? 'rgba(242, 153, 74, 1)': item.availabilityStatu == "fullyAvailable"  ? 'rgba(39, 174, 96, 1)':item.availabilityStatu == "fullyAllocated"  ? 'rgba(234, 64, 71, 1)':item.availabilityStatu == "notAvailable"  ? 'rgba(155, 81, 224, 1)':null }]}>{item.time}</Text>
                 </TouchableOpacity>
@@ -97,8 +157,18 @@ const Cgt = ({navigation,data,date}) => {
 
                 />
             </View>
+            <CgtModal ModalVisible={ModalVisible}
+                        onPressOut={() => {
+                            setModalVisible(false)
+                            slotlistrefresh()
+                            // navigation.navigate('NewCgt')
+                        }}
 
+                        navigation={navigation}
+                        //  onPressOut={() => setModalVisible(!ModalVisible)}
+                        setModalVisible={setModalVisible} />
 
+           
         </View>
     )
 }

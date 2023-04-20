@@ -11,7 +11,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const CalendarStrips = ({ callback,setNewDates,NewDates,getCGTslot}) => {
 
   const dispatch = useDispatch()
-  console.log("state passed",setNewDates,NewDates,getCGTslot)
+  //console.log("state passed",setNewDates,NewDates,getCGTslot)
   //------------------------------------------------------- SetState ----------------------------------------
   const [Month, setMonth] = useState(new Date())
   const [StartDay, setStartDay] = useState(new Date())
@@ -104,7 +104,17 @@ const CalendarStrips = ({ callback,setNewDates,NewDates,getCGTslot}) => {
     }
     setStartDay(next)
     setSelectedDate(next)
-console.log("inside ")
+
+    dispatch({
+      type: 'SET_CREATE_DATE_CGT',
+      payload:next
+  });
+  AsyncStorage.setItem('DATECGT',next);
+    setNewDates(next)
+    setTimeout(()=>{
+      setNewDates(next)
+    },1000)
+console.log("inside ",next)
  
      if (moment(today).format("MMMM YYYY") !== moment(endDate).format("MMMM YYYY")) {
       //setArrowRight(true)
@@ -122,6 +132,15 @@ console.log("inside ")
   const DecrementMonth = () => {
     setStartDay(new Date())
     setSelectedDate(new Date())
+    dispatch({
+      type: 'SET_CREATE_DATE_CGT',
+      payload:new Date()
+  });
+  AsyncStorage.setItem('DATECGT',new Date());
+    setNewDates(new Date())
+    setTimeout(()=>{
+      setNewDates(new Date())
+    },1000)
   }
 
   const onWeekChanged = (start, end) => {
@@ -228,6 +247,7 @@ console.log("inside ")
                       && MonthStatus === false ? COLORS.colorB : COLORS.colorBackground
               }}
               onPress={() => {
+                console.log('date========redux',item?.date._d)
                 dispatch({
                   type: 'SET_CREATE_DATE_CGT',
                   payload:item?.date._d,

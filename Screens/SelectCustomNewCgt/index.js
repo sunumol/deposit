@@ -24,7 +24,7 @@ const { height, width } = Dimensions.get('screen');
 
 
 const SelectCustomerNewCgt = ({ navigation, route }) => {
-  console.log('select customer=====>', route?.params?.date)
+  console.log('select customer=====>============', route?.params?.rescheduledata)
   const isDarkMode = true;
   const [text, onChangeText] = useState('');
   const [selectedItem, setSelectedItem] = useState();
@@ -35,6 +35,7 @@ const SelectCustomerNewCgt = ({ navigation, route }) => {
   const [searchvalue, setsearchvalue] = useState('')
   const [status, setStatus] = useState(true)
   const [EmptyList,setEmptyList] = useState(false)
+  const [reschedulecgt,setReschedulecgt] = useState('')
   const { t } = useTranslation();
 
   const handleGoBack = () => {
@@ -48,6 +49,10 @@ const SelectCustomerNewCgt = ({ navigation, route }) => {
     }
     return true
   }
+
+  useEffect(()=>{
+setReschedulecgt(route?.params?.rescheduledata)
+  },[route?.params?.rescheduledata])
 
   useEffect(() => {
     const backHandler = BackHandler.addEventListener(
@@ -179,23 +184,23 @@ const SelectCustomerNewCgt = ({ navigation, route }) => {
   const createCGT = async () => {
 
 
-    console.log('creat=======', selectedDate)
+    console.log('creat=======',moment(route?.params?.data?.time, ["h:mm A"]).format("HH:mm"))
 
     let date = (moment(selectedDate).utc().format("DD-MM-YYYY"))
-    let selectedtime = route?.params?.data?.time
-
+   // let selectedtime = route?.params?.data?.time
+    let selectedtime = moment(route?.params?.data?.time, ["h:mm A"]).format("HH:mm");
     let time = selectedtime.slice(0, 5);
 
 
 
 
 
-    console.log('schedule time',route?.params?.date, time)
+    console.log('schedule time========>>>>>',route?.params?.date, time)
 
     const data = {
       "employeeId": 1,
-      "customerId": selectedItem.id,
-      "scheduleStartTime":moment(route?.params?.date).format("DD-MM-YYYY") + " " + time
+      "customerId":reschedulecgt ? reschedulecgt.primaryCustomerId : selectedItem.id,
+      "scheduleStartTime":moment(route?.params?.date).format("DD-MM-YYYY") + " " + time 
     }
     await api.createCGT(data).then((res) => {
       console.log('------------------- create CGT res', res)
@@ -267,6 +272,10 @@ const SelectCustomerNewCgt = ({ navigation, route }) => {
               ?
               <>
                 <Text style={styles.recentlyText}>{t('common:RecentCust')}</Text>
+
+         
+
+                <>
                 {customerList?.map((item, index) =>
                   <>
                     <TouchableOpacity onPress={() => { setSelectedItem(item), console }}>
@@ -278,9 +287,18 @@ const SelectCustomerNewCgt = ({ navigation, route }) => {
                     }
                   </>
                 )}
+                </>
+                 
+
+
+
+                
               </>
               : null
             }
+
+              
+
 
             <View >
               {text?.length > 0 && !selectedItem

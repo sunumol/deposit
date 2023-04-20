@@ -175,7 +175,7 @@ const CgtCustomer = ({ navigation, route }) => {
                             <Text style={styles.timeText}>{details?.cgtTime?.slice(0, -3)} PM</Text>
                             <Text style={styles.dateText}>{details?.cgtDate ? moment(new Date(details?.cgtDate)).format("ddd, DD MMM") : ''}</Text>
                         </View>
-                        <TouchableOpacity style={styles.editView} onPress={() =>{ navigation.navigate('NewCgt'),
+                        <TouchableOpacity style={styles.editView} onPress={() =>{ navigation.navigate('NewCgt',{reschedule:details}),
                     AsyncStorage.removeItem('DATECGT')}}>
                             <Date />
                             <Text style={styles.changeText}>Reschedule CGT</Text>
