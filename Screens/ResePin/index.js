@@ -1,4 +1,4 @@
-import React, { useState,useCallback ,useEffect} from 'react';
+import React, { useState} from 'react';
 import {
     StyleSheet,
     Text,
@@ -9,19 +9,16 @@ import {
     KeyboardAvoidingView,
     BackHandler,
     ScrollView,
-    ToastAndroid
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
-import { addDays } from 'date-fns'
-import moment from 'moment'
-import { useRoute } from '@react-navigation/native';
+
 // --------------- Component Imports ---------------------
 import { COLORS, FONTS } from '../../Constants/Constants';
 import Statusbar from '../../Components/StatusBar';
-import Header from '../../Components/RepayHeader';
+import Header from '../../Components/Header2';
 import OTPTextInput from './Components/OtpPin'
 
 // --------------- Image Imports ---------------------
@@ -33,11 +30,9 @@ const CreatePin = ({ navigation }) => {
     const isDarkMode = true;
     const { t } = useTranslation();
     const otpInput2 = React.createRef();
-    const routes = useRoute();
     const [error, setError] = useState(false);
     const [success, setSuccess] = useState(false)
     const [OtpValue, setOtpValue] = useState("")
-    const [exitApp,setExitApp] = useState(0)
     const [modalExitAppVisible, setModalExitAppVisible] = useState(false);
     const clearText = () => {
         otpInput2.current.clear();
@@ -68,7 +63,7 @@ const CreatePin = ({ navigation }) => {
                 <SafeAreaView style={styles.container1} />
                 <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} backgroundColor={"#002B59"} />
 
-                <Header navigation={navigation} name={t('common:ResetPin')} onPress={backAction} />
+                <Header navigation={navigation} name={t('common:ResetPin')}  />
 
                 <View style={styles.container}>
                     <ScrollView>

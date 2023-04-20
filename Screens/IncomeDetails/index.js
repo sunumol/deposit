@@ -32,13 +32,13 @@ import ModalSave from '../../Components/ModalSave';
 import ReasonModal from '../DetailedCheck/Components/ReasonModal';
 import ErrorModal from '../DetailedCheck/Components/ErrorModal';
 
-const IncomeDetails = ({ navigation,route }) => {
-    console.log('IncomeD=====>>',route?.params?.relationShip)
+const IncomeDetails = ({ navigation, route }) => {
+    console.log('IncomeD=====>>', route?.params?.relationShip)
     const isDarkMode = true
     const { t } = useTranslation();
     const [lang, setLang] = useState('')
     const [statusChange, setStatusChange] = useState(false)
-    const [relationShip,setRelationship] =useState('Customer')
+    const [relationShip, setRelationship] = useState('Customer')
     const [Amount, setAmount] = useState('')
     const [ModalVisible, setModalVisible] = useState(false)
     const [Purpose, setPurpose] = useState('')
@@ -51,21 +51,21 @@ const IncomeDetails = ({ navigation,route }) => {
     const [Salary, setSalary] = useState('')
     const [StateChange1, setStateChange1] = useState(false)
     const [ButtonSP, setButtonSP] = useState(false)
-    const [incomedetail,setIncomedetail] =useState('')
-    const [incomedetailfield,setIncomedetailfield] =useState('')
+    const [incomedetail, setIncomedetail] = useState('')
+    const [incomedetailfield, setIncomedetailfield] = useState('')
     const activityId = useSelector(state => state.activityId);
 
 
 
-    const [ModalVisible1,setModalVisible1] = useState(false)
-    const [ModalReason,setModalReason] = useState(false)
+    const [ModalVisible1, setModalVisible1] = useState(false)
+    const [ModalReason, setModalReason] = useState(false)
     const [ModalError, setModalError] = useState(false)
 
     useEffect(() => {
         getData()
-       // setRelationship(route?.params?.relationShip)
+        // setRelationship(route?.params?.relationShip)
         getIncomeDetails('Customer')
-console.log("statecha nge.....",StateChange1)
+        console.log("statecha nge.....", Buttons)
     }, [])
 
     const getData = async () => {
@@ -81,30 +81,30 @@ console.log("statecha nge.....",StateChange1)
     const handleGoBack = useCallback(() => {
 
         // navigation.goBack()
-             setModalVisible1(true)
-         return true; // Returning true from onBackPress denotes that we have handled the event
-     }, [navigation]);
- 
-     useFocusEffect(
-         React.useCallback(() => {
-             BackHandler.addEventListener('hardwareBackPress', handleGoBack);
- 
-             return () =>
-             
-                 BackHandler.removeEventListener('hardwareBackPress', handleGoBack);
-         }, [handleGoBack]),
-     );
+        setModalVisible1(true)
+        return true; // Returning true from onBackPress denotes that we have handled the event
+    }, [navigation]);
+
+    useFocusEffect(
+        React.useCallback(() => {
+            BackHandler.addEventListener('hardwareBackPress', handleGoBack);
+
+            return () =>
+
+                BackHandler.removeEventListener('hardwareBackPress', handleGoBack);
+        }, [handleGoBack]),
+    );
 
     const ButtonClick = () => {
-    
+
         if (Amount !== '' && Avg !== '' && Month !== '') {
             setStateChange1(true)
-           // setStatusChange(true)
-           saveIncomeDetails()
+            // setStatusChange(true)
+            saveIncomeDetails()
 
         } else {
             setStateChange1(false)
-           // setStatusChange(false)
+            // setStatusChange(false)
         }
     }
 
@@ -117,24 +117,25 @@ console.log("statecha nge.....",StateChange1)
     }, [MonthsCustom, Purpose, Salary])
 
     useEffect(() => {
-        if (Amount === '' || Avg === '' || Month === '') {
+        console.log('Use.....', Amount, Avg, Month)
+        if ((Amount === null || Amount === '' ) || (Avg === null || Avg ===  '') ||( Month === null ||  Month === '')) {
             setButtons(false)
         } else {
             setButtons(true)
         }
     }, [Amount, Avg, Month])
-    
 
 
 
 
-       // ------------------getIncomeDetails detail ------------------
 
-       const getIncomeDetails = async () => {
+    // ------------------getIncomeDetails detail ------------------
+
+    const getIncomeDetails = async () => {
         console.log('api called')
 
         const data = {
-          "activityId": activityId,
+            "activityId": activityId,
             "relationShip": relationShip
 
         }
@@ -154,84 +155,94 @@ console.log("statecha nge.....",StateChange1)
     // ------------------ ------------------
 
 
-      // ------------------ get Conduct DLE basic detail Village Api Call Start ------------------
-      const updateRejection = async () => {
+    // ------------------ get Conduct DLE basic detail Village Api Call Start ------------------
+    const updateRejection = async () => {
         console.log('api called for rejection')
         const data = {
-            "activityStatus":'Submitted wrong data',
-            "employeeId":1,
-            "activityId":activityId
+            "activityStatus": 'Submitted wrong data',
+            "employeeId": 1,
+            "activityId": activityId
         }
         await api.updateActivity(data).then((res) => {
             console.log('-------------------res get Village', res)
             setModalError(true)
             setModalReason(false)
             setTimeout(() => {
-                navigation.navigate('Profile')  
+                navigation.navigate('Profile')
             }, 1000);
-          
+
         }).catch((err) => {
             console.log('-------------------err get Village', err)
         })
     };
 
 
-           // ------------------saveIncomeDetails detail ------------------
+    // ------------------saveIncomeDetails detail ------------------
 
-           const saveIncomeDetails = async () => {
-            console.log('api called')
-    
-            const data = {
-                "activityId": activityId,
-                "relationShip": relationShip,
-                "field1": Amount,
-                "field2": Month,
-                "field3": Avg
-    
-            }
-            await api.saveIncomeDetails(data).then((res) => {
-                console.log('-------------------res saveIncomeDetails', res?.data?.body)
-                if (res?.status) {
-                    if(res?.data?.body == 'MARRIED'){
-                       navigation.navigate('IncomeDetailsSpouse')
-                    }else{
-                        navigation.navigate('DebitDetails')  
-                    }
-                   // navigation.navigate('DebitDetails')
+    const saveIncomeDetails = async () => {
+        console.log('api called')
+
+        const data = {
+            "activityId": activityId,
+            "relationShip": relationShip,
+            "field1": Amount,
+            "field2": Month,
+            "field3": Avg
+
+        }
+        await api.saveIncomeDetails(data).then((res) => {
+            console.log('-------------------res saveIncomeDetails', res?.data?.body)
+            if (res?.status) {
+                if (res?.data?.body == 'MARRIED') {
+                    navigation.navigate('IncomeDetailsSpouse')
+                } else {
+                    navigation.navigate('DebitDetails')
                 }
-            }).catch((err) => {
-                console.log('-------------------err saveIncomeDetails', err?.response)
-            })
-        };
-        // ------------------ ------------------
-
-
-        const  getRandomColor =()=> {
-            var letters = '0123456789ABCDEF';
-            var color = '#';
-            for (var i = 0; i < 3; i++) {
-              color += letters[Math.floor(Math.random() * 8)];
+                // navigation.navigate('DebitDetails')
             }
-            return color;
-          }
-        
-        
-          const getInitials = (name) => {
-          
-            let initials;
-            const nameSplit = name?.split(" ");
-             const nameLength = nameSplit?.length;
-            if (nameLength > 1) {
-                initials =
-                    nameSplit[0].substring(0, 1) +
-                    nameSplit[nameLength - 1].substring(0, 1);
-            } else if (nameLength === 1) {
-                initials = nameSplit[0].substring(0, 1);
-            } else return;
-        
-             return initials.toUpperCase();
-        };
+        }).catch((err) => {
+            console.log('-------------------err saveIncomeDetails', err?.response)
+        })
+    };
+    // ------------------ ------------------
 
+
+    const getRandomColor = () => {
+        var letters = '0123456789ABCDEF';
+        var color = '#';
+        for (var i = 0; i < 3; i++) {
+            color += letters[Math.floor(Math.random() * 8)];
+        }
+        return color;
+    }
+
+
+    const getInitials = (name) => {
+
+        let initials;
+        const nameSplit = name?.split(" ");
+        const nameLength = nameSplit?.length;
+        if (nameLength > 1) {
+            initials =
+                nameSplit[0].substring(0, 1) +
+                nameSplit[nameLength - 1].substring(0, 1);
+        } else if (nameLength === 1) {
+            initials = nameSplit[0].substring(0, 1);
+        } else return;
+
+        return initials.toUpperCase();
+    };
+    const setMonthdata = (text) => {
+       if(text?.length>0) {
+            if (text < 13) {
+                setMonth(text)
+            } else {
+                setMonth('')
+            }
+        }else{
+            setMonth('')
+        }
+    }
 
 
     return (
@@ -239,7 +250,7 @@ console.log("statecha nge.....",StateChange1)
             <SafeAreaView style={styles.container1} />
             <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
 
-            <Header name="Income Details" navigation={navigation} onPress={handleGoBack}  />
+            <Header name="Income Details" navigation={navigation} onPress={handleGoBack} />
             {/* <View style={styles.Header}>
             <View style={{ left: 15, alignItems: 'center', justifyContent: 'center', top: -3 }}>
                 <TouchableOpacity onPress={() => { StateChange1 === false ? navigation.goBack() : setStateChange1(false) }} style={{ padding: 0 }}>
@@ -265,11 +276,11 @@ console.log("statecha nge.....",StateChange1)
             <View style={styles.ViewContent}>
                 {/* <Details navigation={navigation} setStatusChange={setStatusChange} setStatusChange2={statusChange} /> */}
                 <View style={styles.mainContainer}>
-                <ScrollView>
-                 
+                    <ScrollView>
+
                         <View style={styles.containerBox}>
                             <View style={{ flex: 1, flexDirection: 'row' }}>
-                                <View style={[styles.circleView,{backgroundColor:getRandomColor()}]}>
+                                <View style={[styles.circleView, { backgroundColor: COLORS.colorB }]}>
                                     <Text style={styles.shortText}>{getInitials(incomedetail?.name)}</Text>
                                 </View>
                                 <View style={{ flexDirection: 'column', flex: 1, marginLeft: 12 }}>
@@ -280,9 +291,9 @@ console.log("statecha nge.....",StateChange1)
                                     <Text style={styles.dateText}>{relationShip}</Text>
                                 </View>
                             </View>
-                        </View> 
+                        </View>
 
-                 
+
                         <View>
                             <View>
                                 <Text style={styles.TextElect}>{incomedetailfield?.field1}</Text>
@@ -292,7 +303,7 @@ console.log("statecha nge.....",StateChange1)
                                 <TextInput
                                     style={[{
                                         fontSize: 14, color: '#1A051D',
-                                        fontFamily: FONTS.FontRegular, left: 5,width:'95%'
+                                        fontFamily: FONTS.FontRegular, left: 5, width: '95%'
                                     }]}
                                     value={Amount?.toString()}
                                     keyboardType={'number-pad'}
@@ -304,11 +315,22 @@ console.log("statecha nge.....",StateChange1)
                                 <Text style={styles.TextElect}>{incomedetailfield?.field2}</Text>
                             </View>
                             <View style={styles.SelectBox}>
-                                <TextInput
-                                    style={[{ fontSize: 14, color: '#1A051D', fontFamily: FONTS.FontRegular, left: 5,width:'95%' }]}
+
+                            {incomedetailfield?.field2 == 'Salary credit method' ? <TouchableOpacity style={[styles.SelectBox,{justifyContent:'space-between'}]} onPress={() => setModalVisible(true)}>
+                                <Text style={[styles.textSelect]}>{Purpose ? Purpose :'Select'}</Text>
+
+                                <Icon1 name="chevron-down" size={18} color={'#808080'} style={{ marginRight: 10 }} />
+                            </TouchableOpacity>:
+                             <TextInput
+                             style={[{ fontSize: 14, color: '#1A051D', fontFamily: FONTS.FontRegular, left: 5,width: '95%'  }]}
+                             value={Month?.toString()}
+                             keyboardType={'number-pad'}
+                             onChangeText={(text) => setMonthdata(text)} /> }
+                                {/* <TextInput
+                                    style={[{ fontSize: 14, color: '#1A051D', fontFamily: FONTS.FontRegular, left: 5, width: '95%' }]}
                                     value={Month?.toString()}
                                     keyboardType={'number-pad'}
-                                    onChangeText={(text) => setMonth(text)} />
+                                    onChangeText={(text) => setMonthdata(text)} /> */}
                             </View>
 
                             <View>
@@ -317,21 +339,21 @@ console.log("statecha nge.....",StateChange1)
                             <View style={styles.SelectBox}>
                                 <Text style={[styles.RS, { color: Avg === '' ? '#808080' : '#1A051D' }]}>₹</Text>
                                 <TextInput
-                                    style={[{ fontSize: 14, color: '#1A051D', fontFamily: FONTS.FontRegular, left: 5 ,width:'95%'}]}
+                                    style={[{ fontSize: 14, color: '#1A051D', fontFamily: FONTS.FontRegular, left: 5, width: '95%' }]}
                                     value={Avg?.toString()}
                                     keyboardType={'number-pad'}
                                     onChangeText={(text) => setAvg(text)} />
                             </View>
-                        </View> 
-                </ScrollView>
-             
+                        </View>
+                    </ScrollView>
+
                     <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                         <TouchableOpacity style={[styles.buttonView, { backgroundColor: Buttons ? COLORS.colorB : 'rgba(224, 224, 224, 1)' }]}
                             onPress={() => ButtonClick()}>
                             <Text style={[styles.continueText, { color: Buttons ? COLORS.colorBackground : '#979C9E' }]}>Continue</Text>
                         </TouchableOpacity>
-                    </View> 
-            </View>
+                    </View>
+                </View>
             </View>
 
             <CreditModal
@@ -340,18 +362,18 @@ console.log("statecha nge.....",StateChange1)
                 setModalVisible={setModalVisible}
                 onPressOut={() => setModalVisible(!ModalVisible)}
             />
-             <ModalSave
-                Press ={()=>{
+            <ModalSave
+                Press={() => {
                     setModalVisible1(false),
-                    setModalReason(true)
-               
+                        setModalReason(true)
+
                 }}
-                Press1={()=>{saveIncomeDetails(),setModalVisible1(false)}}
+                Press1={() => { saveIncomeDetails(), setModalVisible1(false) }}
                 ModalVisible={ModalVisible1}
                 setModalVisible={setModalVisible1}
                 onPressOut={() => {
                     setModalVisible1(false)
-                   
+
 
                 }}
                 navigation={navigation} />
@@ -359,8 +381,8 @@ console.log("statecha nge.....",StateChange1)
 
             <ReasonModal
                 onPress1={() => {
-                     updateRejection()
-                   // setModalError(true)
+                    updateRejection()
+                    // setModalError(true)
                 }}
                 ModalVisible={ModalReason}
                 onPressOut={() => setModalReason(!ModalReason)}
@@ -375,7 +397,7 @@ console.log("statecha nge.....",StateChange1)
                     setModalReason(!ModalReason)
                 }}
                 setModalVisible={setModalError}
-                navigation={navigation} 
+                navigation={navigation}
             />
 
         </SafeAreaProvider>
@@ -522,7 +544,7 @@ const styles = StyleSheet.create({
     circleView: {
         width: 40,
         height: 40,
-     
+
         borderRadius: 20,
         alignItems: 'center',
         justifyContent: 'center'

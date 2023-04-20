@@ -50,19 +50,19 @@ const DLE = ({ navigation, set, list }) => {
             console.log(e)
         }
     }
-    const handleGoBack = useCallback(() => {
-        setModalVisible1(true)
-        return true; // Returning true from onBackPress denotes that we have handled the event
-    }, [navigation]);
+    // const handleGoBack = useCallback(() => {
+    //     setModalVisible1(true)
+    //     return true; // Returning true from onBackPress denotes that we have handled the event
+    // }, [navigation]);
 
-    useFocusEffect(
-        React.useCallback(() => {
-            BackHandler.addEventListener('hardwareBackPress', handleGoBack);
+    // useFocusEffect(
+    //     React.useCallback(() => {
+    //         BackHandler.addEventListener('hardwareBackPress', handleGoBack);
 
-            return () =>
-                BackHandler.removeEventListener('hardwareBackPress', handleGoBack);
-        }, [handleGoBack]),
-    );
+    //         return () =>
+    //             BackHandler.removeEventListener('hardwareBackPress', handleGoBack);
+    //     }, [handleGoBack]),
+    //);
 
     const Data = [
         {
@@ -157,11 +157,12 @@ const DLE = ({ navigation, set, list }) => {
 
     return (
 
-        <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1, marginTop: 15 }}>
+        <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1, marginTop: 0 }}>
             <ScrollView showsVerticalScrollIndicator={false}>
+                <View style={{marginBottom:width*0.25}}>
                 {list?.map((item) => {
                     return (
-                        <View style={[styles.viewCard, { borderColor: 'white', borderWidth: 2 }]}>
+                        <TouchableOpacity  onPress={() => { item.dleScheduleStatus == "Conduct DLE" ? setModalVisible2(true) : item.dleScheduleStatus == "TC approval pending" ? setModalVisible(true) : navigation.navigate('ScheduleMeet',{id:item.id}) }} style={[styles.viewCard, { borderColor: 'white', borderWidth: 2 }]}>
 
 
                             <View style={[styles.circleStyle, { backgroundColor: getRandomColor() }]}>
@@ -188,27 +189,28 @@ const DLE = ({ navigation, set, list }) => {
                                 <View style={{ flexDirection: 'column', top: 0, alignItems: 'flex-end', flex: 1, paddingRight: width * 0.04 }}>
 
                                     <Text style={[styles.numText, {}]}>{item.mobileNumber}</Text>
-                                    <TouchableOpacity onPress={() => { item.dleScheduleStatus == "Conduct DLE" ? setModalVisible2(true) : item.dleScheduleStatus == "TC approval pending" ? setModalVisible(true) : navigation.navigate('ScheduleMeet') }}
+                                    <View
 
                                         style={[styles.ViewExplain, { right: 0, backgroundColor: item.dleScheduleStatus == "Conduct DLE" ? "rgba(186, 134, 205, 0.1)" : item.dleScheduleStatus == "TC approval pending" ? "rgba(39, 174, 96, 0.1)" : "rgba(155, 81, 224, 0.1)", width: item.width }]}>
                                         <Text style={[styles.explainText, { marginHorizontal: 7, marginVertical: 1, color: item.dleScheduleStatus == "Conduct DLE" ? "rgba(242, 153, 74, 1)" : item.dleScheduleStatus == "TC approval pending" ? "rgba(39, 174, 96, 1)" : "rgba(155, 81, 224, 1)" }]}>{item.dleScheduleStatus}</Text>
-                                    </TouchableOpacity>
+                                    </View>
                                 </View>
                             </View>
 
-                        </View>
+                        </TouchableOpacity>
 
                     )
                 })}
+                </View>
             </ScrollView>
 
-            {!set ? <View style={{ alignItems: 'center', justifyContent: 'center', position: 'absolute', left: 0, right: 0, bottom: 0, marginBottom: 20 }}>
+            {/* {!set ? <View style={{ alignItems: 'center', justifyContent: 'center', position: 'absolute', left: 0, right: 0, bottom: 0, marginBottom: 20 }}>
                 <TouchableOpacity onPress={() => navigation.navigate('ScheduleMeet')}
                     style={[styles.Button1, { backgroundColor: COLORS.colorB }]}
                 >
                     <Text style={[styles.textB, { color: COLORS.colorBackground }]}>Schedule DLE</Text>
                 </TouchableOpacity>
-            </View> : null}
+            </View> : null} */}
 
 
 
@@ -242,7 +244,7 @@ const DLE = ({ navigation, set, list }) => {
 
 
             <ModalDLESchedule
-                Press={()=>setModalVisible(true)}
+               
                 ModalVisible={ModalVisible2}
                 setModalVisible={setModalVisible2}
                 onPressOut={() => {
@@ -366,7 +368,7 @@ const styles = StyleSheet.create({
         width: width * 0.86,
         borderRadius: 6,
         height: width * 0.20,
-        marginBottom: width * 0.03,
+        //marginBottom: width * 0.03,
         alignItems: 'center',
         flexDirection: 'row',
         shadowColor: '#000000',
@@ -376,7 +378,7 @@ const styles = StyleSheet.create({
         shadowRadius: 7,
         marginLeft: 5,
         marginRight: 5,
-        marginTop: 5
+        marginTop: width * 0.04
     },
     circleStyle: {
         width: 40,
@@ -423,7 +425,7 @@ const styles = StyleSheet.create({
         width: width * 0.32,
         // backgroundColor:'red',
         borderRadius: 3,
-        height: width * 0.06,
+       // height: width * 0.06,
         alignItems: 'center',
         justifyContent: 'center'
 

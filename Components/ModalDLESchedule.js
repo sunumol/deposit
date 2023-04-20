@@ -51,7 +51,7 @@ const ModalDLESchedule = ({ ModalVisible, onPressOut, setModalVisible, navigatio
                     <Text style={[styles.textdesc, { paddingTop: 26, textAlign: 'center' }]}>Please schedule DLE for all Members
                     </Text>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingTop: 18, paddingBottom: 22 }}>
-                        <TouchableOpacity style={[styles.ButtonContinue, { marginRight: 10 }]} onPress={() =>{ setModalVisible(false),Press()}}>
+                        <TouchableOpacity style={[styles.ButtonContinue, { marginRight: 10 }]} onPress={() =>{ setModalVisible(false)}}>
                             <Text style={styles.textC}>{t('common:Okay')}</Text>
                         </TouchableOpacity>
 

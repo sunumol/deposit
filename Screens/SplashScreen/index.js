@@ -19,7 +19,8 @@ const SplashScreen = ({ navigation }) => {
     const getData = async () => {
         try {
           const Token = await AsyncStorage.getItem('Token')
-          console.log('--------Token',Token)
+         const user = await AsyncStorage.getItem('userName')
+          console.log('--------Token',Token,user)
           if (Token) {
             isGrantedPermissions()
           } else {
@@ -31,8 +32,10 @@ const SplashScreen = ({ navigation }) => {
       }
       
       const isGrantedPermissions = async () => {
-        const camera = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.CAMERA)
-        const Location = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION)
+        const camera = await PermissionsAndroid?.check(PermissionsAndroid?.PERMISSIONS?.CAMERA)
+        const Location = await PermissionsAndroid?.check(PermissionsAndroid?.PERMISSIONS?.ACCESS_FINE_LOCATION)
+        console.log("hello")
+      
         if (camera && Location) {
             const Pin = await AsyncStorage.getItem('Pin')
             const PinDate = await AsyncStorage.getItem('PinDate')

@@ -46,6 +46,7 @@ const ItemTabs = (props) => {
                     props.navigation.navigate('Dashboard')
                 } else if (props.index === 3) {
                     props.navigation.navigate('NewCgt')
+                    AsyncStorage.removeItem('DATECGT')
 
                 } else if (props.index === 4) {
                     props.navigation.navigate('Collect')

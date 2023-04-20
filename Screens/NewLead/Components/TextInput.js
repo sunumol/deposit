@@ -6,12 +6,13 @@ import {
     Text,
     TextInput,
     View,
+    Keyboard
 } from "react-native";
 import { FONTS } from "../../../Constants/Constants";
 
 const { height, width } = Dimensions.get('screen');
 
-const TextInputBox = ({ name, value, onChangeText, onFocus, onBlur,
+const TextInputBox = ({ name, value, onChangeText, onFocus, onBlur,blurOnSubmit,onSubmitEditing,
     secureTextEntry, backgroundColor1, keyboardType1, color, edit,maxLength }) => {
 
     return (
@@ -21,6 +22,7 @@ const TextInputBox = ({ name, value, onChangeText, onFocus, onBlur,
                 <Text style={styles.TextName}>{name}</Text>
 
                 <TextInput
+        
                     style={[styles.textInput, {
                         backgroundColor: backgroundColor1,
                         color: color, borderColor: edit ? 'red' : 'rgba(236, 235, 237, 1)'
@@ -30,12 +32,15 @@ const TextInputBox = ({ name, value, onChangeText, onFocus, onBlur,
                     placeholder={''}
                     placeholderTextColor="#808080"
                     returnKeyType="done"
+                   // ref={ref}
                     //maxLength={10}
-                    //autoFocus={true}
-                    onFocus={onFocus}
+                    onSubmitEditing={Keyboard.dismiss}
+                    // onFocus={onFocus}
                     onBlur={onBlur}
+                   
                     secureTextEntry={secureTextEntry}
                     keyboardType={keyboardType1}
+            
                     onChangeText={onChangeText} />
 
             </View>

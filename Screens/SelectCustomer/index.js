@@ -166,7 +166,7 @@ const SelectCustomer = ({ navigation, route }) => {
           <View style={styles.boxView}>
             <View style={styles.contentView}>
               <Text style={styles.timeText}>{route?.params?.data.time}</Text>
-              <Text style={styles.dateText}>{moment(selectedDate).utc().format("ddd")},{moment(selectedDate).utc().format("DD MMM")}</Text>
+              <Text style={styles.dateText}>{moment(selectedDate).utc().format("ddd")}, {moment(selectedDate).utc().format("DD MMM")}</Text>
             </View>
 
             < TouchableOpacity style={styles.editView} onPress={() => navigation.navigate('NewCgt')}>
@@ -237,8 +237,8 @@ const SelectCustomer = ({ navigation, route }) => {
 
               {
                 customerList && (
-                  <View>
-                    <Text style={[styles.nameText, { padding: 10 }]}>No match Found</Text>
+                  <View style={styles.ViewMapBranch}>
+                    <Text style={[styles.nameText, { padding: 10 }]}>No results Found</Text>
                   </View>
                 )
               }
@@ -353,7 +353,7 @@ const styles = StyleSheet.create({
     color: COLORS.colorDark,
   },
   lineView: {
-    borderWidth: 0.9,
+    borderWidth: 0.6,
     borderColor: COLORS.Gray6,
     backgroundColor: COLORS.Gray6,
     opacity: 0.5,
@@ -392,6 +392,7 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.FontBold,
     color: COLORS.colorBackground,
     letterSpacing: 0.64
-  }
+  },
+
 
 })

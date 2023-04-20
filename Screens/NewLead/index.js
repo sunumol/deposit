@@ -24,6 +24,8 @@ import { useRoute } from '@react-navigation/native';
 import { useFocusEffect } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import NewLead1 from './Components/NewLead';
+
+
 const NewLead = ({ navigation, }) => {
     const route = useRoute();
     console.log("route name", );
@@ -73,10 +75,11 @@ const NewLead = ({ navigation, }) => {
     //   })
 
       const OnstateUpdate = ()=>{
-          setTimeout(()=>{
-            setVillageStatus(false)
-           // alert("hello state")
-          },1000)
+        
+        //   setTimeout(()=>{
+        //     setVillageStatus(false)
+        //    // alert("hello state")
+        //   },1000)
           setVillageStatus(false)
          // alert("hello state")
           console.log("villate",VillageStatus)
@@ -87,8 +90,8 @@ const NewLead = ({ navigation, }) => {
             <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
 
             <Header navigation={navigation} name={t('common:NewLead')} onPress={handleGoBack}/>
-            <View style={styles.ViewContent}>
-         <TouchableOpacity activeOpacity={1.0} onPress={()=>OnstateUpdate()}>
+            <View style={styles.ViewContent} >
+         <TouchableOpacity  onPressOut={OnstateUpdate}  hitSlop={{ top: 30, bottom: 30, left: 30, right: 30 }}>
             <NewLead1 BStatus={BStatus} setBstatus={setBstatus} setVillageStatus={setVillageStatus} VillageStatus={VillageStatus}/>
           </TouchableOpacity>
             </View>

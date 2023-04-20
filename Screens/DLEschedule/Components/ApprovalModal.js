@@ -35,6 +35,7 @@ const ApprovalModal = ({ ModalVisible, onPressOut, setModalVisible, onPress, nav
             visible={ModalVisible}
             onRequestClose={() => {
                 setModalVisible(!ModalVisible)
+                AsyncStorage.removeItem('DATECGT')
                 navigation.navigate('NewCgt')
             }}
         >
@@ -95,7 +96,7 @@ const styles = StyleSheet.create({
     },
     modalContainer: {
         width: Dimensions.get('window').width * 0.82,
-        height: Dimensions.get('window').width * 0.61,
+       // height: Dimensions.get('window').width * 0.61,
         backgroundColor: COLORS.colorBackground,
         borderRadius: 20,
         alignItems: 'center',

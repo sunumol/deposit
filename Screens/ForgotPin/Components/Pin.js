@@ -7,7 +7,8 @@ import {
     TouchableOpacity,
     TextInput,
     ScrollView,
-    KeyboardAvoidingView
+    KeyboardAvoidingView,
+    ActivityIndicator
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import SmsAndroid from 'react-native-get-sms-android';
@@ -48,6 +49,7 @@ const ForgotPin = ({ navigation }) => {
     const [PhoneNum, setPhoneNum] = useState(null)
     const [button, setButton] = useState(true)
     const [otpAvailable, setOtpAvailable] = useState(false)
+    const [phoneChange,setPhoneChange]= useState(false)
 
     // --------------Device Configuration Start----------
     const [ipAdrress, setIPAddress] = useState();
@@ -86,7 +88,7 @@ const ForgotPin = ({ navigation }) => {
             if (res?.data?.status) {
                 console.log(res?.data)
                 setStatus(false)
-                navigation.navigate('ChangePin')
+                navigation.navigate('ResetPin')
                 setOtpFetch(false)
             } else {
                 console.log(res?.data)
@@ -215,8 +217,16 @@ const ForgotPin = ({ navigation }) => {
         return reg.test(Phone);
     }
 
+    useEffect(() => {
+        if(phoneChange){
+            setTimeout(() => {
+                setPhoneChange(false)}, 11000)
+        }
+    }, [phoneChange]);
+
     // ------------------ Resend Api Call Start ------------------
     async function forgotApiCall() {
+        setPhoneChange(true)
         const data = {
             deviceId: deviceId,
             geoLocation: {
@@ -237,7 +247,7 @@ const ForgotPin = ({ navigation }) => {
                 setOtpAvailable(true)
                 setStatus(true)
                 setTimer(30)
-                
+               
             } else {
                 console.log(res?.data)
             }
@@ -247,6 +257,14 @@ const ForgotPin = ({ navigation }) => {
                 setMaxError(true)
                 setOtpFetch(false)
                 setStatus(false)
+                setOtpAvailable(true)
+            }
+            if (err?.response?.data?.message === 'the device ID is already existing in the DB.') {
+                setModalVisibleError(true)
+                setPhoneNum('')
+                setButton(true)
+                setMaxError(false)
+                setMessage('This mobile is already registered with us. We are therefore unable to proceed further.')
             }
 
         })
@@ -291,10 +309,12 @@ const ForgotPin = ({ navigation }) => {
                                 onChangeText={(num) => {
                                     if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(num) || num === '') {
                                         setPhoneNum(num)
-                                        setButton(true)
                                         setMaxError(false)
                                         otpInput2?.current?.setValue('')
                                         setIsExpired(false)
+                                        if(!phoneChange){
+                                            setButton(true)
+                                           }
                                     } else {
                                         setModalVisible1(true)
                                         console.log("restricted values", num, PhoneNum)
@@ -312,10 +332,11 @@ const ForgotPin = ({ navigation }) => {
                         shadowOpacity: button ? 0. : 0,
                         elevation: button ? 5 : 0,
                         shadowRadius: button ? 1 : 0,
+                        flexDirection:'row'
                     }]}
                         onPress={() => GETOTP_Validation()} disabled={button ? false : true}>
-                        <Text style={[styles.getOtpText, { color: button ? COLORS.colorBackground : "#979C9E" }]}>{t('common:GetOTP')}</Text>
-
+                        <Text style={[styles.getOtpText, { color: button ? COLORS.colorBackground : "#979C9E",paddingRight:10}]}>{t('common:GetOTP')}</Text>
+                        {phoneChange?<ActivityIndicator size={15} color={'#979C9E'}/>:null}
                     </TouchableOpacity>
 
                     {otpAvailable

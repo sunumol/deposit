@@ -113,16 +113,16 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
         }
     }, [MonthsCustom, Purpose, Salary])
 
+
+    
     useEffect(() => {
-        console.log('month',Amount,Avg,Purpose)
-        if (Amount === null || Avg === null || Purpose === null) {
+        console.log('Use.....', Amount, Avg, Purpose)
+        if ((Amount === null || Amount === '' ) || (Avg === null || Avg ===  '') ||( Purpose === null ||  Purpose === '')) {
             setButtons(false)
         } else {
             setButtons(true)
         }
-    }, [Amount, Avg, Month])
-    
-
+    }, [Amount, Avg, Purpose])
 
       // ------------------ get Conduct DLE basic detail Village Api Call Start ------------------
       const updateRejection = async () => {
@@ -199,7 +199,17 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
         };
         // ------------------ ------------------
 
-
+        const setMonthdata = (text) => {
+            if(text?.length>0) {
+                 if (text < 13) {
+                     setPurpose(text)
+                 } else {
+                    setPurpose('')
+                 }
+             }else{
+                setPurpose('')
+             }
+         }
 
 
 
@@ -274,11 +284,16 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
                                 <Text style={styles.TextElect}>{incomedetailfield?.field2}</Text>
                             </View>
                             <View style={styles.SelectBox}>
-                            <TouchableOpacity style={[styles.SelectBox,{justifyContent:'space-between'}]} onPress={() => setModalVisible(true)}>
+                          {incomedetailfield?.field2 == 'Salary credit method' ? <TouchableOpacity style={[styles.SelectBox,{justifyContent:'space-between'}]} onPress={() => setModalVisible(true)}>
                                 <Text style={[styles.textSelect]}>{Purpose ? Purpose :'Select'}</Text>
 
                                 <Icon1 name="chevron-down" size={18} color={'#808080'} style={{ marginRight: 10 }} />
-                            </TouchableOpacity>
+                            </TouchableOpacity>:
+                             <TextInput
+                             style={[{ fontSize: 14, color: '#1A051D', fontFamily: FONTS.FontRegular, left: 5 ,width: '95%' }]}
+                             value={Month?.toString()}
+                             keyboardType={'number-pad'}
+                             onChangeText={(text) => setMonthdata(text)} /> }
                                 {/* <TextInput
                                     style={[{ fontSize: 14, color: '#1A051D', fontFamily: FONTS.FontRegular, left: 5 }]}
                                     value={Month?.toString()}

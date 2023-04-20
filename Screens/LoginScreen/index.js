@@ -11,7 +11,7 @@ import {
     ScrollView,
     BackHandler,
     Dimensions,
-    ToastAndroid,
+    ActivityIndicator,
     PermissionsAndroid
 } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -66,12 +66,14 @@ const LoginScreen = ({ navigation }) => {
     const [exitApp, setExitApp] = useState(0);
     const [otpclick, setOtpclick] = useState(true)
 
+
     // --------------Device Configuration Start----------
     const [ipAdrress, setIPAddress] = useState();
     const [DeviceId, setDeviceId] = useState();
     const [permissions, setPermissions] = useState(false)
     const [condirmDate, setConfirmDate] = useState()
     const [fetOtp, setOtpFetch] = useState(false)
+    const [phoneChange,setPhoneChange]= useState(false)
     // --------------Device Configuration End----------
 
     const [otpMessage, setOtpMessage] = useState()
@@ -136,6 +138,7 @@ const LoginScreen = ({ navigation }) => {
         } else {
             setStatus(false)
             setButton(true)
+            setOtpclick(true)
         }
     }, [timerCount, IsOtp1]);
 
@@ -152,21 +155,21 @@ const LoginScreen = ({ navigation }) => {
 
 
     const backAction = () => {
-        console.log('-----------------------------------oir[pe[rgop[og[p------------',IsOtp1)
-        if(IsOtp1){
+        console.log('-----------------------------------oir[pe[rgop[og[p------------', IsOtp1)
+        if (IsOtp1) {
             navigation.reset({
                 index: 0,
-                routes: [{name: 'LoginScreen'}],
+                routes: [{ name: 'LoginScreen' }],
             });
             return true;
-        }else{
+        } else {
             setModalExitAppVisible(true)
             return true;
         }
-      
+
     };
     useFocusEffect(
-       
+
         React.useCallback(() => {
             BackHandler.addEventListener("hardwareBackPress", backAction);
             return () => {
@@ -186,6 +189,8 @@ const LoginScreen = ({ navigation }) => {
 
         const firstDigitStr = String(PhoneNum)[0];
         if (PhoneNum?.length != 10 || PhoneNum == "") {
+            setButton(true)
+            setOtpclick(true)
             setModalVisible1(true)
         } else if (firstDigitStr === '1' || firstDigitStr === '2' || firstDigitStr === '3' || firstDigitStr === '4' || firstDigitStr === '5' || firstDigitStr === '0') {
             setModalVisible1(true)
@@ -232,21 +237,30 @@ const LoginScreen = ({ navigation }) => {
     const OnchangeNumber = (num) => {
         if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(num) || num === '') {
             setPhoneNum(num)
+           if(!phoneChange){
             setButton(true)
-            setMaxError(false)
             setOtpclick(true)
-            otpInput2?.current?.clear()
+           }
+            setMaxError(false)
+            otpInput2?.current?.setValue('')
             setIsExpired(false)
         } else {
             setModalVisible1(true)
             console.log("restricted values", num, PhoneNum)
         }
     }
-
+    useEffect(() => {
+        if(phoneChange){
+            setTimeout(() => {
+                setPhoneChange(false)}, 11000)
+        }
+    }, [phoneChange]);
+ 
     // ------------------ Login Api Call Start ------------------
     async function LoginApiCall() {
         otpInput2?.current?.clear()
         setConfirmDate(new Date().getTime())
+        setPhoneChange(true)
         const data = {
             deviceId: DeviceId,
             geoLocation: {
@@ -268,7 +282,7 @@ const LoginScreen = ({ navigation }) => {
                 setTimer(30)
             }
         }).catch((err) => {
-            console.log("err->", err?.response)
+            console.log("err Login->", err,DeviceId)
             if (err?.message !== 'Network Error') {
                 if (err?.response?.data?.message === 'the device ID is already existing in the DB.') {
                     setModalVisibleError(true)
@@ -279,7 +293,13 @@ const LoginScreen = ({ navigation }) => {
                     setIsOtp1(true)
                     setStatus(false)
                     setMaxError(true)
-                } else {
+                } else if (err?.response?.data?.message === 'Please enter valid agent mobile number') {
+                    setModalVisible1(true)
+                    setButton(true)
+                    setOtpclick(true)
+                    setPhoneNum('')
+                }
+                else {
                     setMaxError(false)
                 }
 
@@ -358,22 +378,21 @@ const LoginScreen = ({ navigation }) => {
             if (res?.data?.status) {
                 setMaxError(false)
                 setOtpFetch(false)
-                setPhoneNum(null)
-                setOtpValue('')
-                setButton(true)
+                
+                //setOtpValue('')
+               // setButton(true)
                 setOtp(false)
                 setConfirmDate(null)
                 console.log("succuss", res?.data?.customerId)
                 AsyncStorage.setItem('Mobile', '+91' + PhoneNum);
                 AsyncStorage.setItem('CustomerId', JSON.stringify(res?.data?.customerId));
-                if (res?.data?.register) {
-                    isGrantedPermissions(res?.data?.status)
-                    AsyncStorage.setItem('Token', 'dXNlckBleGFtcGxlLmNvbTpzZWNyZXQ=');
-                    AsyncStorage.setItem('userName', res?.data?.customerName);
-                    console.log("username", res?.data?.customerName)
-                } else {
-                    navigation.navigate('Permission')
-                }
+
+                isGrantedPermissions(res?.data?.status)
+                AsyncStorage.setItem('Token', 'dXNlckBleGFtcGxlLmNvbTpzZWNyZXQ=');
+                AsyncStorage.setItem('userName', res?.data?.customerName);
+                console.log("username", res?.data?.customerName)
+
+
             } else {
                 console.log(res?.data)
             }
@@ -495,10 +514,10 @@ const LoginScreen = ({ navigation }) => {
                                 }]}
                                     onPress={() => GETOTP_Validation()} disabled={button ? false : true}>
                                     <Text style={[styles.text, { color: button ? COLORS.colorBackground : "#979C9E" }]}>{t('common:GetOTP')}</Text>
-
                                 </TouchableOpacity> :
                                     <View style={[styles.Button, {
                                         backgroundColor: "#ECEBED",
+                                        flexDirection:'row',
                                         shadowColor: "#000000",
                                         shadowOffset: { width: 0, height: 7 },
                                         shadowOpacity: button ? 0. : 0,
@@ -506,7 +525,8 @@ const LoginScreen = ({ navigation }) => {
                                         shadowRadius: button ? 1 : 0,
                                     }]}
                                         disabled={button ? false : true}>
-                                        <Text style={[styles.text, { color: "#979C9E" }]}>{t('common:GetOTP')}</Text>
+                                        <Text style={[styles.text, { color: "#979C9E" ,paddingRight:10}]}>{t('common:GetOTP')}</Text>
+                                        {phoneChange?<ActivityIndicator size={15} color={'#979C9E'}/>:null}
 
                                     </View>}
 
@@ -562,11 +582,12 @@ const LoginScreen = ({ navigation }) => {
                                         containerStyle={{ marginTop: 7 }}
                                         handleTextChange={(code => {
                                             setOtpValue(code)
+                                       
                                             if (code.length === 4) {
                                                 ConfirmOtp(code)
-                                            }
-                                            if (code.length === '') {
+                                            }else{
                                                 setOtp(false)
+                                                setIsExpired(false)
                                             }
                                         })} /> : null}
 
@@ -604,7 +625,7 @@ const LoginScreen = ({ navigation }) => {
                                         otpMessage={otpMessage}
                                         setModalVisible={setModalVisible}
                                         navigation={navigation}
-                                        ConfirmOtp={(data) => ConfirmOtp(data)}
+                                        ConfirmOtp={(data) =>otpInput2?.current?.setValue(data)}
                                         setOtpFetch={setOtpFetch}
                                     /> : null}
 
@@ -621,7 +642,7 @@ const LoginScreen = ({ navigation }) => {
                                     onPressOut={() => setModalVisibleError(!ModalVisibleError)}
                                     setModalVisible={setModalVisibleError}
                                 />
-                                     <ModalExitApp
+                                <ModalExitApp
                                     ModalVisible={modalExitAppVisible}
                                     onPressOut={() => setModalExitAppVisible(!modalExitAppVisible)}
                                     setModalExitAppVisible={setModalExitAppVisible}

@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState,useRef } from 'react';
 import {
     View,
     Image,
@@ -7,6 +7,7 @@ import {
     StyleSheet,
     Text,
     FlatList,
+    Keyboard,
     TouchableWithoutFeedback,
     TouchableOpacity,
     TextInput,
@@ -39,9 +40,13 @@ const NewLead1 = ({ navigation,setVillageStatus,VillageStatus }) => {
     const [ValidModal1, setValidModal1] = useState(false)
     const [Message,setMessage] = useState('')
     const [ResultError, setResultError] = useState(false)
-
+    const [VillageEnable,setVillageEnable] =  useState(false)
     const [vilageList, setVillageList] = useState([])
-
+    const [isFocused, setIsFocused] = useState(false);
+    const [addressFocus, setAddressFocus] = useState(false);
+    const [addressFocus1, setAddressFocus1] = useState(false);
+    const adddressRef = useRef();
+    const MobileRef = useRef();
     const [error, setError] = useState({
         Name: true,
         Mobile: true,
@@ -115,6 +120,7 @@ const NewLead1 = ({ navigation,setVillageStatus,VillageStatus }) => {
         }
     }
     async function onSubmit() {
+        setResultError(true)
         const data = {
             "leadName": Name,
             "mobileNumber": Mobile,
@@ -129,6 +135,7 @@ const NewLead1 = ({ navigation,setVillageStatus,VillageStatus }) => {
                 }
                 else if (res?.data?.body == 'Lead generated') {
                     setModalVisible(true)
+                    setIsFocused(false)
                 }
             }
             console.log('-------------------res', res)
@@ -156,18 +163,25 @@ const NewLead1 = ({ navigation,setVillageStatus,VillageStatus }) => {
 
 
                         <TextInputBox
+                          returnKeyType="next"
+                            ref={adddressRef}
                             //pointerEvents="none"
                             name={t('common:Name')}
                             value={Name}
                             color={"#1A051D"}
-
+                            maxLength={40}
+                            keyboardType1={'email-address'}
+                            onFocus={() => setAddressFocus(true)}
+                            onBlur={() => setAddressFocus(false)}
+                            
+                            onSubmitEditing={() => MobileRef.current.focus()}
                             // edit={AccStatus}
                             onChangeText={(text) => {
-                                if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(text) || text === '') {
+                                if (/^[^!-\/:-@\.,[-`{-~1234567890₹~`|•√π÷×¶∆€¥$¢^°={}%©®™✓]+$/.test(text) || text === '') {
                                     setName(text)
                         
                                 } else {
-                                    ToastAndroid.show(t('common:Valid'), ToastAndroid.SHORT);
+                                    ToastAndroid.show("Please enter a valid name ", ToastAndroid.SHORT);
                                 }
                                 
                             }}
@@ -176,6 +190,7 @@ const NewLead1 = ({ navigation,setVillageStatus,VillageStatus }) => {
 
 
                         <TextInputBox
+                        ref={MobileRef}
                             name={t('common:SmartPhone')}
                             value={Mobile}
                             keyboardType1={'numeric'}
@@ -184,6 +199,7 @@ const NewLead1 = ({ navigation,setVillageStatus,VillageStatus }) => {
                             onChangeText={(text) => {
                                 OnchangeNumber(text)
                             }}
+                            onBlur={()=>true}
                         />
 
                         <TextInputBox
@@ -193,17 +209,24 @@ const NewLead1 = ({ navigation,setVillageStatus,VillageStatus }) => {
                             color={"#1A051D"}
                             maxLength={6}
                             onChangeText={(text) => {
+                                setVillage('')
                                // setPincode(text)
-                                if(text?.length==6){
+                          
+                               if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(text) || text === '') {
                                     setPincode(text)
+                                    console.log("pincode",text)
+                                    setPincode(text)
+                                   
+                                   if(text?.length === 6){
                                     setVStatus(true)
-                               }
-                                else if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(text) || text === '') {
-                                    setPincode(text)
-                                   // setVStatus(true)
+                                   }
                                 }
+                            //      else if(text?.length==6){
+                            //         setPincode(text)
+                            //         setVStatus(true)
+                            //    }
                                 else {
-                                    ToastAndroid.show(t('common:Valid'), ToastAndroid.SHORT);
+                                    ToastAndroid.show('Please enter a valid pincode', ToastAndroid.SHORT);
                                 }
                             }}
                         />
@@ -219,10 +242,13 @@ const NewLead1 = ({ navigation,setVillageStatus,VillageStatus }) => {
                                     <Image1 />
                                 <TextInput
                                     value={Village}
+                                 
                                     style={styles.TextInputBranch}
                                     onChangeText={(text) => {
                                         setVillage(text)
+                                        setVillageEnable(false)
                                         if (text == '') {
+                                            
                                             setVillageList([])
                                             setVillageStatus(false)
                                            // setBstatus(false)
@@ -242,6 +268,7 @@ const NewLead1 = ({ navigation,setVillageStatus,VillageStatus }) => {
 
                                             <TouchableOpacity onPress={() => {
                                                 setVillage(item)
+                                                setVillageEnable(true)
                                                 setButton(true)
                                                 setVillageList([])
                                                 setVillageStatus(false)
@@ -279,10 +306,10 @@ const NewLead1 = ({ navigation,setVillageStatus,VillageStatus }) => {
         
        
             <TouchableOpacity
-                style={[styles.Button1, { backgroundColor: Button &&  Name?.length>=3  && Mobile?.length===10  && Pincode?.length===6 ? COLORS.colorB : '#ECEBED' }]}
-                disabled={Button && Name?.length>=3 && Mobile?.length===10 && Pincode?.length===6 ? false : true}
+                style={[styles.Button1, { backgroundColor: Button &&  Name?.length>=3  && Mobile?.length===10  && Pincode?.length===6 && VillageEnable ? COLORS.colorB : '#ECEBED' }]}
+                disabled={Button && Name?.length>=3 && Mobile?.length===10 && Pincode?.length===6 && VillageEnable? false : true}
                 onPress={()=>Validation()}>
-                <Text style={[styles.text1, { color: Button && Name?.length>=3  && Mobile?.length===10  && Pincode?.length===6? COLORS.colorBackground : '#979C9E' }]}>{t('common:Confirm')}</Text>
+                <Text style={[styles.text1, { color: Button && Name?.length>=3  && Mobile?.length===10  && Pincode?.length===6 && VillageEnable? COLORS.colorBackground : '#979C9E' }]}>{t('common:Confirm')}</Text>
             </TouchableOpacity>
 
             <LeadModal ModalVisible={ModalVisible}

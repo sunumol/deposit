@@ -45,7 +45,7 @@ const PinScreen = ({ navigation, }) => {
     // --------------Device Configuration Start----------
     const [custID, setCustId] = useState()
     const [invalidState, setInvalidState] = useState(1)
-    const [userName, setUserName] = useState()
+    const [userName, setUserName] = useState('Athira')
     const [status, setStatus] = useState(false)
     // --------------Device Configuration End----------
 
@@ -64,8 +64,8 @@ const PinScreen = ({ navigation, }) => {
     const getData = async () => {
         try {
             const id = await AsyncStorage.getItem('CustomerId')
-            const userName = await AsyncStorage.getItem('userName')
-            console.log("userName", AsyncStorage.getItem('userName'))
+           // const userName = await AsyncStorage.getItem('userName')
+            console.log("userName", userName)
             setUserName(userName)
             setCustId(id)
         } catch (e) {
@@ -135,19 +135,7 @@ const PinScreen = ({ navigation, }) => {
                 }
             } else {
                 setModalVisible(!ModalVisible)
-            }
-
-            if (Pin === code) {
-                navigation.navigate('Profile')
-            } else {
-                setError(true)
-                // clearText()
-                setInvalidState(invalidState + 1)
-                if (invalidState === 4) {
-                    invalidOtpApi()
-                }
-                console.log('invalidState', invalidState)
-            }
+            }   
         } catch (e) {
             console.log(e)
         }

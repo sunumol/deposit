@@ -431,7 +431,7 @@ export default {
 
     //Exit Modal
 
-    'ExitModal': 'Are you sure you want to exit ? ',
+    'ExitModal': 'Are you sure you want to exit? ',
 
     //  -------------------- PreClosure -------------------
     'PreClose': 'Pre-close loan',
@@ -443,7 +443,7 @@ export default {
     //New Lead
 
     'NewLead': 'New Lead',
-    'SmartPhone': 'Smartphone linked mobile no.',
+    'SmartPhone': 'Mobile Number',
     'Village': 'Village',
     'LeadG': 'Lead Generated',
 
@@ -452,7 +452,7 @@ export default {
     'ForgotPin': 'Forgot PIN',
 
     'NewLead': 'New Lead',
-    'SmartPhone': 'Smartphone linked mobile no.',
+    //'SmartPhone': 'Smartphone linked mobile no.',
     'Village': 'Village',
     'LeadG': 'Lead Generated',
     'leadValid': 'This number is already registered.',

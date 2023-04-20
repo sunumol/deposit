@@ -12,7 +12,8 @@ import {
     StatusBar,
     ScrollView,
     Dimensions,
-    BackHandler
+    BackHandler,
+    ActivityIndicator
 } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { COLORS, FONTS } from '../../Constants/Constants';
@@ -26,66 +27,133 @@ import Cgt from './Components/Cgt';
 import CalendarStrips from './Components/Calender';
 import moment from 'moment';
 import { api } from '../../Services/Api';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
-const NewCgt = ({ navigation, }) => {
+
+const NewCgt = ({ navigation, date }) => {
     const route = useRoute();
-    console.log("route name",);
+
+    console.log("rEDUX DATA", date);
     const isDarkMode = true
+    const [CgtDate, setCgtDate] = useState('')
     const { t } = useTranslation();
     const [lang, setLang] = useState('');
     const [BStatus, setBstatus] = useState(false);
-    const [slotlist,setSlotlist] = useState([]);
-    const [enab,setEnab]=useState(false)
-    const [ selectedDate,setSelectedDate] = useState(moment().format());
+    const [slotlist, setSlotlist] = useState([]);
+    const [enab, setEnab] = useState(false)
+    const [selectedDate, setSelectedDate] = useState(moment().format());
+    const [NewDates, setNewDates] = useState(new Date())
+    const cgtdate = useSelector(state => state?.NewcgtSlot)
+    const [status,setStatus] = useState(true)
+   
     const dispatch = useDispatch()
+
     useEffect(() => {
         getData(),
-        getCGTslot()
+       // getCGTslot()
+
+        //  setCgtDate(useSelector(state => state?.NewcgtSlot));
+        console.log("slectedDATE data pass", NewDates)
     }, [])
 
     const getData = async () => {
         try {
             const lang = await AsyncStorage.getItem('user-language')
+           const Cgtdate = await AsyncStorage.getItem('DATECGT')
+           console.log("cgtdate async",Cgtdate)
             setLang(lang)
+            //setNewDates(Cgtdate)
+            getCGTslot_callback(Cgtdate)
 
         } catch (e) {
             console.log(e)
         }
     }
+    useFocusEffect(
+        React.useCallback(() => {
+            getData()
 
+           // const Cgtdate =  AsyncStorage.getItem('DATECGT')
+          console.log('Screen was focused',NewDates);
+          
+          // Do something when the screen is focused
+          return () => {
+            console.log('Screen was focused');
+            // Do something when the screen is unfocused
+            // Useful for cleanup functions
+          };
+        }, [])
+      );
+    
 
-    const callback =(value) =>{
-       // const date = moment(value).utc().format('DD-MM-YYYY')
+    const callback = (value) => {
+        console.log("callback called", value)
+
+        // const date = moment(value).utc().format('DD-MM-YYYY')
         setSelectedDate(value)
-        getCGTslot(value)
-     
+        getCGTslot()
+        console.log("date of passing", NewDates)
     }
+ 
+    // ------------------ get Slot Api Call Start ------------------
+    const getCGTslot = async (date) => {
+        // console.log("function set",date)
+        console.log('api called', NewDates)
+        //console.log("selectedDate", selectedDate)
+        const data = {
+            "employeeId": 1,
+            "selectedDate": moment(NewDates).utc().format('DD-MM-YYYY')
+        };
+        await api.getCGTslot(data).then((res) => {
+            dispatch({
+                type: 'SET_ACTIVITY',
+                payload: res?.data?.body[0].sloatActivityList,
+            });
+            console.log("data print", NewDates)
+            console.log('------------------- CGT slot res', res.data?.body[0].sloatActivityList)
+            setSlotlist(res?.data?.body[0].sloatActivityList);
+            setStatus(false)
+            setEnab(false)
+            
 
 
-              // ------------------ get Slot Api Call Start ------------------
-              const getCGTslot = async (date) => {
-                console.log('api called',date)
-                 const data = {
-                     "employeeId": 1,
-                     "selectedDate":  moment(date ? date : selectedDate ).utc().format('DD-MM-YYYY')
-                 };
-                 await api.getCGTslot(data).then((res) => {
-                    dispatch({
-                        type: 'SET_ACTIVITY',
-                        payload:res?.data?.body[0].sloatActivityList,
-                    });
-                     console.log('------------------- CGT slot res', res.data?.body[0].sloatActivityList)
-                      setSlotlist(res?.data?.body[0].sloatActivityList);
-                      setEnab(false)
-                   
-         
-                 })
-                     .catch((err) => {
-                         console.log('-------------------err', err?.response)
-                     })
-             };
-             // ------------------ get slot Api Call End ------------------
+        })
+            .catch((err) => {
+                console.log('-------------------err', err?.response)
+                setStatus(false)
+            })
+    };
+    // ------------------ get slot Api Call End ------------------
+
+
+        // ------------------ get Slot Api Call Start ------------------
+        const getCGTslot_callback = async (cgtdate) => {
+            // console.log("function set",date)
+            console.log('api called',cgtdate,NewDates)
+            //console.log("selectedDate", selectedDate)
+            const data = {
+                "employeeId": 1,
+                "selectedDate": moment(cgtdate?cgtdate:NewDates).utc().format('DD-MM-YYYY')
+            };
+            await api.getCGTslot(data).then((res) => {
+                dispatch({
+                    type: 'SET_ACTIVITY',
+                    payload: res?.data?.body[0].sloatActivityList,
+                });
+                console.log("data print", NewDates)
+                console.log('------------------- CGT slot res', res.data?.body[0].sloatActivityList)
+                setSlotlist(res?.data?.body[0].sloatActivityList);
+                setStatus(false)
+                setEnab(false)
+                
+    
+    
+            })
+                .catch((err) => {
+                    console.log('-------------------err slot', err?.response)
+                    setStatus(false)
+                })
+        };
 
     const handleGoBack = useCallback(() => {
         if (BStatus) {
@@ -105,24 +173,27 @@ const NewCgt = ({ navigation, }) => {
         }, [handleGoBack]),
     );
 
-    React.useEffect(() => {
-        const unsubscribe = navigation.addListener('focus', () => {
-        
-            getCGTslot()
-       
-        });
 
-        return unsubscribe;
-    }, [navigation,enab]);
 
-    {console.log('====fkjkfjkjfkjrf',enab)}
-    
+
+    { console.log('====fkjkfjkjfkjrf', enab) }
+
     useEffect(() => {
         getCGTslot()
-    }, [enab]);
+        console.log("API CALLED")
+    }, []);
+    useEffect(() => {
+        getCGTslot(NewDates)
+        console.log("API CALLED")
+    }, [NewDates]);
 
- 
-
+    useEffect(() => {
+        if (NewDates !== NewDates) {
+            setNewDates(NewDates)
+        }
+        //callback()
+        console.log("selected date INDEX PRINT", NewDates)
+    }, [NewDates])
 
 
     return (
@@ -130,17 +201,19 @@ const NewCgt = ({ navigation, }) => {
             <SafeAreaView style={styles.container1} />
             <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
 
-            <Header navigation={navigation} name={"New CGT"}  activity = {true} onPress={handleGoBack} />
+            <Header navigation={navigation} name={"New CGT"} activity={true} onPress={handleGoBack} />
+            {status ? 
+                <View style={{alignItems:'center',justifyContent:'center',flex:1,}}>
+                <ActivityIndicator size={30} color={COLORS.colorB}/>
+                </View>:
             <View style={styles.ViewContent}>
-          
-           
-                <CalendarStrips callback ={callback}/>
-                <Cgt navigation={navigation} data ={slotlist}  date ={selectedDate}  setEnab={setEnab}/>
-              
+                <CalendarStrips callback={callback} setNewDates={setNewDates} NewDates={NewDates} getCGTslot={()=>getCGTslot()} />
+                <Cgt navigation={navigation} data={slotlist} date={NewDates} setEnab={setEnab} />
+
                 {/* <DatePicker/> */}
 
 
-            </View>
+            </View>}
 
         </SafeAreaProvider>
     )

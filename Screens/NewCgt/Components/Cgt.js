@@ -23,11 +23,12 @@ const { height, width } = Dimensions.get('screen');
 // import { useTranslation } from 'react-i18next';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { api } from '../../../Services/Api';
+import { useDispatch } from 'react-redux';
 
 
 
 const Cgt = ({navigation,data,date}) => {
-    console.log('cgt----->>>',date)
+    console.log('',date)
     const [status, setStatus] = useState(false);
     const weekDay = [];
     const year = [];
@@ -36,157 +37,7 @@ const Cgt = ({navigation,data,date}) => {
     const [DateStatus, setDateStatus] = useState(false)
     const [selectedItem1, setSelectedItem1] = useState()
     const [enab,setEnab]=useState(false)
-    const Data = [
-        {
-            id: 1,
-            slot: '7:00 AM',
-            bgcolor: 'rgba(242, 153, 74, 1)',
-            color: 'rgba(242, 153, 74, 1)'
-        },
-        {
-            id: 2,
-            slot: '7:30 AM',
-            bgcolor: 'rgba(242, 153, 74, 1)',
-            color: 'rgba(242, 153, 74, 1)'
-        },
-        {
-            id: 3,
-            slot: '08:00 AM',
-            bgcolor: 'rgba(242, 153, 74, 1)',
-            color: 'rgba(242, 153, 74, 1)'
-        },
-        {
-            id: 4,
-            slot: '08:30 AM',
-            bgcolor: 'rgba(242, 153, 74, 1)',
-            color: 'rgba(242, 153, 74, 1)'
-        },
-        {
-            id: 5,
-            slot: '09:00 AM',
-            bgcolor: 'rgba(234, 64, 71, 1)',
-            color: 'rgba(234, 64, 71, 1)'
-        },
-        {
-            id: 6,
-            slot: '09:30 AM',
-            bgcolor: 'rgba(155, 81, 224, 1)',
-            color: 'rgba(155, 81, 224, 1)'
-        },
-        {
-            id: 7,
-            slot: '10:00 AM',
-            bgcolor: 'rgba(155, 81, 224, 1)',
-            color: 'rgba(155, 81, 224, 1)'
-        },
-        {
-            id: 8,
-            slot: '10:30 AM',
-            bgcolor: 'rgba(39, 174, 96, 1)',
-            color: '#808080'
-        },
-        {
-            id: 9,
-            slot: '11:00 AM',
-            bgcolor: 'rgba(39, 174, 96, 1)',
-            color: '#808080'
-
-        },
-        {
-            id: 10,
-            slot: '11:30 AM',
-            bgcolor: 'rgba(242, 153, 74, 1)',
-            color: 'rgba(242, 153, 74, 1)'
-        },
-        {
-            id: 11,
-            slot: '12:00 PM',
-            bgcolor: 'rgba(39, 174, 96, 1)',
-            color: '#808080'
-
-        },
-        {
-            id: 12,
-            slot: '12:30 PM',
-            bgcolor: 'rgba(39, 174, 96, 1)',
-            color: '#808080'
-
-        },
-        {
-            id: 13,
-            slot: '01:00 PM',
-            bgcolor: 'rgba(39, 174, 96, 1)',
-            color: '#808080'
-        },
-        {
-            id: 14,
-            slot: '01:30 PM',
-            bgcolor: 'rgba(39, 174, 96, 1)',
-            color: '#808080'
-        },
-        {
-            id: 15,
-            slot: '02:00 PM',
-            bgcolor: 'rgba(39, 174, 96, 1)',
-            color: '#808080'
-        },
-        {
-            id: 16,
-            slot: '02:30 PM',
-            bgcolor: 'rgba(242, 153, 74, 1)',
-            color: 'rgba(242, 153, 74, 1)'
-        },
-        {
-            id: 17,
-            slot: '03:00 PM',
-            bgcolor: 'rgba(39, 174, 96, 1)',
-            color: '#808080'
-        },
-        {
-            id: 18,
-            slot: '03:30 PM',
-            bgcolor: 'rgba(39, 174, 96, 1)',
-            color: '#808080'
-        },
-
-        {
-            id: 20,
-            slot: '04:00 PM',
-            bgcolor: 'rgba(39, 174, 96, 1)',
-            color: '#808080'
-        },
-        {
-            id: 21,
-            slot: '04:30 PM',
-            bgcolor: 'rgba(39, 174, 96, 1)',
-            color: '#808080'
-        },
-        {
-            id: 22,
-            slot: '05:00 PM',
-            bgcolor: 'rgba(39, 174, 96, 1)',
-            color: '#808080'
-        },
-        {
-            id: 23,
-            slot: '05:30 PM',
-            bgcolor: 'rgba(39, 174, 96, 1)',
-            color: '#808080'
-        },
-        {
-            id: 23,
-            slot: '06:00 PM',
-            bgcolor: 'rgba(242, 153, 74, 1)',
-            color: 'rgba(242, 153, 74, 1)'
-        },
-        {
-            id: 24,
-            slot: '06:30 PM',
-            bgcolor: 'rgba(39, 174, 96, 1)',
-            color: '#808080'
-        },
-     
-    ]
+    const dispatch = useDispatch()
 
     const ChooseDate = (day) => {
         console.log("day selection...", day)
@@ -203,12 +54,6 @@ const Cgt = ({navigation,data,date}) => {
     }
 
 
-
-    
-
-
-
-
  useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
         setStatus(false)
@@ -221,11 +66,15 @@ const Cgt = ({navigation,data,date}) => {
   
   }, [navigation]);
 
+
+
     const renderItem = ({ item }) => {
         return (
             <View style={{ justifyContent: 'space-around', margin: 5 }}>
                 <TouchableOpacity 
-                onPress={() => { item.availabilityStatu == "notAvailable" ? navigation.navigate('Activities',{data:item}): navigation.navigate('SelectCustomerNewCgt',{data : item,date :date}) }}
+                onPress={() => { item.availabilityStatu == "notAvailable" ? navigation.navigate('Activities',{data:item}):
+                 navigation.navigate('SelectCustomerNewCgt',{data : item,date :date,
+                }) }}
                     style={[styles.Touch, { borderColor: item.availabilityStatu == "partiallyAvailable"  ? 'rgba(242, 153, 74, 1)': item.availabilityStatu == "fullyAvailable"  ? 'rgba(39, 174, 96, 1)':item.availabilityStatu == "fullyAllocated"  ? 'rgba(234, 64, 71, 1)':item.availabilityStatu == "notAvailable"  ? 'rgba(155, 81, 224, 1)':null, backgroundColor: COLORS.colorBackground }]}>
                     <Text style={[styles.timeText1, { color: item.availabilityStatu == "partiallyAvailable"  ? 'rgba(242, 153, 74, 1)': item.availabilityStatu == "fullyAvailable"  ? 'rgba(39, 174, 96, 1)':item.availabilityStatu == "fullyAllocated"  ? 'rgba(234, 64, 71, 1)':item.availabilityStatu == "notAvailable"  ? 'rgba(155, 81, 224, 1)':null }]}>{item.time}</Text>
                 </TouchableOpacity>

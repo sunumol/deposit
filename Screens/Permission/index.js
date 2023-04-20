@@ -171,14 +171,11 @@ const Permission = ({ navigation }) => {
                 <ScrollView style={{ flex: 1, marginBottom: 0 }}>
 
                     <View style={styles.ViewHead}>
-                        {lang == "en" ?
+                       
                             <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                                 <Text style={styles.HeadText}>Please allow us the  </Text>
                                 <Text style={styles.HeadText}>following permissions</Text>
-                            </View> : <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                                <Text style={[styles.HeadText, { fontSize: 17 }]}>താഴെ പറയുന്ന അനുമതികൾ നൽകൂ</Text>
-                                {/* <Text style={[styles.HeadText, { fontSize: 17 }]}>അനുവദിക്കുക </Text> */}
-                            </View>}
+                            </View> 
                     </View>
                     {Data.map((item, index) => {
                         return (
@@ -216,8 +213,8 @@ const Permission = ({ navigation }) => {
                                                         height={item.height} />}
 
                                     <View style={{ flex: 1, flexDirection: 'column', paddingHorizontal: 15.5, }}>
-                                        <Text style={styles.title}>{lang == "en" ? item.title1 : item.title2}</Text>
-                                        <Text style={[styles.Desc, { fontSize: lang == 'en' ? 12 : 10 }]}>{lang == "en" ? item.description1 : item.description2}</Text>
+                                        <Text style={styles.title}>{item.title1}</Text>
+                                        <Text style={[styles.Desc, { fontSize: lang == 'en' ? 12 : 10 }]}>{item.description1}</Text>
                                     </View>
                                 </View>
                             </View>

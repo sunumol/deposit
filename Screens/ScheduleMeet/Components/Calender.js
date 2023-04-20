@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity,FlatList } from 'react-native';
 import CalendarStrip from 'react-native-calendar-strip';
 import moment from 'moment'
 import { COLORS, FONTS } from '../../../Constants/Constants';
@@ -7,184 +7,82 @@ import Icon1 from 'react-native-vector-icons/SimpleLineIcons'
 import { set } from 'lodash';
 import { format } from 'date-fns';
 
-const CalendarStrips = ({callback}) => {
-  const [Month, setMonth] = useState(new Date())
-  const [StartDay, setStartDay] = useState(new Date())
-  const [Maxdate, setMaxDate] = useState(new Date())
-  const [Maxweek, setMaxweek] = useState(new Date())
-  const [NDate, setNDate] = useState('')
-  const [Format, setFormat] = useState('')
-  const [NewDate, setNewDate] = useState('')
-  const [year, setYear] = useState('')
-  const [Status, setStatus] = useState(false)
-  const [DateArray, setDateArray] = useState([])
-  const [YearArray, setYearArray] = useState([])
-  const [MonthInc, setMonthInc] = useState('')
-  //  const [MonthState,setMonthState]
-  const [currentDate, setCurrentDate] = useState('')
-  const [MonthState, setMonthState] = useState('')
-  const [state, setState] = useState('')
-  const [selectedDate, setSelectedDate] = useState('')
+const CalendarStrips = ({ callback }) => {
 
 
 
   //------------------------------------------------------- SetState ----------------------------------------
- 
+  const [Month, setMonth] = useState(new Date())
+  const [StartDay, setStartDay] = useState(new Date())
+  const [selectedDate, setSelectedDate] = useState('')
+  const [endDate, setEndDate] = useState(new Date(new Date().setDate(new Date().getDate() + 29)))
+  const [dateList, setDateList] = useState([])
+  const [initialDate, setInitialDate] = useState()
+  const flatListRef = useRef(FlatList);
+  const [index, setIndex] = useState(0)
+  const [enable, setEnabled] = useState(false)
+  const [ArrowEnable, setArrowEnable] = useState(false)
+  const [NewDate,setNewDate] = useState(new Date())
+
+
+  useEffect(() => {
+    const dates = getDatesBetween(StartDay, endDate);
+    console.log(dates, dates.length)
+    setDateList(dates)
+    setInitialDate(dates[0])
+
+  }, []);
 
 
   const handleCallBack = (value) => callback(value)
 
-
-  useEffect(() => {
-    const dt = new Date();
-    //console.log("new Date(",dt)
-    // var month = dt.getMonth(),
-    //   year = dt.getFullYear();
-    // var FirstDay = new Date(year, month, 1);
-    // // console.log("firstDay.....",FirstDay)
-
-
-
-    let FormatMonth = moment(dt).format("MMMM");
-    let Format = moment(dt).format("YY");
-    //  console.log("Month date....", Format, FormatMonth)
-    setMonthState(FormatMonth)
-    setYear(Format)
-
-    let Moment = moment(Month).format("MM/DD/YYYY")
-    setTimeout(() => {
-      setNewDate(Moment)
-    }, 1000)
-    setNewDate(Moment)
-    //console.log("new date.....", Moment, NewDate)
-  })
-
-
-  const onDateSelected = (selectedDate) => {
-   // console.log("selecteddATE....", selectedDate)
-  }
-
-
-
-  const getFullYear = () => {
-    let curr_date = new Date();
-    let year = curr_date.getFullYear()
-    let month = curr_date.getMonth()
-    //  console.log("year prints....",year,month,curr_date)
-    let date = new Date(year, month, 1);
-    //for (let i=0;date.getFullYear() === year;i++) {
-
-    date.setDate(date.getDate() + 1);
-    //  console.log("year prints repeat....",new Date(date))
-    YearArray.push(new Date(date))
-    //  console.log("yearv array....",YearArray)
-    //  }
-
-  }
-
-  function get_all_dates(year, month) {
-
-
-    let date = new Date(year, month, 1);
-
-
-    let dates = [];
-
-    for (let i = 0; date.getFullYear() === year; i++) {
-
-
-      const Data = new Date(date);
-      //   console.log("new", Data)
-      // setYearArray(Data)
-      date.setDate(date.getDate() + 1);
-      const year1 = [new set(Data)]
-
-      //  YearArray.map((item)=>{
-      //    console.log("loop inside",moment(item).format("DD MMMM YYYY"))
-      //    console.log("\n");
-      //  })
-
-
-
-
-      //YearArray.push(Data)
-
+  const nextPress = () => {
+    if (!enable) {
+      flatListRef?.current?.scrollToIndex({
+        animated: true,
+        index: index + 5
+      });
+      setIndex(index + 5)
+      setInitialDate(dateList[index + 5])
     }
 
+  };
 
-  }
+  const backPress = () => {
+    if (index > 0)
+      flatListRef?.current?.scrollToIndex({
+        animated: true,
+        index: index - 5
+      });
+    setIndex(index - 5)
+    setInitialDate(dateList[index - 5])
+  };
 
+  const getDatesBetween = (startDate, endDate) => {
+    const dates = [];
 
-  let curr_date = new Date();
-  get_all_dates(curr_date.getFullYear(), curr_date.getMonth());
+    // Strip hours minutes seconds etc.
+    let currentDate = new Date(
+      startDate.getFullYear(),
+      startDate.getMonth(),
+      startDate.getDate()
+    );
 
-  useEffect(() => {
-    getFullYear()
+    while (currentDate <= endDate) {
+      dates.push(currentDate);
 
-  }, [])
-
-  useEffect(() => {
-    if (Month !== Month)
-      setTimeout(() => {
-        setMonth(Month)
-      }, 1000);
-    //  console.log("useeffect", Month)
-  }, [Month])
-
-  useEffect(() => {
-    if (StartDay !== StartDay)
-      setTimeout(() => {
-        setStartDay(StartDay)
-        setMonthInc(MonthInc)
-      }, 1000);
-    //console.log("useeffect", StartDay)
-  }, [StartDay, MonthInc])
-
-  useEffect(() => {
-    if (Status) {
-      setMonth(Month)
-      //   var date = new Date(), y = Month.getFullYear(), m = Month.getMonth();
-      // var firstDay = new Date(y, m, 1);
-      // // setStartDay(firstDay)
-      //   console.log('Count is more that 5');
-    } else {
-      //console.log('Count is less that 5');
+      currentDate = new Date(
+        currentDate.getFullYear(),
+        currentDate.getMonth(),
+        currentDate.getDate() + 1, // Will increase month if over range
+      );
     }
-  }, []);
 
+    return dates;
+  };
 
 
   const IncrementMonth = () => {
-    //   const my_date = new Date();
-    //  const monthFormat =  moment(Month).format("MMMM")
-    // console.log("max date....Month",Month)
-    // console.log("Format....",Format)
-    // console.log("NDATE....",NDate)
-    // if (NDate !== Format) {
-
-    //   new Date(Month.setMonth(Month.getMonth() + 1));
-    //   setTimeout(() => {
-    //     setMonth(Month)
-    //   }, 2000);
-    //   setMonth(Month)
-    //   setStatus(true)
-    //   const CurrentDate1 = moment(Month).format("MMMM YYYY")
-    //   setNDate(CurrentDate1)
-    //   console.log("INC DATE", moment(Month).format("MMMM"));
-    //   // console.log("Month increment.....", Month)
-
-    //   var date = new Date(), y = Month.getFullYear(), m = Month.getMonth();
-    //   var firstDay = new Date(y, m, 1);
-    //   setTimeout(() => {
-    //     setStartDay(firstDay)
-    //   }, 1000)
-    //   setStartDay(firstDay)
-    // }
-    // else {
-    //   console.log("else case")
-    //   console.log("print first day", firstDay)
-    //   console.log("first day state....", Month)
-    // }
     const today = new Date();
     console.log(today, "-----today-----")
     let next;
@@ -193,54 +91,34 @@ const CalendarStrips = ({callback}) => {
     } else {
       next = new Date(today.getFullYear(), today?.getMonth() + 1, 1);
     }
-    setStartDay(next)
-    //setSelectedDate(next)
-    // setMonth(next)
+   // setStartDay(next)
+    setSelectedDate(next)
     console.log("------", next);
-
   }
 
   const DecrementMonth = () => {
-
-    setStartDay(new Date())
-   // setSelectedDate(new Date())
-
+    //setStartDay(new Date())
+    setSelectedDate(new Date())
   }
 
-  useEffect(() => {
-    console.log("mAXdaTE....", Maxdate)
-   // new Date(Maxdate.setMonth(Month?.getMonth() + 1));
-
-    const Format1 = moment(Maxdate).format("MMMM YYYY")
-    setFormat(Format1)
-    console.log("dATE maximum....", Format, Format1, Maxdate)
-
-  }, [])
-
-
-
   const onWeekChanged = (start, end) => {
-    console.log("start end.....", start)
-
-    console.log("\n")
-
-
+ 
     const Data = end.toString()
-
-
     console.log("end print", Data)
     const Moment = moment(Data).utc().format('MMMM YYYY')
     console.log('?Momemnt.....', Moment)
     setMonth(Data)
+    console.log("Month display",moment(NewDate).format("MMMM YYYY"),Moment)
+    // setSelectedDate(Data)
+    if (moment(selectedDate).format('MMMM YYYY') !== moment(end).format('MMMM YYYY')) {
+      IncrementMonth()
+      setArrowEnable(true)
+    }
+    // else if(Moment ==  moment(NewDate).format("MMMM YYYY")){
+    //   setArrowEnable(false)
+    // }
 
   }
-
-  useEffect(() => {
-
-
-    setMaxweek(Maxweek)
-    console.log("USEEFFECT CALLINGff.....", Maxweek)
-  }, [])
 
   return (
     <View style={styles.container}>
@@ -263,49 +141,26 @@ const CalendarStrips = ({callback}) => {
         </TouchableOpacity>
 
       </View>
-      {/* {DateArray.map((item)=>{
-  console.log("item...",moment(item).format('DD'))
-  return(
-    <View style={{flexDirection:'row'}}>
-       <Text>{moment(item).format('DD')}</Text> 
-    </View>
-  )
-})} */}
+
 
 
       <CalendarStrip
-        scrollable={true}
-        scrollerPaging={true}
-        // customDatesStyles={customDatesStyles}
-        style={{ height: 100, paddingTop: 0, paddingBottom: 0 }}
-        onWeekChanged={onWeekChanged}
-        calendarHeaderStyle={{ color: '#171930' }}
-        dateNumberStyle={{ color: '#171930', fontSize: 15, }}
-        dateNameStyle={{ color: '#171930', fontSize: 15, textTransform: 'capitalize', fontFamily: FONTS.FontRegular }}
-        iconContainer={{ flex: 0.1 }}
-        highlightDateNameStyle={{ fontSize: 12, color: COLORS.colorBackground, textTransform: 'capitalize', fontFamily: FONTS.FontRegular }}
-        highlightDateNumberStyle={{ fontSize: 12, color: COLORS.colorBackground, fontFamily: FONTS.FontSemiB }}
-        highlightDateContainerStyle={{ backgroundColor: COLORS.colorB, width: 40, height: 50, borderRadius: 8 }}
-        selectedDate={StartDay}
-        //selectedDate={StartDay !== StartDay ?  StartDay : StartDay}
-        // iconLeftStyle={<Icon1 name="arrow-left" size={14} color={"#171930"} />}
-        //  iconRightStyle={   <Icon1 name="arrow-right" size={14} color={"#171930"} style={{ marginRight: 15, width: 20, height: 15,color:"#171930"}} />}
-        iconLeftStyle={{ fontSize: 15, marginLeft: 15, width: 20, height: 15, color: "#171930" }}
-        iconRightStyle={{ marginRight: 15, width: 20, height: 15, color: "#171930" }}
-        onDateSelected={onDateSelected}
-        maxDate={new Date(new Date().setDate(new Date().getDate() + 30))}
-        showMonth={false}
-        minDate={new Date()}
-        rightSelector={true}
-        Type={'parallel'}
-        scrollToOnSetSelectedDate={selectedDate}
-        //leftSelector={}
-        //minDate={StartDay}
-        //calendarHeaderFormat={moment().format('MMM YY')}
-        //startingDate={moment()}
-        // minDate={StartDay !== StartDay ? setTimeout(() => {
-        //   StartDay
-        // }, (1000)):alert(StartDay)}
+         calendarAnimation={{ type: 'sequence', duration: 30 }}
+         scrollable={true}
+         scrollerPaging={true}
+         style={{ height: 100, paddingTop: 0, paddingBottom: 0 }}
+         onWeekChanged={onWeekChanged}
+         iconContainer={{ flex: 0.1 }}
+        // selectedDate={StartDay}
+         iconLeftStyle={{ fontSize: 15, marginLeft: 15, width: 20, height: 15, color: "#171930" }}
+         iconRightStyle={{ marginRight: 15, width: 20, height: 15, color: "#171930" }}
+         maxDate={endDate}
+         showMonth={false}
+         minDate={new Date()}
+         rightSelector={true}
+         Type={'parallel'}
+         scrollToOnSetSelectedDate={true}
+         useIsoWeekday={false}
         dayComponent={(item) => {
           return (
             <TouchableOpacity
@@ -319,7 +174,7 @@ const CalendarStrips = ({callback}) => {
                 borderWidth: 0.5,
                 backgroundColor: moment(selectedDate).format('DD-MM-YYYY') === moment(item.date).format('DD-MM-YYYY') ? COLORS.colorB : COLORS.colorBackground
               }}
-              onPress={() => {setSelectedDate(item.date),  handleCallBack(item?.date._d)}}
+              onPress={() => {setSelectedDate(item?.date),  handleCallBack(item?.date._d)}}
               >
               <Text
                 style={{

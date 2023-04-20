@@ -261,6 +261,7 @@ const Activities = ({ navigation ,data}) => {
                 }}
                 onPressOut={() => {
                     setModalVisible1(!ModalVisible1)
+                    AsyncStorage.removeItem('DATECGT')
                     navigation.navigate('NewCgt')
                 }}
                 setModalVisible={setModalVisible1}

@@ -14,7 +14,9 @@ import SelectTab from './Components/SelectTab';
 import ReasonModal from './Components/ReasonModal';
 import ErrorModal from './Components/ErrorModal';
 import { api } from '../../Services/Api'
-
+    String.prototype.replaceAt = function (index, replacement) {
+        return this.substring(0, index) + replacement + this.substring(index + replacement.length);
+    }
 const ConfirmMembers = ({ navigation }) => {
 
   const isDarkMode = true;
@@ -23,7 +25,7 @@ const ConfirmMembers = ({ navigation }) => {
   const [selectedItem, setSelectedItem] = useState();
   const [dataSelected, setDataSelected] = useState();
   const [dataSelectedID, setDataSelectedID] = useState();
-
+const [tccustomerlist,setTccustomerlist] = useState();
   const [ModalError, setModalError] = useState(false)
   const [ModalReason, setModalReason] = useState(false)
   const [rejectReason, setRejectReason] = useState()
@@ -32,7 +34,9 @@ const ConfirmMembers = ({ navigation }) => {
   const dispatch = useDispatch()
   const customerList = useSelector(state => state.customerList);
   const customerID = useSelector(state => state.customerID);
-
+  String.prototype.replaceAt = function (index, replacement) {
+    return this.substring(0, index) + replacement + this.substring(index + replacement.length);
+}
   const handleGoBack = useCallback(() => {
     navigation.navigate('CreateTrustCircle')
     return true; // Returning true from onBackPress denotes that we have handled the event
@@ -49,13 +53,20 @@ const ConfirmMembers = ({ navigation }) => {
   const [data, setData] = useState()
 
   const OnchangeNumber = (num) => {
-    console.log('qqqq-----',num)
+    console.log('qqqq-----', num)
     if (/^[^!-\/:-@\.,[-`{-~]+$/.test(num) || num === '') {
       onChangeText(num)
       getCustomerLists(num)
     }
   }
-{console.log('============redux customer id ',selectedItem)}
+  useEffect(()=>{
+    getCustomerLists()
+  },[])
+
+
+
+
+  { console.log('============redux customer id ', selectedItem) }
   useEffect(() => {
     if (ModalError == true) {
       const timer = setTimeout(() => {
@@ -77,9 +88,10 @@ const ConfirmMembers = ({ navigation }) => {
     return unsubscribe;
   }, [navigation]);
 
-  // useEffect(() => {
-  //   getCustomerLists('')
-  // }, []);
+  useEffect(() => {
+    getTCDetails(customerList)
+    getTclist()
+  }, []);
 
   // ------------------ get Slot Api Call Start ------------------
   const getTCDetails = async (id) => {
@@ -99,7 +111,7 @@ const ConfirmMembers = ({ navigation }) => {
   const getCustomerLists = async (phone) => {
 
 
-    console.log('List------>>',phone)
+    console.log('List------>>', phone)
     const data = {
       "employeeId": 1,
       "customerNameOrNumber": phone
@@ -132,13 +144,28 @@ const ConfirmMembers = ({ navigation }) => {
       })
   };
   // ------------------ Update Activity Reject Api Call End ------------------
-
+  const getTclist = async () => {
+    console.log('api called')
+    const data = {
+        "employeeId":1,
+        "customerNameOrNumber":"",
+        "addedTcIds":customerID
+    }
+    await api.getCustomerListForTc(data).then((res) => {
+        console.log('-------------------res getCustomerListForTc', res?.data?.body)
+        if (res?.status) {
+        setTccustomerlist(res?.data?.body)
+        }
+    }).catch((err) => {
+        console.log('-------------------getCustomerListForTc', err?.response)
+    })
+};
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container1} />
       <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} backgroundColor={"#002B59"} />
 
-      <Header navigation={navigation} name="Confirm Member"  onPress={handleGoBack}/>
+      <Header navigation={navigation} name="Confirm Member" onPress={handleGoBack} />
 
       <View style={styles.mainContainer}>
         <ScrollView showsVerticalScrollIndicator={false} >
@@ -150,27 +177,28 @@ const ConfirmMembers = ({ navigation }) => {
                   placeholderTextColor={"#808080"}
                   onChangeText={(text) => OnchangeNumber(text)}
                   value={text}
+                  maxLength={25}
                   style={{ flex: 1, color: COLORS.colorDark, fontSize: 14, fontFamily: FONTS.FontMedium }}
 
                 />
                 <SearchIcon color={"#808080"} name="search" size={18} style={{ right: 5 }} />
               </View> : null}
-            {text.length === 0 && !selectedItem
+            {text?.length === 0 && !selectedItem
               ?
               <>
                 <Text style={styles.recentlyText}>Recently added customers</Text>
-                {data?.map((item, index) =>
+                {tccustomerlist?.map((item, index) =>
                   <>
-                    {console.log('---id available selected--', item?.id)}
+                    {console.log('---id available selected1--', item )}
                     <TouchableOpacity onPress={() => {
-                     getTCDetails(item?.id)
-                     const datas = [...customerID]
-                     datas.push(item?.id)
-                     setSelectedItem(datas)
+                      getTCDetails(item?.id)
+                      const datas = [...customerID]
+                      datas.push(item?.id)
+                      setSelectedItem(datas)
                     }}>
                       <Text style={styles.dataText}>{item.name}</Text>
                     </TouchableOpacity>
-                    {index !== data.length - 1
+                    {index !== tccustomerlist?.length - 1
                       ? <View style={styles.lineView} />
                       : null
                     }
@@ -181,11 +209,22 @@ const ConfirmMembers = ({ navigation }) => {
             }
             {text.length > 0 && !selectedItem
               ?
-              <View style={{ borderWidth: 1, paddingTop: 12, paddingBottom: 22, borderColor: COLORS.colorBorder, marginTop: 10, borderRadius: 8 }}>
+              <View style={{ borderWidth: 1, paddingTop: 12, paddingBottom: 15, borderColor: COLORS.colorBorder, marginTop: 10, borderRadius: 8 }}>
+             
+
+
+                {data?.length < 1 && <Text style={{
+                  fontSize: 14,
+                  fontFamily: FONTS.FontRegular,
+                  color: COLORS.colorDark,
+                  fontWeight: '400', paddingHorizontal: 10,paddingTop:5
+                }}>No results Found</Text>}
+
+
                 {data?.map((item, index) =>
                   <>
                     {console.log(item, "-------")}
-                    <TouchableOpacity style={{ flexDirection: 'row', paddingHorizontal: 15, }}
+                    <TouchableOpacity style={{ flexDirection: 'row', paddingHorizontal: 15 }}
                       onPress={() => {
                         onChangeText('')
                         getTCDetails(item?.id)
@@ -205,7 +244,7 @@ const ConfirmMembers = ({ navigation }) => {
                           </View>
                         </View>
                       </View>
-                      <Text style={[styles.numText, { paddingLeft: 6 }]}>{item?.mobile}</Text>
+                      <Text style={[styles.numText, { paddingLeft: 6 }]}>{item?.mobile?.replace(/^.{0}/g, '').replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X").replaceAt(8, "X")}</Text>
                     </TouchableOpacity>
 
                     {index !== data?.length - 1
@@ -345,7 +384,7 @@ const styles = StyleSheet.create({
     color: COLORS.colorDark,
   },
   lineView: {
-    borderWidth: 0.9,
+    borderWidth: 0.6,
     borderColor: COLORS.Gray6,
     backgroundColor: COLORS.Gray6,
     opacity: 0.5,

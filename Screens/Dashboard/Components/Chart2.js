@@ -8,33 +8,33 @@ const { height, width } = Dimensions.get('screen');
 const GroupedBars2 = ({ Summary }) => {
     const barData = [
         {
-            value: Summary[0]?.customersToLoanClientConversion,
-            label: '  ' + Summary[0]?.month,
+            value: Summary[2]?.customersToLoanClientConversion,
+            label: '   ' + Summary[2]?.month,
             spacing: 6,
             labelWidth: 100,
-            //  labelTextStyle: { color: 'gray',fontSize:12 },
+            labelTextStyle: { color: 'gray',fontSize:12 ,textTransform:'capitalize'},
             frontColor: 'rgba(88, 84, 247, 1)',
             topLabelComponent: () => (
 
-                <Text style={{ top: -6, fontSize: 10, color: 'rgba(128, 128, 128, 1)', fontFamily: FONTS.FontRegular, }}>{Summary[0]?.customersToLoanClientConversion}</Text>
+                <Text style={{ top: -6, fontSize: 10, color: 'rgba(128, 128, 128, 1)', fontFamily: FONTS.FontRegular, }}>{Summary[2]?.customersToLoanClientConversion}</Text>
 
             )
 
         },
         {
-            value: Summary[0]?.avgCustomersToLoanClientConversion, frontColor: 'rgba(176, 195, 230, 1)',
+            value: Summary[2]?.avgCustomersToLoanClientConversion, frontColor: 'rgba(176, 195, 230, 1)',
             topLabelComponent: () => (
 
-                <Text style={{ top: -6, fontSize: 10, color: 'rgba(128, 128, 128, 1)', fontFamily: FONTS.FontRegular, }}>{Summary[0]?.avgCustomersToLoanClientConversion}</Text>
+                <Text style={{ top: -6, fontSize: 10, color: 'rgba(128, 128, 128, 1)', fontFamily: FONTS.FontRegular, }}>{Summary[2]?.avgCustomersToLoanClientConversion}</Text>
 
             )
         },
         {
             value: Summary[1]?.customersToLoanClientConversion,
-            label: '  ' + Summary[1]?.month,
+            label: '   ' + Summary[1]?.month,
             spacing: 6,
             labelWidth: 100,
-            // labelTextStyle: { color: 'gray',fontSize:12 },
+            labelTextStyle: { color: 'gray',fontSize:12 ,textTransform:'capitalize'},
             frontColor: 'rgba(88, 84, 247, 1)',
             topLabelComponent: () => (
 
@@ -51,25 +51,25 @@ const GroupedBars2 = ({ Summary }) => {
             )
         },
         {
-            value: Summary[2]?.customersToLoanClientConversion,
-            label: '    ' + Summary[2]?.month,
+            value: Summary[0]?.customersToLoanClientConversion,
+            label: '   ' + Summary[0]?.month,
             spacing: 6,
             labelWidth: 100,
-            // labelTextStyle: { color: 'gray',fontSize:12 ,},
+            labelTextStyle: { color: 'gray',fontSize:12 ,textTransform:'capitalize'},
             frontColor: 'rgba(88, 84, 247, 1)',
             topLabelComponent: () => (
 
-                <Text style={{ top: -6, fontSize: 10, color: 'rgba(128, 128, 128, 1)', fontFamily: FONTS.FontRegular, }}>{Summary[2]?.customersToLoanClientConversion}</Text>
+                <Text style={{ top: -6, fontSize: 10, color: 'rgba(128, 128, 128, 1)', fontFamily: FONTS.FontRegular, }}>{Summary[0]?.customersToLoanClientConversion}</Text>
 
             )
         },
 
 
         {
-            value: Summary[2]?.avgCustomersToLoanClientConversion, frontColor: 'rgba(176, 195, 230, 1)',
+            value: Summary[0]?.avgCustomersToLoanClientConversion, frontColor: 'rgba(176, 195, 230, 1)',
             topLabelComponent: () => (
 
-                <Text style={{ top: -6, fontSize: 10, color: 'rgba(128, 128, 128, 1)', fontFamily: FONTS.FontRegular, }}>{Summary[2]?.avgCustomersToLoanClientConversion}</Text>
+                <Text style={{ top: -6, fontSize: 10, color: 'rgba(128, 128, 128, 1)', fontFamily: FONTS.FontRegular, }}>{Summary[0]?.avgCustomersToLoanClientConversion}</Text>
 
             )
         },
@@ -81,7 +81,7 @@ const GroupedBars2 = ({ Summary }) => {
     const renderTitle = () => {
         return (
             <>
-                {Summary[2]?.customersToLoanClientConversion <= Summary[2]?.avgCustomersToLoanClientConversion ?
+                {Summary[0]?.customersToLoanClientConversion <= Summary[0]?.avgCustomersToLoanClientConversion ?
                 <View style={{ margin: 15 }}>
                     <Text style={styles.TextData}>Yay! Your<Text style={[styles.TextData, { fontFamily: FONTS.FontSemiB }]}> Customers to Loan Clients conversion</Text> is good. Keep it up</Text>
                 </View>:
@@ -146,6 +146,7 @@ const styles = StyleSheet.create({
     TextData: {
         fontSize: 13,
         color: COLORS.colorB,
-        fontFamily: FONTS.FontRegular
+        fontFamily: FONTS.FontRegular,
+        
     }
 })

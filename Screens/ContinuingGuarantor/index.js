@@ -43,7 +43,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
   const [OtpValue, setOtpValue] = useState('')
   const [timerCount, setTimer] = useState(30)
   const [IsOtp1, setIsOtp1] = useState(false)
-  const [Bstatus, setBstatus] = useState(false)
+  const [verifyotpstatus, setVerifyotpstatus] = useState(false)
   const [IsOtp2, setIsOtp2] = useState(true)
   const [ModalError, setModalError] = useState(false)
   const [ModalVisible1,setModalVisible1] = useState(false)
@@ -265,12 +265,12 @@ const CountDownResend = () => {
 
     // ------------------verifyCG detail ------------------
 
-    const verifyCG = async (mobnumber) => {
+    const verifyCG = async (num) => {
    //   console.log('api called')
 
-      const data = {
+ const data = {
         "activityId":activityId,
-        "mobileNumber":"+91"+mobnumber,
+        "mobileNumber":"+91"+num,
         "name":"",
         "relationShip":relation
     
@@ -283,7 +283,8 @@ const CountDownResend = () => {
             setIsOtp1(true)
             getOtp();
             setTimer(30)
-          
+            setVerifyotpstatus(true)
+      
           }
       }).catch((err) => {
           console.log('-------------------err verifyCG', err)
@@ -362,14 +363,26 @@ const CountDownResend = () => {
 
 
   const OnchangeNumbers = (num) => {
-    console.log('%%%5',"91"+num,customerNumber)
+    console.log('%%%5',"91"+num,customerNumber,num.length)
     if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(num) || num === '') {
-      if("91"+num == customerNumber){
+      if("+91"+num == customerNumber){
         setModalError(true)
         onChangeNumber('')
       }else{
       onChangeNumber(num)
-      verifyCG(num)
+      if(num.length == 10){
+       if(verifyotpstatus == false ){
+        verifyCG(num)
+       }else{
+      if(num != number){
+setTimeout(() => {
+  verifyCG(num)
+}, 10000);
+      }
+       }
+
+
+      }
       onChangeNumber(num)
       setOtpValue('')
      
@@ -558,7 +571,7 @@ const CountDownResend = () => {
                     setModalReason(true)
                
                 }}
-                Press1={()=>{onsubmit(),setModalVisible(false)}}
+                Press1={()=>{verifyCG(),setModalVisible(false)}}
                 ModalVisible={ModalVisible}
                 setModalVisible={setModalVisible}
                 onPressOut={() => {
