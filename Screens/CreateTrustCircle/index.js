@@ -52,6 +52,10 @@ const CreateTrustCircle = ({ navigation,route }) => {
         return true; // Returning true from onBackPress denotes that we have handled the event
     }, [navigation]);
 
+
+
+
+    console.log('000000000======',cgtCustomerDetails)
     useFocusEffect(
         React.useCallback(() => {
             BackHandler.addEventListener('hardwareBackPress', handleGoBack);
@@ -81,9 +85,9 @@ const CreateTrustCircle = ({ navigation,route }) => {
 
     // ------------------ getTCLimitDetails Api Call Start ------------------
     const CreateTrustCircle = async () => {
-        console.log('api called')
+        console.log('api called123456========>>>>>>>')
         const data = {
-            "primaryCustomerId": 1,
+            "primaryCustomerId": cgtCustomerDetails.primaryCustomerId,
             "memberIds": customerID
         }
         await api.createTrustCircles(data).then((res) => {
