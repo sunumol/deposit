@@ -545,7 +545,7 @@ export default {
     'ReCGT': 'Reschedule CGT',
     'TrustCM': 'Trust Circle Members',
     'AddNewM': 'Add new member',
-
+    'EnterForgot':'Please enter your mobile number',
     //Select Customer
 
     'SelectCM': 'Select Customer',

@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect,useCallback } from 'react';
 import {
   StyleSheet,
@@ -129,7 +130,7 @@ const UploadVid = ({ navigation }) => {
       <SafeAreaView style={styles.container1} />
       <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} backgroundColor="#002B59" />
 
-      <Header navigation={navigation} name= "Upload Your Voter ID" onPress={handleGoBack}/>
+      <Header navigation={navigation} name= "Upload Voter ID" onPress={handleGoBack}/>
       <View style={styles.container2}>
         {/* <UploadImage navigation={navigation} id={Number(custID)}/> */}
         <UploadImage navigation={navigation} id={9252} setFrontimage={setFrontimage} setBackimage={setBackimage}/>

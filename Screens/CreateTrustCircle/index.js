@@ -147,7 +147,7 @@ const CreateTrustCircle = ({ navigation,route }) => {
                             <Text style={styles.timeText}>{cgtCustomerDetails?.cgtTime?.slice(0, -3)} PM</Text>
                             <Text style={styles.dateText}>{cgtCustomerDetails?.cgtDate ? moment(new Date(cgtCustomerDetails?.cgtDate)).format("ddd, DD MMM") : ''}</Text>
                         </View>
-                        <TouchableOpacity style={styles.editView} onPress={() => navigation.navigate('NewCgt')}>
+                        <TouchableOpacity style={styles.editView} onPress={() => navigation.navigate('NewCgt',{reschedule:cgtCustomerDetails})}>
                             <Date />
                             <Text style={styles.changeText}>Reschedule CGT</Text>
                         </TouchableOpacity>

@@ -196,7 +196,7 @@ const IncomeDetails = ({ navigation, route }) => {
                 if (res?.data?.body == 'MARRIED') {
                     navigation.navigate('IncomeDetailsSpouse')
                 } else {
-                    navigation.navigate('DebitDetails')
+                    navigation.navigate('Proceed')
                 }
                 // navigation.navigate('DebitDetails')
             }

@@ -1,3 +1,4 @@
+
 import {
     StyleSheet,
     Text,
@@ -36,12 +37,11 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
 
     const isDarkMode = true;
     const [text, onChangeText] = useState('');
-    const [ModalVisible, setModalVisible] = useState(false)
-    const [selectedItem, setSelectedItem] = useState()
+    const [vstatus, setVstatus] = useState(true)
     const [ButtonStatus, setButtonStatus] = useState(false)
     const [ModalError, setModalError] = useState(false)
     const [roadstatus, setRoadStatus] = useState(details?.accessRoadType)
-    const [poststatus, setPostStatus] = useState(false)
+    const [poststatus, setPostStatus] = useState(true)
     const [landmarkname, setLandmarkname] = useState(details?.landmarkname)
     const [ModalReason, setModalReason] = useState(false)
     const [ModalReason1, setModalReason1] = useState(false)
@@ -52,11 +52,12 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
     const [postofficename, setPostofficename] = useState(details?.postOffice);
     const [PStatus, setPstatus] = useState(false);
     const [postofficenamedata, setPostofficenamedata] = useState('');
+
     const toggleCheckbox = () => {
-        console.log('66666',villagename ,postofficename,landmarkname,roadstatus)
+        console.log('66666',villagename ,postofficename,landmarkname,roadstatus,vstatus,poststatus)
         // if ((villagename || details?.village) && (postofficename || details?.postOffice) && (landmarkname || details?.landMark) && (roadstatus || details?.accessRoadType)) {
        
-        if (villagename && postofficename  && landmarkname.length > 0  && roadstatus) {
+        if (villagename && postofficename  && landmarkname.length > 0  && roadstatus && vstatus && poststatus)  {
             setChecked(true)
         } else {
             setChecked(false)
@@ -101,7 +102,7 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
     const searchvillagename = (text) => {
         console.log('VILLAGE NAME ===>>>', text)
         // setVillagename(text)
-       
+       setVstatus(false)
     
         if (text === ""){
             setVillagenamedata([])
@@ -133,7 +134,7 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
     const searchpostofficename = (text) => {
         console.log('Post office NAME ===>>>', text)
         // setVillagename(text)
-       
+       setPostStatus(false)
         if (text == '') {
             setPostofficenamedata([])
             setPstatus(false)
@@ -362,6 +363,7 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
                                                         // setSearchStatus(true)
                                                         setVillagename(item)
                                                         setVillagename1(item)
+                                                        setVstatus(true)
                                                         // setBankBranchNameId(item.id)
                                                         // setCloseBranch(true)
                                                         // setDetailsStatus(false)
@@ -455,6 +457,7 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
                                                         // setSearchStatus(true)
                                                         setPostofficename(item)
                                                         setPostoffice1(item)
+                                                        setPostStatus(true)
                                                         // setBankBranchNameId(item.id)
                                                         // setCloseBranch(true)
                                                         // setDetailsStatus(false)
