@@ -113,6 +113,7 @@ export default {
     'GetStart': 'Get Started',
     'Placeholder': "Enter mobile number",
     'Valid': 'Please enter a valid mobile number',
+    'Valid1': 'Please enter a valid Amount',
     'Valid2': 'Maximum number of OTPs are exceeded.',
     'Valid3': 'Please try after 30 minutes',
     'otpValid': 'You entered wrong OTP',

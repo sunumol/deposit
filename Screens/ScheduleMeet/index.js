@@ -27,17 +27,19 @@ import CalendarStrips from './Components/Calender';
 import moment from 'moment';
 import DLEModal from './Components/DLEModal';
 import { useSelector } from 'react-redux';
+import CGTCompleted from './Components/CGTCompleted';
 const { height, width } = Dimensions.get('screen');
 
-const ScheduleMeet = ({ navigation,route }) => {
-   // const route = useRoute();
-    console.log("route name",route?.params?.id);
+const ScheduleMeet = ({ navigation, route }) => {
+    // const route = useRoute();
+    console.log("route name", route?.params?.id);
     const isDarkMode = true
     const { t } = useTranslation();
     const [lang, setLang] = useState('')
     const [BStatus, setBstatus] = useState(false)
     const [selectedDate, setSelectedDate] = useState('')
     const [ModalVisible, setModalVisible] = useState(false)
+    const [ModalVisible1, setModalVisible1] = useState(false)
     const cgtCustomerDetails = useSelector(state => state.cgtCustomerDetails);
     useEffect(() => {
         getData()
@@ -73,7 +75,7 @@ const ScheduleMeet = ({ navigation,route }) => {
     const callback = (value) => {
         // const date = moment(value).utc().format('DD-MM-YYYY')
         setSelectedDate(value)
-       // ScheduleDLE(value)
+        // ScheduleDLE(value)
 
 
     }
@@ -82,14 +84,19 @@ const ScheduleMeet = ({ navigation,route }) => {
     const ScheduleDLE = async () => {
         console.log('api called')
         const data = {
-            "customerId":cgtCustomerDetails.primaryCustomerId,
+            "customerId": cgtCustomerDetails.primaryCustomerId,
             "tcMemberId": route?.params?.id,
-            "scheduleDate": moment( selectedDate).utc().format('DD-MM-YYYY')
+            "scheduleDate": moment(selectedDate).utc().format('DD-MM-YYYY')
         };
         await api.ScheduleDLE(data).then((res) => {
 
             console.log('------------------- Schedule DLE res', res)
+            setModalVisible(true)
+            if (res?.data?.body == 'CGT successfully completed') {
+                setModalVisible1(true)
+            } else {
                 setModalVisible(true)
+            }
 
         })
             .catch((err) => {
@@ -134,7 +141,14 @@ const ScheduleMeet = ({ navigation,route }) => {
                     }}
                     navigation={navigation}
                     setModalVisible={setModalVisible} />
+                <CGTCompleted
 
+                    ModalVisible={ModalVisible1}
+                    onPressOut={() => {
+                        setModalVisible1(false)
+                    }}
+                    navigation={navigation}
+                    setModalVisible1={setModalVisible1} />
 
             </View>
 
