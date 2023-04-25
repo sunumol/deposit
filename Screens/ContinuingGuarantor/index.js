@@ -400,7 +400,7 @@ setTimeout(() => {
       <SafeAreaView style={styles.container1} />
       <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} backgroundColor={"#002B59"} />
 
-      <Header navigation={navigation} name="Continuing Guarantor"  onPress={handleGoBack} />
+      <Header navigation={navigation} name="Co-Applicant"  onPress={handleGoBack} />
 
       <View style={styles.mainContainer}>
 

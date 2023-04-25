@@ -26,6 +26,7 @@ import { api } from '../../Services/Api';
 import CalendarStrips from './Components/Calender';
 import moment from 'moment';
 import DLEModal from './Components/DLEModal';
+import { useSelector } from 'react-redux';
 const { height, width } = Dimensions.get('screen');
 
 const ScheduleMeet = ({ navigation,route }) => {
@@ -37,7 +38,7 @@ const ScheduleMeet = ({ navigation,route }) => {
     const [BStatus, setBstatus] = useState(false)
     const [selectedDate, setSelectedDate] = useState('')
     const [ModalVisible, setModalVisible] = useState(false)
-
+    const cgtCustomerDetails = useSelector(state => state.cgtCustomerDetails);
     useEffect(() => {
         getData()
     }, [])
@@ -81,13 +82,13 @@ const ScheduleMeet = ({ navigation,route }) => {
     const ScheduleDLE = async () => {
         console.log('api called')
         const data = {
-            "customerId": 1,
+            "customerId":cgtCustomerDetails.primaryCustomerId,
             "tcMemberId": route?.params?.id,
             "scheduleDate": moment( selectedDate).utc().format('DD-MM-YYYY')
         };
         await api.ScheduleDLE(data).then((res) => {
 
-            console.log('------------------- Schedule DLE res', res.data)
+            console.log('------------------- Schedule DLE res', res)
                 setModalVisible(true)
 
         })

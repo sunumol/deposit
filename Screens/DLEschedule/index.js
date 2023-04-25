@@ -24,6 +24,9 @@ import { useTranslation } from 'react-i18next';
 import DLE from './Components/DLE';
 import CGTModal from './Components/CGTModal';
 import { api } from '../../Services/Api';
+import { useSelector } from 'react-redux';
+
+
 
 const DLESchedule = ({ navigation,route}) => {
     //const route = useRoute();
@@ -34,6 +37,7 @@ const DLESchedule = ({ navigation,route}) => {
     const [BStatus, setBstatus] = useState(false)
     const [tcdetail,setTcdetail] = useState('')
     const [ModalVisible1, setModalVisible1] = useState(false)
+    const cgtCustomerDetails = useSelector(state => state.cgtCustomerDetails);
 
     useEffect(() => {
         getData()
@@ -56,11 +60,11 @@ const DLESchedule = ({ navigation,route}) => {
                 console.log('api called')
                  const data = {
                     //"employeeId": route?.params?.customerID,
-                     "customerId":1
+                    "customerId":cgtCustomerDetails.primaryCustomerId,
                  };
                  await api.getDLEschedule(data).then((res) => {
                  
-                     console.log('------------------- DLE res', res?.data?.body)
+                     console.log('------------------- DLE res', res)
                      setTcdetail(res?.data?.body)
                     
                    
@@ -77,6 +81,18 @@ const DLESchedule = ({ navigation,route}) => {
         navigation.navigate('Profile')
 
         return true; // Returning true from onBackPress denotes that we have handled the event
+    }, [navigation]);
+    
+
+
+    React.useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+console.log('focus==========')
+            getDLEschedule()
+
+        });
+        getData();
+        return unsubscribe;
     }, [navigation]);
 
     useFocusEffect(
