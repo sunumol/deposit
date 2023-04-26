@@ -10,7 +10,7 @@ import Image1 from '../../../assets/image/warning.svg';
 
 const { height, width } = Dimensions.get('screen');
 
-const CalenderModal = ({ ModalVisible, setModalVisible }) => {
+const CalenderModal = ({ ModalVisible, setModalVisible ,errorMessage}) => {
 
     const { t } = useTranslation();
 
@@ -36,8 +36,7 @@ const CalenderModal = ({ ModalVisible, setModalVisible }) => {
 
                     <View style={{ paddingTop: width * 0.04 }}>
 
-                        <Text style={styles.textdesc}>Reschedule meet activities from</Text>
-                        <Text style={styles.textdesc}>calendar.</Text>
+                        <Text style={styles.textdesc}>{errorMessage}</Text>
                     </View>
 
                     <TouchableOpacity style={styles.buttonStyle} onPress={() => setModalVisible(false)}>

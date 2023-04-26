@@ -11,7 +11,7 @@ import Image1 from '../../../assets/image/ticks.svg';
 
 const { height, width } = Dimensions.get('screen');
 
-const CalenderModal = ({ ModalVisible, onPressOut, setModalVisible2, navigation }) => {
+const CalenderModal = ({ ModalVisible, setModalVisible2, navigation }) => {
 
     const { t } = useTranslation();
 
@@ -21,7 +21,7 @@ const CalenderModal = ({ ModalVisible, onPressOut, setModalVisible2, navigation 
             animationType="fade"
             transparent={true}
             visible={ModalVisible}
-            onRequestClose={onPressOut}
+            onRequestClose={() => navigation.navigate('Profile')}
         >
             <View style={styles.mainContainer} >
 

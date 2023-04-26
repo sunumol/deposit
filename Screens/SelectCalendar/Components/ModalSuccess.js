@@ -21,7 +21,7 @@ const CalenderModal = ({ ModalVisible, onPressOut, setModalVisible2, navigation 
             animationType="fade"
             transparent={true}
             visible={ModalVisible}
-            onRequestClose={onPressOut}
+            onRequestClose={()=>navigation.navigate('Profile')}
         >
             <View style={styles.mainContainer} >
 

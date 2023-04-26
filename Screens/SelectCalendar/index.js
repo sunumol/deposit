@@ -1,18 +1,18 @@
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect} from 'react';
 import {
     StyleSheet,
     SafeAreaView,
     View,
     StatusBar,
     Dimensions,
-    BackHandler,
+    TouchableOpacity,
     ActivityIndicator,
+    Text
 } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
-import { useTranslation } from 'react-i18next';
 import moment from 'moment';
 
 // -------------- Component Imports -------------------------
@@ -34,7 +34,6 @@ const Calendar = ({ navigation, route }) => {
     const [status, setStatus] = useState(true)
     const [ModalVisible1, setModalVisible1] = useState(false)
     const [ModalVisible, setModalVisible] = useState(false)
-    const [BStatus, setBstatus] = useState(false);
 
     useEffect(() => {
         getData()
@@ -131,8 +130,8 @@ const Calendar = ({ navigation, route }) => {
                         NewDates={NewDates}
                         getCGTslot={() => getCGTslot()}
                     />
-
-                    <View style={{ flex: 1 }}>
+            
+                  <View style={{ flex: 1 }}>
                         <Cgt
                             navigation={navigation}
                             data={slotlist}
@@ -140,6 +139,7 @@ const Calendar = ({ navigation, route }) => {
                             setModalVisible1={setModalVisible1}
                             slotlistrefresh={getCGTslot}
                             selectedData={route?.params?.selectedData}
+                            status={route?.params?.title}
                         />
                     </View>
 
@@ -215,5 +215,6 @@ const styles = StyleSheet.create({
         fontSize: 14,
         color: COLORS.colorB,
         paddingRight: 10
-    }
+    },
+  
 })

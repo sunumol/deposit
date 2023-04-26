@@ -17,10 +17,11 @@ import SuccessModal from './ModalSuccess'
 
 const { height, width } = Dimensions.get('screen');
 
-const Cgt = ({ navigation, data, date, selectedData }) => {
+const Cgt = ({ navigation, data, date, selectedData, status }) => {
 
     const [ModalVisible, setModalVisible] = useState(false)
     const [ModalVisible2, setModalVisible2] = useState(false)
+    const [errorMessage, setErrorMessage] = useState('')
 
     const rescheduleAPi = async (timestart) => {
         var hrs = Number(timestart.match(/^(\d+)/)[1]);
@@ -52,14 +53,37 @@ const Cgt = ({ navigation, data, date, selectedData }) => {
         }
     };
 
+    const rescheduleAPiDLE = async () => {
+        const dates = moment(date).utc().format('DD-MM-YYYY')
+        const data = {
+            "activityId": selectedData?.length <= 1 ? selectedData[0] : '',
+            "activityIdList": selectedData?.length > 1 ? selectedData : [],
+            "dateTime": `${dates} ${'00:00'}`,
+        };
+        await api.setReshedule(data).then((res) => {
+            console.log('----------------->>>>', res)
+            if (res?.status) {
+                setModalVisible2(true)
+            }
+        }).catch((err) => {
+            console.log('-------------------err slot', err?.response)
+        })
+
+    };
+
     const renderItem = ({ item, index }) => {
         return (
             <View style={{ justifyContent: 'space-around', margin: 5 }} key={index}>
                 <TouchableOpacity
                     onPress={() => {
-                        if (data[index + 1]?.availabilityStatu == "notAvailable" || data[index]?.time == "06:30 PM" || item.availabilityStatu == "notAvailable") {
+                        if (data[index + 1]?.availabilityStatu == "notAvailable" || item.availabilityStatu == "notAvailable") {
                             setModalVisible(true)
-                        } else {
+                            setErrorMessage('Reschedule meet activities from calendar')
+                        } else if (data[index]?.time == "06:30 PM") {
+                            setModalVisible(true)
+                            setErrorMessage('Two free slots are needed for CGT.')
+                        }
+                        else {
                             rescheduleAPi(item.time)
                         }
                     }}
@@ -70,24 +94,44 @@ const Cgt = ({ navigation, data, date, selectedData }) => {
         )
     }
     return (
-        <View style={{ top: 0 }}>
-            <View style={{ alignItems: 'center', justifyContent: 'center', marginBottom: 0, marginTop: 10 }}>
-                <Text style={styles.timeText}>Time slots</Text>
-            </View>
+        <View style={{ top: 0, flex: 1 }}>
+            {status === 'New CGT'
+                ? <>
+                    <View style={{ alignItems: 'center', justifyContent: 'center', marginBottom: 0, marginTop: 10 }}>
+                        <Text style={styles.timeText}>Time slots</Text>
+                    </View>
 
-            <View style={{ alignItems: 'center', justifyContent: 'center', marginBottom: 10 }}>
-                <FlatList
-                    data={data}
-                    style={{ marginTop: 10, }}
-                    numColumns={3}
-                    renderItem={renderItem}
-                    keyExtractor={item => item.id}
-                />
-            </View>
+                    <View style={{ alignItems: 'center', justifyContent: 'center', marginBottom: 10 }}>
+                        <FlatList
+                            data={data}
+                            style={{ marginTop: 10, }}
+                            numColumns={3}
+                            renderItem={renderItem}
+                            keyExtractor={item => item.id}
+                        />
+                    </View>
+                </>
+
+                : <View style={{ flex: 1, justifyContent: 'flex-end', marginBottom: 20, marginHorizontal: 16 }}>
+
+                    <TouchableOpacity style={[styles.continueView, {
+                        backgroundColor: COLORS.colorB, shadowColor: '#000000',
+                        shadowOffset: { width: 0, height: 7 },
+                        shadowOpacity: 0.1,
+                        shadowRadius: 3,
+                        elevation: 2
+                    }]} disabled={false}
+                        onPress={rescheduleAPiDLE}>
+                        <Text style={[styles.continueText, { color: COLORS.colorBackground }]}>CONTINUE</Text>
+                    </TouchableOpacity>
+
+                </View>
+            }
             <ModalError
                 ModalVisible={ModalVisible}
                 setModalVisible={setModalVisible}
-                navigation={navigation} />
+                navigation={navigation}
+                errorMessage={errorMessage} />
             <SuccessModal
                 ModalVisible={ModalVisible2}
                 setModalVisible2={setModalVisible2}
@@ -120,5 +164,19 @@ const styles = StyleSheet.create({
     daterow: {
         flexDirection: 'row',
         justifyContent: 'space-between',
+    },
+    continueText: {
+        textAlign: 'center',
+        fontFamily: FONTS.FontRegular,
+        fontSize: 14,
+        fontWeight: '700',
+        lineHeight: 17,
+        letterSpacing: 0.64,
+    },
+    continueView: {
+        height: 48,
+        borderRadius: 54,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
 })
