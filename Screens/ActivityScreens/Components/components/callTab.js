@@ -23,7 +23,9 @@ const MeetTab = (props) => {
         getData()
 
     }, [])
-
+    String.prototype.replaceAt = function (index, replacement) {
+        return this.substring(0, index) + replacement + this.substring(index + replacement.length);
+    }
 
     const getRandomColor = () => {
         var letters = '0123456789ABCDEF';
@@ -166,7 +168,7 @@ const MeetTab = (props) => {
                             <View style={{ flexDirection: 'column', paddingTop: 5, alignItems: 'flex-end' }}>
                                 <View style={{ flexDirection: 'row' }}>
                                     <Icon2 name="phone-in-talk-outline" color={"black"} size={15} />
-                                    <Text style={[styles.numText, { paddingLeft: 6 }]}>{item.mobileNumber}</Text>
+                                    <Text style={[styles.numText, { paddingLeft: 6 }]}>{item?.mobileNumber.replace(/^.{0}/g, '').replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X").replaceAt(8,'X').replaceAt(9,'X').replaceAt(10,'X')}</Text>
                                 </View>
                                 {item.purpose == "Conduct DLE"
                                     ? <TouchableOpacity

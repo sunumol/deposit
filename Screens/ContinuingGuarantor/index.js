@@ -365,12 +365,9 @@ const ContinuingGuarantor = ({ navigation, route }) => {
 
   const GETOTP_Validation = (num) => {
 
-
+setPhoneValid(false)
     const firstDigitStr = String(num)[0];
-    if (num?.length != 10 || num == "") {
-      console.log("inside validation11", number?.length, num)
-      setPhoneValid(true)
-    } else if (firstDigitStr === '1' || firstDigitStr === '2' || firstDigitStr === '3' || firstDigitStr === '4' || firstDigitStr === '5' || firstDigitStr === '0') {
+ if (firstDigitStr === '1' || firstDigitStr === '2' || firstDigitStr === '3' || firstDigitStr === '4' || firstDigitStr === '5' || firstDigitStr === '0') {
       setPhoneValid(true)
       console.log("inside validation2",num)
 
@@ -506,7 +503,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
                 <Text style={{
                   fontFamily: FONTS.FontRegular, color: "red", paddingTop: width * 0.02,
                   fontSize: 12
-                }}>Please enter valid Mobile Number</Text>}
+                }}>Please enter a valid Mobile Number</Text>}
 
 
               {/* #################################################################### */}
