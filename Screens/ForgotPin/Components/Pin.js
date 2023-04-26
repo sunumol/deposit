@@ -201,9 +201,13 @@ const ForgotPin = ({ navigation }) => {
             setModalVisible1(true)
         } else if (firstDigitStr === '1' || firstDigitStr === '2' || firstDigitStr === '3' || firstDigitStr === '4' || firstDigitStr === '5' || firstDigitStr === '0') {
             setModalVisible1(true)
+            setPhoneNum('')
+            console.log("insider")
         } else if (verifyPhone(PhoneNum)) {
             setModalVisible1(true)
+            
         } else if (!(/^\d{10}$/.test(PhoneNum))) {
+           
             setModalVisible1(true)
         }
         else {
@@ -265,6 +269,7 @@ const ForgotPin = ({ navigation }) => {
                 setButton(true)
                 setMaxError(false)
                 setMessage('Please enter the registered phone number')
+                setPhoneChange(false)
             }
 
         })
