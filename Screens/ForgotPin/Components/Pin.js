@@ -125,6 +125,7 @@ const ForgotPin = ({ navigation }) => {
                 setStatus(true)
                 setTimer(30)
                 setOtpFetch(true)
+                setPhoneChange(true)
             } else {
                 console.log(res?.data)
             }
@@ -226,7 +227,6 @@ const ForgotPin = ({ navigation }) => {
 
     // ------------------ Resend Api Call Start ------------------
     async function forgotApiCall() {
-        setPhoneChange(true)
         const data = {
             deviceId: deviceId,
             geoLocation: {
@@ -247,7 +247,7 @@ const ForgotPin = ({ navigation }) => {
                 setOtpAvailable(true)
                 setStatus(true)
                 setTimer(30)
-               
+                setPhoneChange(true)
             } else {
                 console.log(res?.data)
             }
@@ -265,6 +265,12 @@ const ForgotPin = ({ navigation }) => {
                 setButton(true)
                 setMaxError(false)
                 setMessage('This mobile is already registered with us. We are therefore unable to proceed further.')
+            }
+            if (err?.response?.data?.message === 'Sorry! We are unable to proceed further.') {
+                setModalVisibleError(true)
+                setButton(true)
+                setMaxError(false)
+                setMessage('Sorry! We are unable to proceed further.')
             }
 
         })

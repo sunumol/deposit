@@ -42,7 +42,7 @@ import Collect from '../Screens/Collect';
 import AddVehicle from '../Screens/AddVehicle';
 import VehicleOwn from '../Screens/VehicleOwn';
 import WhiteGoodsOwner from '../Screens/WhiteGoodsOwner';
-import EnergyUtility from '../Screens/EnergyUtility'; 
+import EnergyUtility from '../Screens/EnergyUtility';
 import IncomeDetails from '../Screens/IncomeDetails';
 import IncomeDetailsSpouse from '../Screens/IncomeDetailsSpouse';
 import DebitDetails from '../Screens/DebitDetails';
@@ -52,11 +52,15 @@ import Collection from '../Screens/Collection';
 import LoanDetailsCollect from '../Screens/LoanDetailsCollect';
 import Dashboard from '../Screens/Dashboard';
 import SelectCustomerNewCgt from '../Screens/SelectCustomNewCgt';
+import CorrectionScreen from '../Screens/CorrectionScreen';
+import Calendar from '../Screens/Calendar'
+import CalendarActivity from '../Screens/CalendarActivity';
+import SelectCalendar from '../Screens/SelectCalendar'
 
 const Stack = createNativeStackNavigator();
 
-
 export default function Router() {
+  
   const netInfo = useNetInfo();
 
   return (
@@ -97,7 +101,7 @@ export default function Router() {
         <Stack.Screen name="ResidenceOwner" component={netInfo.isConnected ? ResidenceOwner : NetWorkError} />
         <Stack.Screen name="HousePhoto" component={netInfo.isConnected ? HousePhoto : NetWorkError} />
         <Stack.Screen name="DLECompleted" component={netInfo.isConnected ? DLECompleted : NetWorkError} />
-        <Stack.Screen name="CustomerDetails" component={netInfo.isConnected ? CustomerDetails: NetWorkError} />
+        <Stack.Screen name="CustomerDetails" component={netInfo.isConnected ? CustomerDetails : NetWorkError} />
         <Stack.Screen name="ScheduleMeet" component={netInfo.isConnected ? ScheduleMeet : NetWorkError} />
         <Stack.Screen name="Collect" component={netInfo.isConnected ? Collect : NetWorkError} />
         <Stack.Screen name="AddVehicle" component={netInfo.isConnected ? AddVehicle : NetWorkError} />
@@ -109,11 +113,19 @@ export default function Router() {
         <Stack.Screen name="DebitDetails" component={netInfo.isConnected ? DebitDetails : NetWorkError} />
         <Stack.Screen name="Proceed" component={netInfo.isConnected ? Proceed : NetWorkError} />
         <Stack.Screen name="Collection" component={netInfo.isConnected ? Collection : NetWorkError} />
-        <Stack.Screen name="LoanDetailsCollect" component={netInfo.isConnected ?LoanDetailsCollect:NetWorkError} />
+        <Stack.Screen name="LoanDetailsCollect" component={netInfo.isConnected ? LoanDetailsCollect : NetWorkError} />
         <Stack.Screen name="Dashboard" component={netInfo.isConnected ? Dashboard : NetWorkError} />
         <Stack.Screen name="SelectCustomerNewCgt" component={netInfo.isConnected ? SelectCustomerNewCgt : NetWorkError} />
-        <Stack.Screen name="UploadVid" component={netInfo.isConnected ?UploadVid: NetWorkError} />
-   </Stack.Navigator>
+        <Stack.Screen name="UploadVid" component={netInfo.isConnected ? UploadVid : NetWorkError} />
+        <Stack.Screen name="CorrectionScreen" component={netInfo.isConnected ? CorrectionScreen : NetWorkError} />
+        
+        {/* --------------------------- Calendar Navigation Screens Start ---------------------------------------*/}
+        <Stack.Screen name="Calendar" component={netInfo.isConnected ? Calendar : NetWorkError} />
+        <Stack.Screen name="CalendarActivity" component={netInfo.isConnected ? CalendarActivity : NetWorkError} />
+        <Stack.Screen name="SelectCalendar" component={netInfo.isConnected ? SelectCalendar : NetWorkError} />
+        {/* --------------------------- Calendar Navigation Screens End -----------------------------------------*/}
+
+      </Stack.Navigator>
     </NavigationContainer>
   );
 }

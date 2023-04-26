@@ -38,23 +38,18 @@ const ItemTabs = (props) => {
             <TouchableOpacity style={[styles.tabContainer]} onPress={() => {
                 if (props.index === 0) {
                     props.navigation.navigate('ActivityScreens')
-
+                }else if (props.index === 1) {
+                    props.navigation.navigate('Calendar')
                 } else if (props.index === 2) {
                     props.navigation.navigate('NewLead')
                 } else if (props.index === 5) {
-                    //setModalVisible(true)
                     props.navigation.navigate('Dashboard')
                 } else if (props.index === 3) {
                     props.navigation.navigate('NewCgt')
                     AsyncStorage.removeItem('DATECGT')
-
                 } else if (props.index === 4) {
                     props.navigation.navigate('Collect')
-
                 }
-
-
-
             }}>
                 {props.image}
                 <Text style={styles.titleText}>{props.title}</Text>

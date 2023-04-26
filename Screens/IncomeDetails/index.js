@@ -118,7 +118,7 @@ const IncomeDetails = ({ navigation, route }) => {
 
     useEffect(() => {
         console.log('Use.....', Amount, Avg, Month)
-        if ((Amount === null || Amount === '' ) || (Avg === null || Avg ===  '') ||( Month === null ||  Month === '')) {
+        if ((Amount === null || Amount === '' ) || (Avg === null || Avg ===  '') ||( Month === null ||  Month === '' || Purpose  ===  '' || Purpose === null)) {
             setButtons(false)
         } else {
             setButtons(true)
@@ -196,7 +196,7 @@ const IncomeDetails = ({ navigation, route }) => {
                 if (res?.data?.body == 'MARRIED') {
                     navigation.navigate('IncomeDetailsSpouse')
                 } else {
-                    navigation.navigate('DebitDetails')
+                    navigation.navigate('Proceed')
                 }
                 // navigation.navigate('DebitDetails')
             }

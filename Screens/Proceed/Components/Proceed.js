@@ -2,50 +2,34 @@ import {
     StyleSheet,
     Text,
     View,
-    Animated,
-    Easing,
-    BackHandler,
-    StatusBar,
-    SafeAreaView,
-    Platform,
-    TextInput,
-    Image,
     ScrollView,
     Dimensions,
     TouchableOpacity
 } from 'react-native'
-import React, { useCallback, useEffect, useState } from 'react'
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-import Statusbar from '../../../Components/StatusBar';
-import { useFocusEffect } from '@react-navigation/native';
-import Header from '../../../Components/RepayHeader';
-import { FONTS, COLORS } from '../../../Constants/Constants';
-import Icon1 from 'react-native-vector-icons/Entypo'
+import React, { useState } from 'react'
 import LottieView from 'lottie-react-native';
+
+import { FONTS, COLORS } from '../../../Constants/Constants';
 
 const { height, width } = Dimensions.get('screen');
 
 const Energy = ({ navigation }) => {
+
     const [ButtonS, setButtonS] = useState(false)
-  
-    // useEffect(() => {
-    //     setTimeout(() => setButtonS(true)
-    //    // navigation.navigate('HousePhoto')
-    //     , 3000);
-    // }, [])
 
     return (
-
         <>
             <View style={styles.mainContainer}>
                 <ScrollView>
-                    <View style={{ alignItems:'center',
-                            justifyContent:'center',}}>
-                    
-                    {ButtonS
-                    ?<LottieView source={require('../Assets/shakehand.json')} autoPlay loop={true} style={{ width: 200, height: 200 }} />
-                    :<LottieView source={require('../Assets/clocktime.json')} autoPlay loop={true} style={{ width: 200, height: 200 }} />
-}
+                    <View style={{
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                    }}>
+
+                        {ButtonS
+                            ? <LottieView source={require('../Assets/shakehand.json')} autoPlay loop={true} style={{ width: 200, height: 200 }} />
+                            : <LottieView source={require('../Assets/clocktime.json')} autoPlay loop={true} style={{ width: 200, height: 200 }} />
+                        }
                     </View>
                     <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                         <Text style={styles.textD1}>Data sent to Customer for verification.</Text>
@@ -54,19 +38,16 @@ const Energy = ({ navigation }) => {
 
                 </ScrollView>
                 <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                   {ButtonS ? <TouchableOpacity style={[styles.buttonView, { backgroundColor: COLORS.colorB  }]}
+                    {ButtonS ? <TouchableOpacity style={[styles.buttonView, { backgroundColor: COLORS.colorB }]}
                         onPress={() => navigation.navigate('HousePhoto')}>
-                        <Text style={[styles.continueText, { color: COLORS.colorBackground}]}>Proceed</Text>
-                    </TouchableOpacity>:
-                     <TouchableOpacity style={[styles.buttonView, { backgroundColor:  'rgba(224, 224, 224, 1)' }]}
-                     onPress={() => setButtonS(true)}>
-                     <Text style={[styles.continueText, { color: '#979C9E' }]}>Proceed</Text>
-                 </TouchableOpacity>}
+                        <Text style={[styles.continueText, { color: COLORS.colorBackground }]}>Proceed</Text>
+                    </TouchableOpacity> :
+                        <TouchableOpacity style={[styles.buttonView, { backgroundColor: 'rgba(224, 224, 224, 1)' }]}
+                            onPress={() => setButtonS(true)}>
+                            <Text style={[styles.continueText, { color: '#979C9E' }]}>Proceed</Text>
+                        </TouchableOpacity>}
                 </View>
             </View>
-
-
-
         </>
     )
 }
@@ -74,7 +55,6 @@ const Energy = ({ navigation }) => {
 export default Energy;
 
 const styles = StyleSheet.create({
-
     TextElect: {
         fontSize: 12,
         color: '#3B3D43',
@@ -89,7 +69,6 @@ const styles = StyleSheet.create({
     },
     mainContainer: {
         flex: 1,
-        //paddingHorizontal: 20,
         backgroundColor: COLORS.colorBackground
     },
     buttonView: {
@@ -100,7 +79,6 @@ const styles = StyleSheet.create({
         height: 45,
         marginBottom: 0,
         width: width * 0.88,
-
     },
     SelectBox: {
         backgroundColor: '#FCFCFC',
@@ -126,12 +104,10 @@ const styles = StyleSheet.create({
         color: '#000000',
         fontFamily: FONTS.FontSemiB
     },
-
     textD2: {
         fontSize: 12,
         color: '#808080',
         fontFamily: FONTS.FontRegular,
         paddingTop: width * 0.01
     }
-
 })
