@@ -1,11 +1,10 @@
-
 import {
     StyleSheet,
     Text,
     View,
     BackHandler,
     StatusBar,
-    SafeAreaView,
+    Keyboard,
     Platform,
     TextInput,
     ScrollView,
@@ -28,7 +27,6 @@ import RoadAccessModal from './RoadAccessModal';
 import ModalSave from '../../../Components/ModalSave';
 import { api } from '../../../Services/Api';
 import { Checkbox } from 'react-native-paper';
-
 const { height, width } = Dimensions.get('screen');
 
 const 
@@ -339,11 +337,17 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
                                     <TextInput
                                         value={villagename ? villagename : ''}
                                         style={[styles.TextInputBranch, { width: width * 0.48, color: 'rgba(26, 5, 29, 1)', fontSize: 12, left: -4 }]}
-                                        onChangeText={(text) => searchvillagename(text)}
+                                        onChangeText={(text) => {
+                                            if(text.length == 25){
+                                                
+                                                Keyboard.dismiss();
+                                            }
+                                            searchvillagename(text)
+                                        }}
                                         maxLength={25}
                                         onFocus={() => setBstatus(false)}
                                         onKeyPress={() => setBstatus(false)}
-
+                                        blurOnSubmit={true}
                                     />
                                     <Search name="search" size={17} style={{ marginRight: 15 }} color={'#1A051D'} />
 
@@ -434,7 +438,12 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
                                     <TextInput
                                         value={postofficename}
                                         style={styles.TextInputBranch}
-                                        onChangeText={(text) => searchpostofficename(text)}
+                                        onChangeText={(text) =>{
+                                            if(text.length == 25){
+                                                Keyboard.dismiss();
+                                            }
+                                             searchpostofficename(text)
+                                        }}
                                         maxLength={25}
                                         onFocus={() => setPstatus(false)}
                                         onKeyPress={() => setPstatus(false)}

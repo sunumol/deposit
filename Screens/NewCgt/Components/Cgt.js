@@ -32,7 +32,7 @@ import moment from 'moment';
 
 
 
-const Cgt = ({navigation,data,date,setModalVisible1,rescheduledata,slotlistrefresh}) => {
+const Cgt = ({navigation,data,date,setModalVisible1,setModalVisible2,rescheduledata,slotlistrefresh}) => {
     console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~',reschedulecgt)
     const [status, setStatus] = useState(false);
     const weekDay = [];
@@ -115,17 +115,23 @@ useEffect(()=>{setReschedulecgt(rescheduledata)},[rescheduledata])
 
                     if(reschedulecgt){
 
-                        if(data[index+1]?.availabilityStatu == "notAvailable" || data[index]?.time == "06:30 PM"   ){
+                        if(data[index+1]?.availabilityStatu == "notAvailable" ){
                             setModalVisible1(true)
-                         }else{
+                         } else if(data[index]?.time == "06:30 PM" ){
+                            setModalVisible2(true)
+                         }
+                         else{
                             createCGT(item)
                          }
 
                     
                     }else{
-                        if(data[index+1]?.availabilityStatu == "notAvailable" || data[index]?.time == "06:30 PM"   ){
+                        if(data[index+1]?.availabilityStatu == "notAvailable" ){
                             setModalVisible1(true)
-                         }else{
+                         } else if(data[index]?.time == "06:30 PM" ){
+                            setModalVisible2(true)
+                         }
+                         else{
                              item.availabilityStatu == "notAvailable" ? navigation.navigate('Activities',{data:item}):
                       navigation.navigate('SelectCustomerNewCgt',{data : item,date :date,
                      })

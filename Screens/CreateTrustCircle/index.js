@@ -67,7 +67,7 @@ const CreateTrustCircle = ({ navigation,route }) => {
     useEffect(() => {
         getTCLimitDetails()
         getTclist()
-        console.log('======>>>>+++++',customerID)
+        console.log('======>>>>+++++',customerList)
     }, [customerList,customerID])
 
     // ------------------ getTCLimitDetails Api Call Start ------------------
@@ -102,7 +102,9 @@ const CreateTrustCircle = ({ navigation,route }) => {
     // ------------------ HomeScreen Api Call End ------------------
 
 
-
+useEffect(()=>{
+getDLEschedule()
+},[])
     const getTclist = async () => {
         console.log('api called')
         const data = {
@@ -119,6 +121,30 @@ const CreateTrustCircle = ({ navigation,route }) => {
     };
     // ------------------ HomeScreen Api Call End ------------------
 
+            // ------------------ get Slot Api Call Start ------------------
+            const getDLEschedule = async () => {
+                console.log('api called',cgtCustomerDetails?.primaryCustomerId)
+                 const data = {
+                    //"employeeId": route?.params?.customerID,
+                    "customerId":cgtCustomerDetails?.primaryCustomerId,
+                 };
+                 await api.getDLEschedule(data).then((res) => {
+                 
+                     console.log('------------------- DLE res123', res)
+                     dispatch({
+                        type: 'SET_SELECTED_CUSTOMERLIST',
+                        payload: res?.data?.body,
+                      });
+                      console.log('12341233============',customerList)
+                    
+                   
+         
+                 })
+                     .catch((err) => {
+                         console.log('-------------------err', err?.response)
+                     })
+             };
+             // 
     const getInitials = (name) => {
 
         let initials;

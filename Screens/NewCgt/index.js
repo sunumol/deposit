@@ -30,6 +30,7 @@ import { api } from '../../Services/Api';
 import { useDispatch, useSelector } from 'react-redux';
 import CalenderModal from './Components/CalenderModal';
 import CgtModal from '../SelectCustomNewCgt/Components/Modal';
+import ErrorModal from './Components/ErrorModal';
 
 const NewCgt = ({ navigation, date, route }) => {
     // const route = useRoute();
@@ -47,6 +48,7 @@ const NewCgt = ({ navigation, date, route }) => {
     const cgtdate = useSelector(state => state?.NewcgtSlot)
     const [status, setStatus] = useState(true)
     const [ModalVisible1, setModalVisible1] = useState(false)
+    const [ModalVisible2, setModalVisible2] = useState(false)
     const [ModalVisible, setModalVisible] = useState(false)
     const [reschedulecgt, setReschedulecgt] = useState('')
     const dispatch = useDispatch()
@@ -250,7 +252,7 @@ const NewCgt = ({ navigation, date, route }) => {
                 </View> :
                 <View style={styles.ViewContent}>
                     <CalendarStrips callback={callback} setNewDates={setNewDates} NewDates={NewDates} getCGTslot={() => getCGTslot()} />
-                    <Cgt navigation={navigation} data={slotlist} date={NewDates} setEnab={setEnab} setModalVisible1={setModalVisible1} rescheduledata={route?.params?.reschedule} slotlistrefresh={getCGTslot} />
+                    <Cgt navigation={navigation} data={slotlist} date={NewDates} setEnab={setEnab} setModalVisible1={setModalVisible1} setModalVisible2={setModalVisible2} rescheduledata={route?.params?.reschedule} slotlistrefresh={getCGTslot} />
 
                     {/* <DatePicker/> */}
 
@@ -266,6 +268,18 @@ const NewCgt = ({ navigation, date, route }) => {
                         }}
                         setModalVisible={setModalVisible1}
                     />
+
+
+                    <ErrorModal
+                     ModalVisible={ModalVisible2}
+                     onPress1={() => {
+                         setModalVisible2(false)
+
+                     }}
+                     onPressOut={() => {
+                         setModalVisible2(!ModalVisible2)
+                     }}
+                     setModalVisible={setModalVisible2}/>
 
                     <CgtModal ModalVisible={ModalVisible}
                         onPressOut={() => {

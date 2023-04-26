@@ -307,7 +307,7 @@ const IncomeDetails = ({ navigation, route }) => {
                                     }]}
                                     value={Amount?.toString()}
                                     keyboardType={'number-pad'}
-                                    //label={'₹'}
+                                    maxLength={5}
                                     onChangeText={(text) => setAmount(text)} />
                             </View>
 

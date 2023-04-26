@@ -1,245 +1,145 @@
-import React, { useEffect } from "react";
-import { Dimensions, Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { COLORS, FONTS } from '../../../Constants/Constants';
-import { useTranslation } from 'react-i18next';
+import {
+    StyleSheet,
+    Text,
+    View,
+    Animated,
+    Easing,
+    BackHandler,
+    StatusBar,
+    SafeAreaView,
+    Platform,
+    TextInput,
+    Image,
+    ScrollView,
+    Dimensions,
+    TouchableOpacity
+} from 'react-native'
+import React, { useCallback, useEffect, useState } from 'react'
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import Statusbar from '../../../Components/StatusBar';
+import { useFocusEffect } from '@react-navigation/native';
+import Header from '../../../Components/RepayHeader';
+import { FONTS, COLORS } from '../../../Constants/Constants';
+import Icon1 from 'react-native-vector-icons/Entypo'
+import LottieView from 'lottie-react-native';
 
-const RelationModal = ({ visible, onPressOut,setModalVisible,setRelation,setPurposes,setStatus}) => {
-    const { t } = useTranslation();
-   // console.log("setRelation....",setRelation)
+const { height, width } = Dimensions.get('screen');
 
+const DLECompleted = ({ navigation }) => {
+    const [ButtonS, setButtonS] = useState(false)
+  
+    // useEffect(() => {
+    //     setTimeout(() => setButtonS(true)
+    //    // navigation.navigate('HousePhoto')
+    //     , 3000);
+    // }, [])
+
+
+
+    const handleGoBack = useCallback(() => {
+    
+            navigation.navigate('Profile')
+        
+        return true; // Returning true from onBackPress denotes that we have handled the event
+      }, [navigation]);
+    
+      useFocusEffect(
+        React.useCallback(() => {
+          BackHandler.addEventListener('hardwareBackPress', handleGoBack);
+    
+          return () =>
+            BackHandler.removeEventListener('hardwareBackPress', handleGoBack);
+        }, [handleGoBack]),
+      );
 
     return (
 
-        <Modal
-            animationType="slide"
-            transparent={true}
-            visible={visible}
-            onRequestClose={onPressOut}
-        >
-            <View style={styles.mainContainer} >
-                <TouchableOpacity
-                    onPressOut={onPressOut}
-                    style={styles.touchableStyle} >
-                </TouchableOpacity>
-                <View style={styles.centeredView2}>
-                    <View style={styles.modalView}>
-                        <Text style={styles.modalTextHead}>Select Relation</Text>
-                        <View style={styles.lineView} />
-                        <TouchableOpacity style={styles.textTouch}
-                            onPress={() => {
-                               // setRelation("Self")
-                              // setStatus(true)
-                                setPurposes('Self')
-                                setModalVisible(!visible)
-                            }
-                            }>
-                            <Text style={styles.modalText}>Self</Text>
-                            <View style={{ paddingRight: 10 }}>
-                                <Icon
-                                    name="checkbox-blank-circle-outline"
-                                    color={COLORS.DSMuted}
-                                    size={18}
-                                />
-                            </View>
-                        </TouchableOpacity >
-                        <View style={styles.lineView} />
-                        <TouchableOpacity style={styles.textTouch} onPress={() => {
-                            setPurposes("Spouse")
-                            setModalVisible(!visible)
-                        }
-                        }>
-                            <Text style={styles.modalText}>Spouse</Text>
-                            <View style={{ paddingRight: 10 }}>
-                                <Icon
-                                    name="checkbox-blank-circle-outline"
-                                    color={COLORS.DSMuted}
-                                    size={18}
-                                />
-                            </View>
-                        </TouchableOpacity>
-                        <View style={styles.lineView} />
-                        <TouchableOpacity style={styles.textTouch} onPress={() => {
-                            setPurposes("Son")
-                            setModalVisible(!visible)
-                        }
-                        }>
-                            <Text style={styles.modalText}>Son</Text>
-                            <View style={{ paddingRight: 10 }}>
-                                <Icon
-                                    name="checkbox-blank-circle-outline"
-                                    color={COLORS.DSMuted}
-                                    size={18}
-                                />
-                            </View>
-                            
-                        </TouchableOpacity>
-                  
-                        <View style={styles.lineView} />
-                        <TouchableOpacity style={styles.textTouch} onPress={() => {
-                             setPurposes('Daughter')
-                            setModalVisible(!visible)
-                        }
-                        }>
-                            <Text style={styles.modalText}>Daughter</Text>
-                            <View style={{ paddingRight: 10 }}>
-                                <Icon
-                                    name="checkbox-blank-circle-outline"
-                                    color={COLORS.DSMuted}
-                                    size={18}
-                                />
-                            </View>
-                            
-                        </TouchableOpacity>
-
-
-                        <View style={styles.lineView} />
-                        <TouchableOpacity style={styles.textTouch} onPress={() => {
-                             setPurposes('Father')
-                            setModalVisible(!visible)
-                        }
-                        }>
-                            <Text style={styles.modalText}>Father</Text>
-                            <View style={{ paddingRight: 10 }}>
-                                <Icon
-                                    name="checkbox-blank-circle-outline"
-                                    color={COLORS.DSMuted}
-                                    size={18}
-                                />
-                            </View>
-                            
-                        </TouchableOpacity>
-            
-
-                        <View style={styles.lineView} />
-                        <TouchableOpacity style={styles.textTouch} onPress={() => {
-                             setPurposes('Mother')
-                            setModalVisible(!visible)
-                        }
-                        }>
-                            <Text style={styles.modalText}>Mother</Text>
-                            <View style={{ paddingRight: 10 }}>
-                                <Icon
-                                    name="checkbox-blank-circle-outline"
-                                    color={COLORS.DSMuted}
-                                    size={18}
-                                />
-                            </View>
-                            
-                        </TouchableOpacity>
-            
-
-
-                        <View style={styles.lineView} />
-                        <TouchableOpacity style={styles.textTouch} onPress={() => {
-                             setPurposes('Father-in-law')
-                            setModalVisible(!visible)
-                        }
-                        }>
-                            <Text style={styles.modalText}>Father-in-law</Text>
-                            <View style={{ paddingRight: 10 }}>
-                                <Icon
-                                    name="checkbox-blank-circle-outline"
-                                    color={COLORS.DSMuted}
-                                    size={18}
-                                />
-                            </View>
-                            
-                        </TouchableOpacity>
-            
-
-
-                        <View style={styles.lineView} />
-                        <TouchableOpacity style={styles.textTouch} onPress={() => {
-                             setPurposes('Mother-in-law')
-                            setModalVisible(!visible)
-                        }
-                        }>
-                            <Text style={styles.modalText}>Mother-in-law</Text>
-                            <View style={{ paddingRight: 10 }}>
-                                <Icon
-                                    name="checkbox-blank-circle-outline"
-                                    color={COLORS.DSMuted}
-                                    size={18}
-                                />
-                            </View>
-                            
-                        </TouchableOpacity>
-            
-            
+        <>
+            <View style={styles.mainContainer}>
+                <ScrollView>
+                    <View style={{flex:1,marginTop:150, alignItems:'center',
+                            justifyContent:'center',}}>
+                    
+                    <LottieView source={require('./tickcongrats.json')} autoPlay loop={true} style={{ width:200,height:200}} />
 
                     </View>
-                </View>
-            </View>
-        </Modal>
+                    <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                        <Text style={styles.textD1}>DLE is Completed</Text>
+                  
+                    </View>
 
-    );
-};
+                </ScrollView>
+             
+            </View>
+
+
+
+        </>
+    )
+}
+
+export default DLECompleted;
 
 const styles = StyleSheet.create({
+
+    TextElect: {
+        fontSize: 12,
+        color: '#3B3D43',
+        fontFamily: FONTS.FontRegular,
+        marginTop: 10
+    },
+    continueText: {
+        fontSize: 14,
+        fontFamily: FONTS.FontBold,
+        color: COLORS.colorBackground,
+        letterSpacing: 0.64
+    },
     mainContainer: {
-        backgroundColor: "#000000aa",
-        flex: 1
-    },
-    touchableStyle: {
         flex: 1,
-        height: Dimensions.get('window').height,
+       justifyContent:'center',
+       alignItems:'center',
+        backgroundColor: COLORS.colorBackground
     },
-    centeredView2: {
-        justifyContent: "flex-end",
+    buttonView: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 54,
+        height: 45,
+        marginBottom: 0,
+        width: width * 0.88,
+
     },
-    modalView: {
-        backgroundColor: "white",
-        shadowColor: "#000",
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        elevation: 5,
-        shadowRadius: 2,
-        // borderBottomStartRadius: 30,
-        // borderBottomEndRadius: 30,
-        width: Dimensions.get('window').width,
-        paddingBottom: 7
-        // height:Dimensions.get('window').height*0.3
-    },
-    textTouch: {
-        paddingVertical: 20,
-        paddingHorizontal: 25,
+    SelectBox: {
+        backgroundColor: '#FCFCFC',
+        borderRadius: 8,
+        borderWidth: 1,
+        width: width * 0.89,
+        height: width * 0.12,
+        borderColor: 'rgba(236, 235, 237, 1)',
+        alignItems: 'center',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'center',
-
+        marginTop: width * 0.02,
+        marginBottom: width * 0.02
     },
-    textStyle: {
-        color: "white",
-        fontWeight: "bold",
-        textAlign: "center"
-    },
-    modalText: {
-        color: COLORS.colorBlack,
-        fontFamily: FONTS.FontRegular,
+    textSelect: {
         fontSize: 14,
-        fontWeight: '400',
-        lineHeight: 17,
-        opacity: 0.7
-
+        color: 'rgba(128, 128, 128, 1)',
+        fontFamily: FONTS.FontRegular,
+        marginLeft: 10
     },
-    modalTextHead: {
-        color: '#3B3D43',
-        textAlign: 'left',
-        fontFamily: FONTS.FontSemiB,
-        fontSize: 15,
-        marginLeft: 25,
-        marginTop: 22,
-        marginBottom: 15
-     
-    },
-    lineView: {
-        borderWidth: 0.5,
-        borderColor: COLORS.Gray6,
-        backgroundColor: COLORS.Gray6,
-        opacity: 0.5
+    textD1: {
+        fontSize: 24,
+        color: 'rgba(0, 56, 116, 1)',
+        fontFamily: FONTS.FontSemiB
     },
 
-});
+    textD2: {
+        fontSize: 12,
+        color: '#808080',
+        fontFamily: FONTS.FontRegular,
+        paddingTop: width * 0.01
+    }
 
-export default RelationModal;
+})
