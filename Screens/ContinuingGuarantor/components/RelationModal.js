@@ -4,10 +4,10 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { COLORS, FONTS } from '../../../Constants/Constants';
 import { useTranslation } from 'react-i18next';
 
-const RelationModal = ({ visible, onPressOut,setModalVisible,setRelation,setPurposes,setStatus}) => {
+const RelationModal = ({ visible, onPressOut, setModalVisible, setRelation, setPurposes, setStatus, Purpose,relation }) => {
     const { t } = useTranslation();
-   // console.log("setRelation....",setRelation)
-
+    // console.log("setRelation....",setRelation)
+   
 
     return (
 
@@ -24,25 +24,32 @@ const RelationModal = ({ visible, onPressOut,setModalVisible,setRelation,setPurp
                 </TouchableOpacity>
                 <View style={styles.centeredView2}>
                     <View style={styles.modalView}>
-                    <View style={styles.modalView1}>
-                        <Text style={styles.modalTextHead}>Select Relation</Text>
+                        <View style={styles.modalView1}>
+                            <Text style={styles.modalTextHead}>Select Relation</Text>
                         </View>
                         <View style={styles.lineView} />
                         <TouchableOpacity style={styles.textTouch}
                             onPress={() => {
-                               // setRelation("Self")
-                              // setStatus(true)
+                                // setRelation("Self")
+                                // setStatus(true)
                                 setPurposes('Son')
                                 setModalVisible(!visible)
                             }
                             }>
                             <Text style={styles.modalText}>Son</Text>
+
                             <View style={{ paddingRight: 10 }}>
-                                <Icon
-                                    name="checkbox-blank-circle-outline"
-                                    color={COLORS.DSMuted}
-                                    size={18}
-                                />
+                                {relation === 'Son' ?
+                                    <Icon
+                                        name="checkbox-blank-circle"
+                                        color={COLORS.colorB}
+                                        size={18}
+                                    /> :
+                                    <Icon
+                                        name="checkbox-blank-circle-outline"
+                                        color={COLORS.DSMuted}
+                                        size={18}
+                                    />}
                             </View>
                         </TouchableOpacity >
                         <View style={styles.lineView} />
@@ -53,11 +60,17 @@ const RelationModal = ({ visible, onPressOut,setModalVisible,setRelation,setPurp
                         }>
                             <Text style={styles.modalText}>Daughter</Text>
                             <View style={{ paddingRight: 10 }}>
+                            {relation === 'Daughter' ?
+                                    <Icon
+                                        name="checkbox-blank-circle"
+                                        color={COLORS.colorB}
+                                        size={18}
+                                    /> :
                                 <Icon
                                     name="checkbox-blank-circle-outline"
                                     color={COLORS.DSMuted}
                                     size={18}
-                                />
+                                />}
                             </View>
                         </TouchableOpacity>
                         <View style={styles.lineView} />
@@ -68,212 +81,285 @@ const RelationModal = ({ visible, onPressOut,setModalVisible,setRelation,setPurp
                         }>
                             <Text style={styles.modalText}>Son-in-law</Text>
                             <View style={{ paddingRight: 10 }}>
+                            {relation === 'Son-in-law' ?
+                                    <Icon
+                                        name="checkbox-blank-circle"
+                                        color={COLORS.colorB}
+                                        size={18}
+                                    /> :
                                 <Icon
                                     name="checkbox-blank-circle-outline"
                                     color={COLORS.DSMuted}
                                     size={18}
-                                />
+                                />}
                             </View>
-                            
+
                         </TouchableOpacity>
-                  
+
                         <View style={styles.lineView} />
                         <TouchableOpacity style={styles.textTouch} onPress={() => {
-                             setPurposes('Daughter-in-law')
+                            setPurposes('Daughter-in-law')
                             setModalVisible(!visible)
                         }
                         }>
                             <Text style={styles.modalText}>Daughter-in-law</Text>
                             <View style={{ paddingRight: 10 }}>
+                            {relation === 'Daughter-in-law' ?
+                                    <Icon
+                                        name="checkbox-blank-circle"
+                                        color={COLORS.colorB}
+                                        size={18}
+                                    /> :
                                 <Icon
                                     name="checkbox-blank-circle-outline"
                                     color={COLORS.DSMuted}
                                     size={18}
-                                />
+                                />}
                             </View>
-                            
+
                         </TouchableOpacity>
 
 
                         <View style={styles.lineView} />
                         <TouchableOpacity style={styles.textTouch} onPress={() => {
-                             setPurposes('Father-in-law')
+                            setPurposes('Father-in-law')
                             setModalVisible(!visible)
                         }
                         }>
                             <Text style={styles.modalText}>Father-in-law</Text>
                             <View style={{ paddingRight: 10 }}>
+                            {relation === 'Father-in-law' ?
+                                    <Icon
+                                        name="checkbox-blank-circle"
+                                        color={COLORS.colorB}
+                                        size={18}
+                                    /> :
                                 <Icon
                                     name="checkbox-blank-circle-outline"
                                     color={COLORS.DSMuted}
                                     size={18}
-                                />
+                                />}
                             </View>
-                            
+
                         </TouchableOpacity>
-            
+
 
                         <View style={styles.lineView} />
                         <TouchableOpacity style={styles.textTouch} onPress={() => {
-                             setPurposes('Mother-in-law')
+                            setPurposes('Mother-in-law')
                             setModalVisible(!visible)
                         }
                         }>
                             <Text style={styles.modalText}>Mother-in-law</Text>
                             <View style={{ paddingRight: 10 }}>
+                            {relation === 'Mother-in-law' ?
+                                    <Icon
+                                        name="checkbox-blank-circle"
+                                        color={COLORS.colorB}
+                                        size={18}
+                                    /> :
                                 <Icon
                                     name="checkbox-blank-circle-outline"
                                     color={COLORS.DSMuted}
                                     size={18}
-                                />
+                                />}
                             </View>
-                            
+
                         </TouchableOpacity>
-            
+
 
 
                         <View style={styles.lineView} />
                         <TouchableOpacity style={styles.textTouch} onPress={() => {
-                             setPurposes('Father')
+                            setPurposes('Father')
                             setModalVisible(!visible)
                         }
                         }>
                             <Text style={styles.modalText}>Father</Text>
                             <View style={{ paddingRight: 10 }}>
+                            {relation === 'Father' ?
+                                    <Icon
+                                        name="checkbox-blank-circle"
+                                        color={COLORS.colorB}
+                                        size={18}
+                                    /> :
                                 <Icon
                                     name="checkbox-blank-circle-outline"
                                     color={COLORS.DSMuted}
                                     size={18}
-                                />
+                                />}
                             </View>
-                            
+
                         </TouchableOpacity>
-            
+
 
 
                         <View style={styles.lineView} />
                         <TouchableOpacity style={styles.textTouch} onPress={() => {
-                             setPurposes('Mother')
+                            setPurposes('Mother')
                             setModalVisible(!visible)
                         }
                         }>
                             <Text style={styles.modalText}>Mother</Text>
                             <View style={{ paddingRight: 10 }}>
+                            {relation === 'Mother' ?
+                                    <Icon
+                                        name="checkbox-blank-circle"
+                                        color={COLORS.colorB}
+                                        size={18}
+                                    /> :
                                 <Icon
                                     name="checkbox-blank-circle-outline"
                                     color={COLORS.DSMuted}
                                     size={18}
-                                />
+                                />}
                             </View>
-                            
+
                         </TouchableOpacity>
 
 
                         <View style={styles.lineView} />
                         <TouchableOpacity style={styles.textTouch} onPress={() => {
-                             setPurposes('Uncle')
+                            setPurposes('Uncle')
                             setModalVisible(!visible)
                         }
                         }>
                             <Text style={styles.modalText}>Uncle</Text>
                             <View style={{ paddingRight: 10 }}>
+                            {relation === 'Uncle' ?
+                                    <Icon
+                                        name="checkbox-blank-circle"
+                                        color={COLORS.colorB}
+                                        size={18}
+                                    /> :
                                 <Icon
                                     name="checkbox-blank-circle-outline"
                                     color={COLORS.DSMuted}
                                     size={18}
-                                />
+                                />}
                             </View>
-                            
+
                         </TouchableOpacity>
 
                         <View style={styles.lineView} />
                         <TouchableOpacity style={styles.textTouch} onPress={() => {
-                             setPurposes('Aunt')
+                            setPurposes('Aunt')
                             setModalVisible(!visible)
                         }
                         }>
                             <Text style={styles.modalText}>Aunt</Text>
                             <View style={{ paddingRight: 10 }}>
+                            {relation === 'Aunt' ?
+                                    <Icon
+                                        name="checkbox-blank-circle"
+                                        color={COLORS.colorB}
+                                        size={18}
+                                    /> :
                                 <Icon
                                     name="checkbox-blank-circle-outline"
                                     color={COLORS.DSMuted}
                                     size={18}
-                                />
+                                />}
                             </View>
-                            
+
                         </TouchableOpacity>
 
 
                         <View style={styles.lineView} />
                         <TouchableOpacity style={styles.textTouch} onPress={() => {
-                             setPurposes('Nephew')
+                            setPurposes('Nephew')
                             setModalVisible(!visible)
                         }
                         }>
                             <Text style={styles.modalText}>Nephew</Text>
                             <View style={{ paddingRight: 10 }}>
+                            {relation === 'Nephew' ?
+                                    <Icon
+                                        name="checkbox-blank-circle"
+                                        color={COLORS.colorB}
+                                        size={18}
+                                    /> :
                                 <Icon
                                     name="checkbox-blank-circle-outline"
                                     color={COLORS.DSMuted}
                                     size={18}
-                                />
+                                />}
                             </View>
-                            
+
                         </TouchableOpacity>
 
 
                         <View style={styles.lineView} />
                         <TouchableOpacity style={styles.textTouch} onPress={() => {
-                             setPurposes('Niece')
+                            setPurposes('Niece')
                             setModalVisible(!visible)
                         }
                         }>
                             <Text style={styles.modalText}>Niece</Text>
                             <View style={{ paddingRight: 10 }}>
+                            {relation === 'Niece' ?
+                                    <Icon
+                                        name="checkbox-blank-circle"
+                                        color={COLORS.colorB}
+                                        size={18}
+                                    /> :
                                 <Icon
                                     name="checkbox-blank-circle-outline"
                                     color={COLORS.DSMuted}
                                     size={18}
-                                />
+                                />}
                             </View>
-                            
+
                         </TouchableOpacity>
 
                         <View style={styles.lineView} />
                         <TouchableOpacity style={styles.textTouch} onPress={() => {
-                             setPurposes('Male Cousin')
+                            setPurposes('Male Cousin')
                             setModalVisible(!visible)
                         }
                         }>
                             <Text style={styles.modalText}>Male Cousin</Text>
                             <View style={{ paddingRight: 10 }}>
+                            {relation === 'Male Cousin' ?
+                                    <Icon
+                                        name="checkbox-blank-circle"
+                                        color={COLORS.colorB}
+                                        size={18}
+                                    /> :
                                 <Icon
                                     name="checkbox-blank-circle-outline"
                                     color={COLORS.DSMuted}
                                     size={18}
-                                />
+                                />}
                             </View>
-                            
+
                         </TouchableOpacity>
 
                         <View style={styles.lineView} />
                         <TouchableOpacity style={styles.textTouch} onPress={() => {
-                             setPurposes('Female Cousin')
+                            setPurposes('Female Cousin')
                             setModalVisible(!visible)
                         }
                         }>
                             <Text style={styles.modalText}>Female Cousin</Text>
                             <View style={{ paddingRight: 10 }}>
+                            {relation === 'Female Cousin' ?
+                                    <Icon
+                                        name="checkbox-blank-circle"
+                                        color={COLORS.colorB}
+                                        size={18}
+                                    /> :
                                 <Icon
                                     name="checkbox-blank-circle-outline"
                                     color={COLORS.DSMuted}
                                     size={18}
-                                />
-                            </View>
+                                />}
                             
+                            </View>
+
                         </TouchableOpacity>
-            
-            
+
+
 
                     </View>
                 </View>
@@ -311,10 +397,10 @@ const styles = StyleSheet.create({
     modalView1: {
         backgroundColor: "white",
         shadowColor: "#000",
-        justifyContent:'flex-start',
-        paddingHorizontal: Dimensions.get('window').width*0.06,
+        justifyContent: 'flex-start',
+        paddingHorizontal: Dimensions.get('window').width * 0.06,
         paddingBottom: 7
-        
+
     },
     textTouch: {
         paddingVertical: 15,
@@ -343,11 +429,11 @@ const styles = StyleSheet.create({
         textAlign: 'left',
         fontFamily: FONTS.FontSemiB,
         fontSize: 15,
-       // marginLeft: 25,
+        // marginLeft: 25,
         marginTop: 22,
         marginBottom: 15,
-   
-     
+
+
     },
     lineView: {
         borderWidth: 0.5,

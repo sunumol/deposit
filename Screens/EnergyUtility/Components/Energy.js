@@ -147,7 +147,12 @@ useEffect(() => {
                             value={Amount?.toString()}
                             keyboardType={'number-pad'}
                             maxLength={5}
-                            onChangeText={(text) => setAmount(text)} />
+                            onChangeText={(text) => {
+                                if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(text) || text === "") {
+                                    setAmount(text)
+                                }
+                            }
+                               } />
                     </View>
                     <View>
                         <Text style={styles.TextElect}>Cooking fuel type</Text>
@@ -174,7 +179,12 @@ useEffect(() => {
                                 value={days?.toString()}
                                 keyboardType={'number-pad'}
                                 maxLength={2}
-                                onChangeText={(text) => setDays(text)} />
+                                onChangeText={(text) => {
+                                    if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(text) || text === "") {
+                                        setDays(text)
+                                    }
+                                }
+                                } />
                         </View>}
                 </ScrollView>
                 <View style={{ alignItems: 'center', justifyContent: 'center' }}>
@@ -188,6 +198,7 @@ useEffect(() => {
             <EnergyModal
                 visible={ModalVisible}
                 setPurpose={setPurpose}
+                Purpose={Purpose}
                 setModalVisible={setModalVisible}
                 onPressOut={() => setModalVisible(!ModalVisible)}
             />

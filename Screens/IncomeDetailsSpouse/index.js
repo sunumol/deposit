@@ -38,7 +38,7 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
     const { t } = useTranslation();
     const [lang, setLang] = useState('')
     const [statusChange, setStatusChange] = useState(false)
-    const [relationShip,setRelationship] =useState('Spouse')
+    const [relationShip, setRelationship] = useState('Spouse')
     const [Amount, setAmount] = useState('')
     const [ModalVisible, setModalVisible] = useState(false)
     const [Purpose, setPurpose] = useState('')
@@ -51,18 +51,18 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
     const [Salary, setSalary] = useState('')
     const [StateChange1, setStateChange1] = useState(false)
     const [ButtonSP, setButtonSP] = useState(false)
-    const [incomedetail,setIncomedetail] =useState('')
-    const [incomedetailfield,setIncomedetailfield] =useState('')
+    const [incomedetail, setIncomedetail] = useState('')
+    const [incomedetailfield, setIncomedetailfield] = useState('')
     const activityId = useSelector(state => state.activityId);
-    const [ModalVisible1,setModalVisible1] = useState(false)
-    const [ModalReason,setModalReason] = useState(false)
+    const [ModalVisible1, setModalVisible1] = useState(false)
+    const [ModalReason, setModalReason] = useState(false)
     const [ModalError, setModalError] = useState(false)
 
     useEffect(() => {
         getData()
-       // setRelationship(route?.params?.relationShip)
+        // setRelationship(route?.params?.relationShip)
         getIncomeDetails()
-            console.log("statecha nge.....",Purpose)
+        console.log("statecha nge.....", Purpose)
     }, [])
 
     const getData = async () => {
@@ -78,30 +78,30 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
     const handleGoBack = useCallback(() => {
 
         // navigation.goBack()
-             setModalVisible1(true)
-         return true; // Returning true from onBackPress denotes that we have handled the event
-     }, [navigation]);
- 
-     useFocusEffect(
-         React.useCallback(() => {
-             BackHandler.addEventListener('hardwareBackPress', handleGoBack);
- 
-             return () =>
-             
-                 BackHandler.removeEventListener('hardwareBackPress', handleGoBack);
-         }, [handleGoBack]),
-     );
- 
+        setModalVisible1(true)
+        return true; // Returning true from onBackPress denotes that we have handled the event
+    }, [navigation]);
+
+    useFocusEffect(
+        React.useCallback(() => {
+            BackHandler.addEventListener('hardwareBackPress', handleGoBack);
+
+            return () =>
+
+                BackHandler.removeEventListener('hardwareBackPress', handleGoBack);
+        }, [handleGoBack]),
+    );
+
     const ButtonClick = () => {
-    
+
         if (Amount !== '' && Avg !== '' && Month !== '') {
             setStateChange1(true)
-           // setStatusChange(true)
-           saveIncomeDetails()
+            // setStatusChange(true)
+            saveIncomeDetails()
 
         } else {
             setStateChange1(false)
-           // setStatusChange(false)
+            // setStatusChange(false)
         }
     }
 
@@ -114,45 +114,45 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
     }, [MonthsCustom, Purpose, Salary])
 
 
-    
+
     useEffect(() => {
         console.log('Use.....', Amount, Avg, Purpose)
-        if ((Amount === null || Amount === '' ) || (Avg === null || Avg ===  '') ||( Purpose === null ||  Purpose === '')) {
+        if ((Amount === null || Amount === '') || (Avg === null || Avg === '') || (Purpose === null || Purpose === '')) {
             setButtons(false)
         } else {
             setButtons(true)
         }
     }, [Amount, Avg, Purpose])
 
-      // ------------------ get Conduct DLE basic detail Village Api Call Start ------------------
-      const updateRejection = async () => {
+    // ------------------ get Conduct DLE basic detail Village Api Call Start ------------------
+    const updateRejection = async () => {
         console.log('api called for rejection')
         const data = {
-            "activityStatus":'Submitted wrong data',
-            "employeeId":1,
-            "activityId":activityId
+            "activityStatus": 'Submitted wrong data',
+            "employeeId": 1,
+            "activityId": activityId
         }
         await api.updateActivity(data).then((res) => {
             console.log('-------------------res get Village', res)
             setModalError(true)
             setModalReason(false)
             setTimeout(() => {
-                navigation.navigate('Profile')  
+                navigation.navigate('Profile')
             }, 1000);
-          
+
         }).catch((err) => {
             console.log('-------------------err get Village', err)
         })
     };
 
 
-       // ------------------getIncomeDetails detail ------------------
+    // ------------------getIncomeDetails detail ------------------
 
-       const getIncomeDetails = async () => {
+    const getIncomeDetails = async () => {
         console.log('api called')
 
         const data = {
-           "activityId": activityId,
+            "activityId": activityId,
             "relationShip": relationShip
 
         }
@@ -175,42 +175,62 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
 
 
 
-           // ------------------saveIncomeDetails detail ------------------
+    // ------------------saveIncomeDetails detail ------------------
 
-           const saveIncomeDetails = async () => {
-            console.log('api called')
-    
-            const data = {
-                "activityId": activityId,
-                "relationShip": relationShip,
-                "field1": Amount,
-                "field2": Purpose,
-                "field3": Avg
-    
+    const saveIncomeDetails = async () => {
+        console.log('api called')
+
+        const data = {
+            "activityId": activityId,
+            "relationShip": relationShip,
+            "field1": Amount,
+            "field2": Purpose,
+            "field3": Avg
+
+        }
+        await api.saveIncomeDetails(data).then((res) => {
+            console.log('-------------------res saveIncomeDetails', res?.data?.body)
+            if (res?.status) {
+                navigation.navigate('Profile')
             }
-            await api.saveIncomeDetails(data).then((res) => {
-                console.log('-------------------res saveIncomeDetails', res?.data?.body)
-                if (res?.status) {    
-                 navigation.navigate('Proceed')
-                }
-            }).catch((err) => {
-                console.log('-------------------err saveIncomeDetails', err?.response)
-            })
-        };
-        // ------------------ ------------------
+        }).catch((err) => {
+            console.log('-------------------err saveIncomeDetails', err?.response)
+        })
+    };
+    // ------------------ ------------------
 
-        const setMonthdata = (text) => {
-            if(text?.length>0) {
-                 if (text < 13) {
-                     setPurpose(text)
-                 } else {
-                    setPurpose('')
-                 }
-             }else{
-                setPurpose('')
-             }
-         }
 
+    
+
+    const setMonthdata = (text) => {
+        if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(text) || text === "") {
+            if (text < 13) {
+                setMonth(text)
+            } else {
+                setMonth('')
+            }
+
+        } else {
+            setMonth('')
+        }
+
+    }
+
+    const getInitials = (name) => {
+
+        let initials;
+        const nameSplit = name?.split(" ");
+        const nameLength = nameSplit?.length;
+        if (nameLength > 1) {
+            initials =
+                nameSplit[0].substring(0, 1) +
+                nameSplit[nameLength - 1].substring(0, 1);
+        } else if (nameLength === 1) {
+            initials = nameSplit[0].substring(0, 1);
+        } else return;
+
+        return initials.toUpperCase();
+    };
 
 
 
@@ -245,12 +265,12 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
             <View style={styles.ViewContent}>
                 {/* <Details navigation={navigation} setStatusChange={setStatusChange} setStatusChange2={statusChange} /> */}
                 <View style={styles.mainContainer}>
-                <ScrollView>
-                 
+                    <ScrollView>
+
                         <View style={styles.containerBox}>
                             <View style={{ flex: 1, flexDirection: 'row' }}>
                                 <View style={styles.circleView}>
-                                    <Text style={styles.shortText}>AA</Text>
+                                    <Text style={styles.shortText}>{getInitials(incomedetail?.name)}</Text>
                                 </View>
                                 <View style={{ flexDirection: 'column', flex: 1, marginLeft: 12 }}>
                                     <Text style={styles.nameText}>{incomedetail?.name}</Text>
@@ -260,40 +280,47 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
                                     <Text style={styles.dateText}>{relationShip}</Text>
                                 </View>
                             </View>
-                        </View> 
+                        </View>
 
-                 
+
                         <View>
                             <View>
                                 <Text style={styles.TextElect}>{incomedetailfield?.field1}</Text>
                             </View>
                             <View style={styles.SelectBox}>
-                              
+
                                 <TextInput
                                     style={[{
                                         fontSize: 14, color: '#1A051D',
-                                        fontFamily: FONTS.FontRegular, left: 15,width:'95%'
+                                        fontFamily: FONTS.FontRegular, left: 5, width: '95%'
                                     }]}
                                     value={Amount?.toString()}
                                     keyboardType={'number-pad'}
                                     //label={'₹'}
-                                    onChangeText={(text) => setAmount(text)} />
+                                    maxLength={5}
+                                    onChangeText={(text) => {
+                                        if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(text) || text === "") {
+                                            setAmount(text)
+                                        }
+                                    }
+                                    } />
                             </View>
 
                             <View>
                                 <Text style={styles.TextElect}>{incomedetailfield?.field2}</Text>
                             </View>
                             <View style={styles.SelectBox}>
-                          {incomedetailfield?.field2 == 'Salary credit method' ? <TouchableOpacity style={[styles.SelectBox,{justifyContent:'space-between'}]} onPress={() => setModalVisible(true)}>
-                                <Text style={[styles.textSelect]}>{Purpose ? Purpose :'Select'}</Text>
+                                {incomedetailfield?.field2 == 'Salary credit method' ? <TouchableOpacity style={[styles.SelectBox, { justifyContent: 'space-between' }]} onPress={() => setModalVisible(true)}>
+                                    <Text style={[styles.textSelect]}>{Purpose ? Purpose : 'Select'}</Text>
 
-                                <Icon1 name="chevron-down" size={18} color={'#808080'} style={{ marginRight: 10 }} />
-                            </TouchableOpacity>:
-                             <TextInput
-                             style={[{ fontSize: 14, color: '#1A051D', fontFamily: FONTS.FontRegular, left: 5 ,width: '95%' }]}
-                             value={Month?.toString()}
-                             keyboardType={'number-pad'}
-                             onChangeText={(text) => setMonthdata(text)} /> }
+                                    <Icon1 name="chevron-down" size={18} color={'#808080'} style={{ marginRight: 10 }} />
+                                </TouchableOpacity> :
+                                    <TextInput
+                                        style={[{ fontSize: 14, color: '#1A051D', fontFamily: FONTS.FontRegular, left: 5, width: '95%' }]}
+                                        value={Month?.toString()}
+                                        keyboardType={'number-pad'}
+                                        maxLength={2}
+                                        onChangeText={(text) => setMonthdata(text)} />}
                                 {/* <TextInput
                                     style={[{ fontSize: 14, color: '#1A051D', fontFamily: FONTS.FontRegular, left: 5 }]}
                                     value={Month?.toString()}
@@ -307,21 +334,27 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
                             <View style={styles.SelectBox}>
                                 <Text style={[styles.RS, { color: Avg === '' ? '#808080' : '#1A051D' }]}>₹</Text>
                                 <TextInput
-                                    style={[{ fontSize: 14, color: '#1A051D', fontFamily: FONTS.FontRegular, left: 5,width:'95%' }]}
+                                    style={[{ fontSize: 14, color: '#1A051D', fontFamily: FONTS.FontRegular, left: 5, width: '95%' }]}
                                     value={Avg?.toString()}
                                     keyboardType={'number-pad'}
-                                    onChangeText={(text) => setAvg(text)} />
+                                    maxLength={5}
+                                    onChangeText={(text) => {
+                                        if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(text) || text === "") {
+                                            setAvg(text)
+                                        }
+                                    }
+                                    } />
                             </View>
-                        </View> 
-                </ScrollView>
-              {console.log('878787',Buttons)}
+                        </View>
+                    </ScrollView>
+                    {console.log('878787', Buttons)}
                     <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                         <TouchableOpacity style={[styles.buttonView, { backgroundColor: Buttons ? COLORS.colorB : 'rgba(224, 224, 224, 1)' }]}
                             onPress={() => ButtonClick()}>
                             <Text style={[styles.continueText, { color: Buttons ? COLORS.colorBackground : '#979C9E' }]}>Continue</Text>
                         </TouchableOpacity>
-                    </View> 
-            </View>
+                    </View>
+                </View>
             </View>
 
             <CreditModal
@@ -332,18 +365,18 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
             />
 
 
-<ModalSave
-                Press ={()=>{
+            <ModalSave
+                Press={() => {
                     setModalVisible1(false),
-                    setModalReason(true)
-               
+                        setModalReason(true)
+
                 }}
-                Press1={()=>{saveIncomeDetails(),setModalVisible1(false)}}
+                Press1={() => { saveIncomeDetails(), setModalVisible1(false) }}
                 ModalVisible={ModalVisible1}
                 setModalVisible={setModalVisible1}
                 onPressOut={() => {
                     setModalVisible1(false)
-                   
+
 
                 }}
                 navigation={navigation} />
@@ -351,8 +384,8 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
 
             <ReasonModal
                 onPress1={() => {
-                     updateRejection()
-                   // setModalError(true)
+                    updateRejection()
+                    // setModalError(true)
                 }}
                 ModalVisible={ModalReason}
                 onPressOut={() => setModalReason(!ModalReason)}
@@ -367,7 +400,7 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
                     setModalReason(!ModalReason)
                 }}
                 setModalVisible={setModalError}
-                navigation={navigation} 
+                navigation={navigation}
             />
 
         </SafeAreaProvider>

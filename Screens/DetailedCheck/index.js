@@ -226,7 +226,8 @@ const styles = StyleSheet.create({
         //  alignItems: 'center',
         flex: 1,
         backgroundColor: COLORS.colorBackground,
-        padding: 20
+        paddingLeft:20,
+        paddingRight:20
     },
     text: {
         fontWeight: '400',

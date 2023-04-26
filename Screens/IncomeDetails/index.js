@@ -342,7 +342,13 @@ const IncomeDetails = ({ navigation, route }) => {
                                     style={[{ fontSize: 14, color: '#1A051D', fontFamily: FONTS.FontRegular, left: 5, width: '95%' }]}
                                     value={Avg?.toString()}
                                     keyboardType={'number-pad'}
-                                    onChangeText={(text) => setAvg(text)} />
+                                    maxLength={5}
+                                    onChangeText={(text) =>{ 
+                                      
+                                        if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(text) || text === "") {
+                                            setAvg(text)
+                                        }
+                                    }} />
                             </View>
                         </View>
                     </ScrollView>

@@ -161,7 +161,7 @@ const CustomerDetails= ({ navigation, }) => {
                     setModalReason(true)
                
                 }}
-                Press1={()=>{onsubmit(),setModalVisible(false)}}
+                Press1={()=>{navigation.navigate('Profile'),setModalVisible(false)}}
                 ModalVisible={ModalVisible}
                 setModalVisible={setModalVisible}
                 onPressOut={() => {
@@ -211,7 +211,9 @@ const styles = StyleSheet.create({
         //  alignItems: 'center',
         flex: 1,
         backgroundColor: COLORS.colorBackground,
-        padding: 20
+        paddingLeft: 20,
+        paddingRight:20,
+        paddingBottom:20
     },
     text: {
         fontWeight: '400',

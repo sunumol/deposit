@@ -149,7 +149,7 @@ const MeetTab = (props) => {
                                 </View>
 
                                 <View style={{ flexDirection: 'column', paddingLeft: 12, paddingTop: 5 }}>
-                                    <Text style={styles.nameText}>{item.customerName}</Text>
+                                    <Text style={[styles.nameText,{maxWidth:100}]}>{item.customerName}</Text>
                                     <View style={{ flexDirection: 'row', }}>
                                         <View style={{ paddingTop: 5, paddingRight: 1 }}>
                                             <Icon1 name="location-outline" color={"black"} />

@@ -48,12 +48,12 @@ const ExitModal = ({ ModalVisible, onPressOut, setModalVisible, navigation }) =>
                     <Text style={[styles.textdesc, { paddingTop: width * 0.04, textAlign: 'center' }]}>Do you want to exit?
                     </Text>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingTop: 22, paddingBottom: 22 }}>
-                        <TouchableOpacity style={[styles.ButtonContinue, { marginRight: 10 }]} onPress={() => setModalVisible(false)}>
-                            <Text style={styles.textC}>{t('common:No')}</Text>
+                        <TouchableOpacity style={[styles.ButtonCancel, { marginRight: 10 }]} onPress={() => navigation.navigate('Profile')}>
+                            <Text style={styles.text2}>{t('common:Yes')}</Text>
                         </TouchableOpacity>
 
-                        <TouchableOpacity style={styles.ButtonCancel} onPress={() => navigation.navigate('Profile')}>
-                            <Text style={styles.text2}>{t('common:Yes')}</Text>
+                        <TouchableOpacity style={styles.ButtonContinue} onPress={() => setModalVisible(false)}>
+                            <Text style={styles.textC}>{t('common:No')}</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
     text2: {
         color: COLORS.colorB,
         fontFamily: FONTS.FontMedium,
-        fontSize: 16
+        fontSize: 14
     },
     ButtonCancel: {
         width: 138,

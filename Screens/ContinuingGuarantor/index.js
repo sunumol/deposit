@@ -1,8 +1,8 @@
 import {
-  StyleSheet, Text, View, StatusBar, SafeAreaView, Platform,Alert,
-  TextInput, TouchableOpacity, Dimensions, ScrollView, KeyboardAvoidingView, Image,  BackHandler,
+  StyleSheet, Text, View, StatusBar, SafeAreaView, Platform, Alert,
+  TextInput, TouchableOpacity, Dimensions, ScrollView, KeyboardAvoidingView, Image, BackHandler,
 } from 'react-native'
-import React, { useState, useEffect, useRef,useCallback } from 'react'
+import React, { useState, useEffect, useRef, useCallback } from 'react'
 import Header from '../../Components/Header';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { COLORS, FONTS } from '../../Constants/Constants';
@@ -31,169 +31,170 @@ const ContinuingGuarantor = ({ navigation, route }) => {
   const isDarkMode = true;
   const { t } = useTranslation();
   const otpInput2 = React.createRef();
-  const Pin =  AsyncStorage.getItem('Mobile')
+  const Pin = AsyncStorage.getItem('Mobile')
   const [number, onChangeNumber] = useState()
-  const [relation,setRelation] =useState()
+  const [relation, setRelation] = useState()
   const [Purpose, setPurpose] = useState(null)
   const [Purposes, setPurposes] = useState(null)
-  const [customerNumber,setCustomerNumber] =useState('')
-  const [spousedetail,setSpousedetail] = useState('')
-  const [invalidotp,setInvalidotp] = useState(false)
-  const [cgdetail,setCgdetail] = useState('')
+  const [customerNumber, setCustomerNumber] = useState('')
+  const [spousedetail, setSpousedetail] = useState('')
+  const [invalidotp, setInvalidotp] = useState(false)
+  const [cgdetail, setCgdetail] = useState('')
   const [OtpValue, setOtpValue] = useState('')
   const [timerCount, setTimer] = useState(30)
   const [IsOtp1, setIsOtp1] = useState(false)
   const [verifyotpstatus, setVerifyotpstatus] = useState(false)
   const [IsOtp2, setIsOtp2] = useState(true)
+  const [TimerState, setTimerState] = useState(10)
   const [ModalError, setModalError] = useState(false)
-  const [ModalVisible1,setModalVisible1] = useState(false)
+  const [ModalVisible1, setModalVisible1] = useState(false)
   const [status, setStatus] = useState(false)
 
 
   const [fetOtp, setOtpFetch] = useState(false)
-    const [otpMessage, setOtpMessage] = useState()
-    const [ModalVisibleError, setModalVisibleError] = useState(false)
-    const [maxError, setMaxError] = useState(false)
-    const [otp, setOtp] = useState(false)
+  const [otpMessage, setOtpMessage] = useState()
+  const [ModalVisibleError, setModalVisibleError] = useState(false)
+  const [maxError, setMaxError] = useState(false)
+  const [otp, setOtp] = useState(false)
 
-    const activityId = useSelector(state => state.activityId);
-    const [ModalVisible,setModalVisible] = useState(false)
-    const [ModalReason,setModalReason] = useState(false)
-    const [ModalError1, setModalError1] = useState(false)
-
+  const activityId = useSelector(state => state.activityId);
+  const [ModalVisible, setModalVisible] = useState(false)
+  const [ModalReason, setModalReason] = useState(false)
+  const [ModalError1, setModalError1] = useState(false)
+  const [PhoneValid, setPhoneValid] = useState(false)
 
   const getData = async () => {
     try {
-        const mob = await AsyncStorage.getItem('Mobile')
-        setCustomerNumber(mob)
-       
+      const mob = await AsyncStorage.getItem('Mobile')
+      setCustomerNumber(mob)
+
     } catch (e) {
-        console.log('mob',e)
+      console.log('mob', e)
     }
-}
-const handleGoBack = useCallback(() => {
-
-  // navigation.goBack()
-       setModalVisible(true)
-   return true; // Returning true from onBackPress denotes that we have handled the event
-}, [navigation]);
-
-useFocusEffect(
-   React.useCallback(() => {
-       BackHandler.addEventListener('hardwareBackPress', handleGoBack);
-
-       return () =>
-       
-           BackHandler.removeEventListener('hardwareBackPress', handleGoBack);
-   }, [handleGoBack]),
-);
-
-useEffect (()=>{
-  getCGdetails()
-},[])
-
-
-
-
-useEffect(() => {
-
-
-
-  setPurpose(Purpose)
-  setPurposes(Purposes)
-  //setRelation(Purposes)
-if(Purposes){
-  console.log('purpose relation',Purposes) 
-  setRelation(Purposes)
-}
-
-  //setStatus(true)
-}, [Purposes, relation])
-
-
-useEffect(()=>{
-  if(route?.params?.relation == "Spouse"){
-    setRelation('Spouse')
-    getSpousedetail()
   }
-},[])
+  const handleGoBack = useCallback(() => {
 
-useEffect(() => {
-  if (!OtpValue) {
+    // navigation.goBack()
+    setModalVisible(true)
+    return true; // Returning true from onBackPress denotes that we have handled the event
+  }, [navigation]);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      BackHandler.addEventListener('hardwareBackPress', handleGoBack);
+
+      return () =>
+
+        BackHandler.removeEventListener('hardwareBackPress', handleGoBack);
+    }, [handleGoBack]),
+  );
+
+  useEffect(() => {
+    getCGdetails()
+  }, [])
+
+
+
+
+  useEffect(() => {
+
+
+
+    setPurpose(Purpose)
+    setPurposes(Purposes)
+    //setRelation(Purposes)
+    if (Purposes) {
+      console.log('purpose relation', Purposes)
+      setRelation(Purposes)
+    }
+
+    //setStatus(true)
+  }, [Purposes, relation])
+
+
+  useEffect(() => {
+    if (route?.params?.relation == "Spouse") {
+      setRelation('Spouse')
+      getSpousedetail()
+    }
+  }, [])
+
+  useEffect(() => {
+    if (!OtpValue) {
       setOtp(false)
-  }
-}, [OtpValue])
+    }
+  }, [OtpValue])
 
-useEffect(() => {
-  setMaxError(false)
-}, [])
+  useEffect(() => {
+    setMaxError(false)
+  }, [])
 
 
-useEffect(() => {
-  if (IsOtp1 && timerCount > 0) {
+  useEffect(() => {
+    if (IsOtp1 && timerCount > 0) {
       setTimeout(() => setTimer(timerCount - 1), 1000);
-  } else {
+    } else {
       setStatus(false)
-  }
-}, [timerCount, IsOtp1]);
+    }
+  }, [timerCount, IsOtp1]);
 
 
 
-const getOtp = () => {
-  //bug fixing privacy policy and tc back navigation
-  if (IsOtp1 && timerCount === 0) {
+  const getOtp = () => {
+    //bug fixing privacy policy and tc back navigation
+    if (IsOtp1 && timerCount === 0) {
       setTimeout(() => {
-          setIsOtp1(true)
-          setStatus(true)
-          setTimer(30)
+        setIsOtp1(true)
+        setStatus(true)
+        setTimer(30)
       }, 1000)
-     
+
       setIsOtp1(true)
       setStatus(true)
       setTimer(30)
-  } else {
+    } else {
       setTimeout(() => {
-          setIsOtp1(true)
-          setStatus(true)
+        setIsOtp1(true)
+        setStatus(true)
       }, 1000)
-     
+
       setIsOtp1(true)
       setStatus(true)
+    }
   }
-}
-const CountDownResend = () => {
-  setTimer(30)
-  setStatus(true)
-  setIsOtp1(true)
-}
+  const CountDownResend = () => {
+    setTimer(30)
+    setStatus(true)
+    setIsOtp1(true)
+  }
 
 
 
 
-      // ------------------ get Conduct DLE basic detail Village Api Call Start ------------------
-      const updateRejection = async () => {
-        console.log('api called for rejection')
-        const data = {
-            "activityStatus":'Submitted wrong data',
-            "employeeId":1,
-            "activityId":activityId
-        }
-        await api.updateActivity(data).then((res) => {
-            console.log('-------------------res get Village', res)
-            setModalError(true)
-            setModalReason(false)
-            setTimeout(() => {
-                navigation.navigate('Profile')  
-            }, 1000);
-          
-        }).catch((err) => {
-            console.log('-------------------err get Village', err)
-        })
-    };
-    // ------------------ HomeScreen Api Call End ------------------
+  // ------------------ get Conduct DLE basic detail Village Api Call Start ------------------
+  const updateRejection = async () => {
+    console.log('api called for rejection')
+    const data = {
+      "activityStatus": 'Submitted wrong data',
+      "employeeId": 1,
+      "activityId": activityId
+    }
+    await api.updateActivity(data).then((res) => {
+      console.log('-------------------res get Village', res)
+      setModalError(true)
+      setModalReason(false)
+      setTimeout(() => {
+        navigation.navigate('Profile')
+      }, 1000);
+
+    }).catch((err) => {
+      console.log('-------------------err get Village', err)
+    })
+  };
+  // ------------------ HomeScreen Api Call End ------------------
 
   useEffect(() => {
-  
+
     getData();
     if (number) {
       let interval = setInterval(() => {
@@ -205,193 +206,228 @@ const CountDownResend = () => {
       //console.log(interval)
       if (timerCount === 0) {
 
-      //  console.log("timer count useEffect", timerCount)
+        //  console.log("timer count useEffect", timerCount)
       }//each count lasts for a second
       //cleanup the interval on complete
       return () => clearInterval(interval)
     }
-   
-   /// getSpousedetail()
+
+    /// getSpousedetail()
   }, [number]);
 
-    // ------------------spouse detail ------------------
+  // ------------------spouse detail ------------------
 
-    const getSpousedetail = async () => {
-      console.log('api called SPOUSE')
+  const getSpousedetail = async () => {
+    console.log('api called SPOUSE')
 
-      const data = {
-             "activityId": activityId
-        
-
-      }
-      await api.getSpousedetail(data).then((res) => {
-          console.log('-------------------res spousedetail', res)
-          if (res?.status) {
-              setSpousedetail(res?.data?.body)
-          }
-      }).catch((err) => {
-          console.log('-------------------err spousedetail', err?.response)
-      })
-  };
-  // ------------------ ------------------
+    const data = {
+      "activityId": activityId
 
 
-    // ------------------get CG detail ------------------
-
-    const getCGdetails = async () => {
-      console.log('api called GET')
-
-      const data = {
-             "activityId": activityId
-         
-
-      }
-      await api.getCGdetails(data).then((res) => {
-          console.log('-------------------res getCGdetails', res)
-          if (res?.status) {
-            setCgdetail(res?.data?.body)
-            if(res?.data?.body?.relationShip == 'Spouse'){
-              getSpousedetail()
-              console.log('12323434======???????')
-              setRelation('Spouse')
-            }
-          }
-      }).catch((err) => {
-          console.log('-------------------err getCGdetails', err?.response)
-      })
-  };
-  // ------------------ ------------------
-
-
-    // ------------------verifyCG detail ------------------
-
-    const verifyCG = async (num) => {
-   //   console.log('api called')
-
- const data = {
-        "activityId":activityId,
-        "mobileNumber":"+91"+num,
-        "name":"",
-        "relationShip":relation
-    
     }
-      await api.verifyCG(data).then((res) => {
-          console.log('-------------------res verifyCG', res)
-          if (res?.status) {
-            setMaxError(false)
-            setOtpFetch(true)
-            setIsOtp1(true)
-            getOtp();
-            setTimer(30)
-            setVerifyotpstatus(true)
-      
-          }
-      }).catch((err) => {
-          console.log('-------------------err verifyCG', err)
-          if (err?.response?.data?.message === 'Maximum number of OTPs are exceeded. Please try after 30 minutes.') {
-            setOtpFetch(false)
-            setIsOtp1(true)
-            setStatus(false)
-            setMaxError(true)
-        } else {
-            setMaxError(false)
-        }
-      })
+    await api.getSpousedetail(data).then((res) => {
+      console.log('-------------------res spousedetail', res)
+      if (res?.status) {
+        setSpousedetail(res?.data?.body)
+      }
+    }).catch((err) => {
+      console.log('-------------------err spousedetail', err?.response)
+    })
   };
   // ------------------ ------------------
 
 
-   // ------------------verifyCG detail ------------------
+  // ------------------get CG detail ------------------
 
-   const ResendOtp = async (mobnumber) => {
+  const getCGdetails = async () => {
+    console.log('api called GET')
+
+    const data = {
+      "activityId": activityId
+
+
+    }
+    await api.getCGdetails(data).then((res) => {
+      console.log('-------------------res getCGdetails', res)
+      if (res?.status) {
+        setCgdetail(res?.data?.body)
+        if (res?.data?.body?.relationShip == 'Spouse') {
+          getSpousedetail()
+          console.log('12323434======???????')
+          setRelation('Spouse')
+        }
+      }
+    }).catch((err) => {
+      console.log('-------------------err getCGdetails', err?.response)
+    })
+  };
+  // ------------------ ------------------
+
+
+
+
+  // ------------------verifyCG detail ------------------
+
+  const verifyCG = async (num) => {
+    //   console.log('api called')
+
+    const data = {
+      "activityId": activityId,
+      "mobileNumber": "+91" + num,
+      "name": "",
+      "relationShip": relation
+
+    }
+    await api.verifyCG(data).then((res) => {
+      console.log('-------------------res verifyCG', res)
+      if (res?.status) {
+        setMaxError(false)
+        setOtpFetch(true)
+        setIsOtp1(true)
+        getOtp();
+        setTimer(30)
+        setVerifyotpstatus(true)
+
+      }
+    }).catch((err) => {
+      setVerifyotpstatus(true)
+      console.log('-------------------err verifyCG', err)
+      if (err?.response?.data?.message === 'Maximum number of OTPs are exceeded. Please try after 30 minutes.') {
+        setOtpFetch(false)
+        setIsOtp1(true)
+        setStatus(false)
+        setMaxError(true)
+      } else {
+        setMaxError(false)
+      }
+    })
+  };
+  // ------------------ ------------------
+
+
+  // ------------------verifyCG detail ------------------
+
+  const ResendOtp = async (mobnumber) => {
     //   console.log('api called')
     setInvalidotp(false)
     otpInput2.current.clear()
-       const data = {
-         "activityId":activityId,
-         "mobileNumber":"+91"+number,
-         "name":"",
-         "relationShip":relation
-     
-     }
-       await api.verifyCG(data).then((res) => {
-           console.log('-------------------res verifyCG', res)
-           if (res?.status) {
-           
-           }
-       }).catch((err) => {
-           console.log('-------------------err verifyCG', err?.response)
-       })
-   };
-   // ------------------ ------------------
+    const data = {
+      "activityId": activityId,
+      "mobileNumber": "+91" + number,
+      "name": "",
+      "relationShip": relation
 
-
-
-    // ------------------verifyCG detail ------------------
-
-    const verifyCGOTP = async (mobnumber) => {
-      console.log('api called')
-
-      const data = {
-        "activityId":activityId,
-          "otp": OtpValue
-    
     }
-      await api.verifyCGOTP(data).then((res) => {
-          console.log('-------------------res verifyCG', res)
-          if (res?.status) {
-            setMaxError(false)
-            setOtpFetch(false)
-            setIsOtp1(false)
-            setOtpFetch(false)
-            navigation.navigate('UploadVid') 
-          }
-      }).catch((err) => {
-          console.log('-------------------err verifyCG', err?.response?.data?.message)
-          if(err?.response?.data?.message == 'You entered wrong OTP' ){
-            setInvalidotp(true)
-            setOtp(true)
-          }
-          
-      })
+    await api.verifyCG(data).then((res) => {
+      console.log('-------------------res verifyCG', res)
+      if (res?.status) {
+
+      }
+    }).catch((err) => {
+      console.log('-------------------err verifyCG', err?.response)
+    })
   };
   // ------------------ ------------------
 
 
 
+  // ------------------verifyCG detail ------------------
+
+  const verifyCGOTP = async (mobnumber) => {
+    console.log('api called')
+
+    const data = {
+      "activityId": activityId,
+      "otp": OtpValue
+
+    }
+    await api.verifyCGOTP(data).then((res) => {
+      console.log('-------------------res verifyCG', res)
+      if (res?.status) {
+        setMaxError(false)
+        setOtpFetch(false)
+        setIsOtp1(false)
+        setOtpFetch(false)
+        navigation.navigate('UploadVid')
+      }
+    }).catch((err) => {
+      console.log('-------------------err verifyCG', err?.response?.data?.message)
+      if (err?.response?.data?.message == 'You entered wrong OTP') {
+        setInvalidotp(true)
+        setOtp(true)
+      }
+
+    })
+  };
+  // ------------------ ------------------
+
+
+
+  const GETOTP_Validation = (num) => {
+
+
+    const firstDigitStr = String(num)[0];
+    if (num?.length != 10 || num == "") {
+      console.log("inside validation11", number?.length, num)
+      setPhoneValid(true)
+    } else if (firstDigitStr === '1' || firstDigitStr === '2' || firstDigitStr === '3' || firstDigitStr === '4' || firstDigitStr === '5' || firstDigitStr === '0') {
+      setPhoneValid(true)
+      console.log("inside validation2",num)
+
+    } else if (!(/^\d{10}$/.test(num))) {
+      setPhoneValid(true)
+    }
+    else {
+      verifyCG(num)
+      console.log("inside validation3",)
+    }
+  }
 
 
 
   const OnchangeNumbers = (num) => {
-    console.log('%%%5',"91"+num,customerNumber,num.length)
+    setPhoneValid(false)
+    setMaxError(false)
+    console.log('%%%5', "91" + num, customerNumber, num.length)
     if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(num) || num === '') {
-      if("+91"+num == customerNumber){
+      if ("+91" + num == customerNumber) {
         setModalError(true)
         onChangeNumber('')
-      }else{
-      onChangeNumber(num)
-      if(num.length == 10){
-       if(verifyotpstatus == false ){
-        verifyCG(num)
-       }else{
-      if(num != number){
-setTimeout(() => {
-  verifyCG(num)
-}, 10000);
-      }
-       }
+      } else {
+        onChangeNumber(num)
+        if (num?.length == 10) {
+          if (verifyotpstatus == false) {
+            GETOTP_Validation(num)
+            setVerifyotpstatus(true)
+            // setTimeout(() => {
+            //   GETOTP_Validation(num)
+            //   setVerifyotpstatus(false)
+            // }, 10000);
+          } else {
+            console.log("inside otp call", verifyotpstatus)
+
+            console.log("timer state",)
+            if (num != number) {
+              setTimeout(() => {
+                GETOTP_Validation(num)
+              }, 10000);
+
+            }
+          }
 
 
-      }
-      onChangeNumber(num)
-      setOtpValue('')
-     
+        }
+        onChangeNumber(num)
+        setOtpValue('')
+
       }
     } else {
 
       // ToastAndroid.show(t('common:Valid'), ToastAndroid.SHORT);
     }
+
   }
+
 
   const scrollViewRef = useRef();
   return (
@@ -400,39 +436,39 @@ setTimeout(() => {
       <SafeAreaView style={styles.container1} />
       <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} backgroundColor={"#002B59"} />
 
-      <Header navigation={navigation} name="Co-Applicant"  onPress={handleGoBack} />
+      <Header navigation={navigation} name="Co-Applicant" onPress={handleGoBack} />
 
       <View style={styles.mainContainer}>
 
         <KeyboardAvoidingView style={{ flex: 1 }}
           {...(Platform.OS === 'ios' && { behavior: 'position' })}
         >
-          {console.log('relation=====',relation)}
+
           <ScrollView ref={scrollViewRef}
             onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: true })}>
             <View style={{ flex: 1 }}>
               <Text style={styles.headerText}>Relationship with Customer</Text>
-              <TouchableOpacity onPress={()=>setModalVisible1(true)} style={styles.dropDown}>
-                <Text style={styles.spouseText}>{relation ? relation :'Select'}</Text>
+              <TouchableOpacity onPress={() => setModalVisible1(true)} style={styles.dropDown}>
+                <Text style={styles.spouseText}>{relation ? relation : 'Select'}</Text>
                 <Icon1 name="chevron-down" size={18} color={'#808080'} />
               </TouchableOpacity>
-            {relation == 'Spouse' ?  <View style={styles.containerBox}>
+              {relation == 'Spouse' ? <View style={styles.containerBox}>
                 <View style={{ flex: 1, flexDirection: 'row' }}>
                   <View style={styles.circleView}>
                     <Text style={styles.shortText}>AK</Text>
                   </View>
                   <View style={{ flexDirection: 'column', flex: 1, marginLeft: 12 }}>
                     <Text style={styles.nameText}>{spousedetail?.name}</Text>
-                
 
 
-                    {spousedetail?.occupation == 'DAILY_WAGE_LABOURER,'?
-                    <Text style={styles.underText}>Daily Wage Labourer</Text>:
-                    spousedetail?.occupation == 'SALARIED_EMPLOYEE'?
-                    <Text style={styles.underText}>Salaried Employee</Text>:
-                    spousedetail?.occupation == 'BUSINESS_SELF_EMPLOYED'?
-                    <Text style={styles.underText}>Business Self Employed</Text>:
-                    <Text style={styles.underText}>Farmer</Text>}
+
+                    {spousedetail?.occupation == 'DAILY_WAGE_LABOURER,' ?
+                      <Text style={styles.underText}>Daily Wage Labourer</Text> :
+                      spousedetail?.occupation == 'SALARIED_EMPLOYEE' ?
+                        <Text style={styles.underText}>Salaried Employee</Text> :
+                        spousedetail?.occupation == 'BUSINESS_SELF_EMPLOYED' ?
+                          <Text style={styles.underText}>Business Self Employed</Text> :
+                          <Text style={styles.underText}>Farmer</Text>}
 
 
 
@@ -443,7 +479,7 @@ setTimeout(() => {
                     <Text style={styles.dateText}>{spousedetail?.dateOfBirth}</Text>
                   </View>
                 </View>
-              </View>:null}
+              </View> : null}
               <Text style={styles.mobileText}>Mobile Number</Text>
               <View style={styles.inPutStyle}>
                 <TextInput
@@ -466,52 +502,56 @@ setTimeout(() => {
                     <Call width={16} height={16} />
                   </View>}
               </View>
+              {PhoneValid &&
+                <Text style={{
+                  fontFamily: FONTS.FontRegular, color: "red", paddingTop: width * 0.02,
+                  fontSize: 12
+                }}>Please enter valid Mobile Number</Text>}
 
 
-
-{/* #################################################################### */}
+              {/* #################################################################### */}
 
               {number?.length === 10 &&
                 <View style={styles.ViewOtp}>
                   <Text style={styles.textOtp} onPress={() => navigation.navigate('PreClosure')}>{t('common:EnterOtp')} </Text>
 
                   <OTPInputView
-      ref={otpInput2}
-      autoFocus={true}
-      inputCount={4}
-      inputCellLength={1}
-      offTintColor={!otp ? "lightgrey" : "red"}
-      tintColor={!otp ? "lightgrey" : "red"}
-      textInputStyle={[styles.imputContainerStyle, { color: '#090A0A', borderRadius: 8, backgroundColor: '#FCFCFC', borderColor: !otp ? "lightgrey" : "red" }]}
-      keyboardType="numeric"
-      containerStyle={{ marginTop: 7 }}
-      handleTextChange={(code => {
-          setOtpValue(code)
-          if (code.length === 4) {
-            if (code == '1091') {
-              navigation.navigate('Permission')
-              // setOtp(false)
-            }
-            else {
-              console.log("otp value//...", OtpValue)
-              // setOtp(true)
-              // setCount(1)
-            }
-          }
-      })}
+                    ref={otpInput2}
+                    autoFocus={true}
+                    inputCount={4}
+                    inputCellLength={1}
+                    offTintColor={!otp ? "lightgrey" : "red"}
+                    tintColor={!otp ? "lightgrey" : "red"}
+                    textInputStyle={[styles.imputContainerStyle, { color: '#090A0A', borderRadius: 8, backgroundColor: '#FCFCFC', borderColor: !otp ? "lightgrey" : "red" }]}
+                    keyboardType="numeric"
+                    containerStyle={{ marginTop: 7 }}
+                    handleTextChange={(code => {
+                      setOtpValue(code)
+                      if (code.length === 4) {
+                        if (code == '1091') {
+                          navigation.navigate('Permission')
+                          // setOtp(false)
+                        }
+                        else {
+                          console.log("otp value//...", OtpValue)
+                          // setOtp(true)
+                          // setCount(1)
+                        }
+                      }
+                    })}
 
-                    
+
                   />
-                    {invalidotp ?
-                                <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 12, marginBottom: 5 }}>
-                                    <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center' }}>{t('common:otpValid')}</Text>
-                                </View> : null}
+                  {invalidotp ?
+                    <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 12, marginBottom: 5 }}>
+                      <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center' }}>{t('common:otpValid')}</Text>
+                    </View> : null}
 
 
-                { timerCount> 0 ? <View style={{ marginTop: Dimensions.get('window').height * 0.03 }}>
+                  {timerCount > 0 ? <View style={{ marginTop: Dimensions.get('window').height * 0.03 }}>
                     <Text style={styles.TextResend}>{t('common:Resend')} 00:{timerCount < 10 ? '0' : ''}{timerCount}</Text>
-                  </View>: <TouchableOpacity onPress={()=>ResendOtp()} style={{ marginTop: Dimensions.get('window').height * 0.03,flexDirection:'row' }}>
-                  <Resend style={{ width: 9, height: 11, top: 3, marginRight: 6, }} resizeMode="contain" />
+                  </View> : <TouchableOpacity onPress={() => ResendOtp()} style={{ marginTop: Dimensions.get('window').height * 0.03, flexDirection: 'row' }}>
+                    <Resend style={{ width: 9, height: 11, top: 3, marginRight: 6, }} resizeMode="contain" />
                     <Text style={styles.TextResend1}>{t('common:Resend1')}</Text>
                   </TouchableOpacity>}
 
@@ -519,19 +559,19 @@ setTimeout(() => {
 
 
                 </View>
-                 
-                }
+
+              }
 
 
-{/* ############################################################################ */}
+              {/* ############################################################################ */}
 
 
 
-                            {maxError ?
-                                <View style={{ marginTop: Dimensions.get('window').height * 0.03, }}>
-                                    <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center', width: width * 0.8,marginRight:20 }}>{t('common:Valid2')}</Text>
-                                    <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center' }}>{t('common:Valid3')}</Text></View>
-                                : null}
+              {maxError ?
+                <View style={{ marginTop: Dimensions.get('window').height * 0.03, alignItems: 'center', justifyContent: 'center' }}>
+                  <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center', width: width * 0.8, marginRight: 20 }}>{t('common:Valid2')}</Text>
+                  <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center' }}>{t('common:Valid3')}</Text></View>
+                : null}
 
 
 
@@ -541,67 +581,68 @@ setTimeout(() => {
 
 
           <RelationModal
-                visible={ModalVisible1}
-                setRelation={setRelation}
-                setPurposes={setPurposes}
-                setModalVisible={setModalVisible1}
-                setStatus={setStatus}
-                onPressOut={() => setModalVisible1(!ModalVisible1)}
-            // navigation={navigation}
+            visible={ModalVisible1}
+            setRelation={setRelation}
+            setPurposes={setPurposes}
+            setModalVisible={setModalVisible1}
+            setStatus={setStatus}
+            Purpose={Purpose}
+            relation={relation}
+            onPressOut={() => setModalVisible1(!ModalVisible1)}
+          // navigation={navigation}
 
-            />
+          />
 
 
 
           <ErrorModal
-                ModalVisible={ModalError}
-                onPressOut={() => {
-                    setModalError(!ModalError)
-                  
-                }}
-                setModalVisible={setModalError}
-            />
+            ModalVisible={ModalError}
+            onPressOut={() => {
+              setModalError(!ModalError)
+
+            }}
+            setModalVisible={setModalError}
+          />
 
 
 
 
-<ModalSave
-                Press ={()=>{
-                    setModalVisible(false),
-                    setModalReason(true)
-               
-                }}
-                Press1={()=>{verifyCG(),setModalVisible(false)}}
-                ModalVisible={ModalVisible}
-                setModalVisible={setModalVisible}
-                onPressOut={() => {
-                    setModalVisible(false)
-                   
+          <ModalSave
+            Press={() => {
+              setModalVisible(false),
+                setModalReason(true)
 
-                }}
-                navigation={navigation} />
+            }}
 
-
-            <ReasonModal
-                onPress1={() => {
-                     updateRejection()
-                   // setModalError(true)
-                }}
-                ModalVisible={ModalReason}
-                onPressOut={() => setModalReason(!ModalReason)}
-                setModalVisible={setModalReason}
-            />
+            Press1={() => { navigation.navigate('Profile'), setModalVisible(false) }}
+            ModalVisible={ModalVisible}
+            setModalVisible={setModalVisible}
+            onPressOut={() => {
+              setModalVisible(false)
+            }}
+            navigation={navigation} />
 
 
-            <ErrorModal1
-                ModalVisible={ModalError1}
-                onPressOut={() => {
-                    setModalError(!ModalError1)
-                    setModalReason(!ModalReason)
-                }}
-                setModalVisible={setModalError1}
-                navigation={navigation} 
-            />
+          <ReasonModal
+            onPress1={() => {
+              updateRejection()
+              // setModalError(true)
+            }}
+            ModalVisible={ModalReason}
+            onPressOut={() => setModalReason(!ModalReason)}
+            setModalVisible={setModalReason}
+          />
+
+
+          <ErrorModal1
+            ModalVisible={ModalError1}
+            onPressOut={() => {
+              setModalError(!ModalError1)
+              setModalReason(!ModalReason)
+            }}
+            setModalVisible={setModalError1}
+            navigation={navigation}
+          />
 
           <TouchableOpacity onPress={() => OtpValue?.length === 4 && number?.length === 10 ? verifyCGOTP() : console.log("geki")}
             style={[styles.buttonView, { backgroundColor: OtpValue?.length === 4 && number?.length === 10 ? COLORS.colorB : '#E0E0E0' }]}>
@@ -656,7 +697,7 @@ const styles = StyleSheet.create({
     width: 48,
     fontSize: 12,
     fontWeight: 'bold',
-},
+  },
   inPutStyle: {
     borderWidth: 1,
     borderColor: COLORS.colorBorder,
@@ -762,7 +803,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#1A051D',
     fontFamily: FONTS.FontRegular,
-    
+
     width: width * 0.7
 
   },
@@ -792,8 +833,8 @@ const styles = StyleSheet.create({
     color: COLORS.colorB,
     fontFamily: FONTS.FontExtraBold,
     fontWeight: 'bold',
-    marginTop:2
-},
+    marginTop: 2
+  },
 
 
 })
