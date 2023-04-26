@@ -199,8 +199,7 @@ export const api = {
     })
   },
 
-  //DPDOverview
-
+  //--------------------- DPDOverview -----------------------------
   DPDOverview: (EMPID, Sort) => {
     console.log("empid,dpd", EMPID, Sort)
     return axios.get(`${baseURLDPD}dpdOverview/${EMPID}/${Sort}`, {
@@ -210,9 +209,7 @@ export const api = {
     })
   },
 
-  //Dashboard summary
-
-
+  //------------ Dashboard summary ---------------------
   DashBoardSummary: (EMPID) => {
     console.log("empid,dpd", EMPID)
     return axios.get(`${baseURLDPD}summary/${EMPID}`, {
@@ -222,8 +219,7 @@ export const api = {
     })
   },
 
-  //Dashboard Target
-
+  //--------------------Dashboard Target---------------
   DashBoardTarget: (EMPID) => {
     console.log("empid,dpd", EMPID)
     return axios.get(`${baseURLDPD}target/${EMPID}`, {
@@ -268,7 +264,6 @@ export const api = {
     })
   },
 
-
   // ------------------ get post office list---------------------
   getpostoffice: data => {
     return axios.post(`${baseURL2}postOffice`, data, {
@@ -280,7 +275,6 @@ export const api = {
 
   // ------------------ save basic DLE details---------------------
   savebasicdetail: data => {
-
     return axios.post(`${baseURL2}saveOrUpdateBasicDetails`, data, {
       headers: {
         'Content-Type': 'application/json',
@@ -288,10 +282,8 @@ export const api = {
     })
   },
 
-
   // ------------------ get Spouse details---------------------
   getSpousedetail: data => {
-
     return axios.post(`${baseURL2}getSpouseDetail`, data, {
       headers: {
         'Content-Type': 'application/json',
@@ -299,11 +291,8 @@ export const api = {
     })
   },
 
-
-
   // ------------------ get Residence owner details---------------------
   getResidenceowner: data => {
-
     return axios.post(`${baseURL2}getCurrentResidenceOwner`, data, {
       headers: {
         'Content-Type': 'application/json',
@@ -311,10 +300,8 @@ export const api = {
     })
   },
 
-
   // ------------------ upload file image---------------------
   uploadFile: data => {
-
     return axios.post(`${baseURL2}uploadFile`, data, {
       headers: {
         "Content-Type": "multipart/form-data",
@@ -324,14 +311,8 @@ export const api = {
     })
   },
 
-
-
-
   // ------------------ save and update Residence Owner  details---------------------
   UpdateResidenceowner: data => {
-
-    console.log('Residence save', data)
-
     return axios.post(`${baseURL2}saveOrUpdateCurrentResidenceOwner`, data, {
       headers: {
         'Content-Type': 'application/json',
@@ -339,11 +320,8 @@ export const api = {
     })
   },
 
-
-
   // ------------------ get Continue Gurantor details---------------------
   getCGdetails: data => {
-
     return axios.post(`${baseURL2}getCGDetails`, data, {
       headers: {
         'Content-Type': 'application/json',
@@ -351,10 +329,8 @@ export const api = {
     })
   },
 
-
   // ------------------ verify Continue Gurantor details---------------------
   verifyCG: data => {
-
     return axios.post(`${baseURL2}verifyContinuingGuarantor`, data, {
       headers: {
         'Content-Type': 'application/json',
@@ -362,10 +338,8 @@ export const api = {
     })
   },
 
-
   // ------------------ verify  OTP Continue Gurantor details---------------------
   verifyCGOTP: data => {
-
     return axios.post(`${baseURL2}verifyCGOtp`, data, {
       headers: {
         'Content-Type': 'application/json',
@@ -373,11 +347,8 @@ export const api = {
     })
   },
 
-
-
   // ------------------  get CG voter id details---------------------
   getCGvoterid: data => {
-
     return axios.post(`${baseURL2}getCCVoterId`, data, {
       headers: {
         'Content-Type': 'application/json',
@@ -385,10 +356,8 @@ export const api = {
     })
   },
 
-
   // ------------------  save CG voter id details---------------------
   saveCGvoterid: data => {
-
     return axios.post(`${baseURL2}saveCGVoterIds`, data, {
       headers: {
         'Content-Type': 'application/json',
@@ -396,11 +365,8 @@ export const api = {
     })
   },
 
-
-
   // ------------------  getVehicleDetails details---------------------
   getVehicleDetails: data => {
-
     return axios.post(`${baseURL2}getVehicleDetails`, data, {
       headers: {
         'Content-Type': 'application/json',
@@ -408,11 +374,8 @@ export const api = {
     })
   },
 
-
-
   // ------------------  fetchVehicleDetailsForDle details---------------------
   fetchVehicleDetailsForDle: data => {
-
     return axios.post(`${baseURL2}fetchVehicleDetailsForDle`, data, {
       headers: {
         'Content-Type': 'application/json',
@@ -420,10 +383,8 @@ export const api = {
     })
   },
 
-
   // ------------------  save VehicleDetails details---------------------
   saveVehicleDetails: data => {
-
     return axios.post(`${baseURL2}saveOrUpdateVehicleDetails`, data, {
       headers: {
         'Content-Type': 'application/json',
@@ -431,10 +392,8 @@ export const api = {
     })
   },
 
-
   // ------------------  save getEnergyUtilities details---------------------
   getEnergyUtilities: data => {
-
     return axios.post(`${baseURL2}getEnergyUtilities`, data, {
       headers: {
         'Content-Type': 'application/json',
@@ -442,11 +401,8 @@ export const api = {
     })
   },
 
-
-
   // ------------------  save EnergyUtilities details---------------------
   saveEnergyUtilities: data => {
-
     return axios.post(`${baseURL2}saveOrUpdateEnergyUtilities`, data, {
       headers: {
         'Content-Type': 'application/json',
@@ -454,11 +410,8 @@ export const api = {
     })
   },
 
-
-
   // ------------------  save getIncomeDetails details---------------------
   getIncomeDetails: data => {
-
     return axios.post(`${baseURL2}getIncomeDetails`, data, {
       headers: {
         'Content-Type': 'application/json',
@@ -466,11 +419,8 @@ export const api = {
     })
   },
 
-
-
   // ------------------  save IncomeDetails details---------------------
   saveIncomeDetails: data => {
-
     return axios.post(`${baseURL2}saveOrUpdateIncomeDetails`, data, {
       headers: {
         'Content-Type': 'application/json',
@@ -478,11 +428,8 @@ export const api = {
     })
   },
 
-
-
   // ------------------   getHousePhoto details---------------------
   getHousePhoto: data => {
-
     return axios.post(`${baseURL2}getHousePhoto`, data, {
       headers: {
         'Content-Type': 'application/json',
@@ -490,11 +437,8 @@ export const api = {
     })
   },
 
-
-
   // ------------------   saveOrUpdateHousePhoto details---------------------
   saveHousePhoto: data => {
-
     return axios.post(`${baseURL2}saveOrUpdateHousePhoto`, data, {
       headers: {
         'Content-Type': 'application/json',
@@ -502,10 +446,8 @@ export const api = {
     })
   },
 
-
   // ------------------   getDlePageNumber details---------------------
   getDlePageNumber: data => {
-
     return axios.post(`${baseURL2}getDlePageNumber`, data, {
       headers: {
         'Content-Type': 'application/json',
@@ -518,6 +460,32 @@ export const api = {
   getAgentProfile: data => {
 
     return axios.get(`${baseURL}agentProfile/${data}`, {
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+  },
+  // ------------------ getCorrection details---------------------
+  getCorrectionDetails: data => {
+    return axios.post(`${baseURL2}getCorrectionPages`, data, {
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+  },
+
+  // ------------------ getCorrection Dle Page---------------------
+  getCorrectionDLEPage: data => {
+    return axios.post(`${baseURL2}getDlePageNumber`, data, {
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+  },
+
+  // ---------------- Reschedule Api ---------------------------------
+  setReshedule: data => {
+    return axios.post(`${baseURL2}reScheduleActivityToNextSlot`, data, {
       headers: {
         'Content-Type': 'application/json',
       }

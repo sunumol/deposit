@@ -25,9 +25,8 @@ export const  COLORS = {
     DarkBlue:'#2F80ED',
     LightBlue:'rgba(47, 128, 237, 0.1)',
     DarkGreen:'#27AE60',
-    LightGreen:'rgba(39, 174, 96, 0.1)'
-  
-
+    LightGreen:'rgba(39, 174, 96, 0.1)',
+    unScheduleBackground:'#F1F5F9'
 }
 
 export const FONTS = {

@@ -125,6 +125,7 @@ const ForgotPin = ({ navigation }) => {
                 setStatus(true)
                 setTimer(30)
                 setOtpFetch(true)
+                setPhoneChange(true)
             } else {
                 console.log(res?.data)
             }
@@ -230,7 +231,6 @@ const ForgotPin = ({ navigation }) => {
 
     // ------------------ Resend Api Call Start ------------------
     async function forgotApiCall() {
-        setPhoneChange(true)
         const data = {
             deviceId: deviceId,
             geoLocation: {
@@ -251,7 +251,7 @@ const ForgotPin = ({ navigation }) => {
                 setOtpAvailable(true)
                 setStatus(true)
                 setTimer(30)
-               
+                setPhoneChange(true)
             } else {
                 console.log(res?.data)
             }
@@ -270,6 +270,12 @@ const ForgotPin = ({ navigation }) => {
                 setMaxError(false)
                 setMessage('Please enter the registered phone number')
                 setPhoneChange(false)
+            }
+            if (err?.response?.data?.message === 'Sorry! We are unable to proceed further.') {
+                setModalVisibleError(true)
+                setButton(true)
+                setMaxError(false)
+                setMessage('Sorry! We are unable to proceed further.')
             }
 
         })

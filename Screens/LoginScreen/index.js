@@ -260,7 +260,7 @@ const LoginScreen = ({ navigation }) => {
     async function LoginApiCall() {
         otpInput2?.current?.clear()
         setConfirmDate(new Date().getTime())
-        setPhoneChange(true)
+       
         const data = {
             deviceId: DeviceId,
             geoLocation: {
@@ -272,7 +272,7 @@ const LoginScreen = ({ navigation }) => {
             simId: "11111",
         }
         await api.getLoginOtp(data).then((res) => {
-            console.log('-------------------res', res?.status)
+            console.log('-------------------res', res)
             if (res?.status == 200) {
                 setMaxError(false)
                 requestPermission()
@@ -280,9 +280,10 @@ const LoginScreen = ({ navigation }) => {
                 setIsOtp1(true)
                 getOtp();
                 setTimer(30)
+                setPhoneChange(true)
             }
         }).catch((err) => {
-            console.log("err Login->", err,DeviceId)
+            console.log("err Login->", err?.response)
             if (err?.message !== 'Network Error') {
                 if (err?.response?.data?.message === 'the device ID is already existing in the DB.') {
                     setModalVisibleError(true)
@@ -298,6 +299,12 @@ const LoginScreen = ({ navigation }) => {
                     setButton(true)
                     setOtpclick(true)
                     setPhoneNum('')
+                }else if (err?.response?.data?.message === 'Sorry! We are unable to proceed further.') {
+                    setModalVisibleError(true)
+                    setMaxError(false)
+                    setButton(true)
+                    setOtpclick(true)
+                    setMessage('Sorry! We are unable to proceed further.')
                 }
                 else {
                     setMaxError(false)
@@ -453,6 +460,7 @@ const LoginScreen = ({ navigation }) => {
                 setOtpFetch(true)
                 setMaxError(false)
                 setOtpclick(false)
+                setPhoneChange(true)
             } else {
                 console.log(res?.data)
             }

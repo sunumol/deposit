@@ -118,7 +118,7 @@ const IncomeDetails = ({ navigation, route }) => {
 
     useEffect(() => {
         console.log('Use.....', Amount, Avg, Month)
-        if ((Amount === null || Amount === '' ) || (Avg === null || Avg ===  '') ||( Month === null ||  Month === '')) {
+        if ((Amount === null || Amount === '' ) || (Avg === null || Avg ===  '') ||( Month === null ||  Month === '' || Purpose  ===  '' || Purpose === null)) {
             setButtons(false)
         } else {
             setButtons(true)

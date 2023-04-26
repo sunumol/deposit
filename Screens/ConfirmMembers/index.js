@@ -127,7 +127,6 @@ const [tccustomerlist,setTccustomerlist] = useState();
 
   // ------------------ Update Activity Reject Api Call Start ------------------
   const updateActivityReject = async () => {
-    { console.log('-----Number(id)', Number(dataSelectedID)) }
     const data = {
       "customerId": Number(dataSelectedID),
       "status": rejectReason,
