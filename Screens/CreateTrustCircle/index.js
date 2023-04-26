@@ -52,6 +52,10 @@ const CreateTrustCircle = ({ navigation,route }) => {
         return true; // Returning true from onBackPress denotes that we have handled the event
     }, [navigation]);
 
+
+
+
+    console.log('000000000======',cgtCustomerDetails)
     useFocusEffect(
         React.useCallback(() => {
             BackHandler.addEventListener('hardwareBackPress', handleGoBack);
@@ -63,7 +67,7 @@ const CreateTrustCircle = ({ navigation,route }) => {
     useEffect(() => {
         getTCLimitDetails()
         getTclist()
-        console.log('======>>>>+++++',customerID)
+        console.log('======>>>>+++++',customerList)
     }, [customerList,customerID])
 
     // ------------------ getTCLimitDetails Api Call Start ------------------
@@ -81,9 +85,9 @@ const CreateTrustCircle = ({ navigation,route }) => {
 
     // ------------------ getTCLimitDetails Api Call Start ------------------
     const CreateTrustCircle = async () => {
-        console.log('api called')
+        console.log('api called123456========>>>>>>>')
         const data = {
-            "primaryCustomerId": 1,
+            "primaryCustomerId": cgtCustomerDetails.primaryCustomerId,
             "memberIds": customerID
         }
         await api.createTrustCircles(data).then((res) => {
@@ -98,7 +102,9 @@ const CreateTrustCircle = ({ navigation,route }) => {
     // ------------------ HomeScreen Api Call End ------------------
 
 
-
+useEffect(()=>{
+getDLEschedule()
+},[])
     const getTclist = async () => {
         console.log('api called')
         const data = {
@@ -115,6 +121,30 @@ const CreateTrustCircle = ({ navigation,route }) => {
     };
     // ------------------ HomeScreen Api Call End ------------------
 
+            // ------------------ get Slot Api Call Start ------------------
+            const getDLEschedule = async () => {
+                console.log('api called',cgtCustomerDetails?.primaryCustomerId)
+                 const data = {
+                    //"employeeId": route?.params?.customerID,
+                    "customerId":cgtCustomerDetails?.primaryCustomerId,
+                 };
+                 await api.getDLEschedule(data).then((res) => {
+                 
+                     console.log('------------------- DLE res123', res)
+                     dispatch({
+                        type: 'SET_SELECTED_CUSTOMERLIST',
+                        payload: res?.data?.body,
+                      });
+                      console.log('12341233============',customerList)
+                    
+                   
+         
+                 })
+                     .catch((err) => {
+                         console.log('-------------------err', err?.response)
+                     })
+             };
+             // 
     const getInitials = (name) => {
 
         let initials;
@@ -147,7 +177,7 @@ const CreateTrustCircle = ({ navigation,route }) => {
                             <Text style={styles.timeText}>{cgtCustomerDetails?.cgtTime?.slice(0, -3)} PM</Text>
                             <Text style={styles.dateText}>{cgtCustomerDetails?.cgtDate ? moment(new Date(cgtCustomerDetails?.cgtDate)).format("ddd, DD MMM") : ''}</Text>
                         </View>
-                        <TouchableOpacity style={styles.editView} onPress={() => navigation.navigate('NewCgt')}>
+                        <TouchableOpacity style={styles.editView} onPress={() => navigation.navigate('NewCgt',{reschedule:cgtCustomerDetails})}>
                             <Date />
                             <Text style={styles.changeText}>Reschedule CGT</Text>
                         </TouchableOpacity>

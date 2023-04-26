@@ -146,6 +146,7 @@ useEffect(() => {
                             style={[{ fontSize: 14, color: '#000', fontFamily: FONTS.FontRegular, left: 5, width: width * 0.84, }]}
                             value={Amount?.toString()}
                             keyboardType={'number-pad'}
+                            maxLength={5}
                             onChangeText={(text) => setAmount(text)} />
                     </View>
                     <View>
@@ -172,6 +173,7 @@ useEffect(() => {
                                 style={[{ fontSize: 14, color: '#1A051D', fontFamily: FONTS.FontRegular, left: 5, width: width * 0.5 }]}
                                 value={days?.toString()}
                                 keyboardType={'number-pad'}
+                                maxLength={2}
                                 onChangeText={(text) => setDays(text)} />
                         </View>}
                 </ScrollView>

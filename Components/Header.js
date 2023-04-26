@@ -35,7 +35,7 @@ const Header = ({ name, navigation,setStatusChange,setStatusChange1,onPress }) =
         <View style={styles.Header}>
             <View style={{ left: 15, alignItems: 'center', justifyContent: 'center', top: -3 }}>
                 <TouchableOpacity 
-                onPress={() => name == 'Detailed Eligibility Check' || 'Current Residence Owner' || "Continuing Guarantor"|| "Upload Your Voter ID" || "Add Vehicle" || "Vehicles Owned" || "Energy Utilities"  || "Income Details"  || "House Photo Capture"? onPress() : name =='Activities' ? navigation.navigate('NewCgt'):!setStatusChange ? navigation.goBack() : setStatusChange1(false)} style={{ padding: 0 }}>
+                onPress={() => name == 'Detailed Eligibility Check' || 'Current Residence Owner' || "Co-Applicant"|| "Upload Your Voter ID" || "Add Vehicle" || "Vehicles Owned" || "Energy Utilities"  || "Income Details"  || "House Photo Capture"? onPress() : name =='Activities' ? navigation.navigate('NewCgt'):!setStatusChange ? navigation.goBack() : setStatusChange1(false)} style={{ padding: 0 }}>
                     <Icon size={17} color={"white"} name="left" />
                 </TouchableOpacity>
             </View>

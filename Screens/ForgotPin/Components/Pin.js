@@ -264,7 +264,7 @@ const ForgotPin = ({ navigation }) => {
                 setPhoneNum('')
                 setButton(true)
                 setMaxError(false)
-                setMessage('This mobile is already registered with us. We are therefore unable to proceed further.')
+                setMessage('Please enter the registered phone number')
             }
             if (err?.response?.data?.message === 'Sorry! We are unable to proceed further.') {
                 setModalVisibleError(true)

@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useRef} from "react";
 import {
     Dimensions,
     SafeAreaView,
@@ -13,7 +13,7 @@ import { FONTS } from "../../../Constants/Constants";
 const { height, width } = Dimensions.get('screen');
 
 const TextInputBox = ({ name, value, onChangeText, onFocus, onBlur,blurOnSubmit,onSubmitEditing,
-    secureTextEntry, backgroundColor1, keyboardType1, color, edit,maxLength }) => {
+    secureTextEntry, backgroundColor1, keyboardType1, color, edit,maxLength,ref }) => {
 
     return (
         <SafeAreaView>
@@ -32,7 +32,7 @@ const TextInputBox = ({ name, value, onChangeText, onFocus, onBlur,blurOnSubmit,
                     placeholder={''}
                     placeholderTextColor="#808080"
                     returnKeyType="done"
-                   // ref={ref}
+                    ref={ref}
                     //maxLength={10}
                     onSubmitEditing={Keyboard.dismiss}
                     // onFocus={onFocus}

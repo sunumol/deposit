@@ -545,7 +545,7 @@ export default {
     'kycMain': 'കെ വൈ സി പൊരുത്തക്കേട്',
 
     //Create Trust Circle
-
+    'EnterForgot':'Please enter your mobile number',
     'createTC': 'ട്രസ്റ്റ് സർക്കിൾ സൃഷ്ടിക്കുക',
     'ReCGT': 'സി ജി ടി പുനഃക്രമീകരിക്കുക',
     'TrustCM': 'ട്രസ്റ്റ് സർക്കിൾ അംഗങ്ങൾ',

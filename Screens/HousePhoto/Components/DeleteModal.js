@@ -35,12 +35,15 @@ const DeleteModal = ({ ModalVisible, onPressOut, setModalVisible2, navigation, t
 
                     <Text style={[styles.TextDelete1, { textAlign: 'center' }]}>{t('common:AreS2')} ?</Text>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingTop: 22, paddingBottom: 22 }}>
-                        <TouchableOpacity style={[styles.ButtonCancel, { marginRight: 10 }]} onPress={() => setModalVisible2(false)}>
-                            <Text style={styles.text2}>{t('common:No')}</Text>
-                        </TouchableOpacity>
+                    
 
                         <TouchableOpacity style={styles.ButtonContinue} onPress={() => DeleteImage()}>
                             <Text style={styles.textC}>{t('common:Yes')}</Text>
+                        </TouchableOpacity>
+
+
+                        <TouchableOpacity style={[styles.ButtonCancel, { marginRight: 10 }]} onPress={() => setModalVisible2(false)}>
+                            <Text style={styles.text2}>{t('common:No')}</Text>
                         </TouchableOpacity>
                     </View>
 

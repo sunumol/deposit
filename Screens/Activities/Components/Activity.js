@@ -191,7 +191,7 @@ const Activities = ({ navigation ,data}) => {
                     })}
                 </View>
 
-                <Text style={[styles.textActive, { paddingBottom: width * 0.03 }]}>CGT</Text>
+                <Text style={[styles.textActive, { paddingBottom: width * 0.03 }]}>MEET</Text>
 
                 {list?.map((item) => {
                     console.log('CGT listing activities',item.activityType)

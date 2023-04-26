@@ -120,10 +120,12 @@ const NewLead1 = ({ navigation,setVillageStatus,VillageStatus }) => {
         }
     }
     async function onSubmit() {
+    //    MobileRef.blur();
+    //    adddressRef.blur();
         setResultError(true)
         const data = {
             "leadName": Name,
-            "mobileNumber": Mobile,
+            "mobileNumber":"+91"+Mobile,
             "pin": Pincode,
             "village": Village
         }
@@ -190,7 +192,7 @@ const NewLead1 = ({ navigation,setVillageStatus,VillageStatus }) => {
 
 
                         <TextInputBox
-                        ref={MobileRef}
+                            ref={MobileRef}
                             name={t('common:SmartPhone')}
                             value={Mobile}
                             keyboardType1={'numeric'}

@@ -4,7 +4,7 @@ import {
     View,
     BackHandler,
     StatusBar,
-    SafeAreaView,
+    Keyboard,
     Platform,
     TextInput,
     ScrollView,
@@ -27,7 +27,6 @@ import RoadAccessModal from './RoadAccessModal';
 import ModalSave from '../../../Components/ModalSave';
 import { api } from '../../../Services/Api';
 import { Checkbox } from 'react-native-paper';
-
 const { height, width } = Dimensions.get('screen');
 
 const 
@@ -36,12 +35,11 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
 
     const isDarkMode = true;
     const [text, onChangeText] = useState('');
-    const [ModalVisible, setModalVisible] = useState(false)
-    const [selectedItem, setSelectedItem] = useState()
+    const [vstatus, setVstatus] = useState(true)
     const [ButtonStatus, setButtonStatus] = useState(false)
     const [ModalError, setModalError] = useState(false)
     const [roadstatus, setRoadStatus] = useState(details?.accessRoadType)
-    const [poststatus, setPostStatus] = useState(false)
+    const [poststatus, setPostStatus] = useState(true)
     const [landmarkname, setLandmarkname] = useState(details?.landmarkname)
     const [ModalReason, setModalReason] = useState(false)
     const [ModalReason1, setModalReason1] = useState(false)
@@ -52,11 +50,12 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
     const [postofficename, setPostofficename] = useState(details?.postOffice);
     const [PStatus, setPstatus] = useState(false);
     const [postofficenamedata, setPostofficenamedata] = useState('');
+
     const toggleCheckbox = () => {
-        console.log('66666',villagename ,postofficename,landmarkname,roadstatus)
+        console.log('66666',villagename ,postofficename,landmarkname,roadstatus,vstatus,poststatus)
         // if ((villagename || details?.village) && (postofficename || details?.postOffice) && (landmarkname || details?.landMark) && (roadstatus || details?.accessRoadType)) {
        
-        if (villagename && postofficename  && landmarkname.length > 0  && roadstatus) {
+        if (villagename && postofficename  && landmarkname.length > 0  && roadstatus && vstatus && poststatus)  {
             setChecked(true)
         } else {
             setChecked(false)
@@ -101,7 +100,7 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
     const searchvillagename = (text) => {
         console.log('VILLAGE NAME ===>>>', text)
         // setVillagename(text)
-       
+       setVstatus(false)
     
         if (text === ""){
             setVillagenamedata([])
@@ -133,7 +132,7 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
     const searchpostofficename = (text) => {
         console.log('Post office NAME ===>>>', text)
         // setVillagename(text)
-       
+       setPostStatus(false)
         if (text == '') {
             setPostofficenamedata([])
             setPstatus(false)
@@ -338,11 +337,17 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
                                     <TextInput
                                         value={villagename ? villagename : ''}
                                         style={[styles.TextInputBranch, { width: width * 0.48, color: 'rgba(26, 5, 29, 1)', fontSize: 12, left: -4 }]}
-                                        onChangeText={(text) => searchvillagename(text)}
+                                        onChangeText={(text) => {
+                                            if(text.length == 25){
+                                                
+                                                Keyboard.dismiss();
+                                            }
+                                            searchvillagename(text)
+                                        }}
                                         maxLength={25}
                                         onFocus={() => setBstatus(false)}
                                         onKeyPress={() => setBstatus(false)}
-
+                                        blurOnSubmit={true}
                                     />
                                     <Search name="search" size={17} style={{ marginRight: 15 }} color={'#1A051D'} />
 
@@ -362,6 +367,7 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
                                                         // setSearchStatus(true)
                                                         setVillagename(item)
                                                         setVillagename1(item)
+                                                        setVstatus(true)
                                                         // setBankBranchNameId(item.id)
                                                         // setCloseBranch(true)
                                                         // setDetailsStatus(false)
@@ -432,7 +438,12 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
                                     <TextInput
                                         value={postofficename}
                                         style={styles.TextInputBranch}
-                                        onChangeText={(text) => searchpostofficename(text)}
+                                        onChangeText={(text) =>{
+                                            if(text.length == 25){
+                                                Keyboard.dismiss();
+                                            }
+                                             searchpostofficename(text)
+                                        }}
                                         maxLength={25}
                                         onFocus={() => setPstatus(false)}
                                         onKeyPress={() => setPstatus(false)}
@@ -455,6 +466,7 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
                                                         // setSearchStatus(true)
                                                         setPostofficename(item)
                                                         setPostoffice1(item)
+                                                        setPostStatus(true)
                                                         // setBankBranchNameId(item.id)
                                                         // setCloseBranch(true)
                                                         // setDetailsStatus(false)
