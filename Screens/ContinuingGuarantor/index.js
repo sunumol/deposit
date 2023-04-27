@@ -23,7 +23,7 @@ import ErrorModal1 from './components/ErrorModal1';
 import ReasonModal from '../DetailedCheck/Components/ReasonModal';
 import ModalSave from '../../Components/ModalSave';
 import { useFocusEffect } from '@react-navigation/native';
-
+import moment from 'moment'
 
 
 const ContinuingGuarantor = ({ navigation, route }) => {
@@ -269,7 +269,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
   // ------------------verifyCG detail ------------------
 
   const verifyCG = async (num) => {
-    //   console.log('api called')
+       console.log('api called verify cg ==========',moment().format('MMMM Do YYYY, h:mm:ss a'))
 
     const data = {
       "activityId": activityId,
@@ -364,7 +364,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
 
 
   const GETOTP_Validation = (num) => {
-
+console.log('get otp validation on number changes',moment().format('MMMM Do YYYY, h:mm:ss a'))
 setPhoneValid(false)
     const firstDigitStr = String(num)[0];
  if (firstDigitStr === '1' || firstDigitStr === '2' || firstDigitStr === '3' || firstDigitStr === '4' || firstDigitStr === '5' || firstDigitStr === '0') {
@@ -375,7 +375,13 @@ setPhoneValid(false)
       setPhoneValid(true)
     }
     else {
+      if(verifyotpstatus == false){
       verifyCG(num)
+      }else{
+        setTimeout(() => {
+          verifyCG(num)
+        }, 10000);
+      }
       console.log("inside validation3",)
     }
   }
@@ -393,24 +399,25 @@ setPhoneValid(false)
       } else {
         onChangeNumber(num)
         if (num?.length == 10) {
-          if (verifyotpstatus == false) {
-            GETOTP_Validation(num)
-            setVerifyotpstatus(true)
-            // setTimeout(() => {
-            //   GETOTP_Validation(num)
-            //   setVerifyotpstatus(false)
-            // }, 10000);
-          } else {
-            console.log("inside otp call", verifyotpstatus)
+          GETOTP_Validation(num)
+          // if (verifyotpstatus == false) {
+          //   GETOTP_Validation(num)
+          //   setVerifyotpstatus(true)
+          //   // setTimeout(() => {
+          //   //   GETOTP_Validation(num)
+          //   //   setVerifyotpstatus(false)
+          //   // }, 10000);
+          // } else {
+          //   console.log("inside otp call", verifyotpstatus)
 
-            console.log("timer state",)
-            if (num != number) {
-              setTimeout(() => {
-                GETOTP_Validation(num)
-              }, 10000);
+          //   // console.log("timer state",)
+          //   // if (num != number) {
+          //   //   setTimeout(() => {
+          //   //     GETOTP_Validation(num)
+          //   //   }, 10000);
 
-            }
-          }
+          //   // }
+          // }
 
 
         }
@@ -508,7 +515,7 @@ setPhoneValid(false)
 
               {/* #################################################################### */}
 
-              {number?.length === 10 &&
+              {(number?.length === 10 && !PhoneValid ) &&
                 <View style={styles.ViewOtp}>
                   <Text style={styles.textOtp} onPress={() => navigation.navigate('PreClosure')}>{t('common:EnterOtp')} </Text>
 
