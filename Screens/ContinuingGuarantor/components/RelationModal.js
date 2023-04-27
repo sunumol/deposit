@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Dimensions, Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Dimensions, Modal, StyleSheet, Text, TouchableOpacity, View,ScrollView } from "react-native";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { COLORS, FONTS } from '../../../Constants/Constants';
 import { useTranslation } from 'react-i18next';
@@ -22,7 +22,7 @@ const RelationModal = ({ visible, onPressOut, setModalVisible, setRelation, setP
                     onPressOut={onPressOut}
                     style={styles.touchableStyle} >
                 </TouchableOpacity>
-                <View style={styles.centeredView2}>
+                <ScrollView style={styles.centeredView2}>
                     <View style={styles.modalView}>
                         <View style={styles.modalView1}>
                             <Text style={styles.modalTextHead}>Select Relation</Text>
@@ -362,7 +362,7 @@ const RelationModal = ({ visible, onPressOut, setModalVisible, setRelation, setP
 
 
                     </View>
-                </View>
+                </ScrollView>
             </View>
         </Modal>
 
@@ -379,7 +379,7 @@ const styles = StyleSheet.create({
         height: Dimensions.get('window').height,
     },
     centeredView2: {
-        justifyContent: "flex-end",
+       // justifyContent: "flex-end",
     },
     modalView: {
         backgroundColor: "white",

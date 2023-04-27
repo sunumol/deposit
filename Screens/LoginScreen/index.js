@@ -491,7 +491,7 @@ const LoginScreen = ({ navigation }) => {
                                 <Logo width={160} height={51} resizeMode='contain' />
                             </View>
 
-                            <View style={[styles.container, { marginTop: Dimensions.get('window').height * 0.05 }]}>
+                            <View  style={[styles.container, { marginTop: Dimensions.get('window').height * 0.05 }]}>
                                 <Text style={styles.Heading1}>{t('common:Verify')}</Text>
 
                                 <View style={styles.ViewInput}>
