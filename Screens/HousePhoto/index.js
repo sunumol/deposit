@@ -85,7 +85,7 @@ const ResidenceOwner = ({ navigation, }) => {
     
             const data = {
                 "activityId": activityId,
-                "imageUrl": imagedata,
+                "housePhotoUrl": imagedata,
              
             }
             await api.saveHousePhoto(data).then((res) => {

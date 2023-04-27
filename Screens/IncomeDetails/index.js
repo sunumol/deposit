@@ -345,18 +345,20 @@ const IncomeDetails = ({ navigation, route }) => {
                             <View>
                                 <Text style={styles.TextElect}>{incomedetailfield?.field2}</Text>
                             </View>
-                            <View style={styles.SelectBox}>
+                            <View>
 
                             {incomedetailfield?.field2 == 'Salary credit method' ? <TouchableOpacity style={[styles.SelectBox,{justifyContent:'space-between'}]} onPress={() => setModalVisible(true)}>
                                 <Text style={[styles.textSelect]}>{Purpose ? Purpose :'Select'}</Text>
 
                                 <Icon1 name="chevron-down" size={18} color={'#808080'} style={{ marginRight: 10 }} />
                             </TouchableOpacity>:
+                            <View style={styles.SelectBox}>
                              <TextInput
                              style={[{ fontSize: 14, color: '#1A051D', fontFamily: FONTS.FontRegular, left: 5,width: '95%'  }]}
                              value={Month?.toString()}
                              keyboardType={'number-pad'}
-                             onChangeText={(text) => setMonthdata(text)} /> }
+                             onChangeText={(text) => setMonthdata(text)} />
+                             </View> }
                                 {/* <TextInput
                                     style={[{ fontSize: 14, color: '#1A051D', fontFamily: FONTS.FontRegular, left: 5, width: '95%' }]}
                                     value={Month?.toString()}
@@ -531,7 +533,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#FCFCFC',
         borderRadius: 8,
         borderWidth: 1,
-        width: width * 0.89,
+        width: width * 0.88,
         height: width * 0.12,
         borderColor: 'rgba(236, 235, 237, 1)',
         alignItems: 'center',

@@ -166,7 +166,7 @@ const styles = StyleSheet.create({
     text2: {
         color: COLORS.colorB,
         fontFamily: FONTS.FontMedium,
-        fontSize: 16
+        fontSize: 14
     },
     textC: {
         fontFamily: FONTS.FontRegular,

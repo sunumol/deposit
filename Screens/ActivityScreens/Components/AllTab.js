@@ -27,9 +27,9 @@ const ItemTabs = ({ navigation }) => {
     const [slottedlisting, setSlottedListing] = useState()
     const [nonslottedActivities, setNonslottedActivities] = useState()
     const [collectiondata, setCollectiondata] = useState()
-    const [dleopen,setDleopen] = useState(false)
-    const [collectionopen,setCollectionopen] = useState(false)
-    const [enab,setEnab]=useState(false)
+    const [dleopen, setDleopen] = useState(false)
+    const [collectionopen, setCollectionopen] = useState(false)
+    const [enab, setEnab] = useState(false)
 
 
     // ------------------ Activity Listing Api Call Start ------------------
@@ -40,7 +40,7 @@ const ItemTabs = ({ navigation }) => {
         };
         await api.activitylistingscreenApi(data).then((res) => {
             console.log('-------------------res all', res?.data?.body)
-           
+
             setSlottedListing(res?.data?.body?.slottedActivities)
             setNonslottedActivities(res?.data?.body?.nonSlottedActivities)
             setEnab(false)
@@ -56,20 +56,20 @@ const ItemTabs = ({ navigation }) => {
 
     React.useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
-        setDleopen(false)
-        setCollectionopen(false)
-           ActivityListingApiCall()
-       
-          
+            setDleopen(false)
+            setCollectionopen(false)
+            ActivityListingApiCall()
+
+
         });
-getData();
+        getData();
         return unsubscribe;
-    }, [navigation,enab]);
+    }, [navigation, enab]);
 
 
     useEffect(() => {
         ActivityListingApiCall()
- }, [enab]);
+    }, [enab]);
 
 
     const getData = async () => {
@@ -88,121 +88,121 @@ getData();
             <View style={{ paddingHorizontal: 20, marginBottom: 10 }}>
 
 
-            <>
-                        <TouchableOpacity 
-                           onPress={() => {
+                <>
+                    <TouchableOpacity
+                        onPress={() => {
                             setCollectionopen(!collectionopen)
                         }}
-                         style={[styles.containerTab, { backgroundColor: collectionopen ? 'rgba(242, 242, 242, 0.5)' : COLORS.backgroundColor }]}>
-                                <View style={{ flex: 1 }}>
-                                    <Text style={{color: 'rgba(242, 153, 74, 1)',fontSize:14,fontFamily:FONTS.FontSemiB}}>Collection Follows up </Text>
-                                </View>
-                                <View style={{ justifyContent: 'flex-end', flexDirection: 'row', alignItems: 'center' }}>
-                                    <View style={styles.badgeContainer}>
-                                        <Text style={styles.badgeText}>{collectiondata?.length}</Text>
-                                    </View>
-                                    <TouchableOpacity
-                                        onPress={() => {
-                                     setCollectionopen(!collectionopen)
-                                        }}
-                                    >
-                                        <Icon name={collectionopen ? "chevron-up" : "chevron-down"}
-                                            color={COLORS.colorB}
-                                            size={25}
-                                            style={{ paddingLeft: 13 }}
+                        style={[styles.containerTab, { backgroundColor: collectionopen ? 'rgba(242, 242, 242, 0.5)' : COLORS.backgroundColor }]}>
+                        <View style={{ flex: 1 }}>
+                            <Text style={{ color: 'rgba(242, 153, 74, 1)', fontSize: 14, fontFamily: FONTS.FontSemiB }}>Collection Follows up </Text>
+                        </View>
+                        <View style={{ justifyContent: 'flex-end', flexDirection: 'row', alignItems: 'center' }}>
+                            <View style={styles.badgeContainer}>
+                                <Text style={styles.badgeText}>{collectiondata?.length}</Text>
+                            </View>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    setCollectionopen(!collectionopen)
+                                }}
+                            >
+                                <Icon name={collectionopen ? "chevron-up" : "chevron-down"}
+                                    color={COLORS.colorB}
+                                    size={25}
+                                    style={{ paddingLeft: 13 }}
 
-                                        />
-                                    </TouchableOpacity>
-                                </View>
-                            </TouchableOpacity> 
-                            {collectionopen
-                                ?
-                                <>
-
-                                    <View>
-                             
-                                    { collectiondata ?  ( <MeetTab
-                               // id={id}
-                                data={collectiondata}
-                                time={'Collection Follow up'}
-                                setEnab={setEnab}
-                                meet={true}
-                                navigation={navigation}
-                            />) : null }
-
-                                    </View>
-                                  
-
-                                </> : null}
-
-
-                        </>
-
-    
-                
+                                />
+                            </TouchableOpacity>
+                        </View>
+                    </TouchableOpacity>
+                    {collectionopen
+                        ?
                         <>
-                        <TouchableOpacity 
-                           onPress={() => {
+
+                            <View>
+
+                                {collectiondata ? (<MeetTab
+                                    // id={id}
+                                    data={collectiondata}
+                                    time={'Collection Follow up'}
+                                    setEnab={setEnab}
+                                    meet={true}
+                                    navigation={navigation}
+                                />) : null}
+
+                            </View>
+
+
+                        </> : null}
+
+
+                </>
+
+
+
+                <>
+                    <TouchableOpacity
+                        onPress={() => {
                             setDleopen(!dleopen)
                         }}
-                         style={[styles.containerTab, { backgroundColor: ' rgba(155, 81, 224, 0.1) '  }]}>
-                                <View style={{ flex: 1 }}>
-                                    <Text style={styles.timeText1}>DLE Activities</Text>
-                                </View>
-                                <View style={{ justifyContent: 'flex-end', flexDirection: 'row', alignItems: 'center' }}>
-                                    <View style={styles.badgeContainer}>
-                                        <Text style={styles.badgeText}>{nonslottedActivities?.length}</Text>
-                                    </View>
-                                    <TouchableOpacity
-                                        onPress={() => {
-                                     setDleopen(!dleopen)
-                                        }}
-                                    >
-                                        <Icon name={dleopen ? "chevron-up" : "chevron-down"}
-                                            color={COLORS.colorB}
-                                            size={25}
-                                            style={{ paddingLeft: 13 }}
+                        style={[styles.containerTab, { backgroundColor: ' rgba(155, 81, 224, 0.1) ' }]}>
+                        <View style={{ flex: 1 }}>
+                            <Text style={styles.timeText1}>DLE Activities</Text>
+                        </View>
+                        <View style={{ justifyContent: 'flex-end', flexDirection: 'row', alignItems: 'center' }}>
+                            <View style={styles.badgeContainer}>
+                                <Text style={styles.badgeText}>{nonslottedActivities?.length}</Text>
+                            </View>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    setDleopen(!dleopen)
+                                }}
+                            >
+                                <Icon name={dleopen ? "chevron-up" : "chevron-down"}
+                                    color={COLORS.colorB}
+                                    size={25}
+                                    style={{ paddingLeft: 13 }}
 
-                                        />
-                                    </TouchableOpacity>
-                                </View>
-                            </TouchableOpacity> 
-                            {dleopen
-                                ?
-                                <>
+                                />
+                            </TouchableOpacity>
+                        </View>
+                    </TouchableOpacity>
+                    {dleopen
+                        ?
+                        <>
 
-                                    <View>
-                             
-                                    { nonslottedActivities ?  ( <MeetTab
-                               // id={id}
-                                data={nonslottedActivities}
-                                time={'DLE Activities'}
-                                setEnab={setEnab}
-                                meet={true}
-                                navigation={navigation}
-                            />) : null }
+                            <View>
 
-                                    </View>
-                                  
+                                {nonslottedActivities ? (<MeetTab
+                                    // id={id}
+                                    data={nonslottedActivities}
+                                    time={'DLE Activities'}
+                                    setEnab={setEnab}
+                                    meet={true}
+                                    navigation={navigation}
+                                />) : null}
 
-                                </> : null}
+                            </View>
 
 
-                        </>
-              
+                        </> : null}
 
-                {slottedlisting?.map((item, index) => {      
+
+                </>
+
+
+                {slottedlisting?.map((item, index) => {
                     return (
                         <>
-                         { item.data.length > 0 ?  <TouchableOpacity 
-                           onPress={() => {
-                            const nextList = [...slottedlisting];
-                            nextList[index].open = !nextList[index].open;
-                            setSlottedListing(nextList);
-                            setDleopen(false)
-                            setCollectionopen(false)
-                        }}
-                         style={[styles.containerTab, { backgroundColor: item.open ? 'rgba(242, 242, 242, 0.5)' : COLORS.backgroundColor }]}>
+                            {item.data.length > 0 ? <TouchableOpacity
+                                onPress={() => {
+                                    const nextList = [...slottedlisting];
+                                    nextList[index].open = !nextList[index].open;
+                                    setSlottedListing(nextList);
+                                    setDleopen(false)
+                                    setCollectionopen(false)
+                                }}
+                                style={[styles.containerTab, { backgroundColor: item.open ? 'rgba(242, 242, 242, 0.5)' : COLORS.backgroundColor }]}>
                                 <View style={{ flex: 1 }}>
                                     <Text style={styles.timeText}>{item.startTime} - {item.endTime}</Text>
                                 </View>
@@ -233,14 +233,14 @@ getData();
                                 <>
 
                                     <View>
-                                    {item.callCount >0 ?(   
-                                        <>
-                                         <Text style={styles.timeDropStyle}>{item.startTime} ({item.callCount})</Text>
-                                        <Text style={styles.headText}>{t('common:Call')}</Text>
-                                        </>):null}
-                                        {item.data.map((item,index) => {
+                                        {item.callCount > 0 ? (
+                                            <>
+                                                <Text style={styles.timeDropStyle}>{item.startTime} ({item.callCount})</Text>
+                                                <Text style={styles.headText}>{t('common:Call')}</Text>
+                                            </>) : null}
+                                        {item.data.map((item, index) => {
                                             if (item.activityType == 'CALL') {
-                                                    console.log('call datasss')
+                                                console.log('call datasss')
                                                 return (
                                                     <DropTab
                                                         id={item.id}
@@ -259,11 +259,11 @@ getData();
 
                                     </View>
                                     <View>
-                                       {item.meetCount > 0 ?( 
-                                        <>
-                                       <Text style={styles.timeDropStyle}>{item.startTime}   ({item.meetCount})</Text>
-                                        <Text style={styles.headText}>{t('common:Meet')}</Text>
-                                        </>): null}
+                                        {item.meetCount > 0 ? (
+                                            <>
+                                                <Text style={styles.timeDropStyle}>{item.startTime}   ({item.meetCount})</Text>
+                                                <Text style={styles.headText}>{t('common:Meet')}</Text>
+                                            </>) : null}
                                         {item.data.map((item) => {
                                             if (item.activityType == 'MEET') {
                                                 return (
@@ -329,10 +329,10 @@ const styles = StyleSheet.create({
         fontFamily: FONTS.FontSemiB,
         color: COLORS.colorB,
     },
-    timeText1:{
-fontSize:14,
-fontFamily:FONTS.FontSemiB,
-color:"rgba(155, 81, 224, 1)"
+    timeText1: {
+        fontSize: 14,
+        fontFamily: FONTS.FontSemiB,
+        color: "rgba(155, 81, 224, 1)"
     },
     timeDropStyle: {
         fontSize: 11,

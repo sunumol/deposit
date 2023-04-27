@@ -24,7 +24,7 @@ import { api } from '../../../Services/Api';
 import { useSelector } from 'react-redux';
 const { height, width } = Dimensions.get('screen');
 
-const Energy = ({ navigation }) => {
+const Energy = ({ navigation,setAmount1,setPurpose1,setDays1,setCustomerId,setEnergyUtilityId  }) => {
     const [Amount, setAmount] = useState('')
     const [ModalVisible, setModalVisible] = useState(false)
     const [Purpose, setPurpose] = useState('')
@@ -80,6 +80,11 @@ const Energy = ({ navigation }) => {
                     setAmount(res?.data?.body?.averageElectrictyBill)
                     setPurpose(res?.data?.body?.cookingFuelType)
                     setDays(res?.data?.body?.cylinderLastingDays)
+                    setAmount1(res?.data?.body?.averageElectrictyBill)
+                    setPurpose1(res?.data?.body?.cookingFuelType)
+                    setDays1(res?.data?.body?.cylinderLastingDays)
+                    setCustomerId(res?.data?.body?.customerId)
+                    setEnergyUtilityId(res?.data?.body?.energyUtilityId)
                 }
             }).catch((err) => {
                 console.log('-------------------err getEnergyUtilities', err?.response)
@@ -181,7 +186,8 @@ useEffect(() => {
                                 maxLength={2}
                                 onChangeText={(text) => {
                                     if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(text) || text === "") {
-                                        setDays(text)
+                                        setDays(text),
+                                        setDays1(text)
                                     }
                                 }
                                 } />
@@ -190,7 +196,7 @@ useEffect(() => {
                 <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                     <TouchableOpacity style={[styles.buttonView, { backgroundColor: Buttons ? COLORS.colorB: 'rgba(224, 224, 224, 1)' }]}
                         onPress={() =>saveEnergyUtilities()}>
-                        <Text style={[styles.continueText, { color: COLORS.colorBackground }]}>Continue</Text>
+                        <Text style={[styles.continueText, { color: Buttons ? COLORS.colorBackground :'rgba(151, 156, 158, 1)' }]}>Continue</Text>
                     </TouchableOpacity>
                 </View>
             </View>

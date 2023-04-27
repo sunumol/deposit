@@ -59,11 +59,11 @@ const Vehicle = ({ navigation }) => {
     const [Purpose, setPurpose] = useState('')
     const [SearchStatus, setSearchStatus] = useState(false)
     const [SearchStatus2, setSearchStatus2] = useState(false)
-    const [spousedetail,setSpousedetail] = useState('')
+    const [spousedetail, setSpousedetail] = useState('')
     const [Status, setStatus] = useState(false)
     const [ModalVisible1, setModalVisible1] = useState(false)
     const [searchvehicledata, setSearchvehicledata] = useState({})
-
+    const [VehicleStatus,setVehicleStatus] = useState(false)
     const toggleCheckbox = () => setChecked(!checked);
 
     const Data = [
@@ -104,11 +104,11 @@ const Vehicle = ({ navigation }) => {
 
 
 
-    useEffect(()=>{
+    useEffect(() => {
 
         getSpousedetail();
 
-    },[])
+    }, [])
 
 
     // ------------------spouse detail ------------------
@@ -117,8 +117,8 @@ const Vehicle = ({ navigation }) => {
         console.log('api called')
 
         const data = {
-               "activityId": activityId
-      
+            "activityId": activityId
+
 
         }
         await api.getSpousedetail(data).then((res) => {
@@ -139,9 +139,9 @@ const Vehicle = ({ navigation }) => {
 
 
 
-     // ------------------get fetchVehicleDetailsForDle detail ------------------
+    // ------------------get fetchVehicleDetailsForDle detail ------------------
 
-     const fetchVehicleDetailsForDle = async () => {
+    const fetchVehicleDetailsForDle = async () => {
         console.log('api called')
 
         const data = {
@@ -150,25 +150,31 @@ const Vehicle = ({ navigation }) => {
             "vehicleNumber": numbers
         }
         await api.fetchVehicleDetailsForDle(data).then((res) => {
-            console.log('-------------------res fetchVehicleDetailsForDle123', res?.data?.body)
+            console.log('-------------------res fetchVehicleDetailsForDle12388', res)
             if (res?.status) {
-                setSearchvehicledata(res?.data?.body)
-                setSearchStatus2(true)
+                if (res?.data?.body) {
+                    setSearchvehicledata(res?.data?.body)
+                    setSearchStatus2(true)
+                } else {
+                   setVehicleStatus(true)
+                    setSearchStatus2(false)
+                }
+
             }
         }).catch((err) => {
-            console.log('-------------------err fetchVehicleDetailsForDle', err?.response)
+            console.log('-------------------err fetchVehicleDetailsForDle', err)
         })
     };
 
 
-       // ------------------get fetchVehicleDetailsForDle detail ------------------
+    // ------------------get fetchVehicleDetailsForDle detail ------------------
 
-       const saveVehicleDetails = async () => {
+    const saveVehicleDetails = async () => {
         console.log('api called1')
 
         const data = [searchvehicledata]
         await api.saveVehicleDetails(data).then((res) => {
-            console.log('-------------------res save vehicle', res?.data?.body)
+            console.log('-------------------res save vehicle', res)
             if (res?.status) {
                 navigation.navigate('VehicleOwn')
             }
@@ -230,6 +236,7 @@ const Vehicle = ({ navigation }) => {
                         <Text style={[styles.TextOwner, { marginTop: 10 }]}>Enter the vehicle number</Text>
                     </View>
                     {Purpose ?
+                    <View>
                         <TouchableOpacity style={styles.SelectBox}>
 
 
@@ -244,6 +251,7 @@ const Vehicle = ({ navigation }) => {
                                 //placeholderTextColor="#808080"
 
                                 onChangeText={(text) => {
+                                    setVehicleStatus(false)
                                     OnchangeNumbers(text)
 
 
@@ -258,6 +266,12 @@ const Vehicle = ({ navigation }) => {
                                 <Search />
                             </TouchableOpacity>
                         </TouchableOpacity>
+                        {VehicleStatus &&
+                <Text style={{
+                  fontFamily: FONTS.FontRegular, color: "red", paddingTop: width * 0.01,
+                  fontSize: 12
+                }}>Vehicle data Not Available</Text>}
+                        </View>
                         :
                         <View style={styles.SelectBox1}>
 
@@ -276,15 +290,15 @@ const Vehicle = ({ navigation }) => {
                                 </View>
                                 <View style={{ flexDirection: 'column', flex: 1, marginLeft: 12 }}>
                                     <Text style={styles.nameText}>{spousedetail?.name}</Text>
-                                   
 
-                                    {spousedetail?.occupation == 'DAILY_WAGE_LABOURER,'?
-                    <Text style={styles.underText}>Daily Wage Labourer</Text>:
-                    spousedetail?.occupation == 'SALARIED_EMPLOYEE'?
-                    <Text style={styles.underText}>Salaried Employee</Text>:
-                    spousedetail?.occupation == 'BUSINESS_SELF_EMPLOYED'?
-                    <Text style={styles.underText}>Business Self Employed</Text>:
-                    <Text style={styles.underText}>Farmer</Text>}
+
+                                    {spousedetail?.occupation == 'DAILY_WAGE_LABOURER,' ?
+                                        <Text style={styles.underText}>Daily Wage Labourer</Text> :
+                                        spousedetail?.occupation == 'SALARIED_EMPLOYEE' ?
+                                            <Text style={styles.underText}>Salaried Employee</Text> :
+                                            spousedetail?.occupation == 'BUSINESS_SELF_EMPLOYED' ?
+                                                <Text style={styles.underText}>Business Self Employed</Text> :
+                                                <Text style={styles.underText}>Farmer</Text>}
 
 
 
@@ -356,7 +370,7 @@ const Vehicle = ({ navigation }) => {
                                     >
                                         <Text style={[styles.continueText, { color: COLORS.colorB }]}>Reject</Text>
                                     </TouchableOpacity>
-                                    {console.log('~~~~~>>>',searchvehicledata)}
+                                    {console.log('~~~~~>>>', searchvehicledata)}
                                     <TouchableOpacity onPress={() => saveVehicleDetails()}
                                         style={[styles.buttonView1, { backgroundColor: COLORS.colorB }]}>
                                         <Text style={[styles.continueText, { color: COLORS.colorBackground }]}>Confirm</Text>
@@ -368,7 +382,7 @@ const Vehicle = ({ navigation }) => {
                 </ScrollView>
 
                 {!Status &&
-                    <TouchableOpacity onPress={()=>navigation.navigate('EnergyUtility')} style={{ alignItems: 'center', justifyContent: 'center', marginBottom: 20 }}>
+                    <TouchableOpacity onPress={() => navigation.navigate('EnergyUtility')} style={{ alignItems: 'center', justifyContent: 'center', marginBottom: 20 }}>
                         <Text style={styles.skip}>Skip</Text>
                     </TouchableOpacity>}
                 {!Status &&
@@ -379,7 +393,7 @@ const Vehicle = ({ navigation }) => {
 
             <OwnerModal
                 visible={ModalVisible1}
-
+                Purpose={Purpose}
                 setPurpose={setPurpose}
                 setModalVisible={setModalVisible1}
                 setStatus={setStatus}
@@ -563,7 +577,7 @@ const styles = StyleSheet.create({
         //alignItems: 'center',
         marginBottom: 14,
         width: width * 0.88,
-        height: width * 0.57
+       // height: width * 0.57
     },
     owner: {
         color: '#808080',

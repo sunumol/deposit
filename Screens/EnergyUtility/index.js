@@ -38,6 +38,11 @@ const EnergyUtility = ({ navigation, }) => {
     const [ModalVisible,setModalVisible] = useState(false)
     const [ModalReason,setModalReason] = useState(false)
     const [ModalError, setModalError] = useState(false)
+    const [Amount1, setAmount1] = useState('')
+    const [Purpose1, setPurpose1] = useState('')
+    const [days1, setDays1] = useState('')
+    const [customerId,setCustomerId] = useState('')
+    const [energyUtilityId,setEnergyUtilityId] = useState('')
     const activityId = useSelector(state => state.activityId);
 
     useEffect(() => {
@@ -95,6 +100,29 @@ const EnergyUtility = ({ navigation, }) => {
                      BackHandler.removeEventListener('hardwareBackPress', handleGoBack);
              }, [handleGoBack]),
          );
+
+         const saveEnergyUtilities = async () => {
+            console.log('api called')
+        
+            const data = {
+                "activityId": activityId,
+                "customerId": customerId,
+                "energyUtilityId": energyUtilityId,
+                "averageElectrictyBill": Amount1,
+                "cookingFuelType": Purpose1,
+                "cylinderLastingDays":days1
+        
+            }
+            await api.saveEnergyUtilities(data).then((res) => {
+                console.log('-------------------res saveEnergyUtilities', res)
+                if (res?.status) {
+                    navigation.navigate('Profile')
+                }
+            }).catch((err) => {
+                console.log('-------------------err saveEnergyUtilities', err?.response)
+            })
+        };
+    
     return (
         <SafeAreaProvider>
             <SafeAreaView style={styles.container1} />
@@ -103,7 +131,12 @@ const EnergyUtility = ({ navigation, }) => {
             <Header name="Energy Utilities" navigation={navigation} onPress={handleGoBack}/>
 
             <View style={styles.ViewContent}>
-             <Energy  navigation={navigation}/>
+             <Energy navigation={navigation} 
+             setAmount1={setAmount1}
+             setPurpose1={setPurpose1}
+             setDays1={setDays1}
+             setCustomerId={setCustomerId}
+             setEnergyUtilityId={setEnergyUtilityId}/>
   
             </View>
 
@@ -114,7 +147,7 @@ const EnergyUtility = ({ navigation, }) => {
                     setModalReason(true)
                
                 }}
-                Press1={()=>{setModalVisible(false)}}
+                Press1={()=>{saveEnergyUtilities(),setModalVisible(false)}}
                 ModalVisible={ModalVisible}
                 setModalVisible={setModalVisible}
                 onPressOut={() => {

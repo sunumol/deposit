@@ -31,7 +31,7 @@ const { height, width } = Dimensions.get('screen');
 
 const 
 DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLandmarkname1,setRoadStatus1 }) => {
-    console.log('????===>>123',details )
+  //  console.log('????===>>123',details )
 
     const isDarkMode = true;
     const [text, onChangeText] = useState('');
@@ -439,7 +439,7 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
                                         value={postofficename}
                                         style={styles.TextInputBranch}
                                         onChangeText={(text) =>{
-                                            if(text.length == 25){
+                                            if(text?.length == 25){
                                                 Keyboard.dismiss();
                                             }
                                              searchpostofficename(text)
@@ -455,10 +455,10 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
 
                             {PStatus ?
                                 (<View>
-                                    {postofficenamedata.length > 0
+                                    {postofficenamedata?.length > 0
                                         ? <>
-                                            {postofficenamedata.map((item) => {
-                                                console.log('pppp====>>>', item)
+                                            {postofficenamedata?.map((item) => {
+                                               
                                                 return (
                                                     <TouchableOpacity onPress={() => {
                                                         setPstatus(false)
