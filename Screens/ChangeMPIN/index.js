@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     StyleSheet,
     Text,
@@ -7,15 +7,13 @@ import {
     Platform,
     StatusBar,
     KeyboardAvoidingView,
-    BackHandler,
     ScrollView,
     Keyboard
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import ModalExitApp from '../../Components/ModalExitApp';
-import { useFocusEffect } from '@react-navigation/native';
+
 // --------------- Component Imports ---------------------
 import { COLORS, FONTS } from '../../Constants/Constants';
 import Statusbar from '../../Components/StatusBar';
@@ -37,7 +35,7 @@ const ChangeMPIN = ({ navigation }) => {
     const [error, setError] = useState(false);
     const [errorOldPin, setErrorOldPin] = useState(false);
     const [pinSet, setPinSet] = useState()
-    const [modalExitAppVisible, setModalExitAppVisible] = useState(false);
+
     const clearText = () => {
         otpInput2.current.clear();
     }
@@ -49,7 +47,6 @@ const ChangeMPIN = ({ navigation }) => {
     const getPinCheck = async () => {
         try {
             const Pin = await AsyncStorage.getItem('Pin')
-            console.log(Pin, '--------------')
             if (Pin) {
                 setPinSet(Pin)
             }
@@ -57,23 +54,6 @@ const ChangeMPIN = ({ navigation }) => {
             console.log(e)
         }
     }
-
-    const backAction = () => {
-        setModalExitAppVisible(true)
-        return true;
-    };
-
-    useFocusEffect(
-        React.useCallback(() => {
-            BackHandler.addEventListener("hardwareBackPress", backAction);
-
-            return () => {
-                console.log("I am removed from stack")
-                BackHandler.removeEventListener("hardwareBackPress", backAction);
-            };
-        }, [])
-    );
-
 
     return (
         <SafeAreaProvider>
@@ -144,15 +124,7 @@ const ChangeMPIN = ({ navigation }) => {
                             : null}
                     </ScrollView>
                 </View>
-
-
-                <ModalExitApp
-                    ModalVisible={modalExitAppVisible}
-                    onPressOut={() => setModalExitAppVisible(!modalExitAppVisible)}
-                    setModalExitAppVisible={setModalExitAppVisible}
-                />
             </KeyboardAvoidingView>
-
         </SafeAreaProvider>
     )
 }
@@ -189,7 +161,6 @@ const styles = StyleSheet.create({
         color: COLORS.colorDark,
         textAlign: 'center'
     },
-
     imputContainerStyle: {
         borderRadius: 8,
         backgroundColor: COLORS.colorBackground,

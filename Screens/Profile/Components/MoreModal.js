@@ -147,7 +147,7 @@ const MoreModal = ({ ModalVisible, onPressOut, setModalVisible, setOtpValue, nav
                                     <TouchableOpacity style={styles.touch}
                                     onPress={() => {
                                         setModalVisible(!ModalVisible)
-                                        navigation.navigate('ResetPin')
+                                        navigation.navigate('ChangeMPIN')
                                     }}>
                                         <Image7 />
                                     </TouchableOpacity>
