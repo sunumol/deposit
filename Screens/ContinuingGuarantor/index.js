@@ -361,19 +361,26 @@ const ContinuingGuarantor = ({ navigation, route }) => {
   };
   // ------------------ ------------------
 
-
+  const verifyPhone = (Phone) => {
+    var reg = /^([0-9])\1{9}$/;
+    return reg.test(Phone);
+}
 
   const GETOTP_Validation = (num) => {
 console.log('get otp validation on number changes',moment().format('MMMM Do YYYY, h:mm:ss a'))
 setPhoneValid(false)
     const firstDigitStr = String(num)[0];
- if (firstDigitStr === '1' || firstDigitStr === '2' || firstDigitStr === '3' || firstDigitStr === '4' || firstDigitStr === '5' || firstDigitStr === '0') {
+    if (num?.length != 10 || num == "") {
+         
       setPhoneValid(true)
-      console.log("inside validation2",num)
+  } else if (firstDigitStr === '1' || firstDigitStr === '2' || firstDigitStr === '3' || firstDigitStr === '4' || firstDigitStr === '5' || firstDigitStr === '0') {
+    setPhoneValid(true)
+  } else if (verifyPhone(num)) {
+    setPhoneValid(true)
+  } else if (!(/^\d{10}$/.test(num))) {
+    setPhoneValid(true)
+  }
 
-    } else if (!(/^\d{10}$/.test(num))) {
-      setPhoneValid(true)
-    }
     else {
       if(verifyotpstatus == false){
       verifyCG(num)
@@ -558,9 +565,6 @@ setPhoneValid(false)
                     <Resend style={{ width: 9, height: 11, top: 3, marginRight: 6, }} resizeMode="contain" />
                     <Text style={styles.TextResend1}>{t('common:Resend1')}</Text>
                   </TouchableOpacity>}
-
-
-
 
                 </View>
 

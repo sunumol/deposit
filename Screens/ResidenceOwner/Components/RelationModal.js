@@ -5,7 +5,7 @@ import Icon1 from 'react-native-vector-icons/Fontisto'
 import { COLORS, FONTS } from '../../../Constants/Constants';
 import { useTranslation } from 'react-i18next';
 
-const RelationModal = ({ visible, onPressOut,setModalVisible,setRelation,setPurposes,setStatus}) => {
+const RelationModal = ({ visible, onPressOut,setModalVisible,setRelation,setPurposes,setStatus,Error}) => {
     const { t } = useTranslation();
     const [relate,setRelate] = useState('')
  console.log("setRelation....",relate)
@@ -48,6 +48,8 @@ const RelationModal = ({ visible, onPressOut,setModalVisible,setRelation,setPurp
                                 }
                             </View>
                         </TouchableOpacity >
+                        {!Error &&
+                        <>
                         <View style={styles.lineView} />
                         <TouchableOpacity style={styles.textTouch} onPress={() => {
                             setPurposes("Spouse")
@@ -66,6 +68,7 @@ const RelationModal = ({ visible, onPressOut,setModalVisible,setRelation,setPurp
                                 }
                             </View>
                         </TouchableOpacity>
+                        </>}
                         <View style={styles.lineView} />
                         <TouchableOpacity style={styles.textTouch} onPress={() => {
                             setPurposes("Son")

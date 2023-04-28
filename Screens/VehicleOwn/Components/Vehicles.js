@@ -29,8 +29,8 @@ import { useSelector } from 'react-redux';
 
 const { height, width } = Dimensions.get('screen');
 
-const Vehicles = ({ navigation, vehicle }) => {
-    console.log('Vehicles list',  vehicle )
+const Vehicles = ({ navigation, vehicleslist }) => {
+  console.log("vehicleslist......vehicleslist==============",vehicleslist)
 
     const isDarkMode = true;
     const [text, onChangeText] = useState('');
@@ -43,7 +43,7 @@ const Vehicles = ({ navigation, vehicle }) => {
     const [numbers, setNumbers] = useState('')
     const [number, setNumber] = useState(false)
     const [SearchStatus, setSearchStatus] = useState(false)
-    const [vehicleslist, setvehicleslist] = useState([])
+   // const [vehicleslist, setvehicleslist] = useState([])
     const [mergedList, setmergedList] = useState([])
     const toggleCheckbox = () => setChecked(!checked);
     const activityId = useSelector(state => state.activityId);
@@ -88,9 +88,9 @@ const Vehicles = ({ navigation, vehicle }) => {
         }
     ]
 
-    useEffect(()=>{
-    setvehicleslist([vehicle])
-    },[vehicle])
+    // useEffect(()=>{
+    // setvehicleslist([vehicle])
+    // },[vehicle])
 
     // useEffect(() => {
     //     setmergedList([])
@@ -110,20 +110,21 @@ const Vehicles = ({ navigation, vehicle }) => {
 
         }
         await api.getVehicleDetails(data).then((res) => {
-            console.log('-------------------res getVehicleDetails', res?.data?.body?.length)
+            console.log('-------------------res getVehicleDetails', res?.data?.body)
             if (res?.data?.body) {
                 setNumbers(res?.data?.body?.length)
                 let temp = vehicleslist
-                temp  = temp.concat(res?.data?.body)
-                setvehicleslist([...temp])
-            }else{
-                setvehicleslist(vehicle)
+                console.log("vehickelost pass",vehicleslist)
+                console.log("vehcle api data",res?.data?.body)
+                setvehicleslist(res?.data?.body)
+                // temp  = temp.concat(res?.data?.body)
+                // setvehicleslist([...temp])
             }
         }).catch((err) => {
             console.log('-------------------err getVehicleDetails', err)
         })
     };
-     {console.log('=====>>>>',vehicleslist)}
+  
 
     // ------------------get fetchVehicleDetailsForDle detail ------------------
 
@@ -132,7 +133,7 @@ const Vehicles = ({ navigation, vehicle }) => {
 
         const data = vehicleslist
         await api.saveVehicleDetails(data).then((res) => {
-            console.log('-------------------res fetchVehicleDetailsForDle', res?.data?.body)
+            console.log('-------------------res fetchVehicleDetailsForDle', res)
             if (res?.status) {
                 navigation.navigate('EnergyUtility')
             }
@@ -143,7 +144,8 @@ const Vehicles = ({ navigation, vehicle }) => {
 
 
     useEffect(() => {
-        getVehicleDetails()
+       // getVehicleDetails()
+        console.log("USEEFFECT INSIDE")
     }, [])
 
 
@@ -158,14 +160,14 @@ const Vehicles = ({ navigation, vehicle }) => {
                     </View>
                     <View>
 
-                        {console.log('99999',vehicleslist?.length)}
+                       
                         {vehicleslist ? vehicleslist.map((item) => {
-                            console.log('90909',item)
+                           
                             return (
                                 <View style={styles.containerBox1}>
                                     <View style={{
                                         flexDirection: 'row', justifyContent: 'space-around',
-                                        paddingTop: width * 0.04, marginLeft: width * 0.05
+                                        paddingTop: width * 0.04, marginLeft: width * 0.05,marginBottom:5
                                     }}>
                                         <View style={{ flexDirection: 'column', flex: 1, alignItems: 'flex-start' }}>
                                             <Text style={styles.TextOwner}>{item?.ownersName}</Text>
@@ -373,7 +375,7 @@ const styles = StyleSheet.create({
         //alignItems: 'center',
         marginBottom: 14,
         width: width * 0.88,
-        height: width * 0.20
+        //height: width * 0.20
     },
     owner: {
         color: '#808080',

@@ -125,6 +125,16 @@ const MoreModal = ({ ModalVisible, onPressOut, setModalVisible, setOtpValue, nav
                              marginTop: width * 0.08, marginBottom: 35 }}>
                        
               
+                       <View style={{ alignItems: 'center', justifyContent: 'center' ,left:Lang == 'en' ? 0 : -5}} >
+                                    <TouchableOpacity style={styles.touch}
+                                    onPress={() => {
+                                        setModalVisible(!ModalVisible)
+                                        navigation.navigate('ResetPin')
+                                    }}>
+                                        <Image7 />
+                                    </TouchableOpacity>
+                                    <Text style={styles.text}>{t('common:MPIN')}</Text>
+                                </View>
 
                                 <View style={{ alignItems: 'center', justifyContent: 'center',paddingRight:Lang=='en' ? width*0.0:-5, }}>
                                     <TouchableOpacity style={styles.touch} onPress={() => {

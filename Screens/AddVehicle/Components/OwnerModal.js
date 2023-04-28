@@ -3,8 +3,8 @@ import { Dimensions, Modal, StyleSheet, Text, TouchableOpacity, View } from "rea
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { COLORS, FONTS } from '../../../Constants/Constants';
 import { useTranslation } from 'react-i18next';
-
-const OwnerModal = ({ visible, onPressOut,setModalVisible,setRelation,setPurpose,setStatus}) => {
+import Icon1 from 'react-native-vector-icons/Fontisto';
+const OwnerModal = ({ visible, onPressOut,setModalVisible,setRelation,setPurpose,Purpose}) => {
     const { t } = useTranslation();
    // console.log("setRelation....",setRelation)
 
@@ -36,11 +36,11 @@ const OwnerModal = ({ visible, onPressOut,setModalVisible,setRelation,setPurpose
                             }>
                             <Text style={styles.modalText}>Customer</Text>
                             <View style={{ paddingRight: 10 }}>
-                                <Icon
-                                    name="checkbox-blank-circle-outline"
-                                    color={COLORS.DSMuted}
-                                    size={18}
-                                />
+   
+                             {Purpose == 'Customer'? 
+                                <Icon1 name="radio-btn-active" size={18} color={COLORS.colorB} /> :
+                                
+                                <Icon1 name="radio-btn-passive" size={18} color={'rgba(229, 231, 250, 1)'} />}
                             </View>
                         </TouchableOpacity >
                         <View style={styles.lineView} />
@@ -51,11 +51,11 @@ const OwnerModal = ({ visible, onPressOut,setModalVisible,setRelation,setPurpose
                         }>
                             <Text style={styles.modalText}>Spouse</Text>
                             <View style={{ paddingRight: 10 }}>
-                                <Icon
-                                    name="checkbox-blank-circle-outline"
-                                    color={COLORS.DSMuted}
-                                    size={18}
-                                />
+                            
+                            {Purpose == "Spouse" ? 
+                                <Icon1 name="radio-btn-active" size={18} color={COLORS.colorB} /> :
+                                
+                                <Icon1 name="radio-btn-passive" size={18} color={'rgba(229, 231, 250, 1)'} />}
                             </View>
                         </TouchableOpacity>
                      

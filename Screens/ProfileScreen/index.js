@@ -79,7 +79,7 @@ const ProfileScreen = ({ navigation }) => {
                 <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1, }}>
                     <ActivityIndicator size={30} color={COLORS.colorB} />
                 </View> :
-                <ScrollView showsVerticalScrollIndicator={false}>
+                <ScrollView showsVerticalScrollIndicator={false} style={{flex:1,backgroundColor:COLORS.colorBackground}}>
                     <View style={styles.mainContainer}>
                         <View style={styles.boxShadow}>
                             <View style={styles.ProfileView}>
@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
     mainContainer: {
         flex: 1,
         backgroundColor: COLORS.colorBackground,
-        height: '100%',
+       // height: '100%',
         paddingHorizontal: 20,
         paddingTop: 16,
         paddingBottom: 25

@@ -129,8 +129,7 @@ const CustomerDetails= ({ navigation, }) => {
         console.log('api called')
         const data = {
            "activityId": activityId
-     
-        
+
         }
         await api.getSpousedetail(data).then((res) => {
             console.log('-------------------res spousedetail', res)
@@ -138,7 +137,7 @@ const CustomerDetails= ({ navigation, }) => {
                 setSpousedetail(res?.data?.body)
             }
         }).catch((err) => {
-            console.log('-------------------err spousedetail', err?.response)
+            console.log('-------------------err spousedetail', err?.response.status)
         })
     };
     // ------------------ HomeScreen Api Call End ------------------

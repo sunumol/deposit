@@ -69,6 +69,13 @@ const DLECompleted = ({ navigation }) => {
                     </View>
 
                 </ScrollView>
+                <View style={{ position: 'absolute', left: 0, right: 0, bottom: 0, alignItems: 'center', justifyContent: 'center' }}>
+                <TouchableOpacity onPress={() =>  navigation.navigate('Profile')}
+                    style={[styles.Button1, { backgroundColor: COLORS.colorB,marginBottom:20}]}
+                >
+                    <Text style={[styles.text1, { color:  COLORS.colorBackground }]}>Continue</Text>
+                </TouchableOpacity>
+            </View>
              
             </View>
 
@@ -130,7 +137,7 @@ const styles = StyleSheet.create({
         marginLeft: 10
     },
     textD1: {
-        fontSize: 24,
+        fontSize: 20,
         color: 'rgba(0, 56, 116, 1)',
         fontFamily: FONTS.FontSemiB
     },
@@ -140,6 +147,23 @@ const styles = StyleSheet.create({
         color: '#808080',
         fontFamily: FONTS.FontRegular,
         paddingTop: width * 0.01
-    }
+    },
+    Button1: {
+        width: width * 0.87,
+        height: 48,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: COLORS.colorB,
+        marginTop: 31,
+        marginLeft: 12,
+        marginRight: 12,
+        borderRadius: 40,
+        marginBottom: 0
+    },
+    text1: {
+        fontFamily: FONTS.FontBold,
+        fontSize: 14,
+        fontWeight: '700'
+    },
 
 })

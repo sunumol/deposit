@@ -42,11 +42,25 @@ const VehicleOwn = ({ navigation, route }) => {
     const [ModalVisible,setModalVisible] = useState(false)
     const [ModalReason,setModalReason] = useState(false)
     const [ModalError, setModalError] = useState(false)
+    const [state,setState] = useState(true)
+    const [vehicleslist, setvehicleslist] = useState([])
 
 
+    React.useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+
+            getVehicleDetails()
+
+        });
+  
+        return unsubscribe;
+    }, []);
     
     useEffect(() => {
         getData()
+   
+            console.log("inside state call")
+      
     }, [])
 
     const getData = async () => {
@@ -99,6 +113,28 @@ const VehicleOwn = ({ navigation, route }) => {
     };
 
 
+    const getVehicleDetails = async () => {
+        console.log('api called INDEX', activityId)
+
+        const data = {
+            "activityId": activityId,
+
+        }
+        await api.getVehicleDetails(data).then((res) => {
+            console.log('-------------------res getVehicleDetails', res?.data?.body)
+            if (res?.data?.body) {
+              //  setNumbers(res?.data?.body?.length)
+                //let temp = vehicleslist
+               // console.log("vehickelost pass",vehicleslist)
+                console.log("vehcle api data",res?.data?.body)
+                setvehicleslist(res?.data?.body)
+                // temp  = temp.concat(res?.data?.body)
+                // setvehicleslist([...temp])
+            }
+        }).catch((err) => {
+            console.log('-------------------err getVehicleDetails', err)
+        })
+    };
     return (
         <SafeAreaProvider>
             <SafeAreaView style={styles.container1} />
@@ -107,7 +143,7 @@ const VehicleOwn = ({ navigation, route }) => {
             <Header name="Vehicles Owned" navigation={navigation} onPress={handleGoBack}/>
 
             <View style={styles.ViewContent}>
-                <Vehicles navigation={navigation} vehicle ={route?.params?.vehicle} />
+                <Vehicles navigation={navigation} vehicle ={route?.params?.vehicle} vehicleslist={vehicleslist} />
             </View>
 
 
@@ -118,7 +154,7 @@ const VehicleOwn = ({ navigation, route }) => {
                     setModalReason(true)
                
                 }}
-                Press1={()=>{onsubmit(),setModalVisible(false)}}
+                Press1={()=>{navigation.navigate('Profile'),setModalVisible(false)}}
                 ModalVisible={ModalVisible}
                 setModalVisible={setModalVisible}
                 onPressOut={() => {

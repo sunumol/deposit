@@ -31,7 +31,7 @@ import Image2 from '../../../assets/Images/cakes.svg';
 import { api } from '../../../Services/Api';
 import { useSelector } from 'react-redux';
 
-const DetailChecks = ({ navigation, setState,setImagedata1 }) => {
+const DetailChecks = ({ navigation, setState, setImagedata1 }) => {
 
     const isDarkMode = true;
     const [text, onChangeText] = useState('');
@@ -47,7 +47,7 @@ const DetailChecks = ({ navigation, setState,setImagedata1 }) => {
     const [UploadStatus, setUploadStatus] = useState(false)
     const [NameStatus, setNamestatus] = useState(false)
 
-    const [delf,setDelf] = useState(false)
+    const [delf, setDelf] = useState(false)
     const { height, width } = Dimensions.get('screen');
 
     useEffect(() => {
@@ -56,7 +56,7 @@ const DetailChecks = ({ navigation, setState,setImagedata1 }) => {
     }, [])
 
 
- 
+
 
 
 
@@ -68,17 +68,17 @@ const DetailChecks = ({ navigation, setState,setImagedata1 }) => {
         console.log('api called')
 
         const data = {
-               "activityId": activityId
-        
+            "activityId": activityId
+
 
         }
         await api.getHousePhoto(data).then((res) => {
             console.log('-------------------get house photo', res?.data?.body)
             if (res?.data?.body) {
                 console.log('555')
-            setImage(res?.data?.body)
-            setImagedata1(res?.data?.body)
-            setDelf(true) 
+                setImage(res?.data?.body)
+                setImagedata1(res?.data?.body)
+                setDelf(true)
             }
         }).catch((err) => {
             console.log('-------------------err get house', err?.response)
@@ -89,26 +89,26 @@ const DetailChecks = ({ navigation, setState,setImagedata1 }) => {
 
 
 
-        // ------------------save and update residence owner detail ------------------
+    // ------------------save and update residence owner detail ------------------
 
-        const saveHousePhoto = async () => {
-            console.log('api called')
-    
-            const data = {
-                "activityId": activityId,
-                "imageUrl": Image1,
-             
+    const saveHousePhoto = async () => {
+        console.log('api called',Image1,activityId)
+
+        const data = {
+            "activityId": activityId,
+            "housePhotoUrl": Image1,
+
+        }
+        await api.saveHousePhoto(data).then((res) => {
+            console.log('-------------------res  update house photo', res)
+            if (res?.status) {
+                navigation.navigate('DLECompleted')
             }
-            await api.saveHousePhoto(data).then((res) => {
-                console.log('-------------------res  update house photo', res)
-                if (res?.status) {
-                   navigation.navigate('DLECompleted')
-                }
-            }).catch((err) => {
-                console.log('-------------------err  update House photo', err?.response)
-            })
-        };
-        // ------------------ ------------------
+        }).catch((err) => {
+            console.log('-------------------err  update House photo', err?.response)
+        })
+    };
+    // ------------------ ------------------
 
     const UploadImage = () => {
 
@@ -120,33 +120,33 @@ const DetailChecks = ({ navigation, setState,setImagedata1 }) => {
         }).then(image => {
             console.log("IMAGE", image.path);
             setImage(image.path)
-            
+
             setUploadStatus(false)
-            setDelf(true) 
+            setDelf(true)
             uploadFile(image.path, image)
         });
     }
 
 
     const DeleteImageModal = () => {
-        
+
         setModalVisible2(true)
-   
+
     }
 
     const DeleteImage = () => {
-       
 
-            setModalVisible2(false)
-            setDelf(false)
-            setImage("")
-   
+
+        setModalVisible2(false)
+        setDelf(false)
+        setImage("")
+
     }
 
 
 
     async function uploadFile(imagevalue, image) {
-        console.log('api called')
+        console.log('api called frm',imagevalue,image.mime)
         let data = new FormData();
         data.append('multipartFile', {
             name: 'aaa.jpg',
@@ -163,6 +163,7 @@ const DetailChecks = ({ navigation, setState,setImagedata1 }) => {
             }
         }).catch((err) => {
             console.log('-------------------err file upload', err)
+            console.log("image type",imagevalue,image.mime)
         })
     };
     // ------------------ HomeScreen Api Call End ------------------
@@ -172,18 +173,18 @@ const DetailChecks = ({ navigation, setState,setImagedata1 }) => {
         <View style={styles.mainContainer}>
 
             <ScrollView>
-               
-
-            
-
-                <TouchableOpacity style={styles.UploadCard}  onPress={() =>{  UploadImage()}} >
 
 
-                            <View style={{ alignItems: 'flex-start', flex: 1, marginLeft: 25 }}>
-                                
-                                    <Media width={30} height={30} />
-                               
-                            </View> 
+
+
+                <TouchableOpacity style={styles.UploadCard} onPress={() => { UploadImage() }} >
+
+
+                    <View style={{ alignItems: 'flex-start', flex: 1, marginLeft: 25 }}>
+
+                        <Media width={30} height={30} />
+
+                    </View>
                     <View style={styles.Line} />
                     <View style={{ flexDirection: 'column', left: -20 }}>
                         <Text style={[styles.UploadText, { color: NameStatus ? '#1A051D' : '#808080' }]}>Upload photo</Text>
@@ -195,21 +196,21 @@ const DetailChecks = ({ navigation, setState,setImagedata1 }) => {
                     </View>
                 </TouchableOpacity>
 
-{console.log('6666',delf)}
+                {console.log('6666', delf)}
                 {delf ?
-                            <View style={{ justifyContent: 'center', alignItems: 'center', paddingBottom: 11.5 }}>
-                                <TouchableOpacity onPress={() => DeleteImageModal()}  >
-                                    <Icon1 name="closecircleo" color="#BDBDBD" size={25} />
-                                </TouchableOpacity></View> :
-                              null}
+                    <View style={{ justifyContent: 'center', alignItems: 'center', paddingBottom: 11.5 }}>
+                        <TouchableOpacity onPress={() => DeleteImageModal()}  >
+                            <Icon1 name="closecircleo" color="#BDBDBD" size={25} />
+                        </TouchableOpacity></View> :
+                    null}
 
+                <View style={[Image1 ? styles.ViewH: {}]}>
 
+                    <View style={{ alignItems: 'center', flex: 0, }}>
+                        <Image source={{ uri: Image1 ? Image1 : null }} style={{ width: width * 0.55, height: width * 0.5, borderRadius: 2 }} />
+                    </View>
 
-                               <View   style={{ alignItems: 'center', flex: 1,  marginHorizontal:width * 0.3 }}>
-                                <Image source={{ uri:Image1 ? Image1 :null }} style={{ width: width * 0.5, height: width * 0.5, borderRadius: 6 }} />
-                                </View>
-              
-        
+                </View>
 
 
 
@@ -217,9 +218,9 @@ const DetailChecks = ({ navigation, setState,setImagedata1 }) => {
 
             <View style={{ position: 'absolute', left: 0, right: 0, bottom: 0, alignItems: 'center', justifyContent: 'center' }}>
                 <TouchableOpacity onPress={() => Image1 ? saveHousePhoto() : console.log("helo")}
-                    style={[styles.Button1, { backgroundColor:  Image1 ? COLORS.colorB : 'rgba(224, 224, 224, 1)' }]}
+                    style={[styles.Button1, { backgroundColor: Image1 ? COLORS.colorB : 'rgba(224, 224, 224, 1)' }]}
                 >
-                    <Text style={[styles.text1, { color:  Image1 ? COLORS.colorBackground : '#979C9E' }]}>Continue</Text>
+                    <Text style={[styles.text1, { color: Image1 ? COLORS.colorBackground : '#979C9E' }]}>Submit</Text>
                 </TouchableOpacity>
             </View>
             <DeleteModal
@@ -243,6 +244,15 @@ const styles = StyleSheet.create({
         flex: 1
         // justifyContent:'center',
         //  alignItems:'center'
+    },
+    ViewH: {
+        backgroundColor: 'rgba(224, 224, 224, 0.3)',
+        width: width * 0.88,
+        left: 2,
+        height: width * 0.58,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 10
     },
     proof: {
         color: 'rgba(59, 61, 67, 1)',
