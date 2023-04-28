@@ -134,7 +134,9 @@ const ForgotPin = ({ navigation }) => {
             setStatus(false)
             if (err?.response?.data?.message === 'Maximum number of OTPs are exceeded. Please try after 30 minutes.') {
                 setMaxError(true)
-
+                setTimeout(() => {
+                    setMaxError(false)   
+                }, 3000);
             }
         })
     }
@@ -200,12 +202,16 @@ const ForgotPin = ({ navigation }) => {
         const firstDigitStr = String(PhoneNum)[0];
         if (PhoneNum?.length != 10 || PhoneNum == "") {
             setModalVisible1(true)
+            setPhoneNum('')
         } else if (firstDigitStr === '1' || firstDigitStr === '2' || firstDigitStr === '3' || firstDigitStr === '4' || firstDigitStr === '5' || firstDigitStr === '0') {
             setModalVisible1(true)
+            setPhoneNum('')
         } else if (verifyPhone(PhoneNum)) {
             setModalVisible1(true)
+            setPhoneNum('')
         } else if (!(/^\d{10}$/.test(PhoneNum))) {
             setModalVisible1(true)
+            setPhoneNum('')
         }
         else {
             forgotApiCall()
@@ -258,6 +264,9 @@ const ForgotPin = ({ navigation }) => {
                 setOtpFetch(false)
                 setStatus(false)
                 setOtpAvailable(true)
+                setTimeout(() => {
+                    setMaxError(false)   
+                }, 3000);
             }
             if (err?.response?.data?.message === 'the device ID is already existing in the DB.') {
                 setModalVisibleError(true)

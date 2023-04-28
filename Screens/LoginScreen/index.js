@@ -55,7 +55,7 @@ const LoginScreen = ({ navigation }) => {
     const [OtpValue, setOtpValue] = useState('')
     const [PhoneNum, setPhoneNum] = useState(null)
     const [lang, setLang] = useState('')
-    const [timerCount, setTimer] = useState(30)
+    const [timerCount, setTimer] = useState(0)
     const [isExpired, setIsExpired] = useState(false)
     const [ModalVisible, setModalVisible] = useState(false)
     const [ModalVisible1, setModalVisible1] = useState(false)
@@ -186,23 +186,33 @@ const LoginScreen = ({ navigation }) => {
 
     const GETOTP_Validation = () => {
         setOtpclick(false)
-
         const firstDigitStr = String(PhoneNum)[0];
         if (PhoneNum?.length != 10 || PhoneNum == "") {
+            setModalVisible1(true)
+            setPhoneNum('')
             setButton(true)
             setOtpclick(true)
-            setModalVisible1(true)
         } else if (firstDigitStr === '1' || firstDigitStr === '2' || firstDigitStr === '3' || firstDigitStr === '4' || firstDigitStr === '5' || firstDigitStr === '0') {
             setModalVisible1(true)
+            setPhoneNum('')
+            setButton(true)
+            setOtpclick(true)
         } else if (verifyPhone(PhoneNum)) {
             setModalVisible1(true)
+            setPhoneNum('')
+            setButton(true)
+            setOtpclick(true)
         } else if (!(/^\d{10}$/.test(PhoneNum))) {
             setModalVisible1(true)
+            setPhoneNum('')
+            setButton(true)
+            setOtpclick(true)
         }
         else {
             LoginApiCall()
         }
     }
+
 
     const getOtp = () => {
         //bug fixing privacy policy and tc back navigation
@@ -280,7 +290,9 @@ const LoginScreen = ({ navigation }) => {
                 setIsOtp1(true)
                 getOtp();
                 setTimer(30)
+                setOtpclick(false)
                 setPhoneChange(true)
+               
             }
         }).catch((err) => {
             console.log("err Login->", err?.response)
@@ -294,6 +306,10 @@ const LoginScreen = ({ navigation }) => {
                     setIsOtp1(true)
                     setStatus(false)
                     setMaxError(true)
+                    setTimeout(() => {
+                        setMaxError(false)  
+                        setTimer(0)  
+                    }, 3000);
                 } else if (err?.response?.data?.message === 'Please enter valid agent mobile number') {
                     setModalVisible1(true)
                     setButton(true)
@@ -322,10 +338,8 @@ const LoginScreen = ({ navigation }) => {
             );
             if (granted === PermissionsAndroid.RESULTS.GRANTED) {
                 setPermissions(true)
-                AsyncStorage.setItem('PermissionMessage', true);
             } else {
                 setPermissions(false)
-                AsyncStorage.setItem('PermissionMessage', false);
             }
         } catch (err) {
             console.warn(err);
@@ -455,19 +469,22 @@ const LoginScreen = ({ navigation }) => {
         }
         await api.resendLoginOtp(data).then((res) => {
             if (res?.data?.status) {
-                console.log('response Login Api', res.data)
+                console.log('response Login Api', res?.data)
                 CountDownResend()
                 setOtpFetch(true)
                 setMaxError(false)
                 setOtpclick(false)
                 setPhoneChange(true)
             } else {
-                console.log(res?.data)
+                console.log(res?.data?.status)
             }
         }).catch((err) => {
-            console.log("err->", err.response)
-            if (err?.response?.data?.message) {
+            console.log("err->", err?.response)
+            if (err?.response?.data?.message === 'Maximum number of OTPs are exceeded. Please try after 30 minutes.') {
                 setMaxError(true)
+                setTimeout(() => {
+                    setMaxError(false)   
+                }, 3000);
             }
         })
     }

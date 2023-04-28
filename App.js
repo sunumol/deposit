@@ -13,7 +13,6 @@ import { baseReducer } from './Redux/Reducer';
 
 const Store = createStore(baseReducer)
 
-
 const App = () => {
 
   LogBox.ignoreAllLogs();
