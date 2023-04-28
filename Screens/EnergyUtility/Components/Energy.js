@@ -24,36 +24,36 @@ import { api } from '../../../Services/Api';
 import { useSelector } from 'react-redux';
 const { height, width } = Dimensions.get('screen');
 
-const Energy = ({ navigation,setAmount1,setPurpose1,setDays1,setCustomerId,setEnergyUtilityId  }) => {
+const Energy = ({ navigation, setAmount1, setPurpose1, setDays1, setCustomerId, setEnergyUtilityId }) => {
     const [Amount, setAmount] = useState('')
     const [ModalVisible, setModalVisible] = useState(false)
     const [Purpose, setPurpose] = useState('')
     const [days, setDays] = useState('')
-    const [utilities,setUtilities] = useState('') 
-    const [relationShip,setRelationship] = useState('')
+    const [utilities, setUtilities] = useState('')
+    const [relationShip, setRelationship] = useState('')
     const [Buttons, setButtons] = useState(false)
     const activityId = useSelector(state => state.activityId);
+    const [ZeroStatus, setZeroStatus] = useState(false)
 
-
-    useEffect(()=>{
+    useEffect(() => {
         getEnergyUtilities()
         getSpousedetail()
-    },[])
-      // ------------------spouse detail ------------------
+    }, [])
+    // ------------------spouse detail ------------------
 
-      const getSpousedetail = async () => {
+    const getSpousedetail = async () => {
         console.log('api called')
 
         const data = {
-               "activityId": activityId
-           
+            "activityId": activityId
+
 
         }
         await api.getSpousedetail(data).then((res) => {
             console.log('-------------------res spousedetail', res)
             if (res?.status) {
-               setRelationship('Spouse')
-              // setRelationship('Customer')
+                setRelationship('Spouse')
+                // setRelationship('Customer')
             }
         }).catch((err) => {
             console.log('-------------------err spousedetail', err?.response)
@@ -63,88 +63,98 @@ const Energy = ({ navigation,setAmount1,setPurpose1,setDays1,setCustomerId,setEn
     // ------------------ ------------------
 
 
-        // ------------------getEnergyUtilities detail ------------------
+    // ------------------getEnergyUtilities detail ------------------
 
-        const getEnergyUtilities = async () => {
-            console.log('api called')
-    
-            const data = {
-                   "activityId": activityId
-                
-    
-            }
-            await api.getEnergyUtilities(data).then((res) => {
-                console.log('-------------------res getEnergyUtilities', res?.data?.body)
-                if (res?.status) {
-                    setUtilities(res?.data?.body)
-                    setAmount(res?.data?.body?.averageElectrictyBill)
-                    setPurpose(res?.data?.body?.cookingFuelType)
-                    setDays(res?.data?.body?.cylinderLastingDays)
-                    setAmount1(res?.data?.body?.averageElectrictyBill)
-                    setPurpose1(res?.data?.body?.cookingFuelType)
-                    setDays1(res?.data?.body?.cylinderLastingDays)
-                    setCustomerId(res?.data?.body?.customerId)
-                    setEnergyUtilityId(res?.data?.body?.energyUtilityId)
-                }
-            }).catch((err) => {
-                console.log('-------------------err getEnergyUtilities', err?.response)
-            })
-        };
-        // ------------------ ------------------
+    const getEnergyUtilities = async () => {
+        console.log('api called')
+
+        const data = {
+            "activityId": activityId
 
 
-
-// ------------------getEnergyUtilities detail ------------------
-
-const saveEnergyUtilities = async () => {
-    console.log('api called')
-
-    const data = {
-        "activityId": activityId,
-        "customerId": utilities.customerId,
-        "energyUtilityId": utilities.energyUtilityId,
-        "averageElectrictyBill": Amount,
-        "cookingFuelType": Purpose,
-        "cylinderLastingDays":days
-
-    }
-    await api.saveEnergyUtilities(data).then((res) => {
-        console.log('-------------------res saveEnergyUtilities', res)
-        if (res?.status) {
-            navigation.navigate('IncomeDetails',{relationShip: relationShip})
         }
-    }).catch((err) => {
-        console.log('-------------------err saveEnergyUtilities', err?.response)
-    })
-};
-// ------------------ ------------------
+        await api.getEnergyUtilities(data).then((res) => {
+            console.log('-------------------res getEnergyUtilities', res?.data?.body)
+            if (res?.status) {
+                setUtilities(res?.data?.body)
+                setAmount(res?.data?.body?.averageElectrictyBill)
+                setPurpose(res?.data?.body?.cookingFuelType)
+                setDays(res?.data?.body?.cylinderLastingDays)
+                setAmount1(res?.data?.body?.averageElectrictyBill)
+                setPurpose1(res?.data?.body?.cookingFuelType)
+                setDays1(res?.data?.body?.cylinderLastingDays)
+                setCustomerId(res?.data?.body?.customerId)
+                setEnergyUtilityId(res?.data?.body?.energyUtilityId)
+            }
+        }).catch((err) => {
+            console.log('-------------------err getEnergyUtilities', err?.response)
+        })
+    };
+    // ------------------ ------------------
 
-useEffect(() => {
-    console.log('Use.....', Amount, days, Purpose)
 
-    if(Purpose == 'LPG Cylinder'){
-         if ((Amount === ''||Amount ===  null) || (Purpose === ''||Purpose === null )|| (days === ''|| days ===  null)) {
-        setButtons(false)
-    } else {
-        setButtons(true)
-    }}else{
-        if ((Amount === ''|| Amount ===  null) || (Purpose === ''|| Purpose === null )) {
-            setButtons(false)
+
+    // ------------------getEnergyUtilities detail ------------------
+
+    const saveEnergyUtilities = async () => {
+        console.log('api called')
+
+        const data = {
+            "activityId": activityId,
+            "customerId": utilities.customerId,
+            "energyUtilityId": utilities.energyUtilityId,
+            "averageElectrictyBill": Amount,
+            "cookingFuelType": Purpose,
+            "cylinderLastingDays": days
+
+        }
+        await api.saveEnergyUtilities(data).then((res) => {
+            console.log('-------------------res saveEnergyUtilities', res)
+            if (res?.status) {
+                navigation.navigate('IncomeDetails', { relationShip: relationShip })
+            }
+        }).catch((err) => {
+            console.log('-------------------err saveEnergyUtilities', err?.response)
+        })
+    };
+    // ------------------ ------------------
+
+    useEffect(() => {
+        console.log('Use.....', Amount, days, Purpose)
+
+        if (Purpose == 'LPG Cylinder') {
+            if ((Amount === '' || Amount === null) || (Purpose === '' || Purpose === null) || (days === '' || days === null)) {
+                setButtons(false)
+            } else {
+                setButtons(true)
+            }
         } else {
-            setButtons(true)
-        } 
-    }
-}, [Amount, days, Purpose])
+            if ((Amount === '' || Amount === null) || (Purpose === '' || Purpose === null)) {
+                setButtons(false)
+            } else {
+                setButtons(true)
+            }
+        }
+    }, [Amount, days, Purpose])
+
+    // useEffect(() => {
+    //     if (Number(Amount) == 0) {
+    //         setZeroStatus(true)
+    //     } else {
+    //         setZeroStatus(false)
+    //     }
+    // }, [Amount])
+
     return (
 
         <>
             <View style={styles.mainContainer}>
                 <ScrollView>
-                 
+
                     <View>
                         <Text style={styles.TextElect}>Average electricity bill amount</Text>
                     </View>
-                  
+
                     <View style={styles.SelectBox}>
                         <Text style={[styles.RS, { color: Amount === '' ? '#808080' : '#1A051D' }]}>₹</Text>
                         <TextInput
@@ -153,12 +163,26 @@ useEffect(() => {
                             keyboardType={'number-pad'}
                             maxLength={5}
                             onChangeText={(text) => {
-                                if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(text) || text === "") {
+                                setZeroStatus(false)
+                              //  setAmount(text)
+                                // const firstDigitStr = String(num)[0];
+                                if(text === ''){
+                                    setZeroStatus(false)
+                                }
+                                else if (Number(text) == 0) {
+
+                                    setZeroStatus(true)
+                                    console.log("number log", text)
+                                }
+                                else if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(text) || text === "") {
                                     setAmount(text)
+                                    setZeroStatus(false)
                                 }
                             }
-                               } />
+                            } />
                     </View>
+                    {ZeroStatus &&
+                        <Text style={{ color: 'red', fontSize: 9, paddingTop: 3, fontFamily: FONTS.FontRegular }}>Amount cannot be ₹0</Text>}
                     <View>
                         <Text style={styles.TextElect}>Cooking fuel type</Text>
                     </View>
@@ -175,7 +199,7 @@ useEffect(() => {
                             <Text style={styles.TextElect}>Average days a cylinder will last</Text>
                         </View>}
 
-                    {(Purpose == 'LPG Cylinder'|| Purpose == 'LPG Cylender' ) &&
+                    {(Purpose == 'LPG Cylinder' || Purpose == 'LPG Cylender') &&
                         <View style={styles.SelectBox}>
                             <TextInput
                                 placeholder="Enter number of days"
@@ -187,16 +211,16 @@ useEffect(() => {
                                 onChangeText={(text) => {
                                     if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(text) || text === "") {
                                         setDays(text),
-                                        setDays1(text)
+                                            setDays1(text)
                                     }
                                 }
                                 } />
                         </View>}
                 </ScrollView>
                 <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                    <TouchableOpacity style={[styles.buttonView, { backgroundColor: Buttons ? COLORS.colorB: 'rgba(224, 224, 224, 1)' }]}
-                        onPress={() =>saveEnergyUtilities()}>
-                        <Text style={[styles.continueText, { color: Buttons ? COLORS.colorBackground :'rgba(151, 156, 158, 1)' }]}>Continue</Text>
+                    <TouchableOpacity style={[styles.buttonView, { backgroundColor: Buttons ? COLORS.colorB : 'rgba(224, 224, 224, 1)' }]}
+                        onPress={() => saveEnergyUtilities()}>
+                        <Text style={[styles.continueText, { color: Buttons ? COLORS.colorBackground : 'rgba(151, 156, 158, 1)' }]}>Continue</Text>
                     </TouchableOpacity>
                 </View>
             </View>

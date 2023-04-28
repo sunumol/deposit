@@ -28,7 +28,10 @@ const ActiveTab = (props) => {
         return color;
     }
 
-
+    String.prototype.replaceAt = function (index, replacement) {
+        return this.substring(0, index) + replacement + this.substring(index + replacement.length);
+    }
+    
     const getInitials = (name) => {
         let initials;
         const nameSplit = name?.split(" ");
@@ -145,7 +148,7 @@ const ActiveTab = (props) => {
                 <View style={{ flexDirection: 'column', paddingTop: 5, alignItems: 'flex-end' }}>
                     <View style={{ flexDirection: 'row' }}>
                         <Icon2 name="phone-in-talk-outline" color={"black"} size={15} />
-                        <Text style={[styles.numText, { paddingLeft: 6 }]}>{props?.phoneNumber}</Text>
+                        <Text style={[styles.numText, { paddingLeft: 6 }]}>{props?.phoneNumber.replace(/^.{0}/g, '').replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X").replaceAt(8,'X').replaceAt(9,'X').replaceAt(10,'X')}</Text>
                     </View>
                     {props?.details?.purpose === 'Leads Follow Up' &&
                         <TouchableOpacity 
