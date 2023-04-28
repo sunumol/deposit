@@ -117,13 +117,14 @@ const IncomeDetails = ({ navigation, route }) => {
     }, [MonthsCustom, Purpose, Salary])
 
     useEffect(() => {
-        console.log('Use.....', Amount, Avg, Month)
+        console.log('Use.....', Purpose,Amount,Avg)
         if ((Amount === null || Amount === '' ) || (Avg === null || Avg ===  '') ||( Month === null ||  Month === '' || Purpose  ===  '' || Purpose === null)) {
+            console.log("inside valid")
             setButtons(false)
         } else {
             setButtons(true)
         }
-    }, [Amount, Avg, Month])
+    }, [Amount, Avg, Month,Purpose])
 
 
 
@@ -198,6 +199,36 @@ const IncomeDetails = ({ navigation, route }) => {
                 } else {
                     navigation.navigate('Proceed')
                 }
+                // navigation.navigate('DebitDetails')
+            }
+        }).catch((err) => {
+            console.log('-------------------err saveIncomeDetails', err?.response)
+        })
+    };
+    // ------------------ ------------------
+
+
+
+
+    // ------------------saveIncomeDetails detail ------------------
+
+    const saveIncomeDetails_BackAction = async () => {
+        console.log('api called')
+
+        const data = {
+            "activityId": activityId,
+            "relationShip": relationShip,
+            "field1": Amount,
+            "field2": Month,
+            "field3": Avg
+
+        }
+        await api.saveIncomeDetails(data).then((res) => {
+            console.log('-------------------res saveIncomeDetails', res?.data?.body)
+            if (res?.status) {
+            
+                    navigation.navigate('Profile')
+             
                 // navigation.navigate('DebitDetails')
             }
         }).catch((err) => {
@@ -342,7 +373,13 @@ const IncomeDetails = ({ navigation, route }) => {
                                     style={[{ fontSize: 14, color: '#1A051D', fontFamily: FONTS.FontRegular, left: 5, width: '95%' }]}
                                     value={Avg?.toString()}
                                     keyboardType={'number-pad'}
-                                    onChangeText={(text) => setAvg(text)} />
+                                    maxLength={5}
+                                    onChangeText={(text) =>{ 
+                                      
+                                        if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(text) || text === "") {
+                                            setAvg(text)
+                                        }
+                                    }} />
                             </View>
                         </View>
                     </ScrollView>
@@ -368,7 +405,7 @@ const IncomeDetails = ({ navigation, route }) => {
                         setModalReason(true)
 
                 }}
-                Press1={() => { saveIncomeDetails(), setModalVisible1(false) }}
+                Press1={() => { saveIncomeDetails_BackAction(), setModalVisible1(false) }}
                 ModalVisible={ModalVisible1}
                 setModalVisible={setModalVisible1}
                 onPressOut={() => {

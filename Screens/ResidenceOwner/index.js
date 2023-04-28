@@ -113,6 +113,31 @@ const ResidenceOwner = ({ navigation, }) => {
 
 
 
+// device back api call------------------
+
+const UpdateResidenceowner_backButton = async () => {
+    console.log('api called',activityId,proofType,imageurl,relation,relative)
+
+    const data = {
+        "activityId": activityId,
+        "ownerShipProofType": proofType == 'Electricity Bill' ? 'ELECTRICITY_BILL' : proofType == 'Water Bill' ? 'WATER_BILL' : 'BUILDING_TAX_RECEIPT',
+        "imageUrl": imageurl,
+        "relationShipWithCustomer": relation,
+        "ownersName": relative
+    }
+    await api.UpdateResidenceowner(data).then((res) => {
+        console.log('-------------------res  update Residence owner', res)
+        if (res?.status) {
+          
+           // navigation.navigate('ContinuingGuarantor') 
+           navigation.navigate('Profile') 
+
+        }
+    }).catch((err) => {
+        console.log('-------------------err  update Residence Owner', err?.response)
+    })
+};
+
 
 
 
@@ -155,7 +180,7 @@ const ResidenceOwner = ({ navigation, }) => {
                     setModalReason(true)
                
                 }}
-                Press1={()=>{UpdateResidenceowner(),setModalVisible(false)}}
+                Press1={()=>{UpdateResidenceowner_backButton(),setModalVisible(false)}}
                 ModalVisible={ModalVisible}
                 setModalVisible={setModalVisible}
                 onPressOut={() => {

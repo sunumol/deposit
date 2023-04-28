@@ -56,7 +56,7 @@ const CgtModal = ({ ModalVisible, onPressOut, setModalVisible, onPress, navigati
                     //     routes: [{name: 'NewCgt'}],
                     // });
                     
-                   navigation.navigate('NewCgt')
+                   navigation.navigate('Profile')
                 }}>
                     <Text style={styles.buttonTextStyle}>{t('common:Okay')}</Text>
                 </TouchableOpacity>

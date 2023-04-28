@@ -1,21 +1,29 @@
-import React, { useCallback, useState } from 'react';
-import { Text, View, StyleSheet, BackHandler, SafeAreaView, StatusBar, TextInput, Image } from 'react-native';
-import { COLORS, FONTS } from '../../Constants/Constants';
-import Header from '../../Components/RepayHeader';
-import { useFocusEffect } from '@react-navigation/native';
+import React, { useCallback, useState, useEffect } from 'react';
+import { Text, View, StyleSheet, BackHandler, SafeAreaView, StatusBar, TextInput, ScrollView, ActivityIndicator } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+// ---------- Component Imports --------------
+import Header from '../../Components/RepayHeader';
+import { useFocusEffect } from '@react-navigation/native';
+import { COLORS, FONTS } from '../../Constants/Constants';
+import { api } from '../../Services/Api'
 import Statusbar from '../../Components/StatusBar';
-import Profile from './Images/pro1.svg'
+import moment from 'moment';
+
+// ---------- Image Imports --------------
+import Profile from './Images/Pic1.svg'
+
 
 const ProfileScreen = ({ navigation }) => {
     const isDarkMode = true;
     const { t } = useTranslation();
-    const [Join, onChangeJoin] = useState('10 Dec ‘21');
-    const [mobile, onChangeMobile] = useState('8089XXXX98');
-    const [address, onChangeAddress] = useState('Example House,\nKakkanad P.O Kochi');
-    const [aadhar, onChangeAadhar] = useState('4447XXXX3177');
-    const [voter, onChangeVoter] = useState('TU4XXXX9099');
+
+    const [details, SetDetails] = useState()
+    const [custID, setCustId] = useState('S00001')
+    const [status, setStatus] = useState(true)
+
 
     const handleGoBack = useCallback(() => {
         navigation.goBack()
@@ -30,80 +38,129 @@ const ProfileScreen = ({ navigation }) => {
                 BackHandler.removeEventListener('hardwareBackPress', handleGoBack);
         }, [handleGoBack]),
     );
+
+    useEffect(() => {
+        AsyncStorage.getItem("CustomerId").then((value) => {
+            setCustId(value)
+            console.log("value", custID)
+        })
+    }, [])
+
+    useEffect(() => {
+        getProfileDetails()
+    }, [custID])
+
+
+    //.............Profile api calling.........//
+
+    async function getProfileDetails() {
+
+        await api.getAgentProfile(custID).then((res) => {
+            console.log('-------------------res', res)
+            if (res?.status == 200) {
+                SetDetails(res?.data?.body)
+                setStatus(false)
+                console.log('-------------------res of profile', res?.data?.body)
+            }
+        })
+            .catch((err) => {
+                setStatus(false)
+                console.log('-------------------err', err?.response)
+            })
+    }
+
     return (
         <SafeAreaProvider>
             <SafeAreaView style={styles.container1} />
             <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} backgroundColor="#002B59" />
 
-            <Header name={t('common:Profile')} navigation={navigation} onPress={handleGoBack} />
-            <View style={styles.mainContainer}>
-                <View style={styles.boxShadow}>
-                    <View style={{
-                        borderWidth: 4, borderRadius: 35, borderColor: "#A5AFFB", alignItems: 'center', justifyContent: 'center',
-                        width: 70, height: 70
-                    }}>
-                        <Image source={require('./Images/PRO1.png')}
-                            style={{ width: 62, height: 62, borderRadius: 31 }} />
-                    </View>
-                    {/* */}
-                    <View style={{ flexDirection: 'column', paddingLeft: 19 }}>
-                        <Text style={styles.nameText}>Soumi Joseph</Text>
-                        <Text style={styles.idText}>SM0012</Text>
-                    </View>
-                </View>
+            <Header name={t('common:Profile')} navigation={navigation} />
+            {status ?
+                <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1, }}>
+                    <ActivityIndicator size={30} color={COLORS.colorB} />
+                </View> :
+                <ScrollView showsVerticalScrollIndicator={false}>
+                    <View style={styles.mainContainer}>
+                        <View style={styles.boxShadow}>
+                            <View style={styles.ProfileView}>
+                                <Profile />
+                            </View>
+                            <View style={{ flexDirection: 'column', paddingLeft: 19 }}>
+                                <Text style={styles.nameText}>Athira Anil</Text>
+                                <Text style={styles.idText}>{details?.id}</Text>
+                            </View>
+                        </View>
+                        <View style={{ marginTop: 24 }}>
+                            <Text style={styles.mobileText}>{t('common:MobileNum')}</Text>
+                            <TextInput
+                                style={styles.TextInputStyle}
+                                value={details?.mobile}
+                                editable={false}
+                            />
+                        </View>
 
-                <View style={{ marginTop: 24 }}>
-                    <Text style={styles.mobileText}>Date of join</Text>
-                    <TextInput
-                        style={[styles.TextInputStyle, { height: 45 }]}
-                        onChangeText={onChangeJoin}
-                        value={Join}
-                        editable={false}
-                    />
-                </View>
-                <View style={{ marginTop: 24 }}>
-                    <Text style={styles.mobileText}>{t('common:MobileNum')}</Text>
-                    <TextInput
-                        style={[styles.TextInputStyle, { height: 45 }]}
-                        onChangeText={onChangeMobile}
-                        value={mobile}
-                        editable={false}
-                    />
-                </View>
-                <View style={{ marginTop: 24 }}>
-                    <Text style={styles.mobileText}>{t('common:AddressB')}</Text>
-                    <TextInput
-                        style={[styles.TextInputStyle, {}]}
-                        onChangeText={onChangeAddress}
-                        value={address}
-                        numberOfLines={2}
-                        multiline={true}
-                        editable={false}
-                    />
-                </View>
-                <View style={{ marginTop: 24 }}>
-                    <Text style={styles.mobileText}>{t('common:Adhaar1')}</Text>
-                    <TextInput
-                        style={[styles.TextInputStyle, { height: 45 }]}
-                        onChangeText={onChangeAadhar}
-                        value={aadhar}
-                        editable={false}
-                    />
-                </View>
-                <View style={{ marginTop: 24 }}>
-                    <Text style={styles.mobileText}>{t('common:Voters')}</Text>
-                    <TextInput
-                        style={[styles.TextInputStyle, { height: 45 }]}
-                        onChangeText={onChangeVoter}
-                        value={voter}
-                        editable={false}
-                    />
-                </View>
-            </View>
+                        <View style={{ marginTop: 18 }}>
+                            <Text style={styles.mobileText}>Marital Status</Text>
+                            <TextInput
+                                style={styles.TextInputStyle}
+                                value={details?.maritalStatus}
+                                editable={false}
+                            />
+                        </View>
 
+
+                        <View style={{ marginTop: 18 }}>
+                            <Text style={styles.mobileText}>Date Of Birth</Text>
+                            <View style={[styles.TextInputStyle2, { paddingVertical: 10 }]}>
+                                <Text style={{
+                                    fontFamily: FONTS.FontRegular,
+                                    fontSize: 15,
+                                    fontWeight: '400',
+                                    color: COLORS.colorDark,
+                                }}>{moment(details?.dob).format("DD MMM")} ‘{moment(details?.dob).format('YY')}
+                                </Text>
+
+                            </View>
+
+                        </View>
+
+                        <View style={{ marginTop: 18 }}>
+                            <Text style={styles.mobileText}>{t('common:AddressB')}</Text>
+
+                            <View style={[styles.TextInputStyle2, { paddingVertical: 10 }]}>
+                                <Text style={{
+                                    fontFamily: FONTS.FontRegular,
+                                    fontSize: 15,
+                                    fontWeight: '400',
+                                    color: COLORS.colorDark,
+                                }}>{details?.address}
+                                </Text>
+
+                            </View>
+
+                        </View>
+                        <View style={{ marginTop: 18 }}>
+                            <Text style={styles.mobileText}>Aadhaar ID</Text>
+                            <TextInput
+                                style={styles.TextInputStyle}
+                                value={details?.aadharNumber}
+                                editable={false}
+                            />
+                        </View>
+                        <View style={{ marginTop: 18 }}>
+                            <Text style={styles.mobileText}>PAN No</Text>
+                            <TextInput
+                                style={styles.TextInputStyle}
+                                value={details?.panNumber}
+                                editable={false}
+                            />
+                        </View>
+                    </View>
+                </ScrollView>}
         </SafeAreaProvider>
     );
 }
+
 const styles = StyleSheet.create({
     container1: {
         flex: 0,
@@ -112,10 +169,11 @@ const styles = StyleSheet.create({
     },
     mainContainer: {
         flex: 1,
-        backgroundColor: COLORS.backgroundColor,
+        backgroundColor: COLORS.colorBackground,
         height: '100%',
         paddingHorizontal: 20,
         paddingTop: 16,
+        paddingBottom: 25
     },
     TextInputStyle: {
         fontFamily: FONTS.FontRegular,
@@ -125,9 +183,17 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: COLORS.colorBorder,
         borderRadius: 8,
-        //height: 45,
         paddingHorizontal: 12,
-        marginTop: 7
+        marginTop: 7,
+        backgroundColor: 'rgba(252, 252, 252, 1)'
+    },
+    TextInputStyle2: {
+        borderWidth: 1,
+        borderColor: COLORS.colorBorder,
+        borderRadius: 8,
+        marginTop: 7,
+        paddingHorizontal: 12,
+        backgroundColor: 'rgba(252, 252, 252, 1)'
     },
     mobileText: {
         fontSize: 12,
@@ -150,12 +216,23 @@ const styles = StyleSheet.create({
     },
     boxShadow: {
         paddingVertical: 19,
-        borderWidth: 1,
+        //borderWidth: 0.6,
         borderColor: COLORS.colorBorder,
         borderRadius: 20,
         paddingLeft: 15,
         flexDirection: 'row',
         alignItems: 'center',
+        backgroundColor: COLORS.colorBackground,
+        shadowColor: '#000000',
+        elevation: 4
+    },
+    ProfileView: {
+        backgroundColor: 'rgba(45, 113, 187, 1)',
+        width: 68,
+        height: 68,
+        borderRadius: 34,
+        alignItems: 'center',
+        justifyContent: 'center'
     }
 })
 export default ProfileScreen;

@@ -4,8 +4,8 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { COLORS, FONTS } from '../../../Constants/Constants';
 import { useTranslation } from 'react-i18next';
 
-const EnergyModal = ({ visible, onPressOut,setModalVisible,setPurpose,
-   }) => {
+const EnergyModal = ({ visible, onPressOut, setModalVisible, setPurpose, Purpose
+}) => {
     const { t } = useTranslation();
     return (
 
@@ -27,41 +27,53 @@ const EnergyModal = ({ visible, onPressOut,setModalVisible,setPurpose,
                         <TouchableOpacity style={styles.textTouch}
                             onPress={() => {
                                 setPurpose('LPG Cylinder')
-                            
+
                                 setModalVisible(!visible)
-                             
+
                             }
                             }>
                             <Text style={styles.modalText}>LPG Cylinder</Text>
                             <View style={{ paddingRight: 10 }}>
-                                <Icon
-                                    name="checkbox-blank-circle-outline"
-                                    color={COLORS.DSMuted}
-                                    size={18}
-                                />
+                                {Purpose == 'LPG Cylinder' ?
+                                    <Icon
+                                        name="checkbox-blank-circle"
+                                        color={COLORS.colorB}
+                                        size={18}
+                                    /> :
+                                    <Icon
+                                        name="checkbox-blank-circle-outline"
+                                        color={COLORS.DSMuted}
+                                        size={18}
+                                    />}
                             </View>
                         </TouchableOpacity >
                         <View style={styles.lineView} />
                         <TouchableOpacity style={styles.textTouch} onPress={() => {
                             setPurpose("Others")
                             setModalVisible(!visible)
-                        
+
                         }
                         }>
                             <Text style={styles.modalText}>Others</Text>
                             <View style={{ paddingRight: 10 }}>
+                                {Purpose == 'Others' ?
+                                <Icon
+                                    name="checkbox-blank-circle"
+                                    color={COLORS.colorB}
+                                    size={18}
+                                />:
                                 <Icon
                                     name="checkbox-blank-circle-outline"
                                     color={COLORS.DSMuted}
                                     size={18}
-                                />
+                                />}
                             </View>
                         </TouchableOpacity>
-                   
-                     
-                  
 
-            
+
+
+
+
 
                     </View>
                 </View>
@@ -90,7 +102,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.1,
         elevation: 5,
         shadowRadius: 2,
-   
+
         width: Dimensions.get('window').width,
         paddingBottom: 7
         // height:Dimensions.get('window').height*0.3

@@ -415,7 +415,8 @@ const styles = StyleSheet.create({
         borderRadius: 6,
         flexDirection: 'row',
         marginTop: width * 0.02,
-        marginBottom: width * 0.05
+        marginBottom: width * 0.05,
+     
 
     },
     NAMEFont: {

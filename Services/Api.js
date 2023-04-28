@@ -455,6 +455,16 @@ export const api = {
     })
   },
 
+
+  // ------------------   get agent Profile details---------------------
+  getAgentProfile: data => {
+
+    return axios.get(`${baseURL}agentProfile/${data}`, {
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+  },
   // ------------------ getCorrection details---------------------
   getCorrectionDetails: data => {
     return axios.post(`${baseURL2}getCorrectionPages`, data, {

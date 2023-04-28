@@ -31,10 +31,17 @@ const Energy = ({ navigation }) => {
                             : <LottieView source={require('../Assets/clocktime.json')} autoPlay loop={true} style={{ width: 200, height: 200 }} />
                         }
                     </View>
+
+                    {!ButtonS ?
                     <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                         <Text style={styles.textD1}>Data sent to Customer for verification.</Text>
                         <Text style={styles.textD2}>You may proceed after Customer confirms data.</Text>
-                    </View>
+                    </View>:
+
+                    <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                        <Text style={styles.textD1}>Customer has confirmed the data</Text>
+                        
+                    </View>}
 
                 </ScrollView>
                 <View style={{ alignItems: 'center', justifyContent: 'center' }}>
