@@ -4,7 +4,7 @@ import { COLORS, FONTS } from '../../../Constants/Constants';
 import { useTranslation } from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 const { height, width } = Dimensions.get('screen');
-import Image1 from '../../../assets/image/warning.svg';
+import Image1 from '../../../assets/image/Ex.svg';
 
 
 const ErrorModal = ({ ModalVisible, onPressOut,onPress1 }) => {
@@ -43,13 +43,13 @@ const ErrorModal = ({ ModalVisible, onPressOut,onPress1 }) => {
 
                 <View style={styles.modalContainer}>
                     <View style={{ paddingTop: width * 0.05 }}>
-                        <Image1 width={90} height={50}/>
+                    <Image1 style={{ marginTop: 15, marginBottom: 8 }} height={width*0.07} width={width*0.07}/>
               
                     </View>
 
                     <View style={{ paddingTop: width * 0.03,paddingHorizontal: width *0.05 }}>
                       
-                        <Text style={styles.textdesc}>Vehicle Number is not valid</Text>
+                        <Text style={styles.textdesc}>Vehicle number is not valid</Text>
                     </View>
 
 
@@ -78,10 +78,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     modalContainer: {
-        width: Dimensions.get('window').width * 0.68,
+        width: Dimensions.get('window').width * 0.90,
         height: Dimensions.get('window').width * 0.50,
         backgroundColor: COLORS.colorBackground,
-        borderRadius: 20,
+        borderRadius: 10,
         alignItems: 'center',
         justifyContent: 'center'
     },
@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
         //paddingTop: width * 0.02,
         textAlign: 'center',
         color: "#3B3D43",
-        fontFamily: FONTS.FontBold,
+        fontFamily: FONTS.FontRegular,
     },
 
 });

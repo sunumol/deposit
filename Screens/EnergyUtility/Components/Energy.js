@@ -74,7 +74,7 @@ const Energy = ({ navigation,setAmount1,setPurpose1,setDays1,setCustomerId,setEn
     
             }
             await api.getEnergyUtilities(data).then((res) => {
-                console.log('-------------------res getEnergyUtilities', res?.data?.body?.averageElectrictyBill)
+                console.log('-------------------res getEnergyUtilities', res?.data?.body)
                 if (res?.status) {
                     setUtilities(res?.data?.body)
                     setAmount(res?.data?.body?.averageElectrictyBill)

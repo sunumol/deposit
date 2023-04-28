@@ -156,7 +156,7 @@ const Vehicle = ({ navigation }) => {
                     setSearchvehicledata(res?.data?.body)
                     setSearchStatus2(true)
                 } else {
-                   setVehicleStatus(true)
+                    setModalError(true)
                     setSearchStatus2(false)
                 }
 
@@ -251,7 +251,7 @@ const Vehicle = ({ navigation }) => {
                                 //placeholderTextColor="#808080"
 
                                 onChangeText={(text) => {
-                                    setVehicleStatus(false)
+                                    
                                     OnchangeNumbers(text)
 
 
@@ -266,11 +266,7 @@ const Vehicle = ({ navigation }) => {
                                 <Search />
                             </TouchableOpacity>
                         </TouchableOpacity>
-                        {VehicleStatus &&
-                <Text style={{
-                  fontFamily: FONTS.FontRegular, color: "red", paddingTop: width * 0.01,
-                  fontSize: 12
-                }}>Vehicle data Not Available</Text>}
+              
                         </View>
                         :
                         <View style={styles.SelectBox1}>
