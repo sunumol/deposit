@@ -43,6 +43,17 @@ export const baseReducer = (state = initialState, action) => {
                 ...state, // return the updated state
                 customerID: action.payload  
             }
+
+            case "SET_SELECTED_LOANCUSTOMERID":  // for updating state
+            return {
+                ...state, // return the updated state
+                loancustomerID: action.payload  
+            }
+            case "SET_SELECTED_LOANID":  // for updating state
+            return {
+                ...state, // return the updated state
+                loanID: action.payload  
+            }
          case "SET_CGT_CUSTOMERdETAILS":  // for updating state
             return {
                 ...state, // return the updated state

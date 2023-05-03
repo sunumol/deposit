@@ -15,9 +15,13 @@ import Image1 from '../../../assets/image/a1.svg';
 import Image2 from '../../../assets/image/a2.svg';
 import Image3 from '../../../assets/image/a3.svg';
 import Chart from './Chart';
+import { useSelector } from 'react-redux';
+import { api } from '../../../Services/Api';
 const { height, width } = Dimensions.get('screen');
 
 const Trend = ({ navigation }) => {
+    const LoanID = useSelector(state => state.loanId);
+    const [loantrendlist,setLoantrendlist] = useState('')
     const graphicData = [
         { y: 15724, x: '₹15,724' },
         { y: 31172, x: '₹31,172' },
@@ -44,6 +48,31 @@ const Trend = ({ navigation }) => {
 
     ];
 
+useEffect(()=>{
+getloantrend()},
+[LoanID])
+
+
+      // ------------------ get Customer List Api Call Start ------------------
+  const getloantrend = async () => {
+    console.log('search------->>>>>', )
+    const data = {
+    "loanId":LoanID ? LoanID : 2,
+    "rangeType": "MONTH",
+    "range": "3"
+    };
+    await api.getloantrend(data).then((res) => {
+      console.log('------------------- getloantrend res', res.data.body)
+      setLoantrendlist(res?.data?.body)
+     
+     
+    })
+      .catch((err) => {
+        console.log('------------------- getloantrendlisterr', err?.response)
+       
+      })
+  };
+
     return (
 
         <>
@@ -51,24 +80,24 @@ const Trend = ({ navigation }) => {
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={styles.mainContainer}>
 
-                    <Chart />
+                    <Chart loandetails={loantrendlist?.loanMonthlyTrendDetailsDTOList} />
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', }}>
                         <View style={styles.Cards}>
                             <Image1 top={2} />
                             <Text style={styles.Call}>Calls</Text>
-                            <Text style={styles.numText}>04</Text>
+                            <Text style={styles.numText}>{loantrendlist?.calls ? loantrendlist?.calls : 0}</Text>
                         </View>
 
                         <View style={styles.Cards}>
                             <Image2 top={2} />
                             <Text style={styles.Call}>Visits</Text>
-                            <Text style={styles.numText}>03</Text>
+                            <Text style={styles.numText}>{loantrendlist?.visits ? loantrendlist?.visits : 0}</Text>
                         </View>
 
                         <View style={styles.Cards}>
                             <Image3 top={2} />
                             <Text style={styles.Call}>DPD</Text>
-                            <Text style={styles.numText}>12</Text>
+                            <Text style={styles.numText}>{loantrendlist?.dpd ? loantrendlist?.dpd : 0}</Text>
                         </View>
                     </View>
 
@@ -90,14 +119,14 @@ const Trend = ({ navigation }) => {
                                             style={{
                                                 alignItems: 'flex-start',
                                                 labels: {
-                                                    fill: COLORS.colorDark, fontSize: 12, padding: 5, fontFamily: FONTS.FontRegular
+                                                    fill: '#fff', fontSize: 12, padding: 5, fontFamily: FONTS.FontRegular
                                                 },
                                             }}
                                         />
                                     </View>
 
                                  
-                                    <View style={{ left: -127, top: -25 }}>
+                                    <View style={{ left: -120, top: -25 }}>
                                         <FlatList
                                             data={datas}
                                             renderItem={({ item, index }) => {
@@ -134,7 +163,7 @@ const Trend = ({ navigation }) => {
                                             style={{
                                                 alignItems: 'flex-start',
                                                 labels: {
-                                                    fill: COLORS.colorDark, fontSize: 12, padding: 5, fontFamily: FONTS.FontRegular,
+                                                    fill: '#fff', fontSize: 12, padding: 5, fontFamily: FONTS.FontRegular,
 
                                                 },
                                             }}

@@ -19,9 +19,11 @@ import { VictoryChart, VictoryBar, Bar, handleMouseOver, onMouseOver } from 'vic
 import DropDownPicker from 'react-native-dropdown-picker';
 import { BarChart } from "react-native-gifted-charts";
 import { color } from 'react-native-elements/dist/helpers';
+import moment from 'moment/moment';
 const { height, width } = Dimensions.get('screen');
 
-const Chart = ({ navigation }) => {
+const Chart = ({ navigation,loandetails }) => {
+    console.log('chart======>>>',loandetails)
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState('6 Months')
     const [items, setItems] = useState([
@@ -29,9 +31,11 @@ const Chart = ({ navigation }) => {
         { id: 2, label: '3 Months', value: '3 Months' },
         { id: 3, label: '1 Month', value: '1 Month' }]);
 
+        const [dataSet, setDataSet] = useState([])
+
     const barData = [
         {
-            value: 25,
+            value: 15,
             label: 'Aug',
             frontColor: '#E96B6B',
             spacing: 40,
@@ -94,6 +98,31 @@ const Chart = ({ navigation }) => {
         },
 
     ];
+{console.log(dataSet,'jjkjkjkjk')}
+
+useEffect(() => {
+    console.log('chart======>>>2222222222',loandetails)
+
+    const Datas = [];
+    loandetails?.map((item,index)=>{
+        Datas.push({
+                value:(JSON.parse(moment(item?.data[0]?.dueDate).format('D')))+5,
+                label:  item?.data[0]?.month?.slice(0,3),
+                frontColor: item?.data[0]?.dpd > 0 ? '#E96B6B' : '#7DB091',
+                spacing: 40,
+                labelTextStyle: { color: '#808080', fontSize: 12, fontFamily: FONTS.FontRegular },
+                topLabelComponent: () => (
+        
+                    <Text style={{ top: -6, fontSize: 9, color: COLORS.colorDark, fontFamily: FONTS.FontRegular, }}>{item?.data[0]?.dpd > 0 ? item?.data[0]?.dpd  :''}</Text>
+        
+                )
+                })
+    })
+    console.log('chart======>>>77777',Datas)
+    setDataSet(Datas)
+
+  }, [loandetails]);
+
 
     const barData1 = [{ value: 15 }, { value: 30 }, { value: 26 }, { value: 40 }];
     return (
@@ -185,16 +214,19 @@ const Chart = ({ navigation }) => {
                     </View>
                 </View>
 
-                <BarChart
+            
+
+
+<BarChart
                     barWidth={12}
-                    noOfSections={4}
-                    //stepHeight={25}
+                    noOfSections={5}
+                    maxValue={30}
                     barBorderRadius={10}
                     frontColor="lightgray"
-                    data={barData}
+                    data={dataSet}
                     initialSpacing={20}
                     stepValue={5}
-                    yAxisLabelTexts={[' ', '05', '10', '15', '30']}
+                    yAxisLabelTexts={[' ',' ', '05', '10', '15', '30']}
                     yAxisThickness={0.9}
                     xAxisThickness={1}
                     height={100}
@@ -209,7 +241,7 @@ const Chart = ({ navigation }) => {
                     // yAxisIndicesColor={'red'}
                     // yAxisIndicesWidth={30}
                     // yAxisIndicesHeight={0}
-                    referenceLine3Position={22}
+                    referenceLine3Position={30}
                     referenceLine3Config={{
                         color: '#EB5757',
                         dashWidth: 2,
@@ -217,7 +249,6 @@ const Chart = ({ navigation }) => {
                     }}
                 // width={300}
                 />
-
 
             </View>
         </>

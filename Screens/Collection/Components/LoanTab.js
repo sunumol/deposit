@@ -21,11 +21,42 @@ import Image2 from '../../Collect/Images/IMG3.svg';
 import Image3 from '../../Collect/Images/c1.svg';
 import Image4 from '../../Collect/Images/c2.svg';
 import ActiveLoans from './activeLoans';
-
+import { api } from '../../../Services/Api';
+import { useSelector } from 'react-redux';
 const { height, width } = Dimensions.get('screen');
 
 const LoanTab = ({ navigation }) => {
+    const [Activeloandetail,setActiveloandetail] = useState('')
+    const LoancustomerID = useSelector(state => state.loancustomerID);
 
+
+
+
+     // ------------------ get Customer List Api Call Start ------------------
+     async function getActiveLoansdetails()  {
+        console.log('loan customer id',LoancustomerID)
+        console.log('search------->>>>>123', )
+        const data = {
+            customerId: 1
+        }
+
+        await api.getActiveLoansdetails(data).then((res) => {
+          console.log('------------------- Active loan res', res.data.body)
+   setActiveloandetail(res?.data?.body)
+         
+         
+        })
+          .catch((err) => {
+            console.log('-------------------Active loan err', err)
+           
+          })
+      };
+
+
+
+      useEffect(()=>{
+        getActiveLoansdetails()
+      },[])
 
 
     return (
@@ -43,7 +74,7 @@ const LoanTab = ({ navigation }) => {
 
                                 <View style={{ flexDirection: 'column', paddingLeft: width * 0.03 }}>
                                     <Text style={styles.TextCust}>Loans Due</Text>
-                                    <Text style={styles.NumText}>02</Text>
+                                    <Text style={styles.NumText}>{Activeloandetail?.loansDue}</Text>
                                 </View>
                             </View>
 
@@ -53,7 +84,7 @@ const LoanTab = ({ navigation }) => {
                                 </View>
                                 <View style={{ flexDirection: 'column', paddingLeft: width * 0.03 }}>
                                     <Text style={styles.TextCust}>Amount Due</Text>
-                                    <Text style={styles.AmtText}>₹14,724</Text>
+                                    <Text style={styles.AmtText}>{Activeloandetail?.amountDue}</Text>
                                 </View>
                             </View>
 
@@ -67,7 +98,7 @@ const LoanTab = ({ navigation }) => {
                                 </View>
                                 <View style={{ flexDirection: 'column', paddingLeft: width * 0.03 }}>
                                     <Text style={styles.TextCust}>Collected Loans</Text>
-                                    <Text style={styles.NumText}>0.00</Text>
+                                    <Text style={styles.NumText}>{Activeloandetail?.collectedLoans ? Activeloandetail?.collectedLoans : 0}</Text>
                                 </View>
                             </View>
 
@@ -77,13 +108,13 @@ const LoanTab = ({ navigation }) => {
                                 </View>
                                 <View style={{ flexDirection: 'column', paddingLeft: width * 0.03 }}>
                                     <Text style={styles.TextCust}>Collected Amount</Text>
-                                    <Text style={styles.NumText}>0.00</Text>
+                                    <Text style={styles.NumText}>{Activeloandetail?.collectedAmounts ? Activeloandetail?.collectedAmounts :0}</Text>
                                 </View>
                             </View>
                         </View>
                     </View>
                 </View>
-                <ActiveLoans navigation={navigation}/>
+                <ActiveLoans navigation={navigation} loandetails = {Activeloandetail?.loanDetailsDTOS}/>
             </View>
 
          

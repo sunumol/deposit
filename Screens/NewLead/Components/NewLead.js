@@ -25,9 +25,10 @@ import { useTranslation } from 'react-i18next';
 import LeadModal from './LeadModal';
 import ValidModal from './ValidModal';
 import { api } from '../../../Services/Api'
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const NewLead1 = ({ navigation, setVillageStatus, VillageStatus }) => {
-
+ 
+   
     const { t } = useTranslation();
     const [Name, setName] = useState('')
     const [Mobile, setMobile] = useState('')
@@ -45,6 +46,7 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus }) => {
     const [isFocused, setIsFocused] = useState(false);
     const [addressFocus, setAddressFocus] = useState(false);
     const [addressFocus1, setAddressFocus1] = useState(false);
+    const [customerNumber,setCustomerNumber] = useState('');
     const adddressRef = useRef();
     const MobileRef = useRef();
     const [error, setError] = useState({
@@ -62,7 +64,6 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus }) => {
     }, [])
 
     const OnpressOut1 = () => {
-
 
         setModalVisible(!ModalVisible)
         setName(null)
@@ -85,7 +86,26 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus }) => {
         }
     }
 
+    const getData = async () => {
+        try {
+          const mob = await AsyncStorage.getItem('Mobile')
+          const mob1 = mob.slice(3)
+          setCustomerNumber(mob1)
+          console.log('phoe',mob1)
+    
+        } catch (e) {
+          console.log('mob', e)
+        }
+      }
 
+
+      useEffect(() => {
+
+        getData();
+       
+    
+        /// getSpousedetail()
+      }, []);
     async function getVillage(text) {
         const data = {
             "pin": Pincode,
@@ -102,6 +122,7 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus }) => {
             })
     }
     const Validation = () => {
+        console.log('££££233',Mobile)
         const firstDigitStr = String(Mobile)[0];
         if (Mobile?.length != 10 || Mobile == "") {
             setMessage('Please enter a valid mobile number')
@@ -113,6 +134,10 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus }) => {
             setMessage('Please enter a valid mobile number')
             setValidModal1(true)
         } else if (!(/^\d{10}$/.test(Mobile))) {
+            setMessage('Please enter a valid mobile number')
+            setValidModal1(true)
+        }
+        else if (Mobile === customerNumber) {
             setMessage('Please enter a valid mobile number')
             setValidModal1(true)
         }
@@ -139,6 +164,7 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus }) => {
                 else if (res?.data?.body == 'Lead generated') {
                     setModalVisible(true)
                     setIsFocused(false)
+                  
                 }
             }
             console.log('-------------------res', res)
@@ -336,6 +362,7 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus }) => {
                         setModalVisible(!ModalVisible)
 
                     }}
+                    navigation={navigation}
                     setModalVisible={setModalVisible} />
 
                 <ValidModal

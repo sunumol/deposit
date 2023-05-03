@@ -92,7 +92,7 @@ const NewLead = ({ navigation, }) => {
             <Header navigation={navigation} name={t('common:NewLead')} onPress={handleGoBack}/>
             <View style={styles.ViewContent} >
          <TouchableOpacity  onPressOut={OnstateUpdate}  hitSlop={{ top: 30, bottom: 30, left: 30, right: 30 }}>
-            <NewLead1 BStatus={BStatus} setBstatus={setBstatus} setVillageStatus={setVillageStatus} VillageStatus={VillageStatus}/>
+            <NewLead1 BStatus={BStatus} setBstatus={setBstatus} setVillageStatus={setVillageStatus} VillageStatus={VillageStatus} navigation={navigation}/>
           </TouchableOpacity>
             </View>
         
