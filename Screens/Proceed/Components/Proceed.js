@@ -8,15 +8,17 @@ import {
 } from 'react-native'
 import React, { useState } from 'react'
 import LottieView from 'lottie-react-native';
+import { useRoute } from '@react-navigation/native';
 
 import { FONTS, COLORS } from '../../../Constants/Constants';
 
 const { height, width } = Dimensions.get('screen');
 
 const Energy = ({ navigation }) => {
+    const route = useRoute();
 
-    const [ButtonS, setButtonS] = useState(false)
-
+    const [ButtonS, setButtonS] = useState(route?.params?.status ? true : false)
+    { console.log('-----status-----', route) }
     return (
         <>
             <View style={styles.mainContainer}>
@@ -33,15 +35,15 @@ const Energy = ({ navigation }) => {
                     </View>
 
                     {!ButtonS ?
-                    <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                        <Text style={styles.textD1}>Data sent to Customer for verification.</Text>
-                        <Text style={styles.textD2}>You may proceed after Customer confirms data.</Text>
-                    </View>:
+                        <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                            <Text style={styles.textD1}>Data sent to Customer for verification.</Text>
+                            <Text style={styles.textD2}>You may proceed after Customer confirms data.</Text>
+                        </View> :
 
-                    <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                        <Text style={styles.textD1}>Customer has confirmed the data</Text>
-                        
-                    </View>}
+                        <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                            <Text style={styles.textD1}>Customer has confirmed the data</Text>
+
+                        </View>}
 
                 </ScrollView>
                 <View style={{ alignItems: 'center', justifyContent: 'center' }}>

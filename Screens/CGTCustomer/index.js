@@ -38,7 +38,7 @@ const { height, width } = Dimensions.get('screen');
 const CgtCustomer = ({ navigation, route }) => {
 
     const isDarkMode = true;
-   // const route = useRoute();
+    // const route = useRoute();
 
     const [ModalVisible, setModalVisible] = useState(false)
     const [ModalError, setModalError] = useState(false)
@@ -54,9 +54,9 @@ const CgtCustomer = ({ navigation, route }) => {
     const dispatch = useDispatch()
 
     const handleGoBack = useCallback(() => {
-   
-            navigation.goBack()
-    
+
+        navigation.goBack()
+
         return true; // Returning true from onBackPress denotes that we have handled the event
     }, [navigation]);
 
@@ -81,8 +81,8 @@ const CgtCustomer = ({ navigation, route }) => {
     }, [ModalError])
 
     useEffect(() => {
-        console.log('Activity id======>>>>>>',activityId),
-        getDetails()
+        console.log('Activity id======>>>>>>', activityId),
+            getDetails()
         AsyncStorage.getItem("CustomerId").then((value) => {
             setCustId(value)
         })
@@ -134,7 +134,7 @@ const CgtCustomer = ({ navigation, route }) => {
             "activityId": activityId
         };
         await api.updateActivity(data).then((res) => {
-            console.log("rejectreason",rejectReason)
+            console.log("rejectreason", rejectReason)
             console.log('-------------------res789', res?.data)
             if (res?.status) {
                 setModalError(true)
@@ -175,8 +175,10 @@ const CgtCustomer = ({ navigation, route }) => {
                             <Text style={styles.timeText}>{details?.cgtTime?.slice(0, -3)} PM</Text>
                             <Text style={styles.dateText}>{details?.cgtDate ? moment(new Date(details?.cgtDate)).format("ddd, DD MMM") : ''}</Text>
                         </View>
-                        <TouchableOpacity style={styles.editView} onPress={() =>{ navigation.navigate('Calendar',{reschedule:details}),
-                    AsyncStorage.removeItem('DATECGT')}}>
+                        <TouchableOpacity style={styles.editView} onPress={() => {
+                            navigation.navigate('SelectCalendar', { selectedData: [activityId], title: 'New CGT' }),
+                            AsyncStorage.removeItem('DATECGT')
+                        }}>
                             <Date />
                             <Text style={styles.changeText}>Reschedule CGT</Text>
                         </TouchableOpacity>
@@ -259,11 +261,11 @@ const CgtCustomer = ({ navigation, route }) => {
                 ModalVisible={ModalVisible}
                 onPressOut={() => {
                     setModalVisible(!ModalVisible)
-                    navigation.navigate('CreateTrustCircle', { customerDetails: details})
+                    navigation.navigate('CreateTrustCircle', { customerDetails: details })
                 }}
                 onPressClose={() => {
                     setModalVisible(!ModalVisible)
-                    navigation.navigate('CreateTrustCircle', { customerDetails: details})
+                    navigation.navigate('CreateTrustCircle', { customerDetails: details })
                 }}
                 setModalVisible={setModalVisible}
             />
@@ -276,7 +278,7 @@ const CgtCustomer = ({ navigation, route }) => {
                 }}
                 setModalVisible={setModalError}
             />
-            
+
             <ReasonModal
                 onPress1={updateActivityReject}
                 ModalVisible={ModalReason}
