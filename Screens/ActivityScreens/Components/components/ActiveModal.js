@@ -54,7 +54,7 @@ const App = ({ visible, onPressOut, meet, details ,setEnab}) => {
             await api.updateActivity(data).then((res) => {
                 console.log('-------------------res update', res?.data)
                 // if(res)
-                AsyncStorage.setItem('CallActivity',details?.activityId);
+                AsyncStorage.removeItem('CallActivity')
                 onPressOut();
                 setEnab(true)
                 setEnableContinue(false)
@@ -139,6 +139,8 @@ const App = ({ visible, onPressOut, meet, details ,setEnab}) => {
                                     {enableContinue && id && item.id === id
                                         ? <Enable width={18} height={18} onPress={() => {
                                             setEnableContinue(false)
+                                          
+                                            AsyncStorage.setItem('CallActivity',item.id);
                                             setId()
 
                                         }} />
@@ -146,6 +148,7 @@ const App = ({ visible, onPressOut, meet, details ,setEnab}) => {
                                             setEnableContinue(true)
                                             setId(item.id)
                                             selectstatus(item.id)
+                                            AsyncStorage.setItem('CallActivity',item.id);
                                         }
                                         } />
                                     }

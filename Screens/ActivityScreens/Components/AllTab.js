@@ -40,6 +40,9 @@ const ItemTabs = ({ navigation }) => {
 
         };
         await api.activitylistingscreenApi(data).then((res) => {
+            res?.data?.body?.slottedActivities.forEach(function (item) {
+                item.open = false
+            })
             console.log('-------------------res all', res?.data?.body?.slottedActivities)
 
             setSlottedListing(res?.data?.body?.slottedActivities)
@@ -82,7 +85,17 @@ const ItemTabs = ({ navigation }) => {
             console.log(e)
         }
     }
-
+const TabOpen = (index,id)=>{
+    console.log(index,id)
+  
+   // const nextList1 = slottedlisting.find((cb) => cb.open === );
+    const nextList = [...slottedlisting];
+     nextList[index].open = !nextList[index].open;
+     setSlottedListing(nextList);
+     console.log("inside array",slottedlisting)
+     setDleopen(false)
+     setCollectionopen(false)
+}
 
     return (
         <ScrollView style={{ flex: 1, backgroundColor: COLORS.colorBackground }}>
@@ -93,8 +106,14 @@ const ItemTabs = ({ navigation }) => {
                     <TouchableOpacity
                         onPress={() => {
                             setCollectionopen(!collectionopen)
+                            const data1 = slottedlisting.filter((item) => item.open == true);
+                            console.log("data======",data1)
+                           slottedlisting.forEach(function (item) {
+                                item.open = false
+                            })
                             if(dleopen){
                                 setDleopen(!dleopen)
+                            
                             }
                         }}
                         style={[styles.containerTab, { backgroundColor: collectionopen ? 'rgba(242, 242, 242, 0.5)' : COLORS.backgroundColor }]}>
@@ -108,9 +127,18 @@ const ItemTabs = ({ navigation }) => {
                             <TouchableOpacity
                                 onPress={() => {
                                     setCollectionopen(!collectionopen)
+                                    const data1 = slottedlisting.filter((item) => item.open == true);
+                                    console.log("data======",data1)
+                                   slottedlisting.forEach(function (item) {
+                                        item.open = false
+                                    })
                                     if(dleopen){
                                         setDleopen(!dleopen)
+                                  
+                                    
+                                       // setSlottedListing(nextList);
                                     }
+                            
                                 }}
                             >
                                 <Icon name={collectionopen ? "chevron-up" : "chevron-down"}
@@ -152,8 +180,14 @@ const ItemTabs = ({ navigation }) => {
                         onPress={() => {
                             
                             setDleopen(!dleopen)
+                            const data1 = slottedlisting.filter((item) => item.open == true);
+                            console.log("data======",data1)
+                           slottedlisting.forEach(function (item) {
+                                item.open = false
+                            })
                             if(collectionopen){
                                 setCollectionopen(!collectionopen)
+                        
                             }
                         }}
                         style={[styles.containerTab, { backgroundColor: ' rgba(155, 81, 224, 0.1) ' }]}>
@@ -167,8 +201,14 @@ const ItemTabs = ({ navigation }) => {
                             <TouchableOpacity
                                 onPress={() => {
                                     setDleopen(!dleopen)
+                                    const data1 = slottedlisting.filter((item) => item.open == true);
+                                    console.log("data======",data1)
+                                   slottedlisting.forEach(function (item) {
+                                        item.open = false
+                                    })
                                     if(collectionopen){
                                         setCollectionopen(!collectionopen)
+                                   
                                     }
                                 }}
                             >
@@ -203,6 +243,8 @@ const ItemTabs = ({ navigation }) => {
 
 
                 </>
+
+                
 {console.log("slottedlist",slottedlisting)}
 
                 {slottedlisting?.map((item, index) => {
@@ -211,12 +253,19 @@ const ItemTabs = ({ navigation }) => {
                         <>
                             {item.data.length > 0 ? <TouchableOpacity
                                 onPress={() => {
-                                    const nextList = [...slottedlisting];
-                                    nextList[index].open = !nextList[index].open;
-                                    setSlottedListing(nextList);
-                                    console.log("inside array",slottedlisting)
-                                    setDleopen(false)
-                                    setCollectionopen(false)
+                                    const data = slottedlisting.filter((item) => item.open == true);
+                                         
+                                    data.forEach(function (item) {
+                                     item.open = false
+                                 })
+                                 console.log("false sect",data)
+                                     const nextList = [...slottedlisting];
+                                     nextList[index].open = !nextList[index].open;
+                                     setSlottedListing(nextList);
+                                     
+                                     setDleopen(false)
+                                     setCollectionopen(false)
+                                 
                                 }}
                                 style={[styles.containerTab, { backgroundColor: item.open ? 'rgba(242, 242, 242, 0.5)' : COLORS.backgroundColor }]}>
                                 <View style={{ flex: 1 }}>
@@ -228,9 +277,16 @@ const ItemTabs = ({ navigation }) => {
                                     </View>
                                     <TouchableOpacity
                                         onPress={() => {
+                                           const data = slottedlisting.filter((item) => item.open == true);
+                                         
+                                           data.forEach(function (item) {
+                                            item.open = false
+                                        })
+                                        console.log("false sect",data)
                                             const nextList = [...slottedlisting];
                                             nextList[index].open = !nextList[index].open;
                                             setSlottedListing(nextList);
+                                            
                                             setDleopen(false)
                                             setCollectionopen(false)
                                         }}

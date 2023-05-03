@@ -120,10 +120,7 @@ const ActiveTab = (props) => {
                     props.navigation.navigate('CGT')
                  }else if(props?.details?.purpose === 'Conduct DLE'){
                    // setModalVisible(true)
-                    dispatch({
-                        type: 'SET_CGT_ACTIVITY_ID',
-                        payload: item.activityId,
-                    });
+                 
                     
                    
                     setDetails(item)

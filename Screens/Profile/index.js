@@ -104,12 +104,13 @@ const Profile = ({ navigation }) => {
     }, []);
 
     const getData = async () => {
-        console.log("no modal data")
+  
         try {
             const lang = await AsyncStorage.getItem('CallActivity')
-            if (lang === null) {
-console.log("no modal data inside")
-setModalCall(true)
+            console.log("no modal data",lang)
+            if (lang !== null) {
+                console.log("no modal data inside")
+                setModalCall(true)
             }
 
         } catch (e) {
@@ -200,7 +201,7 @@ setModalCall(true)
 
             <CallModal
                 ModalVisible={ModalCall}
-                onPressOut={() => {setModalCall(!ModalCall),navigation.navigate('Activities')}}
+                onPressOut={() => { setModalCall(!ModalCall), navigation.navigate('ActivityScreens') }}
                 setModalVisible={setModalCall}
             />
         </SafeAreaProvider>

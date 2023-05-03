@@ -38,10 +38,11 @@ const CgtModal = ({ ModalVisible, onPressOut, setModalVisible, onPress, navigati
             }}
         >
             <View style={styles.mainContainer}>
-                <TouchableOpacity onPressOut={onPressOut}
-                    style={{ backgroundColor: "#000000aa", flex: 1, alignItems: 'center', justifyContent: 'center', opacity: 5 }}
+                <TouchableOpacity onPressOut={()=>   {setModalVisible(!ModalVisible)
+                navigation.navigate('Profile')}}
+                    style={{  flex: 1, alignItems: 'center', justifyContent: 'center', opacity: 5 }}
                 >
-                </TouchableOpacity>
+            
                 <View style={styles.modalContainer}>
                     <View style={{ paddingTop: width * 0.08 }}>
                         <Image1 />
@@ -61,10 +62,10 @@ const CgtModal = ({ ModalVisible, onPressOut, setModalVisible, onPress, navigati
                         <Text style={styles.buttonTextStyle}>{t('common:Okay')}</Text>
                     </TouchableOpacity>
                 </View>
-
-                <TouchableOpacity onPressOut={onPressOut}
-                    style={{ backgroundColor: "#000000aa", flex: 1, alignItems: 'center', justifyContent: 'center', opacity: 5 }} >
                 </TouchableOpacity>
+                {/* <TouchableOpacity onPressOut={onPressOut}
+                    style={{ backgroundColor: "#000000aa", flex: 1, alignItems: 'center', justifyContent: 'center', opacity: 5 }} >
+                </TouchableOpacity> */}
             </View>
         </Modal>
 

@@ -10,7 +10,7 @@ import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 import ActivityModal from '../components/ActiveModal';
 import { useDispatch } from 'react-redux';
 import { api } from '../../../../Services/Api';
-
+import CallModal from '../../../Profile/Components/Modal';
 const MeetTab = (props) => {
     console.log("props pass",props?.data)
     const { t } = useTranslation();
@@ -20,9 +20,10 @@ const MeetTab = (props) => {
     const [enab, setEnab] = useState(false)
     const dispatch = useDispatch()
     const [callStatus,setCallStatus] = useState(false)
+    const [ModalCall, setModalCall] = useState(false)
     useEffect(() => {
         getData()
-
+        console.log("no modal data inside1")
     }, [])
     String.prototype.replaceAt = function (index, replacement) {
         return this.substring(0, index) + replacement + this.substring(index + replacement.length);
@@ -57,8 +58,16 @@ const MeetTab = (props) => {
 
 
     const getData = async () => {
+
         try {
+            
             const lang = await AsyncStorage.getItem('user-language')
+            const lang1 = await AsyncStorage.getItem('CallActivity')
+            console.log("no modal data inside",lang1)
+            if (lang1 !== null) {
+             
+              //  setModalCall(true)
+            }
             setLang(lang)
         } catch (e) {
             console.log(e)
@@ -150,6 +159,7 @@ const MeetTab = (props) => {
                                     if(!props?.meet){
                                         openDialScreen(item?.mobileNumber)
                                     }
+                                  
                                     setModalVisible(true)
                                     setDetails(item)
                                 }
@@ -201,6 +211,12 @@ const MeetTab = (props) => {
                     )
                 })}
                 <ActivityModal visible={modalVisible} onPressOut={() => setModalVisible(!modalVisible)} meet={props.meet} details={details} setEnab={props.setEnab} />
+          
+                <CallModal
+                ModalVisible={ModalCall}
+                onPressOut={() => { setModalCall(!ModalCall), navigation.navigate('ActivityScreens') }}
+                setModalVisible={setModalCall}
+            />
             </View>
         </>
     )

@@ -60,7 +60,7 @@ const CallModal = ({ ModalVisible, onPressOut, setModalVisible, onPress }) => {
 
                     <Text style={[styles.textdesc, { paddingTop: width * 0.05 }]}>{t('common:statusModal2')}</Text>
 
-                    <TouchableOpacity style={styles.buttonStyle} onPress={() => setModalVisible(false)}>
+                    <TouchableOpacity style={styles.buttonStyle} onPress={() =>onPressOut()}>
                         <Text style={styles.buttonTextStyle}>{t('common:Okay')}</Text>
                     </TouchableOpacity>
                 </View>

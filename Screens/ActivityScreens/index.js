@@ -1,4 +1,4 @@
-import React,{useCallback,useEffect} from 'react';
+import React,{useCallback,useEffect,useState} from 'react';
 import {
     StatusBar,
     Platform,
@@ -19,13 +19,17 @@ import CallTab from './Components/CallTab';
 import { useFocusEffect } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import CallModal from '../Profile/Components/Modal';
 
 const Activityscreens = ({ navigation }) => {
     const isDarkMode = true;
     const Tab = createMaterialTopTabNavigator();
     const { t } = useTranslation();
     const dispatch = useDispatch()
-    
+    const [id,setId] = useState('')
+  
+
     const handleGoBack = useCallback(() => {
         navigation.goBack()
         return true; // Returning true from onBackPress denotes that we have handled the event
@@ -39,6 +43,8 @@ const Activityscreens = ({ navigation }) => {
             BackHandler.removeEventListener('hardwareBackPress', handleGoBack);
         }, [handleGoBack]),
       );
+
+   
 
       useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
@@ -54,6 +60,8 @@ const Activityscreens = ({ navigation }) => {
         return unsubscribe;
       }, [navigation]);
 
+
+
     return (
         <SafeAreaProvider>
             <SafeAreaView style={styles.container1} />
@@ -63,6 +71,7 @@ const Activityscreens = ({ navigation }) => {
 
 
             <Tab.Navigator
+             initialRouteName={id ? t('common:All') : t('common:Call')}
              screenOptions={{
                 tabBarLabelStyle: { focused: true,fontSize: 14,fontFamily:FONTS.FontSemiB},
                 tabBarStyle: { backgroundColor: COLORS.colorB },
@@ -76,6 +85,7 @@ const Activityscreens = ({ navigation }) => {
                 <Tab.Screen name={t('common:Call')} component={CallTab} />
             </Tab.Navigator>
 
+      
         </SafeAreaProvider>
     );
 }
