@@ -10,23 +10,28 @@ import { useTranslation } from 'react-i18next';
 import moment from 'moment';
 
 const { height, width } = Dimensions.get('screen');
-const Header = (Data) => {
+
+
+
+const Header = (loandetail) => {
+
 
     const { t } = useTranslation();
+    
     return (
         <View style={styles.loanContainer}>
             <View style={{ flex: 1 }}>
                 <View style={{ marginTop: 15 }}>
                     <Text style={styles.headText}>{t('common:LoanID')} :</Text>
-                    <Text style={styles.valueText}>34XXXX5433</Text>
+                    <Text style={styles.valueText}>{loandetail?.loandetail?.loanId}</Text>
                 </View>
                 <View style={{ marginTop: 15 }}>
                     <Text style={styles.headText}>{t('common:LoanOutstanding')} :</Text>
-                    <Text style={styles.valueText}>₹1,25,000</Text>
+                    <Text style={styles.valueText}>₹{loandetail?.loandetail?.loanOutstanding}</Text>
                 </View>
                 <View style={{ marginVertical: 19 }}>
                     <Text style={styles.headText}>{t('common:EmiDue')}</Text>
-                    <Text style={styles.valueText}>15 Oct ‘22</Text>
+                    <Text style={styles.valueText}>{ moment(loandetail?.loandetail?.emiDueDate).format("DD MMMM 'YY")}</Text>
                 </View>
             </View>
             <View style={{ flexDirection: 'column', marginTop: 17 }}>
@@ -41,15 +46,15 @@ const Header = (Data) => {
             <View style={{ flex: 1 }}>
                 <View style={{ marginTop: 15 }}>
                     <Text style={styles.headText}>{t('common:LoanAmount')} :</Text>
-                    <Text style={styles.valueText}>₹1,50,000</Text>
+                    <Text style={styles.valueText}>₹{loandetail?.loandetail?.loanAmount}</Text>
                 </View>
                 <View style={{ marginTop: 15 }}>
                     <Text style={styles.headText}>{t('common:Emi')} :</Text>
-                    <Text style={styles.valueText}>₹7,793</Text>
+                    <Text style={styles.valueText}>₹{loandetail?.loandetail?.emi}</Text>
                 </View>
                 <View style={{ marginVertical: 19 }}>
                     <Text style={styles.headText}>{t('common:PaymentDue')}</Text>
-                    <Text style={[styles.valueText,{color:COLORS.colorRed}]}>₹7,793</Text>
+                    <Text style={[styles.valueText,{color:COLORS.colorRed}]}>₹{loandetail?.loandetail?.paymentDue}</Text>
                     <Text style={[styles.valueText,{color:COLORS.colorRed,fontSize:10}]}>*{t('common:Include')}</Text>
                 </View>
             </View>

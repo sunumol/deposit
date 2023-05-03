@@ -17,10 +17,25 @@ import Image1 from '../../../assets/image/loc1.svg';
 import { FONTS, COLORS } from '../../../Constants/Constants';
 import Icon1 from 'react-native-vector-icons/Ionicons'
 import Icon2 from 'react-native-vector-icons/Feather';
+import { api } from '../../../Services/Api';
+import { useSelector } from 'react-redux';
+
+
+
+
 
 const { height, width } = Dimensions.get('screen');
 
-const Profiles = ({ navigation }) => {
+const Profiles = ({ navigation,customerdata }) => {
+    console.log('prifle tab [][][][][][]=====>>>',customerdata)
+    const [custData,setCustData] = useState('')
+    String.prototype.replaceAt = function (index, replacement) {
+        return this.substring(0, index) + replacement + this.substring(index + replacement.length);
+      }
+useEffect(()=>{
+    setCustData(customerdata)
+},[customerdata])
+
 
 
     return (
@@ -34,18 +49,18 @@ const Profiles = ({ navigation }) => {
                         <Image source={require('../../../assets/image/Profile1.png')}
                             resizeMode={'contain'} style={{ borderRadius: 25, width: 50, height: 50 }} />
                         <View style={{ flexDirection: 'column', marginLeft: width * 0.035, marginTop: 3 }}>
-                            <Text style={styles.nameText}>Aiswarya Thomas</Text>
+                            <Text style={styles.nameText}>{custData?.fullName}</Text>
                             <View style={{ flexDirection: 'row', }}>
                                 <View style={{ paddingTop: 2, paddingRight: 1 }}>
                                     <Icon1 name="location-outline" color={"black"} />
                                 </View>
-                                <Text style={[styles.idText, { paddingTop: 0 }]}>Kakkanad</Text>
+                                <Text style={[styles.idText, { paddingTop: 0 }]}>{custData?.village}</Text>
                             </View>
                         </View>
 
                         <View style={{ flexDirection: 'row', marginLeft: width * 0.06, marginTop: 3 }}>
                             <Icon2 name="phone-call" color={'rgba(0, 56, 116, 1)'} size={11} style={{ top: 4 }} />
-                            <Text style={[styles.numText, { paddingLeft: 6 }]}>961XXXXX77</Text>
+                            <Text style={[styles.numText, { paddingLeft: 6 }]}>{custData?.mobile?.replace(/^.{0}/g, '').replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X")}</Text>
                         </View>
                     </View>
 
@@ -58,11 +73,11 @@ const Profiles = ({ navigation }) => {
                         style={{width:width*0.15,height:width*0.27}}/>
                         </View>
 
-                        <View style={{ flexDirection: 'column', marginLeft:width*0.05,marginTop:width*0.05}}>
+                        <View style={{ flexDirection: 'column', width:width*0.37,marginLeft:width*0.05,marginTop:width*0.05}}>
                             <Text style={[styles.nameText, { fontSize: 14, }]}>Address</Text>
-                            <Text style={[styles.nameText, { fontFamily: FONTS.FontRegular, top: 2 }]}>Akshya Nagar 1st Block</Text>
-                            <Text style={[styles.nameText, { fontFamily: FONTS.FontRegular }]}>Cross, Rammurthy nagar,</Text>
-                            <Text style={[styles.nameText, { fontFamily: FONTS.FontRegular }]}>Kochi-560016</Text>
+                            <Text style={[styles.nameText, { fontFamily: FONTS.FontRegular, top: 2 }]}>{custData?.address}</Text>
+                            {/* <Text style={[styles.nameText, { fontFamily: FONTS.FontRegular }]}>Cross, Rammurthy nagar,</Text>
+                            <Text style={[styles.nameText, { fontFamily: FONTS.FontRegular }]}>Kochi-560016</Text> */}
                         </View>
 
                         <View style={styles.LocCard}>
@@ -76,7 +91,7 @@ const Profiles = ({ navigation }) => {
                     <View style={{ flexDirection: 'row',justifyContent:'space-between' }}>
                         <View style={{ flexDirection: 'column',marginTop:10 ,left:-55}}>
                             <Text style={[styles.nameText, { fontSize: 14 }]}>Aadhaar ID</Text>
-                            <Text style={[styles.nameText, { fontFamily: FONTS.FontRegular }]}>45XXXXXX3177</Text>
+                            <Text style={[styles.nameText, { fontFamily: FONTS.FontRegular }]}>{custData?.aadharNumber?.replace(/^.{0}/g, '').replaceAt(2, "X").replaceAt(3, "X").replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X")}</Text>
                         </View>
 
                         <View style={styles.Line1}/>
@@ -84,7 +99,7 @@ const Profiles = ({ navigation }) => {
 
                         <View style={{ flexDirection: 'column',marginTop:10,paddingLeft:width*0.05 }}>
                             <Text style={[styles.nameText, { fontSize: 14 }]}>Voter ID</Text>
-                            <Text style={[styles.nameText, { fontFamily: FONTS.FontRegular }]}>TTUXXXX46</Text>
+                            <Text style={[styles.nameText, { fontFamily: FONTS.FontRegular }]}>{custData?.voterIdNumber?.replace(/^.{0}/g, '').replaceAt(3, "X").replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X")}</Text>
                         </View>
                     </View>
                 </View>

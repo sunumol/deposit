@@ -49,7 +49,7 @@ const CGTCompleted = ({ ModalVisible, onPressOut, setModalVisible,onPress,naviga
 
                     
                         <Text style={[styles.textdesc,
-                             { paddingTop: width * 0.02, textAlign: 'center' }]}>CGT Completed</Text>
+                             { paddingTop: width * 0.02, textAlign: 'center' }]}>CGT Successfully Completed</Text>
                 
 
                     <TouchableOpacity style={styles.buttonStyle} onPress={()=>{onPressOut()

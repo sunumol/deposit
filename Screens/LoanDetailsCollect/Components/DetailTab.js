@@ -18,7 +18,11 @@ import History from './History';
 import { useFocusEffect } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 
-const DetailTab = ({ navigation }) => {
+const DetailTab = ({ navigation,loandetail }) => {
+
+
+  console.log('detail tab [][][][][][]=====>>>',loandetail)
+
     const isDarkMode = true;
     const Tab = createMaterialTopTabNavigator();
     const { t } = useTranslation();

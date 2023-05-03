@@ -16,11 +16,15 @@ import React, { useCallback, useEffect, useState } from 'react'
 import Image1 from '../../../assets/image/dig.svg';
 import { FONTS, COLORS } from '../../../Constants/Constants';
 import Icon1 from 'react-native-vector-icons/FontAwesome';
-
+import { api } from '../../../Services/Api';
+import { useSelector } from 'react-redux';
 
 const { height, width } = Dimensions.get('screen');
 
-const History = ({ navigation }) => {
+const History = ({ route }) => {
+   
+    const LoanId = useSelector(state => state.loanId);
+    const [loanhistory,setLoanhistory] = useState('')
     const [Data, setData] = useState([
         {
             Id: 1,
@@ -56,6 +60,30 @@ const History = ({ navigation }) => {
         },
     ])
 
+    useEffect(()=>{
+        getloanPaymentHistory()
+        console.log('detail tab [][][[][][][]]=====>>>',LoanId)
+    },[LoanId])
+ 
+
+    async function getloanPaymentHistory()  {
+        console.log('search------->>>>>', )
+        const data = {
+            loanId:   2
+        }
+
+        await api.getloanPaymentHistory(data).then((res) => {
+          console.log('------------------- get history loan res', res.data.body)
+            setLoanhistory(res?.data?.body)
+         
+         
+        })
+          .catch((err) => {
+            console.log('-------------------get history loan err', err)
+           
+          })
+      };
+
     return (
 
         <>
@@ -63,14 +91,14 @@ const History = ({ navigation }) => {
             <View style={styles.mainContainer}>
 
                 <View>
-                    {Data.map((item) => {
+                    {loanhistory?.loanPaymentHistoryDetailsDTOS?.map((item) => {
                         return (
                             <View>
                                 <View style={{ flexDirection: 'row', justifyContent: 'space-between',marginBottom:width*0.05,marginTop:width*0.05 }}>
 
                                     <View style={{ flexDirection: 'row' }}>
                                         <Text style={styles.DateText}>{item.Date}</Text>
-                                        {item.Id !== 3 ? 
+                                        {/* {item.Id !== 3 ? 
                                         <View style={styles.RsCard}>
                                             <Icon1 name="rupee" size={14} color={'#4F4F4F'} />
                                         </View>:
@@ -80,7 +108,7 @@ const History = ({ navigation }) => {
                                         {item.paid !== '' ?
                                             <View style={styles.Card1}>
                                                 <Text style={[styles.NumText, { paddingLeft: 2, paddingRight: 2 }]}>{item.paid}</Text>
-                                            </View> : null}
+                                            </View> : null} */}
                                     </View>
 
                                     <Text style={[styles.AmtText, { color: item.color }]}>{item.amount}</Text>

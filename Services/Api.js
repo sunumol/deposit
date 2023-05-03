@@ -4,6 +4,7 @@ import axios from 'axios';
 // --------- Base URL Start------------------
 const baseURL = 'http://3.108.93.231:8383/'
 const baseURL2 = 'http://3.108.93.231:8686/'
+const baseURL3 = 'http://3.108.93.231:8086/'
 // --------- Base URL End--------------------
 const baseURLDPD = 'http://3.108.93.231:8084/'
 
@@ -492,5 +493,79 @@ export const api = {
     })
   },
 
+
+  getCollection: data => {
+
+    return axios.post(`${baseURL3}pendingCollections`, data, {
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+  },
+  // ------------------   collection listing---------------------
+  getActiveLoansdetails: data => {
+
+    return axios.get(`${baseURL3}activeLoans/${data.customerId}`, {
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+  },
+
+
+
+  // ------------------   loanPaymentHistory listing---------------------
+  getloanPaymentHistory: data => {
+
+    return axios.get(`${baseURL3}loanPaymentHistory/${data.loanId}`, {
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+  },
+
+
+  // ------------------   collection listing---------------------
+  getloantrend: data => {
+
+    return axios.post(`${baseURL3}loanTrend`, data, {
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+  },
+
+
+  // ------------------   customerProfile listing---------------------
+  getCustomerProfile: data => {
+
+    return axios.get(`${baseURL3}customerProfile/${data.customerId}`, {
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+  },
+
+
+  // ------------------   customerProfile listing---------------------
+  getTrustcircledetails: data => {
+
+    return axios.get(`${baseURL3}trustCircleDetails/${data.customerId}`, {
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+  },
+
+
+  // ------------------   customerProfile listing---------------------
+  getcompletedCollections: data => {
+
+    return axios.get(`${baseURL3}completedCollections/${data.agentId}`, {
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+  },
 };
 

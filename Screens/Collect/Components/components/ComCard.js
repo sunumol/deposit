@@ -26,7 +26,10 @@ const { height, width } = Dimensions.get('screen');
 import Image1 from '../../Images/greenCash.svg';
 
 
-const ComCard = ({ navigation }) => {
+const ComCard = ({ navigation,details }) => {
+console.log('[00000000]',details)
+
+
     const route = useRoute();
     const [Lang,setLang] = useState('')
     const { t } = useTranslation();
@@ -59,16 +62,32 @@ const ComCard = ({ navigation }) => {
 
                     <View style={{ flexDirection: 'column', paddingLeft: width * 0.03 }}>
                         <Text style={styles.TextNum}>Total amount collected is</Text>
-                        <Text style={styles.TextAmt}>₹33,000</Text>
+                        <Text style={styles.TextAmt}>₹{details?.totalAmountCollected}</Text>
                     </View>
                 </View>
 
                 <View style={{ flexDirection: 'row',marginLeft:width*0.05,marginTop:width*0.022 }}>
                     <Image2 style={{top:3,right:5}} />
-                    <Text style={[styles.TextNum,{color:COLORS.colorDark}]}>Please deposit amount in </Text>
-                    <View style={styles.TimeCard}>
-                    <Text style={styles.Time1}>05:58 hours</Text>
-                    </View>
+                    {/* <Text style={[styles.TextNum,{color:COLORS.colorDark}]}>Please deposit amount in </Text> */}
+                   
+                        {(details?.timeLeftToDeposit === 0 ) ?  
+                        <>
+                          <Text style={[styles.TextNum,{color:COLORS.colorDark}]}>Please deposit the amount</Text>
+                         <View style={[styles.TimeCard,{marginLeft:width*0.1}]}>
+                           <Text style={styles.Time1}>Immediately</Text> 
+                           </View>
+                        </>
+                       
+                           :
+                           <>
+                            <Text style={[styles.TextNum,{color:COLORS.colorDark}]}>Please deposit the amount in </Text>
+                           <View style={styles.TimeCard}> 
+                           <Text style={styles.Time1}>{details?.timeLeftToDeposit} hours</Text>
+                           </View>
+                           </>
+                          }
+                
+               
                 </View>
             </View>
 
@@ -204,12 +223,13 @@ const styles = StyleSheet.create({
     Time1:{
         color:'rgba(235, 87, 87, 1)',
         fontSize:12,
+        marginVertical:2,
         fontFamily:FONTS.FontSemiB
     },
     TimeCard:{
         backgroundColor:'rgba(235, 87, 87, 0.1)',
         width:width*0.21,
-        height:width*0.06,
+      
         alignItems:'center',
         justifyContent:'center',
         borderRadius:4,

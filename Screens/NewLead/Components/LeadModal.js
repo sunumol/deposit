@@ -7,7 +7,7 @@ const { height, width } = Dimensions.get('screen');
 import Image1 from '../assets/tick.svg';
 
 
-const LeadModal = ({ ModalVisible, onPressOut, setModalVisible,onPress }) => {
+const LeadModal = ({ ModalVisible, onPressOut, setModalVisible,onPress,navigation }) => {
     const [state, setState] = useState(null);
     const { t } = useTranslation();
     const [Lang, setLang] = useState('')
@@ -56,7 +56,7 @@ onPress()}}
                              { paddingTop: width * 0.02, textAlign: 'center' }]}>{t('common:LeadG')}</Text>
                 
 
-                    <TouchableOpacity style={styles.buttonStyle} onPress={()=>onPress()}>
+                    <TouchableOpacity style={styles.buttonStyle} onPress={()=>{onPress(),navigation.navigate('Profile')}}>
                         <Text style={styles.buttonTextStyle}>{t('common:Okay')}</Text>
                     </TouchableOpacity>
                 </View>
