@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState,useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import {
     View,
     Image,
@@ -26,8 +26,8 @@ import LeadModal from './LeadModal';
 import ValidModal from './ValidModal';
 import { api } from '../../../Services/Api'
 
-const NewLead1 = ({ navigation,setVillageStatus,VillageStatus }) => {
-    console.log("status of village",setVillageStatus,VillageStatus)
+const NewLead1 = ({ navigation, setVillageStatus, VillageStatus }) => {
+
     const { t } = useTranslation();
     const [Name, setName] = useState('')
     const [Mobile, setMobile] = useState('')
@@ -38,9 +38,9 @@ const NewLead1 = ({ navigation,setVillageStatus,VillageStatus }) => {
     const [ModalVisible, setModalVisible] = useState(false)
     const [VStatus, setVStatus] = useState(false)
     const [ValidModal1, setValidModal1] = useState(false)
-    const [Message,setMessage] = useState('')
+    const [Message, setMessage] = useState('')
     const [ResultError, setResultError] = useState(false)
-    const [VillageEnable,setVillageEnable] =  useState(false)
+    const [VillageEnable, setVillageEnable] = useState(false)
     const [vilageList, setVillageList] = useState([])
     const [isFocused, setIsFocused] = useState(false);
     const [addressFocus, setAddressFocus] = useState(false);
@@ -54,25 +54,26 @@ const NewLead1 = ({ navigation,setVillageStatus,VillageStatus }) => {
         Village: true,
     })
 
-    useEffect(()=>{
-        if(VillageStatus==true){
+    useEffect(() => {
+        if (VillageStatus == true) {
             setVillageStatus(false)
         }
-        console.log("inside village status",VillageStatus)
-    },[])
+
+    }, [])
 
     const OnpressOut1 = () => {
-        console.log("lead modal okay")
+
+
         setModalVisible(!ModalVisible)
         setName(null)
         setVillage(null)
         setMobile(null)
         setPincode(null)
         setVillageStatus(false)
-       // setBstatus(false)
+        // setBstatus(false)
         setButton(false)
         setVStatus(false)
-
+        console.log("lead modal okay", Name, Mobile, Pincode, Village)
     }
 
     const OnchangeNumber = (num) => {
@@ -120,12 +121,12 @@ const NewLead1 = ({ navigation,setVillageStatus,VillageStatus }) => {
         }
     }
     async function onSubmit() {
-    //    MobileRef.blur();
-    //    adddressRef.blur();
+        //    MobileRef.blur();
+        //    adddressRef.blur();
         setResultError(true)
         const data = {
             "leadName": Name,
-            "mobileNumber":"+91"+Mobile,
+            "mobileNumber": "+91" + Mobile,
             "pin": Pincode,
             "village": Village
         }
@@ -146,186 +147,204 @@ const NewLead1 = ({ navigation,setVillageStatus,VillageStatus }) => {
                 console.log('-------------------err', err?.response)
             })
     }
-  
+
     const verifyPhone = (Phone) => {
         var reg = /^([0-9])\1{9}$/;
         return reg.test(Phone);
     }
 
+    function containsWhitespace(str) {
+        return /\s/.test(str);
+    }
+
+
+
+
     return (
         <>
-    <View style={styles.ViewContent}>
+            <View style={styles.ViewContent}>
 
-            <KeyboardAvoidingView
-                behavior={Platform.OS === "ios" ? "padding" : null}
-                style={{ flex: 1, backgroundColor: 'white' }}>
-                <ScrollView showsVerticalScrollIndicator={false}>
-             
-                    <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                <KeyboardAvoidingView
+                    behavior={Platform.OS === "ios" ? "padding" : null}
+                    style={{ flex: 1, backgroundColor: 'white' }}>
+                    <ScrollView showsVerticalScrollIndicator={false}>
 
-
-                        <TextInputBox
-                          returnKeyType="next"
-                            ref={adddressRef}
-                            //pointerEvents="none"
-                            name={t('common:Name')}
-                            value={Name}
-                            color={"#1A051D"}
-                            maxLength={40}
-                            keyboardType1={'email-address'}
-                            onFocus={() => setAddressFocus(true)}
-                            onBlur={() => setAddressFocus(false)}
-                            
-                            onSubmitEditing={() => MobileRef.current.focus()}
-                            // edit={AccStatus}
-                            onChangeText={(text) => {
-                                if (/^[^!-\/:-@\.,[-`{-~1234567890₹~`|•√π÷×¶∆€¥$¢^°={}%©®™✓]+$/.test(text) || text === '') {
-                                    setName(text)
-                        
-                                } else {
-                                    ToastAndroid.show("Please enter a valid name ", ToastAndroid.SHORT);
-                                }
-                                
-                            }}
-                        />
+                        <View style={{ alignItems: 'center', justifyContent: 'center' }}>
 
 
+                            <TextInputBox
+                                returnKeyType="next"
+                                ref={adddressRef}
+                                //pointerEvents="none"
+                                name={t('common:Name')}
+                                value={Name}
+                                color={"#1A051D"}
+                                maxLength={40}
+                                keyboardType1={'email-address'}
+                                onFocus={() => setAddressFocus(true)}
+                                onBlur={() => setAddressFocus(false)}
 
-                        <TextInputBox
-                            ref={MobileRef}
-                            name={t('common:SmartPhone')}
-                            value={Mobile}
-                            keyboardType1={'numeric'}
-                            color={"#1A051D"}
-                            maxLength={10}
-                            onChangeText={(text) => {
-                                OnchangeNumber(text)
-                            }}
-                            onBlur={()=>true}
-                        />
+                                onSubmitEditing={() => MobileRef.current.focus()}
+                                // edit={AccStatus}
+                                onChangeText={(text) => {
+                                    const firstDigitStr = String(text)[0];
+                                    if (firstDigitStr == ' ') {
+                                        containsWhitespace(text)
+                                        // 👇️ this runs
+                                        setName('')
+                                        ToastAndroid.show("Please enter a valid name ", ToastAndroid.SHORT);
+                                        console.log('The string contains whitespace', Name);
+                                    } else if (/^[^!-\/:-@\.,[-`{-~1234567890₹~`|•√π÷×¶∆€¥$¢^°={}%©®™✓]+$/.test(text) || text === '') {
+                                        setName(text)
+                                        console.log("verify daat1")
+                                    }
+                                    else {
+                                        ToastAndroid.show("Please enter a valid name ", ToastAndroid.SHORT);
+                                    }
 
-                        <TextInputBox
-                            name={t('common:Pincode')}
-                            value={Pincode}
-                            keyboardType1={'numeric'}
-                            color={"#1A051D"}
-                            maxLength={6}
-                            onChangeText={(text) => {
-                                setVillage('')
-                               // setPincode(text)
-                          
-                               if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(text) || text === '') {
-                                    setPincode(text)
-                                    console.log("pincode",text)
-                                    setPincode(text)
-                                   
-                                   if(text?.length === 6){
-                                    setVStatus(true)
-                                   }
-                                }
-                            //      else if(text?.length==6){
-                            //         setPincode(text)
-                            //         setVStatus(true)
-                            //    }
-                                else {
-                                    ToastAndroid.show('Please enter a valid pincode', ToastAndroid.SHORT);
-                                }
-                            }}
-                        />
-                    </View>
+                                }}
+                            />
 
-                    {VStatus &&
-                        <View style={{ paddingTop: width * 0.05,}}>
-                            <Text style={styles.TextName}>{t('common:Village')}</Text>
 
-                            <View style={{alignItems:'center'}}>
-                            <View style={[styles.textInput1, { flexDirection: 'row', alignItems:'center',}]} >
-                               
-                                    <Image1 />
-                                <TextInput
-                                    value={Village}
-                                 
-                                    style={styles.TextInputBranch}
-                                    onChangeText={(text) => {
-                                        setVillage(text)
-                                        setVillageEnable(false)
-                                        if (text == '') {
-                                            
-                                            setVillageList([])
-                                            setVillageStatus(false)
-                                           // setBstatus(false)
-                                            setButton(false)
-                                        } else {
-                                            getVillage(text)
+
+                            <TextInputBox
+                                ref={MobileRef}
+                                name={t('common:SmartPhone')}
+                                value={Mobile}
+                                keyboardType1={'numeric'}
+                                color={"#1A051D"}
+                                maxLength={10}
+                                onChangeText={(text) => {
+                                    OnchangeNumber(text)
+                                }}
+                                onBlur={() => true}
+                            />
+
+                            <TextInputBox
+                                name={t('common:Pincode')}
+                                value={Pincode}
+                                keyboardType1={'numeric'}
+                                color={"#1A051D"}
+                                maxLength={6}
+                                onChangeText={(text) => {
+                                    setVillage('')
+                                    // setPincode(text)
+
+                                    if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(text) || text === '') {
+                                        setPincode(text)
+                                        console.log("pincode", text)
+                                        setPincode(text)
+
+                                        if (text?.length === 6) {
+                                            setVStatus(true)
                                         }
-                                    }} />
-                            </View>
-                            {VillageStatus &&
-                            <View>
-                            {vilageList?.length > 0
-                                ?    <View style={{alignItems:'center'}}>
-                                <View style={styles.ViewMapBranch1}>
-                                    {vilageList?.map((item) => {
-                                        return (
+                                    }
+                                    //      else if(text?.length==6){
+                                    //         setPincode(text)
+                                    //         setVStatus(true)
+                                    //    }
+                                    else {
+                                        ToastAndroid.show('Please enter a valid pincode', ToastAndroid.SHORT);
+                                    }
+                                }}
+                            />
+                        </View>
 
-                                            <TouchableOpacity onPress={() => {
-                                                setVillage(item)
-                                                setVillageEnable(true)
-                                                setButton(true)
-                                                setVillageList([])
-                                                setVillageStatus(false)
-                                               // setBstatus(false)
-                                            }}>
-                                                <View style={{ paddingTop: 8 }}>
+                        {VStatus &&
+                            <View style={{ paddingTop: width * 0.05, }}>
+                                <Text style={styles.TextName}>{t('common:Village')}</Text>
 
-                                                    <Text style={styles.ItemNameBranch}>{item}</Text>
+                                <View style={{ alignItems: 'center' }}>
+                                    <View style={[styles.textInput1, { flexDirection: 'row', alignItems: 'center', }]} >
 
-                                                    <View style={styles.Line} />
+                                        <Image1 />
+                                        <TextInput
+                                            value={Village}
+
+                                            style={styles.TextInputBranch}
+                                            onChangeText={(text) => {
+                                                setVillage(text)
+                                                setVillageEnable(false)
+                                                if (text == '') {
+
+                                                    setVillageList([])
+                                                    setVillageStatus(false)
+                                                    // setBstatus(false)
+                                                    setButton(false)
+                                                } else {
+                                                    getVillage(text)
+                                                }
+                                            }} />
+                                    </View>
+                                    {VillageStatus &&
+                                        <View>
+                                            {vilageList?.length > 0
+                                                ? <View style={{ alignItems: 'center' }}>
+                                                    <View style={styles.ViewMapBranch1}>
+                                                        {vilageList?.map((item) => {
+                                                            return (
+
+                                                                <TouchableOpacity onPress={() => {
+                                                                    setVillage(item)
+                                                                    setVillageEnable(true)
+                                                                    setButton(true)
+                                                                    setVillageList([])
+                                                                    setVillageStatus(false)
+                                                                    // setBstatus(false)
+                                                                }}>
+                                                                    <View style={{ paddingTop: 8 }}>
+
+                                                                        <Text style={styles.ItemNameBranch}>{item}</Text>
+
+                                                                        <View style={styles.Line} />
+                                                                    </View>
+                                                                </TouchableOpacity>
+
+                                                            )
+                                                        })}
+                                                    </View>
                                                 </View>
-                                            </TouchableOpacity>
+                                                : null}
+                                        </View>}
+                                    {VillageStatus &&
+                                        <View>
+                                            {vilageList?.length == 0 && VillageStatus ? <View style={[styles.ViewMapBranch, { height: width * 0.15, }]}>
+                                                <View style={{ paddingTop: width * 0.05 }}>
 
-                                        )
-                                    })}
-                                </View>
-                                </View>
-                                : null}
-                             </View>}
-                             {VillageStatus &&
-                            <View>
-                            {vilageList?.length == 0 && VillageStatus  ? <View style={[styles.ViewMapBranch, { height: width * 0.15, }]}>
-                                <View style={{ paddingTop: width * 0.05 }}>
+                                                    <Text style={styles.ItemNameBranch}>No results found</Text>
 
-                                    <Text style={styles.ItemNameBranch}>No results found</Text>
-
+                                                </View>
+                                            </View> : null}
+                                        </View>}
                                 </View>
-                            </View> : null}
                             </View>}
-                            </View>
-                        </View>}
-                       
-                </ScrollView>
-            </KeyboardAvoidingView>
-        
-       
-            <TouchableOpacity
-                style={[styles.Button1, { backgroundColor: Button &&  Name?.length>=3  && Mobile?.length===10  && Pincode?.length===6 && VillageEnable ? COLORS.colorB : '#ECEBED' }]}
-                disabled={Button && Name?.length>=3 && Mobile?.length===10 && Pincode?.length===6 && VillageEnable? false : true}
-                onPress={()=>Validation()}>
-                <Text style={[styles.text1, { color: Button && Name?.length>=3  && Mobile?.length===10  && Pincode?.length===6 && VillageEnable? COLORS.colorBackground : '#979C9E' }]}>{t('common:Confirm')}</Text>
-            </TouchableOpacity>
 
-            <LeadModal ModalVisible={ModalVisible}
-                onPress={() => OnpressOut1()}
-                onPressOut={() => setModalVisible(!ModalVisible)}
-                setModalVisible={setModalVisible} />
+                    </ScrollView>
+                </KeyboardAvoidingView>
 
-            <ValidModal
-                Validation={Message}
-                ModalVisible={ValidModal1}
-                onPressOut={() => setValidModal1(!ValidModal1)}
-                setModalVisible={setValidModal1}
-            />
-        </View>
+
+                <TouchableOpacity
+                    style={[styles.Button1, { backgroundColor: Button && Name?.length >= 3 && Mobile?.length === 10 && Pincode?.length === 6 && VillageEnable ? COLORS.colorB : '#ECEBED' }]}
+                    disabled={Button && Name?.length >= 3 && Mobile?.length === 10 && Pincode?.length === 6 && VillageEnable ? false : true}
+                    onPress={() => Validation()}>
+                    <Text style={[styles.text1, { color: Button && Name?.length >= 3 && Mobile?.length === 10 && Pincode?.length === 6 && VillageEnable ? COLORS.colorBackground : '#979C9E' }]}>{t('common:Confirm')}</Text>
+                </TouchableOpacity>
+
+                <LeadModal ModalVisible={ModalVisible}
+                    onPress={() => OnpressOut1()}
+                    onPressOut={() => {
+                        setModalVisible(!ModalVisible)
+
+                    }}
+                    setModalVisible={setModalVisible} />
+
+                <ValidModal
+                    Validation={Message}
+                    ModalVisible={ValidModal1}
+                    onPressOut={() => setValidModal1(!ValidModal1)}
+                    setModalVisible={setValidModal1}
+                />
+            </View>
         </>
     )
 }
@@ -349,7 +368,7 @@ const styles = StyleSheet.create({
         fontSize: 12,
         color: 'rgba(59, 61, 67, 1)',
         paddingBottom: width * 0.02,
-        paddingLeft:6
+        paddingLeft: 6
     },
     textInput: {
         width: width * 0.9,
@@ -448,7 +467,7 @@ const styles = StyleSheet.create({
         fontSize: 12,
         fontFamily: FONTS.FontRegular
     },
-    
+
 })
 
 export default NewLead1;

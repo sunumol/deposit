@@ -142,6 +142,20 @@ const Vehicles = ({ navigation, vehicleslist }) => {
         })
     };
 
+    const saveVehicleDetails_AddNew = async () => {
+        console.log('api called1')
+
+        const data = vehicleslist
+        await api.saveVehicleDetails(data).then((res) => {
+            console.log('-------------------res fetchVehicleDetailsForDle', res)
+            if (res?.status) {
+                navigation.navigate('AddVehicle')
+            }
+        }).catch((err) => {
+            console.log('-------------------err fetchVehicleDetailsForDle', err?.response)
+        })
+    };
+
 
     useEffect(() => {
        // getVehicleDetails()
@@ -196,7 +210,7 @@ const Vehicles = ({ navigation, vehicleslist }) => {
 
                     <View style={{ alignItems: 'flex-end' }}>
                         <TouchableOpacity style={[styles.buttonView1, { backgroundColor: 'rgba(0, 56, 116, 0.1)' }]}
-                            onPress={() => navigation.navigate('AddVehicle')} >
+                            onPress={() => saveVehicleDetails_AddNew()} >
                             <Icon1 name="plus" size={18} color={COLORS.colorB} />
                             <Text style={[styles.continueText, { color: COLORS.colorB, marginLeft: 5 }]}>Add New</Text>
                         </TouchableOpacity>

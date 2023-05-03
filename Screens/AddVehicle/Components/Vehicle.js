@@ -28,7 +28,7 @@ import Image1 from '../../../assets/Images/cakes.svg';
 import { api } from '../../../Services/Api';
 import ErrorModal from './ErrorModal';
 import { useSelector } from 'react-redux';
-
+import VehicleModal from './VehicleModal';
 
 const Vehicle = ({ navigation }) => {
 
@@ -63,7 +63,8 @@ const Vehicle = ({ navigation }) => {
     const [Status, setStatus] = useState(false)
     const [ModalVisible1, setModalVisible1] = useState(false)
     const [searchvehicledata, setSearchvehicledata] = useState({})
-    const [VehicleStatus,setVehicleStatus] = useState(false)
+    const [VehicleStatus, setVehicleStatus] = useState(false)
+    const [ModalVehicle, setModalVehicle] = useState(false)
     const toggleCheckbox = () => setChecked(!checked);
 
     const Data = [
@@ -150,19 +151,23 @@ const Vehicle = ({ navigation }) => {
             "vehicleNumber": numbers
         }
         await api.fetchVehicleDetailsForDle(data).then((res) => {
-            console.log('-------------------res fetchVehicleDetailsForDle12388', res)
+            console.log('-------------------res fetchVehicleDetailsForDle12388', data, res.data.status)
             if (res?.status) {
                 if (res?.data?.body) {
                     setSearchvehicledata(res?.data?.body)
                     setSearchStatus2(true)
                 } else {
+                    setNumbers('')
                     setModalError(true)
                     setSearchStatus2(false)
                 }
 
             }
         }).catch((err) => {
-            console.log('-------------------err fetchVehicleDetailsForDle', err)
+            if (err.response.status == 400) {
+                setModalVehicle(true)
+            }
+            console.log('-------------------err fetchVehicleDetailsForDle', err.response.status, data)
         })
     };
 
@@ -179,7 +184,7 @@ const Vehicle = ({ navigation }) => {
                 navigation.navigate('VehicleOwn')
             }
         }).catch((err) => {
-            console.log('-------------------err save vehicle', err?.response)
+            console.log('-------------------err save vehicle', err)
         })
     };
 
@@ -204,6 +209,7 @@ const Vehicle = ({ navigation }) => {
             setNumbers(num)
 
         } else {
+
             setModalError(true)
             // ToastAndroid.show(t('common:Valid'), ToastAndroid.SHORT);
         }
@@ -236,37 +242,37 @@ const Vehicle = ({ navigation }) => {
                         <Text style={[styles.TextOwner, { marginTop: 10 }]}>Enter the vehicle number</Text>
                     </View>
                     {Purpose ?
-                    <View>
-                        <TouchableOpacity style={styles.SelectBox}>
+                        <View>
+                            <TouchableOpacity style={styles.SelectBox}>
 
 
-                            <TextInput
-                                readOnly={true}
+                                <TextInput
+                                    readOnly={true}
 
-                                // placeholder='KL34E3278'
-                                placeholderTextColor='#808080'
-                                value={numbers}
-                                //maxLength={10}
-                                style={styles.Num}
-                                //placeholderTextColor="#808080"
+                                    // placeholder='KL34E3278'
+                                    placeholderTextColor='#808080'
+                                    value={numbers}
+                                    //maxLength={10}
+                                    style={styles.Num}
+                                    //placeholderTextColor="#808080"
 
-                                onChangeText={(text) => {
-                                    
-                                    OnchangeNumbers(text)
+                                    onChangeText={(text) => {
+
+                                        OnchangeNumbers(text)
 
 
-                                }
+                                    }
 
-                                }
+                                    }
 
-                            // keyboardType="numeric"
-                            />
+                                // keyboardType="numeric"
+                                />
 
-                            <TouchableOpacity style={styles.SearhView} onPress={() => numbers?.length > 0 ? StatusChange2() : console.log("null")}>
-                                <Search />
+                                <TouchableOpacity style={styles.SearhView} onPress={() => numbers?.length > 0 ? StatusChange2() : console.log("null")}>
+                                    <Search />
+                                </TouchableOpacity>
                             </TouchableOpacity>
-                        </TouchableOpacity>
-              
+
                         </View>
                         :
                         <View style={styles.SelectBox1}>
@@ -352,6 +358,7 @@ const Vehicle = ({ navigation }) => {
                                             )
                                         })}
                                     </View>
+
                                     <View style={{ flexDirection: 'column', flex: 1, left: -28 }}>
                                         <Text style={styles.owner}>Year</Text>
                                         <Text style={styles.NameStyle}>{searchvehicledata?.year}</Text>
@@ -363,7 +370,7 @@ const Vehicle = ({ navigation }) => {
                                 }}>
 
                                     <TouchableOpacity style={[styles.buttonView1, { backgroundColor: 'rgba(229, 231, 250, 1)' }]}
-                                    >
+                                    onPress={()=>{setSearchStatus2(false),setNumbers(''),setPurpose('')}}>
                                         <Text style={[styles.continueText, { color: COLORS.colorB }]}>Reject</Text>
                                     </TouchableOpacity>
                                     {console.log('~~~~~>>>', searchvehicledata)}
@@ -395,6 +402,14 @@ const Vehicle = ({ navigation }) => {
                 setStatus={setStatus}
                 onPressOut={() => setModalVisible1(!ModalVisible1)}
             />
+            <VehicleModal
+                ModalVisible={ModalVehicle}
+                onPressOut={() => {
+                    setModalVehicle(!ModalVehicle)
+
+                }}
+                setModalVisible={setModalVehicle}
+            />
             <ErrorModal
                 ModalVisible={ModalError}
                 onPressOut={() => {
@@ -403,7 +418,6 @@ const Vehicle = ({ navigation }) => {
                 }}
                 setModalVisible={setModalError}
             />
-
 
 
         </>
@@ -573,7 +587,7 @@ const styles = StyleSheet.create({
         //alignItems: 'center',
         marginBottom: 14,
         width: width * 0.88,
-       // height: width * 0.57
+        // height: width * 0.57
     },
     owner: {
         color: '#808080',

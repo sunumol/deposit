@@ -94,6 +94,7 @@ const CalendarStrips = ({ callback }) => {
       next = new Date(today.getFullYear(), today?.getMonth() + 1, 1);
     }
     // setStartDay(next)
+    setMonth(next)
     setSelectedDate(next)
     console.log("------", next);
     if (moment(today).format("MMMM YYYY") !== moment(endDate).format("MMMM YYYY")) {
@@ -110,6 +111,7 @@ const CalendarStrips = ({ callback }) => {
 
   const DecrementMonth = () => {
     //setStartDay(new Date())
+    setMonth(new Date())
     setSelectedDate(new Date())
   }
 
@@ -128,16 +130,16 @@ const CalendarStrips = ({ callback }) => {
       setArrowEnable(true)
        setArrowRight(true)
      }
-     else if (Moment == moment(NewDate).format("MMMM YYYY")) {
-      // console.log("inside this condition", Moment == moment(NewDate).format("MMMM YYYY"))
-       setArrowEnable(false)
-       setArrowRight(true)
+    //  else if (Moment == moment(NewDate).format("MMMM YYYY")) {
+    //   // console.log("inside this condition", Moment == moment(NewDate).format("MMMM YYYY"))
+    //    setArrowEnable(false)
+    //    setArrowRight(true)
  
-     } else if (moment(endDate).format("MMMM YYYY") == Moment) {
-       getCGTslot()
-       console.log("else if condition", moment(endDate).format("MMMM YYYY") == Moment)
-       setArrowRight(false)
-     } 
+    //  } else if (moment(endDate).format("MMMM YYYY") == Moment) {
+    //   // getCGTslot()
+    //    console.log("else if condition", moment(endDate).format("MMMM YYYY") == Moment)
+    //    setArrowRight(false)
+    //  } 
    
 
   }

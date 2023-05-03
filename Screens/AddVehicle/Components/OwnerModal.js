@@ -40,7 +40,7 @@ const OwnerModal = ({ visible, onPressOut,setModalVisible,setRelation,setPurpose
                              {Purpose == 'Customer'? 
                                 <Icon1 name="radio-btn-active" size={18} color={COLORS.colorB} /> :
                                 
-                                <Icon1 name="radio-btn-passive" size={18} color={'rgba(229, 231, 250, 1)'} />}
+                                <Icon1 name="radio-btn-passive" size={18}  color={COLORS.DSMuted} />}
                             </View>
                         </TouchableOpacity >
                         <View style={styles.lineView} />
@@ -55,7 +55,7 @@ const OwnerModal = ({ visible, onPressOut,setModalVisible,setRelation,setPurpose
                             {Purpose == "Spouse" ? 
                                 <Icon1 name="radio-btn-active" size={18} color={COLORS.colorB} /> :
                                 
-                                <Icon1 name="radio-btn-passive" size={18} color={'rgba(229, 231, 250, 1)'} />}
+                                <Icon1 name="radio-btn-passive" size={18}  color={COLORS.DSMuted}/>}
                             </View>
                         </TouchableOpacity>
                      

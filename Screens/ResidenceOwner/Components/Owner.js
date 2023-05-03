@@ -236,8 +236,8 @@ const DetailChecks = ({ navigation, setState, proofType1, imageUrl1, relation1, 
                     <Icon1 name="chevron-down" size={18} color={'#808080'} style={{ marginRight: 10 }} />
                 </TouchableOpacity>
 
-                <Pressable style={[styles.UploadCard, { opacity: Purpose ? 4 : 0.3 }]} onPress={() => { Purpose ? UploadImage() : null }} >
-
+                <Pressable style={[styles.UploadCard, { opacity: Purpose  ? 4 : 0.3 }]} onPress={() => { Purpose ? UploadImage() : null }} >
+{console.log("Purpose print.....",Purpose)}
 
                     {!imageStatus ?
                         <View style={{ alignItems: 'flex-start', flex: 1, marginLeft: 25 }}>
@@ -254,8 +254,8 @@ const DetailChecks = ({ navigation, setState, proofType1, imageUrl1, relation1, 
                             </View>}
                     <View style={[styles.Line, { borderColor: Purpose ? "#F2F2F2" : "grey" }]} />
                     <View style={{ flexDirection: 'column', left: -20 }}>
-                        <Text style={[styles.UploadText, { color: NameStatus ? '#1A051D' : '#808080' }]}>Upload photo</Text>
-                        <Text style={styles.Prooftext}>Proof of ownership</Text>
+                        <Text style={[styles.UploadText, { color: NameStatus || Purpose ? '#1A051D' : '#808080' }]}>Upload photo</Text>
+                        <Text style={[styles.Prooftext]}>Proof of ownership</Text>
                     </View>
 
                     <View style={{ flex: 1, alignItems: 'flex-end' }}>
@@ -304,12 +304,12 @@ const DetailChecks = ({ navigation, setState, proofType1, imageUrl1, relation1, 
                                 <TextInput
                                     value={ownersName}
                                     style={styles.TextInputBranch}
-                                    onChangeText={(text) => { 
+                                    onChangeText={(text) => {
                                         if (/^[^!-\/:-@\.,[-`{-~1234567890₹~`|•√π÷×¶∆€¥$¢^°={}%©®™✓]+$/.test(text) || text === '') {
                                             setOwnersName(text), relative1(text)
-                                
+
                                         }
-                                        }}
+                                    }}
                                 // onFocus={() => setPstatus(false)}
                                 // onKeyPress={() => setPstatus(false)}
 

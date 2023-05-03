@@ -68,7 +68,10 @@ const CgtCustomer = ({ navigation, route }) => {
                 BackHandler.removeEventListener('hardwareBackPress', handleGoBack);
         }, [handleGoBack]),
     );
-
+    
+    String.prototype.replaceAt = function (index, replacement) {
+        return this.substring(0, index) + replacement + this.substring(index + replacement.length);
+    }
     useEffect(() => {
         if (ModalError == true) {
             const timer = setTimeout(() => {
@@ -205,34 +208,41 @@ const CgtCustomer = ({ navigation, route }) => {
                             <View style={{ flexDirection: 'column', paddingTop: 5, alignItems: 'flex-end' }}>
                                 <View style={{ flexDirection: 'row' }}>
                                     <Icon2 name="phone-in-talk-outline" color={"black"} size={15} />
-                                    <Text style={[styles.numText, { paddingLeft: 6 }]}>{details?.mobileNumber}</Text>
+                                    <Text style={[styles.numText, { paddingLeft: 6 }]}>{details?.mobileNumber.replace(/^.{0}/g, ''," ").slice(-10).replaceAt(3, "X").replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X")}</Text>
                                 </View>
                             </View>
 
                         </View>
                         <View style={styles.lineView} />
-                        <View style={{ paddingHorizontal: 17, }}>
+                        <View style={{ paddingHorizontal: 17,marginTop:10 }}>
                             <Text style={styles.headTextTitle}>Address</Text>
                             <Text style={[styles.subText, { maxWidth: 200 }]}>{details?.address}</Text>
                         </View>
                         <View style={styles.lineView} />
                         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 17, }}>
-                            <View style={{ flexDirection: 'column', flex: 1, marginRight: 10 }}>
+                            <View style={{ flexDirection: 'column', flex: 1, marginRight: 10,marginTop:10 }}>
                                 <Text style={styles.headTextTitle}>Aadhaar ID</Text>
                                 <Text style={styles.subText}>{details?.aadharNumber}</Text>
                             </View>
 
                         </View>
+                        
+                        <>
                         <View style={styles.lineView} />
-                        <View style={{ paddingHorizontal: 17, }}>
+                        <View style={{ paddingHorizontal: 17,marginBottom:details?.spouseVoterId? 0:10,marginTop:10}}>
                             <Text style={styles.headTextTitle}>Voter ID</Text>
                             <Text style={styles.subText}>{details?.voterId}</Text>
                         </View>
+                        </>
+
+                        {details?.spouseVoterId &&
+                        <>
                         <View style={styles.lineView} />
-                        <View style={{ paddingHorizontal: 17, paddingBottom: 16 }}>
+                        <View style={{ paddingHorizontal: 17, paddingBottom: 16,marginTop:10 }}>
                             <Text style={styles.headTextTitle}>Spouse Voter ID</Text>
                             <Text style={styles.subText}>{details?.spouseVoterId}</Text>
                         </View>
+                        </>}
 
                     </View>
 
@@ -351,12 +361,12 @@ const styles = StyleSheet.create({
         marginTop: 23
     },
     lineView: {
-        borderWidth: 0.9,
+        borderWidth: 0.6,
         borderColor: COLORS.Gray6,
         backgroundColor: COLORS.Gray6,
         opacity: 0.5,
         marginTop: 13,
-        marginBottom: 16
+        //marginBottom: 16
     },
     nameText: {
         fontSize: 12,

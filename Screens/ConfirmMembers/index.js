@@ -34,6 +34,7 @@ const [tccustomerlist,setTccustomerlist] = useState();
   const dispatch = useDispatch()
   const customerList = useSelector(state => state.customerList);
   const customerID = useSelector(state => state.customerID);
+  
   String.prototype.replaceAt = function (index, replacement) {
     return this.substring(0, index) + replacement + this.substring(index + replacement.length);
 }
@@ -95,6 +96,7 @@ const [tccustomerlist,setTccustomerlist] = useState();
 
   // ------------------ get Slot Api Call Start ------------------
   const getTCDetails = async (id) => {
+    console.log("id..",id)
     const data = {
       "customerId": Number(id)
     };
@@ -243,7 +245,7 @@ const [tccustomerlist,setTccustomerlist] = useState();
                           </View>
                         </View>
                       </View>
-                      <Text style={[styles.numText, { paddingLeft: 6 }]}>{item?.mobile?.replace(/^.{0}/g, '').replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X").replaceAt(8, "X")}</Text>
+                      <Text style={[styles.numText, { paddingLeft: 6 }]}>{item?.mobile?.replace(/^.{0}/g, '', " ").slice(-10).replaceAt(3, "X").replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X")}</Text>
                     </TouchableOpacity>
 
                     {index !== data?.length - 1

@@ -7,8 +7,7 @@ const { height, width } = Dimensions.get('screen');
 import Image1 from '../../../assets/image/Ex.svg';
 
 
-
-const ErrorModal = ({ ModalVisible, onPressOut,onPress1 }) => {
+const VehicleModal = ({ ModalVisible, onPressOut,onPress1 }) => {
     const [state, setState] = useState(null);
     const { t } = useTranslation();
     const [Lang, setLang] = useState('')
@@ -44,14 +43,13 @@ const ErrorModal = ({ ModalVisible, onPressOut,onPress1 }) => {
 
                 <View style={styles.modalContainer}>
                     <View style={{ paddingTop: width * 0.05 }}>
-                    <Image1 style={{ marginTop: 0, marginBottom: 8 }} height={width*0.07} width={width*0.07}/>
+                    <Image1 style={{ marginTop: 15, marginBottom: 8 }} height={width*0.07} width={width*0.07}/>
               
                     </View>
 
-                    <View style={{ paddingTop: width * 0.02,paddingHorizontal: width *0.05 }}>
+                    <View style={{ paddingTop: width * 0.03,paddingHorizontal: width *0.05 }}>
                       
-                        <Text style={styles.textdesc}>Mobile number cannot be same as</Text>
-                        <Text style={styles.textdesc}>that of that Customer</Text>
+                        <Text style={styles.textdesc}>This vehicle is already added</Text>
                     </View>
 
 
@@ -80,10 +78,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     modalContainer: {
-        width: Dimensions.get('window').width * 0.9,
-        height: Dimensions.get('window').width * 0.49,
+        width: Dimensions.get('window').width * 0.90,
+        height: Dimensions.get('window').width * 0.50,
         backgroundColor: COLORS.colorBackground,
-        borderRadius: 8,
+        borderRadius: 10,
         alignItems: 'center',
         justifyContent: 'center'
     },
@@ -147,4 +145,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default ErrorModal;
+export default VehicleModal;

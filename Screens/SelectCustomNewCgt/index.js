@@ -323,7 +323,7 @@ setReschedulecgt(route?.params?.rescheduledata)
                             </View>
                           </View>
                         </View>
-                        <Text style={[styles.numText, { paddingLeft: 6 }]}>{item?.mobile.replace(/^.{0}/g, '').replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X")}</Text>
+                        <Text style={[styles.numText, { paddingLeft: 6 }]}>{item?.mobile.replace(/^.{0}/g, '').slice(-10).replaceAt(3, "X").replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X")}</Text>
                       </TouchableOpacity>
 
                       {customerList?.length - 1 !== index
@@ -366,7 +366,7 @@ setReschedulecgt(route?.params?.rescheduledata)
       <CgtModal ModalVisible={ModalVisible}
         onPressOut={() => {
           setModalVisible(false)
-          navigation.navigate('NewCgt')
+          navigation.navigate('Profile')
         }}
        
         navigation={navigation}

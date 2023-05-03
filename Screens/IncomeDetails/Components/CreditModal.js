@@ -1,10 +1,11 @@
 import React from "react";
 import { Dimensions, Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Icon1 from 'react-native-vector-icons/Fontisto';
 import { COLORS, FONTS } from '../../../Constants/Constants';
 import { useTranslation } from 'react-i18next';
+import Purpose from "../../SelectCustomCall/Components/Purpose";
 
-const CreditModal = ({ visible, onPressOut,setModalVisible,setPurpose,
+const CreditModal = ({ visible, onPressOut,setModalVisible,setPurpose,setMonth,Purpose
    }) => {
     const { t } = useTranslation();
     return (
@@ -27,34 +28,34 @@ const CreditModal = ({ visible, onPressOut,setModalVisible,setPurpose,
                         <TouchableOpacity style={styles.textTouch}
                             onPress={() => {
                                 setPurpose('Bank Account')
-                            
+                                setMonth('Bank Account')
                                 setModalVisible(!visible)
                              
                             }
                             }>
+                                {console.log("Purpose print",Purpose,)}
                             <Text style={styles.modalText}>Bank Account</Text>
                             <View style={{ paddingRight: 10 }}>
-                                <Icon
-                                    name="checkbox-blank-circle-outline"
-                                    color={COLORS.DSMuted}
-                                    size={18}
-                                />
+                                {Purpose == 'Bank Account' ? 
+                            <Icon1 name="radio-btn-active" size={18} color={COLORS.colorB} /> :
+                                
+                                <Icon1 name="radio-btn-passive" size={18}  color={COLORS.DSMuted}/>}
                             </View>
                         </TouchableOpacity >
                         <View style={styles.lineView} />
                         <TouchableOpacity style={styles.textTouch} onPress={() => {
                             setPurpose("Cash")
+                            setMonth('Cash')
                             setModalVisible(!visible)
                         
                         }
                         }>
                             <Text style={styles.modalText}>Cash</Text>
                             <View style={{ paddingRight: 10 }}>
-                                <Icon
-                                    name="checkbox-blank-circle-outline"
-                                    color={COLORS.DSMuted}
-                                    size={18}
-                                />
+                            {Purpose == 'Cash' ? 
+                            <Icon1 name="radio-btn-active" size={18} color={COLORS.colorB} /> :
+                                
+                                <Icon1 name="radio-btn-passive" size={18}  color={COLORS.DSMuted}/>}
                             </View>
                         </TouchableOpacity>
                    

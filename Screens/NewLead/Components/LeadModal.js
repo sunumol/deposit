@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Dimensions, Modal, StyleSheet, Text, TouchableOpacity, View, Image } from "react-native";
+import { Dimensions, Modal, StyleSheet, Text, TouchableOpacity, View,TouchableWithoutFeedback} from "react-native";
 import { COLORS, FONTS } from '../../../Constants/Constants';
 import { useTranslation } from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -33,15 +33,18 @@ const LeadModal = ({ ModalVisible, onPressOut, setModalVisible,onPress }) => {
             transparent={true}
             visible={ModalVisible}
             onRequestClose={() => {
-                setModalVisible(!ModalVisible)
+               onPress()
             }}
         >
             <View style={styles.mainContainer} >
-
-                <TouchableOpacity
-                    onPressOut={onPressOut}
-                    style={styles.touchableStyle} >
-                </TouchableOpacity>
+<TouchableOpacity onPressOut={()=>{
+onPress()}}
+ style={{ flex: 1, alignItems: 'center', justifyContent: 'center', opacity: 5 }} >
+      
+            {/* <TouchableOpacity onPressOut={()=>onPress()}
+          style={{ backgroundColor: "#000000aa", flex: 1, alignItems: 'center', justifyContent: 'center', opacity: 5 }}
+                >
+            </TouchableOpacity> */}
 
                 <View style={styles.modalContainer}>
                     <View style={{paddingTop:width*0.06}}>
@@ -58,10 +61,12 @@ const LeadModal = ({ ModalVisible, onPressOut, setModalVisible,onPress }) => {
                     </TouchableOpacity>
                 </View>
 
-                <TouchableOpacity
-                    onPressOut={onPressOut}
-                    style={styles.touchableStyle} >
-                </TouchableOpacity>
+   
+                {/* <TouchableOpacity onPressOut={()=>onPress()}
+        style={{ backgroundColor: "#000000aa", flex: 1, alignItems: 'center', justifyContent: 'center', opacity: 5 }}
+                 >
+            </TouchableOpacity> */}
+            </TouchableOpacity>
             </View>
         </Modal>
 
@@ -71,13 +76,13 @@ const LeadModal = ({ ModalVisible, onPressOut, setModalVisible,onPress }) => {
 const styles = StyleSheet.create({
     mainContainer: {
         backgroundColor: "#000000aa",
-        flex: 1,
+       flex: 1,
         alignItems: 'center',
         justifyContent: 'center'
     },
     modalContainer: {
         width: Dimensions.get('window').width * 0.82,
-        height: Dimensions.get('window').width * 0.6,
+        height: Dimensions.get('window').width * 0.63,
         backgroundColor: COLORS.colorBackground,
         borderRadius: 20,
         alignItems: 'center',

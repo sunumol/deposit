@@ -53,7 +53,9 @@ const CreateTrustCircle = ({ navigation,route }) => {
     }, [navigation]);
 
 
-
+    String.prototype.replaceAt = function (index, replacement) {
+        return this.substring(0, index) + replacement + this.substring(index + replacement.length);
+    }
 
     console.log('000000000======',cgtCustomerDetails)
     useFocusEffect(
@@ -87,8 +89,10 @@ const CreateTrustCircle = ({ navigation,route }) => {
     const CreateTrustCircle = async () => {
         console.log('api called123456========>>>>>>>')
         const data = {
+            "agentId":1,
             "primaryCustomerId": cgtCustomerDetails.primaryCustomerId,
-            "memberIds": customerID
+            "memberIds": customerID,
+         
         }
         await api.createTrustCircles(data).then((res) => {
             console.log('-------------------res create', res)
@@ -106,12 +110,13 @@ useEffect(()=>{
 getDLEschedule()
 },[])
     const getTclist = async () => {
-        console.log('api called')
+        console.log('api called',customerID,cgtCustomerDetails?.primaryCustomerId)
         const data = {
             "employeeId":1,
             "customerNameOrNumber":"",
-            "addedTcIds":customerID
+            "addedTcIds":[customerID,cgtCustomerDetails?.primaryCustomerId]
         }
+        console.log("DATA PRINT",data)
         await api.getCustomerListForTc(data).then((res) => {
             console.log('-------------------res getCustomerListForTc', res)
             
@@ -208,7 +213,7 @@ getDLEschedule()
                         <View style={{ flexDirection: 'column', top: -8, alignItems: 'flex-end', marginRight: 14 }}>
                             <View style={{ flexDirection: 'row' }}>
                                 <Icon2 name="phone-in-talk-outline" color={"black"} size={15} />
-                                <Text style={[styles.numText, { paddingLeft: 6 }]}>{cgtCustomerDetails?.mobileNumber}</Text>
+                                <Text style={[styles.numText, { paddingLeft: 6 }]}>{cgtCustomerDetails?.mobileNumber.replace(/^.{0}/g, '', " ").slice(-10).replaceAt(3, "X").replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X")}</Text>
                             </View>
                         </View>
                     </View>
@@ -245,7 +250,7 @@ getDLEschedule()
                                 <View style={{ flexDirection: 'column', top: -8, alignItems: 'flex-end', marginRight: 14 }}>
                                     <View style={{ flexDirection: 'row' }}>
                                         <Icon2 name="phone-in-talk-outline" color={"black"} size={15} />
-                                        <Text style={[styles.numText, { paddingLeft: 6 }]}>{item?.mobileNumber}</Text>
+                                        <Text style={[styles.numText, { paddingLeft: 6 }]}>{item?.mobileNumber.replace(/^.{0}/g, '', " ").slice(-10).replaceAt(3, "X").replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X")}</Text>
                                     </View>
                                 </View>
                             </View>

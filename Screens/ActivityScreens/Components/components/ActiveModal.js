@@ -35,6 +35,9 @@ const App = ({ visible, onPressOut, meet, details ,setEnab}) => {
     ])
 
 
+    String.prototype.replaceAt = function (index, replacement) {
+        return this.substring(0, index) + replacement + this.substring(index + replacement.length);
+    }
 
         // ------------------ Activity Update Api Call Start ------------------
         const updateActivity = async () => {
@@ -62,9 +65,6 @@ const App = ({ visible, onPressOut, meet, details ,setEnab}) => {
     
 
    
-    useEffect(() => {
-  
-    }, [])
 
 
   const  selectstatus = (value) => {
@@ -90,8 +90,8 @@ const App = ({ visible, onPressOut, meet, details ,setEnab}) => {
 
     return (
         <Modal isVisible={visible}
-            onBackButtonPress={onPressOut}
-            onBackdropPress={onPressOut}
+          //  onBackButtonPress={onPressOut}
+           // onBackdropPress={onPressOut}
             style={{ margin: 0 }}>
             <View style={styles.mainContainer}>
                 <View style={styles.modalContainer}>
@@ -114,7 +114,7 @@ const App = ({ visible, onPressOut, meet, details ,setEnab}) => {
                         </View>
                         <View style={{ flexDirection: 'row', paddingTop: 4 }}>
                             <Icon2 name="phone-in-talk-outline" color={"black"} size={15} />
-                            <Text style={[styles.numText, { paddingLeft: 6 }]}>{details?.mobileNumber}</Text>
+                            <Text style={[styles.numText, { paddingLeft: 6 }]}>{details?.mobileNumber.replace(/^.{0}/g, '').replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X").replaceAt(8,'X').replaceAt(9,'X').replaceAt(10,'X')}</Text>
                         </View>
 
                     </View>

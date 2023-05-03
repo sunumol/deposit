@@ -9,7 +9,7 @@ const initialState={
     ExpiryDate:'123',
     
     customerList:[],
-    customerID:[],
+    customerID:'',
     cgtCustomerDetails:'',
     activityId:'',
     slot:[],

@@ -116,15 +116,15 @@ const IncomeDetails = ({ navigation, route }) => {
         }
     }, [MonthsCustom, Purpose, Salary])
 
-    useEffect(() => {
-        console.log('Use.....', Purpose,Amount,Avg)
-        if ((Amount === null || Amount === '' ) || (Avg === null || Avg ===  '') ||( Month === null ||  Month === '' || Purpose  ===  '' || Purpose === null)) {
-            console.log("inside valid")
-            setButtons(false)
-        } else {
-            setButtons(true)
-        }
-    }, [Amount, Avg, Month,Purpose])
+    // useEffect(() => {
+    //     console.log('Use.....', Purpose,Amount,Avg)
+    //     if (Amount && (Purpose || Month)  && Avg) {
+    //         console.log("inside valid")
+    //         setButtons(false)
+    //     } else {
+    //         setButtons(true)
+    //     }
+    // }, [Amount, Avg, Month,Purpose])
 
 
 
@@ -133,7 +133,7 @@ const IncomeDetails = ({ navigation, route }) => {
     // ------------------getIncomeDetails detail ------------------
 
     const getIncomeDetails = async () => {
-        console.log('api called')
+        console.log('api called',activityId,relationShip)
 
         const data = {
             "activityId": activityId,
@@ -141,13 +141,14 @@ const IncomeDetails = ({ navigation, route }) => {
 
         }
         await api.getIncomeDetails(data).then((res) => {
-            console.log('-------------------res getIncomeDetails', res?.data?.body?.incomeDetailsFieldHeadders)
+            console.log('-------------------res getIncomeDetails', res?.data?.body)
             if (res?.status) {
                 setIncomedetail(res?.data?.body)
                 setIncomedetailfield(res?.data?.body?.incomeDetailsFieldHeadders)
                 setAmount(res?.data?.body?.field1)
                 setMonth(res?.data?.body?.field2)
                 setAvg(res?.data?.body?.field3)
+                setPurpose(res?.data?.body?.field2)
             }
         }).catch((err) => {
             console.log('-------------------err getIncomeDetails', err?.response)
@@ -192,6 +193,7 @@ const IncomeDetails = ({ navigation, route }) => {
 
         }
         await api.saveIncomeDetails(data).then((res) => {
+            console.log("data pass",data)
             console.log('-------------------res saveIncomeDetails', res?.data?.body)
             if (res?.status) {
                 if (res?.data?.body == 'MARRIED') {
@@ -330,7 +332,7 @@ const IncomeDetails = ({ navigation, route }) => {
                                 <Text style={styles.TextElect}>{incomedetailfield?.field1}</Text>
                             </View>
                             <View style={styles.SelectBox}>
-                                <Text style={[styles.RS, { color: Amount === '' ? '#808080' : '#1A051D' }]}>₹</Text>
+                                <Text style={[styles.RS, { color: Amount === '' ? '#808080' : '#1A051D' }]}>{!incomedetail?.occupation == 'SALARIED_EMPLOYEE' ?  '₹' : ''}</Text>
                                 <TextInput
                                     style={[{
                                         fontSize: 14, color: '#1A051D',
@@ -338,8 +340,30 @@ const IncomeDetails = ({ navigation, route }) => {
                                     }]}
                                     value={Amount?.toString()}
                                     keyboardType={'number-pad'}
-                                    maxLength={5}
-                                    onChangeText={(text) => setAmount(text)} />
+                                    maxLength={6}
+                                    onChangeText={(text) => 
+                                        {
+                                            if(incomedetail?.occupation == 'SALARIED_EMPLOYEE'){
+                                                if(text<13){
+                                                    setAmount(text)
+                                                    console.log("inside occupation 1",incomedetail?.occupation)
+                                                }else{
+                                                    setAmount('')
+                                                    console.log("inside occupation 2",incomedetail?.occupation)
+                                                }
+                                                console.log("inside occupation 3",incomedetail?.occupation)
+                                               // setAmount(text)
+           
+                                                // if(text<13){
+                                                //     setAmount(text)
+                                                // }
+                                            }else{
+                                                setAmount(text)
+                                                console.log("inside occupation",incomedetail?.occupation)
+                                            }
+                                          
+                                        }
+                                    } />
                             </View>
 
                             <View>
@@ -347,7 +371,9 @@ const IncomeDetails = ({ navigation, route }) => {
                             </View>
                             <View>
 
-                            {incomedetailfield?.field2 == 'Salary credit method' ? <TouchableOpacity style={[styles.SelectBox,{justifyContent:'space-between'}]} onPress={() => setModalVisible(true)}>
+                            {incomedetailfield?.field2 == 'Salary credit method' ? 
+                            <TouchableOpacity style={[styles.SelectBox,{justifyContent:'space-between'}]}
+                             onPress={() => setModalVisible(true)}>
                                 <Text style={[styles.textSelect]}>{Purpose ? Purpose :'Select'}</Text>
 
                                 <Icon1 name="chevron-down" size={18} color={'#808080'} style={{ marginRight: 10 }} />
@@ -387,9 +413,9 @@ const IncomeDetails = ({ navigation, route }) => {
                     </ScrollView>
 
                     <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                        <TouchableOpacity style={[styles.buttonView, { backgroundColor: Buttons ? COLORS.colorB : 'rgba(224, 224, 224, 1)' }]}
-                            onPress={() => ButtonClick()}>
-                            <Text style={[styles.continueText, { color: Buttons ? COLORS.colorBackground : '#979C9E' }]}>Continue</Text>
+                        <TouchableOpacity style={[styles.buttonView, { backgroundColor: Amount && (Purpose || Month)  && Avg ? COLORS.colorB : 'rgba(224, 224, 224, 1)' }]}
+                            onPress={() =>Amount && (Purpose || Month)  && Avg ?  ButtonClick() : console.log("hello")}>
+                            <Text style={[styles.continueText, { color: Amount && (Purpose || Month)  && Avg ? COLORS.colorBackground : '#979C9E' }]}>Continue</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -398,6 +424,8 @@ const IncomeDetails = ({ navigation, route }) => {
             <CreditModal
                 visible={ModalVisible}
                 setPurpose={setPurpose}
+                setMonth={setMonth}
+                Purpose={Purpose}
                 setModalVisible={setModalVisible}
                 onPressOut={() => setModalVisible(!ModalVisible)}
             />

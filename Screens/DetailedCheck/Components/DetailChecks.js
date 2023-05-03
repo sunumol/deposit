@@ -56,12 +56,15 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
         // if ((villagename || details?.village) && (postofficename || details?.postOffice) && (landmarkname || details?.landMark) && (roadstatus || details?.accessRoadType)) {
        
         if (villagename && postofficename  && landmarkname.length > 0  && roadstatus && vstatus && poststatus)  {
-            setChecked(true)
+            setChecked(!checked)
         } else {
             setChecked(false)
         }
     }
   
+    String.prototype.replaceAt = function (index, replacement) {
+        return this.substring(0, index) + replacement + this.substring(index + replacement.length);
+    }
 
     useEffect(()=>{
         setVillagename(details?.village)
@@ -158,6 +161,7 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
         if (/^[^!-\/:-@\.,[-`{-~]+$/.test(text) || text === ''){
             setLandmarkname(text)
             setLandmarkname1(text)
+            setChecked(false)
             console.log("inside this land",text)
         }
   
@@ -268,7 +272,7 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
                         <View style={{ flexDirection: 'column', paddingTop: 5, alignItems: 'flex-end' }}>
                             <View style={{ flexDirection: 'row' }}>
                                 <Icon2 name="phone-in-talk-outline" color={"black"} size={15} />
-                                <Text style={[styles.numText, { paddingLeft: 6 }]}>{details?.mobile}</Text>
+                                <Text style={[styles.numText, { paddingLeft: 6 }]}>{details?.mobile.replace(/^.{0}/g, '', " ").slice(-10).replaceAt(3, "X").replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X")}</Text>
                             </View>
                         </View>
 
@@ -336,7 +340,7 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
                                 <View style={styles.borderVillage}>
                                     <TextInput
                                         value={villagename ? villagename : ''}
-                                        style={[styles.TextInputBranch, { width: width * 0.48, color: 'rgba(26, 5, 29, 1)', fontSize: 12, left: -4 }]}
+                                        style={[styles.TextInputBranch, { width: width * 0.48, color: 'rgba(26, 5, 29, 1)', fontSize: 12, left:0 }]}
                                         onChangeText={(text) => {
                                             if(text.length == 25){
                                                 
@@ -355,7 +359,7 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
                             </View>
 
                             {BStatus ?
-                                (<View>
+                                (<View style={{paddingTop:10}}>
                                     {villagenamedata.length > 0
                                         ? <>
                                             {villagenamedata.map((item) => {
@@ -372,7 +376,7 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
                                                         // setCloseBranch(true)
                                                         // setDetailsStatus(false)
                                                     }}>
-                                                        <View style={styles.ViewBankMap}>
+                                                        <View style={[styles.ViewBankMap,{paddingTop:0}]}>
 
                                                             <Text style={styles.ItemNameBranch}>{item}</Text>
                                                             {/* {item.id == 1 &&
@@ -382,8 +386,8 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
                                                 )
                                             })}
                                         </> :
-                                        <View style={styles.ViewBankMap}>
-                                            <Text style={styles.ItemNameBranch}>No matches found</Text>
+                                        <View style={[styles.ViewBankMap,{paddingTop:0}]}>
+                                            <Text style={styles.ItemNameBranch}>No results found</Text>
                                         </View>}
                                 </View>) : null
 
@@ -415,7 +419,7 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
                             <TouchableOpacity style={styles.SelectBox} onPress={() => setModalReason1(true)}>
                                 <Text style={[styles.textSelect, { color: !roadstatus ? '#808080' : '#1A051D' }]}>{roadstatus ? roadstatus : (details?.accessRoadType ? details?.accessRoadType : 'Select')}</Text>
 
-                                <Icon1 name="chevron-down" size={18} color={'#808080'} style={{ marginRight: 10 }} />
+                                {/* <Icon1 name="chevron-down" size={18} color={'#808080'} style={{ marginRight: 10 }} /> */}
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -454,7 +458,7 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
                             </View>
 
                             {PStatus ?
-                                (<View>
+                                (<View style={{paddingTop:10}}>
                                     {postofficenamedata?.length > 0
                                         ? <>
                                             {postofficenamedata?.map((item) => {
@@ -482,7 +486,7 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
                                             })}
                                         </> :
                                         <View style={styles.ViewBankMap}>
-                                            <Text style={styles.ItemNameBranch}>No matches found</Text>
+                                            <Text style={styles.ItemNameBranch}>No results found</Text>
                                         </View>}
                                 </View>) : null
 
@@ -655,10 +659,10 @@ const styles = StyleSheet.create({
         marginBottom: width * 0.02
     },
     textSelect: {
-        fontSize: 14,
+        fontSize: 12,
         color: 'rgba(128, 128, 128, 1)',
         fontFamily: FONTS.FontRegular,
-        marginLeft: 15
+        marginLeft: 10
     },
     borderVillage: {
         // borderRadius: 8,
@@ -732,7 +736,7 @@ const styles = StyleSheet.create({
     },
 
     lineView: {
-        borderWidth: 0.9,
+        borderWidth: 0.6,
         borderColor: COLORS.Gray6,
         backgroundColor: COLORS.Gray6,
         opacity: 0.5,
@@ -860,7 +864,7 @@ const styles = StyleSheet.create({
         color: 'rgba(26, 5, 29, 1)',
         fontSize: 12,
         fontFamily: FONTS.FontRegular,
-        paddingLeft: width * 0.0,
+        paddingLeft:0,
         width: width * 0.48,
         // backgroundColor:'red'
         //height: width * 0.08

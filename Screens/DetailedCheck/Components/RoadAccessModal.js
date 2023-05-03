@@ -124,10 +124,10 @@ const RoadAccessModal = ({ ModalVisible, onPressOut, setModalVisible, onPress1 }
                                     {isSelected1 ?
                                         <TouchableOpacity onPress={() => _choosen(item)}
                                         >
-                                            <Icon1 name="radio-btn-active" size={22} color={COLORS.colorB} />
+                                            <Icon1 name="radio-btn-active" size={18} color={COLORS.colorB} />
                                         </TouchableOpacity> :
                                         <TouchableOpacity onPress={() => _choosen(item)}>
-                                            <Icon1 name="radio-btn-passive" size={22} color={'rgba(229, 231, 250, 1)'} />
+                                            <Icon1 name="radio-btn-passive" size={18}  color={COLORS.DSMuted} />
                                         </TouchableOpacity>}
 
                                 </View>

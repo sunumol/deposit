@@ -180,7 +180,7 @@ const DetailChecks = ({ navigation, setState, setImagedata1 }) => {
                 <TouchableOpacity style={styles.UploadCard} onPress={() => { UploadImage() }} >
 
 
-                    <View style={{ alignItems: 'flex-start', flex: 1, marginLeft: 25 }}>
+                    <View style={{ alignItems: 'flex-start', flex: 1, marginLeft: 25,marginRight:35 }}>
 
                         <Media width={30} height={30} />
 
