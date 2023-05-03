@@ -38,7 +38,7 @@ const SelectTab = (props) => {
         return initials.toUpperCase();
     };
 
-{console.log("initial",props.item)}
+{console.log("initial",props?.item)}
 
     return (
 
@@ -89,7 +89,7 @@ const SelectTab = (props) => {
                             <View style={{ flex: 1, flexDirection: 'row' }}>
 
                                 <View style={[styles.circleStyle, { backgroundColor: '#4B9760' }]}>
-                                    <Text style={styles.circleText}>{getInitials(props.item.customerName)}</Text>
+                                    <Text style={styles.circleText}>{getInitials(props?.item.customerName)}</Text>
                                 </View>
 
                                 <View style={{ flexDirection: 'column', paddingLeft: 12, paddingTop: 5 }}>
@@ -114,7 +114,7 @@ const SelectTab = (props) => {
 
                                 <View style={{ flexDirection: 'row' ,}}>
                                     <Icon2 name="phone-in-talk-outline" color={"black"} size={15} />
-                                    <Text style={[styles.numText, { paddingLeft: 6 }]}>{props?.item?.mobileNumber.replace(/^.{0}/g, '', " ").slice(-10).replaceAt(3, "X").replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X")}</Text>
+                                    <Text style={[styles.numText, { paddingLeft: 6 }]}>{props?.item?.mobileNumber?.replace(/^.{0}/g, '', " ").slice(-10).replaceAt(3, "X").replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X")}</Text>
                                 </View>
 
                             </View>

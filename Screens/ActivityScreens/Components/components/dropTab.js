@@ -112,6 +112,11 @@ const ActiveTab = (props) => {
                         type: 'SET_CGT_ACTIVITY_ID',
                         payload: props?.details?.activityId,
                     });
+                    dispatch({
+                        type: 'SET_SELECTED_CUSTOMERID',
+                        payload:props?.details?.customerId,
+                      });
+                    //console.log("props passing",props?.details?.customerId)
                     props.navigation.navigate('CGT')
                  }else if(props?.details?.purpose === 'Conduct DLE'){
                    // setModalVisible(true)
@@ -149,7 +154,7 @@ const ActiveTab = (props) => {
                     <View style={{ flexDirection: 'row' }}>
                         <Icon2 name="phone-in-talk-outline" color={"black"} size={15} />
                         <Text style={[styles.numText, { paddingLeft: 6 }]}>
-                            {props?.phoneNumber.replace(/^.{0}/g, '', " ").slice(-10).replaceAt(3, "X").replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X")}</Text>
+                            {props?.phoneNumber?.replace(/^.{0}/g, '', " ").slice(-10).replaceAt(3, "X").replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X")}</Text>
                     </View>
                     {props?.details?.purpose === 'Leads Follow Up' &&
                         <TouchableOpacity 

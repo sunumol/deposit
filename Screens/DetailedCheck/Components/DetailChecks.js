@@ -9,7 +9,8 @@ import {
     TextInput,
     ScrollView,
     Dimensions,
-    TouchableOpacity
+    TouchableOpacity,
+    ToastAndroid
 } from 'react-native'
 import React, { useCallback, useEffect, useState } from 'react'
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -82,7 +83,8 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
         }
         return color;
     }
-
+ 
+    
 
     const getInitials = (name) => {
 
@@ -158,7 +160,16 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
 
     const searchlandmarkname = (text) => {
         console.log('landmark NAME ===>>>', text)
-        if (/^[^!-\/:-@\.,[-`{-~]+$/.test(text) || text === ''){
+        const firstDigitStr = String(text)[0];
+        if (firstDigitStr == ' ') {
+            containsWhitespace(text)
+            // 👇️ this runs
+            setLandmarkname('')
+            setLandmarkname1('')
+            ToastAndroid.show("Please enter a valid landmark ", ToastAndroid.SHORT);
+            console.log('The string contains whitespace',);
+        } 
+       else if (/^[^!-\/:-@\.,[-`{-~]+$/.test(text) || text === ''){
             setLandmarkname(text)
             setLandmarkname1(text)
             setChecked(false)
@@ -244,6 +255,11 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
             console.log('-------------------err update', err?.response)
         })
     };
+
+    function containsWhitespace(str) {
+        return /\s/.test(str);
+    }
+
     return (
 
 
@@ -272,7 +288,7 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
                         <View style={{ flexDirection: 'column', paddingTop: 5, alignItems: 'flex-end' }}>
                             <View style={{ flexDirection: 'row' }}>
                                 <Icon2 name="phone-in-talk-outline" color={"black"} size={15} />
-                                <Text style={[styles.numText, { paddingLeft: 6 }]}>{details?.mobile.replace(/^.{0}/g, '', " ").slice(-10).replaceAt(3, "X").replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X")}</Text>
+                                <Text style={[styles.numText, { paddingLeft: 6 }]}>{details?.mobile?.replace(/^.{0}/g, '', " ").slice(-10).replaceAt(3, "X").replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X")}</Text>
                             </View>
                         </View>
 

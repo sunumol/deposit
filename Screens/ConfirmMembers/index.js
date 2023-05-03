@@ -34,7 +34,7 @@ const [tccustomerlist,setTccustomerlist] = useState();
   const dispatch = useDispatch()
   const customerList = useSelector(state => state.customerList);
   const customerID = useSelector(state => state.customerID);
-  
+  const cgtCustomerDetails = useSelector(state => state.cgtCustomerDetails);
   String.prototype.replaceAt = function (index, replacement) {
     return this.substring(0, index) + replacement + this.substring(index + replacement.length);
 }
@@ -57,11 +57,12 @@ const [tccustomerlist,setTccustomerlist] = useState();
     console.log('qqqq-----', num)
     if (/^[^!-\/:-@\.,[-`{-~]+$/.test(num) || num === '') {
       onChangeText(num)
-      getCustomerLists(num)
+      //getCustomerLists(num)
+      getTclist(num)
     }
   }
   useEffect(()=>{
-    getCustomerLists()
+   // getCustomerLists()
   },[])
 
 
@@ -116,7 +117,8 @@ const [tccustomerlist,setTccustomerlist] = useState();
     console.log('List------>>', phone)
     const data = {
       "employeeId": 1,
-      "customerNameOrNumber": phone
+      "customerNameOrNumber": phone,
+     
     };
     await api.getCustomerList(data).then((res) => {
       console.log('------------------- CGT slot res', res)
@@ -145,17 +147,20 @@ const [tccustomerlist,setTccustomerlist] = useState();
       })
   };
   // ------------------ Update Activity Reject Api Call End ------------------
-  const getTclist = async () => {
-    console.log('api called')
+  const getTclist = async (phone) => {
+    console.log('api called confirm',cgtCustomerDetails.primaryCustomerId,customerID)
     const data = {
         "employeeId":1,
-        "customerNameOrNumber":"",
-        "addedTcIds":customerID
+        "customerNameOrNumber":phone,
+        "addedTcIds":[customerID,cgtCustomerDetails?.primaryCustomerId]
     }
+    console.log("data called",data)
     await api.getCustomerListForTc(data).then((res) => {
         console.log('-------------------res getCustomerListForTc', res?.data?.body)
+       
         if (res?.status) {
         setTccustomerlist(res?.data?.body)
+        setData(res?.data?.body)
         }
     }).catch((err) => {
         console.log('-------------------getCustomerListForTc', err?.response)
@@ -192,10 +197,10 @@ const [tccustomerlist,setTccustomerlist] = useState();
                   <>
                     {console.log('---id available selected1--', item )}
                     <TouchableOpacity onPress={() => {
-                      getTCDetails(item?.id)
+                    getTCDetails(item?.id)
                       const datas = [...customerID]
-                      datas.push(item?.id)
-                      setSelectedItem(datas)
+                     datas.push(item?.id)
+                     setSelectedItem(datas)
                     }}>
                       <Text style={styles.dataText}>{item.name}</Text>
                     </TouchableOpacity>
@@ -224,12 +229,13 @@ const [tccustomerlist,setTccustomerlist] = useState();
 
                 {data?.map((item, index) =>
                   <>
-                    {console.log(item, "-------")}
+                 
                     <TouchableOpacity style={{ flexDirection: 'row', paddingHorizontal: 15 }}
                       onPress={() => {
                         onChangeText('')
                         getTCDetails(item?.id)
-                        const datas = [...customerID]
+                        console.log("customerID",customerID)
+                       const datas = [...customerID]
                         datas.push(item?.id)
                         setSelectedItem(datas)
                       }}>
@@ -258,11 +264,11 @@ const [tccustomerlist,setTccustomerlist] = useState();
               : null
             }
 
-            {dataSelected
+           {dataSelected
               ?
               <SelectTab item={dataSelected} />
               : null
-            }
+            } 
 
           </View>
         </ScrollView>

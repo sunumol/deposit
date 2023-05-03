@@ -11,7 +11,8 @@ import {
     Dimensions,
     TouchableOpacity,
     Image,
-    Pressable
+    Pressable,
+    ToastAndroid
 } from 'react-native'
 import React, { useCallback, useState, useEffect } from 'react'
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -211,6 +212,11 @@ const DetailChecks = ({ navigation, setState, proofType1, imageUrl1, relation1, 
         })
     };
     // ------------------ HomeScreen Api Call End ------------------
+
+    function containsWhitespace(str) {
+        return /\s/.test(str);
+    }
+
     return (
 
 
@@ -236,8 +242,8 @@ const DetailChecks = ({ navigation, setState, proofType1, imageUrl1, relation1, 
                     <Icon1 name="chevron-down" size={18} color={'#808080'} style={{ marginRight: 10 }} />
                 </TouchableOpacity>
 
-                <Pressable style={[styles.UploadCard, { opacity: Purpose  ? 4 : 0.3 }]} onPress={() => { Purpose ? UploadImage() : null }} >
-{console.log("Purpose print.....",Purpose)}
+                <Pressable style={[styles.UploadCard, { opacity: Purpose ? 4 : 0.3 }]} onPress={() => { Purpose ? UploadImage() : null }} >
+                    {console.log("Purpose print.....", Purpose)}
 
                     {!imageStatus ?
                         <View style={{ alignItems: 'flex-start', flex: 1, marginLeft: 25 }}>
@@ -305,7 +311,15 @@ const DetailChecks = ({ navigation, setState, proofType1, imageUrl1, relation1, 
                                     value={ownersName}
                                     style={styles.TextInputBranch}
                                     onChangeText={(text) => {
-                                        if (/^[^!-\/:-@\.,[-`{-~1234567890₹~`|•√π÷×¶∆€¥$¢^°={}%©®™✓]+$/.test(text) || text === '') {
+                                        const firstDigitStr = String(text)[0];
+                                        if (firstDigitStr == ' ') {
+                                            containsWhitespace(text)
+                                            // 👇️ this runs
+                                            setOwnersName('')
+                                            ToastAndroid.show("Please enter a valid name ", ToastAndroid.SHORT);
+                                           
+                                        }
+                                        else if (/^[^!-\/:-@\.,[-`{-~1234567890₹~`|•√π÷×¶∆€¥$¢^°={}%©®™✓]+$/.test(text) || text === '') {
                                             setOwnersName(text), relative1(text)
 
                                         }

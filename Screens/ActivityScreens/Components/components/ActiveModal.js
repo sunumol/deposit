@@ -10,6 +10,8 @@ import Disable from '../../Images/disable.svg'
 import Enable from '../../Images/enable.svg'
 import { Colors } from "react-native/Libraries/NewAppScreen";
 import { api } from "../../../../Services/Api";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 const { height, width } = Dimensions.get('screen');
 const App = ({ visible, onPressOut, meet, details ,setEnab}) => {
     const { t } = useTranslation();
@@ -52,6 +54,7 @@ const App = ({ visible, onPressOut, meet, details ,setEnab}) => {
             await api.updateActivity(data).then((res) => {
                 console.log('-------------------res update', res?.data)
                 // if(res)
+                AsyncStorage.setItem('CallActivity',details?.activityId);
                 onPressOut();
                 setEnab(true)
                 setEnableContinue(false)

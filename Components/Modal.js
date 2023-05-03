@@ -7,7 +7,7 @@ const { height, width } = Dimensions.get('screen');
 import Image1 from '../../../assets/image/call.svg';
 
 
-const CallModal = ({ ModalVisible, onPressOut, setModalVisible,onPress }) => {
+const CallModal = ({ ModalVisible, onPressOut,setModalExitAppVisible}) => {
     const [state, setState] = useState(null);
     const { t } = useTranslation();
     const [Lang, setLang] = useState('')
@@ -33,7 +33,7 @@ const CallModal = ({ ModalVisible, onPressOut, setModalVisible,onPress }) => {
             transparent={true}
             visible={ModalVisible}
             onRequestClose={() => {
-                setModalVisible(!ModalVisible)
+                onPressOut()
             }}
         >
             <View style={styles.mainContainer} >
@@ -56,7 +56,7 @@ const CallModal = ({ ModalVisible, onPressOut, setModalVisible,onPress }) => {
                            
                                 <Text style={[styles.textdesc,{paddingTop:width*0.05}]}>Please update the same</Text>
 
-                    <TouchableOpacity style={styles.buttonStyle} onPress={()=>setModalVisible(false)}>
+                    <TouchableOpacity style={styles.buttonStyle} onPress={()=>setModalExitAppVisible(false)}>
                         <Text style={styles.buttonTextStyle}>{t('common:Okay')}</Text>
                     </TouchableOpacity>
                 </View>
