@@ -147,7 +147,7 @@ const ConfirmMembers = ({ navigation }) => {
     const data = {
       "employeeId": 1,
       "customerNameOrNumber": phone,
-      "addedTcIds": []
+      "addedTcIds": [cgtCustomerDetails?.primaryCustomerId]
 
     };
     await api.getCustomerListForTc(data).then((res) => {

@@ -15,12 +15,10 @@ const CalendarStrips = ({ setNewDates, getCGTslot }) => {
   const dispatch = useDispatch()
 
   const [Month, setMonth] = useState(new Date())
-  const [StartDay, setStartDay] = useState(new Date())
   const [selectedDate, setSelectedDate] = useState(new Date())
   const [endDate, setEndDate] = useState(new Date(new Date().setDate(new Date().getDate() + 29)))
   const [ArrowEnable, setArrowEnable] = useState(false)
   const [NewDate, setNewDate] = useState(new Date())
-  const [MonthStatus, setMonthStatus] = useState(false)
   const [ArrowRight, setArrowRight] = useState(true)
 
   useEffect(() => {
@@ -31,7 +29,6 @@ const CalendarStrips = ({ setNewDates, getCGTslot }) => {
     } else {
       next = new Date(today.getFullYear(), today?.getMonth() + 1, 1);
     }
-
     if (moment(selectedDate).format("MMMM YYYY") === moment(next).format("MMMM YYYY")) {
       setArrowEnable(true)
       setArrowRight(false)
@@ -63,7 +60,6 @@ const CalendarStrips = ({ setNewDates, getCGTslot }) => {
   }
 
   const DecrementMonth = () => {
-    setStartDay(new Date())
     setMonth(new Date())
     setSelectedDate(new Date())
     dispatch({
@@ -78,19 +74,14 @@ const CalendarStrips = ({ setNewDates, getCGTslot }) => {
   }
 
   const onWeekChanged = (start, end) => {
-    setMonthStatus(false)
-    const today = new Date();
     const Data = end.toString()
     const Moment = moment(Data).utc().format('MMMM YYYY')
-    setMonth(Data)
+    setMonth(end)
     if (moment(selectedDate).format('MMMM YYYY') !== moment(end).format('MMMM YYYY')) {
       IncrementMonth()
       setArrowEnable(true)
       setArrowRight(true)
     }
-    // else if (moment(today).format('MMMM YYYY') === moment(start).format('MMMM YYYY')) {
-    //   setSelectedDate(new Date())
-    // } 
     else if (Moment == moment(NewDate).format("MMMM YYYY")) {
       setArrowEnable(false)
       setArrowRight(true)
@@ -115,7 +106,7 @@ const CalendarStrips = ({ setNewDates, getCGTslot }) => {
         </View>
 
         <View style={{}}>
-          <Text style={styles.YearText}>{moment(Month).format("MMMM")} '{moment(Month).format("YY")}</Text>
+          <Text style={styles.YearText}>{moment(Month).utc().format('MMMM')} '{moment(Month).utc().format("YY")}</Text>
         </View>
 
         <View>
@@ -133,7 +124,6 @@ const CalendarStrips = ({ setNewDates, getCGTslot }) => {
         scrollerPaging={true}
         style={{ height: 100, paddingTop: 0, paddingBottom: 0 }}
         onWeekChanged={onWeekChanged}
-        onWeekScrollStart={(event) =>console.log(event,'------------------')}
         iconContainer={{ flex: 0.1 }}
         selectedDate={selectedDate}
         iconLeftStyle={{ fontSize: 15, marginLeft: 15, width: 20, height: 15, color: "#171930" }}
@@ -155,14 +145,12 @@ const CalendarStrips = ({ setNewDates, getCGTslot }) => {
                 flex: 1,
                 marginHorizontal: 5,
                 borderRadius: 10,
-                borderColor: moment(selectedDate).format('DD-MM-YYYY') === moment(item?.date).format('DD-MM-YYYY') ? COLORS.colorB :
-                  moment(item?.date).format('DD-MM-YYYY') === moment(new Date()).format('DD-MM-YYYY')
-                    && MonthStatus === false ? COLORS.colorB : '#E5E8EB',
+                borderColor: selectedDate && moment(selectedDate).format('DD-MM-YYYY') === moment(item?.date).format('DD-MM-YYYY') ? COLORS.colorB :
+                  '#E5E8EB',
                 borderWidth: 0.5,
                 backgroundColor:
-                  moment(selectedDate).format('DD-MM-YYYY') === moment(item?.date).format('DD-MM-YYYY') ? COLORS.colorB
-                    : moment(item?.date).format('DD-MM-YYYY') === moment(new Date()).format('DD-MM-YYYY')
-                      && MonthStatus === false ? COLORS.colorB : COLORS.colorBackground
+                selectedDate && moment(selectedDate).format('DD-MM-YYYY') === moment(item?.date).format('DD-MM-YYYY') ? COLORS.colorB
+                    :   COLORS.colorBackground
               }}
               onPress={() => {
                 dispatch({
@@ -175,24 +163,18 @@ const CalendarStrips = ({ setNewDates, getCGTslot }) => {
                   setNewDates(item?.date._d)
                 }, 1000)
                 setSelectedDate(item?.date._d),
-                  setMonth(item?.date._d),
-                  setMonthStatus(true)
-                getCGTslot()
+                  setMonth(item?.date._d)
               }}>
               <Text
                 style={{
-                  color: moment(selectedDate).format('DD-MM-YYYY') === moment(item?.date).format('DD-MM-YYYY') ?
-                    COLORS.colorBackground : moment(item?.date).format('DD-MM-YYYY') === moment(new Date()).format('DD-MM-YYYY')
-                      && MonthStatus === false ? COLORS.colorBackground : '#171930',
+                  color: selectedDate && moment(selectedDate).format('DD-MM-YYYY') === moment(item?.date).format('DD-MM-YYYY') ?
+                    COLORS.colorBackground : '#171930',
                   fontSize: 11,
                   textTransform: 'capitalize',
                   fontFamily: FONTS.FontRegular
                 }}>{moment(item?.date).format('DD-MM-YYYY') === moment(new Date()).format('DD-MM-YYYY') ? 'Today' : moment(item?.date).format('ddd')}</Text>
               <Text style={{
-                color: moment(selectedDate).format('DD-MM-YYYY') === moment(item?.date).format('DD-MM-YYYY')
-
-                  ? COLORS.colorBackground : moment(item?.date).format('DD-MM-YYYY') === moment(new Date()).format('DD-MM-YYYY')
-                    && MonthStatus === false ? COLORS.colorBackground : '#171930', fontSize: 15, fontFamily: FONTS.FontSemiB
+                color: selectedDate &&moment(selectedDate).format('DD-MM-YYYY') === moment(item?.date).format('DD-MM-YYYY')? COLORS.colorBackground :   '#171930', fontSize: 15, fontFamily: FONTS.FontSemiB
               }}>{moment(item?.date).format('DD').replace(/\b0/g, '')}</Text>
             </TouchableOpacity>
           )
