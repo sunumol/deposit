@@ -120,7 +120,7 @@ const UpdateResidenceowner_backButton = async () => {
 
     const data = {
         "activityId": activityId,
-        "ownerShipProofType": proofType == 'Electricity Bill' ? 'ELECTRICITY_BILL' : proofType == 'Water Bill' ? 'WATER_BILL' : 'BUILDING_TAX_RECEIPT',
+        "ownerShipProofType": proofType == 'Electricity Bill' ? 'ELECTRICITY_BILL' : proofType == 'Water Bill' ? 'WATER_BILL' : proofType ==  'Building Tax Receipt'? 'BUILDING_TAX_RECEIPT':'',
         "imageUrl": imageurl,
         "relationShipWithCustomer": relation,
         "ownersName": relative

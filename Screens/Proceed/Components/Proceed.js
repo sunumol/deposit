@@ -48,11 +48,13 @@ const Energy = ({ navigation }) => {
                 </ScrollView>
                 <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                     {ButtonS ? <TouchableOpacity style={[styles.buttonView, { backgroundColor: COLORS.colorB }]}
-                        onPress={() => navigation.navigate('HousePhoto')}>
+                        onPress={() => navigation.navigate('HousePhoto')}
+                        >
                         <Text style={[styles.continueText, { color: COLORS.colorBackground }]}>Proceed</Text>
                     </TouchableOpacity> :
                         <TouchableOpacity style={[styles.buttonView, { backgroundColor: 'rgba(224, 224, 224, 1)' }]}
-                            onPress={() => setButtonS(true)}>
+                           // onPress={() => setButtonS(true)}
+                            >
                             <Text style={[styles.continueText, { color: '#979C9E' }]}>Proceed</Text>
                         </TouchableOpacity>}
                 </View>

@@ -54,7 +54,7 @@ const IncomeDetails = ({ navigation, route }) => {
     const [incomedetail, setIncomedetail] = useState('')
     const [incomedetailfield, setIncomedetailfield] = useState('')
     const activityId = useSelector(state => state.activityId);
-
+    const [ZeroStatus,setZeroStatus] = useState(false)
 
 
     const [ModalVisible1, setModalVisible1] = useState(false)
@@ -318,7 +318,7 @@ const IncomeDetails = ({ navigation, route }) => {
                                 </View>
                                 <View style={{ flexDirection: 'column', flex: 1, marginLeft: 12 }}>
                                     <Text style={styles.nameText}>{incomedetail?.name}</Text>
-                                    <Text style={styles.underText}>{incomedetail?.occupation}</Text>
+                                    <Text style={styles.underText}>{incomedetail?.occupation =='SALARIED_EMPLOYEE' ? 'Salaried employee' :  incomedetail?.occupation == 'FARMER'  ? 'Farmer' : incomedetail?.occupation =="BUSINESS_SELF_EMPLOYED" ? "Business/Self employed" :'Daily wage labourer'}</Text>
                                 </View>
                                 <View style={{ flexDirection: 'row', left: -5 }}>
                                     <Text style={styles.dateText}>{relationShip}</Text>
@@ -340,7 +340,7 @@ const IncomeDetails = ({ navigation, route }) => {
                                     }]}
                                     value={Amount?.toString()}
                                     keyboardType={'number-pad'}
-                                    maxLength={6}
+                                    maxLength={incomedetail?.occupation == 'SALARIED_EMPLOYEE' ? 2 :6}
                                     onChangeText={(text) => 
                                         {
                                             if(incomedetail?.occupation == 'SALARIED_EMPLOYEE'){
@@ -403,12 +403,24 @@ const IncomeDetails = ({ navigation, route }) => {
                                     keyboardType={'number-pad'}
                                     maxLength={5}
                                     onChangeText={(text) =>{ 
-                                      
-                                        if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(text) || text === "") {
-                                            setAvg(text)
+                                        if(text === ''){
+                                            setZeroStatus(false)
+                                            setAvg('')
                                         }
+                                        else if (Number(text) == 0) {
+        
+                                            setZeroStatus(true)
+                                            console.log("number log", text)
+                                        }
+                                        else if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(text) || text === "") {
+                                            setAvg(text)
+                                            setZeroStatus(false)
+                                        }
+                
                                     }} />
                             </View>
+                            {ZeroStatus &&
+                        <Text style={{ color: 'red', fontSize: 9, paddingTop: 3, fontFamily: FONTS.FontRegular }}>Amount cannot be ₹0</Text>}
                         </View>
                     </ScrollView>
 

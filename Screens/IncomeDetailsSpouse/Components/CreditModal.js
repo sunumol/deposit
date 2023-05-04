@@ -1,10 +1,10 @@
 import React from "react";
 import { Dimensions, Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Icon1 from 'react-native-vector-icons/Fontisto';
 import { COLORS, FONTS } from '../../../Constants/Constants';
 import { useTranslation } from 'react-i18next';
 
-const CreditModal = ({ visible, onPressOut,setModalVisible,setPurpose
+const CreditModal = ({ visible, onPressOut,setModalVisible,setPurpose,Purpose
    }) => {
     const { t } = useTranslation();
     return (
@@ -33,11 +33,10 @@ const CreditModal = ({ visible, onPressOut,setModalVisible,setPurpose
                             }>
                             <Text style={styles.modalText}>Bank Account</Text>
                             <View style={{ paddingRight: 10 }}>
-                                <Icon
-                                    name="checkbox-blank-circle-outline"
-                                    color={COLORS.DSMuted}
-                                    size={18}
-                                />
+                            {Purpose == 'Bank Account' ? 
+                            <Icon1 name="radio-btn-active" size={18} color={COLORS.colorB} /> :
+                                
+                                <Icon1 name="radio-btn-passive" size={18}  color={COLORS.DSMuted}/>}
                             </View>
                         </TouchableOpacity >
                         <View style={styles.lineView} />
@@ -49,11 +48,10 @@ const CreditModal = ({ visible, onPressOut,setModalVisible,setPurpose
                         }>
                             <Text style={styles.modalText}>Cash</Text>
                             <View style={{ paddingRight: 10 }}>
-                                <Icon
-                                    name="checkbox-blank-circle-outline"
-                                    color={COLORS.DSMuted}
-                                    size={18}
-                                />
+                            {Purpose == 'Cash' ? 
+                            <Icon1 name="radio-btn-active" size={18} color={COLORS.colorB} /> :
+                                
+                                <Icon1 name="radio-btn-passive" size={18}  color={COLORS.DSMuted}/>}
                             </View>
                         </TouchableOpacity>
                    

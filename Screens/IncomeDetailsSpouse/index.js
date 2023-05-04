@@ -57,7 +57,7 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
     const [ModalVisible1, setModalVisible1] = useState(false)
     const [ModalReason, setModalReason] = useState(false)
     const [ModalError, setModalError] = useState(false)
-
+    const [ZeroStatus,setZeroStatus] = useState(false)
     useEffect(() => {
         getData()
         // setRelationship(route?.params?.relationShip)
@@ -226,21 +226,18 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
 
 
     
-
     const setMonthdata = (text) => {
-        if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(text) || text === "") {
-            if (text < 13) {
-                setMonth(text)
-            } else {
-                setMonth('')
-            }
-
-        } else {
-            setMonth('')
-        }
-
-    }
-
+        if(text?.length>0) {
+             if (text < 13) {
+                 setMonth(text)
+             } else {
+                 setMonth('')
+             }
+         }else{
+             setMonth('')
+         }
+     }
+     
     const getInitials = (name) => {
 
         let initials;
@@ -299,7 +296,7 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
                                 </View>
                                 <View style={{ flexDirection: 'column', flex: 1, marginLeft: 12 }}>
                                     <Text style={styles.nameText}>{incomedetail?.name}</Text>
-                                    <Text style={styles.underText}>{incomedetail?.occupation}</Text>
+                                    <Text style={styles.underText}>{incomedetail?.occupation =='SALARIED_EMPLOYEE' ? 'Salaried employee' :  incomedetail?.occupation == 'FARMER'  ? 'Farmer' : incomedetail?.occupation =="BUSINESS_SELF_EMPLOYED" ? "Business/Self employed" :'Daily wage labourer'}</Text>
                                 </View>
                                 <View style={{ flexDirection: 'row', left: -5 }}>
                                     <Text style={styles.dateText}>{relationShip}</Text>
@@ -322,11 +319,32 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
                                     value={Amount?.toString()}
                                     keyboardType={'number-pad'}
                                     //label={'₹'}
-                                    maxLength={6}
+                                    maxLength={incomedetail?.occupation == 'SALARIED_EMPLOYEE' ? 2 :6}
                                     onChangeText={(text) => {
-                                        if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(text) || text === "") {
+                                    //     if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(text) || text === "") {
+                                    //         setAmount(text)
+                                    //     }
+                                    // }
+                                    // {
+                                        if(incomedetail?.occupation == 'SALARIED_EMPLOYEE'){
+                                            if(text<13){
+                                                setAmount(text)
+                                                console.log("inside occupation 1",incomedetail?.occupation)
+                                            }else{
+                                                setAmount('')
+                                                console.log("inside occupation 2",incomedetail?.occupation)
+                                            }
+                                            console.log("inside occupation 3",incomedetail?.occupation)
+                                           // setAmount(text)
+       
+                                            // if(text<13){
+                                            //     setAmount(text)
+                                            // }
+                                        }else{
                                             setAmount(text)
+                                            console.log("inside occupation",incomedetail?.occupation)
                                         }
+                                      
                                     }
                                     } />
                             </View>
@@ -366,12 +384,24 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
                                     keyboardType={'number-pad'}
                                     maxLength={5}
                                     onChangeText={(text) => {
-                                        if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(text) || text === "") {
+                                        if(text === ''){
+                                            setZeroStatus(false)
+                                            setAvg('')
+                                        }
+                                        else if (Number(text) == 0) {
+                                            setAvg('')
+                                            setZeroStatus(true)
+                                            console.log("number log", text)
+                                        }
+                                        else if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(text) || text === "") {
                                             setAvg(text)
+                                            setZeroStatus(false)
                                         }
                                     }
                                     } />
                             </View>
+                            {ZeroStatus &&
+                        <Text style={{ color: 'red', fontSize: 9, paddingTop: 3, fontFamily: FONTS.FontRegular }}>Amount cannot be ₹0</Text>}
                         </View>
                     </ScrollView>
                     {console.log('878787', Buttons)}
@@ -387,6 +417,7 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
             <CreditModal
                 visible={ModalVisible}
                 setPurpose={setPurpose}
+                Purpose={Purpose}
                 setModalVisible={setModalVisible}
                 onPressOut={() => setModalVisible(!ModalVisible)}
             />

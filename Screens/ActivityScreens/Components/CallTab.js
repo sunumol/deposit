@@ -14,7 +14,7 @@ import { useTranslation } from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CallTab from '../Components/components/callTab';
 import { api } from '../../../Services/Api';
-
+import { useNetInfo } from "@react-native-community/netinfo";
 
 const ItemTabs = ({ props, navigation }) => {
     const { t } = useTranslation();

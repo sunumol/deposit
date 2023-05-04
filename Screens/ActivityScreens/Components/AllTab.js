@@ -337,13 +337,15 @@ const TabOpen = (index,id)=>{
                                                 <Text style={styles.headText}>{t('common:Meet')}</Text>
                                             </>) : null}
                                         {item.data.map((item) => {
+                                            console.log("item vill",item?.villageName)
                                             if (item.activityType == 'MEET') {
                                                 return (
                                                     <DropTab
                                                         id={item.id}
                                                         short={item.short}
                                                         name={item.customerName}
-                                                        text={item.pin}
+                                                        text={item?.pin}
+                                                        village={item?.villageName}
                                                         phoneNumber={item.mobileNumber}
                                                         color={item.color}
                                                         status={item.purpose}

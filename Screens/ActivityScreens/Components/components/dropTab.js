@@ -1,7 +1,7 @@
 
 ;
 import React, { useEffect, useState } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity,Linking } from 'react-native';
 import { COLORS, FONTS } from '../../../../Constants/Constants';
 import { useTranslation } from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -10,6 +10,7 @@ import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 import ActivityModal from '../components/ActiveModal';
 import { useDispatch } from 'react-redux';
 const ActiveTab = (props) => {
+    console.log("props village",props.village)
     const { t } = useTranslation();
     const [Lang, setLang] = useState('')
     const [modalVisible, setModalVisible] = useState(false)
@@ -31,7 +32,7 @@ const ActiveTab = (props) => {
     String.prototype.replaceAt = function (index, replacement) {
         return this.substring(0, index) + replacement + this.substring(index + replacement.length);
     }
-    
+
     const getInitials = (name) => {
         let initials;
         const nameSplit = name?.split(" ");
@@ -81,13 +82,13 @@ const ActiveTab = (props) => {
                 } else if (res?.data?.body == 6) {
                     props.navigation.navigate('VehicleOwn')
                 } else if (res?.data?.body == 7) {
-                        props.navigation.navigate('IncomeDetails', { relationShip: 'Customer' })
-                    } else if (res?.data?.body == 8) {
-                        props.navigation.navigate('IncomeDetails', { relationShip: 'Spouse' })
-                    } else if (res?.data?.body == 9) {
-                        props.navigation.navigate('HousePhoto')
+                    props.navigation.navigate('IncomeDetails', { relationShip: 'Customer' })
+                } else if (res?.data?.body == 8) {
+                    props.navigation.navigate('IncomeDetails', { relationShip: 'Spouse' })
+                } else if (res?.data?.body == 9) {
+                    props.navigation.navigate('HousePhoto')
 
-                    }
+                }
                 //props.navigation.navigate('DetailCheck')
             }
         }).catch((err) => {
@@ -95,7 +96,16 @@ const ActiveTab = (props) => {
         })
     };
     // ------------------ ------------------
-
+    const openDialScreen = (userPhone) => {
+        console.log("inside diale")
+        let number = '';
+        if (Platform.OS === 'ios') {
+            number = `telprompt:${userPhone}`;
+        } else {
+            number = `tel:${userPhone}`;
+        }
+        Linking.openURL(number);
+    };
 
     return (
         <>
@@ -103,27 +113,31 @@ const ActiveTab = (props) => {
                 style={styles.boxStyle}
                 key={props?.id}
                 onPress={() => {
-                 if(props?.details?.purpose === 'Leads Follow Up'){
-                    setModalVisible(true)
-                 }else if(props?.details?.purpose === 'Explain Trust Circle'){
-                    setModalVisible(true)
-                 }else if(props?.details?.purpose === 'Conduct CGT'){
-                    dispatch({
-                        type: 'SET_CGT_ACTIVITY_ID',
-                        payload: props?.details?.activityId,
-                    });
-                   
-                    //console.log("props passing",props?.details?.customerId)
-                    props.navigation.navigate('CGT')
-                 }else if(props?.details?.purpose === 'Conduct DLE'){
-                   // setModalVisible(true)
-                 
-                    
-                   
-                    setDetails(item)
-                    getDlePageNumber(item.activityId)
-                 }
-                
+                    if (props?.details?.purpose === 'Leads Follow Up') {
+                        setModalVisible(true)
+                    } else if (props?.details?.purpose === 'Explain Trust Circle') {
+
+                        if (!props?.meet) {
+                            openDialScreen(props?.phoneNumber)
+                        }
+
+                        setModalVisible(true)
+                    } else if (props?.details?.purpose === 'Conduct CGT') {
+                        dispatch({
+                            type: 'SET_CGT_ACTIVITY_ID',
+                            payload: props?.details?.activityId,
+                        });
+
+                        //console.log("props passing",props?.details?.customerId)
+                        props.navigation.navigate('CGT')
+                    } else if (props?.details?.purpose === 'Conduct DLE') {
+                        // setModalVisible(true)
+
+
+                        setDetails(item)
+                        getDlePageNumber(item.activityId)
+                    }
+
                 }}
             >
                 <View style={{ flex: 1, flexDirection: 'row' }}>
@@ -138,7 +152,7 @@ const ActiveTab = (props) => {
                             <View style={{ paddingTop: 5, paddingRight: 1 }}>
                                 <Icon1 name="location-outline" color={"black"} />
                             </View>
-                            <Text style={[styles.idText, { paddingTop: 4 }]}>{props?.text}</Text>
+                            <Text style={[styles.idText, { paddingTop: 4 }]}>{props?.text ? props?.text : props?.village}</Text>
                         </View>
                     </View>
 
@@ -151,25 +165,25 @@ const ActiveTab = (props) => {
                             {props?.phoneNumber?.replace(/^.{0}/g, '', " ").slice(-10).replaceAt(3, "X").replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X")}</Text>
                     </View>
                     {props?.details?.purpose === 'Leads Follow Up' &&
-                        <TouchableOpacity 
+                        <TouchableOpacity
                             style={[styles.leadContainer, { backgroundColor: COLORS.LightYellow }]}>
                             <Text style={[styles.leadText, { color: COLORS.DarkYellow }]}>{t('common:LeadsFollowUp')}</Text>
                         </TouchableOpacity>
                     }
                     {props?.details?.purpose === 'Explain Trust Circle' &&
-                        <TouchableOpacity 
+                        <TouchableOpacity
                             style={[styles.leadContainer, { backgroundColor: COLORS.LightPurple }]}>
                             <Text style={[styles.leadText, { color: COLORS.DarkPurple }]}>{t('common:ExplainTrustCircle')}</Text>
                         </TouchableOpacity>
                     }
 
                     {props?.details?.purpose === 'Conduct CGT' &&
-                        <TouchableOpacity  style={[styles.leadContainer, { backgroundColor: COLORS.LightBlue }]}>
+                        <TouchableOpacity style={[styles.leadContainer, { backgroundColor: COLORS.LightBlue }]}>
                             <Text style={[styles.leadText, { color: COLORS.DarkBlue }]}>{t('common:ConductCGT')}</Text>
                         </TouchableOpacity>
                     }
                     {props?.details?.purpose === 'Conduct DLE' &&
-                        <TouchableOpacity 
+                        <TouchableOpacity
                             style={[styles.leadContainer, { backgroundColor: COLORS.LightPurple }]}>
                             <Text style={[styles.leadText, { color: COLORS.DarkPurple }]}>Conduct DLE</Text>
                         </TouchableOpacity>

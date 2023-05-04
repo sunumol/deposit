@@ -169,7 +169,7 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
             ToastAndroid.show("Please enter a valid landmark ", ToastAndroid.SHORT);
             console.log('The string contains whitespace',);
         } 
-       else if (/^[^!-\/:-@\.,[-`{-~]+$/.test(text) || text === ''){
+       else if (/^[^!-\/:-@\.,[-`{-~₹~`|•√π÷×¶∆€¥$¢^°={}%©®™✓]+$/.test(text) || text === ''){
             setLandmarkname(text)
             setLandmarkname1(text)
             setChecked(false)

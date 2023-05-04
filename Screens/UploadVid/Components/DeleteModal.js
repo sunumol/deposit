@@ -33,14 +33,14 @@ const DeleteModal = ({ ModalVisible, onPressOut, setModalVisible2, navigation, t
                 <View style={styles.ModalView1}>
                     {/*<Text style={styles.TextDelete}>{t('common:AreS1')} ?</Text>*/}
 
-                    <Text style={[styles.TextDelete1, { textAlign: 'center' }]}>{t('common:AreS2')} ?</Text>
+                    <Text style={[styles.TextDelete1, { textAlign: 'center' }]}>{t('common:AreS2')}?</Text>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingTop: 22, paddingBottom: 22 }}>
-                        <TouchableOpacity style={[styles.ButtonCancel, { marginRight: 10 }]} onPress={() => setModalVisible2(false)}>
-                            <Text style={styles.text2}>{t('common:No')}</Text>
+                        <TouchableOpacity style={[styles.ButtonCancel, { marginRight: 10 }]} onPress={() => DeleteImage()} >
+                            <Text style={styles.text2}>{t('common:Yes')}</Text>
                         </TouchableOpacity>
 
-                        <TouchableOpacity style={styles.ButtonContinue} onPress={() => DeleteImage()}>
-                            <Text style={styles.textC}>{t('common:Yes')}</Text>
+                        <TouchableOpacity style={styles.ButtonContinue}  onPress={() => setModalVisible2(false)}>
+                            <Text style={styles.textC}>{t('common:No')}</Text>
                         </TouchableOpacity>
                     </View>
 
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
     text2: {
         color: COLORS.colorB,
         fontFamily: FONTS.FontMedium,
-        fontSize: 16
+        fontSize: 14
     },
     mainContainer: {
         backgroundColor: "#000000aa",

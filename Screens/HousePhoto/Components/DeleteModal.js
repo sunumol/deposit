@@ -33,7 +33,7 @@ const DeleteModal = ({ ModalVisible, onPressOut, setModalVisible2, navigation, t
                 <View style={styles.ModalView1}>
                     {/*<Text style={styles.TextDelete}>{t('common:AreS1')} ?</Text>*/}
 
-                    <Text style={[styles.TextDelete1, { textAlign: 'center' }]}>{t('common:AreS2')} ?</Text>
+                    <Text style={[styles.TextDelete1, { textAlign: 'center' }]}>{t('common:AreS2')}?</Text>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingTop: 22, paddingBottom: 22 }}>
                     
 
