@@ -36,6 +36,34 @@ const ConfirmMembers = ({ navigation }) => {
   const customerID = useSelector(state => state.customerID);
   const cgtCustomerDetails = useSelector(state => state.cgtCustomerDetails);
 
+  const datas = [
+    {
+      id: 1,
+      Title: 'Suspected fraud',
+      isChecked: false
+    },
+    {
+      id: 2,
+      Title: 'Non cooperative',
+      isChecked: false
+    },
+    {
+      id: 3,
+      Title: 'Submitted wrong data',
+      isChecked: false
+    },
+    {
+      id: 4,
+      Title: 'KYC mismatch',
+      isChecked: false
+    },
+    {
+      id: 5,
+      Title: 'Others',
+      isChecked: false
+    },
+  ]
+
   String.prototype.replaceAt = function (index, replacement) {
     return this.substring(0, index) + replacement + this.substring(index + replacement.length);
   }
@@ -119,7 +147,7 @@ const ConfirmMembers = ({ navigation }) => {
     const data = {
       "employeeId": 1,
       "customerNameOrNumber": phone,
-      "addedTcIds":[]
+      "addedTcIds": []
 
     };
     await api.getCustomerListForTc(data).then((res) => {
@@ -142,6 +170,7 @@ const ConfirmMembers = ({ navigation }) => {
     await api.rejectTrustCircleMembers(data).then((res) => {
       console.log('-------------------res789', res?.data)
       if (res?.status) {
+        setRejectReason()
         setModalError(true)
       }
     })
@@ -150,7 +179,7 @@ const ConfirmMembers = ({ navigation }) => {
       })
   };
 
-  
+
   //   // ------------------ Update Activity Reject Api Call End ------------------
   //   const getTclist = async (phone) => {
   //     console.log('api called confirm',cgtCustomerDetails.primaryCustomerId,customerID)
@@ -314,6 +343,7 @@ const ConfirmMembers = ({ navigation }) => {
         onPressOut={() => setModalReason(!ModalReason)}
         setModalVisible={setModalReason}
         setRejectReason={setRejectReason}
+        data={datas}
       />
 
       <ErrorModal

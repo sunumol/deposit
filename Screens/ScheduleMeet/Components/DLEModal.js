@@ -34,10 +34,12 @@ const DLEModal = ({ ModalVisible, onPressOut, setModalVisible,onPress,navigation
             visible={ModalVisible}
             onRequestClose={() => {
                 setModalVisible(!ModalVisible)
-                navigation.navigate('NewCgt')
+                navigation.navigate('DLESchedule',{set:true})
             }}
         >
-       <TouchableOpacity onPressOut={onPressOut}
+       <TouchableOpacity onPressOut={()=>{onPressOut()
+                    navigation.navigate('DLESchedule',{set:true})
+                  }}
             style={{ backgroundColor: "#000000aa", flex: 1, alignItems: 'center', justifyContent: 'center', opacity: 5 }} >
 
          
