@@ -71,7 +71,7 @@ const Activityscreens = ({ navigation }) => {
 
 
             <Tab.Navigator
-             initialRouteName={id ? t('common:All') : t('common:Call')}
+             initialRouteName={!id ? t('common:All') : t('common:Call')}
              screenOptions={{
                 tabBarLabelStyle: { focused: true,fontSize: 14,fontFamily:FONTS.FontSemiB},
                 tabBarStyle: { backgroundColor: COLORS.colorB },
