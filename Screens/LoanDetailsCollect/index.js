@@ -21,14 +21,22 @@ import DetailBox from './Components/DetailBox';
 import { useTranslation } from 'react-i18next';
 import DetailTab from './Components/DetailTab';
 import History from './Components/History';
-const LoanDetailsCollect = ({ navigation }) => {
+import { api } from '../../Services/Api';
+
+
+
+
+const LoanDetailsCollect = ({ navigation,route }) => {
+
+    console.log('detail loan',route?.params?.loan?.loanId)
     const isDarkMode = true;
     const { t } = useTranslation();
     const [visible, setVisible] = React.useState(false);
     const openMenu = () => setVisible(true);
     const [id, setId] = useState(1)
     const closeMenu = () => setVisible(false);
-    const [status, setStatus] = useState(true)
+    const [status, setStatus] = useState(true);
+    const [loanhistory,setLoanhistory] = useState('')
 
 
     const handleGoBack = useCallback(() => {
@@ -46,6 +54,28 @@ const LoanDetailsCollect = ({ navigation }) => {
     );
 
 
+    useEffect(()=>{
+        getloanPaymentHistory()
+    },[])
+
+    async function getloanPaymentHistory()  {
+        console.log('search------->>>>>', )
+        const data = {
+            loanId:  route?.params?.loan?.loanId ? route?.params?.loan?.loanId :  2
+        }
+
+        await api.getloanPaymentHistory(data).then((res) => {
+          console.log('------------------- get history loan res', res.data.body)
+            setLoanhistory(res?.data?.body)
+         
+         
+        })
+          .catch((err) => {
+            console.log('-------------------get history loan err', err)
+           
+          })
+      };
+
 
 
     return (
@@ -56,10 +86,8 @@ const LoanDetailsCollect = ({ navigation }) => {
             <Header name={t('common:LoanDetails')}  navigation={navigation} onPress={handleGoBack} />
 
             <View style={styles.mainContainer}>
-                <DetailBox />
-                {/* <History/> */}
-
-                <DetailTab />
+                <DetailBox loandetail={loanhistory} />
+                <DetailTab loandetail={loanhistory}  />
             </View>
         </SafeAreaProvider>
     )

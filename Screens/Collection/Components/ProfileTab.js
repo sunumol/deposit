@@ -18,6 +18,11 @@ import { FONTS, COLORS } from '../../../Constants/Constants';
 import Icon1 from 'react-native-vector-icons/Entypo'
 import Icon2 from 'react-native-vector-icons/Feather';
 import Profiles from './Profile';
+import { api } from '../../../Services/Api';
+import { useSelector,useDispatch } from 'react-redux';
+
+
+
 const { height, width } = Dimensions.get('screen');
 
 const ProfileTab = ({ navigation }) => {
@@ -33,6 +38,50 @@ const ProfileTab = ({ navigation }) => {
     const [Credit, setCredit] = useState('')
     const [Salary, setSalary] = useState('')
     const [StateChange, setStateChange] = useState(false)
+    const LoancustID = useSelector(state => state.loancustomerID);
+    const [custData,setCustData] = useState('')
+    String.prototype.replaceAt = function (index, replacement) {
+        return this.substring(0, index) + replacement + this.substring(index + replacement.length);
+      }
+useEffect(()=>{
+    getCustomerProfile()
+},[])
+
+          // ------------------ get Customer List Api Call Start ------------------
+  const getCustomerProfile = async () => {
+    console.log('search------->>>>>', )
+    const data = {
+    "customerId": 1,
+  
+    };
+    await api.getCustomerProfile(data).then((res) => {
+      console.log('------------------- getCustomerProfile res', res.data.body)
+      setCustData(res?.data?.body)
+     
+     
+    })
+      .catch((err) => {
+        console.log('------------------- getCustomerProfile error', err?.response)
+       
+      })
+  };
+
+  const getInitials = (name) => {
+
+    let initials;
+    const nameSplit = name?.split(" ");
+    const nameLength = nameSplit?.length;
+    if (nameLength > 1) {
+        initials =
+            nameSplit[0].substring(0, 1) +
+            nameSplit[nameLength - 1].substring(0, 1);
+    } else if (nameLength === 1) {
+        initials = nameSplit[0].substring(0, 1);
+    } else return;
+
+    return initials.toUpperCase();
+};
+
 
 
     useEffect(() => {
@@ -79,7 +128,7 @@ const ProfileTab = ({ navigation }) => {
 
         <>
             <View style={styles.mainContainer}>
-                <Profiles />
+                <Profiles customerdata={custData} />
                 <View style={{ alignItems: 'flex-start', padding: 10 }}>
                     <Text style={styles.GText}>Continuing Guarantor</Text>
                 </View>
@@ -88,19 +137,19 @@ const ProfileTab = ({ navigation }) => {
                     <View style={styles.containerBox}>
                         <View style={{ flex: 1, flexDirection: 'row' }}>
                             <View style={[styles.circleView, { backgroundColor: 'rgba(206, 116, 143, 1)' }]}>
-                                <Text style={styles.shortText}>AK</Text>
+                                <Text style={styles.shortText}>{getInitials(custData?.continuingGuarantorDTO?.name)}</Text>
                             </View>
                             <View style={{ flexDirection: 'column', flex: 1, marginLeft: 12 }}>
-                                <Text style={styles.nameText}>Anil Kumar</Text>
-                                <Text style={styles.underText}>Spouse</Text>
+                                <Text style={styles.nameText}>{custData?.continuingGuarantorDTO?.name}</Text>
+                                <Text style={styles.underText}>{custData?.continuingGuarantorDTO?.relation}</Text>
                             </View>
 
                             <View style={{ flexDirection: 'column' }}>
                                 <View style={{ flexDirection: 'row' }}>
                                     <Icon2 name="phone-call" color={'rgba(0, 56, 116, 1)'} size={11} style={{ top: 4 }} />
-                                    <Text style={[styles.numText, { paddingLeft: 6 }]}>961XXXXX77</Text>
+                                    <Text style={[styles.numText, { paddingLeft: 6 }]}>{custData?.continuingGuarantorDTO?.phoneNumber?.replace(/^.{0}/g, '').replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X")}</Text>
                                 </View>
-                                <Text style={[styles.numText, { paddingLeft: width * 0.05, color: COLORS.colorDark }]}>TTUXXXX46</Text>
+                                <Text style={[styles.numText, { paddingLeft: width * 0.05, color: COLORS.colorDark }]}>{custData?.continuingGuarantorDTO?.voterId?.replace(/^.{0}/g, '').replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X")}</Text>
                             </View>
                         </View>
                     </View>

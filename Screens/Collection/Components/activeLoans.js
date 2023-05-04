@@ -5,41 +5,162 @@ import {
     Switch,
     ScrollView,
     Dimensions,
-    TouchableOpacity
+    TouchableOpacity,
+    Image,
+    FlatList
 } from 'react-native'
 import React, { useCallback, useEffect, useState } from 'react'
 //import Image1 from '../../../assets/image/BANK1.svg';
 import { FONTS, COLORS } from '../../../Constants/Constants';
-import Icon1 from 'react-native-vector-icons/Entypo'
+import Icon1 from 'react-native-vector-icons/Ionicons'
 import CollectModal from './CollectModal';
 import Image1 from '../../../assets/image/b2.svg';
 import Image2 from '../../../assets/image/b1.svg';
 import ConfirmModal from './ConfirmModal';
+import { api } from '../../../Services/Api';
+import { useDispatch,useSelector } from 'react-redux';
+import { TextInput } from 'react-native-paper';
+import TCMModal from './TCMModal';
+
 
 const { height, width } = Dimensions.get('screen');
 
-const ActiveLoans = ({ navigation }) => {
+const ActiveLoans = ({ navigation, loandetails }) => {
+    console.log('[=][=][=][=][=]', loandetails)
+
+    const LoancustomerID = useSelector(state => state.loancustomerID);
+
+    const dispatch = useDispatch()
     const [isEnabled, setIsEnabled] = useState(false);
-    const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+    const toggleSwitch = () => { setIsEnabled(previousState => !previousState), setTCM('') };
     const [ModalVisible, setModalVisible] = useState(false)
     const [ModalVisible1, setModalVisible1] = useState(false)
-    const Data = [
-        {
-            id: 1,
-            bankName: 'IDFC Bank LTD',
-            LoanId: '34543523',
-            LoanOut: '₹ 1,25,000.00',
-            Date1: '15 Sep ‘22'
-        },
-        {
-            id: 2,
-            bankName: 'Indian Overseas...',
-            LoanId: '34545566',
-            LoanOut: '₹ 75,000.00',
-            Date1: '15 Aug ‘22'
-        },
+    const [ModalVisible4, setModalVisible4] = useState(false)
+    const [TCMstatus, setTCMstatus] = useState(false)
+    const [TCMlist, setTCMlist] = useState(false)
+    
+    
+    const [collectAmount, setCollectAmount] = useState([])
+    const [collectAmount1, setCollectAmount1] = useState([])
 
-    ]
+    
+    const [Activeloandetail, setActiveloandetail] = useState('')
+    
+    const [TCM, setTCM] = useState('')
+
+
+
+    // const RenderItem = ({ content, index, collectAmount }) => {
+
+    //     const onCollect = (text) => {
+    //         setInput(text)
+    //         collectAmount(text)
+    //     }
+
+    //     const [input, setInput] = useState('');
+    //     return (
+    //         <TouchableOpacity style={styles.loanContainer} onPress={() => {
+    //             navigation.navigate('LoanDetailsCollect', { loan: content }),
+
+    //                 dispatch({
+    //                     type: 'SET_SELECTED_LOANID',
+    //                     payload: content?.loanId,
+    //                 });
+    //         }}>
+
+    //             <View style={{ flexDirection: 'row', paddingLeft: 20 }}>
+    //                 <View style={{ flex: 1 }}>
+    //                     <View style={{ marginTop: 15 }}>
+    //                         <Text style={[styles.headText, { paddingBottom: 5 }]}>Lender</Text>
+    //                         <View style={{ flexDirection: 'row', alignItems: 'center', paddingTop: 0, flexWrap: 'wrap' }}>
+    //                             <Image style={{ width: 15, height: 15 }}
+    //                                 source={{ uri: content?.lenderLogo }}
+    //                             />
+    //                             <Text style={[styles.valueText, { paddingLeft: 7, paddingTop: 0 }]}>{content?.lenderName}</Text>
+    //                         </View>
+    //                     </View>
+    //                     <View style={{ marginVertical: 15 }}>
+    //                         <Text style={styles.headText}>Loan Outstanding</Text>
+    //                         <Text style={styles.valueText}>{content?.loanOutstanding}</Text>
+    //                     </View>
+    //                 </View>
+    //                 <View style={{ flexDirection: 'column', marginTop: 17 }}>
+    //                     <View style={{ flex: 1 }}>
+    //                         <View style={styles.verticleLine} />
+    //                     </View>
+    //                     <View style={{ flex: 1 }}>
+    //                         <View style={styles.verticleLine} />
+    //                     </View>
+    //                 </View>
+
+    //                 <View style={{ flex: 1 }}>
+    //                     <View style={{ marginTop: 18 }}>
+
+
+    //                         <Text style={styles.headText}>Payment Due</Text>
+    //                         <Text style={[styles.valueText, { color: content?.dueDatePassed === true ? 'rgba(234, 64, 71, 1)' : '#000' }]}>₹{content?.paymentDue}</Text>
+
+    //                     </View>
+
+    //                     <View style={{ marginVertical: 15, }}>
+    //                         <Text style={styles.headText}>Collected Amount</Text>
+
+    //                         <TextInput
+    //                             style={styles.CardAmt}
+    //                             onChangeText={(text) => {
+    //                                 onCollect(text)
+
+    //                             }
+    //                             }
+    //                             value={input}
+    //                             maxLength={5}
+    //                             keyboardType="numeric"
+    //                         />
+
+    //                     </View>
+    //                 </View>
+    //             </View>
+
+    //         </TouchableOpacity>
+    //     )
+    // };
+
+
+
+
+    const onCollect = (text) => {
+        setCollectAmount([])
+       console.log('collection value',text)
+       var temp = collectAmount;
+       temp = temp.concat(text)
+       setCollectAmount(([...temp]))
+    }
+
+
+
+
+    const getTrustcircledetails = async () => {
+        console.log('search------->>>>>',)
+        const data = {
+            customerId: LoancustomerID,
+
+        };
+        await api.getTrustcircledetails(data).then((res) => {
+            console.log('------------------- getTrustcircledetails res', res)
+           
+if(res?.data?.body){
+    setModalVisible4(!ModalVisible4)
+    setTCMlist(res?.data?.body)
+}
+
+        })
+            .catch((err) => {
+                console.log('------------------- getTrustcircledetails error', err?.response)
+
+            })
+    };
+
+
 
     return (
 
@@ -62,32 +183,110 @@ const ActiveLoans = ({ navigation }) => {
                                 onValueChange={toggleSwitch}
                                 value={isEnabled}
                             />
+
                             <Text style={styles.actLoans}>TC Member</Text>
                         </View>
                     </View>
+
+
+                    {isEnabled &&
+                        <View style={{ paddingTop: width * 0.01, paddingBottom: width * 0.02, }}>
+
+
+                            <View style={{ marginHorizontal: 5 }}>
+                                <TouchableOpacity style={styles.SelectBox} onPress={() => {
+                                    
+                                        
+                                    
+                                       getTrustcircledetails()
+                                  }} >
+                                    <Text style={[styles.textSelect, { color: TCMstatus ? '#808080' : '#1A051D' }]}>{TCM ? TCM : "Select TC Member"}</Text>
+                                    {TCMstatus ?
+                                        <Icon1 name="chevron-up" size={18} color={'#808080'} style={{ marginRight: 10 }} /> :
+                                        <Icon1 name="chevron-down" size={18} color={'#808080'} style={{ marginRight: 10 }} />}
+                                </TouchableOpacity>
+                                {TCMstatus &&
+                                    <View>
+                                        {TCMlist?.length > 0
+                                            ? <View style={{ alignItems: 'center' }}>
+                                                <View style={styles.ViewMapBranch1}>
+                                                    {TCMlist?.map((item) => {
+                                                        return (
+
+                                                            <TouchableOpacity onPress={() => {
+                                                                setTCM(item?.name)
+                                                                setTCMstatus(false)
+
+                                                            }}>
+                                                                <View style={{ paddingTop: 8 }}>
+
+                                                                    <Text style={styles.ItemNameBranch}>{item?.name}</Text>
+
+                                                                    <View style={styles.Line} />
+                                                                </View>
+                                                            </TouchableOpacity>
+
+                                                        )
+                                                    })}
+                                                </View>
+                                            </View>
+                                            : null}
+                                    </View>}
+                                {/* {TCMstatus &&
+                            <View>
+                            {TCMlist?.length == 0 && TCMstatus  ? <View style={[styles.ViewMapBranch, { height: width * 0.15, }]}>
+                                <View style={{ paddingTop: width * 0.05 }}>
+
+                                    <Text style={styles.ItemNameBranch}>No results found</Text>
+
+                                </View>
+                            </View> : null}
+                            </View>} */}
+                            </View>
+                        </View>}
                     <View style={{ marginBottom: 5 }}>
-                        <Text style={styles.actLoans}>Active Loan Accounts (2)</Text>
+                        <Text style={styles.actLoans}>Active Loan Accounts ({loandetails?.length})</Text>
                     </View>
 
                     <View style={{ alignItems: 'center' }}>
-                        {Data.map((item) => {
+
+
+                        {/* <FlatList
+
+                            data={loandetails || []}
+                            keyExtractor={({ item, index }) => index}
+                            renderItem={({ item, index }) =>
+
+                                <RenderItem content={item} index={index} collectAmount={setCollectAmount} />
+
+                            }
+                        /> */}
+                         {loandetails?.map((item) => {
+                          
                             return (
-                                <TouchableOpacity style={styles.loanContainer} onPress={() => props.navigation.navigate('LoanHistoryDetails')}>
+                                <TouchableOpacity style={styles.loanContainer} onPress={() => {
+                                    navigation.navigate('LoanDetailsCollect', { loan: item }),
+                                    console.log('{8888888*******}', item)
+                                    dispatch({
+                                        type: 'SET_SELECTED_LOANID',
+                                        payload: item?.loanId,
+                                    });
+                                }}>
 
                                     <View style={{ flexDirection: 'row', paddingLeft: 20 }}>
                                         <View style={{ flex: 1 }}>
                                             <View style={{ marginTop: 18 }}>
                                                 <Text style={[styles.headText, { paddingBottom: 5 }]}>Lender</Text>
                                                 <View style={{ flexDirection: 'row', alignItems: 'center', paddingTop: 0 }}>
-                                                    {item.id === 1 ?
-                                                        <Image1 /> :
-                                                        <Image2 />}
-                                                    <Text style={[styles.valueText, { paddingLeft: 7, paddingTop: 0 }]}>{item.bankName}</Text>
+                                                    <Image style={{ width: 15, height: 15 }}
+                                                        source={{ uri: item?.lenderLogo }}
+                                                    />
+                                                    <Text style={[styles.valueText, { paddingLeft: 7, paddingTop: 0 }]}>{item?.lenderName}</Text>
                                                 </View>
                                             </View>
                                             <View style={{ marginVertical: 15 }}>
                                                 <Text style={styles.headText}>Loan Outstanding</Text>
-                                                <Text style={styles.valueText}>{item.LoanOut}</Text>
+                                                <Text style={styles.valueText}>{item?.loanOutstanding}</Text>
                                             </View>
                                         </View>
                                         <View style={{ flexDirection: 'column', marginTop: 17 }}>
@@ -104,22 +303,28 @@ const ActiveLoans = ({ navigation }) => {
 
 
                                                 <Text style={styles.headText}>Payment Due</Text>
-                                                <Text style={[styles.valueText, { color: 'rgba(234, 64, 71, 1)' }]}>₹7,793</Text>
+                                                <Text style={[styles.valueText, { color: item?.dueDatePassed === true ? 'rgba(234, 64, 71, 1)' : '#000' }]}>₹{item?.paymentDue}</Text>
 
                                             </View>
 
                                             <View style={{ marginVertical: 15, }}>
                                                 <Text style={styles.headText}>Collected Amount</Text>
-                                                <View style={styles.CardAmt}>
-                                                    <Text style={[styles.valueText, { paddingLeft: 4, color: 'rgba(130, 130, 130, 1)' }]}>₹7,793</Text>
-                                                </View>
+                                               
+                                                    <TextInput
+                                                        style={styles.CardAmt}
+                                                        onChangeText={(text)=>onCollect(text)}
+                                                       value={collectAmount}
+                                                        keyboardType="numeric"
+                                                     
+                                                    />
+                                                
                                             </View>
                                         </View>
                                     </View>
 
                                 </TouchableOpacity>
                             )
-                        })}
+                        })} 
                     </View>
 
                 </View>
@@ -130,22 +335,40 @@ const ActiveLoans = ({ navigation }) => {
                 </TouchableOpacity>
             </View>
 
+            {console.log('{}{}{}{}{}{}{}{}', collectAmount)}
+
             <CollectModal
                 ModalVisible={ModalVisible}
                 onPressOut={() => setModalVisible(!ModalVisible)}
                 setModalVisible={setModalVisible}
-                ModalVisible2={()=>{setModalVisible1(true)
-                setModalVisible(false)}}
-                ModalVisible3={()=>{setModalVisible1(false)
-                navigation.navigate('Collect')}}
-               
+                ModalVisible2={() => {
+                    setModalVisible1(true)
+                    setModalVisible(false)
+                }}
+                ModalVisible3={() => {
+                    setModalVisible1(false)
+                    navigation.navigate('Collect')
+                }}
+
+            />
+
+
+            <TCMModal
+                 press1={(value)=>setTCM(value)}
+                TCMlist={TCMlist}
+                ModalVisible={ModalVisible4}
+                onPressOut={() => setModalVisible4(false)}
+                setModalVisible={setModalVisible4}
+              
+            
+
             />
 
             <ConfirmModal
                 ModalVisible={ModalVisible1}
                 onPressOut={() => setModalVisible1(!ModalVisible1)}
                 setModalVisible={setModalVisible1}
-              
+
             />
         </>
     )
@@ -211,10 +434,9 @@ const styles = StyleSheet.create({
         fontWeight: '400',
     },
     valueText: {
-        fontSize: 12,
-        fontFamily: FONTS.FontSemiB,
-        color: COLORS.colorDark,
-        fontWeight: '600',
+
+        width: 100,
+        // height: 25,
         paddingTop: 4
     },
     buttonView: {
@@ -232,6 +454,48 @@ const styles = StyleSheet.create({
         bottom: 0,
         alignItems: 'center',
         justifyContent: 'center'
-    }
+    },
+    SelectBox: {
+        backgroundColor: '#FCFCFC',
+        borderRadius: 8,
+        borderWidth: 1,
+        width: width * 0.92,
+        height: width * 0.12,
+        borderColor: 'rgba(236, 235, 237, 1)',
+        alignItems: 'center',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        // marginTop: width * 0.02,
+        marginBottom: width * 0.02
+    },
+    textSelect: {
+        fontSize: 14,
+        color: 'rgba(128, 128, 128, 1)',
+        fontFamily: FONTS.FontRegular,
+        marginLeft: 15
+    },
+    ViewMapBranch1: {
+        width: width * 0.9,
+        // height: height * 0.16,
+        borderWidth: 1,
+        paddingLeft: width * 0.02,
+        borderColor: 'rgba(236, 235, 237, 1)',
+        borderRadius: 8,
+        marginTop: width * 0.025,
+        backgroundColor: '#FCFCFC',
+        alignSelf: 'flex-start'
+    },
+    ItemNameBranch: {
+        paddingLeft: width * 0.02,
+        color: "#1A051D",
+        fontSize: 12,
+        fontFamily: FONTS.FontRegular
+    },
+    Line: {
+        borderBottomWidth: 1,
+        borderBottomColor: 'rgba(242, 242, 242, 1)',
+        width: width * 0.85,
+        paddingTop: width * 0.035
+    },
 
 })

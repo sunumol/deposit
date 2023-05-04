@@ -17,67 +17,43 @@ import CustomDetails from './components/CustomDetails';
 import Image1 from '../Images/IMG2.svg';
 import Image2 from '../Images/IMG3.svg';
 import Image3 from '../Images/IMG4.svg';
+import { Import } from 'react-native-unicons';
+import SortModal from './components/SortModal';
+import { api } from '../../../Services/Api';
 
 const ItemTabs = ({ navigation }) => {
     const { t } = useTranslation();
     const [Lang, setLang] = useState('')
     const [dropStatus, setDropStatus] = useState(false)
-    const [data, setData] = useState([{
-        id: 1,
-        startTime: '07:00 AM ',
-        endTime: '10:00 AM',
-        badge: 4,
-        open: false
-    }, {
-        id: 1,
-        startTime: '10:00 AM',
-        endTime: '01:00 PM',
-        badge: 3,
-        open: false
-    },
-    {
-        id: 1,
-        startTime: '01:00 PM',
-        endTime: '04:00 PM',
-        badge: 4,
-        open: false
-    },
-    {
-        id: 1,
-        startTime: '04:00 PM',
-        endTime: '07:00 PM',
-        badge: 2,
-        open: false
-    }])
-    const [listData, setListData] = useState([
-        {
-            id: '1',
-            short: 'EI',
-            name: 'Elizabeth Immanuel Ko...',
-            text: 'Kaippattur',
-            phoneNumber: '828XXXXX00',
-            color: '#C8BD94',
-            status: 'Lead',
-        },
-        {
-            id: '2',
-            short: 'AJ',
-            name: 'Ashly James',
-            text: '682025',
-            phoneNumber: '878XXXXX00',
-            color: '#94BCC8',
-            status: 'Explain',
-        },
-        {
-            id: '3',
-            short: 'NM',
-            name: 'Sismi Joseph',
-            text: '682025',
-            phoneNumber: '965XXXXX00',
-            color: '#9EC894',
-            status: 'Explain',
-        }
-    ])
+    const [Relation,setRelation] = useState()
+    const [Purposes,setPurposes] = useState()
+    const [ModalVisible,setModalVisible] =useState(false)
+    const [pendingdata,setPendingdata] = useState('')
+    const [listData, setListData] = useState({
+        
+            customersDue: 2,
+            loansDue: 2,
+            amountsDue: 1000.0,
+            pendingCustomerCollectionResponses: [
+              {
+                name: "John",
+                village: "abcd",
+                mobileNumber: "9654312299",
+                dueAmount: 1000.0,
+                postOffice: "sdadff",
+                dpd: 4
+              },
+              {
+                name: "raju",
+                village: "ddfdsfsf",
+                mobileNumber: "7766554433",
+                dueAmount: 3333.0,
+                postOffice: "sdadff",
+                dpd: 3
+              }
+            ]
+          
+        })
     const [meetData, setMeetData] = useState([
         {
             id: '1',
@@ -91,6 +67,37 @@ const ItemTabs = ({ navigation }) => {
 
     ])
 
+    useEffect(() => {
+
+        console.log("purpose print....", Purposes)
+ 
+        setPurposes(Purposes)
+        setRelation(Relation)
+
+
+        //setStatus(true)
+    }, [Purposes, Relation])
+
+useEffect(()=>{
+getPendingCollection()
+},[])
+
+  // ------------------ get Slot Api Call Start ------------------
+  const getPendingCollection = async () => {
+    console.log('api called')
+    const data = {
+        "agentId": 1,
+        "sortOrder": Purposes ? Purposes : 'DPD_LOWEST_TO_HIGHEST'
+    };
+    await api.getCollection(data).then((res) => {
+
+        console.log('------------------- Pending Collection res', res)
+      setPendingdata(res?.data?.body)
+    })
+        .catch((err) => {
+            console.log('-------------------Pending collection err', err?.response)
+        })
+};
 
 
 
@@ -101,7 +108,7 @@ const ItemTabs = ({ navigation }) => {
     const getData = async () => {
         try {
             const lang = await AsyncStorage.getItem('user-language')
-            setLang(lang)
+           // setLang(lang)
 
         } catch (e) {
             console.log(e)
@@ -119,8 +126,8 @@ const ItemTabs = ({ navigation }) => {
                             </View>
 
                             <View style={{ flexDirection: 'column',paddingLeft:width*0.03 }}>
-                                <Text style={styles.TextCust}>{t('common:CustomDue')}</Text>
-                                <Text style={styles.NumText}>05</Text>
+                                <Text style={styles.TextCust}>Customer's Due</Text>
+                                <Text style={styles.NumText}>{pendingdata?.customersDue}</Text>
                             </View>
                         </View>
 
@@ -130,7 +137,7 @@ const ItemTabs = ({ navigation }) => {
                             </View>
                             <View style={{ flexDirection: 'column',paddingLeft:width*0.03  }}>
                                 <Text style={styles.TextCust}>Amount Due</Text>
-                                <Text style={styles.AmtText}>₹48,224</Text>
+                                <Text style={styles.AmtText}>₹{pendingdata?.amountsDue}</Text>
                             </View>
                         </View>
                         </View>
@@ -141,12 +148,31 @@ const ItemTabs = ({ navigation }) => {
                         </View>
                         <View style={{ flexDirection: 'column' ,paddingLeft:width*0.03 }}>
                             <Text style={styles.TextCust}>Loans Due</Text>
-                            <Text style={styles.NumText}>06</Text>
+                            <Text style={styles.NumText}>{pendingdata?.loansDue}</Text>
                         </View>
                     </View>
                     </View>
+
+                    <View style={{flex:1,marginRight:20,alignItems:'flex-end'}}>
+                        <TouchableOpacity onPress={()=>setModalVisible(true)} style={{padding:5,marginTop:10,backgroundColor:'rgba(229, 231, 250, 1)',borderRadius:5,justifyContent:'center',alignItems:'center'}}>
+                        <Text style={{color:'rgba(0, 56, 116, 1)',marginHorizontal:10,fontSize:12,fontFamily:FONTS.FontBold}}>Sort</Text>
+                        </TouchableOpacity>
+
+                    </View>
             
-            <CustomDetails />
+            <CustomDetails navigation={navigation} details={pendingdata?.pendingCustomerCollectionResponses} />
+
+
+            <SortModal
+                visible={ModalVisible}
+                setRelation={setRelation}
+                setPurposes={setPurposes}
+                setModalVisible={setModalVisible}
+          
+                onPressOut={() => setModalVisible(!ModalVisible)}
+            // navigation={navigation}
+
+            />
 
             </ScrollView>
         </View>

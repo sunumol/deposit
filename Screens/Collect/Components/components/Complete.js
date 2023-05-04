@@ -28,11 +28,19 @@ import Image2 from '../../Images/greenCash.svg';
 import Img1 from '../../Images/p1.svg';
 import Img2 from '../../Images/p2.svg';
 import ComCard from './ComCard';
+import { api } from '../../../../Services/Api';
+
+
+
 
 const CompleteTab = ({ navigation }) => {
     const route = useRoute();
     const [Lang, setLang] = useState('')
     const { t } = useTranslation();
+    const [completeloan,setCompleteloan] = useState('');
+    const [pendopen,setPendopen] = useState(false)
+    const [deposopen,setDeposopen] = useState(false)
+   
     const [data, setData] = useState([{
         id: 1,
         title: 'Deposit Pending ₹33,000',
@@ -96,18 +104,7 @@ const CompleteTab = ({ navigation }) => {
         },
     ]
 
-    const CGT = [
-        {
-            id: 1,
-            name: 'Dayana James',
-            place: 'Aimurikara',
-            phone: '987XXXXX22',
-            Initial: 'DJ',
-            Amount: '₹10,000',
-            color1: 'rgba(26, 5, 29, 1)',
-            color: 'rgba(148, 166, 200, 1)'
-        },
-    ]
+
     useEffect(() => {
         getData()
     }, [])
@@ -122,48 +119,71 @@ const CompleteTab = ({ navigation }) => {
         }
     }
 
+useEffect(()=>{
+    getcompletedCollections()
+},[])
+
+       // ------------------getcompletedCollections Call Start ------------------
+       async function getcompletedCollections()  {
+       
+        console.log('search------->>>>>123', )
+        const data = {
+            agentId: 1
+        }
+
+        await api.getcompletedCollections(data).then((res) => {
+          console.log('------------------- getcompletedCollections res', res.data.body)
+   setCompleteloan(res?.data?.body)
+         
+         
+        })
+          .catch((err) => {
+            console.log('-------------------getcompletedCollections  err', err)
+           
+          })
+      };
+
+
+
+  
+
 
     return (
         <>
 
             <View style={styles.mainContainer}>
-                <ComCard />
+                <ComCard details={completeloan} />
 
-                {data.map((item, index) => {
-                    return (
-                        <>
-                            <View style={[styles.containerTab, { backgroundColor: item.open ? 'rgba(242, 242, 242, 0.5)' : 'rgba(255, 255, 255, 1)' }]}>
-                                {item.id === 1 ?
+
+         
+
+                <View style={[styles.containerTab, { backgroundColor:  'rgba(255, 255, 255, 1)' }]}>
+                           
                                     <View style={[styles.Card1, { backgroundColor: 'rgba(235, 87, 87, 0.1)' }]}>
                                         <Image1 />
-                                    </View> :
-                                    <View style={[styles.Card1, { backgroundColor: 'rgba(39, 174, 96, 0.1)' }]}>
-                                        <Image2 /></View>}
+                                    </View>
 
                                 <View style={{ justifyContent: 'space-around', flexDirection: 'row', alignItems: 'center' }}>
                                     <View style={{ marginLeft: width * 0.03 }}>
-                                        <Text style={styles.timeText}>{item.title}</Text>
+                                        <Text style={styles.timeText}>Deposit Pending ₹33,000 </Text>
                                     </View>
 
-                                    {item.id === 1 ?
+                                  
                                         <View style={[styles.Card1, { backgroundColor: 'rgba(235, 87, 87, 0.1)', marginLeft: width * 0.05 }]}>
                                             <Img2 />
-                                        </View> :
-                                        <View style={[styles.Card1, { backgroundColor: 'rgba(39, 174, 96, 0.1)', marginLeft: width * 0.155 }]}>
-                                            <Img1 /></View>}
+                                        </View> 
+                                       
                                     <View style={{ marginLeft: width * 0.025 }}>
-                                        <Text style={styles.badgeText}>{item.badge}</Text>
+                                        <Text style={styles.badgeText}>3</Text>
                                     </View>
-                                    <View style={{ marginLeft: item.id === 1 ? width * 0.033 : width * 0.036 }}>
+                                    <View style={{ marginLeft:  width * 0.033 }}>
 
                                         <TouchableOpacity
                                             onPress={() => {
-                                                const nextList = [...data];
-                                                nextList[index].open = !nextList[index].open;
-                                                setData(nextList);
+                                            setPendopen(!pendopen)
                                             }}
                                         >
-                                            <Icon name={item.open ? "chevron-up" : "chevron-down"}
+                                            <Icon name={pendopen ? "chevron-up" :"chevron-down"}
                                                 color={COLORS.colorB}
                                                 size={25}
                                                 style={{ paddingLeft: 13 }}
@@ -179,6 +199,151 @@ const CompleteTab = ({ navigation }) => {
                                     </View> */}
                                 </View>
                             </View>
+
+
+                            <>
+                                    {pendopen &&
+                                        <View>
+
+
+                                            {completeloan?.depositPendingDetailsDTOS?.map((item) => {
+                                                return (
+                                                    <TouchableOpacity
+                                                        style={styles.boxStyle} >
+                                                        <View style={{ flex: 1, flexDirection: 'row' }}>
+
+                                                            <View style={[styles.circleStyle, { backgroundColor: 'rgba(148, 166, 200, 1)' }]}>
+                                                                <Text style={styles.circleText}>K</Text>
+                                                            </View>
+
+                                                            <View style={{ flexDirection: 'column', paddingLeft: 12, paddingTop: 5 }}>
+                                                                <Text style={styles.nameText}>{item?.customerName}</Text>
+                                                                <View style={{ flexDirection: 'row', }}>
+                                                                    <View style={{ paddingTop: 5, paddingRight: 1 }}>
+                                                                        <Icon1 name="location-outline" color={"black"} />
+                                                                    </View>
+                                                                    <Text style={[styles.idText, { paddingTop: 4 }]}>{item?.village}</Text>
+                                                                </View>
+                                                            </View>
+
+                                                        </View>
+
+                                                        <View style={{ flexDirection: 'column', paddingTop: 5, alignItems: 'flex-end' }}>
+                                                            <View style={{ flexDirection: 'row' }}>
+                                                                <Icon2 name="phone-call" color={"black"} size={11} style={{ top: 4 }} />
+                                                                <Text style={[styles.numText, { paddingLeft: 6 }]}>{item?.mobileNumber}</Text>
+                                                            </View>
+
+
+                                                            <Text style={[styles.leadText, { color: item?.dueDatePassed === 'true' ? 'red' :'#000000' }]}>{item?.amount}</Text>
+
+
+                                                        </View>
+
+                                                    </TouchableOpacity>
+                                                );
+                                            })}
+
+                                        </View>}
+
+                                </>
+
+                            <View style={[styles.containerTab, { backgroundColor: 'rgba(255, 255, 255, 1)' }]}>
+                              
+                                    <View style={[styles.Card1, { backgroundColor: 'rgba(39, 174, 96, 0.1)' }]}>
+                                        <Image2 /></View>
+
+                                <View style={{ justifyContent: 'space-around', flexDirection: 'row', alignItems: 'center' }}>
+                                    <View style={{ marginLeft: width * 0.03 }}>
+                                        <Text style={styles.timeText}>Deposited ₹15,224</Text>
+                                    </View>
+
+                                 
+                                        <View style={[styles.Card1, { backgroundColor: 'rgba(39, 174, 96, 0.1)', marginLeft: width * 0.155 }]}>
+                                            <Img1 /></View>
+                                    <View style={{ marginLeft: width * 0.025 }}>
+                                        <Text style={styles.badgeText}>3</Text>
+                                    </View>
+                                    <View style={{ marginLeft: width * 0.036 }}>
+
+                                        <TouchableOpacity
+                                            onPress={() => {
+                                                setDeposopen(!deposopen)
+                                                // const nextList = [...data];
+                                                // nextList[index].open = !nextList[index].open;
+                                                // setData(nextList);
+                                            }}
+                                        >
+                                            <Icon name={ deposopen ?  "chevron-up": "chevron-down"}
+                                                color={COLORS.colorB}
+                                                size={25}
+                                                style={{ paddingLeft: 13 }}
+
+                                            />
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
+                                <View style={{ alignItems: 'center', flexDirection: 'row' }}>
+
+                                    {/* <View style={{flex:1,alignItems:'flex-end'}}>
+                     
+                                    </View> */}
+                                </View>
+                            </View>
+
+
+
+                            <>
+                                    {deposopen &&
+                                        <View>
+
+
+                                            {completeloan?.depositedDetailsDTOS?.map((item) => {
+                                                return (
+                                                    <TouchableOpacity
+                                                        style={styles.boxStyle} >
+                                                        <View style={{ flex: 1, flexDirection: 'row' }}>
+
+                                                            <View style={[styles.circleStyle, { backgroundColor: 'rgba(148, 166, 200, 1)' }]}>
+                                                                <Text style={styles.circleText}>K</Text>
+                                                            </View>
+
+                                                            <View style={{ flexDirection: 'column', paddingLeft: 12, paddingTop: 5 }}>
+                                                                <Text style={styles.nameText}>{item?.customerName}</Text>
+                                                                <View style={{ flexDirection: 'row', }}>
+                                                                    <View style={{ paddingTop: 5, paddingRight: 1 }}>
+                                                                        <Icon1 name="location-outline" color={"black"} />
+                                                                    </View>
+                                                                    <Text style={[styles.idText, { paddingTop: 4 }]}>{item?.village}</Text>
+                                                                </View>
+                                                            </View>
+
+                                                        </View>
+
+                                                        <View style={{ flexDirection: 'column', paddingTop: 5, alignItems: 'flex-end' }}>
+                                                            <View style={{ flexDirection: 'row' }}>
+                                                                <Icon2 name="phone-call" color={"black"} size={11} style={{ top: 4 }} />
+                                                                <Text style={[styles.numText, { paddingLeft: 6 }]}>{item?.mobileNumber}</Text>
+                                                            </View>
+
+
+                                                            <Text style={[styles.leadText, { color: item?.dueDatePassed === 'true' ? 'red' :'#000000' }]}>{item?.amount}</Text>
+
+
+                                                        </View>
+
+                                                    </TouchableOpacity>
+                                                );
+                                            })}
+
+                                        </View>}
+
+                                </>
+
+                {/* {data.map((item, index) => {
+                    return (
+                        <>
+                       
                             {item.id === 1 ?
 
 
@@ -278,7 +443,7 @@ const CompleteTab = ({ navigation }) => {
                         </>
                     )
                 })
-                }
+                } */}
             </View>
 
         </>
