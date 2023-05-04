@@ -36,11 +36,11 @@ const ResidenceOwner = ({ navigation, }) => {
     const { t } = useTranslation();
     const [lang, setLang] = useState('')
     const [BStatus, setBstatus] = useState(false)
-    const [state,setState] = useState()
-    const [imagedata,setImagedata] = useState()
-    const [ModalVisible,setModalVisible] = useState(false)
-    const [ModalVisible1,setModalVisible1] = useState(false)
-    const [ModalReason,setModalReason] = useState(false)
+    const [state, setState] = useState()
+    const [imagedata, setImagedata] = useState()
+    const [ModalVisible, setModalVisible] = useState(false)
+    const [ModalVisible1, setModalVisible1] = useState(false)
+    const [ModalReason, setModalReason] = useState(false)
     const [ModalError, setModalError] = useState(false)
     const activityId = useSelector(state => state.activityId);
 
@@ -57,58 +57,58 @@ const ResidenceOwner = ({ navigation, }) => {
             console.log(e)
         }
     }
-      // ------------------ get Conduct DLE basic detail Village Api Call Start ------------------
-      const updateRejection = async () => {
+    // ------------------ get Conduct DLE basic detail Village Api Call Start ------------------
+    const updateRejection = async () => {
         console.log('api called for rejection')
         const data = {
-            "activityStatus":'Submitted wrong data',
-            "employeeId":1,
-            "activityId":activityId
+            "activityStatus": 'Submitted wrong data',
+            "employeeId": 1,
+            "activityId": activityId
         }
         await api.updateActivity(data).then((res) => {
             console.log('-------------------res get Village', res)
             setModalError(true)
             setModalReason(false)
             setTimeout(() => {
-                navigation.navigate('Profile')  
+                navigation.navigate('Profile')
             }, 1000);
-          
+
         }).catch((err) => {
             console.log('-------------------err get Village', err)
         })
     };
 
-        // ------------------save and update residence owner detail ------------------
+    // ------------------save and update residence owner detail ------------------
 
-        const saveHousePhoto = async () => {
-            console.log('api called')
-    
-            const data = {
-                "activityId": activityId,
-                "housePhotoUrl": imagedata,
-             
+    const saveHousePhoto = async () => {
+        console.log('api called')
+
+        const data = {
+            "activityId": activityId,
+            "housePhotoUrl": imagedata,
+
+        }
+        await api.saveHousePhoto(data).then((res) => {
+            console.log('-------------------res  update house photo', res)
+            if (res?.status) {
+                navigation.navigate('DLECompleted')
             }
-            await api.saveHousePhoto(data).then((res) => {
-                console.log('-------------------res  update house photo', res)
-                if (res?.status) {
-                   navigation.navigate('DLECompleted')
-                }
-            }).catch((err) => {
-                console.log('-------------------err  update House photo', err?.response)
-            })
-        };
-        // -
+        }).catch((err) => {
+            console.log('-------------------err  update House photo', err?.response)
+        })
+    };
+    // -
 
 
 
     const handleGoBack = useCallback(() => {
-        console.log('8888',imagedata)
-        if(imagedata){
+        console.log('8888', imagedata)
+        if (imagedata) {
             setModalVisible(true)
-        }else{
+        } else {
             setModalVisible1(true)
         }
-       
+
 
         return true; // Returning true from onBackPress denotes that we have handled the event
     }, [navigation]);
@@ -129,31 +129,31 @@ const ResidenceOwner = ({ navigation, }) => {
             <Header name="House Photo Capture" navigation={navigation} setState={state} onPress={handleGoBack} />
 
             <View style={styles.ViewContent}>
-                <House navigation={navigation} setState={setState} setImagedata1={setImagedata}  />
+                <House navigation={navigation} setState={setState} setImagedata1={setImagedata} />
             </View>
 
 
             <ExitModal
                 ModalVisible={ModalVisible1}
                 onPressOut={() => {
-                  setModalVisible1(!ModalVisible1)
+                    setModalVisible1(!ModalVisible1)
                 }}
                 setModalVisible={setModalVisible1}
-                navigation={navigation} 
+                navigation={navigation}
             />
 
-<ModalSave
-                Press ={()=>{
+            <ModalSave
+                Press={() => {
                     setModalVisible(false),
-                    setModalReason(true)
-               
+                        setModalReason(true)
+
                 }}
-                Press1={()=>{saveHousePhoto(),setModalVisible(false)}}
+                Press1={() => { saveHousePhoto(), setModalVisible(false) }}
                 ModalVisible={ModalVisible}
                 setModalVisible={setModalVisible}
                 onPressOut={() => {
                     setModalVisible(false)
-                   
+
 
                 }}
                 navigation={navigation} />
@@ -161,8 +161,8 @@ const ResidenceOwner = ({ navigation, }) => {
 
             <ReasonModal
                 onPress1={() => {
-                     updateRejection()
-                   // setModalError(true)
+                    updateRejection()
+                    // setModalError(true)
                 }}
                 ModalVisible={ModalReason}
                 onPressOut={() => setModalReason(!ModalReason)}
@@ -177,7 +177,7 @@ const ResidenceOwner = ({ navigation, }) => {
                     setModalReason(!ModalReason)
                 }}
                 setModalVisible={setModalError}
-                navigation={navigation} 
+                navigation={navigation}
             />
 
         </SafeAreaProvider>

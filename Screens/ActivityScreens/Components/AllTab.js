@@ -40,7 +40,7 @@ const ItemTabs = ({ navigation }) => {
 
         };
         await api.activitylistingscreenApi(data).then((res) => {
-            console.log('-------------------res all', res?.data?.body)
+            console.log('-------------------res all', res?.data?.body?.slottedActivities)
 
             setSlottedListing(res?.data?.body?.slottedActivities)
             setNonslottedActivities(res?.data?.body?.nonSlottedActivities)
@@ -93,22 +93,28 @@ const ItemTabs = ({ navigation }) => {
                     <TouchableOpacity
                         onPress={() => {
                             setCollectionopen(!collectionopen)
+                            if(dleopen){
+                                setDleopen(!dleopen)
+                            }
                         }}
                         style={[styles.containerTab, { backgroundColor: collectionopen ? 'rgba(242, 242, 242, 0.5)' : COLORS.backgroundColor }]}>
                         <View style={{ flex: 1 }}>
-                            <Text style={{ color: 'rgba(242, 153, 74, 1)', fontSize: 14, fontFamily: FONTS.FontSemiB }}>Collection Follows up </Text>
+                            <Text style={{ color: 'rgba(242, 153, 74, 1)', fontSize: 14, fontFamily: FONTS.FontSemiB }}>Collection Follow Ups </Text>
                         </View>
                         <View style={{ justifyContent: 'flex-end', flexDirection: 'row', alignItems: 'center' }}>
-                            <View style={styles.badgeContainer}>
-                                <Text style={styles.badgeText}>{collectiondata?.length}</Text>
+                            <View style={[styles.badgeContainer,{backgroundColor:COLORS.LightYellow}]}>
+                                <Text style={[styles.badgeText,{color:COLORS.DarkYellow }]}>{collectiondata?.length ? collectiondata?.length : '0'}</Text>
                             </View>
                             <TouchableOpacity
                                 onPress={() => {
                                     setCollectionopen(!collectionopen)
+                                    if(dleopen){
+                                        setDleopen(!dleopen)
+                                    }
                                 }}
                             >
                                 <Icon name={collectionopen ? "chevron-up" : "chevron-down"}
-                                    color={COLORS.colorB}
+                                    color={COLORS.DarkYellow }
                                     size={25}
                                     style={{ paddingLeft: 13 }}
 
@@ -144,23 +150,30 @@ const ItemTabs = ({ navigation }) => {
                 <>
                     <TouchableOpacity
                         onPress={() => {
+                            
                             setDleopen(!dleopen)
+                            if(collectionopen){
+                                setCollectionopen(!collectionopen)
+                            }
                         }}
                         style={[styles.containerTab, { backgroundColor: ' rgba(155, 81, 224, 0.1) ' }]}>
                         <View style={{ flex: 1 }}>
                             <Text style={styles.timeText1}>DLE Activities</Text>
                         </View>
                         <View style={{ justifyContent: 'flex-end', flexDirection: 'row', alignItems: 'center' }}>
-                            <View style={styles.badgeContainer}>
-                                <Text style={styles.badgeText}>{nonslottedActivities?.length}</Text>
+                            <View style={[styles.badgeContainer,{backgroundColor: COLORS.LightPurple}]}>
+                                <Text style={[styles.badgeText,{color:COLORS.DarkPurple}]}>{nonslottedActivities?.length}</Text>
                             </View>
                             <TouchableOpacity
                                 onPress={() => {
                                     setDleopen(!dleopen)
+                                    if(collectionopen){
+                                        setCollectionopen(!collectionopen)
+                                    }
                                 }}
                             >
                                 <Icon name={dleopen ? "chevron-up" : "chevron-down"}
-                                    color={COLORS.colorB}
+                                    color={COLORS.DarkPurple}
                                     size={25}
                                     style={{ paddingLeft: 13 }}
 
@@ -190,9 +203,10 @@ const ItemTabs = ({ navigation }) => {
 
 
                 </>
-
+{console.log("slottedlist",slottedlisting)}
 
                 {slottedlisting?.map((item, index) => {
+                    
                     return (
                         <>
                             {item.data.length > 0 ? <TouchableOpacity
@@ -200,6 +214,7 @@ const ItemTabs = ({ navigation }) => {
                                     const nextList = [...slottedlisting];
                                     nextList[index].open = !nextList[index].open;
                                     setSlottedListing(nextList);
+                                    console.log("inside array",slottedlisting)
                                     setDleopen(false)
                                     setCollectionopen(false)
                                 }}

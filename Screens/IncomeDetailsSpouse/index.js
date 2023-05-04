@@ -97,7 +97,7 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
         if (Amount !== '' && Avg !== '' && Month !== '') {
             setStateChange1(true)
             // setStatusChange(true)
-            saveIncomeDetails()
+            saveIncomeDetails_Proceed()
 
         } else {
             setStateChange1(false)
@@ -115,14 +115,14 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
 
 
 
-    useEffect(() => {
-        console.log('Use.....', Amount, Avg, Purpose)
-        if ((Amount === null || Amount === '') || (Avg === null || Avg === '') || (Purpose === null || Purpose === '')) {
-            setButtons(false)
-        } else {
-            setButtons(true)
-        }
-    }, [Amount, Avg, Purpose])
+    // useEffect(() => {
+    //     console.log('Use.....', Amount, Avg, Purpose)
+    //     if ((Amount === null || Amount === '') || (Avg === null || Avg === '') || (Purpose === null || Purpose === '')) {
+    //         setButtons(false)
+    //     } else {
+    //         setButtons(true)
+    //     }
+    // }, [Amount, Avg, Purpose])
 
     // ------------------ get Conduct DLE basic detail Village Api Call Start ------------------
     const updateRejection = async () => {
@@ -192,6 +192,31 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
             console.log('-------------------res saveIncomeDetails', res?.data?.body)
             if (res?.status) {
                 navigation.navigate('Profile')
+            }
+        }).catch((err) => {
+            console.log('-------------------err saveIncomeDetails', err?.response)
+        })
+    };
+    // ------------------ ------------------
+
+
+      // ------------------saveIncomeDetails detail ------------------
+
+      const saveIncomeDetails_Proceed = async () => {
+        console.log('api called')
+
+        const data = {
+            "activityId": activityId,
+            "relationShip": relationShip,
+            "field1": Amount,
+            "field2": Purpose,
+            "field3": Avg
+
+        }
+        await api.saveIncomeDetails(data).then((res) => {
+            console.log('-------------------res saveIncomeDetails', res?.data?.body)
+            if (res?.status) {
+                navigation.navigate('Proceed')
             }
         }).catch((err) => {
             console.log('-------------------err saveIncomeDetails', err?.response)
@@ -297,7 +322,7 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
                                     value={Amount?.toString()}
                                     keyboardType={'number-pad'}
                                     //label={'₹'}
-                                    maxLength={5}
+                                    maxLength={6}
                                     onChangeText={(text) => {
                                         if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(text) || text === "") {
                                             setAmount(text)
@@ -309,18 +334,20 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
                             <View>
                                 <Text style={styles.TextElect}>{incomedetailfield?.field2}</Text>
                             </View>
-                            <View style={styles.SelectBox}>
+                            <View>
                                 {incomedetailfield?.field2 == 'Salary credit method' ? <TouchableOpacity style={[styles.SelectBox, { justifyContent: 'space-between' }]} onPress={() => setModalVisible(true)}>
                                     <Text style={[styles.textSelect]}>{Purpose ? Purpose : 'Select'}</Text>
 
                                     <Icon1 name="chevron-down" size={18} color={'#808080'} style={{ marginRight: 10 }} />
                                 </TouchableOpacity> :
+                                   <View style={styles.SelectBox}>
                                     <TextInput
                                         style={[{ fontSize: 14, color: '#1A051D', fontFamily: FONTS.FontRegular, left: 5, width: '95%' }]}
                                         value={Month?.toString()}
                                         keyboardType={'number-pad'}
                                         maxLength={2}
-                                        onChangeText={(text) => setMonthdata(text)} />}
+                                        onChangeText={(text) => setMonthdata(text)} />
+                                        </View>}
                                 {/* <TextInput
                                     style={[{ fontSize: 14, color: '#1A051D', fontFamily: FONTS.FontRegular, left: 5 }]}
                                     value={Month?.toString()}
@@ -349,9 +376,9 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
                     </ScrollView>
                     {console.log('878787', Buttons)}
                     <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                        <TouchableOpacity style={[styles.buttonView, { backgroundColor: Buttons ? COLORS.colorB : 'rgba(224, 224, 224, 1)' }]}
-                            onPress={() => ButtonClick()}>
-                            <Text style={[styles.continueText, { color: Buttons ? COLORS.colorBackground : '#979C9E' }]}>Continue</Text>
+                        <TouchableOpacity style={[styles.buttonView, { backgroundColor:  Amount && (Purpose || Month)  && Avg ? COLORS.colorB : 'rgba(224, 224, 224, 1)' }]}
+                            onPress={() =>  Amount && (Purpose || Month)  && Avg ? ButtonClick():console.log("hekk")}>
+                            <Text style={[styles.continueText, { color:  Amount && (Purpose || Month)  && Avg ? COLORS.colorBackground : '#979C9E' }]}>Continue</Text>
                         </TouchableOpacity>
                     </View>
                 </View>

@@ -214,6 +214,8 @@ const Details = ({ navigation,setStatusChange,setStatusChange2}) => {
             <CreditModal
                 visible={ModalVisible}
                 setPurpose={setPurpose}
+                setMonth={setMonth}
+               
                 setModalVisible={setModalVisible}
                 onPressOut={() => setModalVisible(!ModalVisible)}
             />

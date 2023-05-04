@@ -112,7 +112,8 @@ const AddVehicle= ({ navigation, }) => {
                     setModalReason(true)
                
                 }}
-                Press1={()=>{setModalVisible(false)}}
+                Press1={()=>{{setModalVisible(false),
+                navigation.navigate('Profile')}}}
                 ModalVisible={ModalVisible}
                 setModalVisible={setModalVisible}
                 onPressOut={() => {

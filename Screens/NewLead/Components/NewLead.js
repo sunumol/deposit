@@ -27,7 +27,6 @@ import ValidModal from './ValidModal';
 import { api } from '../../../Services/Api'
 
 const NewLead1 = ({ navigation, setVillageStatus, VillageStatus }) => {
-    console.log("status of village", setVillageStatus, VillageStatus)
     const { t } = useTranslation();
     const [Name, setName] = useState('')
     const [Mobile, setMobile] = useState('')
@@ -58,11 +57,11 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus }) => {
         if (VillageStatus == true) {
             setVillageStatus(false)
         }
-        console.log("inside village status", VillageStatus)
     }, [])
 
     const OnpressOut1 = () => {
-        console.log("lead modal okay")
+
+
         setModalVisible(!ModalVisible)
         setName(null)
         setVillage(null)
@@ -72,7 +71,7 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus }) => {
         // setBstatus(false)
         setButton(false)
         setVStatus(false)
-
+        console.log("lead modal okay", Name, Mobile, Pincode, Village)
     }
 
     const OnchangeNumber = (num) => {
@@ -152,6 +151,13 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus }) => {
         return reg.test(Phone);
     }
 
+    function containsWhitespace(str) {
+        return /\s/.test(str);
+    }
+
+
+
+
     return (
         <>
             <View style={styles.ViewContent}>
@@ -177,17 +183,27 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus }) => {
                                 onBlur={() => setAddressFocus(false)}
 
                                 onSubmitEditing={() => MobileRef.current.focus()}
-                                // edit={AccStatus}else 
+                                // edit={AccStatus}
                                 onChangeText={(text) => {
-                                    if (/^[^!-\/:-@\.,[-`{-~1234567890₹~`|•√π÷×¶∆€¥$¢^°={}%©®™✓]+$/.test(text) && !/^\s*$/.test(text)|| text === '') {
+                                    const firstDigitStr = String(text)[0];
+                                    if (firstDigitStr == ' ') {
+                                        containsWhitespace(text)
+                                        // 👇️ this runs
+                                        setName('')
+                                        ToastAndroid.show("Please enter a valid name ", ToastAndroid.SHORT);
+                                        console.log('The string contains whitespace', Name);
+                                    } else if (/^[^!-\/:-@\.,[-`{-~1234567890₹~`|•√π÷×¶∆€¥$¢^°={}%©®™✓]+$/.test(text) || !/^\s*$/.test(text) ||text === '') {
                                         setName(text)
-
-                                    } else {
+                                        console.log("verify daat1")
+                                    }
+                                    else {
                                         ToastAndroid.show("Please enter a valid name ", ToastAndroid.SHORT);
                                     }
 
                                 }}
                             />
+
+
 
                             <TextInputBox
                                 ref={MobileRef}
@@ -314,7 +330,10 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus }) => {
 
                 <LeadModal ModalVisible={ModalVisible}
                     onPress={() => OnpressOut1()}
-                    onPressOut={() => setModalVisible(!ModalVisible)}
+                    onPressOut={() => {
+                        setModalVisible(!ModalVisible)
+
+                    }}
                     setModalVisible={setModalVisible} />
 
                 <ValidModal

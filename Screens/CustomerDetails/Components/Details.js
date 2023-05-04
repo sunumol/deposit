@@ -37,17 +37,12 @@ console.log('====',details)
     const [ModalError, setModalError] = useState(false)
     const [ModalReason, setModalReason] = useState(false)
     const [checked, setChecked] = useState(false);
-  
-    const toggleCheckbox = () => setChecked(!checked);
+ 
 
-    const  getRandomColor =()=> {
-        var letters = '0123456789ABCDEF';
-        var color = '#';
-        for (var i = 0; i < 3; i++) {
-          color += letters[Math.floor(Math.random() * 8)];
-        }
-        return color;
-      }
+
+    String.prototype.replaceAt = function (index, replacement) {
+        return this.substring(0, index) + replacement + this.substring(index + replacement.length);
+    }
     
     
       const getInitials = (name) => {
@@ -95,7 +90,7 @@ console.log('====',details)
                             <View style={{ flexDirection: 'column', paddingTop: 5, alignItems: 'flex-end' }}>
                                 <View style={{ flexDirection: 'row' }}>
                                     <Icon2 name="phone-in-talk-outline" color={"black"} size={15} />
-                                    <Text style={[styles.numText, { paddingLeft: 6 }]}>{details?.mobile}</Text>
+                                    <Text style={[styles.numText, { paddingLeft: 6 }]}>{details?.mobile?.replace(/^.{0}/g, '', " ").slice(-10).replaceAt(3, "X").replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X")}</Text>
                                 </View>
                             </View>
 

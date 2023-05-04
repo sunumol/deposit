@@ -7,7 +7,7 @@ import {
     ScrollView,
     Dimensions,
 } from 'react-native'
-import React,{useState} from 'react'
+import React, { useState } from 'react'
 import Icon1 from 'react-native-vector-icons/Ionicons'
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -16,8 +16,29 @@ import { FONTS, COLORS } from '../../../Constants/Constants';
 const { height, width } = Dimensions.get('screen');
 
 const SelectTab = (props) => {
-    
+
     const [ButtonStatus, setButtonStatus] = useState(false)
+
+    String.prototype.replaceAt = function (index, replacement) {
+        return this.substring(0, index) + replacement + this.substring(index + replacement.length);
+    }
+
+    const getInitials = (name) => {
+        let initials;
+        const nameSplit = name?.split(" ");
+        const nameLength = nameSplit?.length;
+        if (nameLength > 1) {
+            initials =
+                nameSplit[0].substring(0, 1) +
+                nameSplit[nameLength - 1].substring(0, 1);
+        } else if (nameLength === 1) {
+            initials = nameSplit[0].substring(0, 1);
+        } else return;
+
+        return initials.toUpperCase();
+    };
+
+{console.log("initial",props?.item)}
 
     return (
 
@@ -68,14 +89,14 @@ const SelectTab = (props) => {
                             <View style={{ flex: 1, flexDirection: 'row' }}>
 
                                 <View style={[styles.circleStyle, { backgroundColor: '#4B9760' }]}>
-                                    <Text style={styles.circleText}>{props.item.short}</Text>
+                                    <Text style={styles.circleText}>{getInitials(props?.item.customerName)}</Text>
                                 </View>
 
                                 <View style={{ flexDirection: 'column', paddingLeft: 12, paddingTop: 5 }}>
 
                                     <Text style={styles.nameText}>{props?.item?.customerName}</Text>
 
-                                    <View style={{ flexDirection: 'row', }}>
+                                    <View style={{ flexDirection: 'row',marginBottom: 15 }}>
 
                                         <View style={{ paddingTop: 5, paddingRight: 1 }}>
                                             <Icon1 name="location-outline" color={"black"} />
@@ -89,11 +110,11 @@ const SelectTab = (props) => {
 
                             </View>
 
-                            <View style={{ flexDirection: 'column', paddingTop: 5, alignItems: 'flex-end' }}>
+                            <View style={{ flexDirection: 'column', paddingTop: 5, alignItems: 'flex-end', }}>
 
-                                <View style={{ flexDirection: 'row' }}>
+                                <View style={{ flexDirection: 'row' ,}}>
                                     <Icon2 name="phone-in-talk-outline" color={"black"} size={15} />
-                                    <Text style={[styles.numText, { paddingLeft: 6 }]}>{props?.item?.mobileNumber}</Text>
+                                    <Text style={[styles.numText, { paddingLeft: 6 }]}>{props?.item?.mobileNumber?.replace(/^.{0}/g, '', " ").slice(-10).replaceAt(3, "X").replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X")}</Text>
                                 </View>
 
                             </View>
@@ -102,7 +123,7 @@ const SelectTab = (props) => {
 
                         <View style={styles.lineView} />
 
-                        <View style={{ paddingHorizontal: 17, }}>
+                        <View style={{ paddingHorizontal: 17,marginBottom: 15 }}>
                             <Text style={styles.headTextTitle}>Address</Text>
                             <Text style={[styles.subText, { maxWidth: 200 }]}>{props?.item?.address}</Text>
                         </View>
@@ -110,7 +131,7 @@ const SelectTab = (props) => {
                         <View style={styles.lineView} />
 
                         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 17, }}>
-                            <View style={{ flexDirection: 'column', flex: 1, marginRight: 10 }}>
+                            <View style={{ flexDirection: 'column', flex: 1, marginRight: 10,paddingBottom:15 }}>
                                 <Text style={styles.headTextTitle}>Aadhaar ID</Text>
                                 <Text style={styles.subText}>{props?.item?.aadharNumber}</Text>
                             </View>
@@ -118,18 +139,19 @@ const SelectTab = (props) => {
 
                         <View style={styles.lineView} />
 
-                        <View style={{ paddingHorizontal: 17, }}>
+                        <View style={{ paddingHorizontal: 17, marginBottom: 15 }}>
                             <Text style={styles.headTextTitle}>Voter ID</Text>
                             <Text style={styles.subText}>{props?.item?.voterId}</Text>
                         </View>
+                        {props?.item?.spouseVoterId &&
+                            <>
+                                <View style={styles.lineView} />
 
-                        <View style={styles.lineView} />
-
-                        <View style={{ paddingHorizontal: 17, paddingBottom: 16 }}>
-                            <Text style={styles.headTextTitle}>Spouse Voter ID</Text>
-                            <Text style={styles.subText}>{props?.item?.spouseVoterId}</Text>
-                        </View>
-
+                                <View style={{ paddingHorizontal: 17, paddingBottom: 16 }}>
+                                    <Text style={styles.headTextTitle}>Spouse Voter ID</Text>
+                                    <Text style={styles.subText}>{props?.item?.spouseVoterId}</Text>
+                                </View>
+                            </>}
                     </View>
                 }
 
@@ -195,11 +217,11 @@ const styles = StyleSheet.create({
         marginTop: 20,
     },
     lineView: {
-        borderWidth: 0.9,
+        borderWidth: 0.6,
         borderColor: COLORS.Gray6,
         backgroundColor: COLORS.Gray6,
         opacity: 0.5,
-        marginTop: 13,
+        //marginTop: 13,
         marginBottom: 16
     },
     nameText: {

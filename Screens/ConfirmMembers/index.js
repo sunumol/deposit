@@ -14,9 +14,9 @@ import SelectTab from './Components/SelectTab';
 import ReasonModal from './Components/ReasonModal';
 import ErrorModal from './Components/ErrorModal';
 import { api } from '../../Services/Api'
-    String.prototype.replaceAt = function (index, replacement) {
-        return this.substring(0, index) + replacement + this.substring(index + replacement.length);
-    }
+String.prototype.replaceAt = function (index, replacement) {
+  return this.substring(0, index) + replacement + this.substring(index + replacement.length);
+}
 const ConfirmMembers = ({ navigation }) => {
 
   const isDarkMode = true;
@@ -25,7 +25,7 @@ const ConfirmMembers = ({ navigation }) => {
   const [selectedItem, setSelectedItem] = useState();
   const [dataSelected, setDataSelected] = useState();
   const [dataSelectedID, setDataSelectedID] = useState();
-const [tccustomerlist,setTccustomerlist] = useState();
+  const [tccustomerlist, setTccustomerlist] = useState();
   const [ModalError, setModalError] = useState(false)
   const [ModalReason, setModalReason] = useState(false)
   const [rejectReason, setRejectReason] = useState()
@@ -34,9 +34,11 @@ const [tccustomerlist,setTccustomerlist] = useState();
   const dispatch = useDispatch()
   const customerList = useSelector(state => state.customerList);
   const customerID = useSelector(state => state.customerID);
+  const cgtCustomerDetails = useSelector(state => state.cgtCustomerDetails);
+
   String.prototype.replaceAt = function (index, replacement) {
     return this.substring(0, index) + replacement + this.substring(index + replacement.length);
-}
+  }
   const handleGoBack = useCallback(() => {
     navigation.navigate('CreateTrustCircle')
     return true; // Returning true from onBackPress denotes that we have handled the event
@@ -57,11 +59,12 @@ const [tccustomerlist,setTccustomerlist] = useState();
     if (/^[^!-\/:-@\.,[-`{-~]+$/.test(num) || num === '') {
       onChangeText(num)
       getCustomerLists(num)
+      // getTclist(num)
     }
   }
-  useEffect(()=>{
-    getCustomerLists()
-  },[])
+  useEffect(() => {
+    // getCustomerLists()
+  }, [])
 
 
 
@@ -90,17 +93,20 @@ const [tccustomerlist,setTccustomerlist] = useState();
 
   useEffect(() => {
     getTCDetails(customerList)
-    getTclist()
+    // getTclist()
+    getCustomerLists()
   }, []);
 
   // ------------------ get Slot Api Call Start ------------------
   const getTCDetails = async (id) => {
+    console.log("id..", id)
     const data = {
       "customerId": Number(id)
     };
     await api.getCGTDetailsTCMembers(data).then((res) => {
       console.log('------------------- CGT slot res', res?.data?.body)
       setDataSelected(res?.data?.body)
+
     }).catch((err) => {
       console.log('-------------------err246', err?.response)
     })
@@ -109,16 +115,17 @@ const [tccustomerlist,setTccustomerlist] = useState();
 
   // ------------------ get Slot Api Call Start ------------------
   const getCustomerLists = async (phone) => {
-
-
     console.log('List------>>', phone)
     const data = {
       "employeeId": 1,
-      "customerNameOrNumber": phone
+      "customerNameOrNumber": phone,
+      "addedTcIds":[]
+
     };
-    await api.getCustomerList(data).then((res) => {
-      console.log('------------------- CGT slot res', res)
-      setData(res?.data?.body)
+    await api.getCustomerListForTc(data).then((res) => {
+      const data = res?.data?.body?.filter((item, index) => !customerID.includes(item?.id))
+      setTccustomerlist(data)
+      setData(data)
     }).catch((err) => {
       console.log('-------------------err123', err?.response)
     })
@@ -128,7 +135,7 @@ const [tccustomerlist,setTccustomerlist] = useState();
   // ------------------ Update Activity Reject Api Call Start ------------------
   const updateActivityReject = async () => {
     const data = {
-      "customerId": Number(dataSelectedID),
+      "customerId": Number(selectedItem),
       "status": rejectReason,
       "tcMemberIds": []
     };
@@ -142,23 +149,28 @@ const [tccustomerlist,setTccustomerlist] = useState();
         console.log('-------------------err789', err?.response)
       })
   };
-  // ------------------ Update Activity Reject Api Call End ------------------
-  const getTclist = async () => {
-    console.log('api called')
-    const data = {
-        "employeeId":1,
-        "customerNameOrNumber":"",
-        "addedTcIds":customerID
-    }
-    await api.getCustomerListForTc(data).then((res) => {
-        console.log('-------------------res getCustomerListForTc', res?.data?.body)
-        if (res?.status) {
-        setTccustomerlist(res?.data?.body)
-        }
-    }).catch((err) => {
-        console.log('-------------------getCustomerListForTc', err?.response)
-    })
-};
+
+  
+  //   // ------------------ Update Activity Reject Api Call End ------------------
+  //   const getTclist = async (phone) => {
+  //     console.log('api called confirm',cgtCustomerDetails.primaryCustomerId,customerID)
+  //     const data = {
+  //         "employeeId":1,
+  //         "customerNameOrNumber":phone,
+  //         "addedTcIds":customerID?[customerID,cgtCustomerDetails?.primaryCustomerId]:[cgtCustomerDetails?.primaryCustomerId]
+  //     }
+  //     console.log("data called",data)
+  //     await api.getCustomerListForTc(data).then((res) => {
+  //         console.log('-------------------res getCustomerListForTc', res?.data?.body)
+  //         if (res?.status) {
+  //         setTccustomerlist(res?.data?.body)
+  //         setData(res?.data?.body)
+  //         }
+  //     }).catch((err) => {
+  //         console.log('-------------------getCustomerListForTc', err?.response)
+  //     })
+  // };
+
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container1} />
@@ -188,12 +200,10 @@ const [tccustomerlist,setTccustomerlist] = useState();
                 <Text style={styles.recentlyText}>Recently added customers</Text>
                 {tccustomerlist?.map((item, index) =>
                   <>
-                    {console.log('---id available selected1--', item )}
+                    {console.log('---id available selected1--', item)}
                     <TouchableOpacity onPress={() => {
                       getTCDetails(item?.id)
-                      const datas = [...customerID]
-                      datas.push(item?.id)
-                      setSelectedItem(datas)
+                      setSelectedItem(item?.id)
                     }}>
                       <Text style={styles.dataText}>{item.name}</Text>
                     </TouchableOpacity>
@@ -209,27 +219,26 @@ const [tccustomerlist,setTccustomerlist] = useState();
             {text.length > 0 && !selectedItem
               ?
               <View style={{ borderWidth: 1, paddingTop: 12, paddingBottom: 15, borderColor: COLORS.colorBorder, marginTop: 10, borderRadius: 8 }}>
-             
+
 
 
                 {data?.length < 1 && <Text style={{
                   fontSize: 14,
                   fontFamily: FONTS.FontRegular,
                   color: COLORS.colorDark,
-                  fontWeight: '400', paddingHorizontal: 10,paddingTop:5
+                  fontWeight: '400', paddingHorizontal: 10, paddingTop: 5
                 }}>No results Found</Text>}
 
 
                 {data?.map((item, index) =>
                   <>
-                    {console.log(item, "-------")}
+
                     <TouchableOpacity style={{ flexDirection: 'row', paddingHorizontal: 15 }}
                       onPress={() => {
                         onChangeText('')
                         getTCDetails(item?.id)
-                        const datas = [...customerID]
-                        datas.push(item?.id)
-                        setSelectedItem(datas)
+                        console.log("customerID", customerID)
+                        setSelectedItem(item?.id)
                       }}>
                       <View style={{ flex: 1, flexDirection: 'row' }}>
 
@@ -243,7 +252,7 @@ const [tccustomerlist,setTccustomerlist] = useState();
                           </View>
                         </View>
                       </View>
-                      <Text style={[styles.numText, { paddingLeft: 6 }]}>{item?.mobile?.replace(/^.{0}/g, '').replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X").replaceAt(8, "X")}</Text>
+                      <Text style={[styles.numText, { paddingLeft: 6 }]}>{item?.mobile?.replace(/^.{0}/g, '', " ").slice(-10).replaceAt(3, "X").replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X")}</Text>
                     </TouchableOpacity>
 
                     {index !== data?.length - 1
@@ -274,15 +283,20 @@ const [tccustomerlist,setTccustomerlist] = useState();
               <Text style={[styles.continueText, { color: COLORS.colorB }]}>Reject</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => {
+
               const data = [...customerList]
               data.push(dataSelected)
+
+              const ids = [...customerID]
+              ids.push(selectedItem)
+
               dispatch({
                 type: 'SET_SELECTED_CUSTOMERLIST',
                 payload: data,
               });
               dispatch({
                 type: 'SET_SELECTED_CUSTOMERID',
-                payload: selectedItem,
+                payload: ids,
               });
               navigation.navigate('CreateTrustCircle')
             }}

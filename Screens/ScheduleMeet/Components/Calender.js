@@ -21,7 +21,7 @@ const CalendarStrips = ({ setNewDates,NewDates }) => {
   const [NewDate, setNewDate] = useState(new Date())
   const [MonthStatus, setMonthStatus] = useState(false)
   const [ArrowRight, setArrowRight] = useState(true)
- console.log('slected date is -----------',selectedDate)
+
   useEffect(() => {
     const today = new Date();
     let next;
@@ -154,14 +154,12 @@ const CalendarStrips = ({ setNewDates,NewDates }) => {
                 flex: 1,
                 marginHorizontal: 5,
                 borderRadius: 10,
-                borderColor: moment(selectedDate).format('DD-MM-YYYY') === moment(item?.date).format('DD-MM-YYYY') ? COLORS.colorB :
-                  moment(item?.date).format('DD-MM-YYYY') === moment(new Date()).format('DD-MM-YYYY')
-                    && MonthStatus === false ? COLORS.colorB : '#E5E8EB',
+                borderColor: selectedDate && moment(selectedDate).format('DD-MM-YYYY') === moment(item?.date).format('DD-MM-YYYY') ? COLORS.colorB :
+                  '#E5E8EB',
                 borderWidth: 0.5,
                 backgroundColor:
-                  moment(selectedDate).format('DD-MM-YYYY') === moment(item?.date).format('DD-MM-YYYY') ? COLORS.colorB
-                    : moment(item?.date).format('DD-MM-YYYY') === moment(new Date()).format('DD-MM-YYYY')
-                      && MonthStatus === false ? COLORS.colorB : COLORS.colorBackground
+                selectedDate && moment(selectedDate).format('DD-MM-YYYY') === moment(item?.date).format('DD-MM-YYYY') ? COLORS.colorB
+                    :   COLORS.colorBackground
               }}
               onPress={() => {
                 dispatch({
@@ -180,18 +178,16 @@ const CalendarStrips = ({ setNewDates,NewDates }) => {
               }}>
               <Text
                 style={{
-                  color: moment(selectedDate).format('DD-MM-YYYY') === moment(item?.date).format('DD-MM-YYYY') ?
-                    COLORS.colorBackground : moment(item?.date).format('DD-MM-YYYY') === moment(new Date()).format('DD-MM-YYYY')
-                      && MonthStatus === false ? COLORS.colorBackground : '#171930',
+                  color: selectedDate && moment(selectedDate).format('DD-MM-YYYY') === moment(item?.date).format('DD-MM-YYYY') ?
+                    COLORS.colorBackground : '#171930',
                   fontSize: 11,
                   textTransform: 'capitalize',
                   fontFamily: FONTS.FontRegular
                 }}>{moment(item?.date).format('DD-MM-YYYY') === moment(new Date()).format('DD-MM-YYYY') ? 'Today' : moment(item?.date).format('ddd')}</Text>
               <Text style={{
-                color: moment(selectedDate).format('DD-MM-YYYY') === moment(item?.date).format('DD-MM-YYYY')
+                color: selectedDate &&moment(selectedDate).format('DD-MM-YYYY') === moment(item?.date).format('DD-MM-YYYY')
 
-                  ? COLORS.colorBackground : moment(item?.date).format('DD-MM-YYYY') === moment(new Date()).format('DD-MM-YYYY')
-                    && MonthStatus === false ? COLORS.colorBackground : '#171930', fontSize: 15, fontFamily: FONTS.FontSemiB
+                  ? COLORS.colorBackground :   '#171930', fontSize: 15, fontFamily: FONTS.FontSemiB
               }}>{moment(item?.date).format('DD').replace(/\b0/g, '')}</Text>
             </TouchableOpacity>
           )

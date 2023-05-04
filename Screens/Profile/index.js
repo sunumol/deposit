@@ -31,6 +31,7 @@ import Collect from './assets/Collect.svg';
 import Dashboard from './assets/a.svg';
 import NewLead from './assets/NewLead.svg';
 import NewUser from './assets/NewUser.svg';
+import CallModal from './Components/Modal';
 
 const Profile = ({ navigation }) => {
 
@@ -57,6 +58,7 @@ const Profile = ({ navigation }) => {
         }
     }, [fcmToken && custID])
 
+    const [ModalCall, setModalCall] = useState(false)
     const isDarkMode = true;
     const DATA = [
         {
@@ -132,7 +134,23 @@ const Profile = ({ navigation }) => {
 
     useEffect(() => {
         HomeScreenApiCall()
+        getData()
+        console.log("call api")
     }, []);
+
+    const getData = async () => {
+        console.log("no modal data")
+        try {
+            const lang = await AsyncStorage.getItem('CallActivity')
+            if (lang === null) {
+console.log("no modal data inside")
+setModalCall(true)
+            }
+
+        } catch (e) {
+            console.log(e)
+        }
+    }
 
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
@@ -172,7 +190,7 @@ const Profile = ({ navigation }) => {
         });
         return unsubscribe;
     }, []);
-    
+
     return (
         <SafeAreaProvider>
             <SafeAreaView style={styles.container1} />
@@ -213,6 +231,12 @@ const Profile = ({ navigation }) => {
                 ModalVisible={modalExitAppVisible}
                 onPressOut={() => setModalExitAppVisible(!modalExitAppVisible)}
                 setModalExitAppVisible={setModalExitAppVisible}
+            />
+
+            <CallModal
+                ModalVisible={ModalCall}
+                onPressOut={() => {setModalCall(!ModalCall),navigation.navigate('Activities')}}
+                setModalVisible={setModalCall}
             />
         </SafeAreaProvider>
     );

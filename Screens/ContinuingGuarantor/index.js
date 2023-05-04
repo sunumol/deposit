@@ -56,6 +56,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
   const [ModalVisibleError, setModalVisibleError] = useState(false)
   const [maxError, setMaxError] = useState(false)
   const [otp, setOtp] = useState(false)
+  const [ResendOtps,setResendOtp] = useState(false)
 
   const activityId = useSelector(state => state.activityId);
   const [ModalVisible, setModalVisible] = useState(false)
@@ -147,18 +148,22 @@ const ContinuingGuarantor = ({ navigation, route }) => {
         setIsOtp1(true)
         setStatus(true)
         setTimer(30)
+        setResendOtp(true)
       }, 1000)
 
       setIsOtp1(true)
+      setResendOtp(true)
       setStatus(true)
       setTimer(30)
     } else {
       setTimeout(() => {
         setIsOtp1(true)
+        setResendOtp(true)
         setStatus(true)
       }, 1000)
 
       setIsOtp1(true)
+      setResendOtp(true)
       setStatus(true)
     }
   }
@@ -166,6 +171,8 @@ const ContinuingGuarantor = ({ navigation, route }) => {
     setTimer(30)
     setStatus(true)
     setIsOtp1(true)
+   
+   
   }
 
 
@@ -196,24 +203,10 @@ const ContinuingGuarantor = ({ navigation, route }) => {
   useEffect(() => {
 
     getData();
-    if (number) {
-      let interval = setInterval(() => {
-        setTimer(lastTimerCount => {
-          lastTimerCount <= 1 && clearInterval(interval)
-          return lastTimerCount - 1
-        })
-      }, 1000)
-      //console.log(interval)
-      if (timerCount === 0) {
-
-        //  console.log("timer count useEffect", timerCount)
-      }//each count lasts for a second
-      //cleanup the interval on complete
-      return () => clearInterval(interval)
-    }
+   
 
     /// getSpousedetail()
-  }, [number]);
+  }, []);
 
   // ------------------spouse detail ------------------
 
@@ -269,7 +262,8 @@ const ContinuingGuarantor = ({ navigation, route }) => {
   // ------------------verifyCG detail ------------------
 
   const verifyCG = async (num) => {
-       console.log('api called verify cg ==========',moment().format('MMMM Do YYYY, h:mm:ss a'))
+
+    console.log('api called verify cg ==========', moment().format('MMMM Do YYYY, h:mm:ss a'))
 
     const data = {
       "activityId": activityId,
@@ -285,18 +279,22 @@ const ContinuingGuarantor = ({ navigation, route }) => {
         setOtpFetch(true)
         setIsOtp1(true)
         getOtp();
-        setTimer(30)
+       
         setVerifyotpstatus(true)
 
       }
     }).catch((err) => {
+      setTimer(0)
       setVerifyotpstatus(true)
-      console.log('-------------------err verifyCG', err)
+      console.log('-------------------err verifyCG',ResendOtps)
       if (err?.response?.data?.message === 'Maximum number of OTPs are exceeded. Please try after 30 minutes.') {
         setOtpFetch(false)
         setIsOtp1(true)
         setStatus(false)
+        setResendOtp(false)
         setMaxError(true)
+      
+        console.log("timer zero.....",timerCount)
       } else {
         setMaxError(false)
       }
@@ -307,9 +305,11 @@ const ContinuingGuarantor = ({ navigation, route }) => {
 
   // ------------------verifyCG detail ------------------
 
-  const ResendOtp = async (mobnumber) => {
+  async function ResendOtp() {
+   
     //   console.log('api called')
     setInvalidotp(false)
+
     otpInput2.current.clear()
     const data = {
       "activityId": activityId,
@@ -321,9 +321,13 @@ const ContinuingGuarantor = ({ navigation, route }) => {
     await api.verifyCG(data).then((res) => {
       console.log('-------------------res verifyCG', res)
       if (res?.status) {
-
+        CountDownResend()
       }
     }).catch((err) => {
+      if (err?.response?.data?.message) {
+        setMaxError(true)
+        setResendOtp(false)
+      }
       console.log('-------------------err verifyCG', err?.response)
     })
   };
@@ -335,7 +339,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
 
   const verifyCGOTP = async (mobnumber) => {
     console.log('api called')
-
+   
     const data = {
       "activityId": activityId,
       "otp": OtpValue
@@ -344,19 +348,24 @@ const ContinuingGuarantor = ({ navigation, route }) => {
     await api.verifyCGOTP(data).then((res) => {
       console.log('-------------------res verifyCG', res)
       if (res?.status) {
-        setMaxError(false)
+       
         setOtpFetch(false)
         setIsOtp1(false)
         setOtpFetch(false)
         navigation.navigate('UploadVid')
       }
     }).catch((err) => {
-      console.log('-------------------err verifyCG', err?.response?.data?.message)
+  
       if (err?.response?.data?.message == 'You entered wrong OTP') {
         setInvalidotp(true)
         setOtp(true)
+        setResendOtp(true)
+      }else if(err?.response?.data?.message === 'Maximum number of OTPs are exceeded. Please try after 30 minutes.'){
+        setResendOtp(false)
+        setInvalidotp(true)
+        setOtp(true)
       }
-
+      console.log('-------------------err verifyCG',ResendOtps)
     })
   };
   // ------------------ ------------------
@@ -364,27 +373,27 @@ const ContinuingGuarantor = ({ navigation, route }) => {
   const verifyPhone = (Phone) => {
     var reg = /^([0-9])\1{9}$/;
     return reg.test(Phone);
-}
-
-  const GETOTP_Validation = (num) => {
-console.log('get otp validation on number changes',moment().format('MMMM Do YYYY, h:mm:ss a'))
-setPhoneValid(false)
-    const firstDigitStr = String(num)[0];
-    if (num?.length != 10 || num == "") {
-         
-      setPhoneValid(true)
-  } else if (firstDigitStr === '1' || firstDigitStr === '2' || firstDigitStr === '3' || firstDigitStr === '4' || firstDigitStr === '5' || firstDigitStr === '0') {
-    setPhoneValid(true)
-  } else if (verifyPhone(num)) {
-    setPhoneValid(true)
-  } else if (!(/^\d{10}$/.test(num))) {
-    setPhoneValid(true)
   }
 
+  const GETOTP_Validation = (num) => {
+    console.log('get otp validation on number changes', moment().format('MMMM Do YYYY, h:mm:ss a'))
+    setPhoneValid(false)
+    const firstDigitStr = String(num)[0];
+    if (num?.length != 10 || num == "") {
+
+      setPhoneValid(true)
+    } else if (firstDigitStr === '1' || firstDigitStr === '2' || firstDigitStr === '3' || firstDigitStr === '4' || firstDigitStr === '5' || firstDigitStr === '0') {
+      setPhoneValid(true)
+    } else if (verifyPhone(num)) {
+      setPhoneValid(true)
+    } else if (!(/^\d{10}$/.test(num))) {
+      setPhoneValid(true)
+    }
+
     else {
-      if(verifyotpstatus == false){
-      verifyCG(num)
-      }else{
+      if (verifyotpstatus == false) {
+        verifyCG(num)
+      } else {
         setTimeout(() => {
           verifyCG(num)
         }, 10000);
@@ -407,26 +416,7 @@ setPhoneValid(false)
         onChangeNumber(num)
         if (num?.length == 10) {
           GETOTP_Validation(num)
-          // if (verifyotpstatus == false) {
-          //   GETOTP_Validation(num)
-          //   setVerifyotpstatus(true)
-          //   // setTimeout(() => {
-          //   //   GETOTP_Validation(num)
-          //   //   setVerifyotpstatus(false)
-          //   // }, 10000);
-          // } else {
-          //   console.log("inside otp call", verifyotpstatus)
-
-          //   // console.log("timer state",)
-          //   // if (num != number) {
-          //   //   setTimeout(() => {
-          //   //     GETOTP_Validation(num)
-          //   //   }, 10000);
-
-          //   // }
-          // }
-
-
+    
         }
         onChangeNumber(num)
         setOtpValue('')
@@ -500,8 +490,11 @@ setPhoneValid(false)
                   maxLength={10}
                   style={styles.textIn1}
                   onChangeText={(text) => {
+                    
                     OnchangeNumbers(text)
-                    // setOtpValue('')
+                    setInvalidotp(false)
+                    setMaxError(false)
+                   
                   }
 
                   }
@@ -522,7 +515,7 @@ setPhoneValid(false)
 
               {/* #################################################################### */}
 
-              {(number?.length === 10 && !PhoneValid ) &&
+              {(number?.length === 10 && !PhoneValid) &&
                 <View style={styles.ViewOtp}>
                   <Text style={styles.textOtp} onPress={() => navigation.navigate('PreClosure')}>{t('common:EnterOtp')} </Text>
 
@@ -538,6 +531,7 @@ setPhoneValid(false)
                     containerStyle={{ marginTop: 7 }}
                     handleTextChange={(code => {
                       setOtpValue(code)
+                      setInvalidotp(false)
                       if (code.length === 4) {
                         if (code == '1091') {
                           navigation.navigate('Permission')
@@ -559,12 +553,18 @@ setPhoneValid(false)
                     </View> : null}
 
 
-                  {timerCount > 0 ? <View style={{ marginTop: Dimensions.get('window').height * 0.03 }}>
-                    <Text style={styles.TextResend}>{t('common:Resend')} 00:{timerCount < 10 ? '0' : ''}{timerCount}</Text>
-                  </View> : <TouchableOpacity onPress={() => ResendOtp()} style={{ marginTop: Dimensions.get('window').height * 0.03, flexDirection: 'row' }}>
-                    <Resend style={{ width: 9, height: 11, top: 3, marginRight: 6, }} resizeMode="contain" />
-                    <Text style={styles.TextResend1}>{t('common:Resend1')}</Text>
-                  </TouchableOpacity>}
+                  {timerCount > 0 ?
+                    <View style={{ marginTop: Dimensions.get('window').height * 0.03 }}>
+                      <Text style={styles.TextResend}>{t('common:Resend')} 00:{timerCount < 10 ? '0' : ''}{timerCount}</Text>
+                    </View> :
+                    ResendOtps &&
+                    <TouchableOpacity onPress={() => ResendOtp()} style={{ padding: 18 }}>
+                      <View style={{ flexDirection: 'row', }}>
+                        <Resend style={{ width: 9, height: 11, top: 3, marginRight: 6, }} resizeMode="contain" />
+                        <Text style={styles.TextResend1} onPress={() => ResendOtp()}  >{t('common:Resend1')}</Text>
+                      </View>
+                    </TouchableOpacity>
+                  }
 
                 </View>
 
@@ -576,8 +576,8 @@ setPhoneValid(false)
 
 
               {maxError ?
-                <View style={{ marginTop: Dimensions.get('window').height * 0.03, alignItems: 'center', justifyContent: 'center' }}>
-                  <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center', width: width * 0.8, marginRight: 20 }}>{t('common:Valid2')}</Text>
+                <View style={{ marginTop: Dimensions.get('window').height * 0.20, alignItems: 'center', justifyContent: 'center' }}>
+                  <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center', width: width * 0.8,}}>{t('common:Valid2')}</Text>
                   <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center' }}>{t('common:Valid3')}</Text></View>
                 : null}
 

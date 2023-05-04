@@ -1,7 +1,7 @@
 
 ;
 import React, { useEffect, useState } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity,Linking } from 'react-native';
 import { COLORS, FONTS } from '../../../../Constants/Constants';
 import { useTranslation } from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -12,14 +12,14 @@ import { useDispatch } from 'react-redux';
 import { api } from '../../../../Services/Api';
 
 const MeetTab = (props) => {
-    console.log("props pass",props)
+    console.log("props pass",props?.data)
     const { t } = useTranslation();
     const [Lang, setLang] = useState('')
     const [modalVisible, setModalVisible] = useState(false)
     const [details, setDetails] = useState()
     const [enab, setEnab] = useState(false)
     const dispatch = useDispatch()
-
+    const [callStatus,setCallStatus] = useState(false)
     useEffect(() => {
         getData()
 
@@ -109,19 +109,27 @@ const MeetTab = (props) => {
     };
     // ------------------ ------------------
 
-
+    const openDialScreen = (userPhone) => {
+        let number = '';
+        if (Platform.OS === 'ios') {
+            number = `telprompt:${userPhone}`;
+        } else {
+            number = `tel:${userPhone}`;
+        }
+        Linking.openURL(number);
+    };
 
     return (
         <>
             <View style={{ marginBottom: 0 }}>
                 <Text style={[styles.timeDropStyle, { paddingTop: props.time ? 18 : 0 }]}>{props.time} {!props.meet ?'(':''}{!props.meet ?(`${props?.data?.length}`):''}{!props.meet ?')':''}</Text>
+                {/* <Text style={[styles.timeDropStyle, { paddingTop: props.time ? 18 : 0 }]}>{props?.time} ({props?.data?.length})</Text> */}
           
                 {props?.data?.map((item, index) => {
 
                     return (
-                        <TouchableOpacity
+                        <TouchableOpacity 
                             onPress={() => {
-                             
                                 if(item.purpose == "Conduct DLE" ){
                                     dispatch({
                                         type: 'SET_CGT_ACTIVITY_ID',
@@ -140,6 +148,9 @@ const MeetTab = (props) => {
                                 
                                 
                                 }else{
+                                    if(!props?.meet){
+                                        openDialScreen(item?.mobileNumber)
+                                    }
                                     setModalVisible(true)
                                     setDetails(item)
                                 }
@@ -169,20 +180,20 @@ const MeetTab = (props) => {
                             <View style={{ flexDirection: 'column', paddingTop: 5, alignItems: 'flex-end' }}>
                                 <View style={{ flexDirection: 'row' }}>
                                     <Icon2 name="phone-in-talk-outline" color={"black"} size={15} />
-                                    <Text style={[styles.numText, { paddingLeft: 6 }]}>{item?.mobileNumber.replace(/^.{0}/g, '').replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X").replaceAt(8,'X').replaceAt(9,'X').replaceAt(10,'X')}</Text>
+                                    <Text style={[styles.numText, { paddingLeft: 6 }]}>{item?.mobileNumber?.replace(/^.{0}/g, ''," ").slice(-10).replaceAt(3, "X").replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X")}</Text>
                                 </View>
                                 {item.purpose == "Conduct DLE"
                                     ? <TouchableOpacity
                                         
-                                        style={[styles.leadContainer, { backgroundColor: 'rgba(186, 134, 205, 0.1)' }]}>
-                                        <Text style={[styles.leadText, { color: '#F2994A' }]}>Conduct DLE</Text>
+                                        style={[styles.leadContainer, { backgroundColor: COLORS.LightPurple  }]}>
+                                        <Text style={[styles.leadText, { color: COLORS.DarkPurple }]}>Conduct DLE</Text>
                                     </TouchableOpacity>
                                     :item.purpose == 'Conduct CGT' ? 
                                      <TouchableOpacity style={[styles.leadContainer, { backgroundColor: props.meet ? COLORS.LightBlue : COLORS.LightPurple }]}>
                                         <Text style={[styles.leadText, { color: props.meet ? COLORS.DarkBlue : COLORS.DarkPurple }]}>{t('common:ConductCGT')}</Text>
                                     </TouchableOpacity>:
-                                          <TouchableOpacity style={[styles.leadContainer, { backgroundColor: props.meet ? COLORS.LightBlue : COLORS.LightPurple }]}>
-                                          <Text style={[styles.leadText, { color: props.meet ? COLORS.DarkBlue : COLORS.DarkPurple }]}>{t('common:ExplainTrustCircle')}</Text>
+                                          <TouchableOpacity style={[styles.leadContainer, { backgroundColor:COLORS.LightPurple }]}>
+                                          <Text style={[styles.leadText, { color: COLORS.DarkPurple }]}>{t('common:ExplainTrustCircle')}</Text>
                                       </TouchableOpacity>}
 
                             </View>

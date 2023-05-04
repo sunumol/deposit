@@ -7,7 +7,7 @@ const { height, width } = Dimensions.get('screen');
 import Image1 from '../../../assets/image/call.svg';
 
 
-const CallModal = ({ ModalVisible, onPressOut, setModalVisible,onPress }) => {
+const CallModal = ({ ModalVisible, onPressOut, setModalVisible, onPress }) => {
     const [state, setState] = useState(null);
     const { t } = useTranslation();
     const [Lang, setLang] = useState('')
@@ -32,43 +32,41 @@ const CallModal = ({ ModalVisible, onPressOut, setModalVisible,onPress }) => {
             animationType="fade"
             transparent={true}
             visible={ModalVisible}
-            onRequestClose={() => {
-                setModalVisible(!ModalVisible)
-            }}
+
         >
             <View style={styles.mainContainer} >
 
                 <TouchableOpacity
-                    onPressOut={onPressOut}
+
                     style={styles.touchableStyle} >
                 </TouchableOpacity>
 
                 <View style={styles.modalContainer}>
-                    <View style={{paddingTop:width*0.065}}>
+                    <View style={{ paddingTop: width * 0.065 }}>
                         <Image1 />
                     </View>
 
-                    {Lang == 'en' ? 
-<View>
-                    <Text style={[styles.textdesc,
-                             {fontFamily:FONTS.FontBold,paddingTop: width * 0.06, }]}>Your last call status has not </Text>
-                                <Text style={[styles.textdesc,
-                             { fontFamily:FONTS.FontBold }]}>been updated.</Text>
-                             </View>:
-                    
-                        <Text style={[styles.textdesc,
-                             {fontFamily:FONTS.FontBold,paddingTop: width * 0.06, }]}>{t('common:statusModal1')}</Text>
-                        }
-                           
-                                <Text style={[styles.textdesc,{paddingTop:width*0.05}]}>{t('common:statusModal2')}</Text>
+                    {Lang == 'en' ?
+                        <View>
+                            <Text style={[styles.textdesc,
+                            { fontFamily: FONTS.FontBold, paddingTop: width * 0.06, }]}>Your last call status has not </Text>
+                            <Text style={[styles.textdesc,
+                            { fontFamily: FONTS.FontBold }]}>been updated.</Text>
+                        </View> :
 
-                    <TouchableOpacity style={styles.buttonStyle} onPress={()=>setModalVisible(false)}>
+                        <Text style={[styles.textdesc,
+                        { fontFamily: FONTS.FontBold, paddingTop: width * 0.06, }]}>{t('common:statusModal1')}</Text>
+                    }
+
+                    <Text style={[styles.textdesc, { paddingTop: width * 0.05 }]}>{t('common:statusModal2')}</Text>
+
+                    <TouchableOpacity style={styles.buttonStyle} onPress={() => setModalVisible(false)}>
                         <Text style={styles.buttonTextStyle}>{t('common:Okay')}</Text>
                     </TouchableOpacity>
                 </View>
 
                 <TouchableOpacity
-                    onPressOut={onPressOut}
+
                     style={styles.touchableStyle} >
                 </TouchableOpacity>
             </View>
@@ -145,7 +143,7 @@ const styles = StyleSheet.create({
     textdesc: {
         fontSize: 14,
         //paddingTop: width * 0.02,
-         textAlign: 'center' ,
+        textAlign: 'center',
         color: "#1A051D",
         fontFamily: FONTS.FontRegular,
     },

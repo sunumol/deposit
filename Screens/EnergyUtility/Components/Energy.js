@@ -34,6 +34,7 @@ const Energy = ({ navigation, setAmount1, setPurpose1, setDays1, setCustomerId, 
     const [Buttons, setButtons] = useState(false)
     const activityId = useSelector(state => state.activityId);
     const [ZeroStatus, setZeroStatus] = useState(false)
+    const [ZeroDays,setZeroDays] = useState(false)
 
     useEffect(() => {
         getEnergyUtilities()
@@ -137,13 +138,7 @@ const Energy = ({ navigation, setAmount1, setPurpose1, setDays1, setCustomerId, 
         }
     }, [Amount, days, Purpose])
 
-    // useEffect(() => {
-    //     if (Number(Amount) == 0) {
-    //         setZeroStatus(true)
-    //     } else {
-    //         setZeroStatus(false)
-    //     }
-    // }, [Amount])
+  
 
     return (
 
@@ -168,6 +163,7 @@ const Energy = ({ navigation, setAmount1, setPurpose1, setDays1, setCustomerId, 
                                 // const firstDigitStr = String(num)[0];
                                 if(text === ''){
                                     setZeroStatus(false)
+                                    setAmount('')
                                 }
                                 else if (Number(text) == 0) {
 
@@ -209,17 +205,29 @@ const Energy = ({ navigation, setAmount1, setPurpose1, setDays1, setCustomerId, 
                                 keyboardType={'number-pad'}
                                 maxLength={2}
                                 onChangeText={(text) => {
-                                    if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(text) || text === "") {
+                                    setZeroDays(false)
+                                    if(text === ''){
+                                        setZeroDays(false)
+                                        setDays('')
+                                    }
+                                    else if (Number(text) == 0) {
+    
+                                        setZeroDays(true)
+                                        console.log("number log", text)
+                                    }
+                                    else if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(text) || text === "") {
                                         setDays(text),
-                                            setDays1(text)
+                                        setDays1(text)
                                     }
                                 }
                                 } />
                         </View>}
+                        {ZeroDays &&
+                        <Text style={{ color: 'red', fontSize: 9, paddingTop: 3, fontFamily: FONTS.FontRegular }}>Days cannot be ₹0</Text>}
                 </ScrollView>
                 <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                     <TouchableOpacity style={[styles.buttonView, { backgroundColor: Buttons ? COLORS.colorB : 'rgba(224, 224, 224, 1)' }]}
-                        onPress={() => saveEnergyUtilities()}>
+                        onPress={() => Buttons ? saveEnergyUtilities() :console.log("hello")}>
                         <Text style={[styles.continueText, { color: Buttons ? COLORS.colorBackground : 'rgba(151, 156, 158, 1)' }]}>Continue</Text>
                     </TouchableOpacity>
                 </View>

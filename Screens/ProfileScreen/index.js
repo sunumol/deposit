@@ -41,7 +41,7 @@ const ProfileScreen = ({ navigation }) => {
 
     useEffect(() => {
         AsyncStorage.getItem("CustomerId").then((value) => {
-            setCustId(value)
+            //setCustId(value)
             console.log("value", custID)
         })
     }, [])
@@ -65,7 +65,7 @@ const ProfileScreen = ({ navigation }) => {
         })
             .catch((err) => {
                 setStatus(false)
-                console.log('-------------------err', err?.response)
+                console.log('-------------------err Profile', err?.response)
             })
     }
 

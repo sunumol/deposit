@@ -7,7 +7,7 @@ const { height, width } = Dimensions.get('screen');
 import Image1 from '../../NewLead/assets/tick.svg';
 
 
-const CgtModal = ({ ModalVisible, onPressOut, setModalVisible, onPress, navigation,}) => {
+const CgtModal = ({ ModalVisible, onPressOut, setModalVisible, onPress, navigation, }) => {
     const [state, setState] = useState(null);
     const { t } = useTranslation();
     const [Lang, setLang] = useState('')
@@ -34,37 +34,37 @@ const CgtModal = ({ ModalVisible, onPressOut, setModalVisible, onPress, navigati
             visible={ModalVisible}
             onRequestClose={() => {
                 setModalVisible(!ModalVisible)
-                navigation.navigate('NewCgt')
+                navigation.navigate('Profile')
             }}
         >
             <View style={styles.mainContainer}>
-            <TouchableOpacity onPressOut={onPressOut}
-                style={{ backgroundColor: "#000000aa", flex: 1, alignItems: 'center', justifyContent: 'center', opacity: 5 }}
-                 >
-            </TouchableOpacity>
-            <View style={styles.modalContainer}>
-                <View style={{ paddingTop: width * 0.08 }}>
-                    <Image1 />
-                </View>
-                <Text style={[styles.textdesc,
-                { paddingTop: width * 0.02, textAlign: 'center' }]}>{t('common:CgtDesc')}</Text>
-
-                <TouchableOpacity style={styles.buttonStyle} onPress={() => {
-                    onPressOut()
-                    // navigation.reset({
-                    //     index: 0,
-                    //     routes: [{name: 'NewCgt'}],
-                    // });
-                    
-                   navigation.navigate('Profile')
-                }}>
-                    <Text style={styles.buttonTextStyle}>{t('common:Okay')}</Text>
+                <TouchableOpacity onPressOut={onPressOut}
+                    style={{ backgroundColor: "#000000aa", flex: 1, alignItems: 'center', justifyContent: 'center', opacity: 5 }}
+                >
                 </TouchableOpacity>
-            </View>
+                <View style={styles.modalContainer}>
+                    <View style={{ paddingTop: width * 0.08 }}>
+                        <Image1 />
+                    </View>
+                    <Text style={[styles.textdesc,
+                    { paddingTop: width * 0.02, textAlign: 'center' }]}>{t('common:CgtDesc')}</Text>
 
-            <TouchableOpacity onPressOut={onPressOut}
-                style={{ backgroundColor: "#000000aa", flex: 1, alignItems: 'center', justifyContent: 'center', opacity: 5 }} >
-            </TouchableOpacity>
+                    <TouchableOpacity style={styles.buttonStyle} onPress={() => {
+                        onPressOut()
+                        // navigation.reset({
+                        //     index: 0,
+                        //     routes: [{name: 'NewCgt'}],
+                        // });
+
+                        navigation.navigate('Profile')
+                    }}>
+                        <Text style={styles.buttonTextStyle}>{t('common:Okay')}</Text>
+                    </TouchableOpacity>
+                </View>
+
+                <TouchableOpacity onPressOut={onPressOut}
+                    style={{ backgroundColor: "#000000aa", flex: 1, alignItems: 'center', justifyContent: 'center', opacity: 5 }} >
+                </TouchableOpacity>
             </View>
         </Modal>
 
@@ -76,8 +76,8 @@ const styles = StyleSheet.create({
     mainContainer: {
         backgroundColor: "#000000aa",
         flex: 1,
-         alignItems: 'center',
-         justifyContent: 'center'
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     modalContainer: {
         width: Dimensions.get('window').width * 0.82,

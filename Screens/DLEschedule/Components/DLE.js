@@ -50,6 +50,10 @@ const DLE = ({ navigation, set, list }) => {
             console.log(e)
         }
     }
+    String.prototype.replaceAt = function (index, replacement) {
+        return this.substring(0, index) + replacement + this.substring(index + replacement.length);
+    }
+    
     // const handleGoBack = useCallback(() => {
     //     setModalVisible1(true)
     //     return true; // Returning true from onBackPress denotes that we have handled the event
@@ -188,7 +192,7 @@ const DLE = ({ navigation, set, list }) => {
 
                                 <View style={{ flexDirection: 'column', top: 0, alignItems: 'flex-end', flex: 1, paddingRight: width * 0.04 }}>
 
-                                    <Text style={[styles.numText, {}]}>{item.mobileNumber}</Text>
+                                    <Text style={[styles.numText, {}]}>{item?.mobileNumber?.replace(/^.{0}/g, '', " ").slice(-10).replaceAt(3, "X").replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X")}</Text>
                                     <View
 
                                         style={[styles.ViewExplain, { right: 0, backgroundColor: item.dleScheduleStatus == "Conduct DLE" ? "rgba(186, 134, 205, 0.1)" : item.dleScheduleStatus == "TC approval pending" ? "rgba(39, 174, 96, 0.1)" : "rgba(155, 81, 224, 0.1)", width: item.width }]}>

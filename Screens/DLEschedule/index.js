@@ -26,8 +26,6 @@ import CGTModal from './Components/CGTModal';
 import { api } from '../../Services/Api';
 import { useSelector } from 'react-redux';
 
-
-
 const DLESchedule = ({ navigation,route}) => {
     //const route = useRoute();
     console.log("route name=======>",route?.params);
@@ -54,6 +52,7 @@ const DLESchedule = ({ navigation,route}) => {
         }
     }
 
+    
 
             // ------------------ get Slot Api Call Start ------------------
             const getDLEschedule = async () => {

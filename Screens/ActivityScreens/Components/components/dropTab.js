@@ -112,6 +112,8 @@ const ActiveTab = (props) => {
                         type: 'SET_CGT_ACTIVITY_ID',
                         payload: props?.details?.activityId,
                     });
+                   
+                    //console.log("props passing",props?.details?.customerId)
                     props.navigation.navigate('CGT')
                  }else if(props?.details?.purpose === 'Conduct DLE'){
                    // setModalVisible(true)
@@ -148,7 +150,8 @@ const ActiveTab = (props) => {
                 <View style={{ flexDirection: 'column', paddingTop: 5, alignItems: 'flex-end' }}>
                     <View style={{ flexDirection: 'row' }}>
                         <Icon2 name="phone-in-talk-outline" color={"black"} size={15} />
-                        <Text style={[styles.numText, { paddingLeft: 6 }]}>{props?.phoneNumber.replace(/^.{0}/g, '').replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X").replaceAt(8,'X').replaceAt(9,'X').replaceAt(10,'X')}</Text>
+                        <Text style={[styles.numText, { paddingLeft: 6 }]}>
+                            {props?.phoneNumber?.replace(/^.{0}/g, '', " ").slice(-10).replaceAt(3, "X").replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X")}</Text>
                     </View>
                     {props?.details?.purpose === 'Leads Follow Up' &&
                         <TouchableOpacity 
@@ -170,8 +173,8 @@ const ActiveTab = (props) => {
                     }
                     {props?.details?.purpose === 'Conduct DLE' &&
                         <TouchableOpacity 
-                            style={[styles.leadContainer, { backgroundColor: COLORS.LightGreen }]}>
-                            <Text style={[styles.leadText, { color: COLORS.DarkGreen }]}>Conduct DLE</Text>
+                            style={[styles.leadContainer, { backgroundColor: COLORS.LightPurple }]}>
+                            <Text style={[styles.leadText, { color: COLORS.DarkPurple }]}>Conduct DLE</Text>
                         </TouchableOpacity>
                     }
                 </View>

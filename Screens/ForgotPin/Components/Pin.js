@@ -311,7 +311,7 @@ const ForgotPin = ({ navigation }) => {
                         <Text style={styles.enterText}>{t('common:EnterForgot')}</Text>
                     </View>
 
-                    <View style={{ alignItems: 'flex-end' }}>
+                    <View style={{ alignItems: 'center' }}>
                         <View style={styles.inputBoxView}>
                             <View style={{ justifyContent: 'center' }}>
                                 <Text style={styles.codeText}>+91</Text>
@@ -327,6 +327,8 @@ const ForgotPin = ({ navigation }) => {
                                 autoFocus={true}
                                 value={PhoneNum}
                                 onChangeText={(num) => {
+                                    setOtpAvailable(false)
+                                    setTimer(30)
                                     if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(num) || num === '') {
                                         setPhoneNum(num)
                                         setMaxError(false)

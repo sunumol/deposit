@@ -46,13 +46,13 @@ const ModalSave = ({ ModalVisible, onPressOut, setModalVisible, navigation ,Pres
 
                     <Text style={[styles.textdesc, { paddingTop: width * 0.01, textAlign: 'center' }]}>Do you want to save or discard them
                     </Text>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingTop: 22, paddingBottom: 5 }}>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingTop: 22, paddingBottom: 5,alignItems:'center' }}>
 
 
                     <TouchableOpacity style={[styles.ButtonCancel, { marginRight: 10 }]} onPress={() => navigation.navigate('Profile')}>
                             <Text style={styles.text2}>Discard</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={[styles.ButtonContinue, { marginRight: 10 }]} onPress={() => {Press1()}}>
+                        <TouchableOpacity style={[styles.ButtonContinue, { }]} onPress={() => {Press1()}}>
                             <Text style={styles.textC}>Save</Text>
                         </TouchableOpacity>
                      
@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
     text2: {
         color: COLORS.colorB,
         fontFamily: FONTS.FontMedium,
-        fontSize: 16
+        fontSize: 14
     },
     ButtonCancel: {
         width: 138,
