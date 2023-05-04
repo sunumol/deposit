@@ -1,30 +1,16 @@
-import React, { useState, useEffect } from "react";
-import { Dimensions, Modal, StyleSheet, Text, TouchableOpacity, View, Image } from "react-native";
-import { COLORS, FONTS } from '../../../Constants/Constants';
+import React from "react";
+import { Dimensions, Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useTranslation } from 'react-i18next';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-const { height, width } = Dimensions.get('screen');
+
+// --------------- Component Imports ------------------------
+import { COLORS, FONTS } from '../../../Constants/Constants';
 import Image1 from '../../../assets/image/warning.svg';
 
+const { height, width } = Dimensions.get('screen');
 
-const CalenderModal = ({ ModalVisible, onPressOut,onPress1 }) => {
-    const [state, setState] = useState(null);
+const CalenderModal = ({ ModalVisible, onPressOut, onPress1 }) => {
+
     const { t } = useTranslation();
-    const [Lang, setLang] = useState('')
-    const [BStatus, setBstatus] = useState(false)
-
-    useEffect(() => {
-        getData()
-    }, [])
-
-    const getData = async () => {
-        try {
-            const lang = await AsyncStorage.getItem('user-language')
-            setLang(lang)
-        } catch (e) {
-            console.log(e)
-        }
-    }
 
     return (
 
@@ -43,11 +29,11 @@ const CalenderModal = ({ ModalVisible, onPressOut,onPress1 }) => {
 
                 <View style={styles.modalContainer}>
                     <View style={{ paddingTop: width * 0.045 }}>
-                   <Image1 width={40} height={40}/>
+                        <Image1 width={40} height={40} />
                     </View>
 
                     <View style={{ paddingTop: width * 0.04 }}>
-                      
+
                         <Text style={styles.textdesc}>Reschedule meet activities from</Text>
                         <Text style={styles.textdesc}>calendar.</Text>
                     </View>
@@ -82,7 +68,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center'
     },
-
     textStyle: {
         fontFamily: FONTS.FontRegular,
         color: COLORS.colorDark,
@@ -134,12 +119,10 @@ const styles = StyleSheet.create({
     },
     textdesc: {
         fontSize: 14,
-        //paddingTop: width * 0.02,
         textAlign: 'center',
         color: "#3B3D43",
         fontFamily: FONTS.FontSemiB,
     },
-
 });
 
 export default CalenderModal;

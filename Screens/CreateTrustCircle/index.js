@@ -83,7 +83,7 @@ const CreateTrustCircle = ({ navigation, route }) => {
         })
     };
     // ------------------ HomeScreen Api Call End ------------------
-
+{console.log('----------customerLi-------',customerList)}
     // ------------------ getTCLimitDetails Api Call Start ------------------
     const CreateTrustCircle = async () => {
         const data = {
@@ -95,6 +95,8 @@ const CreateTrustCircle = ({ navigation, route }) => {
             console.log('-------------------res create', res)
             if (res?.status) {
                 setModalVisible(true)
+                // const selecte = customerList?.filter((item)=>)
+                
             }
         }).catch((err) => {
             console.log('-------------------err', err)
