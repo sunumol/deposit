@@ -142,11 +142,21 @@ const ForgotPin = ({ navigation }) => {
     }
     // ------------------ Resend Api Call End ----------------------
 
+    // useEffect(() => {
+    //     if (timerCount > 0) {
+    //         setTimeout(() => setTimer(timerCount - 1), 1000);
+    //     } else {
+    //         setStatus(false)
+    //     }
+    // }, [timerCount]);
+
     useEffect(() => {
-        if (timerCount > 0) {
+        if ( timerCount > 0) {
+            console.log("timer",timerCount)
             setTimeout(() => setTimer(timerCount - 1), 1000);
         } else {
             setStatus(false)
+        
         }
     }, [timerCount]);
 
@@ -286,6 +296,12 @@ const ForgotPin = ({ navigation }) => {
                 setMaxError(false)
                 setMessage('Sorry! We are unable to proceed further.')
             }
+             if (err?.response?.data?.message === 'Please enter valid agent mobile number') {
+                setModalVisible1(true)
+                setButton(true)
+              
+                setPhoneNum('')
+            }
 
         })
     }
@@ -328,7 +344,7 @@ const ForgotPin = ({ navigation }) => {
                                 value={PhoneNum}
                                 onChangeText={(num) => {
                                     setOtpAvailable(false)
-                                    setTimer(30)
+                                    //setTimer(30)
                                     if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(num) || num === '') {
                                         setPhoneNum(num)
                                         setMaxError(false)

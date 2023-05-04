@@ -26,6 +26,8 @@ import LeadModal from './LeadModal';
 import ValidModal from './ValidModal';
 import { api } from '../../../Services/Api'
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import VillageModal from './VillageModal';
+
 const NewLead1 = ({ navigation, setVillageStatus, VillageStatus }) => {
     const { t } = useTranslation();
     const [Name, setName] = useState('')
@@ -44,7 +46,8 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus }) => {
     const [isFocused, setIsFocused] = useState(false);
     const [addressFocus, setAddressFocus] = useState(false);
     const [addressFocus1, setAddressFocus1] = useState(false);
-    const [customerNumber,setCustomerNumber] = useState('');
+    const [customerNumber, setCustomerNumber] = useState('');
+    const [ModalVillage, setModalVillage] = useState(false)
     const adddressRef = useRef();
     const MobileRef = useRef();
     const [error, setError] = useState({
@@ -71,6 +74,7 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus }) => {
         // setBstatus(false)
         setButton(false)
         setVStatus(false)
+        navigation.navigate('Profile')
         console.log("lead modal okay", Name, Mobile, Pincode, Village)
     }
 
@@ -85,24 +89,24 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus }) => {
 
     const getData = async () => {
         try {
-          const mob = await AsyncStorage.getItem('Mobile')
-          const mob1 = mob.slice(3)
-          setCustomerNumber(mob1)
-          console.log('phoe',mob1)
-    
+            const mob = await AsyncStorage.getItem('Mobile')
+            const mob1 = mob.slice(3)
+            setCustomerNumber(mob1)
+            console.log('phoe', mob1)
+
         } catch (e) {
-          console.log('mob', e)
+            console.log('mob', e)
         }
-      }
+    }
 
 
-      useEffect(() => {
+    useEffect(() => {
 
         getData();
-       
-    
+
+
         /// getSpousedetail()
-      }, []);
+    }, []);
     async function getVillage(text) {
         const data = {
             "pin": Pincode,
@@ -119,7 +123,7 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus }) => {
             })
     }
     const Validation = () => {
-        console.log('££££233',Mobile)
+        console.log('££££233', Mobile)
         const firstDigitStr = String(Mobile)[0];
         if (Mobile?.length != 10 || Mobile == "") {
             setMessage('Please enter a valid mobile number')
@@ -161,7 +165,7 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus }) => {
                 else if (res?.data?.body == 'Lead generated') {
                     setModalVisible(true)
                     setIsFocused(false)
-                  
+
                 }
             }
             console.log('-------------------res', res)
@@ -217,13 +221,12 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus }) => {
                                         setName('')
                                         ToastAndroid.show("Please enter a valid name ", ToastAndroid.SHORT);
                                         console.log('The string contains whitespace', Name);
-                                    } else if (/^[^!-\/:-@\.,[-`{-~1234567890₹~`|•√π÷×¶∆€¥$¢^°={}%©®™✓]+$/.test(text) || !/^\s*$/.test(text) ||text === '') {
+                                    }
+                                   else if (/^[^!-\/:-@\.,[-`{-~1234567890₹~`|•√π÷×¶∆€¥$¢^°={}%©®™✓]+$/.test(text) || text === '') {
                                         setName(text)
                                         console.log("verify daat1")
                                     }
-                                    else {
-                                        ToastAndroid.show("Please enter a valid name ", ToastAndroid.SHORT);
-                                    }
+                                  
 
                                 }}
                             />
@@ -250,7 +253,9 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus }) => {
                                 color={"#1A051D"}
                                 maxLength={6}
                                 onChangeText={(text) => {
-                                    setVillage('')
+                                    setVillage(null)
+                                    setVStatus(false)
+                                    console.log("village......",Village)
                                     // setPincode(text)
 
                                     if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(text) || text === '') {
@@ -347,17 +352,17 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus }) => {
 
 
                 <TouchableOpacity
-                    style={[styles.Button1, { backgroundColor: Button && Name?.length >= 3 && Mobile?.length === 10 && Pincode?.length === 6 && VillageEnable ? COLORS.colorB : '#ECEBED' }]}
-                    disabled={Button && Name?.length >= 3 && Mobile?.length === 10 && Pincode?.length === 6 && VillageEnable ? false : true}
+                    style={[styles.Button1, { backgroundColor: Button && Name?.length >= 3 && Mobile?.length === 10 && Pincode?.length === 6 && VillageEnable && Village ? COLORS.colorB : '#ECEBED' }]}
+                    disabled={Button && Name?.length >= 3 && Mobile?.length === 10 && Pincode?.length === 6 && VillageEnable && Village ? false : true}
                     onPress={() => Validation()}>
-                    <Text style={[styles.text1, { color: Button && Name?.length >= 3 && Mobile?.length === 10 && Pincode?.length === 6 && VillageEnable ? COLORS.colorBackground : '#979C9E' }]}>{t('common:Confirm')}</Text>
+                    <Text style={[styles.text1, { color: Button && Name?.length >= 3 && Mobile?.length === 10 && Pincode?.length === 6 && VillageEnable && Village ? COLORS.colorBackground : '#979C9E' }]}>{t('common:Confirm')}</Text>
                 </TouchableOpacity>
 
                 <LeadModal ModalVisible={ModalVisible}
                     onPress={() => OnpressOut1()}
                     onPressOut={() => {
                         setModalVisible(!ModalVisible)
-
+                        navigation.navigate('Profile')
                     }}
                     navigation={navigation}
                     setModalVisible={setModalVisible} />
@@ -367,6 +372,13 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus }) => {
                     ModalVisible={ValidModal1}
                     onPressOut={() => setValidModal1(!ValidModal1)}
                     setModalVisible={setValidModal1}
+                />
+
+
+                <VillageModal
+                    ModalVisible={ModalVillage}
+                    onPressOut={() => setModalVillage(!VillageModal)}
+                    setModalVisible={setModalVillage}
                 />
             </View>
         </>

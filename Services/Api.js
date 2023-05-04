@@ -75,7 +75,7 @@ export const api = {
 
   // ---------------- Get Forgot Api -----------------
   getForgotOtp: data => {
-    return axios.post(`${baseURL}forgotPin`, data, {
+    return axios.post(`${baseURL}agentRegister`, data, {
       headers: {
         'Content-Type': 'application/json',
       }
