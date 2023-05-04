@@ -8,34 +8,8 @@ import { useTranslation } from 'react-i18next';
 
 const { height, width } = Dimensions.get('screen');
 
-const data = [
-    {
-        id: 1,
-        Title: 'Suspected fraud',
-        isChecked: false
-    },
-    {
-        id: 2,
-        Title: 'Non cooperative',
-        isChecked: false
-    },
-    {
-        id: 3,
-        Title: 'Submitted wrong data',
-        isChecked: false
-    },
-    {
-        id: 4,
-        Title: 'KYC mismatch',
-        isChecked: false
-    },
-    {
-        id: 5,
-        Title: 'Others',
-        isChecked: false
-    },
-]
-const ReasonModal = ({ModalVisible, onPressOut,setModalVisible,onPress1,setRejectReason}) => {
+
+const ReasonModal = ({ModalVisible, onPressOut,setModalVisible,onPress1,setRejectReason,data}) => {
     const { t } = useTranslation();
 
     const [Data, setData] = useState(data)
@@ -94,8 +68,6 @@ useEffect(()=>{
                 <View style={styles.centeredView2}>
                     <View style={styles.modalView}>
                         <Text style={styles.modalTextHead}>Reason for reject</Text>
-
-
                         {Data.map((item, index) => {
                             return (
                                 <View style={{flexDirection:'column',}}>
@@ -119,7 +91,17 @@ useEffect(()=>{
                         <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                             <TouchableOpacity style={[styles.Button1,
                             { backgroundColor: ButtonStatus ? COLORS.colorB : '#ECEBED' }]}
-                            onPress={()=>ButtonStatus ? onPress1() : console.log("hello")}>
+                            onPress={()=>
+                                { 
+                                   if(ButtonStatus){
+                                      Data.forEach(function (item) {
+                                          item.isChecked= false
+                                      })
+                                      onPress1()
+                                   }else{
+                                      console.log("hello")
+                                  }
+                              }}>
 
                                 <Text style={[styles.text1, { color: ButtonStatus ?
                                      COLORS.colorBackground : '#979C9E', paddingLeft: width * 0.02 }]}>Submit</Text>

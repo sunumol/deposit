@@ -1,78 +1,63 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import {
     StyleSheet,
-    Text,
     SafeAreaView,
     View,
-    TouchableOpacity,
-    TextInput,
-    Image,
-    KeyboardAvoidingView,
     StatusBar,
-    ScrollView,
     Dimensions,
     BackHandler
 } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { COLORS, FONTS } from '../../Constants/Constants';
-import Statusbar from '../../Components/StatusBar';
-import Header from '../../Components/Header';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useRoute } from '@react-navigation/native';
 import { useFocusEffect } from '@react-navigation/native';
-import { useTranslation } from 'react-i18next';
-import DetailChecks from './Components/DetailChecks';
-import { api } from '../../Services/Api';
 import { useSelector } from 'react-redux';
+
+// -------------- Component Imports ----------------------
 import ModalSave from '../../Components/ModalSave';
 import ReasonModal from './Components/ReasonModal';
 import ErrorModal from './Components/ErrorModal';
+import DetailChecks from './Components/DetailChecks';
+import { api } from '../../Services/Api';
+import { COLORS, FONTS } from '../../Constants/Constants';
+import Statusbar from '../../Components/StatusBar';
+import Header from '../../Components/Header';
 
+const DetailCheck = ({ navigation, route }) => {
 
-const DetailCheck = ({ navigation,route }) => {
-    console.log('====>>Activity id',route?.params?.data)
-   // const route = useRoute();
-        
+    console.log('====>>Activity id', route?.params?.data)
+
     const isDarkMode = true
-    const { t } = useTranslation();
-    const [lang, setLang] = useState('')
-    const [BStatus, setBstatus] = useState(false)
+
     const [basicdetail, setBasicdetail] = useState('')
-    const [ModalVisible,setModalVisible] = useState(false)
-    const [ModalReason,setModalReason] = useState(false)
+    const [ModalVisible, setModalVisible] = useState(false)
+    const [ModalReason, setModalReason] = useState(false)
     const [ModalError, setModalError] = useState(false)
     const [villagename, setVillagename] = useState('')
     const [roadstatus, setRoadStatus] = useState('')
     const [postofficename, setPostofficename] = useState('')
     const [landmarkname, setLandmarkname] = useState('false')
-    const [reason,setReason] = useState('')
-   // const [activityId,setActivityId] = useState(route?.params?.data)
-   const activityId = useSelector(state => state.activityId);
+
+    const activityId = useSelector(state => state.activityId);
 
     useEffect(() => {
-        getData()
-getConductDLEbasicdetail()
+        getConductDLEbasicdetail()
     }, [])
 
-
-
-
-      // ------------------ get Conduct DLE basic detail Village Api Call Start ------------------
-      const updateRejection = async () => {
+    // ------------------ get Conduct DLE basic detail Village Api Call Start ------------------
+    const updateRejection = async () => {
         console.log('api called for rejection')
         const data = {
-            "activityStatus":'Submitted wrong data',
-            "employeeId":1,
-            "activityId":activityId
+            "activityStatus": 'Submitted wrong data',
+            "employeeId": 1,
+            "activityId": activityId
         }
         await api.updateActivity(data).then((res) => {
             console.log('-------------------res get Village', res)
             setModalError(true)
             setModalReason(false)
             setTimeout(() => {
-                navigation.navigate('Profile')  
+                navigation.navigate('Profile')
             }, 1000);
-          
+
         }).catch((err) => {
             console.log('-------------------err get Village', err)
         })
@@ -82,13 +67,13 @@ getConductDLEbasicdetail()
 
 
 
-     // ------------------ get Conduct DLE basic detail start Api Call Start ------------------
-     const getConductDLEbasicdetail = async () => {
-        console.log('api called',activityId)
+    // ------------------ get Conduct DLE basic detail start Api Call Start ------------------
+    const getConductDLEbasicdetail = async () => {
+        console.log('api called', activityId)
         const data = {
-           "activityId": activityId
- 
-        
+            "activityId": activityId
+
+
         }
         await api.ConductDLEbasicdetail(data).then((res) => {
             console.log('-------------------res ConductDLEbasicdetail12', res)
@@ -103,17 +88,17 @@ getConductDLEbasicdetail()
 
 
 
-     // ------------------ get Conduct DLE basic detail Village Api Call Start ------------------
-     const onsubmit = async (value) => {
-        
-        console.log('api called',villagename)
-        const data =  {
+    // ------------------ get Conduct DLE basic detail Village Api Call Start ------------------
+    const onsubmit = async (value) => {
+
+        console.log('api called', villagename)
+        const data = {
             "customerId": basicdetail?.customerId,
             "customerName": basicdetail?.customerName,
             "address": basicdetail?.address,
             "district": basicdetail?.district,
-            "village": villagename ? villagename : basicdetail?.village ,
-            "accessRoadType":roadstatus ? roadstatus : basicdetail?.accessRoadType,
+            "village": villagename ? villagename : basicdetail?.village,
+            "accessRoadType": roadstatus ? roadstatus : basicdetail?.accessRoadType,
             "postOffice": postofficename ? postofficename : basicdetail?.postOffice,
             "landMark": landmarkname ? landmarkname : basicdetail?.landMark,
             "pin": basicdetail?.pin
@@ -121,43 +106,26 @@ getConductDLEbasicdetail()
         await api.savebasicdetail(data).then((res) => {
             console.log('-------------------res update', res?.data)
             if (res?.status) {
-                navigation.navigate('Profile') 
+                navigation.navigate('Profile')
             }
         }).catch((err) => {
             console.log('-------------------err update', err?.response)
         })
     };
 
-    const getData = async () => {
-        try {
-            const lang = await AsyncStorage.getItem('user-language')
-            setLang(lang)
-
-        } catch (e) {
-            console.log(e)
-        }
-    }
-
     const handleGoBack = useCallback(() => {
-
-       // navigation.goBack()
-            setModalVisible(true)
+        // navigation.goBack()
+        setModalVisible(true)
         return true; // Returning true from onBackPress denotes that we have handled the event
     }, [navigation]);
 
     useFocusEffect(
         React.useCallback(() => {
             BackHandler.addEventListener('hardwareBackPress', handleGoBack);
-
             return () =>
-            
                 BackHandler.removeEventListener('hardwareBackPress', handleGoBack);
         }, [handleGoBack]),
     );
-
-
-
-
 
     return (
         <SafeAreaProvider>
@@ -167,36 +135,38 @@ getConductDLEbasicdetail()
             <Header name="Detailed Eligibility Check" navigation={navigation} onPress={handleGoBack} />
 
             <View style={styles.ViewContent}>
-                <DetailChecks navigation={navigation} details ={basicdetail} setVillagename1={setVillagename} setPostoffice1={setPostofficename} setLandmarkname1={setLandmarkname} setRoadStatus1={setRoadStatus}/>
+                <DetailChecks
+                    navigation={navigation}
+                    details={basicdetail}
+                    setVillagename1={setVillagename}
+                    setPostoffice1={setPostofficename}
+                    setLandmarkname1={setLandmarkname}
+                    setRoadStatus1={setRoadStatus}
+                />
             </View>
 
             <ModalSave
-                Press ={()=>{
+                Press={() => {
                     setModalVisible(false),
-                    setModalReason(true)
-               
+                        setModalReason(true)
                 }}
-                Press1={()=>{onsubmit(),setModalVisible(false)}}
+                Press1={() => { onsubmit(), setModalVisible(false) }}
                 ModalVisible={ModalVisible}
                 setModalVisible={setModalVisible}
                 onPressOut={() => {
                     setModalVisible(false)
-                   
-
                 }}
-                navigation={navigation} />
-
+                navigation={navigation}
+            />
 
             <ReasonModal
                 onPress1={() => {
-                     updateRejection()
-                   // setModalError(true)
+                    updateRejection()
                 }}
                 ModalVisible={ModalReason}
                 onPressOut={() => setModalReason(!ModalReason)}
                 setModalVisible={setModalReason}
             />
-
 
             <ErrorModal
                 ModalVisible={ModalError}
@@ -205,7 +175,7 @@ getConductDLEbasicdetail()
                     setModalReason(!ModalReason)
                 }}
                 setModalVisible={setModalError}
-                navigation={navigation} 
+                navigation={navigation}
             />
 
         </SafeAreaProvider>
@@ -214,7 +184,6 @@ getConductDLEbasicdetail()
 
 export default DetailCheck;
 
-
 const styles = StyleSheet.create({
     container1: {
         flex: 0,
@@ -222,12 +191,10 @@ const styles = StyleSheet.create({
         paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
     },
     ViewContent: {
-        // justifyContent: 'center',
-        //  alignItems: 'center',
         flex: 1,
         backgroundColor: COLORS.colorBackground,
-        paddingLeft:20,
-        paddingRight:20
+        paddingLeft: 20,
+        paddingRight: 20
     },
     text: {
         fontWeight: '400',

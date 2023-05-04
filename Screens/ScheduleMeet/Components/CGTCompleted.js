@@ -34,10 +34,12 @@ const CGTCompleted = ({ ModalVisible, onPressOut, setModalVisible,onPress,naviga
             visible={ModalVisible}
             onRequestClose={() => {
                 setModalVisible(!ModalVisible)
-                navigation.navigate('NewCgt')
+                navigation.navigate('Profile',{set:true})
             }}
         >
-       <TouchableOpacity onPressOut={onPressOut}
+       <TouchableOpacity onPressOut={()=>{onPressOut()
+                    navigation.navigate('Profile',{set:true})
+                  }}
             style={{ backgroundColor: "#000000aa", flex: 1, alignItems: 'center', justifyContent: 'center', opacity: 5 }} >
 
          

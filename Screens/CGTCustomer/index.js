@@ -47,6 +47,34 @@ const CgtCustomer = ({ navigation, route }) => {
     const [details, setDetails] = useState()
     const [custID, setCustId] = useState()
     const [rejectReason, setRejectReason] = useState()
+   
+    const data = [
+        {
+            id: 1,
+            Title: 'Suspected fraud',
+            isChecked: false
+        },
+        {
+            id: 2,
+            Title: 'Non cooperative',
+            isChecked: false
+        },
+        {
+            id: 3,
+            Title: 'Submitted wrong data',
+            isChecked: false
+        },
+        {
+            id: 4,
+            Title: 'KYC mismatch',
+            isChecked: false
+        },
+        {
+            id: 5,
+            Title: 'Others',
+            isChecked: false
+        },
+    ]
 
     const activityId = useSelector(state => state.activityId);
 
@@ -141,6 +169,7 @@ const CgtCustomer = ({ navigation, route }) => {
             console.log('-------------------res789', res?.data)
             if (res?.status) {
                 setModalError(true)
+                setRejectReason()
             }
         })
             .catch((err) => {
@@ -287,6 +316,7 @@ const CgtCustomer = ({ navigation, route }) => {
                     navigation.navigate('Profile')
                 }}
                 setModalVisible={setModalError}
+                
             />
 
             <ReasonModal
@@ -295,6 +325,7 @@ const CgtCustomer = ({ navigation, route }) => {
                 onPressOut={() => setModalReason(!ModalReason)}
                 setModalVisible={setModalReason}
                 setRejectReason={setRejectReason}
+                data={data}
             />
 
         </SafeAreaProvider>

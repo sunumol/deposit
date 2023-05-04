@@ -332,34 +332,19 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
 
                     <View style={{ paddingHorizontal: 17, flexDirection: 'row' }}>
 
-
                         <View style={{ flex: 0.7, marginTop: width * 0.04 }}>
                             <Text style={styles.headTextTitle}>Village</Text>
                         </View>
-                        {/* <TouchableOpacity style={styles.borderVillage} onPress={()=>setStatus(true)}>
-                                <Text style={[styles.searchText1,{color:!status ? '#808080':'#1A051D'}]}>{!status ? "Search village" : "Thrikkakara North"}</Text>
-                                <Search name="search" size={17} style={{marginRight:15}} color={'#1A051D'} />
-                            </TouchableOpacity> */}
-
-
-
-
-
-
+                       
                         <View style={{ flex: 2 }}>
-
-
-
                             <View style={[styles.textInput, { flexDirection: 'row' }]}>
-
-
                                 <View style={styles.borderVillage}>
                                     <TextInput
                                         value={villagename ? villagename : ''}
+                                        editable={details?.village ?false:true}
                                         style={[styles.TextInputBranch, { width: width * 0.48, color: 'rgba(26, 5, 29, 1)', fontSize: 12, left:0 }]}
                                         onChangeText={(text) => {
                                             if(text.length == 25){
-                                                
                                                 Keyboard.dismiss();
                                             }
                                             searchvillagename(text)
@@ -369,8 +354,9 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
                                         onKeyPress={() => setBstatus(false)}
                                         blurOnSubmit={true}
                                     />
-                                    <Search name="search" size={17} style={{ marginRight: 15 }} color={'#1A051D'} />
-
+                                    {!details?.village
+                                    ?<Search name="search" size={17} style={{ marginRight: 15 }} color={'#1A051D'} />
+                                    :null}
                                 </View>
                             </View>
 
@@ -379,24 +365,15 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
                                     {villagenamedata.length > 0
                                         ? <>
                                             {villagenamedata.map((item) => {
-                                            
                                                 return (
                                                     <TouchableOpacity onPress={() => {
                                                         setBstatus(false)
-                                                        // setBranchStatus(false)
-                                                        // setSearchStatus(true)
                                                         setVillagename(item)
                                                         setVillagename1(item)
                                                         setVstatus(true)
-                                                        // setBankBranchNameId(item.id)
-                                                        // setCloseBranch(true)
-                                                        // setDetailsStatus(false)
                                                     }}>
                                                         <View style={[styles.ViewBankMap,{paddingTop:0}]}>
-
                                                             <Text style={styles.ItemNameBranch}>{item}</Text>
-                                                            {/* {item.id == 1 &&
-                                                        <View style={styles.Line} />} */}
                                                         </View>
                                                     </TouchableOpacity>
                                                 )
@@ -406,25 +383,9 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
                                             <Text style={styles.ItemNameBranch}>No results found</Text>
                                         </View>}
                                 </View>) : null
-
-
                             }
                         </View>
-
-
-
-
-
-
-
-
-
-
-
-
                     </View>
-
-
 
                     <View style={styles.lineView} />
                     <View style={{ paddingHorizontal: 17, flexDirection: 'row' }}>
@@ -434,12 +395,9 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
                         <View style={{ flex: 2 }}>
                             <TouchableOpacity style={styles.SelectBox} onPress={() => setModalReason1(true)}>
                                 <Text style={[styles.textSelect, { color: !roadstatus ? '#808080' : '#1A051D' }]}>{roadstatus ? roadstatus : (details?.accessRoadType ? details?.accessRoadType : 'Select')}</Text>
-
-                                {/* <Icon1 name="chevron-down" size={18} color={'#808080'} style={{ marginRight: 10 }} /> */}
                             </TouchableOpacity>
                         </View>
                     </View>
-
 
                     <View style={styles.lineView} />
                     <View style={{ paddingHorizontal: 17, flexDirection: 'row' }}>
@@ -447,13 +405,7 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
                             <Text style={styles.headTextTitle}>Post Office</Text>
                         </View>
                         <View style={{ flex: 2 }}>
-
-
-
-
                             <View style={[styles.textInput, { flexDirection: 'row' }]}>
-
-
                                 <View style={styles.borderVillage}>
                                     <TextInput
                                         value={postofficename}
