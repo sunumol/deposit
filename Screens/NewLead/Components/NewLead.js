@@ -27,8 +27,6 @@ import ValidModal from './ValidModal';
 import { api } from '../../../Services/Api'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 const NewLead1 = ({ navigation, setVillageStatus, VillageStatus }) => {
- 
-   
     const { t } = useTranslation();
     const [Name, setName] = useState('')
     const [Mobile, setMobile] = useState('')
@@ -60,7 +58,6 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus }) => {
         if (VillageStatus == true) {
             setVillageStatus(false)
         }
-
     }, [])
 
     const OnpressOut1 = () => {
@@ -220,7 +217,7 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus }) => {
                                         setName('')
                                         ToastAndroid.show("Please enter a valid name ", ToastAndroid.SHORT);
                                         console.log('The string contains whitespace', Name);
-                                    } else if (/^[^!-\/:-@\.,[-`{-~1234567890₹~`|•√π÷×¶∆€¥$¢^°={}%©®™✓]+$/.test(text) || text === '') {
+                                    } else if (/^[^!-\/:-@\.,[-`{-~1234567890₹~`|•√π÷×¶∆€¥$¢^°={}%©®™✓]+$/.test(text) || !/^\s*$/.test(text) ||text === '') {
                                         setName(text)
                                         console.log("verify daat1")
                                     }

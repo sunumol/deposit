@@ -131,7 +131,8 @@ const MeetTab = (props) => {
     return (
         <>
             <View style={{ marginBottom: 0 }}>
-                <Text style={[styles.timeDropStyle, { paddingTop: props.time ? 18 : 0 }]}>{props?.time} ({props?.data?.length})</Text>
+                <Text style={[styles.timeDropStyle, { paddingTop: props.time ? 18 : 0 }]}>{props.time} {!props.meet ?'(':''}{!props.meet ?(`${props?.data?.length}`):''}{!props.meet ?')':''}</Text>
+                {/* <Text style={[styles.timeDropStyle, { paddingTop: props.time ? 18 : 0 }]}>{props?.time} ({props?.data?.length})</Text> */}
           
                 {props?.data?.map((item, index) => {
 

@@ -16,9 +16,9 @@ import { useFocusEffect } from '@react-navigation/native';
 import Icon1 from 'react-native-vector-icons/Ionicons'
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 import Icon from 'react-native-vector-icons/AntDesign';
-import { useRoute } from '@react-navigation/native';
 import moment from 'moment';
-import { useSelector } from 'react-redux';
+import { useSelector,useDispatch } from 'react-redux';
+import { useNetInfo } from "@react-native-community/netinfo";
 
 // ----------------- Component Import --------------------
 import Statusbar from '../../Components/StatusBar';
@@ -26,6 +26,7 @@ import Header from '../../Components/RepayHeader';
 import { FONTS, COLORS } from '../../Constants/Constants';
 import TrustModal from './Components/TrustModal';
 import { api } from '../../Services/Api';
+import NetWorkError from '../NetWorkError';
 
 // --------------- Image Import -------------------
 import Date from '../CGTCustomer/Images/Date.svg';
@@ -33,31 +34,30 @@ import Plus from '../../assets/image/Plus.svg';
 
 const { height, width } = Dimensions.get('screen');
 
-const CreateTrustCircle = ({ navigation,route }) => {
+const CreateTrustCircle = ({ navigation, route }) => {
 
     const isDarkMode = true;
-    const routes = useRoute();
+    const netInfo = useNetInfo();
 
     const [ModalVisible, setModalVisible] = useState(false)
-    const [tcLimit, setTCLimit] = useState();
-    const [custid,setCustid] = useState('')
     // --------- Redux State -------------------------------------
     const customerList = useSelector(state => state.customerList);
     const customerID = useSelector(state => state.customerID);
     const cgtCustomerDetails = useSelector(state => state.cgtCustomerDetails);
-    const [minLimit,setMinLimit] = useState()
-    const [maxLimit,setMaxLimit] = useState()
+    const dispatch = useDispatch()
+
+    const [minLimit, setMinLimit] = useState()
+    const [maxLimit, setMaxLimit] = useState()
+
     const handleGoBack = useCallback(() => {
         navigation.navigate('CGT')// -----> Todo back navigation with activity ID
         return true; // Returning true from onBackPress denotes that we have handled the event
     }, [navigation]);
 
-
     String.prototype.replaceAt = function (index, replacement) {
         return this.substring(0, index) + replacement + this.substring(index + replacement.length);
     }
 
-    console.log('000000000======',cgtCustomerDetails)
     useFocusEffect(
         React.useCallback(() => {
             BackHandler.addEventListener('hardwareBackPress', handleGoBack);
@@ -69,7 +69,6 @@ const CreateTrustCircle = ({ navigation,route }) => {
     useEffect(() => {
         getTCLimitDetails()
         getTclist()
-        console.log('======>>>>+++++',customerList)
     }, [customerList,customerID])
 
     // ------------------ getTCLimitDetails Api Call Start ------------------
@@ -87,12 +86,10 @@ const CreateTrustCircle = ({ navigation,route }) => {
 
     // ------------------ getTCLimitDetails Api Call Start ------------------
     const CreateTrustCircle = async () => {
-        console.log('api called123456========>>>>>>>')
         const data = {
-            "agentId":1,
+            "agentId": 1,
             "primaryCustomerId": cgtCustomerDetails.primaryCustomerId,
             "memberIds": customerID,
-         
         }
         await api.createTrustCircles(data).then((res) => {
             console.log('-------------------res create', res)
@@ -100,58 +97,60 @@ const CreateTrustCircle = ({ navigation,route }) => {
                 setModalVisible(true)
             }
         }).catch((err) => {
-            console.log('-------------------err', err?.response)
+            console.log('-------------------err', err)
         })
     };
     // ------------------ HomeScreen Api Call End ------------------
 
+    useEffect(() => {
+        getDLEschedule()
+        console.log('------------',customerList)
+    }, [])
 
-useEffect(()=>{
-getDLEschedule()
-},[])
     const getTclist = async () => {
-        console.log('api called',customerID,cgtCustomerDetails?.primaryCustomerId)
+        console.log('api called', customerID, cgtCustomerDetails?.primaryCustomerId)
         const data = {
-            "employeeId":1,
-            "customerNameOrNumber":"",
-            "addedTcIds":[customerID,cgtCustomerDetails?.primaryCustomerId]
+            "employeeId": 1,
+            "customerNameOrNumber": "",
+            "addedTcIds": [customerID, cgtCustomerDetails?.primaryCustomerId]
         }
-        console.log("DATA PRINT",data)
+        console.log("DATA PRINT", data)
         await api.getCustomerListForTc(data).then((res) => {
             console.log('-------------------res getCustomerListForTc', res)
-            
+
         }).catch((err) => {
             console.log('-------------------getCustomerListForTc', err?.response)
         })
     };
-    // ------------------ HomeScreen Api Call End ------------------
+    // ------------------ HomeScreen Api Call End -----------------------
 
-            // ------------------ get Slot Api Call Start ------------------
-            const getDLEschedule = async () => {
-                console.log('api called',cgtCustomerDetails?.primaryCustomerId)
-                 const data = {
-                    //"employeeId": route?.params?.customerID,
-                    "customerId":cgtCustomerDetails?.primaryCustomerId,
-                 };
-                 await api.getDLEschedule(data).then((res) => {
-                 
-                     console.log('------------------- DLE res123', res)
-                     dispatch({
-                        type: 'SET_SELECTED_CUSTOMERLIST',
-                        payload: res?.data?.body,
-                      });
-                      console.log('12341233============',customerList)
-                    
-                   
-         
-                 })
-                     .catch((err) => {
-                         console.log('-------------------err', err?.response)
-                     })
-             };
-             // 
+    // ------------------ get Slot Api Call Start -----------------------
+    const getDLEschedule = async () => {
+        const data = {
+            "customerId": cgtCustomerDetails?.primaryCustomerId,
+        };
+        await api.getDLEschedule(data).then((res) => {
+            console.log('------------------- DLE res123', res)
+            dispatch({
+                type: 'SET_SELECTED_CUSTOMERLIST',
+                payload: res?.data?.body,
+            });
+            const idData=[]
+            res?.data?.body?.map((item)=>{
+                idData.push(item?.id)
+            })
+            dispatch({
+                type: 'SET_SELECTED_CUSTOMERID',
+                payload: idData,
+            });
+        }).catch((err) => {
+            console.log('-------------------errytttyrtty', err)
+        })
+    };
+    // --------------------------------------------------------------------
+
+    // ------------------ get Slot Api Call Start ------------------
     const getInitials = (name) => {
-
         let initials;
         const nameSplit = name?.split(" ");
         const nameLength = nameSplit?.length;
@@ -165,15 +164,18 @@ getDLEschedule()
 
         return initials.toUpperCase();
     };
+
     return (
         <SafeAreaProvider>
             <SafeAreaView style={styles.container1} />
             <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} backgroundColor={"#002B59"} />
-
+            {netInfo.isConnected
+                    ?
+                    <>
             <Header navigation={navigation} name="CGT" back={true} onPress={handleGoBack} />
-
+         
             <View style={styles.mainContainer}>
-
+          
                 <ScrollView showsVerticalScrollIndicator={false} >
 
                     {/* --------------------------------- Date Resedule Box  Start--------------------------------------------------------------------------------------------------------------------- */}
@@ -182,7 +184,7 @@ getDLEschedule()
                             <Text style={styles.timeText}>{cgtCustomerDetails?.cgtTime?.slice(0, -3)} PM</Text>
                             <Text style={styles.dateText}>{cgtCustomerDetails?.cgtDate ? moment(new Date(cgtCustomerDetails?.cgtDate)).format("ddd, DD MMM") : ''}</Text>
                         </View>
-                        <TouchableOpacity style={styles.editView} onPress={() => navigation.navigate('NewCgt',{reschedule:cgtCustomerDetails})}>
+                        <TouchableOpacity style={styles.editView} onPress={() => navigation.navigate('NewCgt', { reschedule: cgtCustomerDetails })}>
                             <Date />
                             <Text style={styles.changeText}>Reschedule CGT</Text>
                         </TouchableOpacity>
@@ -226,25 +228,25 @@ getDLEschedule()
                         </View> : null}
 
                     {customerList && customerList?.map((item) => {
-                        {console.log('--',)}
+                        { console.log('--',) }
                         return (
                             <View style={[styles.viewCard, { flex: 1, flexDirection: 'row', }]}>
 
                                 <View style={[styles.circleStyle, { backgroundColor: 'green', marginLeft: width * 0.05 }]}>
-                                    <Text style={styles.circleText}>{getInitials(item?.customerName)}</Text>
+                                    <Text style={styles.circleText}>{getInitials(item?.customerName?item?.customerName:item?.name)}</Text>
                                 </View>
 
 
                                 <View style={{ flexDirection: 'column', paddingLeft: 12, paddingTop: 5, flex: 1 }}>
 
-                                    <Text style={styles.nameText}>{item?.customerName}</Text>
+                                    <Text style={styles.nameText}>{item?.customerName?item?.customerName:item?.name}</Text>
 
 
                                     <View style={{ flexDirection: 'row', }}>
                                         <View style={{ paddingTop: 5, paddingRight: 1 }}>
                                             <Icon1 name="location-outline" color={"black"} />
                                         </View>
-                                        <Text style={[styles.idText, { paddingTop: 4 }]}>{item?.pin}</Text>
+                                        <Text style={[styles.idText, { paddingTop: 4 }]}>{item?.pin?item?.pin:item?.villageOrPin}</Text>
                                     </View>
                                 </View>
                                 <View style={{ flexDirection: 'column', top: -8, alignItems: 'flex-end', marginRight: 14 }}>
@@ -258,7 +260,7 @@ getDLEschedule()
                     })}
 
                     {customerList?.length > 0 && customerList?.length <= maxLimit
-                        ? <TouchableOpacity style={styles.viewCard} onPress={() => navigation.navigate('ConfirmMembers')}>
+                        ? <TouchableOpacity style={styles.viewCard} onPress={() => navigation.navigate('ConfirmMembers', { id: route?.params?.customerDetails?.primaryCustomerId })}>
 
                             <View style={{ marginLeft: width * 0.05 }}>
                                 <Plus />
@@ -274,8 +276,8 @@ getDLEschedule()
                 <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                     {customerList?.length > 0
                         ? <TouchableOpacity style={[styles.Button1,
-                        { backgroundColor: customerList?.length >= minLimit ? COLORS.colorB : '#ECEBED' }]} onPress={()=>customerList?.length >= minLimit? CreateTrustCircle(): null}>
-                            <Text style={[styles.text1, { color: customerList?.length >= minLimit? COLORS.colorBackground : '#979C9E', paddingLeft: width * 0.02 }]}>Create Trust Circle</Text>
+                        { backgroundColor: customerList?.length >= minLimit ? COLORS.colorB : '#ECEBED' }]} onPress={() => customerList?.length >= minLimit ? CreateTrustCircle() : null}>
+                            <Text style={[styles.text1, { color: customerList?.length >= minLimit ? COLORS.colorBackground : '#979C9E', paddingLeft: width * 0.02 }]}>Create Trust Circle</Text>
                         </TouchableOpacity>
                         :
                         <TouchableOpacity style={[styles.Button1, { backgroundColor: COLORS.colorB }]}
@@ -291,6 +293,11 @@ getDLEschedule()
                 {/* --------------------------------- Button End--------------------------------------------------------------------------------------------------------------------- */}
 
             </View>
+            </>
+             :
+             <NetWorkError />
+         }
+            
 
             <TrustModal
                 ModalVisible={ModalVisible}
@@ -301,11 +308,12 @@ getDLEschedule()
                 setModalVisible={setModalVisible}
                 onPress1={() => {
                     setModalVisible(false)
-                    navigation.navigate('DLESchedule', { set: true,customerID: cgtCustomerDetails?.primaryCustomerId })
+                    navigation.navigate('DLESchedule', { set: true, customerID: cgtCustomerDetails?.primaryCustomerId })
                 }}
             />
 
         </SafeAreaProvider>
+       
     )
 }
 

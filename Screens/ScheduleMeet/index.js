@@ -115,7 +115,7 @@ const ScheduleMeet = ({ navigation, route }) => {
             <View style={styles.ViewContent}>
 
 
-                <CalendarStrips callback={callback} />
+                <CalendarStrips callback={callback}  setNewDates={setSelectedDate} NewDates={selectedDate}/>
                 {/* <Cgt navigation={navigation} /> */}
 
 

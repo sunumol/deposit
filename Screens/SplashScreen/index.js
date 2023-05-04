@@ -34,8 +34,6 @@ const SplashScreen = ({ navigation }) => {
       const isGrantedPermissions = async () => {
         const camera = await PermissionsAndroid?.check(PermissionsAndroid?.PERMISSIONS?.CAMERA)
         const Location = await PermissionsAndroid?.check(PermissionsAndroid?.PERMISSIONS?.ACCESS_FINE_LOCATION)
-        console.log("hello")
-      
         if (camera && Location) {
             const Pin = await AsyncStorage.getItem('Pin')
             const PinDate = await AsyncStorage.getItem('PinDate')
@@ -72,7 +70,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         backgroundColor: "#002B59",
         color: "white"
-
     },
 });
 

@@ -21,11 +21,11 @@ const App = () => {
     requestUserPermission();
     NotificationServices();
   }, []);
-
+ 
   return (
     <Provider store={Store}>
       <ForegroundHandler />
-      <Router />
+      <Router/>
     </Provider>
   );
 

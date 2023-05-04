@@ -24,10 +24,6 @@ import ReasonModal from '../DetailedCheck/Components/ReasonModal';
 import { useFocusEffect } from '@react-navigation/native';
 import { api } from '../../Services/Api';
 
-
-
-
-
 const UploadVid = ({ navigation }) => {
 
   const routes = useRoute();

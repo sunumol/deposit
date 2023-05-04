@@ -12,6 +12,7 @@ import {
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
+import { useRoute } from '@react-navigation/native';
 
 import ExitModal from '../../Components/ModalExit';
 import { COLORS, FONTS } from '../../Constants/Constants';
@@ -21,9 +22,11 @@ import { api } from '../../Services/Api'
 
 import Settings from './Images/settings.svg'
 
-const CorrectionScreen = ({ navigation, }) => {
+const CorrectionScreen = ({ navigation }) => {
 
     const isDarkMode = true
+    const route = useRoute();
+    console.log('---------', route?.params?.AcyivityId)
     const activityId = useSelector(state => state.activityId);
     const [dataDetails, setDataDetails] = useState()
     const [ModalVisible, setModalVisible] = useState(false)
@@ -48,7 +51,7 @@ const CorrectionScreen = ({ navigation, }) => {
     // ------------------ get Conduct DLE basic detail Village Api Call Start ------------------
     const getCorrectionDetails = async () => {
         const data = {
-            "activityId": activityId    //-----> addd --- activityId
+            "activityId": route?.params?.AcyivityId    //-----> addd --- activityId
         }
         await api.getCorrectionDetails(data).then((res) => {
             console.log('-------------------res getCorrection', res)
@@ -70,23 +73,23 @@ const CorrectionScreen = ({ navigation, }) => {
             console.log('-------------------res getCorrection', res)
             if (res?.data) {
                 if (res?.data?.body == 1) {
-                   navigation.navigate('DetailCheck')
+                    navigation.navigate('DetailCheck')
                 } else if (res?.data?.body == 2) {
                     navigation.navigate('ResidenceOwner')
                 } else if (res?.data?.body == 3) {
-                   navigation.navigate('ContinuingGuarantor')
+                    navigation.navigate('ContinuingGuarantor')
                 } else if (res?.data?.body == 4) {
-                   navigation.navigate('UploadVid')
+                    navigation.navigate('UploadVid')
                 } else if (res?.data?.body == 5) {
-                   navigation.navigate('EnergyUtility')
+                    navigation.navigate('EnergyUtility')
                 } else if (res?.data?.body == 6) {
-                  navigation.navigate('VehicleOwn')
+                    navigation.navigate('VehicleOwn')
                 } else if (res?.data?.body == 7) {
                     navigation.navigate('IncomeDetails', { relationShip: 'Customer' })
                 } else if (res?.data?.body == 8) {
-                   navigation.navigate('IncomeDetails', { relationShip: 'Spouse' })
+                    navigation.navigate('IncomeDetails', { relationShip: 'Spouse' })
                 } else if (res?.data?.body == 9) {
-                   navigation.navigate('HousePhoto')
+                    navigation.navigate('HousePhoto')
                 }
             }
         }).catch((err) => {

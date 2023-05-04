@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
 import SplashScreen from '../Screens/SplashScreen';
 import IntroScreens from '../Screens/IntroScreens';
 import LoginScreen from '../Screens/LoginScreen';
@@ -57,14 +58,16 @@ import Calendar from '../Screens/Calendar'
 import CalendarActivity from '../Screens/CalendarActivity';
 import SelectCalendar from '../Screens/SelectCalendar'
 
+import { navigationRef } from './RootNavigation';
+
 const Stack = createNativeStackNavigator();
 
 export default function Router() {
-  
+
   const netInfo = useNetInfo();
 
   return (
-    <NavigationContainer>
+    <NavigationContainer ref={navigationRef}>
       <Stack.Navigator screenOptions={{
         headerShown: false
       }}>
@@ -86,7 +89,7 @@ export default function Router() {
         <Stack.Screen name="CGT" component={netInfo.isConnected ? CGT : NetWorkError} />
         <Stack.Screen name="Activities" component={netInfo.isConnected ? Activities : NetWorkError} />
         <Stack.Screen name="CgtCustomer" component={netInfo.isConnected ? CgtCustomer : NetWorkError} />
-        <Stack.Screen name="CreateTrustCircle" component={netInfo.isConnected ? CreateTrustCircle : NetWorkError} />
+        <Stack.Screen name="CreateTrustCircle" component={CreateTrustCircle} />
         <Stack.Screen name="ConfirmMembers" component={netInfo.isConnected ? ConfirmMembers : NetWorkError} />
         <Stack.Screen name="ContinuingGuarantor" component={netInfo.isConnected ? ContinuingGuarantor : NetWorkError} />
         <Stack.Screen name="SelectCustomerCall" component={netInfo.isConnected ? SelectCustomerCall : NetWorkError} />
@@ -118,7 +121,7 @@ export default function Router() {
         <Stack.Screen name="SelectCustomerNewCgt" component={netInfo.isConnected ? SelectCustomerNewCgt : NetWorkError} />
         <Stack.Screen name="UploadVid" component={netInfo.isConnected ? UploadVid : NetWorkError} />
         <Stack.Screen name="CorrectionScreen" component={netInfo.isConnected ? CorrectionScreen : NetWorkError} />
-        
+
         {/* --------------------------- Calendar Navigation Screens Start ---------------------------------------*/}
         <Stack.Screen name="Calendar" component={netInfo.isConnected ? Calendar : NetWorkError} />
         <Stack.Screen name="CalendarActivity" component={netInfo.isConnected ? CalendarActivity : NetWorkError} />

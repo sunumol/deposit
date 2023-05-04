@@ -112,10 +112,7 @@ const ActiveTab = (props) => {
                         type: 'SET_CGT_ACTIVITY_ID',
                         payload: props?.details?.activityId,
                     });
-                    dispatch({
-                        type: 'SET_SELECTED_CUSTOMERID',
-                        payload:props?.details?.customerId,
-                      });
+                   
                     //console.log("props passing",props?.details?.customerId)
                     props.navigation.navigate('CGT')
                  }else if(props?.details?.purpose === 'Conduct DLE'){

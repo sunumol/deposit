@@ -40,6 +40,24 @@ const Profile = ({ navigation }) => {
 
     const [notificationCount, SetNotificationCount] = useState()
     const [modalExitAppVisible, setModalExitAppVisible] = useState(false);
+    const [custID, setCustId] = useState()
+    const [fcmToken, setFcmToken] = useState()
+
+    useEffect(() => {
+        AsyncStorage.getItem("CustomerId").then((value) => {
+            setCustId(value)
+        })
+        AsyncStorage.getItem("fcmToken").then((value) => {
+            setFcmToken(value)
+        })
+    }, [])
+   
+    useEffect(() => {
+        if(fcmToken && custID){
+            firebaseTokenSentTo()
+        }
+    }, [fcmToken && custID])
+
     const [ModalCall, setModalCall] = useState(false)
     const isDarkMode = true;
     const DATA = [
@@ -94,6 +112,23 @@ const Profile = ({ navigation }) => {
             .catch((err) => {
                 console.log('-------------------err notification', err)
             })
+    };
+    // ------------------ HomeScreen Api Call End ------------------
+
+     // ------------------ HomeScreen Api Call Start ------------------
+     const firebaseTokenSentTo = async () => {
+        console.log("inside api call")
+        const data = {
+            // "agentId":Number(custID),
+            "agentId":1,
+            "deviceToken":fcmToken
+        };
+        await api.firebaseToken(data).then((res) => {
+            console.log('-------------------res-----notification', res?.data)
+        })
+        .catch((err) => {
+                console.log('-------------------err notification', err?.response)
+        })
     };
     // ------------------ HomeScreen Api Call End ------------------
 

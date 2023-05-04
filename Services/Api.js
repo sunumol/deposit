@@ -493,6 +493,14 @@ export const api = {
     })
   },
 
+   // ---------------- Firebase Token Api ---------------------------------
+   firebaseToken: data => {
+    return axios.post(`${baseURL2}updateAgentToken`, data, {
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+  },
 
   getCollection: data => {
 
