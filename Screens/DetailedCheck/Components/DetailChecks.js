@@ -192,12 +192,12 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
     const getVillage = async (value) => {
         console.log('api called')
         const data = {
-            // "pin": details?.pin,
-            "pin": 688540,
+            "pin": details?.pin,
+            // "pin": 688540,
             "villageName": value
         }
         await api.getVillage(data).then((res) => {
-            console.log('-------------------res get Village', res?.data?.body)
+            console.log('-------------------res get Village', res)
             if (res?.status) {
                 setVillagenamedata(res?.data?.body)
                 setBstatus(true)
@@ -481,11 +481,8 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
                                         style={styles.TextInputBranch}
                                         numberOfLines={2}
                                         maxLength={40}
-                                        onChangeText={(text) => searchlandmarkname(text)}
-
-
+                                       onChangeText={(text) => searchlandmarkname(text)}
                                     />
-
                                 </View>
                             </View>
                         </View>
@@ -504,8 +501,6 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
                             checkedIcon="checkbox-marked"
                             uncheckedIcon="checkbox-blank-outline"
                             checkedColor={COLORS.colorB}
-
-
                         />
                     </View>
                     <View style={{ flexDirection: 'column', left: -5 }}>

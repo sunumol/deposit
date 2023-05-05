@@ -1,30 +1,13 @@
-import React, { useState, useEffect } from "react";
-import { Dimensions, Modal, StyleSheet, Text, TouchableOpacity, View, Image } from "react-native";
+import React from "react";
+import { Dimensions, Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { COLORS, FONTS } from '../../../Constants/Constants';
 import { useTranslation } from 'react-i18next';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 const { height, width } = Dimensions.get('screen');
 import Image1 from '../../NewLead/assets/tick.svg';
 
+const CGTCompleted = ({ ModalVisible, onPressOut, setModalVisible,navigation }) => {
 
-const DLEModal = ({ ModalVisible, onPressOut, setModalVisible,onPress,navigation }) => {
-    const [state, setState] = useState(null);
     const { t } = useTranslation();
-    const [Lang, setLang] = useState('')
-    const [BStatus, setBstatus] = useState(false)
-
-    useEffect(() => {
-        getData()
-    }, [])
-
-    const getData = async () => {
-        try {
-            const lang = await AsyncStorage.getItem('user-language')
-            setLang(lang)
-        } catch (e) {
-            console.log(e)
-        }
-    }
 
     return (
 
@@ -34,27 +17,23 @@ const DLEModal = ({ ModalVisible, onPressOut, setModalVisible,onPress,navigation
             visible={ModalVisible}
             onRequestClose={() => {
                 setModalVisible(!ModalVisible)
-                navigation.navigate('DLESchedule',{set:true})
+                navigation.navigate('Profile',{set:true})
             }}
         >
        <TouchableOpacity onPressOut={()=>{onPressOut()
-                    navigation.navigate('DLESchedule',{set:true})
+                    navigation.navigate('Profile',{set:true})
                   }}
             style={{ backgroundColor: "#000000aa", flex: 1, alignItems: 'center', justifyContent: 'center', opacity: 5 }} >
-
-         
 
                 <View style={styles.modalContainer}>
                     <View style={{paddingTop:width*0.08}}>
                         <Image1 />
                     </View>
-
-                    
                         <Text style={[styles.textdesc,
-                             { paddingTop: width * 0.02, textAlign: 'center' }]}>DLE check scheduled</Text>
+                             { paddingTop: width * 0.02, textAlign: 'center' }]}>CGT Successfully Completed</Text>
 
                     <TouchableOpacity style={styles.buttonStyle} onPress={()=>{onPressOut()
-                    navigation.navigate('DLESchedule',{set:true})
+                    navigation.navigate('Profile',{set:true})
                   }}>
                         <Text style={styles.buttonTextStyle}>{t('common:Okay')}</Text>
                     </TouchableOpacity>
@@ -81,7 +60,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center'
     },
-
     textStyle: {
         fontFamily: FONTS.FontRegular,
         color: COLORS.colorDark,
@@ -139,4 +117,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default DLEModal;
+export default CGTCompleted;
