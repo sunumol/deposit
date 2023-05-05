@@ -1,112 +1,109 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { Dimensions, Modal, StyleSheet, Text, TouchableOpacity, View, Pressable, } from "react-native";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+
+// ------------------- Component Imports -------------------
 import { COLORS, FONTS } from '../../../Constants/Constants';
-import { useTranslation } from 'react-i18next';
-import { CheckBox } from 'react-native-elements';
-import { useSelector } from "react-redux";
-import { api } from "../../../Services/Api";
+
 const { height, width } = Dimensions.get('screen');
 
-const data = [
-    {
-        id: 1,
-        Title: 'Suspected fraud',
-        isChecked: false
-    },
-    {
-        id: 2,
-        Title: 'Non cooperative',
-        isChecked: false
-    },
-    {
-        id: 3,
-        Title: 'Submitted wrong data',
-        isChecked: false
-    },
-    {
-        id: 4,
-        Title: 'Unviable household',
-        isChecked: false
-    },
-    {
-        id: 5,
-        Title: 'Others',
-        isChecked: false
-    },
-]
-const ReasonModal = ({ModalVisible, onPressOut,setModalVisible,onPress1,setReason1}) => {
-    const { t } = useTranslation();
+const data = [{
+    id: 1,
+    Title: 'Suspected fraud',
+    isChecked: false
+},
+{
+    id: 2,
+    Title: 'Non cooperative',
+    isChecked: false
+},
+{
+    id: 3,
+    Title: 'Submitted wrong data',
+    isChecked: false
+},
+{
+    id: 4,
+    Title: 'Unviable household',
+    isChecked: false
+},
+{
+    id: 5,
+    Title: 'Others',
+    isChecked: false
+},]
 
-    const [Data, setData] = useState(data)
-    const [Reason, setReason] = useState('')
+const ReasonModal = ({ ModalVisible, onPressOut, onPress1, }) => {
+
+    const [Data, setData] = useState(data )
+    
     const [ButtonStatus, setButtonStatus] = useState(false)
-    const [Checked,setChecked] = useState('')
-    const activityId = useSelector(state => state.activityId);
-
 
     const onCheck1 = (id) => {
-        console.log('On check',id)
+    console.log('----------------CHECKED-------------',id)
         let reason = Data
         let index = reason.findIndex(o => o.id === id)
         reason[index].isChecked = !reason[index].isChecked;
+      
         setTimeout(() => {
             let FilterArray1 = Data.filter(item => item.isChecked == true)
             let FilterId1 = FilterArray1.map((item) => (item.id))
-            let Checked = FilterArray1.map((item)=>(item.isChecked))
-            let activity = FilterArray1.map((item)=> (item.Title))
-            //let FilterId1 = FilterArray.slice(id)
-
-            console.log("FilterId.",Checked)
-            console.log("FilterArray.......", activity[0])
-            setReason(activity[0])
-            setChecked(Checked)
-            if(FilterId1.length == 0){
+            if (FilterId1.length == 0) {
                 setButtonStatus(false)
-            }else{
+            } else {
                 setButtonStatus(true)
             }
         }, 10)
-
-     
     }
 
+    useEffect(() => {
+        Data.forEach(function (item) {
+            item.isChecked = false
+        })
 
-
-
-  
+    }, [])
+    
     return (
 
         <Modal
             animationType="slide"
             transparent={true}
             visible={ModalVisible}
-            onRequestClose={()=>{onPressOut()
-            setReason(null)}}
+            onRequestClose={() => { 
+                Data.forEach(function (item) {
+                    item.isChecked = false
+                })
+                setButtonStatus(false)
+                onPressOut() }}
         >
             <View style={styles.mainContainer} >
                 <TouchableOpacity
-                    onPressOut={onPressOut}
+                    onPressOut={() => { 
+                        Data.forEach(function (item) {
+                            item.isChecked = false
+                        })
+                        setButtonStatus(false)
+                        onPressOut() }}
                     style={styles.touchableStyle} >
                 </TouchableOpacity>
                 <View style={styles.centeredView2}>
                     <View style={styles.modalView}>
                         <Text style={styles.modalTextHead}>Reason for reject</Text>
 
-
                         {Data.map((item, index) => {
                             return (
-                                <View style={{flexDirection:'column',}}>
-                                <View style={{ flexDirection: 'row', justifyContent: 'space-between', 
-                                paddingLeft: width * 0.06,paddingRight:width*0.06,alignItems:'center',marginBottom:width*0.05,marginTop:width*0.05 }}>
-                                    <Text style={styles.TextTitle}>{item.Title}</Text>
-                                    <Pressable onPress={() => onCheck1(item.id)} >
-                                        <Icon name={item.isChecked ? 'checkbox-marked' : 'checkbox-blank-outline'} size={22} color={item.isChecked ? COLORS.colorB : '#DADADA'} />
-                                    </Pressable>
-                                    
-                                </View>
-                                {item.id !==5 &&
-                                <View style={styles.lineView} />}
+                                <View style={{ flexDirection: 'column', }}>
+                                    <View style={{
+                                        flexDirection: 'row', justifyContent: 'space-between',
+                                        paddingLeft: width * 0.06, paddingRight: width * 0.06, alignItems: 'center', marginBottom: width * 0.05, marginTop: width * 0.05
+                                    }}>
+                                        <Text style={styles.TextTitle}>{item.Title}</Text>
+                                        <Pressable onPress={() => onCheck1(item.id)} >
+                                            <Icon name={item.isChecked ? 'checkbox-marked' : 'checkbox-blank-outline'} size={22} color={item.isChecked ? COLORS.colorB : '#DADADA'} />
+                                        </Pressable>
+                                    </View>
+                                    {item.id !== 5 &&
+                                        <View style={styles.lineView} />}
                                 </View>
                             )
                         })}
@@ -114,19 +111,36 @@ const ReasonModal = ({ModalVisible, onPressOut,setModalVisible,onPress1,setReaso
                         <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                             <TouchableOpacity style={[styles.Button1,
                             { backgroundColor: ButtonStatus ? COLORS.colorB : '#ECEBED' }]}
-                            onPress={()=>ButtonStatus ? onPress1(): console.log("hello")}>
-
-                                <Text style={[styles.text1, { color: ButtonStatus ?
-                                     COLORS.colorBackground : '#979C9E', paddingLeft: width * 0.02 }]}>Submit</Text>
+                                onPress={() => 
+                                    {
+                                        if (ButtonStatus) {
+                                            Data.forEach(function (item) {
+                                                item.isChecked = false
+                                            })
+                                            setButtonStatus(false)
+                                            onPress1()
+                                        } else {
+                                            console.log("hello")
+                                        }
+                                    }}>
+                                <Text style={[styles.text1, {
+                                    color: ButtonStatus ?
+                                        COLORS.colorBackground : '#979C9E', paddingLeft: width * 0.02
+                                }]}>Submit</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
-
-
                 </View>
+                <TouchableOpacity
+                    onPressOut={() => { 
+                        Data.forEach(function (item) {
+                            item.isChecked = false
+                        })
+                        onPressOut() }}
+                    style={styles.touchableStyle} >
+                </TouchableOpacity>
             </View>
         </Modal>
-
     );
 };
 
@@ -134,23 +148,13 @@ const styles = StyleSheet.create({
     mainContainer: {
         backgroundColor: "#000000aa",
         flex: 1,
-        justifyContent:'center',
-        alignItems:'center'
     },
     touchableStyle: {
-       // flex: 1,
-//height: Dimensions.get('window').height,
+        flex: 1,
+        height: Dimensions.get('window').height,
     },
     centeredView2: {
-       // justifyContent: "flex-end",
-    },
-    lineView2: {
-    //     borderBottomWidth: 0.7,
-    //     borderBottomColor: COLORS.colorB,
-   
-    //     opacity: 0.5,
-    //    marginLeft:100,
-    //    marginRight:100
+        paddingLeft: 25
     },
     modalView: {
         backgroundColor: "white",
@@ -159,11 +163,8 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.1,
         elevation: 5,
         shadowRadius: 2,
-        // borderTopStartRadius: 30,
-        // borderTopEndRadius: 30,
         width: Dimensions.get('window').width * 0.89,
         paddingBottom: 7
-        // height:Dimensions.get('window').height*0.3
     },
     textTouch: {
         paddingVertical: 20,
@@ -171,7 +172,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-
     },
     textStyle: {
         color: "white",
@@ -185,7 +185,6 @@ const styles = StyleSheet.create({
         fontWeight: '400',
         lineHeight: 17,
         opacity: 0.7
-
     },
     modalTextHead: {
         color: '#3B3D43',
@@ -193,7 +192,6 @@ const styles = StyleSheet.create({
         fontFamily: FONTS.FontRegular,
         fontSize: 14,
         fontWeight: '700',
-        //: 17,
         marginTop: 20,
         marginBottom: 10
     },
@@ -202,8 +200,6 @@ const styles = StyleSheet.create({
         borderColor: COLORS.Gray6,
         backgroundColor: COLORS.Gray6,
         opacity: 0.5,
-    
-
     },
     TextTitle: {
         fontSize: 14,
@@ -216,10 +212,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: COLORS.colorB,
-        marginTop:15,
+        marginTop: 15,
         flexDirection: 'row',
-        // marginLeft: 12,
-        // marginRight: 12,
         borderRadius: 40,
         marginBottom: 15
     },
@@ -228,8 +222,6 @@ const styles = StyleSheet.create({
         fontSize: 14,
         fontWeight: '700'
     },
-   
-
 });
 
 export default ReasonModal;

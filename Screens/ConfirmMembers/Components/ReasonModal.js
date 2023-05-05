@@ -24,7 +24,6 @@ const ReasonModal = ({ ModalVisible, onPressOut, setModalVisible, onPress1, setR
             let FilterId1 = FilterArray1.map((item) => (item.id))
             let Checked = FilterArray1.map((item) => (item.isChecked))
             //let FilterId1 = FilterArray.slice(id)
-
             console.log("FilterId.", Checked)
             console.log("FilterArray.......", FilterArray1)
             setReason(FilterId1)
@@ -93,7 +92,6 @@ const ReasonModal = ({ ModalVisible, onPressOut, setModalVisible, onPress1, setR
                                         console.log("hello")
                                     }
                                 }}>
-
                                 <Text style={[styles.text1, {
                                     color: ButtonStatus ?
                                         COLORS.colorBackground : '#979C9E', paddingLeft: width * 0.02

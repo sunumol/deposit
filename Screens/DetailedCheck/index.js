@@ -165,7 +165,7 @@ const DetailCheck = ({ navigation, route }) => {
                 }}
                 ModalVisible={ModalReason}
                 onPressOut={() => setModalReason(!ModalReason)}
-                setModalVisible={setModalReason}
+                setModalReason={setModalReason}
             />
 
             <ErrorModal

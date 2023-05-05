@@ -13,7 +13,8 @@ const initialState={
     cgtCustomerDetails:'',
     activityId:'',
     slot:[],
-    NewcgtSlot:''
+    NewcgtSlot:'',
+    CallFlag:''
 }
 
 export const baseReducer = (state = initialState, action) => {
@@ -73,6 +74,11 @@ export const baseReducer = (state = initialState, action) => {
             return {
                 ...state, // return the updated state
                 NewcgtSlot: action.payload  
+            }
+            case  "SET_CALL-FLAG":  // for updating state
+            return {
+                ...state, // return the updated state
+                CallFlag: action.payload  
             }
            
         default:

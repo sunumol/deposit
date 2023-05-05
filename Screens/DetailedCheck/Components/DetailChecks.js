@@ -483,11 +483,8 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
                                         style={styles.TextInputBranch}
                                         numberOfLines={2}
                                         maxLength={40}
-                                        onChangeText={(text) => searchlandmarkname(text)}
-
-
+                                       onChangeText={(text) => searchlandmarkname(text)}
                                     />
-
                                 </View>
                             </View>
                         </View>
@@ -506,8 +503,6 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
                             checkedIcon="checkbox-marked"
                             uncheckedIcon="checkbox-blank-outline"
                             checkedColor={COLORS.colorB}
-
-
                         />
                     </View>
                     <View style={{ flexDirection: 'column', left: -5 }}>

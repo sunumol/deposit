@@ -12,7 +12,7 @@ import { useDispatch } from 'react-redux';
 import { api } from '../../../../Services/Api';
 import CallModal from '../../../Profile/Components/Modal';
 const MeetTab = (props) => {
-    console.log("props pass",props?.data)
+   // console.log("props pass",props?.data)
     const { t } = useTranslation();
     const [Lang, setLang] = useState('')
     const [modalVisible, setModalVisible] = useState(false)

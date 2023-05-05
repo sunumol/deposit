@@ -15,7 +15,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 const { height, width } = Dimensions.get('screen');
 const App = ({ visible, onPressOut, meet, details ,setEnab}) => {
     const { t } = useTranslation();
-    console.log("details of active modal",details)
+    //console.log("details of active modal",details)
     const [enableContinue, setEnableContinue] = useState(false)
     const [id, setId] = useState()
     const [data, setData] = useState([

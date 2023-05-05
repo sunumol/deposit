@@ -18,7 +18,7 @@ import MeetTab from './Components/MeetTab';
 import CallTab from './Components/CallTab';
 import { useFocusEffect } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
-import { useDispatch } from 'react-redux';
+import { useDispatch,useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CallModal from '../Profile/Components/Modal';
 
@@ -30,7 +30,7 @@ const Activityscreens = ({ navigation ,id}) => {
   const { t } = useTranslation();
   const dispatch = useDispatch()
   const [idw, setId] = useState(null)
-
+  const activityId = useSelector(state => state.CallFlag);
 
   const handleGoBack = useCallback(() => {
     navigation.goBack()
@@ -46,7 +46,32 @@ const Activityscreens = ({ navigation ,id}) => {
     }, [handleGoBack]),
   );
 
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      console.log("inside addeventlistener",AsyncStorage.getItem('CallActivity'))
+      const langg = AsyncStorage.getItem('CallActivity')
+      console.log("log active",activityId)
+     getData()
+     AsyncStorage.getItem("CallActivity").then((value) => {
+      dispatch({
+        type: 'SET_CALL-FLAG',
+        payload: value
+      });
+  
+       console.log("value of new item",value)
+       setTimeout(()=>{
+        setId(value);
+       },1000)
+     setId(value);
+     console.log("value of new item",idw)
+  })
+  .then(res => {
+      //do something else
+  });
+    });
 
+    return unsubscribe;
+  }, [navigation]);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
@@ -62,17 +87,19 @@ const Activityscreens = ({ navigation ,id}) => {
     return unsubscribe;
   }, [navigation]);
 
-  useEffect(() => {
-    getData()
-    console.log("inside")
-  }, [])
+
   const getData = async () => {
 
     try {
-      const lang1 = await AsyncStorage.getItem('CallActivity')
+      const lang1 =JSON.parse(await AsyncStorage.getItem('CallActivity'))
       console.log("no modal data inside", lang1)
+    //  (await AsyncStorage.getItem('CallActivity'))
+      //setId(lang1)
+      setTimeout(()=>{
+        setId(lang1)
+      },1000)
       setId(lang1)
-      console.log("no modal data inside state", id)
+      console.log("getdata pass", idw)
     
     } catch (e) {
       console.log(e)
@@ -90,7 +117,7 @@ const Activityscreens = ({ navigation ,id}) => {
 
 
       <Tab.Navigator
-        initialRouteName={id == null ? t('common:All') : t('common:Call')}
+        initialRouteName={idw== null ? t('common:All') : t('common:Call')}
         screenOptions={{
           tabBarLabelStyle: { focused: true, fontSize: 14, fontFamily: FONTS.FontSemiB },
           tabBarStyle: { backgroundColor: COLORS.colorB },

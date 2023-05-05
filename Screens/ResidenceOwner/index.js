@@ -198,7 +198,7 @@ const UpdateResidenceowner_backButton = async () => {
                 }}
                 ModalVisible={ModalReason}
                 onPressOut={() => setModalReason(!ModalReason)}
-                setModalVisible={setModalReason}
+                setModalVisible={setModalVisible}
             />
 
 

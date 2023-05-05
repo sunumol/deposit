@@ -17,7 +17,7 @@ import Icon1 from 'react-native-vector-icons/Ionicons'
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 import Icon from 'react-native-vector-icons/AntDesign';
 import moment from 'moment';
-import { useSelector,useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useNetInfo } from "@react-native-community/netinfo";
 
 // ----------------- Component Import --------------------
@@ -27,6 +27,7 @@ import { FONTS, COLORS } from '../../Constants/Constants';
 import TrustModal from './Components/TrustModal';
 import { api } from '../../Services/Api';
 import NetWorkError from '../NetWorkError';
+import CGTCompleted from './Components/CGTCompleted'
 
 // --------------- Image Import -------------------
 import Date from '../CGTCustomer/Images/Date.svg';
@@ -40,6 +41,8 @@ const CreateTrustCircle = ({ navigation, route }) => {
     const netInfo = useNetInfo();
 
     const [ModalVisible, setModalVisible] = useState(false)
+    const [ModalVisible1, setModalVisible1] = useState(false)
+    const [ModalVisible3, setModalVisible3] = useState(false)
     // --------- Redux State -------------------------------------
     const customerList = useSelector(state => state.customerList);
     const customerID = useSelector(state => state.customerID);
@@ -69,7 +72,7 @@ const CreateTrustCircle = ({ navigation, route }) => {
     useEffect(() => {
         getTCLimitDetails()
         getTclist()
-    }, [customerList,customerID])
+    }, [customerList, customerID])
 
     // ------------------ getTCLimitDetails Api Call Start ------------------
     const getTCLimitDetails = async () => {
@@ -83,7 +86,7 @@ const CreateTrustCircle = ({ navigation, route }) => {
         })
     };
     // ------------------ HomeScreen Api Call End ------------------
-{console.log('----------customerLi-------',customerList)}
+    { console.log('-----------------', customerList) }
     // ------------------ getTCLimitDetails Api Call Start ------------------
     const CreateTrustCircle = async () => {
         const data = {
@@ -94,9 +97,17 @@ const CreateTrustCircle = ({ navigation, route }) => {
         await api.createTrustCircles(data).then((res) => {
             console.log('-------------------res create', res)
             if (res?.status) {
-                setModalVisible(true)
-                // const selecte = customerList?.filter((item)=>)
-                
+                const setShedule = customerList?.filter((item) => item?.dleScheduleStatus !== 'Conduct DLE')
+                console.log('------------',setShedule)
+                if (setShedule.length > 0) {
+                    setModalVisible(true)
+                } else {
+                    setModalVisible1(true)
+                    setTimeout(() => {
+                        setModalVisible1(false)
+                        setModalVisible3(true)
+                    }, 500);
+                }
             }
         }).catch((err) => {
             console.log('-------------------err', err)
@@ -106,7 +117,7 @@ const CreateTrustCircle = ({ navigation, route }) => {
 
     useEffect(() => {
         getDLEschedule()
-        console.log('------------',customerList)
+        console.log('------------', customerList)
     }, [])
 
     const getTclist = async () => {
@@ -137,8 +148,8 @@ const CreateTrustCircle = ({ navigation, route }) => {
                 type: 'SET_SELECTED_CUSTOMERLIST',
                 payload: res?.data?.body,
             });
-            const idData=[]
-            res?.data?.body?.map((item)=>{
+            const idData = []
+            res?.data?.body?.map((item) => {
                 idData.push(item?.id)
             })
             dispatch({
@@ -172,134 +183,134 @@ const CreateTrustCircle = ({ navigation, route }) => {
             <SafeAreaView style={styles.container1} />
             <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} backgroundColor={"#002B59"} />
             {netInfo.isConnected
-                    ?
-                    <>
-            <Header navigation={navigation} name="CGT" back={true} onPress={handleGoBack} />
-         
-            <View style={styles.mainContainer}>
-          
-                <ScrollView showsVerticalScrollIndicator={false} >
+                ?
+                <>
+                    <Header navigation={navigation} name="CGT" back={true} onPress={handleGoBack} />
 
-                    {/* --------------------------------- Date Resedule Box  Start--------------------------------------------------------------------------------------------------------------------- */}
-                    <View style={styles.boxView}>
-                        <View style={styles.contentView}>
-                            <Text style={styles.timeText}>{cgtCustomerDetails?.cgtTime?.slice(0, -3)} PM</Text>
-                            <Text style={styles.dateText}>{cgtCustomerDetails?.cgtDate ? moment(new Date(cgtCustomerDetails?.cgtDate)).format("ddd, DD MMM") : ''}</Text>
-                        </View>
-                        <TouchableOpacity style={styles.editView} onPress={() => navigation.navigate('NewCgt', { reschedule: cgtCustomerDetails })}>
-                            <Date />
-                            <Text style={styles.changeText}>Reschedule CGT</Text>
-                        </TouchableOpacity>
-                    </View>
-                    {/* --------------------------------- Date Resedule Box  End--------------------------------------------------------------------------------------------------------------------- */}
+                    <View style={styles.mainContainer}>
 
-                    {/* --------------------------------- Customer Details Start--------------------------------------------------------------------------------------------------------------------- */}
+                        <ScrollView showsVerticalScrollIndicator={false} >
 
-                    <View style={[styles.viewCard, { flex: 1, flexDirection: 'row', }]}>
-
-                        <View style={[styles.circleStyle, { backgroundColor: '#6979F8', marginLeft: width * 0.05 }]}>
-                            <Text style={styles.circleText}>{getInitials(cgtCustomerDetails?.customerName)}</Text>
-                        </View>
-
-
-                        <View style={{ flexDirection: 'column', paddingLeft: 12, paddingTop: 5, flex: 1 }}>
-
-                            <Text style={styles.nameText}>{cgtCustomerDetails?.customerName}</Text>
-
-
-                            <View style={{ flexDirection: 'row', }}>
-                                <View style={{ paddingTop: 5, paddingRight: 1 }}>
-                                    <Icon1 name="location-outline" color={"black"} />
+                            {/* --------------------------------- Date Resedule Box  Start--------------------------------------------------------------------------------------------------------------------- */}
+                            <View style={styles.boxView}>
+                                <View style={styles.contentView}>
+                                    <Text style={styles.timeText}>{cgtCustomerDetails?.cgtTime?.slice(0, -3)} PM</Text>
+                                    <Text style={styles.dateText}>{cgtCustomerDetails?.cgtDate ? moment(new Date(cgtCustomerDetails?.cgtDate)).format("ddd, DD MMM") : ''}</Text>
                                 </View>
-                                <Text style={[styles.idText, { paddingTop: 4 }]}>{cgtCustomerDetails?.pin}</Text>
+                                <TouchableOpacity style={styles.editView} onPress={() => navigation.navigate('NewCgt', { reschedule: cgtCustomerDetails })}>
+                                    <Date />
+                                    <Text style={styles.changeText}>Reschedule CGT</Text>
+                                </TouchableOpacity>
                             </View>
-                        </View>
-                        <View style={{ flexDirection: 'column', top: -8, alignItems: 'flex-end', marginRight: 14 }}>
-                            <View style={{ flexDirection: 'row' }}>
-                                <Icon2 name="phone-in-talk-outline" color={"black"} size={15} />
-                                <Text style={[styles.numText, { paddingLeft: 6 }]}>{cgtCustomerDetails?.mobileNumber?.replace(/^.{0}/g, '', " ").slice(-10).replaceAt(3, "X").replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X")}</Text>
-                            </View>
-                        </View>
-                    </View>
-                    {/* --------------------------------- Customer Details End--------------------------------------------------------------------------------------------------------------------- */}
+                            {/* --------------------------------- Date Resedule Box  End--------------------------------------------------------------------------------------------------------------------- */}
 
-                    {/* --------------------------------- Trust Circle Members Start--------------------------------------------------------------------------------------------------------------------- */}
-                    {customerList?.length > 0
-                        ? <View>
-                            <Text style={styles.Trust}>Trust Circle Members ({customerList?.length})</Text>
-                        </View> : null}
+                            {/* --------------------------------- Customer Details Start--------------------------------------------------------------------------------------------------------------------- */}
 
-                    {customerList && customerList?.map((item) => {
-                        { console.log('--',) }
-                        return (
                             <View style={[styles.viewCard, { flex: 1, flexDirection: 'row', }]}>
 
-                                <View style={[styles.circleStyle, { backgroundColor: 'green', marginLeft: width * 0.05 }]}>
-                                    <Text style={styles.circleText}>{getInitials(item?.customerName?item?.customerName:item?.name)}</Text>
+                                <View style={[styles.circleStyle, { backgroundColor: '#6979F8', marginLeft: width * 0.05 }]}>
+                                    <Text style={styles.circleText}>{getInitials(cgtCustomerDetails?.customerName)}</Text>
                                 </View>
 
 
                                 <View style={{ flexDirection: 'column', paddingLeft: 12, paddingTop: 5, flex: 1 }}>
 
-                                    <Text style={styles.nameText}>{item?.customerName?item?.customerName:item?.name}</Text>
+                                    <Text style={styles.nameText}>{cgtCustomerDetails?.customerName}</Text>
 
 
                                     <View style={{ flexDirection: 'row', }}>
                                         <View style={{ paddingTop: 5, paddingRight: 1 }}>
                                             <Icon1 name="location-outline" color={"black"} />
                                         </View>
-                                        <Text style={[styles.idText, { paddingTop: 4 }]}>{item?.pin?item?.pin:item?.villageOrPin}</Text>
+                                        <Text style={[styles.idText, { paddingTop: 4 }]}>{cgtCustomerDetails?.pin}</Text>
                                     </View>
                                 </View>
                                 <View style={{ flexDirection: 'column', top: -8, alignItems: 'flex-end', marginRight: 14 }}>
                                     <View style={{ flexDirection: 'row' }}>
                                         <Icon2 name="phone-in-talk-outline" color={"black"} size={15} />
-                                        <Text style={[styles.numText, { paddingLeft: 6 }]}>{item?.mobileNumber?.replace(/^.{0}/g, '', " ").slice(-10).replaceAt(3, "X").replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X")}</Text>
+                                        <Text style={[styles.numText, { paddingLeft: 6 }]}>{cgtCustomerDetails?.mobileNumber?.replace(/^.{0}/g, '', " ").slice(-10).replaceAt(3, "X").replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X")}</Text>
                                     </View>
                                 </View>
                             </View>
-                        )
-                    })}
+                            {/* --------------------------------- Customer Details End--------------------------------------------------------------------------------------------------------------------- */}
 
-                    {customerList?.length > 0 && customerList?.length <= maxLimit
-                        ? <TouchableOpacity style={styles.viewCard} onPress={() => navigation.navigate('ConfirmMembers', { id: route?.params?.customerDetails?.primaryCustomerId })}>
+                            {/* --------------------------------- Trust Circle Members Start--------------------------------------------------------------------------------------------------------------------- */}
+                            {customerList?.length > 0
+                                ? <View>
+                                    <Text style={styles.Trust}>Trust Circle Members ({customerList?.length})</Text>
+                                </View> : null}
 
-                            <View style={{ marginLeft: width * 0.05 }}>
-                                <Plus />
-                            </View>
-                            <Text style={styles.AddText}>Add new member</Text>
-                        </TouchableOpacity> : null}
+                            {customerList && customerList?.map((item) => {
+                                { console.log('--',) }
+                                return (
+                                    <View style={[styles.viewCard, { flex: 1, flexDirection: 'row', }]}>
 
-                    {/* --------------------------------- Trust Circle Members End--------------------------------------------------------------------------------------------------------------------- */}
+                                        <View style={[styles.circleStyle, { backgroundColor: 'green', marginLeft: width * 0.05 }]}>
+                                            <Text style={styles.circleText}>{getInitials(item?.customerName ? item?.customerName : item?.name)}</Text>
+                                        </View>
 
-                </ScrollView>
 
-                {/* --------------------------------- Button Start--------------------------------------------------------------------------------------------------------------------- */}
-                <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                    {customerList?.length > 0
-                        ? <TouchableOpacity style={[styles.Button1,
-                        { backgroundColor: customerList?.length >= minLimit ? COLORS.colorB : '#ECEBED' }]} onPress={() => customerList?.length >= minLimit ? CreateTrustCircle() : null}>
-                            <Text style={[styles.text1, { color: customerList?.length >= minLimit ? COLORS.colorBackground : '#979C9E', paddingLeft: width * 0.02 }]}>Create Trust Circle</Text>
-                        </TouchableOpacity>
-                        :
-                        <TouchableOpacity style={[styles.Button1, { backgroundColor: COLORS.colorB }]}
-                            onPress={() => navigation.navigate('ConfirmMembers')}
-                        >
-                            <Icon name="pluscircleo" size={15} color={"#FFFFFF"} />
-                            <Text style={[styles.text1, { color: COLORS.colorBackground, paddingLeft: width * 0.02 }]}>Add Trust Circle Member</Text>
-                        </TouchableOpacity>
-                    }
+                                        <View style={{ flexDirection: 'column', paddingLeft: 12, paddingTop: 5, flex: 1 }}>
 
-                </View>
+                                            <Text style={styles.nameText}>{item?.customerName ? item?.customerName : item?.name}</Text>
 
-                {/* --------------------------------- Button End--------------------------------------------------------------------------------------------------------------------- */}
 
-            </View>
-            </>
-             :
-             <NetWorkError />
-         }
-            
+                                            <View style={{ flexDirection: 'row', }}>
+                                                <View style={{ paddingTop: 5, paddingRight: 1 }}>
+                                                    <Icon1 name="location-outline" color={"black"} />
+                                                </View>
+                                                <Text style={[styles.idText, { paddingTop: 4 }]}>{item?.pin ? item?.pin : item?.villageOrPin}</Text>
+                                            </View>
+                                        </View>
+                                        <View style={{ flexDirection: 'column', top: -8, alignItems: 'flex-end', marginRight: 14 }}>
+                                            <View style={{ flexDirection: 'row' }}>
+                                                <Icon2 name="phone-in-talk-outline" color={"black"} size={15} />
+                                                <Text style={[styles.numText, { paddingLeft: 6 }]}>{item?.mobileNumber?.replace(/^.{0}/g, '', " ").slice(-10).replaceAt(3, "X").replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X")}</Text>
+                                            </View>
+                                        </View>
+                                    </View>
+                                )
+                            })}
+
+                            {customerList?.length > 0 && customerList?.length <= maxLimit
+                                ? <TouchableOpacity style={styles.viewCard} onPress={() => navigation.navigate('ConfirmMembers', { id: route?.params?.customerDetails?.primaryCustomerId })}>
+
+                                    <View style={{ marginLeft: width * 0.05 }}>
+                                        <Plus />
+                                    </View>
+                                    <Text style={styles.AddText}>Add new member</Text>
+                                </TouchableOpacity> : null}
+
+                            {/* --------------------------------- Trust Circle Members End--------------------------------------------------------------------------------------------------------------------- */}
+
+                        </ScrollView>
+
+                        {/* --------------------------------- Button Start--------------------------------------------------------------------------------------------------------------------- */}
+                        <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                            {customerList?.length > 0
+                                ? <TouchableOpacity style={[styles.Button1,
+                                { backgroundColor: customerList?.length >= minLimit ? COLORS.colorB : '#ECEBED' }]} onPress={() => customerList?.length >= minLimit ? CreateTrustCircle() : null}>
+                                    <Text style={[styles.text1, { color: customerList?.length >= minLimit ? COLORS.colorBackground : '#979C9E', paddingLeft: width * 0.02 }]}>Create Trust Circle</Text>
+                                </TouchableOpacity>
+                                :
+                                <TouchableOpacity style={[styles.Button1, { backgroundColor: COLORS.colorB }]}
+                                    onPress={() => navigation.navigate('ConfirmMembers')}
+                                >
+                                    <Icon name="pluscircleo" size={15} color={"#FFFFFF"} />
+                                    <Text style={[styles.text1, { color: COLORS.colorBackground, paddingLeft: width * 0.02 }]}>Add Trust Circle Member</Text>
+                                </TouchableOpacity>
+                            }
+
+                        </View>
+
+                        {/* --------------------------------- Button End--------------------------------------------------------------------------------------------------------------------- */}
+
+                    </View>
+                </>
+                :
+                <NetWorkError />
+            }
+
 
             <TrustModal
                 ModalVisible={ModalVisible}
@@ -313,9 +324,27 @@ const CreateTrustCircle = ({ navigation, route }) => {
                     navigation.navigate('DLESchedule', { set: true, customerID: cgtCustomerDetails?.primaryCustomerId })
                 }}
             />
+            <TrustModal
+                ModalVisible={ModalVisible1}
+                onPressOut={() => {
+                    setModalVisible1(!ModalVisible1)
+                }}
+                setModalVisible={setModalVisible1}
+                onPress1={() => {
+                    setModalVisible1(false)
+                }}
+            />
+            <CGTCompleted
+                ModalVisible={ModalVisible3}
+                onPressOut={() => {
+                    setModalVisible3(false)
+                }}
+                navigation={navigation}
+                setModalVisible1={setModalVisible3} 
+            />
 
         </SafeAreaProvider>
-       
+
     )
 }
 

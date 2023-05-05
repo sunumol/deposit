@@ -20,6 +20,7 @@ import Resend from '../../assets/Images/resend.svg'
 import OTPInputView from '../../Components/OTPInputView'
 import { useSelector } from 'react-redux';
 import ErrorModal1 from './components/ErrorModal1';
+import ErrorModal2 from './components/ErrorModal2';
 import ReasonModal from '../DetailedCheck/Components/ReasonModal';
 import ModalSave from '../../Components/ModalSave';
 import { useFocusEffect } from '@react-navigation/native';
@@ -49,14 +50,14 @@ const ContinuingGuarantor = ({ navigation, route }) => {
   const [ModalError, setModalError] = useState(false)
   const [ModalVisible1, setModalVisible1] = useState(false)
   const [status, setStatus] = useState(false)
-
+  const [ModalError2, setModalError2] = useState(false)
 
   const [fetOtp, setOtpFetch] = useState(false)
   const [otpMessage, setOtpMessage] = useState()
   const [ModalVisibleError, setModalVisibleError] = useState(false)
   const [maxError, setMaxError] = useState(false)
   const [otp, setOtp] = useState(false)
-  const [ResendOtps,setResendOtp] = useState(false)
+  const [ResendOtps, setResendOtp] = useState(false)
 
   const activityId = useSelector(state => state.activityId);
   const [ModalVisible, setModalVisible] = useState(false)
@@ -171,8 +172,8 @@ const ContinuingGuarantor = ({ navigation, route }) => {
     setTimer(30)
     setStatus(true)
     setIsOtp1(true)
-   
-   
+
+
   }
 
 
@@ -203,7 +204,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
   useEffect(() => {
 
     getData();
-   
+
 
     /// getSpousedetail()
   }, []);
@@ -272,6 +273,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
       "relationShip": relation
 
     }
+    console.log("data pass", data)
     await api.verifyCG(data).then((res) => {
       console.log('-------------------res verifyCG', res)
       if (res?.status) {
@@ -279,22 +281,24 @@ const ContinuingGuarantor = ({ navigation, route }) => {
         setOtpFetch(true)
         setIsOtp1(true)
         getOtp();
-       
+
         setVerifyotpstatus(true)
 
       }
     }).catch((err) => {
       setTimer(0)
       setVerifyotpstatus(true)
-      console.log('-------------------err verifyCG',ResendOtps)
+      console.log('-------------------err verifyCG', err?.response?.data?.message)
       if (err?.response?.data?.message === 'Maximum number of OTPs are exceeded. Please try after 30 minutes.') {
         setOtpFetch(false)
         setIsOtp1(true)
         setStatus(false)
         setResendOtp(false)
         setMaxError(true)
-      
-        console.log("timer zero.....",timerCount)
+
+        console.log("timer zero.....", timerCount)
+      } else if (err?.response?.data?.message === "Mobile number cannot be same as that of the Customer") {
+        setModalError2(true)
       } else {
         setMaxError(false)
       }
@@ -306,7 +310,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
   // ------------------verifyCG detail ------------------
 
   async function ResendOtp() {
-   
+
     //   console.log('api called')
     setInvalidotp(false)
 
@@ -338,8 +342,8 @@ const ContinuingGuarantor = ({ navigation, route }) => {
   // ------------------verifyCG detail ------------------
 
   const verifyCGOTP = async (mobnumber) => {
-    console.log('api called')
-   
+    console.log('api called', activityId)
+
     const data = {
       "activityId": activityId,
       "otp": OtpValue
@@ -348,24 +352,24 @@ const ContinuingGuarantor = ({ navigation, route }) => {
     await api.verifyCGOTP(data).then((res) => {
       console.log('-------------------res verifyCG', res)
       if (res?.status) {
-       
+
         setOtpFetch(false)
         setIsOtp1(false)
         setOtpFetch(false)
         navigation.navigate('UploadVid')
       }
     }).catch((err) => {
-  
+
       if (err?.response?.data?.message == 'You entered wrong OTP') {
         setInvalidotp(true)
         setOtp(true)
         setResendOtp(true)
-      }else if(err?.response?.data?.message === 'Maximum number of OTPs are exceeded. Please try after 30 minutes.'){
+      } else if (err?.response?.data?.message === 'Maximum number of OTPs are exceeded. Please try after 30 minutes.') {
         setResendOtp(false)
         setInvalidotp(true)
         setOtp(true)
       }
-      console.log('-------------------err verifyCG',ResendOtps)
+      console.log('-------------------err verifyCG', ResendOtps)
     })
   };
   // ------------------ ------------------
@@ -417,7 +421,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
         onChangeNumber(num)
         if (num?.length == 10) {
           GETOTP_Validation(num)
-    
+
         }
         onChangeNumber(num)
         setOtpValue('')
@@ -435,15 +439,15 @@ const ContinuingGuarantor = ({ navigation, route }) => {
     const nameSplit = name?.split(" ");
     const nameLength = nameSplit?.length;
     if (nameLength > 1) {
-        initials =
-            nameSplit[0].substring(0, 1) +
-            nameSplit[nameLength - 1].substring(0, 1);
+      initials =
+        nameSplit[0].substring(0, 1) +
+        nameSplit[nameLength - 1].substring(0, 1);
     } else if (nameLength === 1) {
-        initials = nameSplit[0].substring(0, 1);
+      initials = nameSplit[0].substring(0, 1);
     } else return;
 
     return initials.toUpperCase();
-};
+  };
 
   const scrollViewRef = useRef();
   return (
@@ -464,7 +468,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
             onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: true })}>
             <View style={{ flex: 1 }}>
               <Text style={styles.headerText}>Relationship with Customer</Text>
-              <TouchableOpacity onPress={() => relation == 'Spouse' ? setModalVisible1(false) :setModalVisible1(true)} style={styles.dropDown}>
+              <TouchableOpacity onPress={() => relation == 'Spouse' ? setModalVisible1(false) : setModalVisible1(true)} style={styles.dropDown}>
                 <Text style={styles.spouseText}>{relation ? relation : 'Select'}</Text>
                 <Icon1 name="chevron-down" size={18} color={'#808080'} />
               </TouchableOpacity>
@@ -505,11 +509,11 @@ const ContinuingGuarantor = ({ navigation, route }) => {
                   maxLength={10}
                   style={styles.textIn1}
                   onChangeText={(text) => {
-                    
+
                     OnchangeNumbers(text)
                     setInvalidotp(false)
                     setMaxError(false)
-                   
+
                   }
 
                   }
@@ -592,7 +596,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
 
               {maxError ?
                 <View style={{ marginTop: Dimensions.get('window').height * 0.20, alignItems: 'center', justifyContent: 'center' }}>
-                  <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center', width: width * 0.8,}}>{t('common:Valid2')}</Text>
+                  <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center', width: width * 0.8, }}>{t('common:Valid2')}</Text>
                   <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center' }}>{t('common:Valid3')}</Text></View>
                 : null}
 
@@ -628,6 +632,14 @@ const ContinuingGuarantor = ({ navigation, route }) => {
           />
 
 
+          <ErrorModal2
+            ModalVisible={ModalError2}
+            onPressOut={() => {
+              setModalError2(!ModalError2)
+
+            }}
+            setModalVisible={setModalError2}
+          />
 
 
           <ModalSave
