@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Dimensions, Modal, StyleSheet, Text, TouchableOpacity, View, Pressable, } from "react-native";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -7,83 +7,78 @@ import { COLORS, FONTS } from '../../../Constants/Constants';
 
 const { height, width } = Dimensions.get('screen');
 
-const data = [{
-    id: 1,
-    Title: 'Suspected fraud',
-    isChecked: false
-},
-{
-    id: 2,
-    Title: 'Non cooperative',
-    isChecked: false
-},
-{
-    id: 3,
-    Title: 'Submitted wrong data',
-    isChecked: false
-},
-{
-    id: 4,
-    Title: 'Unviable household',
-    isChecked: false
-},
-{
-    id: 5,
-    Title: 'Others',
-    isChecked: false
-},]
 
-const ReasonModal = ({ ModalVisible, onPressOut, onPress1, }) => {
+const ReasonModal = ({ ModalVisible, onPressOut, onPress1 }) => {
 
-    const [Data, setData] = useState(data )
-    
+    const [selectedData, setSelectedData] = useState([])
+    const [Data, setData] = useState([{
+        id: 1,
+        Title: 'Suspected fraud',
+        isChecked: false
+    },
+    {
+        id: 2,
+        Title: 'Non cooperative',
+        isChecked: false
+    },
+    {
+        id: 3,
+        Title: 'Submitted wrong data',
+        isChecked: false
+    },
+    {
+        id: 4,
+        Title: 'Unviable household',
+        isChecked: false
+    },
+    {
+        id: 5,
+        Title: 'Others',
+        isChecked: false
+    },]
+    )
+
     const [ButtonStatus, setButtonStatus] = useState(false)
 
-    const onCheck1 = (id) => {
-    console.log('----------------CHECKED-------------',id)
-        let reason = Data
-        let index = reason.findIndex(o => o.id === id)
-        reason[index].isChecked = !reason[index].isChecked;
-      
-        setTimeout(() => {
-            let FilterArray1 = Data.filter(item => item.isChecked == true)
-            let FilterId1 = FilterArray1.map((item) => (item.id))
-            if (FilterId1.length == 0) {
-                setButtonStatus(false)
-            } else {
-                setButtonStatus(true)
-            }
-        }, 10)
-    }
+    useEffect(() => {
+        const check = Data.every(element => element.isChecked === false);
+        console.log('----------------CHECKED-------------', check)
+        if (check === false) {
+            setButtonStatus(true)
+        } else {
+            setButtonStatus(false);
+        }
+    }, [Data])
 
     useEffect(() => {
         Data.forEach(function (item) {
             item.isChecked = false
         })
-
     }, [])
-    
+
     return (
 
         <Modal
             animationType="slide"
             transparent={true}
             visible={ModalVisible}
-            onRequestClose={() => { 
+            onRequestClose={() => {
                 Data.forEach(function (item) {
                     item.isChecked = false
                 })
                 setButtonStatus(false)
-                onPressOut() }}
+                onPressOut()
+            }}
         >
             <View style={styles.mainContainer} >
                 <TouchableOpacity
-                    onPressOut={() => { 
+                    onPressOut={() => {
                         Data.forEach(function (item) {
                             item.isChecked = false
                         })
                         setButtonStatus(false)
-                        onPressOut() }}
+                        onPressOut()
+                    }}
                     style={styles.touchableStyle} >
                 </TouchableOpacity>
                 <View style={styles.centeredView2}>
@@ -91,14 +86,24 @@ const ReasonModal = ({ ModalVisible, onPressOut, onPress1, }) => {
                         <Text style={styles.modalTextHead}>Reason for reject</Text>
 
                         {Data.map((item, index) => {
+                            { console.log('-------', item.isChecked, '----', item?.id) }
                             return (
-                                <View style={{ flexDirection: 'column', }}>
+                                <View style={{ flexDirection: 'column', }} key={item?.id}>
                                     <View style={{
                                         flexDirection: 'row', justifyContent: 'space-between',
                                         paddingLeft: width * 0.06, paddingRight: width * 0.06, alignItems: 'center', marginBottom: width * 0.05, marginTop: width * 0.05
                                     }}>
                                         <Text style={styles.TextTitle}>{item.Title}</Text>
-                                        <Pressable onPress={() => onCheck1(item.id)} >
+                                        <Pressable onPress={() => {
+                                            const nextList = [...Data];
+                                            nextList[index].isChecked = !nextList[index].isChecked;
+                                            setData(nextList);
+                                            if (item.isChecked === true) {
+                                                selectedData.push({ item })
+                                            } else {
+                                                selectedData.splice(index)
+                                            }
+                                        }} >
                                             <Icon name={item.isChecked ? 'checkbox-marked' : 'checkbox-blank-outline'} size={22} color={item.isChecked ? COLORS.colorB : '#DADADA'} />
                                         </Pressable>
                                     </View>
@@ -111,18 +116,17 @@ const ReasonModal = ({ ModalVisible, onPressOut, onPress1, }) => {
                         <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                             <TouchableOpacity style={[styles.Button1,
                             { backgroundColor: ButtonStatus ? COLORS.colorB : '#ECEBED' }]}
-                                onPress={() => 
-                                    {
-                                        if (ButtonStatus) {
-                                            Data.forEach(function (item) {
-                                                item.isChecked = false
-                                            })
-                                            setButtonStatus(false)
-                                            onPress1()
-                                        } else {
-                                            console.log("hello")
-                                        }
-                                    }}>
+                                onPress={() => {
+                                    if (ButtonStatus) {
+                                        Data.forEach(function (item) {
+                                            item.isChecked = false
+                                        })
+                                        setButtonStatus(false)
+                                        onPress1()
+                                    } else {
+                                        console.log("hello")
+                                    }
+                                }}>
                                 <Text style={[styles.text1, {
                                     color: ButtonStatus ?
                                         COLORS.colorBackground : '#979C9E', paddingLeft: width * 0.02
@@ -132,11 +136,12 @@ const ReasonModal = ({ ModalVisible, onPressOut, onPress1, }) => {
                     </View>
                 </View>
                 <TouchableOpacity
-                    onPressOut={() => { 
+                    onPressOut={() => {
                         Data.forEach(function (item) {
                             item.isChecked = false
                         })
-                        onPressOut() }}
+                        onPressOut()
+                    }}
                     style={styles.touchableStyle} >
                 </TouchableOpacity>
             </View>

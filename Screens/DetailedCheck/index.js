@@ -23,8 +23,6 @@ import Header from '../../Components/Header';
 
 const DetailCheck = ({ navigation, route }) => {
 
-    console.log('====>>Activity id', route?.params?.data)
-
     const isDarkMode = true
 
     const [basicdetail, setBasicdetail] = useState('')
@@ -64,16 +62,11 @@ const DetailCheck = ({ navigation, route }) => {
     };
     // ------------------ HomeScreen Api Call End ------------------
 
-
-
-
     // ------------------ get Conduct DLE basic detail start Api Call Start ------------------
     const getConductDLEbasicdetail = async () => {
         console.log('api called', activityId)
         const data = {
             "activityId": activityId
-
-
         }
         await api.ConductDLEbasicdetail(data).then((res) => {
             console.log('-------------------res ConductDLEbasicdetail12', res)
@@ -85,8 +78,6 @@ const DetailCheck = ({ navigation, route }) => {
         })
     };
     // ------------------ HomeScreen Api Call End ------------------
-
-
 
     // ------------------ get Conduct DLE basic detail Village Api Call Start ------------------
     const onsubmit = async (value) => {
