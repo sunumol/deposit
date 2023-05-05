@@ -116,6 +116,7 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus }) => {
             console.log('-------------------res', res?.data?.body)
             setVillageList(res?.data?.body)
             setVillageStatus(true)
+           // setModalVillage(true)
             //setBstatus(true)
         })
             .catch((err) => {
@@ -318,6 +319,7 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus }) => {
                                                                     setButton(true)
                                                                     setVillageList([])
                                                                     setVillageStatus(false)
+                                                                    
                                                                     // setBstatus(false)
                                                                 }}>
                                                                     <View style={{ paddingTop: 8 }}>
@@ -370,6 +372,7 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus }) => {
                 <ValidModal
                     Validation={Message}
                     ModalVisible={ValidModal1}
+                  //  villageList={vilageList}
                     onPressOut={() => setValidModal1(!ValidModal1)}
                     setModalVisible={setValidModal1}
                 />

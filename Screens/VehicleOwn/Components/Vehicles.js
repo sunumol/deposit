@@ -110,7 +110,7 @@ const Vehicles = ({ navigation, vehicleslist }) => {
 
         }
         await api.getVehicleDetails(data).then((res) => {
-            console.log('-------------------res getVehicleDetails', res?.data?.body)
+            console.log('-------------------res getVehicleDetails', res?.data?.body?.length)
             if (res?.data?.body) {
                 setNumbers(res?.data?.body?.length)
                 let temp = vehicleslist
@@ -170,7 +170,7 @@ const Vehicles = ({ navigation, vehicleslist }) => {
                 <ScrollView>
 
                     <View>
-                        <Text style={styles.vehText}>Vehicles owned ({numbers})</Text>
+                        <Text style={styles.vehText}>Vehicles owned ({vehicleslist?.length})</Text>
                     </View>
                     <View>
 

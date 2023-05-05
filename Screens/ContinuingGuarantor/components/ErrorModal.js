@@ -51,7 +51,7 @@ const ErrorModal = ({ ModalVisible, onPressOut,onPress1 }) => {
                     <View style={{ paddingTop: width * 0.02,paddingHorizontal: width *0.05 }}>
                       
                         <Text style={styles.textdesc}>Mobile number cannot be same as</Text>
-                        <Text style={styles.textdesc}>that of that Customer</Text>
+                        <Text style={styles.textdesc}>that of that agent</Text>
                     </View>
 
 

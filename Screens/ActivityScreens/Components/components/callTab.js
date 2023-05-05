@@ -23,7 +23,7 @@ const MeetTab = (props) => {
     const [ModalCall, setModalCall] = useState(false)
     useEffect(() => {
         getData()
-        console.log("no modal data inside1")
+       // console.log("no modal data inside1")
     }, [])
     String.prototype.replaceAt = function (index, replacement) {
         return this.substring(0, index) + replacement + this.substring(index + replacement.length);
@@ -63,7 +63,7 @@ const MeetTab = (props) => {
             
             const lang = await AsyncStorage.getItem('user-language')
             const lang1 = await AsyncStorage.getItem('CallActivity')
-            console.log("no modal data inside",lang1)
+          //  console.log("no modal data inside",lang1)
             if (lang1 !== null) {
              
               //  setModalCall(true)

@@ -15,13 +15,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import CallTab from '../Components/components/callTab';
 import { api } from '../../../Services/Api';
 import { useNetInfo } from "@react-native-community/netinfo";
-
+import NetWorkError from '../../NetWorkError'
 const ItemTabs = ({ props, navigation }) => {
     const { t } = useTranslation();
     const [Lang, setLang] = useState('')
     const [ModalVisible1, setModalVisible1] = useState(false)
     const [listing, setListing] = useState([])
     const [enab, setEnab] = useState(false)
+    const netInfo = useNetInfo();
     const [meetData, setMeetData] = useState([
         {
             id: 1,
@@ -132,6 +133,8 @@ const ItemTabs = ({ props, navigation }) => {
     }
     return (
         <ScrollView style={{ flex: 1, backgroundColor: COLORS.colorBackground }}>
+                 {netInfo.isConnected
+                    ?
             <View style={{ paddingHorizontal: 20, marginBottom: 20 }}>
 
                 {
@@ -150,7 +153,9 @@ const ItemTabs = ({ props, navigation }) => {
                         )
                     })
                 }
-            </View>
+            </View>: 
+                    <NetWorkError />
+                }
         </ScrollView>
     )
 }

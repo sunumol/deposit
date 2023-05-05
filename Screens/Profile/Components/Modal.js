@@ -7,7 +7,8 @@ const { height, width } = Dimensions.get('screen');
 import Image1 from '../../../assets/image/call.svg';
 
 
-const CallModal = ({ ModalVisible, onPressOut, setModalVisible, onPress }) => {
+const CallModal = ({ ModalVisible, onPressOut, setModalVisible, onPress,id }) => {
+    console.log("id pass",id)
     const [state, setState] = useState(null);
     const { t } = useTranslation();
     const [Lang, setLang] = useState('')

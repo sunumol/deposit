@@ -42,7 +42,7 @@ const Profile = ({ navigation }) => {
     const [modalExitAppVisible, setModalExitAppVisible] = useState(false);
     const [custID, setCustId] = useState()
     const [fcmToken, setFcmToken] = useState()
-
+    const [id,setId] = useState(null)
     useEffect(() => {
         AsyncStorage.getItem("CustomerId").then((value) => {
             setCustId(value)
@@ -145,6 +145,7 @@ const Profile = ({ navigation }) => {
             console.log("no modal data",lang)
             if (lang !== null) {
                 console.log("no modal data inside")
+                setId(lang)
                 setModalCall(true)
             }
 
@@ -235,8 +236,10 @@ const Profile = ({ navigation }) => {
             />
 
             <CallModal
+                id={id}
                 ModalVisible={ModalCall}
-                onPressOut={() => { setModalCall(!ModalCall), navigation.navigate('ActivityScreens') }}
+                onPressOut={() => { setModalCall(!ModalCall),
+                     navigation.navigate('ActivityScreens',{id:id}) }}
                 setModalVisible={setModalCall}
             />
         </SafeAreaProvider>

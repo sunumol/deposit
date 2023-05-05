@@ -393,6 +393,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
     else {
       if (verifyotpstatus == false) {
         verifyCG(num)
+        console.log("if")
       } else {
         setTimeout(() => {
           verifyCG(num)
@@ -428,7 +429,21 @@ const ContinuingGuarantor = ({ navigation, route }) => {
     }
 
   }
+  const getInitials = (name) => {
 
+    let initials;
+    const nameSplit = name?.split(" ");
+    const nameLength = nameSplit?.length;
+    if (nameLength > 1) {
+        initials =
+            nameSplit[0].substring(0, 1) +
+            nameSplit[nameLength - 1].substring(0, 1);
+    } else if (nameLength === 1) {
+        initials = nameSplit[0].substring(0, 1);
+    } else return;
+
+    return initials.toUpperCase();
+};
 
   const scrollViewRef = useRef();
   return (
@@ -449,14 +464,14 @@ const ContinuingGuarantor = ({ navigation, route }) => {
             onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: true })}>
             <View style={{ flex: 1 }}>
               <Text style={styles.headerText}>Relationship with Customer</Text>
-              <TouchableOpacity onPress={() => setModalVisible1(true)} style={styles.dropDown}>
+              <TouchableOpacity onPress={() => relation == 'Spouse' ? setModalVisible1(false) :setModalVisible1(true)} style={styles.dropDown}>
                 <Text style={styles.spouseText}>{relation ? relation : 'Select'}</Text>
                 <Icon1 name="chevron-down" size={18} color={'#808080'} />
               </TouchableOpacity>
               {relation == 'Spouse' ? <View style={styles.containerBox}>
                 <View style={{ flex: 1, flexDirection: 'row' }}>
                   <View style={styles.circleView}>
-                    <Text style={styles.shortText}>AK</Text>
+                    <Text style={styles.shortText}>{getInitials(spousedetail?.name)}</Text>
                   </View>
                   <View style={{ flexDirection: 'column', flex: 1, marginLeft: 12 }}>
                     <Text style={styles.nameText}>{spousedetail?.name}</Text>

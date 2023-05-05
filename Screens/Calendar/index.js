@@ -9,14 +9,15 @@ import {
     BackHandler,
     ActivityIndicator,
     Text,
-    TouchableOpacity
+    TouchableOpacity,
+ 
 } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import moment from 'moment';
-
+const { height, width } = Dimensions.get('screen');
 // -------------- Component Imports -------------------------
 import { api } from '../../Services/Api';
 import { COLORS, FONTS } from '../../Constants/Constants';
@@ -153,7 +154,7 @@ const Calendar = ({ navigation, route }) => {
                     getCGTslot={() => getCGTslot()} 
                     />
 
-                    <View style={{ flex: 1 }}>
+                    <View style={{ flex: 1,marginBottom:width*0.18 }}>
                         <Cgt 
                         navigation={navigation} 
                         data={slotlist} 

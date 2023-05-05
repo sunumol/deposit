@@ -169,15 +169,17 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
             ToastAndroid.show("Please enter a valid landmark ", ToastAndroid.SHORT);
             console.log('The string contains whitespace',);
         } 
-       else if (/^[^!-\/:-@\.,[-`{-~₹~`|•√π÷×¶∆€¥$¢^°={}%©®™✓]+$/.test(text) || text === ''){
-            setLandmarkname(text)
-            setLandmarkname1(text)
-            setChecked(false)
-            console.log("inside this land",text)
-        }
+    //    else if (/^[^!-\/:-@\.,[-`{-~₹~`|•√π÷×¶∆€¥$¢^°={}%©®™✓]+$/.test(text) || text === ''){
+    //         setLandmarkname(text)
+    //         setLandmarkname1(text)
+    //         setChecked(false)
+    //         console.log("inside this land",text)
+    //     }
   
          else {
             //setLandmarkname()
+            setLandmarkname(text)
+            setLandmarkname1(text)
             console.log("inside this land else",text)
             setChecked(false)
             // setLandmarkname(text)
@@ -192,12 +194,12 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
     const getVillage = async (value) => {
         console.log('api called')
         const data = {
-            // "pin": details?.pin,
-            "pin": 688540,
+             "pin": details?.pin,
+            //"pin": 688540,
             "villageName": value
         }
         await api.getVillage(data).then((res) => {
-            console.log('-------------------res get Village', res?.data?.body)
+            console.log('-------------------res get Village', res.data)
             if (res?.status) {
                 setVillagenamedata(res?.data?.body)
                 setBstatus(true)

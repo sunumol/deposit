@@ -7,7 +7,8 @@ const { height, width } = Dimensions.get('screen');
 import Image1 from '../assets/tick.svg';
 
 
-const VillageModal = ({ ModalVisible, onPressOut, setModalVisible, onPress, navigation }) => {
+const VillageModal = ({ ModalVisible, onPressOut, setModalVisible, onPress, navigation,villageList }) => {
+    console.log("villa",villageList)
     const [state, setState] = useState(null);
     const { t } = useTranslation();
     const [Lang, setLang] = useState('')

@@ -140,6 +140,7 @@ const IncomeDetails = ({ navigation, route }) => {
             "relationShip": relationShip
 
         }
+        console.log("data pass",data)
         await api.getIncomeDetails(data).then((res) => {
             console.log('-------------------res getIncomeDetails', res?.data?.body)
             if (res?.status) {
@@ -225,6 +226,7 @@ const IncomeDetails = ({ navigation, route }) => {
             "field3": Avg
 
         }
+        
         await api.saveIncomeDetails(data).then((res) => {
             console.log('-------------------res saveIncomeDetails', res?.data?.body)
             if (res?.status) {
@@ -383,6 +385,7 @@ const IncomeDetails = ({ navigation, route }) => {
                              style={[{ fontSize: 14, color: '#1A051D', fontFamily: FONTS.FontRegular, left: 5,width: '95%'  }]}
                              value={Month?.toString()}
                              keyboardType={'number-pad'}
+                             maxLength={2}
                              onChangeText={(text) => setMonthdata(text)} />
                              </View> }
                                 {/* <TextInput

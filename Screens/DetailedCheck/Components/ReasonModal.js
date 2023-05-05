@@ -53,20 +53,20 @@ const ReasonModal = ({ModalVisible, onPressOut,setModalVisible,onPress1,setReaso
     const onCheck1 = (id) => {
         console.log('On check',id)
         let reason = Data
-        let index = reason.findIndex(o => o.id === id)
+        let index = reason.findIndex(o => o?.id === id)
         reason[index].isChecked = !reason[index].isChecked;
         setTimeout(() => {
-            let FilterArray1 = Data.filter(item => item.isChecked == true)
-            let FilterId1 = FilterArray1.map((item) => (item.id))
-            let Checked = FilterArray1.map((item)=>(item.isChecked))
-            let activity = FilterArray1.map((item)=> (item.Title))
+            let FilterArray1 = Data?.filter(item => item?.isChecked == true)
+            let FilterId1 = FilterArray1.map((item) => (item?.id))
+            let Checked = FilterArray1.map((item)=>(item?.isChecked))
+            let activity = FilterArray1.map((item)=> (item?.Title))
             //let FilterId1 = FilterArray.slice(id)
 
             console.log("FilterId.",Checked)
             console.log("FilterArray.......", activity[0])
             setReason(activity[0])
             setChecked(Checked)
-            if(FilterId1.length == 0){
+            if(FilterId1?.length == 0){
                 setButtonStatus(false)
             }else{
                 setButtonStatus(true)
@@ -104,13 +104,13 @@ const ReasonModal = ({ModalVisible, onPressOut,setModalVisible,onPress1,setReaso
                                 <View style={{flexDirection:'column',}}>
                                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', 
                                 paddingLeft: width * 0.06,paddingRight:width*0.06,alignItems:'center',marginBottom:width*0.05,marginTop:width*0.05 }}>
-                                    <Text style={styles.TextTitle}>{item.Title}</Text>
-                                    <Pressable onPress={() => onCheck1(item.id)} >
-                                        <Icon name={item.isChecked ? 'checkbox-marked' : 'checkbox-blank-outline'} size={22} color={item.isChecked ? COLORS.colorB : '#DADADA'} />
+                                    <Text style={styles.TextTitle}>{item?.Title}</Text>
+                                    <Pressable onPress={() => onCheck1(item?.id)} >
+                                        <Icon name={item.isChecked ? 'checkbox-marked' : 'checkbox-blank-outline'} size={22} color={item?.isChecked ? COLORS.colorB : '#DADADA'} />
                                     </Pressable>
                                     
                                 </View>
-                                {item.id !==5 &&
+                                {item?.id !==5 &&
                                 <View style={styles.lineView} />}
                                 </View>
                             )
