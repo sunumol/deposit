@@ -216,8 +216,8 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
     const getpostoffice = async (value) => {
         console.log('api called')
         const data = {
-            // "pin": details?.pin,
-            "pin": 688540,
+             "pin": details?.pin,
+            //"pin": 688540,
             "postOfficeName": value
         }
         await api.getpostoffice(data).then((res) => {

@@ -263,7 +263,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
   // ------------------verifyCG detail ------------------
 
   const verifyCG = async (num) => {
-
+   
     console.log('api called verify cg ==========', moment().format('MMMM Do YYYY, h:mm:ss a'))
 
     const data = {
@@ -280,13 +280,13 @@ const ContinuingGuarantor = ({ navigation, route }) => {
         setMaxError(false)
         setOtpFetch(true)
         setIsOtp1(true)
-        getOtp();
+    
 
         setVerifyotpstatus(true)
 
       }
     }).catch((err) => {
-      setTimer(0)
+      
       setVerifyotpstatus(true)
       console.log('-------------------err verifyCG', err?.response?.data?.message)
       if (err?.response?.data?.message === 'Maximum number of OTPs are exceeded. Please try after 30 minutes.') {
@@ -295,10 +295,11 @@ const ContinuingGuarantor = ({ navigation, route }) => {
         setStatus(false)
         setResendOtp(false)
         setMaxError(true)
-
+        
         console.log("timer zero.....", timerCount)
       } else if (err?.response?.data?.message === "Mobile number cannot be same as that of the Customer") {
         setModalError2(true)
+        
       } else {
         setMaxError(false)
       }
@@ -395,6 +396,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
     }
 
     else {
+      getOtp();
       if (verifyotpstatus == false) {
         verifyCG(num)
         console.log("if")
@@ -416,6 +418,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
     if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(num) || num === '') {
       if ("+91" + num == customerNumber) {
         setModalError(true)
+        setResendOtp(false)
         onChangeNumber('')
       } else {
         onChangeNumber(num)
@@ -513,6 +516,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
                     OnchangeNumbers(text)
                     setInvalidotp(false)
                     setMaxError(false)
+                  
 
                   }
 
@@ -679,9 +683,9 @@ const ContinuingGuarantor = ({ navigation, route }) => {
             navigation={navigation}
           />
 
-          <TouchableOpacity onPress={() => OtpValue?.length === 4 && number?.length === 10 ? verifyCGOTP() : console.log("geki")}
-            style={[styles.buttonView, { backgroundColor: OtpValue?.length === 4 && number?.length === 10 ? COLORS.colorB : '#E0E0E0' }]}>
-            <Text style={[styles.continueText, { color: OtpValue?.length === 4 && number?.length === 10 ? COLORS.colorBackground : COLORS.colorWhite3 }]}>Continue</Text>
+          <TouchableOpacity onPress={() => OtpValue?.length === 4 && number?.length === 10 && relation ? verifyCGOTP() : console.log("geki")}
+            style={[styles.buttonView, { backgroundColor: OtpValue?.length === 4 && number?.length === 10 && relation? COLORS.colorB : '#E0E0E0' }]}>
+            <Text style={[styles.continueText, { color: OtpValue?.length === 4 && number?.length === 10 && relation? COLORS.colorBackground : COLORS.colorWhite3 }]}>Continue</Text>
           </TouchableOpacity>
         </KeyboardAvoidingView>
 

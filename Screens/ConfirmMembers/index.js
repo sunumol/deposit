@@ -154,6 +154,7 @@ const ConfirmMembers = ({ navigation }) => {
       const data = res?.data?.body?.filter((item, index) => !customerID.includes(item?.id))
       setTccustomerlist(data)
       setData(data)
+      console.log("data length")
     }).catch((err) => {
       console.log('-------------------err123', err?.response)
     })

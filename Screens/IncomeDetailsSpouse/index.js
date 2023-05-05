@@ -321,11 +321,7 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
                                     //label={'₹'}
                                     maxLength={incomedetail?.occupation == 'SALARIED_EMPLOYEE' ? 2 :6}
                                     onChangeText={(text) => {
-                                    //     if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(text) || text === "") {
-                                    //         setAmount(text)
-                                    //     }
-                                    // }
-                                    // {
+                                        if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(text) || text === "") {
                                         if(incomedetail?.occupation == 'SALARIED_EMPLOYEE'){
                                             if(text<13){
                                                 setAmount(text)
@@ -341,10 +337,15 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
                                             //     setAmount(text)
                                             // }
                                         }else{
+                                            if (Number(text) == 0){
+                                                setAmount('')
+                                                console.log("inside occupation 2",incomedetail?.occupation)
+                                         }else{
                                             setAmount(text)
                                             console.log("inside occupation",incomedetail?.occupation)
                                         }
-                                      
+                                        }
+                                    }
                                     }
                                     } />
                             </View>

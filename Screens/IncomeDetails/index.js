@@ -344,14 +344,17 @@ const IncomeDetails = ({ navigation, route }) => {
                                     keyboardType={'number-pad'}
                                     maxLength={incomedetail?.occupation == 'SALARIED_EMPLOYEE' ? 2 :6}
                                     onChangeText={(text) => 
-                                        {
+                                        
+                                        {  
+                                          
+                                            if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(text) || text === "") {
+                                         
                                             if(incomedetail?.occupation == 'SALARIED_EMPLOYEE'){
                                                 if(text<13){
                                                     setAmount(text)
                                                     console.log("inside occupation 1",incomedetail?.occupation)
                                                 }else{
                                                     setAmount('')
-                                                    console.log("inside occupation 2",incomedetail?.occupation)
                                                 }
                                                 console.log("inside occupation 3",incomedetail?.occupation)
                                                // setAmount(text)
@@ -359,11 +362,17 @@ const IncomeDetails = ({ navigation, route }) => {
                                                 // if(text<13){
                                                 //     setAmount(text)
                                                 // }
-                                            }else{
+                                            }
+                                            else{
+                                             if (Number(text) == 0){
+                                                    setAmount('')
+                                                    console.log("inside occupation 2",incomedetail?.occupation)
+                                             }else{
                                                 setAmount(text)
                                                 console.log("inside occupation",incomedetail?.occupation)
                                             }
-                                          
+                                        }
+                                        }
                                         }
                                     } />
                             </View>

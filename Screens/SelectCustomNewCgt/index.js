@@ -140,14 +140,19 @@ setReschedulecgt(route?.params?.rescheduledata)
   const OnchangeNumber = (num) => {
     setSelectedItem(null)
     console.log("num value print",num,text)
+  
     if (/^[^!-\/:-@\.,[-`{-~]+$/.test(num) || num === '') {
-
+console.log("inside ",num)
       onChangeText(num)
 
       let searchword = num;
 
       setsearchvalue(num);
-      setEmptyList(true)
+      if(num !== ''){
+        setEmptyList(true)
+      }else{
+        setEmptyList(false)
+      }
       getCustomerList(searchword)
     }else if(text?.length>1){
       setEmptyList(false)
