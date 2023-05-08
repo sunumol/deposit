@@ -224,11 +224,11 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus }) => {
                                         ToastAndroid.show("Please enter a valid name ", ToastAndroid.SHORT);
                                         console.log('The string contains whitespace', Name);
                                     }
-                                   else if (/^[^!-\/:-@\.,[-`{-~1234567890₹~`|•√π÷×¶∆€¥$¢^°={}%©®™✓]+$/.test(text) || text === '') {
+                                    else if (/^[^!-\/:-@\.,[-`{-~1234567890₹~`|•√π÷×¶∆€¥$¢^°={}%©®™✓]+$/.test(text) || text === '') {
                                         setName(text)
                                         console.log("verify daat1")
                                     }
-                                  
+
 
                                 }}
                             />
@@ -257,7 +257,7 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus }) => {
                                 onChangeText={(text) => {
                                     setVillage(null)
                                     setVStatus(false)
-                                    console.log("village......",Village)
+                                    console.log("village......", Village)
                                     // setPincode(text)
 
                                     if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(text) || text === '') {
@@ -293,15 +293,25 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus }) => {
 
                                             style={styles.TextInputBranch}
                                             onChangeText={(text) => {
-                                                setVillage(text)
+
                                                 setVillageEnable(false)
                                                 if (text == '') {
-
+                                                    console.log(" if ", Village)
                                                     setVillageList([])
                                                     setVillageStatus(false)
+                                                    setVillage(text)
+                                                    setButton(false)
+                                                }
+                                                else 
+                                                if (!(/^[^!-\/:-@\.,[-`{-~1234567890₹~`|•√π÷×¶∆€¥$¢^°={}%©®™✓]+$/.test(text))) {
+                                                    setVillageList([])
+                                                    setVillageStatus(false)
+                                                  //  setVillage('')
                                                     // setBstatus(false)
                                                     setButton(false)
+                                                    console.log("else if ", Village)
                                                 } else {
+                                                    setVillage(text)
                                                     getVillage(text)
                                                 }
                                             }} />
@@ -311,7 +321,7 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus }) => {
                                             {vilageList?.length > 0
                                                 ? <View style={{ alignItems: 'center' }}>
                                                     <View style={styles.ViewMapBranch1}>
-                                                        {vilageList?.map((item,index) => {
+                                                        {vilageList?.map((item, index) => {
                                                             return (
 
                                                                 <TouchableOpacity onPress={() => {
@@ -320,14 +330,14 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus }) => {
                                                                     setButton(true)
                                                                     setVillageList([])
                                                                     setVillageStatus(false)
-                                                                    
+
                                                                     // setBstatus(false)
                                                                 }}>
-                                                                    <View style={{  }}>
+                                                                    <View style={{}}>
 
-                                                                        <Text style={[styles.ItemNameBranch,{marginTop:10,marginBottom:10}]}>{item}</Text>
+                                                                        <Text style={[styles.ItemNameBranch, { marginTop: 10, marginBottom: 10 }]}>{item}</Text>
                                                                         {vilageList?.length - 1 !== index ?
-                                                                        <View style={styles.Line} />:null}
+                                                                            <View style={styles.Line} /> : null}
                                                                     </View>
                                                                 </TouchableOpacity>
 
@@ -373,7 +383,7 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus }) => {
                 <ValidModal
                     Validation={Message}
                     ModalVisible={ValidModal1}
-                  //  villageList={vilageList}
+                    //  villageList={vilageList}
                     onPressOut={() => setValidModal1(!ValidModal1)}
                     setModalVisible={setValidModal1}
                 />
@@ -389,7 +399,7 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus }) => {
                     setButton={setButton}
                     setVillageList={setVillageList}
                     setVillageStatus={setVillageStatus}
-                  
+
                 />
             </View>
         </>
@@ -475,7 +485,7 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderBottomColor: 'rgba(242, 242, 242, 1)',
         width: width * 0.85,
-       // paddingTop: width * 0.035
+        // paddingTop: width * 0.035
     },
     TextInputBranch: {
         color: "#1A051D",
