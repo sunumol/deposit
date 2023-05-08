@@ -202,9 +202,14 @@ const MeetTab = (props) => {
                                      <TouchableOpacity style={[styles.leadContainer, { backgroundColor: props.meet ? COLORS.LightBlue : COLORS.LightPurple }]}>
                                         <Text style={[styles.leadText, { color: props.meet ? COLORS.DarkBlue : COLORS.DarkPurple }]}>{t('common:ConductCGT')}</Text>
                                     </TouchableOpacity>:
-                                          <TouchableOpacity style={[styles.leadContainer, { backgroundColor:COLORS.LightPurple }]}>
-                                          <Text style={[styles.leadText, { color: COLORS.DarkPurple }]}>{t('common:ExplainTrustCircle')}</Text>
-                                      </TouchableOpacity>}
+                                    item.purpose == 'Leads Follow Up' ? 
+                                    <TouchableOpacity
+                                    style={[styles.leadContainer, { backgroundColor: COLORS.LightYellow }]}>
+                                    <Text style={[styles.leadText, { color: COLORS.DarkYellow }]}>{t('common:LeadsFollowUp')}</Text>
+                                </TouchableOpacity>:
+                                        <TouchableOpacity style={[styles.leadContainer, { backgroundColor:COLORS.LightPurple }]}>
+                                        <Text style={[styles.leadText, { color: COLORS.DarkPurple }]}>{t('common:ExplainTrustCircle')}</Text>
+                                    </TouchableOpacity>}
 
                             </View>
 
