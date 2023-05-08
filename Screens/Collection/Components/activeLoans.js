@@ -45,96 +45,58 @@ const ActiveLoans = ({ navigation, loandetails }) => {
 
     
     const [Activeloandetail, setActiveloandetail] = useState('')
-    
+    const [itemsselected,setItems]=useState([]);
     const [TCM, setTCM] = useState('')
 
+    console.log('-------',itemsselected)
+
+const totalcollection =() =>{
+   // const sum = itemsselected.reduce((partialSum, a) => partialSum + a, 0);
+   let sum = 0;
+
+    for (const value of itemsselected) {
+        if (typeof value === 'number') {
+          sum += value;
+        }
+      }
+    setCollectAmount1(sum)
+    console.log('total',sum)        
+}
 
 
-    // const RenderItem = ({ content, index, collectAmount }) => {
+    const onCollect = (text, index) => {
 
-    //     const onCollect = (text) => {
-    //         setInput(text)
-    //         collectAmount(text)
-    //     }
+        console.log('on colle',itemsselected,text,index)
+     
+        const updatedItems = [...itemsselected];
 
-    //     const [input, setInput] = useState('');
-    //     return (
-    //         <TouchableOpacity style={styles.loanContainer} onPress={() => {
-    //             navigation.navigate('LoanDetailsCollect', { loan: content }),
-
-    //                 dispatch({
-    //                     type: 'SET_SELECTED_LOANID',
-    //                     payload: content?.loanId,
-    //                 });
-    //         }}>
-
-    //             <View style={{ flexDirection: 'row', paddingLeft: 20 }}>
-    //                 <View style={{ flex: 1 }}>
-    //                     <View style={{ marginTop: 15 }}>
-    //                         <Text style={[styles.headText, { paddingBottom: 5 }]}>Lender</Text>
-    //                         <View style={{ flexDirection: 'row', alignItems: 'center', paddingTop: 0, flexWrap: 'wrap' }}>
-    //                             <Image style={{ width: 15, height: 15 }}
-    //                                 source={{ uri: content?.lenderLogo }}
-    //                             />
-    //                             <Text style={[styles.valueText, { paddingLeft: 7, paddingTop: 0 }]}>{content?.lenderName}</Text>
-    //                         </View>
-    //                     </View>
-    //                     <View style={{ marginVertical: 15 }}>
-    //                         <Text style={styles.headText}>Loan Outstanding</Text>
-    //                         <Text style={styles.valueText}>{content?.loanOutstanding}</Text>
-    //                     </View>
-    //                 </View>
-    //                 <View style={{ flexDirection: 'column', marginTop: 17 }}>
-    //                     <View style={{ flex: 1 }}>
-    //                         <View style={styles.verticleLine} />
-    //                     </View>
-    //                     <View style={{ flex: 1 }}>
-    //                         <View style={styles.verticleLine} />
-    //                     </View>
-    //                 </View>
-
-    //                 <View style={{ flex: 1 }}>
-    //                     <View style={{ marginTop: 18 }}>
-
-
-    //                         <Text style={styles.headText}>Payment Due</Text>
-    //                         <Text style={[styles.valueText, { color: content?.dueDatePassed === true ? 'rgba(234, 64, 71, 1)' : '#000' }]}>₹{content?.paymentDue}</Text>
-
-    //                     </View>
-
-    //                     <View style={{ marginVertical: 15, }}>
-    //                         <Text style={styles.headText}>Collected Amount</Text>
-
-    //                         <TextInput
-    //                             style={styles.CardAmt}
-    //                             onChangeText={(text) => {
-    //                                 onCollect(text)
-
-    //                             }
-    //                             }
-    //                             value={input}
-    //                             maxLength={5}
-    //                             keyboardType="numeric"
-    //                         />
-
-    //                     </View>
-    //                 </View>
-    //             </View>
-
-    //         </TouchableOpacity>
-    //     )
-    // };
-
-
-
-
-    const onCollect = (text) => {
-        setCollectAmount([])
-       console.log('collection value',text)
-       var temp = collectAmount;
-       temp = temp.concat(text)
-       setCollectAmount(([...temp]))
-    }
+        if(index == 0) {
+            updatedItems[0] = JSON.parse(text);  
+            updatedItems[1] =  updatedItems[1] ?  updatedItems[1]: 0;  
+            updatedItems[2] =   updatedItems[2] ?  updatedItems[2]: 0;   
+            updatedItems[3] =   updatedItems[3] ?  updatedItems[3]: 0;   
+        }else   if(index == 1) {
+            updatedItems[1] =JSON.parse(text);   
+            updatedItems[0] =  updatedItems[0] ?  updatedItems[0]: 0;  
+            updatedItems[2] =   updatedItems[2] ?  updatedItems[2]: 0;   
+            updatedItems[3] =   updatedItems[3] ?  updatedItems[3]: 0; 
+        }else   if(index == 2) {
+            updatedItems[2] = JSON.parse(text);  
+            updatedItems[0] =  updatedItems[0] ?  updatedItems[0]: 0;  
+            updatedItems[1] =   updatedItems[1] ?  updatedItems[1]: 0;   
+            updatedItems[3] =   updatedItems[3] ?  updatedItems[3]: 0; 
+        }else   if(index == 3) {
+            updatedItems[3] = JSON.parse(text); 
+            updatedItems[0] =  updatedItems[0] ?  updatedItems[0]: 0;  
+            updatedItems[1] =   updatedItems[1] ?  updatedItems[1]: 0;   
+            updatedItems[2] =   updatedItems[2] ?  updatedItems[2]: 0; 
+        }
+   
+        
+        
+    
+       setItems(updatedItems);
+    };
 
 
 
@@ -261,7 +223,7 @@ if(res?.data?.body){
 
                             }
                         /> */}
-                         {loandetails?.map((item) => {
+                         {loandetails?.map((item,index) => {
                           
                             return (
                                 <TouchableOpacity style={styles.loanContainer} onPress={() => {
@@ -312,7 +274,7 @@ if(res?.data?.body){
                                                
                                                     <TextInput
                                                         style={styles.CardAmt}
-                                                        onChangeText={(text)=>onCollect(text)}
+                                                        onChangeText={(text)=>onCollect(text == '' ? 0 : text,index)}
                                                        value={collectAmount}
                                                         keyboardType="numeric"
                                                      
@@ -330,7 +292,7 @@ if(res?.data?.body){
                 </View>
             </ScrollView>
             <View style={styles.viewsB}>
-                <TouchableOpacity style={[styles.buttonView]} onPress={() => setModalVisible(true)}>
+                <TouchableOpacity style={[styles.buttonView]} onPress={() =>{totalcollection(), setModalVisible(true)}}>
                     <Text style={[styles.continueText]}>Submit</Text>
                 </TouchableOpacity>
             </View>
@@ -341,6 +303,7 @@ if(res?.data?.body){
                 ModalVisible={ModalVisible}
                 onPressOut={() => setModalVisible(!ModalVisible)}
                 setModalVisible={setModalVisible}
+                collectedvalue={collectAmount1}
                 ModalVisible2={() => {
                     setModalVisible1(true)
                     setModalVisible(false)
