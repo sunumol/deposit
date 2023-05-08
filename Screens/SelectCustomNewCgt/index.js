@@ -3,56 +3,54 @@ import {
   StyleSheet, Text, View, BackHandler, StatusBar,
   SafeAreaView, Platform, TextInput, ScrollView, TouchableOpacity, ActivityIndicator, Dimensions
 } from 'react-native'
-import React, { useCallback, useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import Statusbar from '../../Components/StatusBar';
-import { useFocusEffect } from '@react-navigation/native';
-import Header from '../../Components/RepayHeader';
-import { FONTS, COLORS } from '../../Constants/Constants';
-import Edit from './Images/Vector.svg'
-import Search from './Images/Search.svg'
-import ItemTabs from '../ActivityScreens/Components/AllTab';
 import Icon1 from 'react-native-vector-icons/Ionicons'
-import SelectedTab from './Components/SelectedTab';
-import CgtModal from './Components/Modal';
+import moment from 'moment';
 import SearchIcon from 'react-native-vector-icons/Feather'
 import { useTranslation } from 'react-i18next';
+
+// -------------- Component Imports ------------------------
+import Statusbar from '../../Components/StatusBar';
+import Header from '../../Components/RepayHeader';
+import { FONTS, COLORS } from '../../Constants/Constants';
 import { api } from '../../Services/Api';
-import moment from 'moment';
+import SelectedTab from './Components/SelectedTab';
+import CgtModal from './Components/Modal';
+
+// ----------- Image Imports ---------
+import Edit from './Images/Vector.svg'
+
 const { height, width } = Dimensions.get('screen');
 
-
-
 const SelectCustomerNewCgt = ({ navigation, route }) => {
-  console.log('select customer=====>============', route?.params?.rescheduledata)
+
   const isDarkMode = true;
+  const { t } = useTranslation();
+
   const [text, onChangeText] = useState('');
   const [selectedItem, setSelectedItem] = useState();
   const [ModalVisible, setModalVisible] = useState(false);
   const [customerList, setCustomerList] = useState([]);
   const [selectedDate, setSelectedDate] = useState(route?.params?.date)
   const [enab, setEnab] = useState(false)
-  const [searchvalue, setsearchvalue] = useState('')
   const [status, setStatus] = useState(true)
-  const [EmptyList,setEmptyList] = useState(false)
-  const [reschedulecgt,setReschedulecgt] = useState('')
-  const { t } = useTranslation();
+  const [EmptyList, setEmptyList] = useState(false)
+  const [reschedulecgt, setReschedulecgt] = useState('')
 
   const handleGoBack = () => {
-
     if (text?.length > 0) {
       onChangeText('')
       setEmptyList(false)
-      console.log("text nulll", text)
     } else {
       navigation.goBack()
     }
     return true
   }
 
-  useEffect(()=>{
-setReschedulecgt(route?.params?.rescheduledata)
-  },[route?.params?.rescheduledata])
+  useEffect(() => {
+    setReschedulecgt(route?.params?.rescheduledata)
+  }, [route?.params?.rescheduledata])
 
   useEffect(() => {
     const backHandler = BackHandler.addEventListener(
@@ -61,107 +59,26 @@ setReschedulecgt(route?.params?.rescheduledata)
     );
     return () => backHandler.remove();
   }, [handleGoBack]);
-  const data = [{
-    id: 1,
-    name: 'Anjana Mathew',
-    number: '9688XXXXX77',
-    short: 'AA',
-    text: '686666'
-  },
-  {
-    id: 2,
-    name: 'Dayana james',
-    number: '9688XXXXX77',
-    short: 'DJ',
-    text: '686666'
-  },
-  {
-    id: 3,
-    name: 'Aiswarya Cheriyan',
-    number: '9688XXXXX77',
-    short: 'AC',
-    text: '686666'
-  },
-  {
-    id: 4,
-    name: 'Reshmi Prakash',
-    number: '9688XXXXX77',
-    short: 'RP',
-    text: '686666'
-  },
-  {
-    id: 5,
-    name: 'Athira Anil',
-    number: '9688XXXXX77',
-    short: 'AA',
-    text: '686666'
-  },
-  {
-    id: 6,
-    name: 'Ashly James',
-    number: '9688XXXXX77',
-    short: 'AJ',
-    text: '686666'
-  },
-  {
-    id: 7,
-    name: 'Naufiya Mohammed',
-    number: '9688XXXXX77',
-    short: 'NM',
-    text: '686666'
-  },
-  ]
-  const searchList = [{
-    id: 1,
-    name: 'Anjana Anil',
-    number: '9688XXXXX77',
-    short: 'AA',
-    text: '686666'
-  },
-  {
-    id: 2,
-    name: 'Aiswarya Thomas',
-    number: '9688XXXXX44',
-    short: 'AT',
-    text: '686666'
-  },
-  {
-    id: 3,
-    name: 'Layana James',
-    number: '9688XXXXX99',
-    short: 'LJ',
-    text: '686666'
-  },
-  ]
+
   String.prototype.replaceAt = function (index, replacement) {
     return this.substring(0, index) + replacement + this.substring(index + replacement.length);
   }
 
   const OnchangeNumber = (num) => {
     setSelectedItem(null)
-    console.log("num value print",num,text)
-  
     if (/^[^!-\/:-@\.,[-`{-~]+$/.test(num) || num === '') {
-console.log("inside ",num)
       onChangeText(num)
-
       let searchword = num;
-
-      setsearchvalue(num);
-      if(num !== ''){
+      if (num !== '') {
         setEmptyList(true)
-      }else{
+      } else {
         setEmptyList(false)
       }
       getCustomerList(searchword)
-    }else if(text?.length>1){
+    } else if (text?.length > 1) {
       setEmptyList(false)
-      console.log("empty list",text?.length)
     }
   }
-
-
-
 
   // ------------------ get Customer List Api Call Start ------------------
   const getCustomerList = async (searchvalue) => {
@@ -173,7 +90,6 @@ console.log("inside ",num)
     await api.getCustomerList(data).then((res) => {
       console.log('------------------- customer list res', res.data.body)
       setCustomerList(res?.data?.body)
-     
       setStatus(false)
     })
       .catch((err) => {
@@ -181,62 +97,30 @@ console.log("inside ",num)
         setStatus(false)
       })
   };
-  // --
+  // ------------------------- end -----------------------------------------------
 
-
-
-  // ------------------ get Customer List Api Call Start ------------------
+  // ------------------ get Customer List Api Call Start -----------------------------
   const createCGT = async () => {
-
-
-    console.log('creat=======',moment(route?.params?.data?.time, ["h:mm A"]).format("HH:mm"))
-
-    let date = (moment(selectedDate).utc().format("DD-MM-YYYY"))
-   // let selectedtime = route?.params?.data?.time
     let selectedtime = moment(route?.params?.data?.time, ["h:mm A"]).format("HH:mm");
     let time = selectedtime.slice(0, 5);
-
-
-
-
-
-    console.log('schedule time========>>>>>',route?.params?.date, time)
-
     const data = {
       "employeeId": 1,
-      "customerId":reschedulecgt ? reschedulecgt.primaryCustomerId : selectedItem.id,
-      "scheduleStartTime":moment(route?.params?.date).format("DD-MM-YYYY") + " " + time 
+      "customerId": reschedulecgt ? reschedulecgt.primaryCustomerId : selectedItem.id,
+      "scheduleStartTime": moment(route?.params?.date).format("DD-MM-YYYY") + " " + time
     }
     await api.createCGT(data).then((res) => {
       console.log('------------------- create CGT res', res)
-      // setCustomerList(res?.data?.body)
       setModalVisible(true)
       setEnab(true)
+    }).catch((err) => {
+      console.log('-------------------err', err?.response)
     })
-      .catch((err) => {
-        console.log('-------------------err', err?.response)
-      })
   };
-  // --
-
-
+  // --------------- end --------------------------------------------------------------------
 
   useEffect(() => {
     getCustomerList()
-
   }, [enab])
-
-
-  const searchText = (e) => {
-
-
-    let searchword = e;
-
-    setsearchvalue(e);
-
-
-
-  }
 
   return (
     <SafeAreaProvider>
@@ -269,7 +153,6 @@ console.log("inside ",num)
                 value={text}
                 maxLength={25}
                 style={{ flex: 1, color: COLORS.colorDark, fontSize: 14, fontFamily: FONTS.FontMedium }}
-
               />
               <SearchIcon color={"#808080"} name="search" size={18} style={{ right: 5 }} />
             </View>
@@ -277,33 +160,22 @@ console.log("inside ",num)
               ?
               <>
                 <Text style={styles.recentlyText}>{t('common:RecentCust')}</Text>
-
-         
-
                 <>
-                {customerList?.map((item, index) =>
-                  <>
-                    <TouchableOpacity onPress={() => { setSelectedItem(item), console }}>
-                      <Text style={styles.dataText}>{item.name ? item.name : item?.mobile.replace(/^.{0}/g, '').replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X")}</Text>
-                    </TouchableOpacity>
-                    {index !== 10
-                      ? <View style={styles.lineView} />
-                      : null
-                    }
-                  </>
-                )}
+                  {customerList?.map((item, index) =>
+                    <>
+                      <TouchableOpacity onPress={() => { setSelectedItem(item), console }}>
+                        <Text style={styles.dataText}>{item.name ? item.name : item?.mobile.replace(/^.{0}/g, '').replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X")}</Text>
+                      </TouchableOpacity>
+                      {index !== 10
+                        ? <View style={styles.lineView} />
+                        : null
+                      }
+                    </>
+                  )}
                 </>
-                 
-
-
-
-                
               </>
               : null
             }
-
-              
-
 
             <View >
               {text?.length > 0 && !selectedItem
@@ -354,13 +226,11 @@ console.log("inside ",num)
               : null
             }
 
-
           </ScrollView>
           {selectedItem
             ?
             <TouchableOpacity style={styles.buttonView}
               onPress={() => createCGT()}
-            //  onPress={()=>setModalVisible(true)}
             >
               <Text style={styles.continueText}>{t('common:Confirm')}</Text>
             </TouchableOpacity>
@@ -373,10 +243,9 @@ console.log("inside ",num)
           setModalVisible(false)
           navigation.navigate('Profile')
         }}
-       
         navigation={navigation}
-        //  onPressOut={() => setModalVisible(!ModalVisible)}
-        setModalVisible={setModalVisible} />
+        setModalVisible={setModalVisible}
+      />
     </SafeAreaProvider>
   )
 }
@@ -425,7 +294,6 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.FontRegular,
     color: COLORS.colorBlack,
   },
-
   changeText: {
     fontSize: 12,
     fontFamily: FONTS.FontMedium,
@@ -433,7 +301,6 @@ const styles = StyleSheet.create({
     paddingLeft: 8
   },
   searchBox: {
-
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -503,10 +370,8 @@ const styles = StyleSheet.create({
     paddingLeft: width * 0.01,
     borderColor: 'rgba(236, 235, 237, 1)',
     borderRadius: 8,
-    // marginTop: width * 0.025,
     backgroundColor: '#FCFCFC',
     alignItems: 'flex-start',
     justifyContent: 'center'
   },
-
 })

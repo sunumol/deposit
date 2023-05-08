@@ -1,80 +1,76 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import CalendarStrip from 'react-native-calendar-strip';
-import moment from 'moment'
 import { useDispatch } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
-// ----------------- Component Imports ----------------------
-import { COLORS, FONTS } from '../../../Constants/Constants';
 import Icon1 from 'react-native-vector-icons/SimpleLineIcons'
+import moment from 'moment'
+
+// -------------------- Component Imports -------------------
+import { COLORS, FONTS } from '../../../Constants/Constants';
 
 const CalendarStrips = ({ setNewDates, getCGTslot }) => {
 
   const dispatch = useDispatch()
 
   const [Month, setMonth] = useState(new Date())
-  const [StartDay, setStartDay] = useState(new Date())
   const [selectedDate, setSelectedDate] = useState(new Date())
   const [endDate, setEndDate] = useState(new Date(new Date().setDate(new Date().getDate() + 29)))
   const [ArrowEnable, setArrowEnable] = useState(false)
   const [NewDate, setNewDate] = useState(new Date())
-  const [MonthStatus, setMonthStatus] = useState(false)
   const [ArrowRight, setArrowRight] = useState(true)
 
-  const IncrementMonth = () => {
+  useEffect(() => {
     const today = new Date();
     let next;
-
     if (today.getMonth() === 11) {
       next = new Date(today.getFullYear() + 1, 0, 1);
     } else {
       next = new Date(today.getFullYear(), today?.getMonth() + 1, 1);
     }
-
-    setStartDay(next)
-    setSelectedDate(next)
-
-    dispatch({
-      type: 'SET_CREATE_DATE_CGT',
-      payload: next
-    });
-
-    AsyncStorage.setItem('DATECGT', next);
-    setNewDates(next)
-    setTimeout(() => {
-      setNewDates(next)
-    }, 1000)
-
-    if (moment(today).format("MMMM YYYY") !== moment(endDate).format("MMMM YYYY")) {
+    if (moment(selectedDate).format("MMMM YYYY") === moment(next).format("MMMM YYYY")) {
       setArrowEnable(true)
-    } else if (moment(next).format("MMMM YYYY") == moment(endDate).format("MMMM YYYY")) {
       setArrowRight(false)
+    } else {
       setArrowEnable(false)
+      setArrowRight(true)
     }
-
+  }, [selectedDate])
+  
+  useEffect(() => {
+    let s = selectedDate.toString();
+    function parseAsUTC(s) {
+      let months = ['jan', 'feb', 'mar', 'apr', 'may', 'jun',
+        'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
+      let b = s.split(/\W/);
+      return new Date(Date.UTC(b[3], months.indexOf(b[1].toLowerCase()),
+        b[2], b[4], b[5], b[6]));
+    }
+    setNewDates(parseAsUTC(s).toISOString())
+  }, [selectedDate])
+ 
+  const IncrementMonth = () => {
+    const today = new Date();
+    let next;
+    if (today.getMonth() === 11) {
+      next = new Date(today.getFullYear() + 1, 0, 1);
+    } else {
+      next = new Date(today.getFullYear(), today?.getMonth() + 1, 1);
+    }
+    setMonth(next)
+    setSelectedDate(next)
   }
 
   const DecrementMonth = () => {
-    setStartDay(new Date())
+    setMonth(new Date())
     setSelectedDate(new Date())
-    dispatch({
-      type: 'SET_CREATE_DATE_CGT',
-      payload: new Date()
-    });
-    AsyncStorage.setItem('DATECGT', new Date());
-    setNewDates(new Date())
-    setTimeout(() => {
-      setNewDates(new Date())
-    }, 1000)
   }
 
   const onWeekChanged = (start, end) => {
-    setMonthStatus(false)
     const Data = end.toString()
     const Moment = moment(Data).utc().format('MMMM YYYY')
-    setMonth(Data)
+    setMonth(end)
     if (moment(selectedDate).format('MMMM YYYY') !== moment(end).format('MMMM YYYY')) {
       IncrementMonth()
       setArrowEnable(true)
@@ -95,14 +91,16 @@ const CalendarStrips = ({ setNewDates, getCGTslot }) => {
         flexDirection: 'row', marginTop: 25, justifyContent: 'space-between',
         marginLeft: 15, marginRight: 15
       }}>
+
         <View>
           <TouchableOpacity onPress={() => DecrementMonth()}>
             {ArrowEnable &&
               <Icon1 name="arrow-left" size={14} color={"#171930"} />}
           </TouchableOpacity>
         </View>
-        <View>
-          <Text style={styles.YearText}>{moment(Month).format("MMMM")} '{moment(Month).format("YY")}</Text>
+
+        <View style={{}}>
+          <Text style={styles.YearText}>{moment(Month).utc().format('MMMM')} '{moment(Month).utc().format("YY")}</Text>
         </View>
 
         <View>
@@ -121,7 +119,7 @@ const CalendarStrips = ({ setNewDates, getCGTslot }) => {
         style={{ height: 100, paddingTop: 0, paddingBottom: 0 }}
         onWeekChanged={onWeekChanged}
         iconContainer={{ flex: 0.1 }}
-        selectedDate={StartDay}
+        selectedDate={selectedDate}
         iconLeftStyle={{ fontSize: 15, marginLeft: 15, width: 20, height: 15, color: "#171930" }}
         iconRightStyle={{ marginRight: 15, width: 20, height: 15, color: "#171930" }}
         maxDate={endDate}
@@ -141,14 +139,12 @@ const CalendarStrips = ({ setNewDates, getCGTslot }) => {
                 flex: 1,
                 marginHorizontal: 5,
                 borderRadius: 10,
-                borderColor: moment(selectedDate).format('DD-MM-YYYY') === moment(item?.date).format('DD-MM-YYYY') ? COLORS.colorB :
-                  moment(item?.date).format('DD-MM-YYYY') === moment(new Date()).format('DD-MM-YYYY')
-                    && MonthStatus === false ? COLORS.colorB : '#E5E8EB',
+                borderColor: selectedDate && moment(selectedDate).format('DD-MM-YYYY') === moment(item?.date).format('DD-MM-YYYY') ? COLORS.colorB :
+                  '#E5E8EB',
                 borderWidth: 0.5,
                 backgroundColor:
-                  moment(selectedDate).format('DD-MM-YYYY') === moment(item?.date).format('DD-MM-YYYY') ? COLORS.colorB
-                    : moment(item?.date).format('DD-MM-YYYY') === moment(new Date()).format('DD-MM-YYYY')
-                      && MonthStatus === false ? COLORS.colorB : COLORS.colorBackground
+                selectedDate && moment(selectedDate).format('DD-MM-YYYY') === moment(item?.date).format('DD-MM-YYYY') ? COLORS.colorB
+                    :   COLORS.colorBackground
               }}
               onPress={() => {
                 dispatch({
@@ -161,24 +157,18 @@ const CalendarStrips = ({ setNewDates, getCGTslot }) => {
                   setNewDates(item?.date._d)
                 }, 1000)
                 setSelectedDate(item?.date._d),
-                  setMonth(item?.date._d),
-
-                  setMonthStatus(true)
-                getCGTslot()
+                  setMonth(item?.date._d)
               }}>
               <Text
                 style={{
-                  color: moment(selectedDate).format('DD-MM-YYYY') === moment(item?.date).format('DD-MM-YYYY') ?
-                    COLORS.colorBackground : moment(item?.date).format('DD-MM-YYYY') === moment(new Date()).format('DD-MM-YYYY')
-                      && MonthStatus === false ? COLORS.colorBackground : '#171930',
+                  color: selectedDate && moment(selectedDate).format('DD-MM-YYYY') === moment(item?.date).format('DD-MM-YYYY') ?
+                    COLORS.colorBackground : '#171930',
                   fontSize: 11,
                   textTransform: 'capitalize',
                   fontFamily: FONTS.FontRegular
                 }}>{moment(item?.date).format('DD-MM-YYYY') === moment(new Date()).format('DD-MM-YYYY') ? 'Today' : moment(item?.date).format('ddd')}</Text>
               <Text style={{
-                color: moment(selectedDate).format('DD-MM-YYYY') === moment(item?.date).format('DD-MM-YYYY')
-                  ? COLORS.colorBackground : moment(item?.date).format('DD-MM-YYYY') === moment(new Date()).format('DD-MM-YYYY')
-                    && MonthStatus === false ? COLORS.colorBackground : '#171930', fontSize: 15, fontFamily: FONTS.FontSemiB
+                color: selectedDate &&moment(selectedDate).format('DD-MM-YYYY') === moment(item?.date).format('DD-MM-YYYY')? COLORS.colorBackground :   '#171930', fontSize: 15, fontFamily: FONTS.FontSemiB
               }}>{moment(item?.date).format('DD').replace(/\b0/g, '')}</Text>
             </TouchableOpacity>
           )

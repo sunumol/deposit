@@ -259,12 +259,12 @@ const LoginScreen = ({ navigation }) => {
             console.log("restricted values", num, PhoneNum)
         }
     }
-    useEffect(() => {
-        if(phoneChange){
-            setTimeout(() => {
-                setPhoneChange(false)}, 11000)
-        }
-    }, [phoneChange]);
+    // useEffect(() => {
+    //     if(phoneChange){
+    //         setTimeout(() => {
+    //             setPhoneChange(false)}, 11000)
+    //     }
+    // }, [phoneChange]);
  
     // ------------------ Login Api Call Start ------------------
     async function LoginApiCall() {
@@ -292,7 +292,8 @@ const LoginScreen = ({ navigation }) => {
                 setTimer(30)
                 setOtpclick(false)
                 setPhoneChange(true)
-               
+                setTimeout(() => {setPhoneChange(false)}, 30000)
+                    
             }
         }).catch((err) => {
             console.log("err Login->", err?.response)
@@ -475,6 +476,7 @@ const LoginScreen = ({ navigation }) => {
                 setMaxError(false)
                 setOtpclick(false)
                 setPhoneChange(true)
+                setTimeout(() => {setPhoneChange(false)}, 30000)
             } else {
                 console.log(res?.data?.status)
             }

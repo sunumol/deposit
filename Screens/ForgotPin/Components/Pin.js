@@ -126,6 +126,7 @@ const ForgotPin = ({ navigation }) => {
                 setTimer(30)
                 setOtpFetch(true)
                 setPhoneChange(true)
+                setTimeout(() => {setPhoneChange(false)}, 30000)
             } else {
                 console.log(res?.data)
             }
@@ -238,12 +239,12 @@ const ForgotPin = ({ navigation }) => {
         return reg.test(Phone);
     }
 
-    useEffect(() => {
-        if(phoneChange){
-            setTimeout(() => {
-                setPhoneChange(false)}, 11000)
-        }
-    }, [phoneChange]);
+    // useEffect(() => {
+    //     if(phoneChange){
+    //         setTimeout(() => {
+    //             setPhoneChange(false)}, 11000)
+    //     }
+    // }, [phoneChange]);
 
     // ------------------ Resend Api Call Start ------------------
     async function forgotApiCall() {
@@ -268,6 +269,7 @@ const ForgotPin = ({ navigation }) => {
                 setStatus(true)
                 setTimer(30)
                 setPhoneChange(true)
+                setTimeout(() => {setPhoneChange(false)}, 30000)
             } else {
                 console.log(res?.data)
             }
