@@ -299,6 +299,10 @@ const ContinuingGuarantor = ({ navigation, route }) => {
         console.log("timer zero.....", timerCount)
       } else if (err?.response?.data?.message === "Mobile number cannot be same as that of the Customer") {
         setModalError2(true)
+        onChangeNumber('')
+        // setResendOtp(false)
+         setTimer(0)
+        
         
       } else {
         setMaxError(false)
@@ -418,8 +422,10 @@ const ContinuingGuarantor = ({ navigation, route }) => {
     if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(num) || num === '') {
       if ("+91" + num == customerNumber) {
         setModalError(true)
+        setTimer(null)
         setResendOtp(false)
         onChangeNumber('')
+        console.log("")
       } else {
         onChangeNumber(num)
         if (num?.length == 10) {
@@ -506,7 +512,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
               <Text style={styles.mobileText}>Mobile Number</Text>
               <View style={styles.inPutStyle}>
                 <TextInput
-
+                  
                   placeholder=''
                   value={number}
                   maxLength={10}
@@ -630,6 +636,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
             ModalVisible={ModalError}
             onPressOut={() => {
               setModalError(!ModalError)
+              setTimer(0)
 
             }}
             setModalVisible={setModalError}

@@ -116,7 +116,8 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus }) => {
             console.log('-------------------res', res?.data?.body)
             setVillageList(res?.data?.body)
             setVillageStatus(true)
-           // setModalVillage(true)
+            //setModalVillage(true)
+            setVillageList(res?.data?.body)
             //setBstatus(true)
         })
             .catch((err) => {
@@ -310,7 +311,7 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus }) => {
                                             {vilageList?.length > 0
                                                 ? <View style={{ alignItems: 'center' }}>
                                                     <View style={styles.ViewMapBranch1}>
-                                                        {vilageList?.map((item) => {
+                                                        {vilageList?.map((item,index) => {
                                                             return (
 
                                                                 <TouchableOpacity onPress={() => {
@@ -322,11 +323,11 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus }) => {
                                                                     
                                                                     // setBstatus(false)
                                                                 }}>
-                                                                    <View style={{ paddingTop: 8 }}>
+                                                                    <View style={{  }}>
 
-                                                                        <Text style={styles.ItemNameBranch}>{item}</Text>
-
-                                                                        <View style={styles.Line} />
+                                                                        <Text style={[styles.ItemNameBranch,{marginTop:10,marginBottom:10}]}>{item}</Text>
+                                                                        {vilageList?.length - 1 !== index ?
+                                                                        <View style={styles.Line} />:null}
                                                                     </View>
                                                                 </TouchableOpacity>
 
@@ -382,6 +383,13 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus }) => {
                     ModalVisible={ModalVillage}
                     onPressOut={() => setModalVillage(!VillageModal)}
                     setModalVisible={setModalVillage}
+                    vilageLists={vilageList}
+                    setVillage={setVillage}
+                    setVillageEnable={setVillageEnable}
+                    setButton={setButton}
+                    setVillageList={setVillageList}
+                    setVillageStatus={setVillageStatus}
+                  
                 />
             </View>
         </>
@@ -467,7 +475,7 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderBottomColor: 'rgba(242, 242, 242, 1)',
         width: width * 0.85,
-        paddingTop: width * 0.035
+       // paddingTop: width * 0.035
     },
     TextInputBranch: {
         color: "#1A051D",

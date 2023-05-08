@@ -353,7 +353,7 @@ const styles = StyleSheet.create({
     },
 
     lineView: {
-        borderWidth: 0.9,
+        borderWidth: 0.6,
         borderColor: COLORS.Gray6,
         backgroundColor: COLORS.Gray6,
         opacity: 0.5,

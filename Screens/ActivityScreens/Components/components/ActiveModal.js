@@ -140,7 +140,7 @@ const App = ({ visible, onPressOut, meet, details ,setEnab}) => {
                                         ? <Enable width={18} height={18} onPress={() => {
                                             setEnableContinue(false)
                                           
-                                            AsyncStorage.setItem('CallActivity',item.id);
+                                          
                                             setId()
 
                                         }} />
@@ -148,7 +148,7 @@ const App = ({ visible, onPressOut, meet, details ,setEnab}) => {
                                             setEnableContinue(true)
                                             setId(item.id)
                                             selectstatus(item.id)
-                                            AsyncStorage.setItem('CallActivity',item.id);
+                                         
                                         }
                                         } />
                                     }

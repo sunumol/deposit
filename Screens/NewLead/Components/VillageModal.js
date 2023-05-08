@@ -7,8 +7,8 @@ const { height, width } = Dimensions.get('screen');
 import Image1 from '../assets/tick.svg';
 
 
-const VillageModal = ({ ModalVisible, onPressOut, setModalVisible, onPress, navigation,villageList }) => {
-    console.log("villa",villageList)
+const VillageModal = ({ ModalVisible, onPressOut, vilageLists, setVillage, setVillageEnable, setButton, setVillageList, setVillageStatus }) => {
+    console.log("village list", vilageLists, ModalVisible)
     const [state, setState] = useState(null);
     const { t } = useTranslation();
     const [Lang, setLang] = useState('')
@@ -34,26 +34,59 @@ const VillageModal = ({ ModalVisible, onPressOut, setModalVisible, onPress, navi
             transparent={true}
             visible={ModalVisible}
             onRequestClose={() => {
-                onPress()
+               // onPressOut()
             }}
         >
             <View style={styles.mainContainer} >
                 <TouchableOpacity onPressOut={() => {
-                    onPress()
+                    onPressOut()
                 }}
                     style={{ flex: 1, alignItems: 'center', justifyContent: 'center', opacity: 5 }} >
 
-                    {/* <TouchableOpacity onPressOut={()=>onPress()}
-          style={{ backgroundColor: "#000000aa", flex: 1, alignItems: 'center', justifyContent: 'center', opacity: 5 }}
-                >
-            </TouchableOpacity> */}
+
 
                     <View style={styles.modalContainer}>
-                        
+                        <View>
+                            {vilageLists?.length > 0
+                                ? <View style={{ alignItems: 'center' }}>
+                                    <View style={styles.ViewMapBranch1}>
+                                        {vilageLists?.map((item, index) => {
+                                            return (
+
+                                                <TouchableOpacity onPress={() => {
+                                                    setVillage(item)
+                                                    setVillageEnable(true)
+                                                    setButton(true)
+                                                    setVillageList([])
+                                                    setVillageStatus(false)
+
+                                                    setBstatus(false)
+                                                    onPressOut()
+                                                }}>
+                                                    <View style={{}}>
+
+                                                        <Text style={styles.ItemNameBranch1}>{item}</Text>
+                                                        {vilageLists?.length - 1 !== index ?
+                                                            <View style={styles.Line} /> : null}
+                                                    </View>
+                                                </TouchableOpacity>
+
+                                            )
+                                        })}
+                                    </View>
+                                </View>
+                                : <View style={[styles.ViewMapBranch, { height: width * 0.15, }]}>
+                                <View style={{ paddingTop: width * 0.05 }}>
+
+                                    <Text style={styles.ItemNameBranch}>No results found</Text>
+
+                                </View>
+                            </View> }
+                        </View>
                     </View>
 
 
-     
+
                 </TouchableOpacity>
             </View>
         </Modal>
@@ -64,25 +97,26 @@ const VillageModal = ({ ModalVisible, onPressOut, setModalVisible, onPress, navi
 const styles = StyleSheet.create({
     mainContainer: {
         //backgroundColor: "#000000aa",
-        flex: 1,
+        flex:1,
         alignItems: 'center',
         justifyContent: 'center'
     },
     modalContainer: {
-        width: Dimensions.get('window').width * 0.9,
-        height: Dimensions.get('window').width * 0.33,
-        backgroundColor: COLORS.colorBackground,
-       
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginTop:width*0.25,
-        borderWidth: 1,
-        paddingLeft: width * 0.02,
-        borderColor: 'rgba(236, 235, 237, 1)',
-        borderRadius: 8,
-      
-        backgroundColor: '#FCFCFC',
-        alignSelf: 'flex-start'
+        // width: Dimensions.get('window').width * 0.9,
+        // height: Dimensions.get('window').width * 0.33,
+        // backgroundColor: COLORS.colorBackground,
+
+        // alignItems: 'center',
+        // justifyContent: 'center',
+      flex:0.09,
+      marginTop:width*0.6
+        // borderWidth: 1,
+        // paddingLeft: width * 0.02,
+        // borderColor: 'rgba(236, 235, 237, 1)',
+        // borderRadius: 8,
+
+        // backgroundColor: '#FCFCFC',
+        // alignSelf: 'flex-start'
     },
 
     textStyle: {
@@ -101,6 +135,17 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         marginTop: width * 0.07,
         marginBottom: 21
+    },
+    ViewMapBranch1: {
+        width: width * 0.9,
+        // height: height * 0.16,
+        borderWidth: 1,
+        paddingLeft: width * 0.02,
+        borderColor: 'rgba(236, 235, 237, 1)',
+        borderRadius: 8,
+       // marginTop: width * 0.68,
+        backgroundColor: '#FCFCFC',
+        alignSelf: 'flex-start'
     },
     buttonTextStyle: {
         color: COLORS.colorBackground,
@@ -126,6 +171,16 @@ const styles = StyleSheet.create({
         color: "#1A051D",
         fontFamily: FONTS.FontRegular
     },
+    ViewMapBranch: {
+        width: width * 0.9,
+        height: width * 0.28,
+        borderWidth: 1,
+        paddingLeft: width * 0.02,
+        borderColor: 'rgba(236, 235, 237, 1)',
+        borderRadius: 8,
+        marginTop: width * 0.60,
+        backgroundColor: '#FCFCFC'
+    },
     ViewDesc: {
         width: width * 0.8,
         height: width * 0.18,
@@ -139,7 +194,26 @@ const styles = StyleSheet.create({
         color: "#1A051D",
         fontFamily: FONTS.FontRegular,
     },
-
+    ItemNameBranch: {
+        paddingLeft: width * 0.02,
+        color: "#1A051D",
+        fontSize: 12,
+        fontFamily: FONTS.FontRegular
+    },
+    ItemNameBranch1: {
+        paddingLeft: width * 0.02,
+        color: "#1A051D",
+        fontSize: 12,
+        fontFamily: FONTS.FontRegular,
+        paddingBottom:12,
+        paddingTop:12
+    },
+    Line: {
+        borderBottomWidth: 1,
+        borderBottomColor: 'rgba(242, 242, 242, 1)',
+        width: width * 0.85,
+        // paddingTop: width * 0.035
+    },
 });
 
 export default VillageModal;
