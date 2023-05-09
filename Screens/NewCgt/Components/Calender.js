@@ -37,7 +37,19 @@ const CalendarStrips = ({ setNewDates, getCGTslot }) => {
       setArrowRight(true)
     }
   }, [selectedDate])
-
+  
+  useEffect(() => {
+    let s = selectedDate.toString();
+    function parseAsUTC(s) {
+      let months = ['jan', 'feb', 'mar', 'apr', 'may', 'jun',
+        'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
+      let b = s.split(/\W/);
+      return new Date(Date.UTC(b[3], months.indexOf(b[1].toLowerCase()),
+        b[2], b[4], b[5], b[6]));
+    }
+    setNewDates(parseAsUTC(s).toISOString())
+  }, [selectedDate])
+ 
   const IncrementMonth = () => {
     const today = new Date();
     let next;
@@ -48,29 +60,11 @@ const CalendarStrips = ({ setNewDates, getCGTslot }) => {
     }
     setMonth(next)
     setSelectedDate(next)
-    dispatch({
-      type: 'SET_CREATE_DATE_CGT',
-      payload: next
-    });
-    AsyncStorage.setItem('DATECGT', next);
-    setNewDates(next)
-    setTimeout(() => {
-      setNewDates(next)
-    }, 1000)
   }
 
   const DecrementMonth = () => {
     setMonth(new Date())
     setSelectedDate(new Date())
-    dispatch({
-      type: 'SET_CREATE_DATE_CGT',
-      payload: new Date()
-    });
-    AsyncStorage.setItem('DATECGT', new Date());
-    setNewDates(new Date())
-    setTimeout(() => {
-      setNewDates(new Date())
-    }, 1000)
   }
 
   const onWeekChanged = (start, end) => {

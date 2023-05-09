@@ -10,12 +10,9 @@ import {
     ActivityIndicator,
     Text,
     TouchableOpacity,
- 
 } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
-import { useTranslation } from 'react-i18next';
 import moment from 'moment';
 const { height, width } = Dimensions.get('screen');
 // -------------- Component Imports -------------------------
@@ -30,7 +27,6 @@ import Icon from 'react-native-vector-icons/SimpleLineIcons'
 const Calendar = ({ navigation, route }) => {
 
     const isDarkMode = true
-    const { t } = useTranslation();
 
     const [slotlist, setSlotlist] = useState([]);
     const [NewDates, setNewDates] = useState(new Date())
@@ -38,23 +34,8 @@ const Calendar = ({ navigation, route }) => {
     const [BStatus, setBstatus] = useState(false);
     const [unScheduledActivities, setUnScheduledActivities] = useState();
 
-    useEffect(() => {
-        getData()
-    }, [])
-
-    const getData = async () => {
-        try {
-            const Cgtdate = await AsyncStorage.getItem('DATECGT')
-            getCGTslot_callback(Cgtdate)
-
-        } catch (e) {
-            console.log(e)
-        }
-    }
-
     useFocusEffect(
         React.useCallback(() => {
-            getData()
             return () => {
                 console.log('Screen was focused');
                 // Do something when the screen is unfocused
@@ -86,23 +67,6 @@ const Calendar = ({ navigation, route }) => {
     };
     // ------------------ get slot Api Call End ------------------
 
-    // ------------------ get Slot Api Call Start ------------------
-    const getCGTslot_callback = async (cgtdate) => {
-        const data = {
-            "employeeId": 1,
-            "selectedDate": moment(cgtdate ? cgtdate : NewDates).utc().format('DD-MM-YYYY')
-        };
-        await api.getCGTslot(data).then((res) => {
-           
-            setSlotlist(res?.data?.body[0].sloatActivityList);
-            setStatus(false)
-        })
-            .catch((err) => {
-                console.log('-------------------err slot', err?.response)
-                setStatus(false)
-            })
-    };
-
     const handleGoBack = useCallback(() => {
         if (BStatus) {
             setBstatus(false)
@@ -128,12 +92,6 @@ const Calendar = ({ navigation, route }) => {
     useEffect(() => {
         getCGTslot(NewDates)
     }, [NewDates]);
-
-    useEffect(() => {
-        if (NewDates !== NewDates) {
-            setNewDates(NewDates)
-        }
-    }, [NewDates])
 
     return (
         <SafeAreaProvider>

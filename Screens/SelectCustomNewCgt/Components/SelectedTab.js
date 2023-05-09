@@ -1,26 +1,16 @@
-
-;
-import React, { useEffect, useState } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
-import { COLORS, FONTS } from '../../../Constants/Constants';
+import React from 'react';
+import { Text, View, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon1 from 'react-native-vector-icons/Ionicons'
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 
+// ------------------ Component Imports ---------------------
+import { COLORS, FONTS } from '../../../Constants/Constants';
+
 const MeetTab = (props) => {
+   
     const { t } = useTranslation();
-    const [Lang, setLang] = useState('')
 
-    useEffect(() => {
-        getData()
-        console.log('selected tab', props)
-    }, [])
-
-
-    // String.prototype.replaceAt = function (index, replacement) {
-    //     return this.substring(0, index) + replacement + this.substring(index + replacement.length);
-    // }
     const getRandomColor = () => {
         var letters = '0123456789ABCDEF';
         var color = '#';
@@ -33,8 +23,8 @@ const MeetTab = (props) => {
     String.prototype.replaceAt = function (index, replacement) {
         return this.substring(0, index) + replacement + this.substring(index + replacement.length);
     }
+    
     const getInitials = (name) => {
-
         let initials;
         const nameSplit = name?.split(" ");
         const nameLength = nameSplit?.length;
@@ -49,22 +39,10 @@ const MeetTab = (props) => {
         return initials.toUpperCase();
     };
 
-
-    const getData = async () => {
-        try {
-            const lang = await AsyncStorage.getItem('user-language')
-            setLang(lang)
-        } catch (e) {
-            console.log(e)
-        }
-    }
     return (
 
-        <View
-
-            style={styles.boxStyle} key={props.id}>
+        <View style={styles.boxStyle} key={props.id}>
             <View style={{ flex: 1, flexDirection: 'row' }}>
-
                 <View style={[styles.circleStyle, { backgroundColor: getRandomColor() }]}>
                     <Text style={styles.circleText}>{getInitials(props.item.name ? props.item.name : props.item.mobile)}</Text>
                 </View>
@@ -94,17 +72,10 @@ const MeetTab = (props) => {
             </View>
 
         </View>
-
     )
 }
 
 const styles = StyleSheet.create({
-    timeDropStyle: {
-        fontSize: 11,
-        fontFamily: FONTS.FontMedium,
-        color: COLORS.colorDSText,
-        paddingTop: 18,
-    },
     boxStyle: {
         backgroundColor: COLORS.colorBackground,
         borderColor: COLORS.colorBorder,
@@ -157,37 +128,10 @@ const styles = StyleSheet.create({
         color: COLORS.colorDark,
         fontWeight: '400',
     },
-    approveContainer: {
-        width: 98,
-        height: 35,
-        borderRadius: 54,
-        shadowColor: 'rgba(0, 0, 0, 0.12',
-        shadowOffset: { width: 0, height: 1 },
-        shadowOpacity: 0.2,
-        elevation: 7,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: COLORS.colorB
-    },
-    textApprove: {
-        fontSize: 12,
-        fontFamily: FONTS.FontSemiB,
-        fontWeight: '600',
-    },
-    rejectContainer: {
-        width: 98,
-        height: 35,
-        borderRadius: 54,
-        backgroundColor: COLORS.colorLight,
-        marginLeft: 10,
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
     leadText: {
         fontSize: 11,
         fontFamily: FONTS.FontSemiB,
         fontWeight: '600',
-
     },
     leadContainer: {
         padding: 4,
@@ -195,7 +139,5 @@ const styles = StyleSheet.create({
         marginTop: 2,
         maxWidth: 150
     },
-
-
 });
 export default MeetTab;

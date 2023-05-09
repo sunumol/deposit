@@ -89,10 +89,12 @@ const ConfirmMembers = ({ navigation }) => {
   if(num === ''){
     onChangeText(num)
       setTccustomerlist([])
-    }else if (/^[^!-\/:-@\.,[-`{-~]+$/.test(num) || num === '') {
+    }else if (!(/^[^!-\/:-@\.,[-`{-~]+$/.test(num) || num === '')) {
+      
+      // getTclist(num)
+    }else{
       onChangeText(num)
       getCustomerLists(num)
-      // getTclist(num)
     }
   }
 
@@ -163,7 +165,7 @@ const ConfirmMembers = ({ navigation }) => {
       setTccustomerlist(data)
       setData(data)
       setStatus(true)
-      console.log("data length")
+    //  console.log("data length")
     }).catch((err) => {
       console.log('-------------------err123', err?.response)
     })
@@ -239,7 +241,7 @@ const ConfirmMembers = ({ navigation }) => {
                 <Text style={styles.recentlyText}>Recently added customers</Text>
                 {tccustomerlist?.map((item, index) =>
                   <>
-                    {console.log('---id available selected1--', text,selectedItem)}
+                  
                     <TouchableOpacity onPress={() => {
                       getTCDetails(item?.id)
                       setSelectedItem(item?.id)
