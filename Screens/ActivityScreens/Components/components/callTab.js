@@ -135,7 +135,7 @@ const MeetTab = (props) => {
                 {/* <Text style={[styles.timeDropStyle, { paddingTop: props.time ? 18 : 0 }]}>{props?.time} ({props?.data?.length})</Text> */}
           
                 {props?.data?.map((item, index) => {
-
+                    console.log("props data",item)
                     return (
                         <TouchableOpacity 
                             onPress={() => {
@@ -157,10 +157,12 @@ const MeetTab = (props) => {
                                 
                                 
                                 }else{
+                                    AsyncStorage.setItem('CallActivity',JSON.stringify(item?.activityId));
+                                    console.log("item id",item?.activityId)
                                     if(!props?.meet){
                                         openDialScreen(item?.mobileNumber)
                                     }
-                                  
+                                    
                                     setModalVisible(true)
                                     setDetails(item)
                                 }

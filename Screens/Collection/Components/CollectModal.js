@@ -7,7 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const { height, width } = Dimensions.get('screen');
 
 
-const CollectModal = ({ ModalVisible, onPressOut, setModalVisible,ModalVisible2,ModalVisible3,navigation }) => {
+const CollectModal = ({ ModalVisible, onPressOut, setModalVisible,ModalVisible2,ModalVisible3,navigation,collectedvalue }) => {
     const [state, setState] = useState(null);
     const { t } = useTranslation();
     const [Lang, setLang] = useState('')
@@ -44,7 +44,7 @@ const CollectModal = ({ ModalVisible, onPressOut, setModalVisible,ModalVisible2,
 
 
                     <Text style={[styles.textdesc, { paddingTop: width * 0.06, textAlign: 'center' }]}>Confirm Collection of
-                    <Text style={[styles.textdesc, { paddingTop: width * 0.06, textAlign: 'center',fontFamily:FONTS.FontMedium }]}> ₹14,724 ?</Text></Text>
+                    <Text style={[styles.textdesc, { paddingTop: width * 0.06, textAlign: 'center',fontFamily:FONTS.FontMedium }]}> ₹{collectedvalue} ?</Text></Text>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingTop: 22, paddingBottom: 22, }}>
                         <TouchableOpacity style={styles.ButtonCancel} onPress={() => setModalVisible(false)}>
                             <Text style={styles.text2}>{t('common:No')}</Text>

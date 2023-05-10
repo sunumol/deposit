@@ -157,15 +157,19 @@ const Vehicle = ({ navigation }) => {
                     setSearchvehicledata(res?.data?.body)
                     setSearchStatus2(true)
                 } else {
+              
                     setNumbers('')
                     setModalError(true)
                     setSearchStatus2(false)
+                    console.log("inside this",Status)
                 }
 
             }
         }).catch((err) => {
             if (err.response.status == 400) {
                 setModalVehicle(true)
+                setStatus(!Status)
+                setNumbers('')
             }
             console.log('-------------------err fetchVehicleDetailsForDle', err.response.status, data)
         })
@@ -191,7 +195,7 @@ const Vehicle = ({ navigation }) => {
 
     const StatusChange2 = () => {
 
-        if (numbers.length > 0) {
+        if (numbers?.length > 0) {
             //setSearchStatus2(true)
             setStatus(true)
             fetchVehicleDetailsForDle()
@@ -414,6 +418,7 @@ const Vehicle = ({ navigation }) => {
                 ModalVisible={ModalError}
                 onPressOut={() => {
                     setModalError(!ModalError)
+                    
 
                 }}
                 setModalVisible={setModalError}

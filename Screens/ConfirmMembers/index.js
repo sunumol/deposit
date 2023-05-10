@@ -13,7 +13,9 @@ import { FONTS, COLORS } from '../../Constants/Constants';
 import SelectTab from './Components/SelectTab';
 import ReasonModal from './Components/ReasonModal';
 import ErrorModal from './Components/ErrorModal';
-import { api } from '../../Services/Api'
+import { api } from '../../Services/Api';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 String.prototype.replaceAt = function (index, replacement) {
   return this.substring(0, index) + replacement + this.substring(index + replacement.length);
 }
@@ -29,7 +31,7 @@ const ConfirmMembers = ({ navigation }) => {
   const [ModalError, setModalError] = useState(false)
   const [ModalReason, setModalReason] = useState(false)
   const [rejectReason, setRejectReason] = useState()
-
+  const [status,setStatus] = useState(false)
   // -----------Redux State ---------------------------------
   const dispatch = useDispatch()
   const customerList = useSelector(state => state.customerList);
@@ -84,16 +86,17 @@ const ConfirmMembers = ({ navigation }) => {
 
   const OnchangeNumber = (num) => {
     console.log('qqqq-----', num)
-    if (/^[^!-\/:-@\.,[-`{-~]+$/.test(num) || num === '') {
+  if(num === ''){
+    onChangeText(num)
+      setTccustomerlist([])
+    }else if (!(/^[^!-\/:-@\.,[-`{-~]+$/.test(num) || num === '')) {
+      
+      // getTclist(num)
+    }else{
       onChangeText(num)
       getCustomerLists(num)
-      // getTclist(num)
     }
   }
-  useEffect(() => {
-    // getCustomerLists()
-  }, [])
-
 
 
 
@@ -120,8 +123,13 @@ const ConfirmMembers = ({ navigation }) => {
   }, [navigation]);
 
   useEffect(() => {
-    getTCDetails(customerList)
+  //   AsyncStorage.getItem("CustomerId").then((value) => {
+  //     //setCustId(value)
+  //     console.log("value",value)
+  // })
+  getTCDetails(customerList)
     // getTclist()
+    console.log("idbhh..", customerList,customerID)
     getCustomerLists()
   }, []);
 
@@ -150,11 +158,14 @@ const ConfirmMembers = ({ navigation }) => {
       "addedTcIds": [cgtCustomerDetails?.primaryCustomerId]
 
     };
+    console.log("data of tc list",data)
     await api.getCustomerListForTc(data).then((res) => {
+      console.log("api response",res?.data)
       const data = res?.data?.body?.filter((item, index) => !customerID.includes(item?.id))
       setTccustomerlist(data)
       setData(data)
-      console.log("data length")
+      setStatus(true)
+    //  console.log("data length")
     }).catch((err) => {
       console.log('-------------------err123', err?.response)
     })
@@ -230,7 +241,7 @@ const ConfirmMembers = ({ navigation }) => {
                 <Text style={styles.recentlyText}>Recently added customers</Text>
                 {tccustomerlist?.map((item, index) =>
                   <>
-                    {console.log('---id available selected1--', item)}
+                  
                     <TouchableOpacity onPress={() => {
                       getTCDetails(item?.id)
                       setSelectedItem(item?.id)
@@ -252,7 +263,7 @@ const ConfirmMembers = ({ navigation }) => {
 
 
 
-                {data?.length < 1 && <Text style={{
+                {tccustomerlist?.length == 0 && status && <Text style={{
                   fontSize: 14,
                   fontFamily: FONTS.FontRegular,
                   color: COLORS.colorDark,

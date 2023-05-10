@@ -75,6 +75,7 @@ const ForgotPin = ({ navigation }) => {
         // -------------- Get DeviceInfo start----------
         DeviceInfo.getUniqueId().then((uniqueId) => {
             setDeviceId(uniqueId)
+            console.log("deviceid 12345",uniqueId);
         });
         // -------------- Get DeviceInfo End ----------
     }, [])

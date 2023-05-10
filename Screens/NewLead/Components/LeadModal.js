@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Dimensions, Modal, StyleSheet, Text, TouchableOpacity, View,TouchableWithoutFeedback} from "react-native";
+import { Dimensions, Modal, StyleSheet, Text, TouchableOpacity, View, TouchableWithoutFeedback } from "react-native";
 import { COLORS, FONTS } from '../../../Constants/Constants';
 import { useTranslation } from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -7,7 +7,7 @@ const { height, width } = Dimensions.get('screen');
 import Image1 from '../assets/tick.svg';
 
 
-const LeadModal = ({ ModalVisible, onPressOut, setModalVisible,onPress,navigation }) => {
+const LeadModal = ({ ModalVisible, onPressOut, setModalVisible, onPress, navigation }) => {
     const [state, setState] = useState(null);
     const { t } = useTranslation();
     const [Lang, setLang] = useState('')
@@ -33,40 +33,41 @@ const LeadModal = ({ ModalVisible, onPressOut, setModalVisible,onPress,navigatio
             transparent={true}
             visible={ModalVisible}
             onRequestClose={() => {
-               onPress()
+                onPress()
             }}
         >
             <View style={styles.mainContainer} >
-<TouchableOpacity onPressOut={()=>{
-onPress()}}
- style={{ flex: 1, alignItems: 'center', justifyContent: 'center', opacity: 5 }} >
-      
-            {/* <TouchableOpacity onPressOut={()=>onPress()}
+                <TouchableOpacity onPressOut={() => {
+                    onPress()
+                }}
+                    style={{ flex: 1, alignItems: 'center', justifyContent: 'center', opacity: 5 }} >
+
+                    {/* <TouchableOpacity onPressOut={()=>onPress()}
           style={{ backgroundColor: "#000000aa", flex: 1, alignItems: 'center', justifyContent: 'center', opacity: 5 }}
                 >
             </TouchableOpacity> */}
 
-                <View style={styles.modalContainer}>
-                    <View style={{paddingTop:width*0.06}}>
-                        <Image1 />
+                    <View style={styles.modalContainer}>
+                        <View style={{ paddingTop: width * 0.06 }}>
+                            <Image1 />
+                        </View>
+
+
+                        <Text style={[styles.textdesc,
+                        { paddingTop: width * 0.02, textAlign: 'center' }]}>{t('common:LeadG')}</Text>
+
+
+                        <TouchableOpacity style={styles.buttonStyle} onPress={() => { onPress(), navigation.navigate('Profile') }}>
+                            <Text style={styles.buttonTextStyle}>{t('common:Okay')}</Text>
+                        </TouchableOpacity>
                     </View>
 
-                    
-                        <Text style={[styles.textdesc,
-                             { paddingTop: width * 0.02, textAlign: 'center' }]}>{t('common:LeadG')}</Text>
-                
 
-                    <TouchableOpacity style={styles.buttonStyle} onPress={()=>{onPress(),navigation.navigate('Profile')}}>
-                        <Text style={styles.buttonTextStyle}>{t('common:Okay')}</Text>
-                    </TouchableOpacity>
-                </View>
-
-   
-                {/* <TouchableOpacity onPressOut={()=>onPress()}
+                    {/* <TouchableOpacity onPressOut={()=>onPress()}
         style={{ backgroundColor: "#000000aa", flex: 1, alignItems: 'center', justifyContent: 'center', opacity: 5 }}
                  >
             </TouchableOpacity> */}
-            </TouchableOpacity>
+                </TouchableOpacity>
             </View>
         </Modal>
 
@@ -76,9 +77,10 @@ onPress()}}
 const styles = StyleSheet.create({
     mainContainer: {
         backgroundColor: "#000000aa",
-       flex: 1,
+        flex: 1,
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+     
     },
     modalContainer: {
         width: Dimensions.get('window').width * 0.82,

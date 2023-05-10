@@ -18,7 +18,7 @@ import Image1 from '../../../assets/image/b2.svg';
 import Image2 from '../../../assets/image/b1.svg';
 import ConfirmModal from './ConfirmModal';
 import { api } from '../../../Services/Api';
-import { useDispatch,useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { TextInput } from 'react-native-paper';
 import TCMModal from './TCMModal';
 
@@ -38,103 +38,65 @@ const ActiveLoans = ({ navigation, loandetails }) => {
     const [ModalVisible4, setModalVisible4] = useState(false)
     const [TCMstatus, setTCMstatus] = useState(false)
     const [TCMlist, setTCMlist] = useState(false)
-    
-    
+
+
     const [collectAmount, setCollectAmount] = useState([])
     const [collectAmount1, setCollectAmount1] = useState([])
 
-    
+
     const [Activeloandetail, setActiveloandetail] = useState('')
-    
+    const [itemsselected,setItems]=useState([]);
     const [TCM, setTCM] = useState('')
 
+    console.log('-------',itemsselected)
+
+const totalcollection =() =>{
+   // const sum = itemsselected.reduce((partialSum, a) => partialSum + a, 0);
+   let sum = 0;
+
+    for (const value of itemsselected) {
+        if (typeof value === 'number') {
+          sum += value;
+        }
+      }
+    setCollectAmount1(sum)
+    console.log('total',sum)        
+}
 
 
-    // const RenderItem = ({ content, index, collectAmount }) => {
+    const onCollect = (text, index) => {
 
-    //     const onCollect = (text) => {
-    //         setInput(text)
-    //         collectAmount(text)
-    //     }
+        console.log('on colle',itemsselected,text,index)
+     
+        const updatedItems = [...itemsselected];
 
-    //     const [input, setInput] = useState('');
-    //     return (
-    //         <TouchableOpacity style={styles.loanContainer} onPress={() => {
-    //             navigation.navigate('LoanDetailsCollect', { loan: content }),
-
-    //                 dispatch({
-    //                     type: 'SET_SELECTED_LOANID',
-    //                     payload: content?.loanId,
-    //                 });
-    //         }}>
-
-    //             <View style={{ flexDirection: 'row', paddingLeft: 20 }}>
-    //                 <View style={{ flex: 1 }}>
-    //                     <View style={{ marginTop: 15 }}>
-    //                         <Text style={[styles.headText, { paddingBottom: 5 }]}>Lender</Text>
-    //                         <View style={{ flexDirection: 'row', alignItems: 'center', paddingTop: 0, flexWrap: 'wrap' }}>
-    //                             <Image style={{ width: 15, height: 15 }}
-    //                                 source={{ uri: content?.lenderLogo }}
-    //                             />
-    //                             <Text style={[styles.valueText, { paddingLeft: 7, paddingTop: 0 }]}>{content?.lenderName}</Text>
-    //                         </View>
-    //                     </View>
-    //                     <View style={{ marginVertical: 15 }}>
-    //                         <Text style={styles.headText}>Loan Outstanding</Text>
-    //                         <Text style={styles.valueText}>{content?.loanOutstanding}</Text>
-    //                     </View>
-    //                 </View>
-    //                 <View style={{ flexDirection: 'column', marginTop: 17 }}>
-    //                     <View style={{ flex: 1 }}>
-    //                         <View style={styles.verticleLine} />
-    //                     </View>
-    //                     <View style={{ flex: 1 }}>
-    //                         <View style={styles.verticleLine} />
-    //                     </View>
-    //                 </View>
-
-    //                 <View style={{ flex: 1 }}>
-    //                     <View style={{ marginTop: 18 }}>
-
-
-    //                         <Text style={styles.headText}>Payment Due</Text>
-    //                         <Text style={[styles.valueText, { color: content?.dueDatePassed === true ? 'rgba(234, 64, 71, 1)' : '#000' }]}>₹{content?.paymentDue}</Text>
-
-    //                     </View>
-
-    //                     <View style={{ marginVertical: 15, }}>
-    //                         <Text style={styles.headText}>Collected Amount</Text>
-
-    //                         <TextInput
-    //                             style={styles.CardAmt}
-    //                             onChangeText={(text) => {
-    //                                 onCollect(text)
-
-    //                             }
-    //                             }
-    //                             value={input}
-    //                             maxLength={5}
-    //                             keyboardType="numeric"
-    //                         />
-
-    //                     </View>
-    //                 </View>
-    //             </View>
-
-    //         </TouchableOpacity>
-    //     )
-    // };
-
-
-
-
-    const onCollect = (text) => {
-        setCollectAmount([])
-       console.log('collection value',text)
-       var temp = collectAmount;
-       temp = temp.concat(text)
-       setCollectAmount(([...temp]))
-    }
+        if(index == 0) {
+            updatedItems[0] = JSON.parse(text);  
+            updatedItems[1] =  updatedItems[1] ?  updatedItems[1]: 0;  
+            updatedItems[2] =   updatedItems[2] ?  updatedItems[2]: 0;   
+            updatedItems[3] =   updatedItems[3] ?  updatedItems[3]: 0;   
+        }else   if(index == 1) {
+            updatedItems[1] =JSON.parse(text);   
+            updatedItems[0] =  updatedItems[0] ?  updatedItems[0]: 0;  
+            updatedItems[2] =   updatedItems[2] ?  updatedItems[2]: 0;   
+            updatedItems[3] =   updatedItems[3] ?  updatedItems[3]: 0; 
+        }else   if(index == 2) {
+            updatedItems[2] = JSON.parse(text);  
+            updatedItems[0] =  updatedItems[0] ?  updatedItems[0]: 0;  
+            updatedItems[1] =   updatedItems[1] ?  updatedItems[1]: 0;   
+            updatedItems[3] =   updatedItems[3] ?  updatedItems[3]: 0; 
+        }else   if(index == 3) {
+            updatedItems[3] = JSON.parse(text); 
+            updatedItems[0] =  updatedItems[0] ?  updatedItems[0]: 0;  
+            updatedItems[1] =   updatedItems[1] ?  updatedItems[1]: 0;   
+            updatedItems[2] =   updatedItems[2] ?  updatedItems[2]: 0; 
+        }
+   
+        
+        
+    
+       setItems(updatedItems);
+    };
 
 
 
@@ -147,11 +109,11 @@ const ActiveLoans = ({ navigation, loandetails }) => {
         };
         await api.getTrustcircledetails(data).then((res) => {
             console.log('------------------- getTrustcircledetails res', res)
-           
-if(res?.data?.body){
-    setModalVisible4(!ModalVisible4)
-    setTCMlist(res?.data?.body)
-}
+
+            if (res?.data?.body) {
+                setModalVisible4(!ModalVisible4)
+                setTCMlist(res?.data?.body)
+            }
 
         })
             .catch((err) => {
@@ -195,11 +157,11 @@ if(res?.data?.body){
 
                             <View style={{ marginHorizontal: 5 }}>
                                 <TouchableOpacity style={styles.SelectBox} onPress={() => {
-                                    
-                                        
-                                    
-                                       getTrustcircledetails()
-                                  }} >
+
+
+
+                                    getTrustcircledetails()
+                                }} >
                                     <Text style={[styles.textSelect, { color: TCMstatus ? '#808080' : '#1A051D' }]}>{TCM ? TCM : "Select TC Member"}</Text>
                                     {TCMstatus ?
                                         <Icon1 name="chevron-up" size={18} color={'#808080'} style={{ marginRight: 10 }} /> :
@@ -261,12 +223,12 @@ if(res?.data?.body){
 
                             }
                         /> */}
-                         {loandetails?.map((item) => {
+                         {loandetails?.map((item,index) => {
                           
                             return (
                                 <TouchableOpacity style={styles.loanContainer} onPress={() => {
                                     navigation.navigate('LoanDetailsCollect', { loan: item }),
-                                    console.log('{8888888*******}', item)
+                                        console.log('{8888888*******}', item)
                                     dispatch({
                                         type: 'SET_SELECTED_LOANID',
                                         payload: item?.loanId,
@@ -312,7 +274,7 @@ if(res?.data?.body){
                                                
                                                     <TextInput
                                                         style={styles.CardAmt}
-                                                        onChangeText={(text)=>onCollect(text)}
+                                                        onChangeText={(text)=>onCollect(text == '' ? 0 : text,index)}
                                                        value={collectAmount}
                                                         keyboardType="numeric"
                                                      
@@ -324,13 +286,13 @@ if(res?.data?.body){
 
                                 </TouchableOpacity>
                             )
-                        })} 
+                        })}
                     </View>
 
                 </View>
             </ScrollView>
             <View style={styles.viewsB}>
-                <TouchableOpacity style={[styles.buttonView]} onPress={() => setModalVisible(true)}>
+                <TouchableOpacity style={[styles.buttonView]} onPress={() =>{totalcollection(), setModalVisible(true)}}>
                     <Text style={[styles.continueText]}>Submit</Text>
                 </TouchableOpacity>
             </View>
@@ -341,6 +303,7 @@ if(res?.data?.body){
                 ModalVisible={ModalVisible}
                 onPressOut={() => setModalVisible(!ModalVisible)}
                 setModalVisible={setModalVisible}
+                collectedvalue={collectAmount1}
                 ModalVisible2={() => {
                     setModalVisible1(true)
                     setModalVisible(false)
@@ -354,13 +317,13 @@ if(res?.data?.body){
 
 
             <TCMModal
-                 press1={(value)=>setTCM(value)}
+                press1={(value) => setTCM(value)}
                 TCMlist={TCMlist}
                 ModalVisible={ModalVisible4}
                 onPressOut={() => setModalVisible4(false)}
                 setModalVisible={setModalVisible4}
-              
-            
+
+
 
             />
 

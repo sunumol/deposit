@@ -346,8 +346,10 @@ const ContinuingGuarantor = ({ navigation, route }) => {
     if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(num) || num === '') {
       if ("+91" + num == customerNumber) {
         setModalError(true)
+        setTimer(null)
         setResendOtp(false)
         onChangeNumber('')
+        console.log("")
       } else {
         onChangeNumber(num)
         if (num?.length == 10) {
