@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, BackHandler, StatusBar, SafeAreaView, Platform, TextInput, ScrollView, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, BackHandler, StatusBar, SafeAreaView, Platform, TextInput, ScrollView, TouchableOpacity, Pressable } from 'react-native'
 import React, { useCallback, useState, useEffect } from 'react'
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import SearchIcon from 'react-native-vector-icons/Feather'
@@ -15,6 +15,7 @@ import ReasonModal from './Components/ReasonModal';
 import ErrorModal from './Components/ErrorModal';
 import { api } from '../../Services/Api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import MemberModal from './Components/MemberModal';
 
 String.prototype.replaceAt = function (index, replacement) {
   return this.substring(0, index) + replacement + this.substring(index + replacement.length);
@@ -32,12 +33,14 @@ const ConfirmMembers = ({ navigation }) => {
   const [ModalReason, setModalReason] = useState(false)
   const [rejectReason, setRejectReason] = useState()
   const [status,setStatus] = useState(false)
+  const [ModalVisible4,setModalVisible4] = useState(false)
+  const [clearpop,setClearPop] = useState(false)
   // -----------Redux State ---------------------------------
   const dispatch = useDispatch()
   const customerList = useSelector(state => state.customerList);
   const customerID = useSelector(state => state.customerID);
   const cgtCustomerDetails = useSelector(state => state.cgtCustomerDetails);
-
+console.log('++++++++',ModalVisible4)
   const datas = [
     {
       id: 1,
@@ -95,6 +98,7 @@ const ConfirmMembers = ({ navigation }) => {
     }else{
       onChangeText(num)
       getCustomerLists(num)
+      setModalVisible4(true)
     }
   }
 
@@ -159,10 +163,14 @@ const ConfirmMembers = ({ navigation }) => {
 
     };
     console.log("data of tc list",data)
+    if(phone){
+      setClearPop(true)
+     }
     await api.getCustomerListForTc(data).then((res) => {
       console.log("api response",res?.data)
       const data = res?.data?.body?.filter((item, index) => !customerID.includes(item?.id))
       setTccustomerlist(data)
+     
       setData(data)
       setStatus(true)
     //  console.log("data length")
@@ -219,7 +227,9 @@ const ConfirmMembers = ({ navigation }) => {
 
       <Header navigation={navigation} name="Confirm Member" onPress={handleGoBack} />
 
-      <View style={styles.mainContainer}>
+      <Pressable  onPress={()=>{setClearPop(false),
+          onChangeText('')
+         }} style={styles.mainContainer}>
         <ScrollView showsVerticalScrollIndicator={false} >
           <View style={{ padding: 20, paddingTop: 2 }}>
             {!selectedItem ?
@@ -257,7 +267,7 @@ const ConfirmMembers = ({ navigation }) => {
               </>
               : null
             }
-            {text.length > 0 && !selectedItem
+            {text.length > 0 && clearpop && !selectedItem
               ?
               <View style={{ borderWidth: 1, paddingTop: 12, paddingBottom: 15, borderColor: COLORS.colorBorder, marginTop: 10, borderRadius: 8 }}>
 
@@ -347,7 +357,7 @@ const ConfirmMembers = ({ navigation }) => {
           </View>
           : null
         }
-      </View>
+      </Pressable>
 
       <ReasonModal
         onPress1={updateActivityReject}
@@ -357,6 +367,21 @@ const ConfirmMembers = ({ navigation }) => {
         setRejectReason={setRejectReason}
         data={datas}
       />
+        {/* <MemberModal
+               press1={(value) => {
+                onChangeText('')
+                getTCDetails(value)
+                setSelectedItem(value)
+                setModalVisible4(false)
+               }}
+                Memberlist={data}
+                ModalVisible={ModalVisible4}
+                onPressOut={() => setModalVisible4(false)}
+                setModalVisible={setModalVisible4}
+
+
+
+            /> */}
 
       <ErrorModal
         ModalVisible={ModalError}

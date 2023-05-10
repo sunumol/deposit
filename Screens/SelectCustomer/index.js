@@ -238,7 +238,7 @@ const SelectCustomer = ({ navigation, route }) => {
               {
                 customerList && (
                   <View style={styles.ViewMapBranch}>
-                    <Text style={[styles.nameText, { padding: 10 }]}>No results Found</Text>
+                    <Text style={[styles.nameText, { padding: 10 }]}>No results found</Text>
                   </View>
                 )
               }

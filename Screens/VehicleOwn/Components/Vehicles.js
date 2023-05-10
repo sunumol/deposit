@@ -153,6 +153,7 @@ const Vehicles = ({ navigation, vehicleslist }) => {
             }
         }).catch((err) => {
             console.log('-------------------err fetchVehicleDetailsForDle', err?.response)
+            navigation.navigate('AddVehicle')
         })
     };
 
