@@ -34,7 +34,7 @@ const PinModal = ({ ModalVisible, onPressOut, setModalVisible, navigation }) => 
 
                     <TouchableOpacity style={styles.buttonStyle}
                         onPress={() => {
-                            navigation.navigate('ChangePin')
+                            navigation.navigate('ResetPin')
                             setModalVisible(false)
                         }}>
                         <Text style={styles.buttonTextStyle}>{t('common:Reset')}</Text>
