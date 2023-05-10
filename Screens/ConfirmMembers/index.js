@@ -92,6 +92,7 @@ console.log('++++++++',ModalVisible4)
   if(num === ''){
     onChangeText(num)
       setTccustomerlist([])
+      setData([])
     }else if (!(/^[^!-\/:-@\.,[-`{-~]+$/.test(num) || num === '')) {
       
       // getTclist(num)
@@ -127,10 +128,7 @@ console.log('++++++++',ModalVisible4)
   }, [navigation]);
 
   useEffect(() => {
-  //   AsyncStorage.getItem("CustomerId").then((value) => {
-  //     //setCustId(value)
-  //     console.log("value",value)
-  // })
+
   getTCDetails(customerList)
     // getTclist()
     console.log("idbhh..", customerList,customerID)
@@ -167,15 +165,15 @@ console.log('++++++++',ModalVisible4)
       setClearPop(true)
      }
     await api.getCustomerListForTc(data).then((res) => {
-      console.log("api response",res?.data)
+      console.log("api response123",res)
       const data = res?.data?.body?.filter((item, index) => !customerID.includes(item?.id))
-      setTccustomerlist(data)
-     
+      setTccustomerlist(data)     
       setData(data)
       setStatus(true)
     //  console.log("data length")
     }).catch((err) => {
       console.log('-------------------err123', err?.response)
+      setData('')
     })
   };
   // ------------------ get slot Api Call End ------------------getCustomerList
@@ -271,9 +269,9 @@ console.log('++++++++',ModalVisible4)
               ?
               <View style={{ borderWidth: 1, paddingTop: 12, paddingBottom: 15, borderColor: COLORS.colorBorder, marginTop: 10, borderRadius: 8 }}>
 
+{console.log('{=}{=}{=}{=}{=}',data,data.length,status)}
 
-
-                {tccustomerlist?.length == 0 && status && <Text style={{
+                {data?.length == 0 && status  && <Text style={{
                   fontSize: 14,
                   fontFamily: FONTS.FontRegular,
                   color: COLORS.colorDark,
@@ -281,7 +279,7 @@ console.log('++++++++',ModalVisible4)
                 }}>No results Found</Text>}
 
 
-                {data?.map((item, index) =>
+                { data && data?.map((item, index) =>
                   <>
 
                     <TouchableOpacity style={{ flexDirection: 'row', paddingHorizontal: 15 }}
