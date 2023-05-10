@@ -263,7 +263,7 @@ const MeetTab = (props) => {
             /> */}
                     </View>
                 </> :
-                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', marginTop: 120 }}>
+                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', marginTop: 200 }}>
                     <NetworkScreen setModalVisible={true} />
                 </View>
             }

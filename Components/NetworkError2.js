@@ -33,7 +33,7 @@ const NetworkScreen = ({ navigation }) => {
     return (
         // <SafeAreaProvider style={{ backgroundColor: COLORS.colorBackground }} >
         
-            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center',backgroundColor: COLORS.colorBackground }}>
                 <NetworkImage />
                 <View style={{ marginTop: 34 }}>
                     <Text style={styles.textStyle}>Unable to connect to internet.</Text>
