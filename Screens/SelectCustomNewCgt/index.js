@@ -1,7 +1,7 @@
 
 import {
   StyleSheet, Text, View, BackHandler, StatusBar,
-  SafeAreaView, Platform, TextInput, ScrollView, TouchableOpacity, ActivityIndicator, Dimensions
+  SafeAreaView, Platform, TextInput, ScrollView, TouchableOpacity, ActivityIndicator, Dimensions, Pressable
 } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -17,7 +17,7 @@ import { FONTS, COLORS } from '../../Constants/Constants';
 import { api } from '../../Services/Api';
 import SelectedTab from './Components/SelectedTab';
 import CgtModal from './Components/Modal';
-
+import MemberModal from './Components/MemberModal';
 // ----------- Image Imports ---------
 import Edit from './Images/Vector.svg'
 
@@ -36,7 +36,9 @@ const SelectCustomerNewCgt = ({ navigation, route }) => {
   const [enab, setEnab] = useState(false)
   const [status, setStatus] = useState(true)
   const [EmptyList, setEmptyList] = useState(false)
+  const [ModalVisible4,setModalVisible4] = useState(false)
   const [reschedulecgt, setReschedulecgt] = useState('')
+  const [clearpop,setClearPop] = useState(false)
 
   const handleGoBack = () => {
     if (text?.length > 0) {
@@ -75,6 +77,7 @@ const SelectCustomerNewCgt = ({ navigation, route }) => {
         setEmptyList(false)
       }
       getCustomerList(searchword)
+    
     } else if (text?.length > 1) {
       setEmptyList(false)
     }
@@ -82,14 +85,19 @@ const SelectCustomerNewCgt = ({ navigation, route }) => {
 
   // ------------------ get Customer List Api Call Start ------------------
   const getCustomerList = async (searchvalue) => {
-    console.log('search------->>>>>', searchvalue)
+
+    console.log('search------->>>>>', searchvalue,clearpop)
     const data = {
       "employeeId": 1,
-      "customerNameOrNumber": searchvalue
+      "customerNameOrNumber": searchvalue ? searchvalue : ' '
     };
+    if(searchvalue){
+     setClearPop(true)
+    }
     await api.getCustomerList(data).then((res) => {
       console.log('------------------- customer list res', res.data.body)
       setCustomerList(res?.data?.body)
+      
       setStatus(false)
     })
       .catch((err) => {
@@ -122,6 +130,8 @@ const SelectCustomerNewCgt = ({ navigation, route }) => {
     getCustomerList()
   }, [enab])
 
+ 
+
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container1} />
@@ -132,7 +142,9 @@ const SelectCustomerNewCgt = ({ navigation, route }) => {
         <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1, }}>
           <ActivityIndicator size={30} color={COLORS.colorB} />
         </View> :
-        <View style={styles.mainContainer}>
+        <Pressable onPress={()=>{setClearPop(false),
+          onChangeText(''),
+          setStatus(false)}} style={styles.mainContainer}>
           <ScrollView showsVerticalScrollIndicator={false} >
             <View style={styles.boxView}>
               <View style={styles.contentView}>
@@ -152,6 +164,7 @@ const SelectCustomerNewCgt = ({ navigation, route }) => {
                 onChangeText={(text) => OnchangeNumber(text)}
                 value={text}
                 maxLength={25}
+                
                 style={{ flex: 1, color: COLORS.colorDark, fontSize: 14, fontFamily: FONTS.FontMedium }}
               />
               <SearchIcon color={"#808080"} name="search" size={18} style={{ right: 5 }} />
@@ -178,10 +191,11 @@ const SelectCustomerNewCgt = ({ navigation, route }) => {
             }
 
             <View >
-              {text?.length > 0 && !selectedItem
+              {text?.length >  0 && clearpop && !selectedItem
                 ?
                 <View style={{ borderWidth: customerList?.length > 0 ? 1 : 0, paddingTop: customerList?.length > 0 ? 12 : 0, paddingBottom: customerList?.length > 0 ? 12 : 2, borderColor: COLORS.colorBorder, marginTop: 10, borderRadius: 8 }} >
                   {customerList?.map((item, index) =>
+                
                     <>
                       <TouchableOpacity style={{ flexDirection: 'row', paddingHorizontal: 15, }}
                         onPress={() => {
@@ -215,9 +229,9 @@ const SelectCustomerNewCgt = ({ navigation, route }) => {
               }
             </View>
             {
-              customerList?.length === 0 && EmptyList && (
+              customerList?.length === 0 &&  clearpop  &&EmptyList && (
                 <View style={styles.ViewMapBranch}>
-                  <Text style={[styles.nameText, { padding: 10 }]}>No results Found</Text>
+                  <Text style={[styles.nameText, { padding: 10 }]}>No results found</Text>
                 </View>
               )
             }
@@ -236,7 +250,7 @@ const SelectCustomerNewCgt = ({ navigation, route }) => {
             </TouchableOpacity>
             : null
           }
-        </View>}
+        </Pressable>}
 
       <CgtModal ModalVisible={ModalVisible}
         onPressOut={() => {
@@ -246,6 +260,22 @@ const SelectCustomerNewCgt = ({ navigation, route }) => {
         navigation={navigation}
         setModalVisible={setModalVisible}
       />
+
+
+{/* <MemberModal
+               press1={(value) => {
+                onChangeText('')
+                setSelectedItem(value)
+                setModalVisible4(false)
+               }}
+                Memberlist={customerList}
+                ModalVisible={ModalVisible4}
+                onPressOut={() => setModalVisible4(false)}
+                setModalVisible={setModalVisible4}
+
+
+
+            /> */}
     </SafeAreaProvider>
   )
 }
@@ -261,6 +291,7 @@ const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
     paddingHorizontal: 20,
+    //backgroundColor:'red'
     backgroundColor: COLORS.colorBackground
   },
   editView: {

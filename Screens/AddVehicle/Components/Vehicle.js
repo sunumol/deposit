@@ -151,7 +151,7 @@ const Vehicle = ({ navigation }) => {
             "vehicleNumber": numbers
         }
         await api.fetchVehicleDetailsForDle(data).then((res) => {
-            console.log('-------------------res fetchVehicleDetailsForDle12388', data, res.data.status)
+            console.log('-------------------res fetchVehicleDetailsForDle12388', data, res)
             if (res?.status) {
                 if (res?.data?.body) {
                     setSearchvehicledata(res?.data?.body)
@@ -160,6 +160,7 @@ const Vehicle = ({ navigation }) => {
               
                     setNumbers('')
                     setModalError(true)
+                    setStatus(false)
                     setSearchStatus2(false)
                     console.log("inside this",Status)
                 }
@@ -168,13 +169,13 @@ const Vehicle = ({ navigation }) => {
         }).catch((err) => {
             if (err.response.status == 400) {
                 setModalVehicle(true)
-                setStatus(!Status)
+                setStatus(true)
                 setNumbers('')
             }
             console.log('-------------------err fetchVehicleDetailsForDle', err.response.status, data)
         })
     };
-
+console.log('++++++++++++++++++',Status)
 
     // ------------------get fetchVehicleDetailsForDle detail ------------------
 
