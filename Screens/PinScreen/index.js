@@ -126,14 +126,15 @@ const PinScreen = ({ navigation, }) => {
                     navigation.navigate('Profile')
                     setMaxError(false);
                 } else {
+                    otpInput2?.current?.clear()
                     setError(true)
                     setInvalidState(invalidState + 1)
-                    if (invalidState === 4) {
+                    if (invalidState === 3) {
                         invalidOtpApi()
+                        setInvalidState(1)
                     }
                     console.log('invalidState', invalidState)
                 }
-            } else {
                 setModalVisible(!ModalVisible)
             }   
         } catch (e) {

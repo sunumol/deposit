@@ -49,7 +49,6 @@ const ForgotPin = ({ navigation }) => {
     const [PhoneNum, setPhoneNum] = useState(null)
     const [button, setButton] = useState(true)
     const [otpAvailable, setOtpAvailable] = useState(false)
-    const [phoneChange,setPhoneChange]= useState(false)
 
     // --------------Device Configuration Start----------
     const [ipAdrress, setIPAddress] = useState();
@@ -59,6 +58,11 @@ const ForgotPin = ({ navigation }) => {
     const [maxError, setMaxError] = useState(false)
     const [status, setStatus] = useState(true)
     // --------------Device Configuration End----------
+
+    // --------------- getOtp Button Disable Start ------------
+    const [getOtpDisable, setGetOtpDisable] = useState(false);
+    const [selectedPhoneNum, setSelectedPhoneNum] = useState()
+    // --------------- getOtp Button Disable End --------------
 
     String.prototype.replaceAt = function (index, replacement) {
         return this.substring(0, index) + replacement + this.substring(index + replacement.length);
@@ -82,7 +86,7 @@ const ForgotPin = ({ navigation }) => {
 
         const data = {
             otp: otp,
-            mobNumber: '+91' + PhoneNum,
+            mobNumber: '+91' + selectedPhoneNum,
         }
         await api.confirmLoginOtp(data).then((res) => {
             if (res?.data?.status) {
@@ -115,7 +119,7 @@ const ForgotPin = ({ navigation }) => {
                 latitude: "10.0302",//Todo
                 longitude: "76.33553"//Todo
             },
-            mobile: '+91' + PhoneNum,
+            mobile: '+91' + selectedPhoneNum,
             deviceIpAddress: ipAdrress,
             simId: "11111",
         }
@@ -125,18 +129,17 @@ const ForgotPin = ({ navigation }) => {
                 setStatus(true)
                 setTimer(30)
                 setOtpFetch(true)
-                setPhoneChange(true)
-                setTimeout(() => {setPhoneChange(false)}, 30000)
+
             } else {
                 console.log(res?.data)
             }
         }).catch((err) => {
-            console.log("err->", err.response)
+            console.log("err->", err?.response)
             setStatus(false)
             if (err?.response?.data?.message === 'Maximum number of OTPs are exceeded. Please try after 30 minutes.') {
                 setMaxError(true)
                 setTimeout(() => {
-                    setMaxError(false)   
+                    setMaxError(false)
                 }, 3000);
             }
         })
@@ -152,12 +155,12 @@ const ForgotPin = ({ navigation }) => {
     // }, [timerCount]);
 
     useEffect(() => {
-        if ( timerCount > 0) {
-            console.log("timer",timerCount)
+        if (timerCount > 0) {
+            console.log("timer", timerCount)
             setTimeout(() => setTimer(timerCount - 1), 1000);
         } else {
             setStatus(false)
-        
+
         }
     }, [timerCount]);
 
@@ -210,6 +213,11 @@ const ForgotPin = ({ navigation }) => {
     };
 
     const GETOTP_Validation = () => {
+        setMaxError(false)
+        setOtpFetch(false)
+        setOtpAvailable(false)
+        setTimer(0)
+        setSelectedPhoneNum()
         const firstDigitStr = String(PhoneNum)[0];
         if (PhoneNum?.length != 10 || PhoneNum == "") {
             setModalVisible1(true)
@@ -239,12 +247,6 @@ const ForgotPin = ({ navigation }) => {
         return reg.test(Phone);
     }
 
-    // useEffect(() => {
-    //     if(phoneChange){
-    //         setTimeout(() => {
-    //             setPhoneChange(false)}, 11000)
-    //     }
-    // }, [phoneChange]);
 
     // ------------------ Resend Api Call Start ------------------
     async function forgotApiCall() {
@@ -261,28 +263,35 @@ const ForgotPin = ({ navigation }) => {
         }
         await api.getForgotOtp(data).then((res) => {
             if (res?.data?.status) {
-                console.log('response Login Api', res.data)
+                console.log('response Login Api', res?.data)
                 setConDate(new Date().getTime())
                 setOtpFetch(true)
                 setMaxError(false)
                 setOtpAvailable(true)
                 setStatus(true)
                 setTimer(30)
-                setPhoneChange(true)
-                setTimeout(() => {setPhoneChange(false)}, 30000)
+                // -----getOtp Button Disable Start-----
+                setGetOtpDisable(true)
+                setSelectedPhoneNum(PhoneNum)
+                // -----getOtp Button Disable End-----
+
             } else {
                 console.log(res?.data)
             }
         }).catch((err) => {
-            console.log("err PRINT->", err.response)
+            console.log("err PRINT->", err?.response)
             if (err?.response?.data?.message == "Maximum number of OTPs are exceeded. Please try after 30 minutes.") {
                 setMaxError(true)
                 setOtpFetch(false)
                 setStatus(false)
                 setOtpAvailable(true)
                 setTimeout(() => {
-                    setMaxError(false)   
+                    setMaxError(false)
                 }, 3000);
+                // -----getOtp Button Disable Start-----
+                setGetOtpDisable(true)
+                setSelectedPhoneNum(PhoneNum)
+                // -----getOtp Button Disable End-----
             }
             if (err?.response?.data?.message === 'the device ID is already existing in the DB.') {
                 setModalVisibleError(true)
@@ -290,7 +299,6 @@ const ForgotPin = ({ navigation }) => {
                 setButton(true)
                 setMaxError(false)
                 setMessage('Please enter the registered phone number')
-                setPhoneChange(false)
             }
             if (err?.response?.data?.message === 'Sorry! We are unable to proceed further.') {
                 setModalVisibleError(true)
@@ -298,10 +306,10 @@ const ForgotPin = ({ navigation }) => {
                 setMaxError(false)
                 setMessage('Sorry! We are unable to proceed further.')
             }
-             if (err?.response?.data?.message === 'Please enter valid agent mobile number') {
+            if (err?.response?.data?.message === 'Please enter valid agent mobile number') {
                 setModalVisible1(true)
                 setButton(true)
-              
+
                 setPhoneNum('')
             }
 
@@ -335,49 +343,68 @@ const ForgotPin = ({ navigation }) => {
                                 <Text style={styles.codeText}>+91</Text>
                             </View>
                             <View style={styles.Line} />
-                            <TextInput
-                                ref={inputText}
-                                style={styles.enterTextInputView}
-                                placeholder={t('common:Placeholder')}
-                                placeholderTextColor="#808080"
-                                returnKeyType="done"
-                                maxLength={10}
-                                autoFocus={true}
-                                value={PhoneNum}
-                                onChangeText={(num) => {
-                                    setOtpAvailable(false)
-                                    //setTimer(30)
-                                    if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(num) || num === '') {
-                                        setPhoneNum(num)
-                                        setMaxError(false)
-                                        otpInput2?.current?.setValue('')
-                                        setIsExpired(false)
-                                        if(!phoneChange){
-                                            setButton(true)
-                                           }
-                                    } else {
-                                        setModalVisible1(true)
-                                        console.log("restricted values", num, PhoneNum)
-                                    }
-                                }}
-                                keyboardType="numeric"
-                            />
+                            <View style={{ flex: 1 }}>
+                                <TextInput
+                                    ref={inputText}
+                                    editable={otpAvailable && status === true ? false : true}
+                                    style={[styles.enterTextInputView, {
+                                        borderBottomRightRadius: 8,
+                                        borderTopRightRadius: 8,
+                                        backgroundColor: otpAvailable && status === true ? '#ECEBED' : COLORS.colorBackground,
+                                        color: otpAvailable && status === true ? '#808080' : COLORS.colorDark,
+                                    }]}
+                                    placeholder={t('common:Placeholder')}
+                                    placeholderTextColor="#808080"
+                                    returnKeyType="done"
+                                    maxLength={10}
+                                    autoFocus={true}
+                                    value={PhoneNum}
+                                    onChangeText={(num) => {
+                                        setOtpAvailable(false)
+                                        //setTimer(30)
+                                        if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(num) || num === '') {
+                                            setPhoneNum(num)
+                                            setMaxError(false)
+                                            otpInput2?.current?.setValue('')
+                                            setIsExpired(false)
+                                            // --------------- getOtp Button Disable Start ------------
+                                            if (selectedPhoneNum) {
+                                                if (selectedPhoneNum !== num) {
+                                                    setGetOtpDisable(false)
+                                                    setButton(true)
+                                                    setOtpAvailable(false)
+                                                } else {
+                                                    setGetOtpDisable(true)
+                                                    setOtpAvailable(true)
+                                                }
+                                            }
+                                            // --------------- getOtp Button Disable End ------------
+
+                                        } else {
+                                            setModalVisible1(true)
+                                            console.log("restricted values", num, PhoneNum)
+                                        }
+                                    }}
+                                    keyboardType="numeric"
+                                />
+                            </View>
                         </View>
                     </View>
-
-                    <TouchableOpacity style={[styles.Button, {
-                        backgroundColor: button ? COLORS.colorB : "#ECEBED",
-                        shadowColor: "#000000",
-                        shadowOffset: { width: 0, height: 7 },
-                        shadowOpacity: button ? 0. : 0,
-                        elevation: button ? 5 : 0,
-                        shadowRadius: button ? 1 : 0,
-                        flexDirection:'row'
-                    }]}
-                        onPress={() => GETOTP_Validation()} disabled={button ? false : true}>
-                        <Text style={[styles.getOtpText, { color: button ? COLORS.colorBackground : "#979C9E",paddingRight:10}]}>{t('common:GetOTP')}</Text>
-                        {phoneChange?<ActivityIndicator size={15} color={'#979C9E'}/>:null}
-                    </TouchableOpacity>
+                    {!getOtpDisable
+                        ?
+                        <TouchableOpacity style={[styles.Button, {
+                            backgroundColor: button ? COLORS.colorB : "#ECEBED",
+                            shadowColor: "#000000",
+                            shadowOffset: { width: 0, height: 7 },
+                            shadowOpacity: button ? 0. : 0,
+                            elevation: button ? 5 : 0,
+                            shadowRadius: button ? 1 : 0,
+                            flexDirection: 'row'
+                        }]}
+                            onPress={() => GETOTP_Validation()} disabled={button ? false : true}>
+                            <Text style={[styles.getOtpText, { color: button ? COLORS.colorBackground : "#979C9E", paddingRight: 10 }]}>{t('common:GetOTP')}</Text>
+                        </TouchableOpacity>
+                        : null}
 
                     {otpAvailable
                         ? <View style={styles.otpView}>
@@ -438,34 +465,35 @@ const ForgotPin = ({ navigation }) => {
                         </View>
                         : null}
 
-                    {screenIsFocused
-                        ? <AllowModal ModalVisible={ModalVisible}
-                            onPressOut={() => setModalVisible(!ModalVisible)}
-                            setOtpValue={setOtpValue}
-                            otpMessage={otpMessage}
-                            setModalVisible={setModalVisible}
-                            navigation={navigation}
-                            ConfirmOtp={(data) => otpInput2?.current?.setValue(data)}
-                            setOtpFetch={setOtpFetch}
-                        />
-                        : null}
 
-                    <ToastModal
-                        Validation={t('common:Valid')}
-                        ModalVisible={ModalVisible1}
-                        onPressOut={() => setModalVisible1(!ModalVisible1)}
-                        setModalVisible={setModalVisible1}
-                    />
-
-                    <ToastModal
-                        Validation={message}
-                        ModalVisible={ModalVisibleError}
-                        onPressOut={() => setModalVisibleError(!ModalVisibleError)}
-                        setModalVisible={setModalVisibleError}
-                    />
 
                 </KeyboardAvoidingView>
             </ScrollView>
+            {screenIsFocused
+                ? <AllowModal ModalVisible={ModalVisible}
+                    onPressOut={() => setModalVisible(!ModalVisible)}
+                    setOtpValue={setOtpValue}
+                    otpMessage={otpMessage}
+                    setModalVisible={setModalVisible}
+                    navigation={navigation}
+                    ConfirmOtp={(data) => otpInput2?.current?.setValue(data)}
+                    setOtpFetch={setOtpFetch}
+                />
+                : null}
+
+            <ToastModal
+                Validation={t('common:Valid')}
+                ModalVisible={ModalVisible1}
+                onPressOut={() => setModalVisible1(!ModalVisible1)}
+                setModalVisible={setModalVisible1}
+            />
+
+            <ToastModal
+                Validation={message}
+                ModalVisible={ModalVisibleError}
+                onPressOut={() => setModalVisibleError(!ModalVisibleError)}
+                setModalVisible={setModalVisibleError}
+            />
         </View>
     )
 }
@@ -513,7 +541,6 @@ const styles = StyleSheet.create({
         color: COLORS.colorDark,
         fontWeight: '400',
         fontFamily: FONTS.FontRegular,
-        width: '100%'
     },
     Button: {
         height: 48,

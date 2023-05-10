@@ -70,7 +70,6 @@ const ContinuingGuarantor = ({ navigation, route }) => {
   const [ModalReason, setModalReason] = useState(false)
   const [ModalError1, setModalError1] = useState(false)
   const [PhoneValid, setPhoneValid] = useState(false)
-  const [phoneChange, setPhoneChange] = useState(false)
 
   const getData = async () => {
     try {
@@ -234,11 +233,8 @@ const ContinuingGuarantor = ({ navigation, route }) => {
         setMaxError(false)
         setIsOtp1(true)
         setVerifyotpstatus(true)
-        setPhoneChange
-        setPhoneChange(true)
         setStatus(true)
         setTimer(30)
-        setTimeout(() => { setPhoneChange(false) }, 30000)
       }
     }).catch((err) => {
       setVerifyotpstatus(true)
@@ -275,8 +271,6 @@ const ContinuingGuarantor = ({ navigation, route }) => {
       console.log('-------------------res verifyCG', res)
       if (res?.status) {
         CountDownResend()
-        setPhoneChange(true)
-        setTimeout(() => { setPhoneChange(false) }, 30000)
         setStatus(true)
         setTimer(30)
       }
@@ -427,12 +421,16 @@ const ContinuingGuarantor = ({ navigation, route }) => {
                 </View>
               </View> : null}
               <Text style={styles.mobileText}>Mobile Number</Text>
-              <View style={styles.inPutStyle}>
+              <View style={[styles.inPutStyle, { backgroundColor: IsOtp1 && status === true ? '#ECEBED' : COLORS.colorBackground, }]}>
                 <TextInput
                   placeholder=''
                   value={number}
                   maxLength={10}
-                  style={styles.textIn1}
+                  style={[styles.textIn1,
+                  {
+
+                    color: IsOtp1 && status === true ? '#808080' : COLORS.colorDark
+                  }]}
                   onChangeText={(text) => {
                     OnchangeNumbers(text)
                     setInvalidotp(false)
@@ -440,7 +438,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
                   }}
                   placeholderTextColor={COLORS.colorDark}
                   keyboardType="numeric"
-                  editable={phoneChange ? false : true}
+                  editable={IsOtp1 && status === true ? false : true}
                 />
                 {number?.length === 10 &&
                   <View style={styles.CallView}>
@@ -482,44 +480,42 @@ const ContinuingGuarantor = ({ navigation, route }) => {
                         }
                       }
                     })}
-
-
                   />
+
                   {invalidotp ?
                     <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 12, marginBottom: 5 }}>
                       <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center' }}>{t('common:otpValid')}</Text>
                     </View> : null}
-                  
 
-{IsOtp1 && status === true &&
-                                    <View style={{ marginTop: Dimensions.get('window').height * 0.03 }}>
-                                        <Text style={styles.TextResend}>{t('common:Resend')} 00:{timerCount < 10 ? '0' : ''}{timerCount}</Text>
-                                    </View>
-                                }
-                                {maxError === true ?
-                                  null
-                                    : IsOtp1 && timerCount === 0 ?
-                                        <TouchableOpacity onPress={() => ResendOtp()} style={{ padding: 18 }}>
-                                            <View style={{ flexDirection: 'row', }}>
-                                                <Resend style={{ width: 9, height: 11, top: 3, marginRight: 6, }} resizeMode="contain" />
-                                                <Text style={styles.TextResend1} >{t('common:Resend1')}</Text>
-                                            </View>
-                                        </TouchableOpacity> : null}
-          
-              
+                  {IsOtp1 && status === true &&
+                    <View style={{ marginTop: Dimensions.get('window').height * 0.03 }}>
+                      <Text style={styles.TextResend}>{t('common:Resend')} 00:{timerCount < 10 ? '0' : ''}{timerCount}</Text>
+                    </View>
+                  }
+
+                  {maxError === true ?
+                    null
+                    : IsOtp1 && timerCount === 0 ?
+                      <TouchableOpacity onPress={() => ResendOtp()} style={{ padding: 18 }}>
+                        <View style={{ flexDirection: 'row', }}>
+                          <Resend style={{ width: 9, height: 11, top: 3, marginRight: 6, }} resizeMode="contain" />
+                          <Text style={styles.TextResend1} >{t('common:Resend1')}</Text>
+                        </View>
+                      </TouchableOpacity> : null}
+
                 </View>
               }
 
               {/* ############################################################################ */}
 
               {maxError === true ?
-                                 <View style={{ marginTop: Dimensions.get('window').height * 0.20, alignItems: 'center', justifyContent: 'center' }}>
-                                 <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center', width: width * 0.8, }}>{t('common:Valid2')}</Text>
-                                 <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center' }}>{t('common:Valid3')}</Text></View>
-                                 :null}
-             
+                <View style={{ marginTop: Dimensions.get('window').height * 0.20, alignItems: 'center', justifyContent: 'center' }}>
+                  <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center', width: width * 0.8, }}>{t('common:Valid2')}</Text>
+                  <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center' }}>{t('common:Valid3')}</Text></View>
+                : null}
 
               <Call />
+
             </View>
           </ScrollView>
 

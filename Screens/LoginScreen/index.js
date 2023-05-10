@@ -22,7 +22,6 @@ import DeviceInfo from 'react-native-device-info';
 import { NetworkInfo } from 'react-native-network-info';
 import { useIsFocused } from '@react-navigation/native';
 import { useNetInfo } from "@react-native-community/netinfo";
-import { useNavigationState } from '@react-navigation/native';
 
 // --------------- Component Imports ---------------------
 import { COLORS, FONTS } from '../../Constants/Constants';
@@ -34,16 +33,14 @@ import NetWorkError from '../NetWorkError';
 import OTPInputView from '../../Components/OTPInputView';
 import ModalExitApp from '../../Components/ModalExitApp';
 import { useFocusEffect } from '@react-navigation/native';
+
 // --------------- Image Imports ---------------------
 import Resend from '../../assets/Images/resend.svg'
 import Logo from '../../assets/Images/svadhan.svg';
 
-
 const { height, width } = Dimensions.get('screen');
 
 const LoginScreen = ({ navigation }) => {
-
-    const index = useNavigationState(state => state.index);
 
     const { t } = useTranslation();
     const isDarkMode = true;
@@ -63,9 +60,7 @@ const LoginScreen = ({ navigation }) => {
     const [IsOtp1, setIsOtp1] = useState(false)
     const [button, setButton] = useState(true)
     const [status, setStatus] = useState(false)
-    const [exitApp, setExitApp] = useState(0);
     const [otpclick, setOtpclick] = useState(true)
-
 
     // --------------Device Configuration Start----------
     const [ipAdrress, setIPAddress] = useState();
@@ -73,7 +68,6 @@ const LoginScreen = ({ navigation }) => {
     const [permissions, setPermissions] = useState(false)
     const [condirmDate, setConfirmDate] = useState()
     const [fetOtp, setOtpFetch] = useState(false)
-    const [phoneChange,setPhoneChange]= useState(false)
     // --------------Device Configuration End----------
 
     const [otpMessage, setOtpMessage] = useState()
@@ -82,6 +76,10 @@ const LoginScreen = ({ navigation }) => {
     const [maxError, setMaxError] = useState(false)
     const [modalExitAppVisible, setModalExitAppVisible] = useState(false);
 
+    // --------------- getOtp Button Disable Start ------------
+    const [getOtpDisable, setGetOtpDisable] = useState(false);
+    const [selectedPhoneNum, setSelectedPhoneNum] = useState()
+    // --------------- getOtp Button Disable End --------------
 
     useEffect(() => {
 
@@ -97,6 +95,7 @@ const LoginScreen = ({ navigation }) => {
         DeviceInfo.getUniqueId().then((uniqueId) => {
             setDeviceId(uniqueId)
         });
+        console.log('-----------------', DeviceId)
         // Get DeviceInfo End ------------------------
 
     }, [])
@@ -118,16 +117,8 @@ const LoginScreen = ({ navigation }) => {
     }, [OtpValue])
 
     useEffect(() => {
-        setTimeout(() => {
-            setMaxError(false)
-            setTimer(0)
-        }, 1800000);
-    }, [maxError])
-
-    useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
-            console.log("addList", PhoneNum, IsOtp1)
-            setExitApp(0)
+
         });
         return unsubscribe;
     }, [navigation]);
@@ -152,10 +143,7 @@ const LoginScreen = ({ navigation }) => {
         }
     }
 
-
-
     const backAction = () => {
-        console.log('-----------------------------------oir[pe[rgop[og[p------------', IsOtp1)
         if (IsOtp1) {
             navigation.reset({
                 index: 0,
@@ -166,10 +154,9 @@ const LoginScreen = ({ navigation }) => {
             setModalExitAppVisible(true)
             return true;
         }
-
     };
-    useFocusEffect(
 
+    useFocusEffect(
         React.useCallback(() => {
             BackHandler.addEventListener("hardwareBackPress", backAction);
             return () => {
@@ -186,6 +173,12 @@ const LoginScreen = ({ navigation }) => {
 
     const GETOTP_Validation = () => {
         setOtpclick(false)
+        setMaxError(false)
+        setOtpFetch(false)
+        setIsOtp1(false)
+        setTimer(0)
+        setSelectedPhoneNum()
+        otpInput2?.current?.setValue('')
         const firstDigitStr = String(PhoneNum)[0];
         if (PhoneNum?.length != 10 || PhoneNum == "") {
             setModalVisible1(true)
@@ -212,7 +205,6 @@ const LoginScreen = ({ navigation }) => {
             LoginApiCall()
         }
     }
-
 
     const getOtp = () => {
         //bug fixing privacy policy and tc back navigation
@@ -241,36 +233,39 @@ const LoginScreen = ({ navigation }) => {
         setTimer(30)
         setStatus(true)
         setIsOtp1(true)
-
     }
 
     const OnchangeNumber = (num) => {
         if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(num) || num === '') {
             setPhoneNum(num)
-           if(!phoneChange){
-            setButton(true)
-            setOtpclick(true)
-           }
             setMaxError(false)
             otpInput2?.current?.setValue('')
             setIsExpired(false)
+
+            // --------------- getOtp Button Disable Start ------------
+            if (selectedPhoneNum) {
+                if (selectedPhoneNum !== num) {
+                    setGetOtpDisable(false)
+                    setOtpclick(true)
+                    setButton(true)
+                    setIsOtp1(false)
+                } else {
+                    setGetOtpDisable(true)
+                    setIsOtp1(true)
+                }
+            }
+            // --------------- getOtp Button Disable End ------------
+
         } else {
             setModalVisible1(true)
             console.log("restricted values", num, PhoneNum)
         }
     }
-    // useEffect(() => {
-    //     if(phoneChange){
-    //         setTimeout(() => {
-    //             setPhoneChange(false)}, 11000)
-    //     }
-    // }, [phoneChange]);
- 
+
     // ------------------ Login Api Call Start ------------------
     async function LoginApiCall() {
         otpInput2?.current?.clear()
         setConfirmDate(new Date().getTime())
-       
         const data = {
             deviceId: DeviceId,
             geoLocation: {
@@ -291,9 +286,12 @@ const LoginScreen = ({ navigation }) => {
                 getOtp();
                 setTimer(30)
                 setOtpclick(false)
-                setPhoneChange(true)
-                setTimeout(() => {setPhoneChange(false)}, 30000)
-                    
+
+                // -----getOtp Button Disable Start-----
+                setGetOtpDisable(true)
+                setSelectedPhoneNum(PhoneNum)
+                // -----getOtp Button Disable End-----
+
             }
         }).catch((err) => {
             console.log("err Login->", err?.response)
@@ -308,15 +306,19 @@ const LoginScreen = ({ navigation }) => {
                     setStatus(false)
                     setMaxError(true)
                     setTimeout(() => {
-                        setMaxError(false)  
-                        setTimer(0)  
+                        setMaxError(false)
+                        setTimer(0)
                     }, 3000);
+                    // -----getOtp Button Disable Start-----
+                    setGetOtpDisable(true)
+                    setSelectedPhoneNum(PhoneNum)
+                    // -----getOtp Button Disable End-----
                 } else if (err?.response?.data?.message === 'Please enter valid agent mobile number') {
                     setModalVisible1(true)
                     setButton(true)
                     setOtpclick(true)
                     setPhoneNum('')
-                }else if (err?.response?.data?.message === 'Sorry! We are unable to proceed further.') {
+                } else if (err?.response?.data?.message === 'Sorry! We are unable to proceed further.') {
                     setModalVisibleError(true)
                     setMaxError(false)
                     setButton(true)
@@ -371,7 +373,6 @@ const LoginScreen = ({ navigation }) => {
                     console.log('--> sms body' + object.body);
 
                     if (object.body.includes('One Time Password')) {
-
                         let match = object.body.match(/\b\d{4}\b/)
                         setOtpFetch(false)
                         if (match) {
@@ -393,28 +394,20 @@ const LoginScreen = ({ navigation }) => {
     async function ConfirmOtp(otp) {
         const data = {
             otp: otp,
-            mobNumber: '+91' + PhoneNum,
+            mobNumber: '+91' + selectedPhoneNum,
         }
         await api.confirmLoginOtp(data).then((res) => {
             console.log('-------------------res', res)
             if (res?.data?.status) {
                 setMaxError(false)
                 setOtpFetch(false)
-                
-                //setOtpValue('')
-               // setButton(true)
                 setOtp(false)
                 setConfirmDate(null)
-                console.log("succuss", res?.data?.customerId)
-                AsyncStorage.setItem('Mobile', '+91' + PhoneNum);
+                AsyncStorage.setItem('Mobile', '+91' + selectedPhoneNum);
                 AsyncStorage.setItem('CustomerId', JSON.stringify(res?.data?.customerId));
-
                 isGrantedPermissions(res?.data?.status)
                 AsyncStorage.setItem('Token', 'dXNlckBleGFtcGxlLmNvbTpzZWNyZXQ=');
                 AsyncStorage.setItem('userName', res?.data?.customerName);
-                console.log("username", res?.data?.customerName)
-
-
             } else {
                 console.log(res?.data)
             }
@@ -464,7 +457,7 @@ const LoginScreen = ({ navigation }) => {
                 latitude: "10.0302",//Todo
                 longitude: "76.33553"//Todo
             },
-            mobile: '+91' + PhoneNum,
+            mobile: '+91' + selectedPhoneNum,
             deviceIpAddress: ipAdrress,
             simId: "11111",
         }
@@ -475,8 +468,6 @@ const LoginScreen = ({ navigation }) => {
                 setOtpFetch(true)
                 setMaxError(false)
                 setOtpclick(false)
-                setPhoneChange(true)
-                setTimeout(() => {setPhoneChange(false)}, 30000)
             } else {
                 console.log(res?.data?.status)
             }
@@ -485,7 +476,7 @@ const LoginScreen = ({ navigation }) => {
             if (err?.response?.data?.message === 'Maximum number of OTPs are exceeded. Please try after 30 minutes.') {
                 setMaxError(true)
                 setTimeout(() => {
-                    setMaxError(false)   
+                    setMaxError(false)
                 }, 3000);
             }
         })
@@ -497,187 +488,199 @@ const LoginScreen = ({ navigation }) => {
             <SafeAreaProvider style={{ backgroundColor: COLORS.colorBackground }} >
                 {netInfo.isConnected
                     ?
-                    <ScrollView ref={scrollViewRef}
-                        onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: true })}>
+                    <>
+                        <ScrollView ref={scrollViewRef}
+                            onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: true })}>
 
-                        <KeyboardAvoidingView style={{ flex: 1 }}
-                            {...(Platform.OS === 'ios' && { behavior: 'position' })}>
+                            <KeyboardAvoidingView style={{ flex: 1 }}
+                                {...(Platform.OS === 'ios' && { behavior: 'position' })}>
 
-                            <SafeAreaView style={styles.container1} />
-                            <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+                                <SafeAreaView style={styles.container1} />
+                                <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
 
-                            <View style={{ marginBottom: IsOtp1 ? 0 : 0, marginTop: Dimensions.get('window').height * 0.2, alignItems: 'center', justifyContent: 'center', }}>
-                                <Logo width={160} height={51} resizeMode='contain' />
-                            </View>
-
-                            <View  style={[styles.container, { marginTop: Dimensions.get('window').height * 0.05 }]}>
-                                <Text style={styles.Heading1}>{t('common:Verify')}</Text>
-
-                                <View style={styles.ViewInput}>
-                                    <View style={{ justifyContent: 'center' }}>
-                                        <Text style={styles.textNum}>+91</Text>
-                                    </View>
-                                    <View style={styles.Line} />
-                                    <TextInput
-                                        style={[styles.TextInput, { fontSize: lang == 'en' ? 15 : 14, width: lang == 'en' ? 190 : 250, }]}
-                                        placeholder={t('common:Placeholder')}
-                                        placeholderTextColor="#808080"
-                                        returnKeyType="done"
-                                        maxLength={10}
-                                        autoFocus={true}
-                                        value={PhoneNum}
-                                        onChangeText={(num) => OnchangeNumber(num)}
-                                        keyboardType="numeric"
-                                    />
+                                <View style={{ marginBottom: IsOtp1 ? 0 : 0, marginTop: Dimensions.get('window').height * 0.2, alignItems: 'center', justifyContent: 'center', }}>
+                                    <Logo width={160} height={51} resizeMode='contain' />
                                 </View>
 
-                                {otpclick ? <TouchableOpacity style={[styles.Button, {
-                                    backgroundColor: button ? COLORS.colorB : "#ECEBED",
-                                    shadowColor: "#000000",
-                                    shadowOffset: { width: 0, height: 7 },
-                                    shadowOpacity: button ? 0. : 0,
-                                    elevation: button ? 5 : 0,
-                                    shadowRadius: button ? 1 : 0,
-                                }]}
-                                    onPress={() => GETOTP_Validation()} disabled={button ? false : true}>
-                                    <Text style={[styles.text, { color: button ? COLORS.colorBackground : "#979C9E" }]}>{t('common:GetOTP')}</Text>
-                                </TouchableOpacity> :
-                                    <View style={[styles.Button, {
-                                        backgroundColor: "#ECEBED",
-                                        flexDirection:'row',
-                                        shadowColor: "#000000",
-                                        shadowOffset: { width: 0, height: 7 },
-                                        shadowOpacity: button ? 0. : 0,
-                                        elevation: button ? 5 : 0,
-                                        shadowRadius: button ? 1 : 0,
-                                    }]}
-                                        disabled={button ? false : true}>
-                                        <Text style={[styles.text, { color: "#979C9E" ,paddingRight:10}]}>{t('common:GetOTP')}</Text>
-                                        {phoneChange?<ActivityIndicator size={15} color={'#979C9E'}/>:null}
+                                <View style={[styles.container, { marginTop: Dimensions.get('window').height * 0.05 }]}>
+                                    <Text style={styles.Heading1}>{t('common:Verify')}</Text>
 
-                                    </View>}
-
-                                {lang == "en" ?
-                                    <View style={styles.viewTerms}>
-                                        <Text style={styles.textTerms2}>By continuing, I accept the </Text>
-                                        <TouchableOpacity onPress={() => navigation.navigate('Terms')}>
-                                            <Text style={styles.textTerms1}>terms and conditions</Text>
-                                            <View style={styles.ViewLine} />
-                                        </TouchableOpacity>
-                                    </View> :
-                                    <View style={styles.viewTerms}>
-                                        <Text style={styles.textTerms2}>തുടരുന്നതിലൂടെ,  </Text>
-                                        <TouchableOpacity onPress={() => navigation.navigate('Terms')}>
-                                            <Text style={styles.textTerms1}>നിബന്ധനകളും വ്യവസ്ഥകളും</Text>
-                                            <View style={styles.ViewLine} />
-                                        </TouchableOpacity>
-                                    </View>}
-
-                                {lang == "en" ?
-                                    <View style={styles.viewTerms}>
-                                        <Text style={styles.textTerms2}>and </Text>
-                                        <TouchableOpacity onPress={() => navigation.navigate('Privacy')}>
-                                            <Text style={styles.textTerms1}>privacy policy.</Text>
-                                            <View style={[styles.ViewLine, { marginRight: 4 }]} />
-                                        </TouchableOpacity>
-                                    </View> :
-                                    <View style={styles.viewTerms}>
-                                        <TouchableOpacity onPress={() => navigation.navigate('Privacy')}>
-                                            <Text style={styles.textTerms1}>സ്വകാര്യതാ നയവും</Text>
-                                            <View style={styles.ViewLine} />
-                                        </TouchableOpacity>
-                                        <Text style={[styles.textTerms2, { paddingLeft: 5 }]}>ഞാൻ അംഗീകരിക്കുന്നു.</Text>
-                                    </View>}
-
-                                {IsOtp1 ?
-                                    <View style={styles.ViewOtp}>
-                                        <Text style={styles.textOtp}>{t('common:EnterOtp')} </Text>
-                                    </View> : null}
-
-                                {IsOtp1 ?
-                                    <OTPInputView
-                                        ref={otpInput2}
-                                        // ref={otpInput2}
-                                        //value={OtpValue}
-                                        autoFocus={true}
-                                        inputCount={4}
-                                        inputCellLength={1}
-                                        offTintColor={!otp ? "lightgrey" : "red"}
-                                        tintColor={!otp ? "lightgrey" : "red"}
-                                        textInputStyle={[styles.imputContainerStyle, { color: '#090A0A', borderRadius: 8, backgroundColor: '#FCFCFC', borderColor: !otp ? "lightgrey" : "red" }]}
-                                        keyboardType="numeric"
-                                        containerStyle={{ marginTop: 7 }}
-                                        handleTextChange={(code => {
-                                            setOtpValue(code)
-                                       
-                                            if (code.length === 4) {
-                                                ConfirmOtp(code)
-                                            }else{
-                                                setOtp(false)
-                                                setIsExpired(false)
-                                            }
-                                        })} /> : null}
-
-                                {isExpired
-                                    ? <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                                        <Text style={styles.errrorText}>OTP has Expired</Text>
+                                    <View style={[styles.ViewInput, { marginBottom: getOtpDisable ? 21 : 0 }]}>
+                                        <View style={{ justifyContent: 'center' }}>
+                                            <Text style={styles.textNum}>+91</Text>
+                                        </View>
+                                        <View style={styles.Line} />
+                                        <View style={{ flex: 1 }}>
+                                            <TextInput
+                                                style={[styles.TextInput, {
+                                                    fontSize: lang == 'en' ? 15 : 14,
+                                                    borderBottomRightRadius: 8,
+                                                    borderTopRightRadius: 8,
+                                                    backgroundColor: IsOtp1 && status === true ? '#ECEBED' : COLORS.colorBackground,
+                                                    color: IsOtp1 && status === true ? '#808080' : COLORS.colorDark,
+                                                }]}
+                                                placeholder={t('common:Placeholder')}
+                                                placeholderTextColor="#808080"
+                                                returnKeyType="done"
+                                                maxLength={10}
+                                                autoFocus={true}
+                                                value={PhoneNum}
+                                                onChangeText={(num) => OnchangeNumber(num)}
+                                                keyboardType="numeric"
+                                                editable={IsOtp1 && status === true ? false : true}
+                                            />
+                                        </View>
                                     </View>
-                                    : null}
-                                {otp ?
-                                    <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 12, marginBottom: 5 }}>
-                                        <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center' }}>{t('common:otpValid')}</Text>
-                                    </View> : null}
+                                    {!getOtpDisable
+                                        ? <>
+                                            {otpclick ? <TouchableOpacity style={[styles.Button, {
+                                                backgroundColor: button ? COLORS.colorB : "#ECEBED",
+                                                shadowColor: "#000000",
+                                                shadowOffset: { width: 0, height: 7 },
+                                                shadowOpacity: button ? 0. : 0,
+                                                elevation: button ? 5 : 0,
+                                                shadowRadius: button ? 1 : 0,
+                                            }]}
+                                                onPress={() => GETOTP_Validation()} disabled={button ? false : true}>
+                                                <Text style={[styles.text, { color: button ? COLORS.colorBackground : "#979C9E" }]}>{t('common:GetOTP')}</Text>
+                                            </TouchableOpacity> :
+                                                <View style={[styles.Button, {
+                                                    backgroundColor: "#ECEBED",
+                                                    flexDirection: 'row',
+                                                    shadowColor: "#000000",
+                                                    shadowOffset: { width: 0, height: 7 },
+                                                    shadowOpacity: button ? 0. : 0,
+                                                    elevation: button ? 5 : 0,
+                                                    shadowRadius: button ? 1 : 0,
+                                                }]}
+                                                    disabled={button ? false : true}>
+                                                    <Text style={[styles.text, { color: "#979C9E", paddingRight: 10 }]}>{t('common:GetOTP')}</Text>
+                                                </View>}
+                                        </>
+                                        :
+                                        null}
 
-                                {IsOtp1 && status === true &&
-                                    <View style={{ marginTop: Dimensions.get('window').height * 0.03 }}>
-                                        <Text style={styles.TextResend}>{t('common:Resend')} 00:{timerCount < 10 ? '0' : ''}{timerCount}</Text>
-                                    </View>
-                                }
-                                {maxError === true ?
-                                    <View style={{ marginTop: Dimensions.get('window').height * 0.03, }}>
-                                        <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center', width: width * 0.8 }}>{t('common:Valid2')}</Text>
-                                        <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center' }}>{t('common:Valid3')}</Text></View>
-                                    : IsOtp1 && timerCount === 0 ?
-                                        <TouchableOpacity onPress={() => ResendApiCall()} style={{ padding: 18 }}>
-                                            <View style={{ flexDirection: 'row', }}>
-                                                <Resend style={{ width: 9, height: 11, top: 3, marginRight: 6, }} resizeMode="contain" />
-                                                <Text style={styles.TextResend1} >{t('common:Resend1')}</Text>
-                                            </View>
-                                        </TouchableOpacity> : null}
 
-                                {screenIsFocused
-                                    ? <AllowModal ModalVisible={ModalVisible}
-                                        onPressOut={() => setModalVisible(!ModalVisible)}
-                                        setOtpValue={setOtpValue}
-                                        otpMessage={otpMessage}
-                                        setModalVisible={setModalVisible}
-                                        navigation={navigation}
-                                        ConfirmOtp={(data) =>otpInput2?.current?.setValue(data)}
-                                        setOtpFetch={setOtpFetch}
-                                    /> : null}
+                                    {lang == "en" ?
+                                        <View style={styles.viewTerms}>
+                                            <Text style={styles.textTerms2}>By continuing, I accept the </Text>
+                                            <TouchableOpacity onPress={() => navigation.navigate('Terms')}>
+                                                <Text style={styles.textTerms1}>terms and conditions</Text>
+                                                <View style={styles.ViewLine} />
+                                            </TouchableOpacity>
+                                        </View> :
+                                        <View style={styles.viewTerms}>
+                                            <Text style={styles.textTerms2}>തുടരുന്നതിലൂടെ,  </Text>
+                                            <TouchableOpacity onPress={() => navigation.navigate('Terms')}>
+                                                <Text style={styles.textTerms1}>നിബന്ധനകളും വ്യവസ്ഥകളും</Text>
+                                                <View style={styles.ViewLine} />
+                                            </TouchableOpacity>
+                                        </View>}
 
-                                <ToastModal
-                                    Validation={t('common:Valid')}
-                                    ModalVisible={ModalVisible1}
-                                    onPressOut={() => setModalVisible1(!ModalVisible1)}
-                                    setModalVisible={setModalVisible1}
-                                />
+                                    {lang == "en" ?
+                                        <View style={styles.viewTerms}>
+                                            <Text style={styles.textTerms2}>and </Text>
+                                            <TouchableOpacity onPress={() => navigation.navigate('Privacy')}>
+                                                <Text style={styles.textTerms1}>privacy policy.</Text>
+                                                <View style={[styles.ViewLine, { marginRight: 4 }]} />
+                                            </TouchableOpacity>
+                                        </View> :
+                                        <View style={styles.viewTerms}>
+                                            <TouchableOpacity onPress={() => navigation.navigate('Privacy')}>
+                                                <Text style={styles.textTerms1}>സ്വകാര്യതാ നയവും</Text>
+                                                <View style={styles.ViewLine} />
+                                            </TouchableOpacity>
+                                            <Text style={[styles.textTerms2, { paddingLeft: 5 }]}>ഞാൻ അംഗീകരിക്കുന്നു.</Text>
+                                        </View>}
 
-                                <ToastModal
-                                    Validation={message}
-                                    ModalVisible={ModalVisibleError}
-                                    onPressOut={() => setModalVisibleError(!ModalVisibleError)}
-                                    setModalVisible={setModalVisibleError}
-                                />
-                                <ModalExitApp
-                                    ModalVisible={modalExitAppVisible}
-                                    onPressOut={() => setModalExitAppVisible(!modalExitAppVisible)}
-                                    setModalExitAppVisible={setModalExitAppVisible}
-                                />
+                                    {IsOtp1 ?
+                                        <View style={styles.ViewOtp}>
+                                            <Text style={styles.textOtp}>{t('common:EnterOtp')} </Text>
+                                        </View> : null}
 
-                            </View>
-                        </KeyboardAvoidingView>
-                    </ScrollView>
+                                    {IsOtp1 ?
+                                        <OTPInputView
+                                            ref={otpInput2}
+                                            autoFocus={true}
+                                            inputCount={4}
+                                            inputCellLength={1}
+                                            offTintColor={!otp ? "lightgrey" : "red"}
+                                            tintColor={!otp ? "lightgrey" : "red"}
+                                            textInputStyle={[styles.imputContainerStyle, { color: '#090A0A', borderRadius: 8, backgroundColor: '#FCFCFC', borderColor: !otp ? "lightgrey" : "red" }]}
+                                            keyboardType="numeric"
+                                            containerStyle={{ marginTop: 7 }}
+                                            handleTextChange={(code => {
+                                                setOtpValue(code)
+
+                                                if (code.length === 4) {
+                                                    ConfirmOtp(code)
+                                                } else {
+                                                    setOtp(false)
+                                                    setIsExpired(false)
+                                                }
+                                            })} />
+                                        : null
+                                    }
+
+                                    {isExpired
+                                        ? <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                                            <Text style={styles.errrorText}>OTP has Expired</Text>
+                                        </View>
+                                        : null}
+                                    {otp ?
+                                        <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 12, marginBottom: 5 }}>
+                                            <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center' }}>{t('common:otpValid')}</Text>
+                                        </View> : null}
+
+                                    {IsOtp1 && status === true &&
+                                        <View style={{ marginTop: Dimensions.get('window').height * 0.03 }}>
+                                            <Text style={styles.TextResend}>{t('common:Resend')} 00:{timerCount < 10 ? '0' : ''}{timerCount}</Text>
+                                        </View>
+                                    }
+                                    {maxError === true ?
+                                        <View style={{ marginTop: Dimensions.get('window').height * 0.03, }}>
+                                            <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center', width: width * 0.8 }}>{t('common:Valid2')}</Text>
+                                            <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center' }}>{t('common:Valid3')}</Text></View>
+                                        : IsOtp1 && timerCount === 0 ?
+                                            <TouchableOpacity onPress={() => ResendApiCall()} style={{ padding: 18 }}>
+                                                <View style={{ flexDirection: 'row', }}>
+                                                    <Resend style={{ width: 9, height: 11, top: 3, marginRight: 6, }} resizeMode="contain" />
+                                                    <Text style={styles.TextResend1} >{t('common:Resend1')}</Text>
+                                                </View>
+                                            </TouchableOpacity> : null}
+
+
+                                </View>
+                            </KeyboardAvoidingView>
+                        </ScrollView>
+                        {screenIsFocused
+                            ? <AllowModal ModalVisible={ModalVisible}
+                                onPressOut={() => setModalVisible(!ModalVisible)}
+                                setOtpValue={setOtpValue}
+                                otpMessage={otpMessage}
+                                setModalVisible={setModalVisible}
+                                navigation={navigation}
+                                ConfirmOtp={(data) => otpInput2?.current?.setValue(data)}
+                                setOtpFetch={setOtpFetch}
+                            /> : null}
+                        <ToastModal
+                            Validation={t('common:Valid')}
+                            ModalVisible={ModalVisible1}
+                            onPressOut={() => setModalVisible1(!ModalVisible1)}
+                            setModalVisible={setModalVisible1}
+                        />
+                        <ToastModal
+                            Validation={message}
+                            ModalVisible={ModalVisibleError}
+                            onPressOut={() => setModalVisibleError(!ModalVisibleError)}
+                            setModalVisible={setModalVisibleError}
+                        />
+                        <ModalExitApp
+                            ModalVisible={modalExitAppVisible}
+                            onPressOut={() => setModalExitAppVisible(!modalExitAppVisible)}
+                            setModalExitAppVisible={setModalExitAppVisible}
+                        />
+                    </>
                     :
                     <NetWorkError />
                 }
@@ -738,9 +741,9 @@ const styles = StyleSheet.create({
     TextInput: {
         paddingLeft: 21,
         fontSize: 15,
-        color: COLORS.colorDark,
         fontWeight: '400',
         fontFamily: FONTS.FontRegular,
+        width: '100%'
     },
     imputContainerStyle: {
         borderWidth: 1,
