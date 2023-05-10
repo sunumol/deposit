@@ -75,7 +75,7 @@ const Activityscreens = ({ navigation, route }) => {
         }}>
         <Tab.Screen name={t('common:All')} component={AllTab} navigation={navigation} />
         <Tab.Screen name={t('common:Meet')} component={MeetTab} navigation={navigation} />
-        <Tab.Screen name={t('common:Call')} component={CallTab} />
+        <Tab.Screen name={t('common:Call')} component={CallTab} navigation={navigation}/>
       </Tab.Navigator>
 
 

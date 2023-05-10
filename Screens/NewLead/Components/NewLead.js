@@ -28,6 +28,7 @@ import { api } from '../../../Services/Api'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import VillageModal from './VillageModal';
 
+
 const NewLead1 = ({ navigation, setVillageStatus, VillageStatus }) => {
     const { t } = useTranslation();
     const [Name, setName] = useState('')
@@ -290,7 +291,7 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus }) => {
                                         <Image1 />
                                         <TextInput
                                             value={Village}
-
+                                            keyboardType1={'email-address'}
                                             style={styles.TextInputBranch}
                                             onChangeText={(text) => {
 
@@ -306,10 +307,10 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus }) => {
                                                 if (!(/^[^!-\/:-@\.,[-`{-~1234567890₹~`|•√π÷×¶∆€¥$¢^°={}%©®™✓]+$/.test(text))) {
                                                     setVillageList([])
                                                     setVillageStatus(false)
-                                                  //  setVillage('')
+                                                    setVillage('')
                                                     // setBstatus(false)
                                                     setButton(false)
-                                                    console.log("else if ", Village)
+                                                    console.log("else if ", Village,text)
                                                 } else {
                                                     setVillage(text)
                                                     getVillage(text)

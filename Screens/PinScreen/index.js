@@ -135,8 +135,10 @@ const PinScreen = ({ navigation, }) => {
                     }
                     console.log('invalidState', invalidState)
                 }
+               
+            }   else{
                 setModalVisible(!ModalVisible)
-            }   
+            }
         } catch (e) {
             console.log(e)
         }

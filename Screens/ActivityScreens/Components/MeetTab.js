@@ -12,9 +12,10 @@ import { COLORS, FONTS } from '../../../Constants/Constants';
 const { height, width } = Dimensions.get('screen');
 import { useTranslation } from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import MeetTab from '../Components/components/callTab';
+import MeetTab from '../Components/components/MeetTab';
 import { api } from '../../../Services/Api';
-
+import { useNetInfo} from "@react-native-community/netinfo";
+import NetworkScreen from '../../../Components/NetworkError2';
 
 const ItemTabs = ({navigation}) => {
     const { t } = useTranslation();
@@ -22,7 +23,7 @@ const ItemTabs = ({navigation}) => {
     const [ModalVisible1, setModalVisible1] = useState(false)
     const [slottedlisting,setSlottedListing] = useState ([])
     const [nonSlottedActivities,setNonslottedListing] = useState ([])
-
+    const netInfo = useNetInfo();
     const [enab,setEnab]=useState(false)
     const [meetData, setMeetData] = useState([
        // {
@@ -179,9 +180,12 @@ getData();
         }
     }
     return (
+        <>
+        {netInfo.isConnected
+            ?
+
         <ScrollView style={{ flex: 1, backgroundColor: COLORS.colorBackground }}>
 
-{console.log('333',nonSlottedActivities.length)}
             <View style={{ paddingHorizontal: 20 ,marginBottom:10}}>
                 <>
                 { nonSlottedActivities ?  ( <MeetTab
@@ -211,7 +215,10 @@ getData();
                 }
                 </>
             </View>
-        </ScrollView>
+        </ScrollView>: 
+        <NetworkScreen />
+    }
+    </>
     )
 }
 
