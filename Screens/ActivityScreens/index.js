@@ -11,7 +11,7 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import { useFocusEffect } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
-
+import { useNetInfo } from "@react-native-community/netinfo";
 // --------------- Component Imports ----------------------
 import AllTab from './Components/AllTab';
 import MeetTab from './Components/MeetTab';
@@ -19,14 +19,14 @@ import CallTab from './Components/CallTab';
 import Statusbar from '../../Components/StatusBar';
 import { FONTS, COLORS } from '../../Constants/Constants';
 import HeaderDashBoard from '../../Components/RepayHeader';
-
+import NetworkScreen from '../../Components/NetworkError2';
 const Activityscreens = ({ navigation, route }) => {
 
   const isDarkMode = true;
   const Tab = createMaterialTopTabNavigator();
   const { t } = useTranslation();
   const dispatch = useDispatch()
-
+  const netInfo = useNetInfo();
   const handleGoBack = useCallback(() => {
     navigation.goBack()
     return true; // Returning true from onBackPress denotes that we have handled the event
@@ -56,6 +56,9 @@ const Activityscreens = ({ navigation, route }) => {
   }, [navigation]);
 
   return (
+    <>
+
+
     <SafeAreaProvider>
 
       <SafeAreaView style={styles.container1} />
@@ -79,7 +82,8 @@ const Activityscreens = ({ navigation, route }) => {
       </Tab.Navigator>
 
 
-    </SafeAreaProvider>
+    </SafeAreaProvider> 
+    </>
   );
 }
 

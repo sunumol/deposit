@@ -489,7 +489,7 @@ const LoginScreen = ({ navigation }) => {
                 {netInfo.isConnected
                     ?
                     <>
-                        <ScrollView ref={scrollViewRef}
+                        <ScrollView ref={scrollViewRef} keyboardShouldPersistTaps={'handled'}
                             onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: true })}>
 
                             <KeyboardAvoidingView style={{ flex: 1 }}

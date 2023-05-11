@@ -28,21 +28,28 @@ import ReasonModal from '../DetailedCheck/Components/ReasonModal';
 import ErrorModal from '../DetailedCheck/Components/ErrorModal';
 import ExitModal from '../Proceed/Components/ExitModal';
 import { api } from '../../Services/Api';
+import { useNetInfo } from "@react-native-community/netinfo";
+import NetWorkError from '../NetWorkError';
+
 
 const ResidenceOwner = ({ navigation, }) => {
     const route = useRoute();
+
     console.log("route name",);
     const isDarkMode = true
+    const netInfo = useNetInfo();
     const { t } = useTranslation();
     const [lang, setLang] = useState('')
+    const [ApiState,setStateApi] = useState(false)
     const [BStatus, setBstatus] = useState(false)
-    const [state, setState] = useState()
-    const [imagedata, setImagedata] = useState()
+    const [state, setState] = useState(false)
+    const [imagedata, setImagedata] = useState(null)
     const [ModalVisible, setModalVisible] = useState(false)
     const [ModalVisible1, setModalVisible1] = useState(false)
     const [ModalReason, setModalReason] = useState(false)
     const [ModalError, setModalError] = useState(false)
     const activityId = useSelector(state => state.activityId);
+   
 
     useEffect(() => {
         getData()
@@ -121,66 +128,83 @@ const ResidenceOwner = ({ navigation, }) => {
                 BackHandler.removeEventListener('hardwareBackPress', handleGoBack);
         }, [handleGoBack]),
     );
+
+    useEffect(() => {
+        if(state){
+            console.log("api true",state)
+           // alert("hello")
+        }else{
+            console.log("hello",state)
+           // alert("good")
+        }
+        console.log("image of useEFFECT", imagedata)
+    })
     return (
-        <SafeAreaProvider>
-            <SafeAreaView style={styles.container1} />
-            <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+        <>
+            {netInfo.isConnected
+                ?
+                <SafeAreaProvider>
 
-            <Header name="House Photo Capture" navigation={navigation} setState={state} onPress={handleGoBack} />
+                    <SafeAreaView style={styles.container1} />
+                    <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
 
-            <View style={styles.ViewContent}>
-                <House navigation={navigation} setState={setState} setImagedata1={setImagedata} />
-            </View>
+                    <Header name="House Photo Capture" navigation={navigation} setState={state} onPress={handleGoBack} />
 
-
-            <ExitModal
-                ModalVisible={ModalVisible1}
-                onPressOut={() => {
-                    setModalVisible1(!ModalVisible1)
-                }}
-                setModalVisible={setModalVisible1}
-                navigation={navigation}
-            />
-
-            <ModalSave
-                Press={() => {
-                    setModalVisible(false),
-                        setModalReason(true)
-
-                }}
-                Press1={() => { saveHousePhoto(), setModalVisible(false) }}
-                ModalVisible={ModalVisible}
-                setModalVisible={setModalVisible}
-                onPressOut={() => {
-                    setModalVisible(false)
+                    <View style={styles.ViewContent}>
+                        <House navigation={navigation} setState={setState} setImagedata1={setImagedata} imagedata={imagedata}/>
+                    </View>
 
 
-                }}
-                navigation={navigation} />
+                    <ExitModal
+                        ModalVisible={ModalVisible1}
+                        onPressOut={() => {
+                            setModalVisible1(!ModalVisible1)
+                        }}
+                        setModalVisible={setModalVisible1}
+                        navigation={navigation}
+                    />
+
+                    <ModalSave
+                        Press={() => {
+                            setModalVisible(false),
+                                setModalReason(true)
+
+                        }}
+                        Press1={() => { saveHousePhoto(), setModalVisible(false) }}
+                        ModalVisible={ModalVisible}
+                        setModalVisible={setModalVisible}
+                        onPressOut={() => {
+                            setModalVisible(false)
 
 
-            <ReasonModal
-                onPress1={() => {
-                    updateRejection()
-                    // setModalError(true)
-                }}
-                ModalVisible={ModalReason}
-                onPressOut={() => setModalReason(!ModalReason)}
-                setModalVisible={setModalReason}
-            />
+                        }}
+                        navigation={navigation} />
 
 
-            <ErrorModal
-                ModalVisible={ModalError}
-                onPressOut={() => {
-                    setModalError(!ModalError)
-                    setModalReason(!ModalReason)
-                }}
-                setModalVisible={setModalError}
-                navigation={navigation}
-            />
+                    <ReasonModal
+                        onPress1={() => {
+                            updateRejection()
+                            // setModalError(true)
+                        }}
+                        ModalVisible={ModalReason}
+                        onPressOut={() => setModalReason(!ModalReason)}
+                        setModalVisible={setModalReason}
+                    />
 
-        </SafeAreaProvider>
+
+                    <ErrorModal
+                        ModalVisible={ModalError}
+                        onPressOut={() => {
+                            setModalError(!ModalError)
+                            setModalReason(!ModalReason)
+                        }}
+                        setModalVisible={setModalError}
+                        navigation={navigation}
+                    />
+
+                </SafeAreaProvider> : <NetWorkError setState={true}/>
+            }
+        </>
     )
 }
 

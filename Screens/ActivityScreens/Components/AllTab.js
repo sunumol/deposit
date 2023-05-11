@@ -264,9 +264,16 @@ const TabOpen = (index,id)=>{
                                  })
                                  console.log("false sect",data)
                                      const nextList = [...slottedlisting];
-                                     nextList[index].open = !nextList[index].open;
-                                     setSlottedListing(nextList);
-                                     
+                                     if(nextList[index].open){
+                                        !nextList[index].open
+                                        setSlottedListing(nextList);
+                                     }else{
+                                        nextList[index].open
+                                        setSlottedListing(nextList);
+                                     }
+                                     //nextList[index].open = !nextList[index].open;
+                                    
+                                     console.log("nextList checv open",)
                                      setDleopen(false)
                                      setCollectionopen(false)
                                  

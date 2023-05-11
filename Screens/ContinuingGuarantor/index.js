@@ -48,6 +48,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
   const activityId = useSelector(state => state.activityId);
   const scrollViewRef = useRef();
 
+  const [Name,setName] = useState('')
   const [number, onChangeNumber] = useState()
   const [relation, setRelation] = useState()
   const [Purpose, setPurpose] = useState(null)
@@ -70,6 +71,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
   const [ModalReason, setModalReason] = useState(false)
   const [ModalError1, setModalError1] = useState(false)
   const [PhoneValid, setPhoneValid] = useState(false)
+  const [ResendState,setResendState] = useState()
 
   const getData = async () => {
     try {
@@ -95,6 +97,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
   );
 
   useEffect(() => {
+    console.log("route?.params?.relation",route?.params?.relation)
     getCGdetails()
   }, [])
 
@@ -112,6 +115,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
       setRelation('Spouse')
       getSpousedetail()
     }
+  
   }, [])
 
   useEffect(() => {
@@ -190,7 +194,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
       "activityId": activityId
     }
     await api.getSpousedetail(data).then((res) => {
-      console.log('-------------------res spousedetail', res)
+      console.log('-------------------res spousedetail co-app', res?.data?.body)
       if (res?.status) {
         setSpousedetail(res?.data?.body)
       }
@@ -221,10 +225,11 @@ const ContinuingGuarantor = ({ navigation, route }) => {
 
   // ------------------ verifyCG detail --------------------------------
   const verifyCG = async (num) => {
+    console.log("verify resend come",maxError,IsOtp1,timerCount)
     const data = {
       "activityId": activityId,
       "mobileNumber": "+91" + num,
-      "name": "",
+      "name":relation !== 'Spouse' ? Name : "",
       "relationShip": relation
     }
     await api.verifyCG(data).then((res) => {
@@ -264,7 +269,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
     const data = {
       "activityId": activityId,
       "mobileNumber": "+91" + number,
-      "name": "",
+      "name":relation !== 'Spouse' ? Name : "",
       "relationShip": relation
     }
     await api.verifyCG(data).then((res) => {
@@ -377,6 +382,11 @@ const ContinuingGuarantor = ({ navigation, route }) => {
     return initials.toUpperCase();
   };
 
+  function containsWhitespace(str) {
+    return /\s/.test(str);
+}
+
+
   return (
     <SafeAreaProvider>
 
@@ -422,6 +432,46 @@ const ContinuingGuarantor = ({ navigation, route }) => {
                   </View>
                 </View>
               </View> : null}
+
+              {relation !== 'Spouse' ?
+              <View>
+              <Text style={styles.mobileText}>Name</Text>
+              <View style={[styles.inPutStyle, { backgroundColor:COLORS.colorBackground, }]}>
+                <TextInput
+                  placeholder=''
+                  value={Name}
+                  maxLength={25}
+                  style={[styles.textIn1,
+                  {
+
+                    color: COLORS.colorDark
+                  }]}
+                  onChangeText={(text) => {
+                    const firstDigitStr = String(text)[0];
+                    if (firstDigitStr == ' ') {
+                        containsWhitespace(text)
+                        // 👇️ this runs
+                        setName('')
+                       // ToastAndroid.show("Please enter a valid name ", ToastAndroid.SHORT);
+                        console.log('The string contains whitespace', Name);
+                    }
+                    else if (/^[^!-\/:-@\.,[-`{-~1234567890₹~`|•√π÷×¶∆€¥$¢^°={}%©®™✓]+$/.test(text) || text === '') {
+                        setName(text)
+                        console.log("verify daat1")
+                    }
+
+
+                
+                  }}
+                  placeholderTextColor={COLORS.colorDark}
+                  keyboardType="email-address"
+                 
+                />
+                </View>
+                </View>:null}
+
+         
+
               <Text style={styles.mobileText}>Mobile Number</Text>
               <View style={[styles.inPutStyle, { backgroundColor: IsOtp1 && status === true ? '#ECEBED' : COLORS.colorBackground, }]}>
                 <TextInput
@@ -495,9 +545,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
                     </View>
                   }
 
-                  {maxError === true ?
-                    null
-                    : IsOtp1 && timerCount === 0 ?
+                  {maxError === true  && IsOtp1 && timerCount === 0 ?
                       <TouchableOpacity onPress={() => ResendOtp()} style={{ padding: 18 }}>
                         <View style={{ flexDirection: 'row', }}>
                           <Resend style={{ width: 9, height: 11, top: 3, marginRight: 6, }} resizeMode="contain" />

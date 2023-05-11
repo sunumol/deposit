@@ -102,7 +102,7 @@ export default function Router() {
         <Stack.Screen name="DLESchedule" component={netInfo.isConnected ? DLESchedule : NetWorkError} />
         <Stack.Screen name="DetailCheck" component={netInfo.isConnected ? DetailCheck : NetWorkError} />
         <Stack.Screen name="ResidenceOwner" component={netInfo.isConnected ? ResidenceOwner : NetWorkError} />
-        <Stack.Screen name="HousePhoto" component={netInfo.isConnected ? HousePhoto : NetWorkError} />
+        <Stack.Screen name="HousePhoto" component={HousePhoto} />
         <Stack.Screen name="DLECompleted" component={netInfo.isConnected ? DLECompleted : NetWorkError} />
         <Stack.Screen name="CustomerDetails" component={netInfo.isConnected ? CustomerDetails : NetWorkError} />
         <Stack.Screen name="ScheduleMeet" component={netInfo.isConnected ? ScheduleMeet : NetWorkError} />
