@@ -76,10 +76,10 @@ export default function Router() {
         <Stack.Screen name="LoginScreen" component={netInfo.isConnected ? LoginScreen : NetWorkError} />
         <Stack.Screen name="Permission" component={netInfo.isConnected ? Permission : NetWorkError} />
         <Stack.Screen name="CreatePin" component={netInfo.isConnected ? CreatePin : NetWorkError} />
-        <Stack.Screen name="Profile" component={netInfo.isConnected ? Profile : NetWorkError} />
+        <Stack.Screen name="Profile" component={Profile} />
         <Stack.Screen name="Privacy" component={netInfo.isConnected ? PrivacyPolicy : NetWorkError} />
         <Stack.Screen name="Terms" component={netInfo.isConnected ? Terms : NetWorkError} />
-        <Stack.Screen name="ActivityScreens" component={netInfo.isConnected ? ActivityScreens : NetWorkError} />
+        <Stack.Screen name="ActivityScreens" component={ActivityScreens} />
         <Stack.Screen name="NewLead" component={netInfo.isConnected ? NewLead : NetWorkError} />
         <Stack.Screen name="ResetPin" component={netInfo.isConnected ? ResetPin : NetWorkError} />
         <Stack.Screen name="ForgotPin" component={netInfo.isConnected ? ForgotPin : NetWorkError} />
@@ -97,12 +97,12 @@ export default function Router() {
         <Stack.Screen name="FAQ" component={netInfo.isConnected ? FAQ : NetWorkError} />
         <Stack.Screen name="Language" component={netInfo.isConnected ? Language : NetWorkError} />
         <Stack.Screen name="NewCall" component={netInfo.isConnected ? NewCall : NetWorkError} />
-        <Stack.Screen name="ProfileScreen" component={netInfo.isConnected ? ProfileScreen : NetWorkError} />
+        <Stack.Screen name="ProfileScreen" component={netInfo.isConnected ? ProfileScreen: NetWorkError} />
         <Stack.Screen name="ChangeMPIN" component={netInfo.isConnected ? ChangeMPIN : NetWorkError} />
         <Stack.Screen name="DLESchedule" component={netInfo.isConnected ? DLESchedule : NetWorkError} />
         <Stack.Screen name="DetailCheck" component={netInfo.isConnected ? DetailCheck : NetWorkError} />
         <Stack.Screen name="ResidenceOwner" component={netInfo.isConnected ? ResidenceOwner : NetWorkError} />
-        <Stack.Screen name="HousePhoto" component={netInfo.isConnected ? HousePhoto : NetWorkError} />
+        <Stack.Screen name="HousePhoto" component={HousePhoto} />
         <Stack.Screen name="DLECompleted" component={netInfo.isConnected ? DLECompleted : NetWorkError} />
         <Stack.Screen name="CustomerDetails" component={netInfo.isConnected ? CustomerDetails : NetWorkError} />
         <Stack.Screen name="ScheduleMeet" component={netInfo.isConnected ? ScheduleMeet : NetWorkError} />

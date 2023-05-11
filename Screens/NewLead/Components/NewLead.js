@@ -28,6 +28,7 @@ import { api } from '../../../Services/Api'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import VillageModal from './VillageModal';
 
+
 const NewLead1 = ({ navigation, setVillageStatus, VillageStatus }) => {
     const { t } = useTranslation();
     const [Name, setName] = useState('')
@@ -196,10 +197,7 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus }) => {
                 <KeyboardAvoidingView
                     behavior={Platform.OS === "ios" ? "padding" : null}
                     style={{ flex: 1, backgroundColor: 'white' }}>
-                    <ScrollView 
-                    showsVerticalScrollIndicator={false}
-                    keyboardShouldPersistTaps={'handled'}
-                    >
+                    <ScrollView showsVerticalScrollIndicator={false} keyboardShouldPersistTaps ={'always'}  keyboardDismissMode={'on-drag'} >
 
                         <View style={{ alignItems: 'center', justifyContent: 'center' }}>
 
@@ -293,7 +291,7 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus }) => {
                                         <Image1 />
                                         <TextInput
                                             value={Village}
-
+                                            keyboardType1={'email-address'}
                                             style={styles.TextInputBranch}
                                             onChangeText={(text) => {
 
@@ -304,15 +302,16 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus }) => {
                                                     setVillageStatus(false)
                                                     setVillage(text)
                                                     setButton(false)
+                                                    
                                                 }
                                                 else 
                                                 if (!(/^[^!-\/:-@\.,[-`{-~1234567890₹~`|•√π÷×¶∆€¥$¢^°={}%©®™✓]+$/.test(text))) {
                                                     setVillageList([])
                                                     setVillageStatus(false)
-                                                  //  setVillage('')
+                                                    setVillage('')
                                                     // setBstatus(false)
                                                     setButton(false)
-                                                    console.log("else if ", Village)
+                                                    console.log("else if ", Village,text)
                                                 } else {
                                                     setVillage(text)
                                                     getVillage(text)

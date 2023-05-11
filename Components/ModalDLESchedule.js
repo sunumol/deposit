@@ -60,7 +60,7 @@ const ModalDLESchedule = ({ ModalVisible, onPressOut, setModalVisible, navigatio
                 </View>
                 <TouchableOpacity
                     onPressOut={onPressOut}
-                    style={styles.touchableStyle} >
+                    style={styles.touchableStyle1} >
                 </TouchableOpacity>
             </View>
         </Modal>
@@ -72,12 +72,20 @@ const styles = StyleSheet.create({
     mainContainer: {
         backgroundColor: "#000000aa",
         flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center'
+        // alignItems: 'center',
+        // justifyContent: 'center'
+    },
+    touchableStyle:{
+    
+        height: Dimensions.get('window').width * 0.75,
+    },
+    touchableStyle1:{
+      
+        height: Dimensions.get('window').width * 0.9,
     },
     modalContainer: {
         width: Dimensions.get('window').width * 0.9,
-
+        marginHorizontal: Dimensions.get('window').width * 0.05,
         backgroundColor: COLORS.colorBackground,
         borderRadius: 8,
         alignItems: 'center',

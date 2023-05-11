@@ -40,7 +40,9 @@ const ConfirmMembers = ({ navigation }) => {
   const customerList = useSelector(state => state.customerList);
   const customerID = useSelector(state => state.customerID);
   const cgtCustomerDetails = useSelector(state => state.cgtCustomerDetails);
-console.log('++++++++',ModalVisible4)
+
+
+
   const datas = [
     {
       id: 1,
@@ -91,7 +93,7 @@ console.log('++++++++',ModalVisible4)
     console.log('qqqq-----', num)
   if(num === ''){
     onChangeText(num)
-      setTccustomerlist([])
+      //setTccustomerlist([])
       setData([])
     }else if (!(/^[^!-\/:-@\.,[-`{-~]+$/.test(num) || num === '')) {
       
@@ -227,8 +229,9 @@ console.log('++++++++',ModalVisible4)
 
       <Pressable  onPress={()=>{setClearPop(false),
           onChangeText('')
+        
          }} style={styles.mainContainer}>
-        <ScrollView showsVerticalScrollIndicator={false} >
+        <ScrollView showsVerticalScrollIndicator={false}   keyboardShouldPersistTaps={'handled'} >
           <View style={{ padding: 20, paddingTop: 2 }}>
             {!selectedItem ?
               <View style={styles.searchBox}>

@@ -11,7 +11,7 @@ import { COLORS, FONTS } from '../../Constants/Constants';
 import { api } from '../../Services/Api'
 import Statusbar from '../../Components/StatusBar';
 import moment from 'moment';
-
+import NetWorkError from '../NetWorkError';
 // ---------- Image Imports --------------
 import Profile from './Images/Pic1.svg'
 

@@ -15,11 +15,11 @@ import { useTranslation } from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import DropTab from '../Components/components/dropTab';
-import MeetTab from './components/callTab';
+import MeetTab from './components/MeetTab';
 import { api } from '../../../Services/Api';
 import moment from 'moment';
-
-
+import { useNetInfo} from "@react-native-community/netinfo";
+import NetworkScreen from '../../../Components/NetworkError2';
 
 const ItemTabs = ({ navigation }) => {
     const { t } = useTranslation();
@@ -30,7 +30,7 @@ const ItemTabs = ({ navigation }) => {
     const [dleopen, setDleopen] = useState(false)
     const [collectionopen, setCollectionopen] = useState(false)
     const [enab, setEnab] = useState(false)
-
+    const netInfo = useNetInfo();
   
 
     // ------------------ Activity Listing Api Call Start ------------------
@@ -98,6 +98,10 @@ const TabOpen = (index,id)=>{
 }
 
     return (
+        <>
+
+{netInfo.isConnected
+                    ?
         <ScrollView style={{ flex: 1, backgroundColor: COLORS.colorBackground }}>
             <View style={{ paddingHorizontal: 20, marginBottom: 10 }}>
 
@@ -106,7 +110,7 @@ const TabOpen = (index,id)=>{
                     <TouchableOpacity
                         onPress={() => {
                             setCollectionopen(!collectionopen)
-                            const data1 = slottedlisting.filter((item) => item.open == true);
+                            const data1 = slottedlisting?.filter((item) => item.open == true);
                             console.log("data======",data1)
                            slottedlisting.forEach(function (item) {
                                 item.open = false
@@ -202,7 +206,7 @@ const TabOpen = (index,id)=>{
                                 onPress={() => {
                                     setDleopen(!dleopen)
                                     const data1 = slottedlisting.filter((item) => item.open == true);
-                                    console.log("data======",data1)
+                                    console.log("data======",dleopen)
                                    slottedlisting.forEach(function (item) {
                                         item.open = false
                                     })
@@ -260,9 +264,16 @@ const TabOpen = (index,id)=>{
                                  })
                                  console.log("false sect",data)
                                      const nextList = [...slottedlisting];
-                                     nextList[index].open = !nextList[index].open;
-                                     setSlottedListing(nextList);
-                                     
+                                     if(nextList[index].open){
+                                        !nextList[index].open
+                                        setSlottedListing(nextList);
+                                     }else{
+                                        nextList[index].open
+                                        setSlottedListing(nextList);
+                                     }
+                                     //nextList[index].open = !nextList[index].open;
+                                    
+                                     console.log("nextList checv open",)
                                      setDleopen(false)
                                      setCollectionopen(false)
                                  
@@ -370,6 +381,8 @@ const TabOpen = (index,id)=>{
             </View>
 
         </ScrollView>
+        :<NetworkScreen/>}
+        </>
     )
 }
 

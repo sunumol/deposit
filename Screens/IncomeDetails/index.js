@@ -268,10 +268,12 @@ const IncomeDetails = ({ navigation, route }) => {
         return initials.toUpperCase();
     };
     const setMonthdata = (text) => {
+        setAvg('')
        if(text?.length>0) {
-            if (text < 13) {
+             if (text < 13) {
                 setMonth(text)
-            } else {
+            }
+             else {
                 setMonth('')
             }
         }else{
@@ -418,11 +420,13 @@ const IncomeDetails = ({ navigation, route }) => {
                                         if(text === ''){
                                             setZeroStatus(false)
                                             setAvg('')
+                                        }else if(incomedetail?.occupation == 'FARMER' && Month === '0'){
+                                            setAvg(text)
                                         }
-                                        else if (Number(text) == 0) {
+                                        else if ( Month !== '0' && Number(text) == 0) {
         
                                             setZeroStatus(true)
-                                            console.log("number log", text)
+                                            console.log("number log", text,Month)
                                         }
                                         else if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(text) || text === "") {
                                             setAvg(text)
@@ -431,8 +435,8 @@ const IncomeDetails = ({ navigation, route }) => {
                 
                                     }} />
                             </View>
-                            {ZeroStatus &&
-                        <Text style={{ color: 'red', fontSize: 9, paddingTop: 3, fontFamily: FONTS.FontRegular }}>Amount cannot be ₹0</Text>}
+                            {/* {ZeroStatus &&
+                        <Text style={{ color: 'red', fontSize: 9, paddingTop: 3, fontFamily: FONTS.FontRegular }}>Amount cannot be ₹0</Text>} */}
                         </View>
                     </ScrollView>
 

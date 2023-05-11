@@ -18,11 +18,11 @@ const TextInputBox = ({ name, value, onChangeText, onFocus, onBlur,blurOnSubmit,
     return (
         <SafeAreaView>
 
-            <View style={{ paddingTop: width * 0.05, justifyContent: 'center' }}>
+            <View style={{ paddingTop: width * 0.05, justifyContent: 'center' }} >
                 <Text style={styles.TextName}>{name}</Text>
 
                 <TextInput
-        
+              
                     style={[styles.textInput, {
                         backgroundColor: backgroundColor1,
                         color: color, borderColor: edit ? 'red' : 'rgba(236, 235, 237, 1)'

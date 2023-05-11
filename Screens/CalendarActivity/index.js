@@ -49,6 +49,9 @@ const Activities = ({ navigation, route }) => {
         return color;
     }
 
+      String.prototype.replaceAt = function (index, replacement) {
+        return this.substring(0, index) + replacement + this.substring(index + replacement.length);
+    }
     const getInitials = (name) => {
         let initials;
         const nameSplit = name?.split(" ");
@@ -208,7 +211,7 @@ const Activities = ({ navigation, route }) => {
                                                 </View>
 
                                                 <View style={{ flexDirection: 'column', top: 0, alignItems: 'flex-end', flex: 1, paddingRight: width * 0.04 }}>
-                                                    <Text style={[styles.numText, {}]}>{item.mobileNumber}</Text>
+                                                    <Text style={[styles.numText, {}]}>{item.mobileNumber?.replace(/^.{0}/g, ''," ").slice(-10).replaceAt(3, "X").replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X")}</Text>
                                                     {item.purpose === 'Explain Trust Circle' &&
                                                         <Text style={[styles.explainText, { color: COLORS.DarkPurple, backgroundColor: COLORS.LightPurple }]}>Welcome Call</Text>
                                                     }
@@ -283,7 +286,7 @@ const Activities = ({ navigation, route }) => {
                                             <View style={{ flexDirection: 'row', justifyContent: 'space-between', flex: 1 }}>
                                                 <View style={{ flexDirection: 'column', paddingLeft: 12 }}>
 
-                                                    <Text style={styles.nameText}>{item.customerName ? item.customerName : item.mobileNumber}</Text>
+                                                    <Text style={styles.nameText}>{item.customerName ? item.customerName :item?.mobileNumber?.replace(/^.{0}/g, ''," ").slice(-10).replaceAt(3, "X").replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X")}</Text>
 
                                                     <View style={{ flexDirection: 'row', }}>
                                                         <View style={{ paddingTop: 5, paddingRight: 1 }}>
@@ -295,7 +298,7 @@ const Activities = ({ navigation, route }) => {
                                                 </View>
 
                                                 <View style={{ flexDirection: 'column', top: 0, alignItems: 'flex-end', flex: 1, paddingRight: width * 0.04 }}>
-                                                    <Text style={[styles.numText, {}]}>{item.mobileNumber}</Text>
+                                                    <Text style={[styles.numText, {}]}>{item?.mobileNumber?.replace(/^.{0}/g, ''," ").slice(-10).replaceAt(3, "X").replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X")}</Text>
                                                     {item.purpose === 'Explain Trust Circle' &&
                                                         <Text style={[styles.explainText, { color: COLORS.DarkPurple, backgroundColor: COLORS.LightPurple }]}>Welcome Call</Text>
                                                     }

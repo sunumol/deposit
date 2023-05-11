@@ -31,7 +31,7 @@ import Image2 from '../../../assets/Images/cakes.svg';
 import { api } from '../../../Services/Api';
 import { useSelector } from 'react-redux';
 
-const DetailChecks = ({ navigation, setState, setImagedata1 }) => {
+const DetailChecks = ({ navigation, setState, setImagedata1,imagedata }) => {
 
     const isDarkMode = true;
     const [text, onChangeText] = useState('');
@@ -140,6 +140,7 @@ const DetailChecks = ({ navigation, setState, setImagedata1 }) => {
         setModalVisible2(false)
         setDelf(false)
         setImage("")
+        setImagedata1(null)
 
     }
 
@@ -207,7 +208,7 @@ const DetailChecks = ({ navigation, setState, setImagedata1 }) => {
                 <View style={[Image1 ? styles.ViewH: {}]}>
 
                     <View style={{ alignItems: 'center', flex: 0, }}>
-                        <Image source={{ uri: Image1 ? Image1 : null }} style={{ width: width * 0.55, height: width * 0.5, borderRadius: 2 }} />
+                        <Image source={{ uri: imagedata ? imagedata : null }} style={{ width: width * 0.55, height: width * 0.5, borderRadius: 2 }} />
                     </View>
 
                 </View>

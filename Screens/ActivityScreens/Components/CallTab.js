@@ -16,11 +16,14 @@ import CallTab from '../Components/components/callTab';
 import { api } from '../../../Services/Api';
 import { useNetInfo } from "@react-native-community/netinfo";
 import NetWorkError from '../../NetWorkError'
+import NetworkScreen from '../../../Components/NetworkError2';
+import ActivityModal from '../../Activities/Components/ActivityModal';
 const ItemTabs = ({ props, navigation }) => {
     const { t } = useTranslation();
     const [Lang, setLang] = useState('')
     const [ModalVisible1, setModalVisible1] = useState(false)
     const [listing, setListing] = useState([])
+    const [modalVisible, setModalVisible] = useState(false)
     const [enab, setEnab] = useState(false)
     const netInfo = useNetInfo();
     const [meetData, setMeetData] = useState([
@@ -91,7 +94,7 @@ const ItemTabs = ({ props, navigation }) => {
             "activityType": "CALL"
         };
         await api.activitylistingscreenApi(data).then((res) => {
-            console.log('-------------------res call', res?.data?.body?.nonSlottedActivities)
+            console.log('-------------------res call', res?.data?.body?.slottedActivities)
             setListing(res?.data?.body?.slottedActivities)
             setEnab(false)
         })
@@ -132,31 +135,34 @@ const ItemTabs = ({ props, navigation }) => {
         }
     }
     return (
-        <ScrollView style={{ flex: 1, backgroundColor: COLORS.colorBackground }}>
-                 {netInfo.isConnected
-                    ?
-            <View style={{ paddingHorizontal: 20, marginBottom: 20 }}>
+        <>
+           
+                <ScrollView style={{ flex: 1, backgroundColor: COLORS.colorBackground }}>
 
-                {
-                    listing.map((item, index) => {
+                    <View style={{ paddingHorizontal: 20, marginBottom: 20 }}>
+                    <CallTab listing={listing} navigation={navigation} meet={false} navigation={navigation}  setEnab={setEnab}/>
+                        {/* {
+                            listing.map((item, index) => {
 
-                        return (
-                            <>
-                                {item?.data.length > 0 ? (<CallTab
-                                    id={item.id}
-                                    time={item.time}
-                                    data={item.data}
-                                    setEnab={setEnab}
-                                    navigation={navigation}
-                                    meet={false} />) : null}
-                            </>
-                        )
-                    })
-                }
-            </View>: 
-                    <NetWorkError />
-                }
-        </ScrollView>
+                                return (
+                                    <>
+                                        {item?.data.length > 0 ? (<CallTab
+                                            id={item.id}
+                                            listing={listing}
+                                            time={item.time}
+                                            data={item.data}
+                                            setEnab={setEnab}
+                                      
+                                            navigation={navigation}
+                                            meet={false} />) : null}
+                                    </>
+                                )
+                            })
+                        } */}
+                    </View>
+                </ScrollView> 
+              {/* <ActivityModal visible={modalVisible} onPressOut={() => setModalVisible(!modalVisible)} meet={meet} details={details} setEnab={setEnab} /> */}
+        </>
     )
 }
 

@@ -13,7 +13,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Statusbar from '../../Components/StatusBar';
 import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-
+import NetWorkError from '../NetWorkError';
 // ----------------- Components Imports -----------------------
 import { FONTS, COLORS } from '../../Constants/Constants';
 import HeaderDashBoard from '../../Components/HeaderDashBoard';
@@ -32,12 +32,12 @@ import Dashboard from './assets/a.svg';
 import NewLead from './assets/NewLead.svg';
 import NewUser from './assets/NewUser.svg';
 import CallModal from './Components/Modal';
-
+import { useNetInfo } from "@react-native-community/netinfo";
 const Profile = ({ navigation }) => {
 
     const { t } = useTranslation();
     const dispatch = useDispatch()
-
+    const netInfo = useNetInfo();
     const [notificationCount, SetNotificationCount] = useState()
     const [modalExitAppVisible, setModalExitAppVisible] = useState(false);
     const [custID, setCustId] = useState()
@@ -194,6 +194,9 @@ const Profile = ({ navigation }) => {
     }, []);
 
     return (
+        <>
+          {netInfo.isConnected
+                    ?
         <SafeAreaProvider>
             <SafeAreaView style={styles.container1} />
             <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} backgroundColor={"#002B59"} />
@@ -242,7 +245,8 @@ const Profile = ({ navigation }) => {
                      navigation.navigate('ActivityScreens',{id:id}) }}
                 setModalVisible={setModalCall}
             />
-        </SafeAreaProvider>
+        </SafeAreaProvider>:<NetWorkError setModalCall={false}/>}
+        </>
     );
 }
 
