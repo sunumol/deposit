@@ -197,7 +197,7 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus }) => {
                 <KeyboardAvoidingView
                     behavior={Platform.OS === "ios" ? "padding" : null}
                     style={{ flex: 1, backgroundColor: 'white' }}>
-                    <ScrollView showsVerticalScrollIndicator={false}>
+                    <ScrollView showsVerticalScrollIndicator={false} keyboardShouldPersistTaps ={'always'}  keyboardDismissMode={'on-drag'} >
 
                         <View style={{ alignItems: 'center', justifyContent: 'center' }}>
 
@@ -302,6 +302,7 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus }) => {
                                                     setVillageStatus(false)
                                                     setVillage(text)
                                                     setButton(false)
+                                                    
                                                 }
                                                 else 
                                                 if (!(/^[^!-\/:-@\.,[-`{-~1234567890₹~`|•√π÷×¶∆€¥$¢^°={}%©®™✓]+$/.test(text))) {

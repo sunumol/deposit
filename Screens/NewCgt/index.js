@@ -64,7 +64,7 @@ const NewCgt = ({ navigation, route }) => {
                 type: 'SET_ACTIVITY',
                 payload: res?.data?.body[0].sloatActivityList,
             });
-            // console.log('------------------- CGT slot res', res)
+             console.log('------------------- CGT slot res', res)
             setSlotlist(res?.data?.body[0].sloatActivityList);
             setStatus(false)
         })

@@ -130,7 +130,6 @@ const SelectCustomerNewCgt = ({ navigation, route }) => {
     getCustomerList()
   }, [enab])
 
- 
 
   return (
     <SafeAreaProvider>
@@ -142,10 +141,14 @@ const SelectCustomerNewCgt = ({ navigation, route }) => {
         <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1, }}>
           <ActivityIndicator size={30} color={COLORS.colorB} />
         </View> :
-        <Pressable onPress={()=>{setClearPop(false),
+        <Pressable 
+        onPress={()=>{setClearPop(false),
           onChangeText(''),
           setStatus(false)}} style={styles.mainContainer}>
-          <ScrollView showsVerticalScrollIndicator={false} >
+          <ScrollView 
+       //   keyboardShouldPersistTaps={'always'}
+          keyboardDismissMode={'on-drag'}
+          showsVerticalScrollIndicator={false} >
             <View style={styles.boxView}>
               <View style={styles.contentView}>
                 <Text style={styles.timeText}>{route?.params?.data.time}</Text>
@@ -159,6 +162,7 @@ const SelectCustomerNewCgt = ({ navigation, route }) => {
             </View>
             <View style={styles.searchBox}>
               <TextInput
+            
                 placeholder={t('common:EnterNORM')}
                 placeholderTextColor={'#808080'}
                 onChangeText={(text) => OnchangeNumber(text)}
