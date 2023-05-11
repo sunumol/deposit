@@ -16,7 +16,6 @@ import Statusbar from '../../Components/StatusBar';
 import { useFocusEffect } from '@react-navigation/native';
 import Icon1 from 'react-native-vector-icons/Ionicons'
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
-import { useRoute } from '@react-navigation/native';
 import moment from 'moment';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch } from 'react-redux';
@@ -28,6 +27,7 @@ import RejectModal from './Components/RejectModal';
 import ErrorModal from './Components/ErrorModal';
 import ReasonModal from './Components/ReasonModal';
 import { api } from '../../Services/Api';
+import Verified from '../../assets/Verified.svg'
 
 // ------------- Import Image --------
 import Date from './Images/Date.svg';
@@ -47,7 +47,7 @@ const CgtCustomer = ({ navigation, route }) => {
     const [details, setDetails] = useState()
     const [custID, setCustId] = useState()
     const [rejectReason, setRejectReason] = useState()
-   
+
     const data = [
         {
             id: 1,
@@ -100,6 +100,7 @@ const CgtCustomer = ({ navigation, route }) => {
     String.prototype.replaceAt = function (index, replacement) {
         return this.substring(0, index) + replacement + this.substring(index + replacement.length);
     }
+
     useEffect(() => {
         if (ModalError == true) {
             const timer = setTimeout(() => {
@@ -112,8 +113,7 @@ const CgtCustomer = ({ navigation, route }) => {
     }, [ModalError])
 
     useEffect(() => {
-        console.log('Activity id======>>>>>>', activityId),
-            getDetails()
+        getDetails()
         AsyncStorage.getItem("CustomerId").then((value) => {
             setCustId(value)
         })
@@ -125,7 +125,7 @@ const CgtCustomer = ({ navigation, route }) => {
             "activityId": activityId
         };
         await api.getCGTDetails(data).then((res) => {
-            console.log('-------------------res123', res?.data)
+            console.log('-------------------res123', res)
             setDetails(res?.data?.body)
         })
             .catch((err) => {
@@ -138,11 +138,11 @@ const CgtCustomer = ({ navigation, route }) => {
     const updateActivity = async () => {
         const data = {
             "activityStatus": "kyc verified",
-            "employeeId": Number(custID),
+            "employeeId": 1,
             "activityId": activityId
         };
         await api.updateActivity(data).then((res) => {
-            console.log('-------------------res246', res?.data)
+            console.log('-------------------res246', res)
             if (res?.status) {
                 setModalVisible(true)
                 dispatch({
@@ -161,7 +161,7 @@ const CgtCustomer = ({ navigation, route }) => {
     const updateActivityReject = async () => {
         const data = {
             "activityStatus": rejectReason,
-            "employeeId": Number(custID),
+            "employeeId": 1,
             "activityId": activityId
         };
         await api.updateActivity(data).then((res) => {
@@ -209,7 +209,7 @@ const CgtCustomer = ({ navigation, route }) => {
                         </View>
                         <TouchableOpacity style={styles.editView} onPress={() => {
                             navigation.navigate('SelectCalendar', { selectedData: [activityId], title: 'New CGT' }),
-                            AsyncStorage.removeItem('DATECGT')
+                                AsyncStorage.removeItem('DATECGT')
                         }}>
                             <Date />
                             <Text style={styles.changeText}>Reschedule CGT</Text>
@@ -225,7 +225,12 @@ const CgtCustomer = ({ navigation, route }) => {
                                 </View>
 
                                 <View style={{ flexDirection: 'column', paddingLeft: 12, paddingTop: 5 }}>
-                                    <Text style={styles.nameText}>{details?.customerName}</Text>
+                                    <View style={{ flexDirection: 'row' }}>
+                                        <Text style={[styles.nameText, { paddingRight: 5 }]}>{details?.customerName}</Text>
+                                        {details?.varificationStatus
+                                            ? <Verified width={18} height={18} />
+                                            : null}
+                                    </View>
                                     <View style={{ flexDirection: 'row', }}>
                                         <View style={{ paddingTop: 5, paddingRight: 1 }}>
                                             <Icon1 name="location-outline" color={"black"} />
@@ -233,47 +238,45 @@ const CgtCustomer = ({ navigation, route }) => {
                                         <Text style={[styles.idText, { paddingTop: 4 }]}>{details?.pin}</Text>
                                     </View>
                                 </View>
-
                             </View>
 
                             <View style={{ flexDirection: 'column', paddingTop: 5, alignItems: 'flex-end' }}>
                                 <View style={{ flexDirection: 'row' }}>
                                     <Icon2 name="phone-in-talk-outline" color={"black"} size={15} />
-                                    <Text style={[styles.numText, { paddingLeft: 6 }]}>{details?.mobileNumber?.replace(/^.{0}/g, ''," ").slice(-10).replaceAt(3, "X").replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X")}</Text>
+                                    <Text style={[styles.numText, { paddingLeft: 6 }]}>{details?.mobileNumber?.replace(/^.{0}/g, '', " ").slice(-10).replaceAt(3, "X").replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X")}</Text>
                                 </View>
                             </View>
 
                         </View>
                         <View style={styles.lineView} />
-                        <View style={{ paddingHorizontal: 17,marginTop:10 }}>
+                        <View style={{ paddingHorizontal: 17, marginTop: 10 }}>
                             <Text style={styles.headTextTitle}>Address</Text>
                             <Text style={[styles.subText, { maxWidth: 200 }]}>{details?.address}</Text>
                         </View>
                         <View style={styles.lineView} />
                         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 17, }}>
-                            <View style={{ flexDirection: 'column', flex: 1, marginRight: 10,marginTop:10 }}>
+                            <View style={{ flexDirection: 'column', flex: 1, marginRight: 10, marginTop: 10 }}>
                                 <Text style={styles.headTextTitle}>Aadhaar ID</Text>
                                 <Text style={styles.subText}>{details?.aadharNumber}</Text>
                             </View>
+                        </View>
 
-                        </View>
-                        
                         <>
-                        <View style={styles.lineView} />
-                        <View style={{ paddingHorizontal: 17,marginBottom:details?.spouseVoterId? 0:10,marginTop:10}}>
-                            <Text style={styles.headTextTitle}>Voter ID</Text>
-                            <Text style={styles.subText}>{details?.voterId}</Text>
-                        </View>
+                            <View style={styles.lineView} />
+                            <View style={{ paddingHorizontal: 17, marginBottom: details?.spouseVoterId ? 0 : 10, marginTop: 10 }}>
+                                <Text style={styles.headTextTitle}>Voter ID</Text>
+                                <Text style={styles.subText}>{details?.voterId}</Text>
+                            </View>
                         </>
 
                         {details?.spouseVoterId &&
-                        <>
-                        <View style={styles.lineView} />
-                        <View style={{ paddingHorizontal: 17, paddingBottom: 16,marginTop:10 }}>
-                            <Text style={styles.headTextTitle}>Spouse Voter ID</Text>
-                            <Text style={styles.subText}>{details?.spouseVoterId}</Text>
-                        </View>
-                        </>}
+                            <>
+                                <View style={styles.lineView} />
+                                <View style={{ paddingHorizontal: 17, paddingBottom: 16, marginTop: 10 }}>
+                                    <Text style={styles.headTextTitle}>Spouse Voter ID</Text>
+                                    <Text style={styles.subText}>{details?.spouseVoterId}</Text>
+                                </View>
+                            </>}
 
                     </View>
 
@@ -308,6 +311,7 @@ const CgtCustomer = ({ navigation, route }) => {
                 }}
                 setModalVisible={setModalVisible}
             />
+
             <ErrorModal
                 ModalVisible={ModalError}
                 onPressOut={() => {
@@ -316,7 +320,6 @@ const CgtCustomer = ({ navigation, route }) => {
                     navigation.navigate('Profile')
                 }}
                 setModalVisible={setModalError}
-                
             />
 
             <ReasonModal
@@ -399,7 +402,6 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.Gray6,
         opacity: 0.5,
         marginTop: 13,
-        //marginBottom: 16
     },
     nameText: {
         fontSize: 12,

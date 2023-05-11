@@ -196,7 +196,10 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus }) => {
                 <KeyboardAvoidingView
                     behavior={Platform.OS === "ios" ? "padding" : null}
                     style={{ flex: 1, backgroundColor: 'white' }}>
-                    <ScrollView showsVerticalScrollIndicator={false}>
+                    <ScrollView 
+                    showsVerticalScrollIndicator={false}
+                    keyboardShouldPersistTaps={'handled'}
+                    >
 
                         <View style={{ alignItems: 'center', justifyContent: 'center' }}>
 

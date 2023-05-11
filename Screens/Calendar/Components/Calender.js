@@ -63,6 +63,7 @@ const CalendarStrips = ({ setNewDates, getCGTslot }) => {
   }
 
   const DecrementMonth = () => {
+    setSelectedDate()
     setMonth(new Date())
     setSelectedDate(new Date())
   }
@@ -76,13 +77,12 @@ const CalendarStrips = ({ setNewDates, getCGTslot }) => {
       setArrowEnable(true)
       setArrowRight(true)
     }
-    else if (Moment == moment(NewDate).format("MMMM YYYY")) {
-      setArrowEnable(false)
-      setArrowRight(true)
-    } else if (moment(endDate).format("MMMM YYYY") == Moment) {
-      getCGTslot()
-      setArrowRight(false)
-    }
+    // if (moment(start).format('MMMM YYYY') !== moment(end).format('MMMM YYYY')) {
+    //   IncrementMonth()
+    //   setArrowEnable(true)
+    //   setArrowRight(true)
+    // }
+   
   }
 
   return (
@@ -129,10 +129,10 @@ const CalendarStrips = ({ setNewDates, getCGTslot }) => {
         Type={'parallel'}
         scrollToOnSetSelectedDate={true}
         useIsoWeekday={false}
-        dayComponent={(item) => {
+        dayComponent={(item,index) => {
 
           return (
-            <TouchableOpacity
+            <TouchableOpacity key ={index}
               style={{
                 alignItems: 'center',
                 justifyContent: 'center',

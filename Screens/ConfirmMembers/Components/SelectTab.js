@@ -10,6 +10,7 @@ import {
 import React, { useState } from 'react'
 import Icon1 from 'react-native-vector-icons/Ionicons'
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
+import Verified from '../../../assets/Verified.svg'
 
 import { FONTS, COLORS } from '../../../Constants/Constants';
 
@@ -93,8 +94,13 @@ const SelectTab = (props) => {
                                 </View>
 
                                 <View style={{ flexDirection: 'column', paddingLeft: 12, paddingTop: 5 }}>
+                                <View style={{flexDirection:'row'}}>
+                                    <Text style={[styles.nameText,{paddingRight:5}]}>{props?.item?.customerName}</Text>
 
-                                    <Text style={styles.nameText}>{props?.item?.customerName}</Text>
+                                    {props?.item?.varificationStatus
+                                    ?<Verified width={18} height={18}/>
+                                    :null}
+                                    </View>
 
                                     <View style={{ flexDirection: 'row',marginBottom: 15 }}>
 
