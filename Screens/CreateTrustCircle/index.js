@@ -102,11 +102,8 @@ const CreateTrustCircle = ({ navigation, route }) => {
                 if (setShedule.length > 0) {
                     setModalVisible(true)
                 } else {
-                    setModalVisible1(true)
-                    setTimeout(() => {
-                        setModalVisible1(false)
-                        setModalVisible3(true)
-                    }, 500);
+                    setModalVisible3(true)
+                   
                 }
             }
         }).catch((err) => {

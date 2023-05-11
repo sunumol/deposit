@@ -109,6 +109,7 @@ const PinScreen = ({ navigation, }) => {
             const pinDate = await AsyncStorage.getItem('PinDate')
             const dateToday = new Date()
             const dateExpired = new Date(addDays(new Date(pinDate), 90))
+           
             //  const dateExpired =new Date('2/2/2023')
             console.log('----', dateExpired, '-----', dateToday, pinDate, Pin)
 
@@ -135,9 +136,9 @@ const PinScreen = ({ navigation, }) => {
                     }
                     console.log('invalidState', invalidState)
                 }
-               
+              
             }   else{
-                setModalVisible(!ModalVisible)
+                setModalVisible(true)
             }
         } catch (e) {
             console.log(e)

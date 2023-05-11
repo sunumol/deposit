@@ -15,6 +15,7 @@ import SmsAndroid from 'react-native-get-sms-android';
 import DeviceInfo from 'react-native-device-info';
 import { NetworkInfo } from 'react-native-network-info';
 import { useIsFocused } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // --------------- Component Import --------------------
 import { api } from '../../../Services/Api';
@@ -57,6 +58,7 @@ const ForgotPin = ({ navigation }) => {
     const [conDate, setConDate] = useState()
     const [maxError, setMaxError] = useState(false)
     const [status, setStatus] = useState(true)
+    const [phoneSet,setPhoneSet]= useState()
     // --------------Device Configuration End----------
 
     // --------------- getOtp Button Disable Start ------------
@@ -68,6 +70,7 @@ const ForgotPin = ({ navigation }) => {
         return this.substring(0, index) + replacement + this.substring(index + replacement.length);
     }
     useEffect(() => {
+        getData();
         NetworkInfo.getIPV4Address().then(ipv4Address => {
             console.log(ipv4Address);
             setIPAddress(ipv4Address)
@@ -79,6 +82,15 @@ const ForgotPin = ({ navigation }) => {
         });
         // -------------- Get DeviceInfo End ----------
     }, [])
+
+    const getData = async () => {
+        try {
+            const phone = await AsyncStorage.getItem('Mobile')
+            setPhoneSet(phone)
+        } catch (e) {
+            console.log(e)
+        }
+    }
 
     // ------------------ Confirm Otp Api Call Start ------------------
     async function ConfirmOtp(otp) {
@@ -238,8 +250,13 @@ const ForgotPin = ({ navigation }) => {
             setButton(true)
         }
         else {
-            forgotApiCall()
-            setButton(false)
+            if(phoneSet == '+91'+PhoneNum){
+                forgotApiCall()
+                setButton(false)
+            }else{
+                setModalVisibleError(true)
+                setMessage('Please enter the registered phone number')
+            }
         }
     }
 

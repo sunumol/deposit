@@ -53,10 +53,10 @@ const Profile = ({ navigation }) => {
     }, [])
    
     useEffect(() => {
-        if(fcmToken && custID){
+        if(fcmToken ){
             firebaseTokenSentTo()
         }
-    }, [fcmToken && custID])
+    }, [fcmToken ])
 
     const [ModalCall, setModalCall] = useState(false)
     const isDarkMode = true;
