@@ -37,7 +37,10 @@ const Activities = ({ navigation ,data}) => {
     const [ModalVisible, setModalVisible] = useState(false)
     const [ModalVisible1, setModalVisible1] = useState(false)
     const [list,setList] = useState(data?.data)
-
+    const [callavail, setcallavail] = useState(false);
+    String.prototype.replaceAt = function (index, replacement) {
+        return this.substring(0, index) + replacement + this.substring(index + replacement.length);
+    }
 
     const Data = [
         {
@@ -141,21 +144,23 @@ const Activities = ({ navigation ,data}) => {
 
                     <Text style={styles.textTime}>{data?.time} ({data?.data?.length})</Text>
 
-                    <Text style={[styles.textActive, { paddingBottom: width * 0.03 }]}>CALL</Text>
+                  {callavail &&  <Text style={[styles.textActive, { paddingBottom: width * 0.03 }]}>CALL</Text>}
 
                     {list?.map((item) => {
-                        console.log('------->>>>>>',item)
+                        console.log('CALL------->>>>>>',item)
                         if(item.ActivityType == 'CALL'){
+                         
+                            setcallavail(true)
                         return (
                             <View style={styles.viewCard}>
                                 <View style={[styles.circleStyle, { backgroundColor: getRandomColor(), marginLeft: width * 0.03 }]}>
-                                    <Text style={styles.circleText}>{getInitials(item.customerName ? item.customerName : item.mobileNumber)}</Text>
+                                    <Text style={styles.circleText}>{getInitials(item.customerName ? item.customerName : (item.mobileNumber.replace(/^.{0}/g, '').replaceAt(6, "X").replaceAt(7, "X").replaceAt(8, "X").replaceAt(9, "X").slice(3)))}</Text>
                                 </View>
 
                                 <View style={{ flexDirection: 'row',justifyContent:'space-between',flex:1}}>
                                     <View style={{ flexDirection: 'column', paddingLeft: 12, paddingTop: 5 }}>
 
-                                        <Text style={styles.nameText}>{item.customerName ? item.customerName : item.mobileNumber}</Text>
+                                        <Text style={styles.nameText}>{item.customerName ? item.customerName : (item.mobileNumber.replace(/^.{0}/g, '').replaceAt(6, "X").replaceAt(7, "X").replaceAt(8, "X").replaceAt(9, "X").slice(3))}</Text>
 
 
                                         <View style={{ flexDirection: 'row', }}>
@@ -191,22 +196,26 @@ const Activities = ({ navigation ,data}) => {
                     })}
                 </View>
 
-                <Text style={[styles.textActive, { paddingBottom: width * 0.03 }]}>MEET</Text>
+              
 
                 {list?.map((item) => {
                     console.log('CGT listing activities',item.activityType)
                     if(item.activityType == 'MEET'){
+                       
                     return (
+                        <>
+                          <Text style={[styles.textActive, { paddingBottom: width * 0.03 }]}>MEET</Text>
                         <View style={styles.viewCard}>
+                            
                              <View style={[styles.circleStyle, { backgroundColor: "#A294C8", marginLeft: width * 0.03,alignItems:'center' }]}>
-                                <Text style={styles.circleText}>{getInitials(item?.customerName ? item?.customerName : item?.mobileNumber)}</Text>
+                                <Text style={styles.circleText}>{getInitials(item?.customerName ? item?.customerName : (item?.mobileNumber.replace(/^.{0}/g, '').replaceAt(6, "X").replaceAt(7, "X").replaceAt(8, "X").replaceAt(9, "X").slice(3)))}</Text>
                             </View> 
 
                      
                              <View style={{ flexDirection: 'row' ,justifyContent:'space-between',flex:1,paddingRight:width*0.04}}>
                                 <View style={{ flexDirection: 'column', paddingLeft: 12, paddingTop: 5, }}>
 
-                                    <Text style={styles.nameText}>{item.customerName ? item.customerName : item?.mobileNumber}</Text>
+                                    <Text style={styles.nameText}>{item.customerName ? item.customerName : (item?.mobileNumber.replace(/^.{0}/g, '').replaceAt(6, "X").replaceAt(7, "X").replaceAt(8, "X").replaceAt(9, "X").slice(3))}</Text>
 
 
                                     <View style={{ flexDirection: 'row', }}>
@@ -229,6 +238,7 @@ const Activities = ({ navigation ,data}) => {
                             </View> 
 
                         </View>
+                        </>
                     )
                     }
                 })}

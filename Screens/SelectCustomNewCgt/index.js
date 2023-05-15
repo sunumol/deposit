@@ -89,7 +89,7 @@ const SelectCustomerNewCgt = ({ navigation, route }) => {
     console.log('search------->>>>>', searchvalue,clearpop)
     const data = {
       "employeeId": 1,
-      "customerNameOrNumber": searchvalue ? searchvalue : ' '
+      "customerNameOrNumber": searchvalue ? searchvalue : ''
     };
     if(searchvalue){
      setClearPop(true)

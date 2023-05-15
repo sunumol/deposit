@@ -22,15 +22,23 @@ const { height, width } = Dimensions.get('screen');
 const Trend = ({ navigation }) => {
     const LoanID = useSelector(state => state.loanId);
     const [loantrendlist,setLoantrendlist] = useState('')
+    const [paidtcm, setpaidtcm] = useState();
+    const [paidself, setpaidself] = useState();
+    const [paidcard, setpaidcard] = useState();
+    const [paidcash, setpaidcash] = useState();
+
+
+
+
     const graphicData = [
-        { y: 15724, x: '₹15,724' },
-        { y: 31172, x: '₹31,172' },
+        { y: paidtcm, x: '₹15,724' },
+        { y: paidself, x: '₹31,172' },
 
     ];
 
     const graphicData1 = [
-        { y: 27724, x: '₹15,724' },
-        { y: 32172, x: '₹31,172' },
+        { y: paidcash, x: '₹15,724' },
+        { y: paidcard, x: '₹31,172' },
 
     ];
     const graphicColor = ['#184261', '#39B66B',];
@@ -64,6 +72,13 @@ getloantrend()},
     await api.getloantrend(data).then((res) => {
       console.log('------------------- getloantrend res', res.data.body)
       setLoantrendlist(res?.data?.body)
+
+
+    setpaidcard(res?.data?.body?.paidByDigital)
+    setpaidcash(res?.data?.body?.paidByCash)
+    setpaidself(res?.data?.body?.paidBySelf)
+    setpaidtcm(res?.data?.body?.paidByTCMember)
+  
      
      
     })

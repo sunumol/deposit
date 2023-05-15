@@ -99,6 +99,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
   useEffect(() => {
     console.log("route?.params?.relation",route?.params?.relation)
     getCGdetails()
+    getSpousedetail()
   }, [])
 
   useEffect(() => {
@@ -113,7 +114,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
   useEffect(() => {
     if (route?.params?.relation == "Spouse") {
       setRelation('Spouse')
-      getSpousedetail()
+     
     }
   
   }, [])
@@ -197,6 +198,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
       console.log('-------------------res spousedetail co-app', res?.data?.body)
       if (res?.status) {
         setSpousedetail(res?.data?.body)
+        setRelation('Spouse')
       }
     }).catch((err) => {
       console.log('-------------------err spousedetail', err?.response)
