@@ -172,7 +172,7 @@ String.prototype.replaceAt = function (index, replacement) {
                                     <View style={{ flexDirection: 'column', paddingTop: 5, alignItems: 'flex-end' }}>
                                         <View style={{ flexDirection: 'row' }}>
                                             <Icon2 name="phone-call" color={"black"} size={11} style={{ top: 4 }} />
-                                            <Text style={[styles.numText, { paddingLeft: 6 }]}>{item?.mobileNumber.replace(/^.{0}/g, '').replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X")}</Text>
+                                            <Text style={[styles.numText, { paddingLeft: 6 }]}>{(item?.mobileNumber.replace(/^.{0}/g, '').replaceAt(6, "X").replaceAt(7, "X").replaceAt(8, "X").replaceAt(9, "X").slice(3))}</Text>
                                         </View>
 
 

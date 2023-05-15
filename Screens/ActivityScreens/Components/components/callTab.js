@@ -106,7 +106,7 @@ const MeetTab = (props) => {
 
         }
         await api.getDlePageNumber(data).then((res) => {
-            console.log('-------------------res getDlePageNumber', res?.data?.body)
+            console.log('-------------------res getDlePageNumber1', res?.data?.body)
             if (res?.status) {
                 if (res?.data?.body == 1) {
                     props.navigation.navigate('DetailCheck')
@@ -117,16 +117,17 @@ const MeetTab = (props) => {
                 } else if (res?.data?.body == 4) {
                     props.navigation.navigate('UploadVid')
                 } else if (res?.data?.body == 5) {
-                    props.navigation.navigate('EnergyUtility')
-                } else if (res?.data?.body == 6) {
                     props.navigation.navigate('VehicleOwn')
+                } else if (res?.data?.body == 6) {
+                    props.navigation.navigate('EnergyUtility')
                 } else if (res?.data?.body == 7) {
                     props.navigation.navigate('IncomeDetails', { relationShip: 'Customer' })
                 } else if (res?.data?.body == 8) {
                     props.navigation.navigate('IncomeDetails', { relationShip: 'Spouse' })
                 } else if (res?.data?.body == 9) {
                     props.navigation.navigate('HousePhoto')
-
+                } else  {
+                    props.navigation.navigate('AddVehicle')
                 }
                 //props.navigation.navigate('DetailCheck')
             }

@@ -140,7 +140,7 @@ const ItemTabs = ({ props, navigation }) => {
                 <ScrollView style={{ flex: 1, backgroundColor: COLORS.colorBackground }}>
 
                     <View style={{ paddingHorizontal: 20, marginBottom: 20 }}>
-                    <CallTab listing={listing} navigation={navigation} meet={false} navigation={navigation}  setEnab={setEnab}/>
+                    <CallTab listing={listing} navigation={navigation} meet={false}  setEnab={setEnab}/>
                         {/* {
                             listing.map((item, index) => {
 

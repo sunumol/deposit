@@ -158,7 +158,7 @@ const ConfirmMembers = ({ navigation }) => {
     console.log('List------>>', phone)
     const data = {
       "employeeId": 1,
-      "customerNameOrNumber": phone,
+      "customerNameOrNumber": phone ? phone : "",
       "addedTcIds": [cgtCustomerDetails?.primaryCustomerId]
 
     };

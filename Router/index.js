@@ -79,7 +79,7 @@ export default function Router() {
         <Stack.Screen name="Profile" component={Profile} />
         <Stack.Screen name="Privacy" component={netInfo.isConnected ? PrivacyPolicy : NetWorkError} />
         <Stack.Screen name="Terms" component={netInfo.isConnected ? Terms : NetWorkError} />
-        <Stack.Screen name="ActivityScreens" component={ActivityScreens} />
+        <Stack.Screen name="ActivityScreens" component={netInfo.isConnected ? ActivityScreens : NetWorkError}  />
         <Stack.Screen name="NewLead" component={netInfo.isConnected ? NewLead : NetWorkError} />
         <Stack.Screen name="ResetPin" component={netInfo.isConnected ? ResetPin : NetWorkError} />
         <Stack.Screen name="ForgotPin" component={netInfo.isConnected ? ForgotPin : NetWorkError} />

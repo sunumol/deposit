@@ -97,17 +97,18 @@ const MeetTab = (props) => {
                 } else if (res?.data?.body == 4) {
                     props.navigation.navigate('UploadVid')
                 } else if (res?.data?.body == 5) {
-                    props.navigation.navigate('EnergyUtility')
-                } else if (res?.data?.body == 6) {
                     props.navigation.navigate('VehicleOwn')
+                } else if (res?.data?.body == 6) {
+                    props.navigation.navigate('EnergyUtility')
                 } else if (res?.data?.body == 7) {
-                        props.navigation.navigate('IncomeDetails', { relationShip: 'Customer' })
-                    } else if (res?.data?.body == 8) {
-                        props.navigation.navigate('IncomeDetails', { relationShip: 'Spouse' })
-                    } else if (res?.data?.body == 9) {
-                        props.navigation.navigate('HousePhoto')
-
-                    }
+                    props.navigation.navigate('IncomeDetails', { relationShip: 'Customer' })
+                } else if (res?.data?.body == 8) {
+                    props.navigation.navigate('IncomeDetails', { relationShip: 'Spouse' })
+                } else if (res?.data?.body == 9) {
+                    props.navigation.navigate('HousePhoto')
+                } else if (res?.data?.body == 10){
+                    props.navigation.navigate('AddVehicle')
+                }
                 //props.navigation.navigate('DetailCheck')
             }
         }).catch((err) => {
