@@ -57,7 +57,7 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
     const [ModalVisible1, setModalVisible1] = useState(false)
     const [ModalReason, setModalReason] = useState(false)
     const [ModalError, setModalError] = useState(false)
-    const [ZeroStatus,setZeroStatus] = useState(false)
+    const [ZeroStatus, setZeroStatus] = useState(false)
     useEffect(() => {
         getData()
         // setRelationship(route?.params?.relationShip)
@@ -200,9 +200,9 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
     // ------------------ ------------------
 
 
-      // ------------------saveIncomeDetails detail ------------------
+    // ------------------saveIncomeDetails detail ------------------
 
-      const saveIncomeDetails_Proceed = async () => {
+    const saveIncomeDetails_Proceed = async () => {
         console.log('api called')
 
         const data = {
@@ -225,19 +225,17 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
     // ------------------ ------------------
 
 
-    
+
     const setMonthdata = (text) => {
-        if(text?.length>0) {
-             if (text < 13) {
-                 setMonth(text)
-             } else {
-                 setMonth('')
-             }
-         }else{
-             setMonth('')
-         }
-     }
-     
+        if (text?.length > 0) {
+
+            setMonth(text)
+
+        } else {
+            setMonth('')
+        }
+    }
+
     const getInitials = (name) => {
 
         let initials;
@@ -296,7 +294,7 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
                                 </View>
                                 <View style={{ flexDirection: 'column', flex: 1, marginLeft: 12 }}>
                                     <Text style={styles.nameText}>{incomedetail?.name}</Text>
-                                    <Text style={styles.underText}>{incomedetail?.occupation =='SALARIED_EMPLOYEE' ? 'Salaried employee' :  incomedetail?.occupation == 'FARMER'  ? 'Farmer' : incomedetail?.occupation =="BUSINESS_SELF_EMPLOYED" ? "Business/Self employed" :'Daily wage labourer'}</Text>
+                                    <Text style={styles.underText}>{incomedetail?.occupation == 'SALARIED_EMPLOYEE' ? 'Salaried employee' : incomedetail?.occupation == 'FARMER' ? 'Farmer' : incomedetail?.occupation == "BUSINESS_SELF_EMPLOYED" ? "Business/Self employed" : 'Daily wage labourer'}</Text>
                                 </View>
                                 <View style={{ flexDirection: 'row', left: -5 }}>
                                     <Text style={styles.dateText}>{relationShip}</Text>
@@ -319,33 +317,30 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
                                     value={Amount?.toString()}
                                     keyboardType={'number-pad'}
                                     //label={'₹'}
-                                    maxLength={incomedetail?.occupation == 'SALARIED_EMPLOYEE' ? 2 :6}
+                                    maxLength={incomedetail?.occupation == 'SALARIED_EMPLOYEE' ? 2 : 6}
                                     onChangeText={(text) => {
                                         if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(text) || text === "") {
-                                        if(incomedetail?.occupation == 'SALARIED_EMPLOYEE'){
-                                            if(text<13){
+                                            if (incomedetail?.occupation == 'SALARIED_EMPLOYEE') {
+
                                                 setAmount(text)
-                                                console.log("inside occupation 1",incomedetail?.occupation)
-                                            }else{
-                                                setAmount('')
-                                                console.log("inside occupation 2",incomedetail?.occupation)
+                                                console.log("inside occupation 1", incomedetail?.occupation)
+
+                                                console.log("inside occupation 3", incomedetail?.occupation)
+                                                // setAmount(text)
+
+                                                // if(text<13){
+                                                //     setAmount(text)
+                                                // }
+                                            } else {
+                                                if (Number(text) == 0) {
+                                                    setAmount('')
+                                                    console.log("inside occupation 2", incomedetail?.occupation)
+                                                } else {
+                                                    setAmount(text)
+                                                    console.log("inside occupation", incomedetail?.occupation)
+                                                }
                                             }
-                                            console.log("inside occupation 3",incomedetail?.occupation)
-                                           // setAmount(text)
-       
-                                            // if(text<13){
-                                            //     setAmount(text)
-                                            // }
-                                        }else{
-                                            if (Number(text) == 0){
-                                                setAmount('')
-                                                console.log("inside occupation 2",incomedetail?.occupation)
-                                         }else{
-                                            setAmount(text)
-                                            console.log("inside occupation",incomedetail?.occupation)
                                         }
-                                        }
-                                    }
                                     }
                                     } />
                             </View>
@@ -359,14 +354,14 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
 
                                     <Icon1 name="chevron-down" size={18} color={'#808080'} style={{ marginRight: 10 }} />
                                 </TouchableOpacity> :
-                                   <View style={styles.SelectBox}>
-                                    <TextInput
-                                        style={[{ fontSize: 14, color: '#1A051D', fontFamily: FONTS.FontRegular, left: 5, width: '95%' }]}
-                                        value={Month?.toString()}
-                                        keyboardType={'number-pad'}
-                                        maxLength={2}
-                                        onChangeText={(text) => setMonthdata(text)} />
-                                        </View>}
+                                    <View style={styles.SelectBox}>
+                                        <TextInput
+                                            style={[{ fontSize: 14, color: '#1A051D', fontFamily: FONTS.FontRegular, left: 5, width: '95%' }]}
+                                            value={Month?.toString()}
+                                            keyboardType={'number-pad'}
+                                            maxLength={2}
+                                            onChangeText={(text) => setMonthdata(text)} />
+                                    </View>}
                                 {/* <TextInput
                                     style={[{ fontSize: 14, color: '#1A051D', fontFamily: FONTS.FontRegular, left: 5 }]}
                                     value={Month?.toString()}
@@ -385,7 +380,7 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
                                     keyboardType={'number-pad'}
                                     maxLength={5}
                                     onChangeText={(text) => {
-                                        if(text === ''){
+                                        if (text === '') {
                                             setZeroStatus(false)
                                             setAvg('')
                                         }
@@ -402,14 +397,14 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
                                     } />
                             </View>
                             {ZeroStatus &&
-                        <Text style={{ color: 'red', fontSize: 9, paddingTop: 3, fontFamily: FONTS.FontRegular }}>Amount cannot be ₹0</Text>}
+                                <Text style={{ color: 'red', fontSize: 9, paddingTop: 3, fontFamily: FONTS.FontRegular }}>Amount cannot be ₹0</Text>}
                         </View>
                     </ScrollView>
                     {console.log('878787', Buttons)}
                     <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                        <TouchableOpacity style={[styles.buttonView, { backgroundColor:  Amount && (Purpose || Month)  && Avg ? COLORS.colorB : 'rgba(224, 224, 224, 1)' }]}
-                            onPress={() =>  Amount && (Purpose || Month)  && Avg ? ButtonClick():console.log("hekk")}>
-                            <Text style={[styles.continueText, { color:  Amount && (Purpose || Month)  && Avg ? COLORS.colorBackground : '#979C9E' }]}>Continue</Text>
+                        <TouchableOpacity style={[styles.buttonView, { backgroundColor: Amount && (Purpose || Month) && Avg ? COLORS.colorB : 'rgba(224, 224, 224, 1)' }]}
+                            onPress={() => Amount && (Purpose || Month) && Avg ? ButtonClick() : console.log("hekk")}>
+                            <Text style={[styles.continueText, { color: Amount && (Purpose || Month) && Avg ? COLORS.colorBackground : '#979C9E' }]}>Continue</Text>
                         </TouchableOpacity>
                     </View>
                 </View>

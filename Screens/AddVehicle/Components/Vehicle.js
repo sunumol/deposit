@@ -375,7 +375,7 @@ console.log('++++++++++++++++++',Status)
                                 }}>
 
                                     <TouchableOpacity style={[styles.buttonView1, { backgroundColor: 'rgba(229, 231, 250, 1)' }]}
-                                    onPress={()=>{setSearchStatus2(false),setNumbers(''),setPurpose('')}}>
+                                    onPress={()=>{setSearchStatus2(false),setNumbers(''),setPurpose(''),setStatus(!Status)}}>
                                         <Text style={[styles.continueText, { color: COLORS.colorB }]}>Reject</Text>
                                     </TouchableOpacity>
                                     {console.log('~~~~~>>>', searchvehicledata)}

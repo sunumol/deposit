@@ -162,6 +162,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
     setTimer(30)
     setStatus(true)
     setIsOtp1(true)
+    //setMaxError(true)
   }
 
   // ------------------ get Conduct DLE basic detail Village Api Call Start ------------------
@@ -547,7 +548,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
                     </View>
                   }
 
-                  {maxError === true  && IsOtp1 && timerCount === 0 ?
+                  { timerCount === 0 ?
                       <TouchableOpacity onPress={() => ResendOtp()} style={{ padding: 18 }}>
                         <View style={{ flexDirection: 'row', }}>
                           <Resend style={{ width: 9, height: 11, top: 3, marginRight: 6, }} resizeMode="contain" />

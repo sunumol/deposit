@@ -161,7 +161,7 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
     const searchlandmarkname = (text) => {
         console.log('landmark NAME ===>>>', text)
         const firstDigitStr = String(text)[0];
-        if (firstDigitStr == ' ') {
+        if (firstDigitStr == ' ' || !(/^[^!-\/:-@\.,[-`{-~₹~`|•√π÷×¶∆€¥$¢^°={}%©®™✓]+$/.test(text)) || text === '') {
             containsWhitespace(text)
             // 👇️ this runs
             setLandmarkname('')
@@ -169,12 +169,12 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
             ToastAndroid.show("Please enter a valid landmark ", ToastAndroid.SHORT);
             console.log('The string contains whitespace',);
         } 
-    //    else if (/^[^!-\/:-@\.,[-`{-~₹~`|•√π÷×¶∆€¥$¢^°={}%©®™✓]+$/.test(text) || text === ''){
-    //         setLandmarkname(text)
-    //         setLandmarkname1(text)
-    //         setChecked(false)
-    //         console.log("inside this land",text)
-    //     }
+       else if (/^[^!-\/:-@\.,[-`{-~₹~`|•√π÷×¶∆€¥$¢^°={}%©®™✓]+$/.test(text) || text === ''){
+            setLandmarkname(text)
+            setLandmarkname1(text)
+            setChecked(false)
+            console.log("inside this land",text)
+        }
   
          else {
             //setLandmarkname()
@@ -266,7 +266,7 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
 
 
         <View style={styles.mainContainer}>
-            <ScrollView showsVerticalScrollIndicator={false} >
+            <ScrollView showsVerticalScrollIndicator={false}  keyboardShouldPersistTaps={'handled'}  >
                 <View style={styles.searchBox}>
                     <View style={styles.boxStyle}>
                         <View style={{ flex: 1, flexDirection: 'row' }}>
