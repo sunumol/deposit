@@ -345,7 +345,9 @@ const ForgotPin = ({ navigation }) => {
 
     return (
         <View style={styles.mainContainer}>
-            <ScrollView ref={scrollViewRef}
+            <ScrollView 
+             keyboardShouldPersistTaps={'handled'}
+            ref={scrollViewRef}
                 onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: true })}>
 
                 <KeyboardAvoidingView style={{ flex: 1 }}

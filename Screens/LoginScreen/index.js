@@ -180,7 +180,7 @@ const LoginScreen = ({ navigation }) => {
         setTimer(0)
         setSelectedPhoneNum()
         otpInput2?.current?.setValue('')
-        const firstDigitStr = String(PhoneNum)[0];
+        const firstDigitStr = String(PhoneNum)[0]
         if (PhoneNum?.length != 10 || PhoneNum == "") {
             setModalVisible1(true)
             setPhoneNum('')
@@ -192,8 +192,8 @@ const LoginScreen = ({ navigation }) => {
             setButton(true)
             setOtpclick(true)
         } else if (verifyPhone(PhoneNum)) {
-            setModalVisible1(true)
             setPhoneNum('')
+            setModalVisible1(true)
             setButton(true)
             setOtpclick(true)
         } else if (!(/^\d{10}$/.test(PhoneNum))) {
@@ -240,6 +240,8 @@ const LoginScreen = ({ navigation }) => {
         if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(num) || num === '') {
             setPhoneNum(num)
             setMaxError(false)
+            setOtp(false)
+            setIsExpired(false)
             otpInput2?.current?.setValue('')
             setIsExpired(false)
 
@@ -258,6 +260,9 @@ const LoginScreen = ({ navigation }) => {
             // --------------- getOtp Button Disable End ------------
 
         } else {
+            if(num.length === 1){
+                setPhoneNum('')
+            }
             setModalVisible1(true)
             console.log("restricted values", num, PhoneNum)
         }
@@ -296,6 +301,9 @@ const LoginScreen = ({ navigation }) => {
             }
         }).catch((err) => {
             console.log("err Login->", err?.response)
+            setMaxError(false)
+            setOtp(false)
+            setIsExpired(false)
             if (err?.message !== 'Network Error') {
                 if (err?.response?.data?.message === 'the device ID is already existing in the DB.') {
                     setModalVisibleError(true)
@@ -307,26 +315,27 @@ const LoginScreen = ({ navigation }) => {
                     setStatus(false)
                     setMaxError(true)
                     
-                  
-                    BackgroundTimer.setTimeout(() => {
-                        // this will be executed once after 10 seconds
-                        // even when app is the the background
-                        setMaxError(false)
-                        setTimer(0) 
-                        console.log('jhhh')
-                    }, 1800000);
-                    // setTimeout(() => {
+                    // BackgroundTimer.setTimeout(() => {
+                    //     // this will be executed once after 10 seconds
+                    //     // even when app is the the background
                     //     setMaxError(false)
-                    //     setTimer(0)
-                    // }, 3000);
+                    //     setTimer(0) 
+                    //     console.log('jhhh')
+                    // }, );
+                    setTimeout(() => {
+                        setMaxError(false)
+                        setTimer(0)
+                    }, 3000);
                     // -----getOtp Button Disable Start-----
                     setGetOtpDisable(true)
                     setSelectedPhoneNum(PhoneNum)
                     // -----getOtp Button Disable End-----
                 } else if (err?.response?.data?.message === 'Please enter valid agent mobile number') {
-                    setModalVisible1(true)
+                    setModalVisibleError(true)
                     setButton(true)
                     setOtpclick(true)
+                   
+                    setMessage('Please enter valid agent mobile number')
                     setPhoneNum('')
                 } else if (err?.response?.data?.message === 'Sorry! We are unable to proceed further.') {
                     setModalVisibleError(true)
@@ -485,13 +494,17 @@ const LoginScreen = ({ navigation }) => {
             console.log("err->", err?.response)
             if (err?.response?.data?.message === 'Maximum number of OTPs are exceeded. Please try after 30 minutes.') {
                 setMaxError(true)
-                BackgroundTimer.setTimeout(() => {
-                    // this will be executed once after 10 seconds
-                    // even when app is the the background
+                setTimeout(() => {
                     setMaxError(false)
-                    console.log('jhhh')
+                    setTimer(0)
+                }, 3000);
+                // BackgroundTimer.setTimeout(() => {
+                //     // this will be executed once after 10 seconds
+                //     // even when app is the the background
+                //     setMaxError(false)
+                //     console.log('jhhh')
                    
-                }, 1800000);
+                // }, 1800000);
             }
         })
     }

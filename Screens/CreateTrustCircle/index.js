@@ -99,11 +99,10 @@ const CreateTrustCircle = ({ navigation, route }) => {
             if (res?.status) {
                 const setShedule = customerList?.filter((item) => item?.dleScheduleStatus !== 'Conduct DLE')
                 console.log('------------',setShedule)
-                if (setShedule.length > 0) {
+                if (setShedule.length) {
                     setModalVisible(true)
                 } else {
                     setModalVisible3(true)
-                   
                 }
             }
         }).catch((err) => {
