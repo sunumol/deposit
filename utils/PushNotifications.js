@@ -3,8 +3,8 @@ import messaging from '@react-native-firebase/messaging';
 import * as RootNavigation from '../Router/RootNavigation';
 
 export const requestUserPermission = async () => {
-
-  const authStatus = await messaging().requestPermission();
+  try {
+    const authStatus = await messaging().requestPermission();
   const enabled =
     authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
     authStatus === messaging.AuthorizationStatus.PROVISIONAL;
@@ -13,6 +13,10 @@ export const requestUserPermission = async () => {
     console.log('Authorization status:', authStatus);
     getFcmToken();
   }
+} catch (err) {
+    console.warn(err);
+}
+
 };
 
 const getFcmToken = async () => {

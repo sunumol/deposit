@@ -10,7 +10,7 @@ import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 import ActivityModal from '../components/ActiveModal';
 import { useDispatch } from 'react-redux';
 const ActiveTab = (props) => {
-    console.log("props village",props)
+  
     const { t } = useTranslation();
     const [Lang, setLang] = useState('')
     const [modalVisible, setModalVisible] = useState(false)

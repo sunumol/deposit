@@ -7,6 +7,11 @@ export default ForegroundHandler = () => {
 
   useEffect(() => {
     ///Foreground Message Handling
+
+    PushNotification.popInitialNotification((notification) => {
+      console.log('Initial Notification', notification);
+    });
+    
     const unSubscribe = messaging().onMessage(async remoteMessage => {
       const { messageId, notification } = remoteMessage;
       PushNotification.configure({

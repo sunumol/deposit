@@ -33,6 +33,7 @@ import NetWorkError from '../NetWorkError';
 import OTPInputView from '../../Components/OTPInputView';
 import ModalExitApp from '../../Components/ModalExitApp';
 import { useFocusEffect } from '@react-navigation/native';
+import BackgroundTimer from 'react-native-background-timer';
 
 // --------------- Image Imports ---------------------
 import Resend from '../../assets/Images/resend.svg'
@@ -305,10 +306,19 @@ const LoginScreen = ({ navigation }) => {
                     setIsOtp1(true)
                     setStatus(false)
                     setMaxError(true)
-                    setTimeout(() => {
+                    
+                  
+                    BackgroundTimer.setTimeout(() => {
+                        // this will be executed once after 10 seconds
+                        // even when app is the the background
                         setMaxError(false)
-                        setTimer(0)
-                    }, 3000);
+                        setTimer(0) 
+                        console.log('jhhh')
+                    }, 1800000);
+                    // setTimeout(() => {
+                    //     setMaxError(false)
+                    //     setTimer(0)
+                    // }, 3000);
                     // -----getOtp Button Disable Start-----
                     setGetOtpDisable(true)
                     setSelectedPhoneNum(PhoneNum)
@@ -475,9 +485,13 @@ const LoginScreen = ({ navigation }) => {
             console.log("err->", err?.response)
             if (err?.response?.data?.message === 'Maximum number of OTPs are exceeded. Please try after 30 minutes.') {
                 setMaxError(true)
-                setTimeout(() => {
+                BackgroundTimer.setTimeout(() => {
+                    // this will be executed once after 10 seconds
+                    // even when app is the the background
                     setMaxError(false)
-                }, 3000);
+                    console.log('jhhh')
+                   
+                }, 1800000);
             }
         })
     }
