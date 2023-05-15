@@ -35,8 +35,9 @@ const ApprovalModal = ({ ModalVisible, onPressOut, setModalVisible, onPress, nav
             visible={ModalVisible}
             onRequestClose={() => {
                 setModalVisible(!ModalVisible)
+                // navigation.navigate('DLESchedule')
                 AsyncStorage.removeItem('DATECGT')
-                navigation.navigate('NewCgt')
+                // navigation.navigate('NewCgt')
             }}
         >
             <TouchableOpacity onPressOut={onPressOut}
