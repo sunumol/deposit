@@ -87,6 +87,7 @@ const CreateTrustCircle = ({ navigation, route }) => {
     };
     // ------------------ HomeScreen Api Call End ------------------
     { console.log('-----------------', customerList) }
+     
     // ------------------ getTCLimitDetails Api Call Start ------------------
     const CreateTrustCircle = async () => {
         const data = {
@@ -97,13 +98,7 @@ const CreateTrustCircle = ({ navigation, route }) => {
         await api.createTrustCircles(data).then((res) => {
             console.log('-------------------res create', res)
             if (res?.status) {
-                const setShedule = customerList?.filter((item) => item?.dleScheduleStatus !== 'Conduct DLE')
-                console.log('------------',setShedule)
-                if (setShedule.length) {
-                    setModalVisible(true)
-                } else {
-                    setModalVisible3(true)
-                }
+                getDLEschedulestatus()
             }
         }).catch((err) => {
             console.log('-------------------err', err)
@@ -157,6 +152,26 @@ const CreateTrustCircle = ({ navigation, route }) => {
         })
     };
     // --------------------------------------------------------------------
+
+        // ------------------ get Slot Api Call Start -----------------------
+        const getDLEschedulestatus = async () => {
+            const data = {
+                "customerId": cgtCustomerDetails?.primaryCustomerId,
+            };
+            await api.getDLEschedule(data).then((res) => {
+                if(res?.data?.body){
+                    const setShedule = res?.data?.body?.filter((item) => item?.dleScheduleStatus !== 'Conduct DLE')
+                    if (setShedule.length) {
+                        setModalVisible(true)
+                    } else {
+                        setModalVisible3(true)
+                    }
+                }
+            }).catch((err) => {
+                console.log('-------------------errytttyrtty', err)
+            })
+        };
+        // --------------------------------------------------------------------
 
     // ------------------ get Slot Api Call Start ------------------
     const getInitials = (name) => {
