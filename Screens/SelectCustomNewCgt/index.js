@@ -151,8 +151,10 @@ const [searchcustomerlist, setsearchcustomerlist] = useState();
           <ActivityIndicator size={30} color={COLORS.colorB} />
         </View> :
         <Pressable 
-        onPress={()=>{setClearPop(false),
+        onPress={()=>{
+          setClearPop(false),
           onChangeText(''),
+          getCustomerList(''),
           setStatus(false)}} style={styles.mainContainer}>
           <ScrollView 
        //   keyboardShouldPersistTaps={'always'}
