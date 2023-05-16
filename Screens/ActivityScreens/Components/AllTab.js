@@ -74,7 +74,7 @@ const ItemTabs = ({ navigation }) => {
                             <TouchableOpacity
                                 onPress={() => {
                                     setCollectionopen(!collectionopen)
-                                    slottedlisting.forEach(function (item) {
+                                    slottedlisting?.forEach(function (item) {
                                         item.open = false
                                     })
                                     if (dleopen) {
@@ -92,7 +92,7 @@ const ItemTabs = ({ navigation }) => {
                                     <TouchableOpacity
                                         onPress={() => {
                                             setCollectionopen(!collectionopen)
-                                            slottedlisting.forEach(function (item) {
+                                            slottedlisting?.forEach(function (item) {
                                                 item.open = false
                                             })
                                             if (dleopen) {
@@ -129,7 +129,7 @@ const ItemTabs = ({ navigation }) => {
                             <TouchableOpacity
                                 onPress={() => {
                                     setDleopen(!dleopen)
-                                    slottedlisting.forEach(function (item) {
+                                    slottedlisting?.forEach(function (item) {
                                         item.open = false
                                     })
                                     if (collectionopen) {
@@ -147,7 +147,7 @@ const ItemTabs = ({ navigation }) => {
                                     <TouchableOpacity
                                         onPress={() => {
                                             setDleopen(!dleopen)
-                                            slottedlisting.forEach(function (item) {
+                                            slottedlisting?.forEach(function (item) {
                                                 item.open = false
                                             })
                                             if (collectionopen) {

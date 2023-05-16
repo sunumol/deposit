@@ -270,12 +270,7 @@ const IncomeDetails = ({ navigation, route }) => {
     const setMonthdata = (text) => {
         setAvg('')
        if(text?.length>0) {
-             if (text < 13) {
-                setMonth(text)
-            }
-             else {
-                setMonth('')
-            }
+        setMonth(text)
         }else{
             setMonth('')
         }
@@ -352,12 +347,9 @@ const IncomeDetails = ({ navigation, route }) => {
                                             if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(text) || text === "") {
                                          
                                             if(incomedetail?.occupation == 'SALARIED_EMPLOYEE'){
-                                                if(text<13){
-                                                    setAmount(text)
+                                                  setAmount(text)
                                                     console.log("inside occupation 1",incomedetail?.occupation)
-                                                }else{
-                                                    setAmount('')
-                                                }
+                                               
                                                 console.log("inside occupation 3",incomedetail?.occupation)
                                                // setAmount(text)
            

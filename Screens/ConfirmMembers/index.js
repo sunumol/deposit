@@ -328,7 +328,7 @@ const ConfirmMembers = ({ navigation }) => {
         {dataSelected
           ?
 
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingLeft: 15, paddingRight: 10 }}>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingLeft: 15, paddingRight: 15 }}>
 
             <TouchableOpacity style={[styles.buttonView, { backgroundColor: COLORS.colorLight }]}
               onPress={() => setModalReason(true)}>
