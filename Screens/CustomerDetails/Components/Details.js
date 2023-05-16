@@ -27,8 +27,8 @@ import { api } from '../../../Services/Api';
 
 const { height, width } = Dimensions.get('screen');
 
-const Details = ({ navigation,details,spouse }) => {
-console.log('====',details)
+const Details = ({ navigation, details, spouse }) => {
+    console.log('====', details)
     const isDarkMode = true;
     const [text, onChangeText] = useState('');
     const [ModalVisible, setModalVisible] = useState(false)
@@ -37,19 +37,19 @@ console.log('====',details)
     const [ModalError, setModalError] = useState(false)
     const [ModalReason, setModalReason] = useState(false)
     const [checked, setChecked] = useState(false);
- 
+
 
 
     String.prototype.replaceAt = function (index, replacement) {
         return this.substring(0, index) + replacement + this.substring(index + replacement.length);
     }
-    
-    
-      const getInitials = (name) => {
-      
+
+
+    const getInitials = (name) => {
+
         let initials;
         const nameSplit = name?.split(" ");
-         const nameLength = nameSplit?.length;
+        const nameLength = nameSplit?.length;
         if (nameLength > 1) {
             initials =
                 nameSplit[0].substring(0, 1) +
@@ -57,8 +57,8 @@ console.log('====',details)
         } else if (nameLength === 1) {
             initials = nameSplit[0].substring(0, 1);
         } else return;
-    
-         return initials.toUpperCase();
+
+        return initials.toUpperCase();
     };
 
 
@@ -71,7 +71,7 @@ console.log('====',details)
                         <View style={styles.boxStyle}>
                             <View style={{ flex: 1, flexDirection: 'row' }}>
 
-                                <View style={[styles.circleStyle, { backgroundColor:'rgba(105, 121, 248, 1)'}]}>
+                                <View style={[styles.circleStyle, { backgroundColor: 'rgba(105, 121, 248, 1)' }]}>
                                     <Text style={styles.circleText}>{getInitials(details?.customerName)}</Text>
                                 </View>
 
@@ -96,127 +96,122 @@ console.log('====',details)
 
                         </View>
                         <View style={styles.lineView} />
-                        <View style={{ paddingLeft: 15,paddingRight:25,flexDirection:'row' }}>
-                        <View style={{ flex: 1.2,marginTop:width * 0.009 }}>
-                            <Text style={styles.headTextTitle}>Address</Text>
-                        </View>
-                        <View style={{ flex: 2 ,flexWrap:'wrap'}}>
-                            <Text style={[styles.subText, { maxWidth: 200 }]}>{details?.address ? details?.address : '-'} </Text>
-                        </View>
-                           
+                        <View style={{ paddingLeft: 15, paddingRight: 25, flexDirection: 'row' }}>
+                            <View style={{ flex: 1.2, marginTop: width * 0.009 }}>
+                                <Text style={styles.headTextTitle}>Address</Text>
+                            </View>
+                            <View style={{ flex: 2, flexWrap: 'wrap' }}>
+                                <Text style={[styles.subText, { maxWidth: 200 }]}>{details?.address ? details?.address : '-'} </Text>
+                            </View>
+
                         </View>
                         <View style={styles.lineView} />
                         <View style={{ paddingHorizontal: 17, }}>
                             <View style={{ flexDirection: 'row', flex: 1 }}>
-                            <View style={{ flex: 1.2,marginTop:width * 0.0009 }}>
-                            <Text style={styles.headTextTitle}>District</Text>
-                            </View>
-                            <View style={{ flex: 2 }}>
-                            <Text style={styles.subText}>{details?.district}</Text>
-                            </View>
-                                
-                              
+                                <View style={{ flex: 1.2, marginTop: width * 0.0009 }}>
+                                    <Text style={styles.headTextTitle}>District</Text>
+                                </View>
+                                <View style={{ flex: 2 }}>
+                                    <Text style={styles.subText}>{details?.district}</Text>
+                                </View>
+
+
                             </View>
 
-                       
+
                             {/* <Success height={23} width={24} /> */}
                         </View>
                         <View style={styles.lineView} />
-                            <View style={{ paddingLeft: 15,paddingRight:25,flexDirection:'row'}}>
-                            <View style={{ flex: 1.2,marginTop:width * 0.009 }}> 
+                        <View style={{ paddingLeft: 15, paddingRight: 25, flexDirection: 'row' }}>
+                            <View style={{ flex: 1.2, marginTop: width * 0.009 }}>
                                 <Text style={styles.headTextTitle}>Village</Text>
                             </View>
                             <View style={{ flex: 2 }}>
-                                 <Text style={styles.subText}>{details?.village}</Text>
-                                 </View>
-                               
-                               
+                                <Text style={styles.subText}>{details?.village}</Text>
                             </View>
 
-                        <View style={styles.lineView} />
-                        <View style={{ paddingLeft: 15,paddingRight:25, paddingBottom: 16,flex:1,flexDirection:'row'}}>
-                        <View style={{ flex: 1.2 ,marginTop:width * 0.0065}}>
-                        <Text style={styles.headTextTitle}>Access road</Text>
-                        <Text style={styles.headTextTitle}>type</Text>
-                         </View>
-                        <View style={{ flex: 2}}> 
-                        <Text style={styles.subText}>{details?.accessRoadType}</Text>
-                        </View>
-                          
-                            
+
                         </View>
 
-
                         <View style={styles.lineView} />
-                        <View style={{ paddingLeft: 15,paddingRight:25, paddingBottom: 16,flex:1,flexDirection:'row'}}>
-                        <View style={{ flex:1.2 ,marginTop:width * 0.0065}}>
-                        <Text style={styles.headTextTitle}>Post Office</Text>
-                         </View>
-                         <View style={{ flex: 2 }}>
-                        <Text style={styles.subText}>{details?.postOffice}</Text>
-                        </View>
-                          
-                            
+                        <View style={{ paddingLeft: 15, paddingRight: 25, paddingBottom: 16, flex: 1, flexDirection: 'row' }}>
+                            <View style={{ flex: 1.2, marginTop: width * 0.0065 }}>
+                                <Text style={styles.headTextTitle}>Access road</Text>
+                                <Text style={styles.headTextTitle}>type</Text>
+                            </View>
+                            <View style={{ flex: 2 }}>
+                                <Text style={styles.subText}>{details?.accessRoadType}</Text>
+                            </View>
+
+
                         </View>
 
 
                         <View style={styles.lineView} />
-                        <View style={{ paddingLeft: 15,paddingRight:25, paddingBottom: 16,flex:1,flexDirection:'row'}}>
-                        <View style={{ flex: 1.2 ,marginTop:width * 0.0065}}>
-                        <Text style={styles.headTextTitle}>Landmark</Text>
-                         </View>
-                         <View style={{ flex: 2 }}>
-                        <Text style={styles.subText}>{details?.landMark}</Text>
+                        <View style={{ paddingLeft: 15, paddingRight: 25, paddingBottom: 16, flex: 1, flexDirection: 'row' }}>
+                            <View style={{ flex: 1.2, marginTop: width * 0.0065 }}>
+                                <Text style={styles.headTextTitle}>Post Office</Text>
+                            </View>
+                            <View style={{ flex: 2 }}>
+                                <Text style={styles.subText}>{details?.postOffice}</Text>
+                            </View>
+
+
                         </View>
-                          
-                            
+
+
+                        <View style={styles.lineView} />
+                        <View style={{ paddingLeft: 15, paddingRight: 25, paddingBottom: 16, flex: 1, flexDirection: 'row' }}>
+                            <View style={{ flex: 1.2, marginTop: width * 0.0065 }}>
+                                <Text style={styles.headTextTitle}>Landmark</Text>
+                            </View>
+                            <View style={{ flex: 2 }}>
+                                <Text style={styles.subText}>{details?.landMark}</Text>
+                            </View>
+
+
                         </View>
 
                     </View>
 
                     {spouse ?
-                    <> 
-                    <View style={{ marginTop: width * 0.05 }}>
-                        <Text style={styles.TextSp}>Spouse details</Text>
-                    </View>
-
-                    <View style={styles.containerBox}>
-                        <View style={{ flex: 1, flexDirection: 'row' }}>
-                            <View style={[styles.circleView,{backgroundColor:'rgba(117, 181, 195, 1)'}]}>
-                                <Text style={styles.shortText}>{getInitials(spouse?.name)}</Text>
+                        <>
+                            <View style={{ marginTop: width * 0.05 }}>
+                                <Text style={styles.TextSp}>Spouse details</Text>
                             </View>
-                            <View style={{ flexDirection: 'column', flex: 1, marginLeft: 12 }}>
-                                <Text style={styles.nameText}>{spouse?.name}</Text>
-                            
+
+                            <View style={styles.containerBox}>
+                                <View style={{ flex: 1, flexDirection: 'row' }}>
+                                    <View style={[styles.circleView, { backgroundColor: 'rgba(117, 181, 195, 1)' }]}>
+                                        <Text style={styles.shortText}>{getInitials(spouse?.name)}</Text>
+                                    </View>
+                                    <View style={{ flexDirection: 'column', flex: 1, marginLeft: 12 }}>
+                                        <Text style={styles.nameText}>{spouse?.name}</Text>
+
+                                        {spouse?.occupation == 'DAILY_WAGE_LABOURER,' ?
+                                            <Text style={styles.underText}>Daily Wage Labourer</Text> :
+                                            spouse?.occupation == 'SALARIED_EMPLOYEE' ?
+                                                <Text style={styles.underText}>Salaried Employee</Text> :
+                                                spouse?.occupation == 'BUSINESS_SELF_EMPLOYED' ?
+                                                    <Text style={styles.underText}>Business Self Employed</Text> :
+                                                    <Text style={styles.underText}>Farmer</Text>}
 
 
 
 
 
-                                {spouse?.occupation == 'DAILY_WAGE_LABOURER,'?
-                    <Text style={styles.underText}>Daily Wage Labourer</Text>:
-                    spouse?.occupation == 'SALARIED_EMPLOYEE'?
-                    <Text style={styles.underText}>Salaried Employee</Text>:
-                    spouse?.occupation == 'BUSINESS_SELF_EMPLOYED'?
-                    <Text style={styles.underText}>Business Self Employed</Text>:
-                    <Text style={styles.underText}>Farmer</Text>}
 
 
 
 
-
-
-
-
-
+                                    </View>
+                                    <View style={{ flexDirection: 'row', }}>
+                                        <Image1 width={11} height={11} top={3} />
+                                        <Text style={styles.dateText}>{spouse?.dateOfBirth}</Text>
+                                    </View>
+                                </View>
                             </View>
-                            <View style={{ flexDirection: 'row', }}>
-                            <Image1 width={11} height={11} top={3}/>
-                                <Text style={styles.dateText}>{spouse?.dateOfBirth}</Text>
-                            </View>
-                        </View>
-                    </View>
-                    </>:null}
+                        </> : null}
                 </ScrollView>
 
                 <View style={{ alignItems: 'center', justifyContent: 'center' }}>
@@ -497,7 +492,7 @@ const styles = StyleSheet.create({
     circleView: {
         width: 40,
         height: 40,
-       
+
         borderRadius: 20,
         alignItems: 'center',
         justifyContent: 'center',
