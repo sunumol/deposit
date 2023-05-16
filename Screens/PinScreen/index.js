@@ -94,8 +94,6 @@ const PinScreen = ({ navigation, }) => {
             setStatus(false),
                 setError(false),
                 setOtpValue('')
-
-
         });
         return unsubscribe;
     }, [navigation]);
@@ -201,7 +199,6 @@ const PinScreen = ({ navigation, }) => {
                             if (code.length === 4) {
                                 getPinCheck(code)
                             }
-                            setOtpValue(code)
                             if (code.length !== 4) {
                                 setError(false)
                             }
