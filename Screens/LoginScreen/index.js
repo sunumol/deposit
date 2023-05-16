@@ -315,17 +315,17 @@ const LoginScreen = ({ navigation }) => {
                     setStatus(false)
                     setMaxError(true)
                     
-                    // BackgroundTimer.setTimeout(() => {
-                    //     // this will be executed once after 10 seconds
-                    //     // even when app is the the background
-                    //     setMaxError(false)
-                    //     setTimer(0) 
-                    //     console.log('jhhh')
-                    // }, );
-                    setTimeout(() => {
+                    BackgroundTimer.setTimeout(() => {
+                        // this will be executed once after 10 seconds
+                        // even when app is the the background
                         setMaxError(false)
-                        setTimer(0)
-                    }, 3000);
+                        setTimer(0) 
+                        console.log('jhhh')
+                    }, );
+                    // setTimeout(() => {
+                    //     setMaxError(false)
+                    //     setTimer(0)
+                    // }, 3000);
                     // -----getOtp Button Disable Start-----
                     setGetOtpDisable(true)
                     setSelectedPhoneNum(PhoneNum)
@@ -494,17 +494,18 @@ const LoginScreen = ({ navigation }) => {
             console.log("err->", err?.response)
             if (err?.response?.data?.message === 'Maximum number of OTPs are exceeded. Please try after 30 minutes.') {
                 setMaxError(true)
-                setTimeout(() => {
+                // setTimeout(() => {
+                //     setMaxError(false)
+                //     setTimer(0)
+                // }, 3000);
+                BackgroundTimer.setTimeout(() => {
+                    // this will be executed once after 10 seconds
+                    // even when app is the the background
                     setMaxError(false)
                     setTimer(0)
-                }, 3000);
-                // BackgroundTimer.setTimeout(() => {
-                //     // this will be executed once after 10 seconds
-                //     // even when app is the the background
-                //     setMaxError(false)
-                //     console.log('jhhh')
+                    console.log('jhhh')
                    
-                // }, 1800000);
+                }, 1800000);
             }
         })
     }

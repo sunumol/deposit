@@ -8,7 +8,8 @@ import {
     Platform,
     ScrollView,
     Dimensions,
-    TouchableOpacity
+    TouchableOpacity,
+    ActivityIndicator
 } from 'react-native'
 import React, { useCallback, useState, useEffect } from 'react'
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -46,6 +47,7 @@ const CgtCustomer = ({ navigation, route }) => {
 
     const [details, setDetails] = useState()
     const [custID, setCustId] = useState()
+    const [Status,setStatus] = useState(true)
     const [rejectReason, setRejectReason] = useState()
 
     const data = [
@@ -127,8 +129,10 @@ const CgtCustomer = ({ navigation, route }) => {
         await api.getCGTDetails(data).then((res) => {
             console.log('-------------------res123', res)
             setDetails(res?.data?.body)
+            setStatus(false)
         })
             .catch((err) => {
+                setStatus(false)
                 console.log('-------------------err123', err?.response)
             })
     };
@@ -200,6 +204,10 @@ const CgtCustomer = ({ navigation, route }) => {
 
             <Header navigation={navigation} name="CGT" onPress={handleGoBack} />
 
+            {Status ? 
+                <View style={{alignItems:'center',justifyContent:'center',flex:1,}}>
+                <ActivityIndicator size={30} color={COLORS.colorB}/>
+                </View>:
             <View style={styles.mainContainer}>
                 <ScrollView showsVerticalScrollIndicator={false} >
                     <View style={styles.boxView}>
@@ -294,7 +302,7 @@ const CgtCustomer = ({ navigation, route }) => {
                     </TouchableOpacity>
                 </View>
 
-            </View>
+            </View>}
 
             <RejectModal
                 onPress1={() => {

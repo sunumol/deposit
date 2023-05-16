@@ -1,4 +1,3 @@
-
 import {
   StyleSheet, Text, View, BackHandler, StatusBar,
   SafeAreaView, Platform, TextInput, ScrollView, TouchableOpacity, ActivityIndicator, Dimensions, Pressable
@@ -39,7 +38,7 @@ const SelectCustomerNewCgt = ({ navigation, route }) => {
   const [ModalVisible4,setModalVisible4] = useState(false)
   const [reschedulecgt, setReschedulecgt] = useState('')
   const [clearpop,setClearPop] = useState(false)
-
+const [searchcustomerlist, setsearchcustomerlist] = useState();
   const handleGoBack = () => {
     if (text?.length > 0) {
       onChangeText('')
@@ -68,7 +67,12 @@ const SelectCustomerNewCgt = ({ navigation, route }) => {
 
   const OnchangeNumber = (num) => {
     setSelectedItem(null)
-    if (/^[^!-\/:-@\.,[-`{-~]+$/.test(num) || num === '') {
+    const firstDigitStr = String(num)[0];
+    if (firstDigitStr == ' ') {
+      onChangeText('')
+      setEmptyList(false)
+    }
+    else if (/^[^!-\/:-@\.,[-`{-~]+$/.test(num) || num === '') {
       onChangeText(num)
       let searchword = num;
       if (num !== '') {
@@ -86,7 +90,7 @@ const SelectCustomerNewCgt = ({ navigation, route }) => {
   // ------------------ get Customer List Api Call Start ------------------
   const getCustomerList = async (searchvalue) => {
 
-    console.log('search------->>>>>', searchvalue,clearpop)
+    console.log('search------->>>>>', searchvalue,clearpop,text)
     const data = {
       "employeeId": 1,
       "customerNameOrNumber": searchvalue ? searchvalue : ''
@@ -95,9 +99,14 @@ const SelectCustomerNewCgt = ({ navigation, route }) => {
      setClearPop(true)
     }
     await api.getCustomerList(data).then((res) => {
-      console.log('------------------- customer list res', res.data.body)
+      console.log('------------------- customer list res', res.data.body,data.customerNameOrNumber)
+      if(data.customerNameOrNumber){
+        setsearchcustomerlist(res?.data?.body)
+     
+      }else{
+       
       setCustomerList(res?.data?.body)
-      
+      }
       setStatus(false)
     })
       .catch((err) => {
@@ -195,10 +204,10 @@ const SelectCustomerNewCgt = ({ navigation, route }) => {
             }
 
             <View >
-              {text?.length >  0 && clearpop && !selectedItem
+              {text?.length >  0 && clearpop && !selectedItem && searchcustomerlist?.length>0
                 ?
                 <View style={{ borderWidth: customerList?.length > 0 ? 1 : 0, paddingTop: customerList?.length > 0 ? 12 : 0, paddingBottom: customerList?.length > 0 ? 12 : 2, borderColor: COLORS.colorBorder, marginTop: 10, borderRadius: 8 }} >
-                  {customerList?.map((item, index) =>
+                  {searchcustomerlist?.map((item, index) =>
                 
                     <>
                       <TouchableOpacity style={{ flexDirection: 'row', paddingHorizontal: 15, }}
@@ -221,7 +230,7 @@ const SelectCustomerNewCgt = ({ navigation, route }) => {
                         <Text style={[styles.numText, { paddingLeft: 6 }]}>{item?.mobile?.replace(/^.{0}/g, '').slice(-10).replaceAt(3, "X").replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X")}</Text>
                       </TouchableOpacity>
 
-                      {customerList?.length - 1 !== index
+                      {searchcustomerlist?.length - 1 !== index
                         ? <View style={styles.lineView} />
                         : null
                       }
@@ -233,7 +242,7 @@ const SelectCustomerNewCgt = ({ navigation, route }) => {
               }
             </View>
             {
-              customerList?.length === 0 &&  clearpop  &&EmptyList && (
+              searchcustomerlist?.length === 0 &&  clearpop  &&EmptyList && (
                 <View style={styles.ViewMapBranch}>
                   <Text style={[styles.nameText, { padding: 10 }]}>No results found</Text>
                 </View>
@@ -407,6 +416,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     backgroundColor: '#FCFCFC',
     alignItems: 'flex-start',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    marginTop:5
   },
 })

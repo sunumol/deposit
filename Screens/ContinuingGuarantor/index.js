@@ -409,7 +409,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
               <Text style={styles.headerText}>Relationship with Customer</Text>
               <TouchableOpacity onPress={() => relation == 'Spouse' ? setModalVisible1(false) : setModalVisible1(true)} style={styles.dropDown}>
                 <Text style={styles.spouseText}>{relation ? relation : 'Select'}</Text>
-                <Icon1 name="chevron-down" size={18} color={'#808080'} />
+                {relation !== 'Spouse' &&  <Icon1 name="chevron-down" size={18} color={'#808080'} />}
               </TouchableOpacity>
               {relation == 'Spouse' ? <View style={styles.containerBox}>
                 <View style={{ flex: 1, flexDirection: 'row' }}>

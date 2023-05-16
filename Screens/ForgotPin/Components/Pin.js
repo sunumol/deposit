@@ -255,6 +255,7 @@ const ForgotPin = ({ navigation }) => {
                 setButton(false)
             }else{
                 setModalVisibleError(true)
+                setPhoneNum('')
                 setMessage('Please enter the registered phone number')
             }
         }
@@ -316,11 +317,13 @@ const ForgotPin = ({ navigation }) => {
                 setPhoneNum('')
                 setButton(true)
                 setMaxError(false)
+              console.log("alert this")
                 setMessage('Please enter the registered phone number')
             }
             if (err?.response?.data?.message === 'Sorry! We are unable to proceed further.') {
                 setModalVisibleError(true)
                 setButton(true)
+                setPhoneNum('')
                 setMaxError(false)
                 setMessage('Sorry! We are unable to proceed further.')
             }
