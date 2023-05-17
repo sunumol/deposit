@@ -33,7 +33,7 @@ const CGTCompleted = ({ ModalVisible, onPressOut, setModalVisible,onPress,naviga
             transparent={true}
             visible={ModalVisible}
             onRequestClose={() => {
-                setModalVisible(!ModalVisible)
+               // setModalVisible(!ModalVisible)
                 navigation.navigate('Profile',{set:true})
             }}
         >
