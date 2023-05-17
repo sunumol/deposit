@@ -65,6 +65,7 @@ const Vehicle = ({ navigation }) => {
     const [searchvehicledata, setSearchvehicledata] = useState({})
     const [VehicleStatus, setVehicleStatus] = useState(false)
     const [ModalVehicle, setModalVehicle] = useState(false)
+    const [CustomerDetail,setCustomerDetail] = useState([])
     const toggleCheckbox = () => setChecked(!checked);
 
     const Data = [
@@ -106,7 +107,7 @@ const Vehicle = ({ navigation }) => {
 
 
     useEffect(() => {
-
+        getCustomerdetail()
         getSpousedetail();
 
     }, [])
@@ -135,8 +136,24 @@ const Vehicle = ({ navigation }) => {
 
 
 
+    const getCustomerdetail = async () => {
+        console.log('api called')
+
+        const data = {
+            "activityId": activityId
 
 
+        }
+        await api. getCustomerdetail(data).then((res) => {
+            console.log('-------------------res customerdetail', res.data.body)
+            if (res?.status) {
+                setCustomerDetail(res.data.body)
+                //setSpousedetail(res?.data?.body)
+            }
+        }).catch((err) => {
+            console.log('-------------------err spousedetail', err?.response)
+        })
+    };
 
 
 
@@ -157,12 +174,12 @@ const Vehicle = ({ navigation }) => {
                     setSearchvehicledata(res?.data?.body)
                     setSearchStatus2(true)
                 } else {
-              
+
                     setNumbers('')
                     setModalError(true)
                     setStatus(false)
                     setSearchStatus2(false)
-                    console.log("inside this",Status)
+                    console.log("inside this", Status)
                 }
 
             }
@@ -175,7 +192,7 @@ const Vehicle = ({ navigation }) => {
             console.log('-------------------err fetchVehicleDetailsForDle', err.response.status, data)
         })
     };
-console.log('++++++++++++++++++',Status)
+    console.log('++++++++++++++++++', Status)
 
     // ------------------get fetchVehicleDetailsForDle detail ------------------
 
@@ -222,7 +239,21 @@ console.log('++++++++++++++++++',Status)
 
 
 
-
+    const getInitials = (name) => {
+      
+        let initials;
+        const nameSplit = name?.split(" ");
+         const nameLength = nameSplit?.length;
+        if (nameLength > 1) {
+            initials =
+                nameSplit[0].substring(0, 1) +
+                nameSplit[nameLength - 1].substring(0, 1);
+        } else if (nameLength === 1) {
+            initials = nameSplit[0].substring(0, 1);
+        } else return;
+    
+         return initials.toUpperCase();
+    };
 
 
 
@@ -230,7 +261,7 @@ console.log('++++++++++++++++++',Status)
 
         <>
             <View style={styles.mainContainer}>
-                <ScrollView>
+                <ScrollView  keyboardShouldPersistTaps={'handled'}>
                     <View>
                         <Text style={styles.TextOwner}>Vehicle owner</Text>
                     </View>
@@ -289,11 +320,11 @@ console.log('++++++++++++++++++',Status)
                             </View>
                         </View>}
 
-                    {(SearchStatus2 && Purpose == "Spouse") &&
+                    {(SearchStatus2 && Purpose == "Spouse") ?
                         <View style={styles.containerBox}>
                             <View style={{ flex: 1, flexDirection: 'row' }}>
                                 <View style={[styles.circleView, { backgroundColor: 'rgba(206, 116, 143, 1)' }]}>
-                                    <Text style={styles.shortText}>AK</Text>
+                                    <Text style={styles.shortText}>{getInitials(spousedetail?.name)}</Text>
                                 </View>
                                 <View style={{ flexDirection: 'column', flex: 1, marginLeft: 12 }}>
                                     <Text style={styles.nameText}>{spousedetail?.name}</Text>
@@ -318,7 +349,33 @@ console.log('++++++++++++++++++',Status)
                                 </View>
 
                             </View>
-                        </View>}
+                        </View>:SearchStatus2 && Purpose == "Customer" &&
+                         <View style={styles.containerBox}>
+                         <View style={{ flex: 1, flexDirection: 'row' }}>
+                             <View style={[styles.circleView, { backgroundColor: 'rgba(206, 116, 143, 1)' }]}>
+                                 <Text style={styles.shortText}>{getInitials(CustomerDetail?.name)}</Text>
+                             </View>
+                             <View style={{ flexDirection: 'column', flex: 1, marginLeft: 12 }}>
+                                 <Text style={styles.nameText}>{CustomerDetail?.name}</Text>
+
+
+                                 {CustomerDetail?.occupation == 'DAILY_WAGE_LABOURER,' ?
+                                     <Text style={styles.underText}>Daily Wage Labourer</Text> :
+                                     CustomerDetail?.occupation == 'SALARIED_EMPLOYEE' ?
+                                         <Text style={styles.underText}>Salaried Employee</Text> :
+                                         CustomerDetail?.occupation == 'BUSINESS_SELF_EMPLOYED' ?
+                                             <Text style={styles.underText}>Business Self Employed</Text> :
+                                             <Text style={styles.underText}>Farmer</Text>}
+                             </View>
+
+
+                             <View style={{ flexDirection: 'row', }}>
+                                 <Image1 width={11} height={11} top={3} />
+                                 <Text style={styles.dateText}>{CustomerDetail?.dateOfBirth}</Text>
+                             </View>
+
+                         </View>
+                     </View>}
 
                     {SearchStatus2 &&
 
@@ -375,7 +432,7 @@ console.log('++++++++++++++++++',Status)
                                 }}>
 
                                     <TouchableOpacity style={[styles.buttonView1, { backgroundColor: 'rgba(229, 231, 250, 1)' }]}
-                                    onPress={()=>{setSearchStatus2(false),setNumbers(''),setPurpose(''),setStatus(!Status)}}>
+                                        onPress={() => { setSearchStatus2(false), setNumbers(''), setPurpose(''), setStatus(!Status) }}>
                                         <Text style={[styles.continueText, { color: COLORS.colorB }]}>Reject</Text>
                                     </TouchableOpacity>
                                     {console.log('~~~~~>>>', searchvehicledata)}
@@ -419,7 +476,7 @@ console.log('++++++++++++++++++',Status)
                 ModalVisible={ModalError}
                 onPressOut={() => {
                     setModalError(!ModalError)
-                    
+
 
                 }}
                 setModalVisible={setModalError}

@@ -357,7 +357,7 @@ const UploadImage = ({ navigation, id ,setFrontimage,setBackimage}) => {
                     <TouchableOpacity style={styles.Button1}
                         onPress={uploadVoterID}>
                         <Text style={styles.text1}>{t('common:CONTINUE')}</Text>
-                        {/* {Status && <ActivityIndicator size={15} color={COLORS.colorBackground} />} */}
+                        {Status && <ActivityIndicator size={15} color={COLORS.colorBackground} />}
                     </TouchableOpacity> :
                     <TouchableOpacity style={styles.Button2} >
                         <Text style={styles.textshade}>{t('common:CONTINUE')}</Text>

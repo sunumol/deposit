@@ -292,6 +292,14 @@ export const api = {
     })
   },
 
+    // ------------------ get Spouse details---------------------
+    getCustomerdetail: data => {
+      return axios.post(`${baseURL2}getCustomerDetails`, data, {
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      })
+    },
   // ------------------ get Residence owner details---------------------
   getResidenceowner: data => {
     return axios.post(`${baseURL2}getCurrentResidenceOwner`, data, {

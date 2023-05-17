@@ -142,7 +142,7 @@ const ItemTabs = ({ navigation }) => {
                                 </View>
                                 <View style={{ justifyContent: 'flex-end', flexDirection: 'row', alignItems: 'center' }}>
                                     <View style={[styles.badgeContainer, { backgroundColor: COLORS.LightPurple }]}>
-                                        <Text style={[styles.badgeText, { color: COLORS.DarkPurple }]}>{nonslottedActivities?.length}</Text>
+                                        <Text style={[styles.badgeText, { color: COLORS.DarkPurple }]}>{nonslottedActivities?.length !== 0 ? nonslottedActivities?.length : '0' }</Text>
                                     </View>
                                     <TouchableOpacity
                                         onPress={() => {

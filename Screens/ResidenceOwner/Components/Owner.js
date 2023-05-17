@@ -60,7 +60,7 @@ const DetailChecks = ({ navigation, setState, proofType1, imageUrl1, relation1, 
     const [spousedetail, setSpousedetail] = useState('')
     const [ownersName, setOwnersName] = useState('')
     const [error, setError] = useState('')
-
+    const [NameValid,setNameValid] = useState(false)
     const [ImagesFSet, setImagesFSet] = useState()
     const [ImagesBSet, setImagesBSet] = useState()
 
@@ -217,6 +217,23 @@ const DetailChecks = ({ navigation, setState, proofType1, imageUrl1, relation1, 
         return /\s/.test(str);
     }
 
+    const getInitials = (name) => {
+      
+        let initials;
+        const nameSplit = name?.split(" ");
+         const nameLength = nameSplit?.length;
+        if (nameLength > 1) {
+            initials =
+                nameSplit[0].substring(0, 1) +
+                nameSplit[nameLength - 1].substring(0, 1);
+        } else if (nameLength === 1) {
+            initials = nameSplit[0].substring(0, 1);
+        } else return;
+    
+         return initials.toUpperCase();
+    };
+
+
     return (
 
 
@@ -282,7 +299,7 @@ const DetailChecks = ({ navigation, setState, proofType1, imageUrl1, relation1, 
                     <View style={styles.containerBox}>
                         <View style={{ flex: 1, flexDirection: 'row' }}>
                             <View style={styles.circleView}>
-                                <Text style={styles.shortText}>AK</Text>
+                                <Text style={styles.shortText}>{getInitials(spousedetail?.name)}</Text>
                             </View>
 
                             <View style={{ flexDirection: 'column', flex: 1, marginLeft: 12 }}>
@@ -309,8 +326,10 @@ const DetailChecks = ({ navigation, setState, proofType1, imageUrl1, relation1, 
                             <View style={styles.SelectBox}>
                                 <TextInput
                                     value={ownersName}
+                                    maxLength={30}
                                     style={styles.TextInputBranch}
                                     onChangeText={(text) => {
+                                        setNameValid(false)
                                         const firstDigitStr = String(text)[0];
                                         if (firstDigitStr == ' ') {
                                             containsWhitespace(text)
@@ -319,9 +338,10 @@ const DetailChecks = ({ navigation, setState, proofType1, imageUrl1, relation1, 
                                             ToastAndroid.show("Please enter a valid name ", ToastAndroid.SHORT);
                                            
                                         }
-                                        else if (/^[^!-\/:-@\.,[-`{-~1234567890₹~`|•√π÷×¶∆€¥$¢^°={}%©®™✓]+$/.test(text) || text === '') {
-                                            setOwnersName(text), relative1(text)
-
+                                        
+                                       else  if (/^[^!-\/:-@\.,[-`{-~1234567890₹~`|•√π÷×¶∆€¥$¢^°={}%©®™✓]+$/.test(text) || text === '') {
+                                            setOwnersName(text),
+                                             relative1(text)
                                         }
                                     }}
                                 // onFocus={() => setPstatus(false)}
@@ -336,10 +356,10 @@ const DetailChecks = ({ navigation, setState, proofType1, imageUrl1, relation1, 
             </ScrollView>
 
             <View style={{ position: 'absolute', left: 0, right: 0, bottom: 0, alignItems: 'center', justifyContent: 'center' }}>
-                <TouchableOpacity onPress={() => (Purpose && Purposes == 'Spouse' ? Purposes : ownersName && Image1) ? UpdateResidenceowner() : console.log("helo")}
-                    style={[styles.Button1, { backgroundColor: (Purpose && Purposes == 'Spouse' ? Purposes : ownersName && Image1) ? COLORS.colorB : 'rgba(224, 224, 224, 1)' }]}
+                <TouchableOpacity onPress={() => (Purpose && Purposes == 'Spouse' ? Purposes : ownersName?.length>2 && Image1) ? UpdateResidenceowner() : console.log("helo")}
+                    style={[styles.Button1, { backgroundColor: (Purpose && Purposes == 'Spouse' ? Purposes : ownersName?.length>2 && Image1 ) ? COLORS.colorB : 'rgba(224, 224, 224, 1)' }]}
                 >
-                    <Text style={[styles.text1, { color: (Purpose && Purposes == 'Spouse' ? Purposes : ownersName && Image1) ? COLORS.colorBackground : '#979C9E' }]}>Continue</Text>
+                    <Text style={[styles.text1, { color: (Purpose && Purposes == 'Spouse' ? Purposes : ownersName?.length>2 && Image1 ) ? COLORS.colorBackground : '#979C9E' }]}>Continue</Text>
                 </TouchableOpacity>
             </View>
             <OwnerModal
