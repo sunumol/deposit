@@ -455,6 +455,16 @@ export const api = {
     })
   },
 
+
+    // ------------------   DeleteHousePhoto details---------------------
+    DeleteHousePhoto: data => {
+      return axios.post(`${baseURL2}deleteHousePhoto`, data, {
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      })
+    },
+
   // ------------------   getDlePageNumber details---------------------
   getDlePageNumber: data => {
     return axios.post(`${baseURL2}getDlePageNumber`, data, {
