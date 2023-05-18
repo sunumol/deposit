@@ -110,6 +110,19 @@ const DetailChecks = ({ navigation, setState, setImagedata1,imagedata }) => {
     };
     // ------------------ ------------------
 
+
+
+  const  DeleteHousePhoto = async () =>{
+    const data ={
+    "activityId": activityId
+    }
+    await api.DeleteHousePhoto(data).then((res) => {
+        console.log('-------------------res  delete house photo', res)
+    }).catch((err) =>{
+        console.log('-------------------res  delete house photo', res)
+    })
+  }
+
     const UploadImage = () => {
 
         //Choose Image from gallery
@@ -136,7 +149,7 @@ const DetailChecks = ({ navigation, setState, setImagedata1,imagedata }) => {
 
     const DeleteImage = () => {
 
-
+        DeleteHousePhoto()
         setModalVisible2(false)
         setDelf(false)
         setImage("")
