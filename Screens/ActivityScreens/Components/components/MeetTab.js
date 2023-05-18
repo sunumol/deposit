@@ -19,6 +19,7 @@ const MeetTab = (props) => {
     const dispatch = useDispatch()
     const [callStatus,setCallStatus] = useState(false)
     const [ModalCall, setModalCall] = useState(false)
+    const [spouseDetail,setSpousedetail] = useState([])
     useEffect(() => {
         getData()
        // console.log("no modal data inside1")
@@ -95,7 +96,12 @@ const MeetTab = (props) => {
                 } else if (res?.data?.body == 3) {
                     props.navigation.navigate('ContinuingGuarantor')
                 } else if (res?.data?.body == 4) {
-                    props.navigation.navigate('UploadVid')
+                    if(spouseDetail){
+                        props.navigation.navigate('AddVehicle')
+                    }else{
+                        props.navigation.navigate('UploadVid')
+                    }
+                    
                 } else if (res?.data?.body == 5) {
                     props.navigation.navigate('VehicleOwn')
                 } else if (res?.data?.body == 6) {
@@ -127,6 +133,22 @@ const MeetTab = (props) => {
         Linking.openURL(number);
     };
 
+    const getSpousedetail = async (id) => {
+        const data = {
+          "activityId": id
+        }
+        await api.getSpousedetail(data).then((res) => {
+          console.log('-------------------res spousedetail co-app',id)
+          if (res?.status) {
+              setSpousedetail(res?.data?.body)
+            console.log("spose detail",res?.data?.body)
+          
+          }
+        }).catch((err) => {
+          console.log('-------------------err spousedetail', err?.response)
+        })
+      };
+
     return (
         <>
             <View style={{ marginBottom: 0 }}>
@@ -147,6 +169,7 @@ const MeetTab = (props) => {
                                    
                                     setDetails(item)
                                     getDlePageNumber(item.activityId)
+                                    getSpousedetail(item?.activityId)
                                 } else if (item?.purpose == 'Conduct CGT'){
                                     dispatch({
                                         type: 'SET_CGT_ACTIVITY_ID',

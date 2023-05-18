@@ -45,7 +45,7 @@ const CalendarStrips = ({ setNewDates, getCGTslot }) => {
       }
       setNewDates(parseAsUTC(s).toISOString())
       setMonth(parseAsUTC(s).toISOString())
-    
+
     }
   }, [selectedDate])
 
@@ -55,7 +55,7 @@ const CalendarStrips = ({ setNewDates, getCGTslot }) => {
       if (moment(today).format("MMMM YYYY") === moment(month).format("MMMM YYYY")) {
         setLeftArrow(false)
         setRightArrow(true)
-      
+
       } else {
         setLeftArrow(true)
         setRightArrow(false)
@@ -72,20 +72,20 @@ const CalendarStrips = ({ setNewDates, getCGTslot }) => {
     setSelectedDate(today)
   }
 
-  
+
   return (
     <View style={styles.container}>
       <View style={{
         flexDirection: 'row', marginTop: 25, justifyContent: 'space-between',
         marginLeft: 15, marginRight: 15
       }}>
- <View>
-        {leftArrow
-          ? <TouchableOpacity onPress={DecrementMonth}>
-            <Icon1 name="arrow-left" size={14} color={"#171930"} />
-          </TouchableOpacity>
-          : null}
-</View>
+        <View>
+          {leftArrow
+            ? <TouchableOpacity onPress={DecrementMonth}>
+              <Icon1 name="arrow-left" size={14} color={"#171930"} />
+            </TouchableOpacity>
+            : null}
+        </View>
         <View>
           <Text style={styles.YearText}>{moment(month).format('MMMM')}{" '"}{moment(month).format('YY')}</Text>
         </View>
@@ -104,6 +104,7 @@ const CalendarStrips = ({ setNewDates, getCGTslot }) => {
         calendarAnimation={{ type: 'sequence', duration: 30 }}
         scrollable={true}
         scrollerPaging={true}
+       
         style={{ height: 100, paddingTop: 0, paddingBottom: 0 }}
         iconContainer={{ flex: 0.1 }}
         selectedDate={selectedDate}

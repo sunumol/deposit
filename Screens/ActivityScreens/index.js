@@ -10,7 +10,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { useFocusEffect } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useStore } from 'react-redux';
 import { useNetInfo } from "@react-native-community/netinfo";
 // --------------- Component Imports ----------------------
 import AllTab from './Components/AllTab';
@@ -20,6 +20,7 @@ import Statusbar from '../../Components/StatusBar';
 import { FONTS, COLORS } from '../../Constants/Constants';
 import HeaderDashBoard from '../../Components/RepayHeader';
 import NetworkScreen from '../../Components/NetworkError2';
+import { api } from '../../Services/Api';
 const Activityscreens = ({ navigation, route }) => {
 
   const isDarkMode = true;
@@ -27,6 +28,7 @@ const Activityscreens = ({ navigation, route }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch()
   const netInfo = useNetInfo();
+ 
   const handleGoBack = useCallback(() => {
     navigation.goBack()
     return true; // Returning true from onBackPress denotes that we have handled the event
@@ -54,6 +56,10 @@ const Activityscreens = ({ navigation, route }) => {
     });
     return unsubscribe;
   }, [navigation]);
+
+
+
+
 
   return (
     <>

@@ -196,8 +196,9 @@ const ContinuingGuarantor = ({ navigation, route }) => {
       "activityId": activityId
     }
     await api.getSpousedetail(data).then((res) => {
-      console.log('-------------------res spousedetail co-app', res?.data?.body)
+      console.log('-------------------res spousedetail co-app', activityId)
       if (res?.status) {
+        console.log('-------------------res spousedetail co-app',res?.data?.body)
         setSpousedetail(res?.data?.body)
         setRelation('Spouse')
       }
@@ -309,7 +310,12 @@ const ContinuingGuarantor = ({ navigation, route }) => {
       console.log('-------------------res verifyCG', res)
       if (res?.status) {
         setIsOtp1(false)
-        navigation.navigate('UploadVid')
+        if(relation !== 'Spouse'){
+          navigation.navigate('UploadVid')
+        }else{
+          navigation.navigate('AddVehicle')
+        }
+      
       }
     }).catch((err) => {
       if (err?.response?.data?.message == 'You entered wrong OTP') {
@@ -403,7 +409,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
         <KeyboardAvoidingView style={{ flex: 1 }}
           {...(Platform.OS === 'ios' && { behavior: 'position' })}
         >
-          <ScrollView ref={scrollViewRef}
+          <ScrollView ref={scrollViewRef}   keyboardShouldPersistTaps={'handled'}
             onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: true })}>
             <View style={{ flex: 1 }}>
               <Text style={styles.headerText}>Relationship with Customer</Text>
@@ -511,7 +517,8 @@ const ContinuingGuarantor = ({ navigation, route }) => {
 
               {(number?.length === 10 && !PhoneValid) &&
                 <View style={styles.ViewOtp}>
-                  <Text style={styles.textOtp} onPress={() => navigation.navigate('PreClosure')}>{t('common:EnterOtp')} </Text>
+                  <Text style={styles.textOtp}>{t('common:EnterOtp')} </Text>
+
 
                   <OTPInputView
                     ref={otpInput2}
@@ -526,14 +533,14 @@ const ContinuingGuarantor = ({ navigation, route }) => {
                     handleTextChange={(code => {
                       setOtpValue(code)
                       setInvalidotp(false)
-                      if (code.length === 4) {
-                        if (code == '1091') {
-                          navigation.navigate('Permission')
-                        }
-                        else {
-                          console.log("otp value//...", OtpValue)
-                        }
-                      }
+                      // if (code.length === 4) {
+                      //   // if (code == '1091') {
+                      //   //   navigation.navigate('Permission')
+                      //   // }
+                      //   // else {
+                      //   //   console.log("otp value//...", OtpValue)
+                      //   // }
+                      // }
                     })}
                   />
 
@@ -548,7 +555,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
                     </View>
                   }
 
-                  { timerCount === 0 ?
+                  {timerCount === 0 ?
                       <TouchableOpacity onPress={() => ResendOtp()} style={{ padding: 18 }}>
                         <View style={{ flexDirection: 'row', }}>
                           <Resend style={{ width: 9, height: 11, top: 3, marginRight: 6, }} resizeMode="contain" />
@@ -595,6 +602,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
             ModalVisible={ModalError2}
             onPressOut={() => {
               setModalError2(!ModalError2)
+              onChangeNumber('')
             }}
             setModalVisible={setModalError2}
           />

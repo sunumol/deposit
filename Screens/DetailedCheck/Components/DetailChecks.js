@@ -262,6 +262,8 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
         return /\s/.test(str);
     }
 
+
+
     return (
 
 
@@ -436,6 +438,7 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
                                                 return (
                                                     <TouchableOpacity onPress={() => {
                                                         setPstatus(false)
+                                                       
                                                         // setBranchStatus(false)
                                                         // setSearchStatus(true)
                                                         setPostofficename(item)

@@ -119,7 +119,7 @@ const DetailChecks = ({ navigation, setState, proofType1, imageUrl1, relation1, 
 
         }
         await api.getResidenceowner(data).then((res) => {
-            console.log('-------------------res Residence owner', res?.data?.body)
+            console.log('-------------------res Residence owner of sona', res?.data?.body?.imageUrl)
             if (res?.status) {
                 setPurposes(res?.data?.body?.relationShipWithCustomer)
                 setPurpose(res?.data?.body?.ownerShipProofType)
@@ -262,7 +262,7 @@ const DetailChecks = ({ navigation, setState, proofType1, imageUrl1, relation1, 
                 <Pressable style={[styles.UploadCard, { opacity: Purpose ? 4 : 0.3 }]} onPress={() => { Purpose ? UploadImage() : null }} >
                     {console.log("Purpose print.....", Purpose)}
 
-                    {!imageStatus ?
+                    {!imageStatus  && Image1 === null ?
                         <View style={{ alignItems: 'flex-start', flex: 1, marginLeft: 25 }}>
                             <View >
                                 <Media1 width={30} height={30} />
@@ -356,10 +356,10 @@ const DetailChecks = ({ navigation, setState, proofType1, imageUrl1, relation1, 
             </ScrollView>
 
             <View style={{ position: 'absolute', left: 0, right: 0, bottom: 0, alignItems: 'center', justifyContent: 'center' }}>
-                <TouchableOpacity onPress={() => (Purpose && Purposes == 'Spouse' ? Purposes : ownersName?.length>2 && Image1) ? UpdateResidenceowner() : console.log("helo")}
-                    style={[styles.Button1, { backgroundColor: (Purpose && Purposes == 'Spouse' ? Purposes : ownersName?.length>2 && Image1 ) ? COLORS.colorB : 'rgba(224, 224, 224, 1)' }]}
+                <TouchableOpacity onPress={() => (Purpose && Purposes == 'Spouse' ? Purposes : ownersName?.length>2 && Image1&& Image1 !== null) ? UpdateResidenceowner() : console.log("helo")}
+                    style={[styles.Button1, { backgroundColor: (Purpose && Purposes == 'Spouse' ? Purposes : ownersName?.length>2 && Image1 && Image1 !== null) ? COLORS.colorB : 'rgba(224, 224, 224, 1)' }]}
                 >
-                    <Text style={[styles.text1, { color: (Purpose && Purposes == 'Spouse' ? Purposes : ownersName?.length>2 && Image1 ) ? COLORS.colorBackground : '#979C9E' }]}>Continue</Text>
+                    <Text style={[styles.text1, { color: (Purpose && Purposes == 'Spouse' ? Purposes : ownersName?.length>2 && Image1 && Image1 !== null ) ? COLORS.colorBackground : '#979C9E' }]}>Continue</Text>
                 </TouchableOpacity>
             </View>
             <OwnerModal
