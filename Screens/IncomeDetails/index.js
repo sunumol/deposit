@@ -276,18 +276,7 @@ const IncomeDetails = ({ navigation, route }) => {
         }
     }
 
-    export function numberWithCommas(x) {
 
-        return x?.toString().replace(/^[+-]?\d+/, function (int) {
-            return int.replace(/(\d)(?=(\d{3})+$)/g, '$1,');
-        });
-    }
-    useEffect(()=>{
-        if(Amount){
-            numberWithCommas(Amount)
-            console.log("income detail")
-        }
-    },[Amount])
 
     return (
         <SafeAreaProvider>
