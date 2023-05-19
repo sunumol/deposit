@@ -35,6 +35,7 @@ const ConfirmMembers = ({ navigation }) => {
   const [status,setStatus] = useState(false)
   const [ModalVisible4,setModalVisible4] = useState(false)
   const [clearpop,setClearPop] = useState(false)
+  const [searchcustomerlist, setsearchcustomerlist] = useState();
   // -----------Redux State ---------------------------------
   const dispatch = useDispatch()
   const customerList = useSelector(state => state.customerList);
@@ -168,9 +169,14 @@ const ConfirmMembers = ({ navigation }) => {
      }
     await api.getCustomerListForTc(data).then((res) => {
       console.log("api response123",res)
-      const data = res?.data?.body?.filter((item, index) => !customerID.includes(item?.id))
-      setTccustomerlist(data)     
-      setData(data)
+      const data1 = res?.data?.body?.filter((item, index) => !customerID.includes(item?.id))
+      console.log('?????????',data.customerNameOrNumber)
+      if(data?.customerNameOrNumber){
+        setData(data1)
+      }else{
+        setTccustomerlist(data1)  
+      }
+
       setStatus(true)
     //  console.log("data length")
     }).catch((err) => {
@@ -272,7 +278,7 @@ const ConfirmMembers = ({ navigation }) => {
               ?
               <View style={{ borderWidth: 1, paddingTop: 12, paddingBottom: 15, borderColor: COLORS.colorBorder, marginTop: 10, borderRadius: 8 }}>
 
-{console.log('{=}{=}{=}{=}{=}',data,data.length,status)}
+{console.log('{=}{=}{=}{=}{=}',data,data?.length,status)}
 
                 {data?.length == 0 && status  && <Text style={{
                   fontSize: 14,
