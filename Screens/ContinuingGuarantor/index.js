@@ -49,7 +49,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
   const scrollViewRef = useRef();
 
   const [Name,setName] = useState('')
-  const [number, onChangeNumber] = useState()
+  const [number, onChangeNumber] = useState('')
   const [relation, setRelation] = useState()
   const [Purpose, setPurpose] = useState(null)
   const [Purposes, setPurposes] = useState(null)
@@ -256,7 +256,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
         setTimeout(() => {
           setMaxError(false)
           setTimer(0)
-        }, 3000);
+        }, 5000);
       } else if (err?.response?.data?.message === "Mobile number cannot be same as that of the Customer") {
         setModalError2(true)
       } else {
@@ -338,16 +338,30 @@ const ContinuingGuarantor = ({ navigation, route }) => {
 
   const GETOTP_Validation = (num) => {
     setPhoneValid(false)
+   
     const firstDigitStr = String(num)[0];
     if (num?.length != 10 || num == "") {
       setPhoneValid(true)
     } else if (firstDigitStr === '1' || firstDigitStr === '2' || firstDigitStr === '3' || firstDigitStr === '4' || firstDigitStr === '5' || firstDigitStr === '0') {
       setPhoneValid(true)
+      if(num?.length === 10){
+        onChangeNumber('')
+   
+      }
+      console.log("inside first digit",number)
+
     } else if (verifyPhone(num)) {
       setPhoneValid(true)
+      console.log("inside second digit")
+   
     } else if (!(/^\d{10}$/.test(num))) {
       setPhoneValid(true)
+      
+      console.log("inside third digit")
     }
+    // else if(PhoneValid && num?.length === 10){
+    //   onChangeNumber(null)
+    // }
     else {
 
       verifyCG(num)
@@ -395,6 +409,11 @@ const ContinuingGuarantor = ({ navigation, route }) => {
     return /\s/.test(str);
 }
 
+useEffect(()=>{
+  if(PhoneValid){
+    onChangeNumber('')
+  }
+},[PhoneValid])
 
   return (
     <SafeAreaProvider>
@@ -493,6 +512,8 @@ const ContinuingGuarantor = ({ navigation, route }) => {
                     color: IsOtp1 && status === true ? '#808080' : COLORS.colorDark
                   }]}
                   onChangeText={(text) => {
+                    console.log("text length",text?.length)
+                  
                     OnchangeNumbers(text)
                     setInvalidotp(false)
                     setMaxError(false)

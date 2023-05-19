@@ -119,7 +119,7 @@ const DetailChecks = ({ navigation, setState, proofType1, imageUrl1, relation1, 
 
         }
         await api.getResidenceowner(data).then((res) => {
-            console.log('-------------------res Residence owner', res?.data?.body)
+            console.log('-------------------res Residence owner',res?.data?.body?.imageUrl)
             if (res?.status) {
                 setPurposes(res?.data?.body?.relationShipWithCustomer)
                 setPurpose(res?.data?.body?.ownerShipProofType)

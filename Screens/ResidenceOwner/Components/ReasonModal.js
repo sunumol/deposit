@@ -86,7 +86,7 @@ const ReasonModal = ({ ModalVisible, onPressOut, onPress1 }) => {
                         <Text style={styles.modalTextHead}>Reason for reject</Text>
 
                         {Data.map((item, index) => {
-                            { console.log('-------', item.isChecked, '----', item?.id) }
+                          
                             return (
                                 <View style={{ flexDirection: 'column', }} key={item?.id}>
                                     <View style={{

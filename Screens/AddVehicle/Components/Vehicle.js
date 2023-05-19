@@ -203,6 +203,7 @@ const Vehicle = ({ navigation }) => {
         await api.saveVehicleDetails(data).then((res) => {
             console.log('-------------------res save vehicle', res)
             if (res?.status) {
+                setStatus(!Status) 
                 navigation.navigate('VehicleOwn')
             }
         }).catch((err) => {

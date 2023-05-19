@@ -161,7 +161,7 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
     const searchlandmarkname = (text) => {
         console.log('landmark NAME ===>>>', text)
         const firstDigitStr = String(text)[0];
-        if (firstDigitStr == ' ' || !(/^[^!-\/:-@\.,[-`{-~₹~`|•√π÷×¶∆€¥$¢^°={}%©®™✓]+$/.test(text)) || text === '') {
+        if (firstDigitStr == ' ' || firstDigitStr === '1' || firstDigitStr === '2' || firstDigitStr === '3' || firstDigitStr === '4' || firstDigitStr === '5' || firstDigitStr === '0'   || !(/^[^!-\/:-@\.,[-`{-~₹~`|•√π÷×¶∆€¥$¢^°={}%©®™✓]+$/.test(text)) || text === '') {
             containsWhitespace(text)
             // 👇️ this runs
             setLandmarkname('')
@@ -344,7 +344,9 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
                             <View style={[styles.textInput, { flexDirection: 'row' }]}>
                                 <View style={styles.borderVillage}>
                                     <TextInput
-                                        value={villagename ? villagename : ''}
+                                        value={villagename}
+                                        placeholder={"Search village"}
+                                        placeholderTextColor="#808080"
                                         editable={details?.village ?false:true}
                                         style={[styles.TextInputBranch, { width: width * 0.48, color: 'rgba(26, 5, 29, 1)', fontSize: 12, left:0 }]}
                                         onChangeText={(text) => {
@@ -482,7 +484,9 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
                                 <View style={{ flexDirection: 'row' }}>
                                     {console.log('lan====', details?.landMark)}
                                     <TextInput
-                                        value={landmarkname}
+                                        placeholder={"Near Oakview Mall"}
+                                        placeholderTextColor="#808080"
+                                       value={landmarkname}
                                         style={styles.TextInputBranch}
                                         numberOfLines={2}
                                         maxLength={40}

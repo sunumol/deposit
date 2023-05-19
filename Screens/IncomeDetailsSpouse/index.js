@@ -229,7 +229,11 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
     const setMonthdata = (text) => {
         if (text?.length > 0) {
 
-            setMonth(text)
+            if (text < 13) {
+                setMonth(text)
+            } else {
+                setMonth('')
+            }
 
         } else {
             setMonth('')

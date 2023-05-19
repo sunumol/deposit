@@ -43,6 +43,7 @@ const UploadImage = ({ navigation, id ,setFrontimage,setBackimage}) => {
     const [custID, setCustId] = useState()
     const [errorVisible, setErrorVisible] = useState(false)
     const activityId = useSelector(state => state.activityId);
+    const [continueAble,setContinueAble] = useState(false)
 
     useEffect(() => {
         getData()
@@ -257,7 +258,7 @@ const UploadImage = ({ navigation, id ,setFrontimage,setBackimage}) => {
         setDelf(false)
         setDelb(false)
         setStatus(true)
-      
+        setContinueAble(true)
         const data = {
             "activityId":activityId,
             "cgFrontImage": ImagesF1,
@@ -266,15 +267,18 @@ const UploadImage = ({ navigation, id ,setFrontimage,setBackimage}) => {
         await api.saveCGvoterid(data).then((res) => {
             console.log('-------------------res CG voter id upload', res)
             if (res?.status) {
-               navigation.navigate('AddVehicle')
+               //navigation.navigate('AddVehicle')
                 setStatus(false)
             }
         })
             .catch((err) => {
+                setStatus(false)
+                setContinueAble(false)
                 console.log('-------------------err CG voter id upload', err)
                 if (err?.response?.data?.message === 'Could not read the details.Please upload a new image.' || err?.response?.data?.message === 'Could not verify the ID details. Please upload a new image.'
                     || err?.response?.status == 400) {
                     setErrorVisible(true)
+                    setContinueAble(false)
                     setStatus(false)
                     setDelf(false)
                     setDelb(false)
@@ -302,7 +306,7 @@ const UploadImage = ({ navigation, id ,setFrontimage,setBackimage}) => {
                                     <Icon1 name="closecircleo" color="#FFFFFF" size={25} />
                                 </TouchableOpacity></View>}
 
-                        <TouchableOpacity style={{}} onPress={() => OpenModal(title1)}>
+                        <TouchableOpacity style={{}} onPress={() => OpenModal(title1)} disabled={continueAble?true:false}>
                             <View style={styles.View1}>
                                 {ImagesF ?
                                     <View style={{ alignItems: 'center', padding: 13 }}>
@@ -328,7 +332,7 @@ const UploadImage = ({ navigation, id ,setFrontimage,setBackimage}) => {
                                     <Icon1 name="closecircleo" color="#FFFFFF" size={25} />
                                 </TouchableOpacity>
                             </View>}
-                        <TouchableOpacity style={{}} onPress={() => OpenModal(title2)}>
+                        <TouchableOpacity style={{}} onPress={() => OpenModal(title2)} disabled={continueAble?true:false}>
 
                             <View style={styles.View1}>
                                 {ImagesB ?
