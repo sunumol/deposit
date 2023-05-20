@@ -269,13 +269,12 @@ const IncomeDetails = ({ navigation, route }) => {
     };
     const setMonthdata = (text) => {
         setAvg('')
-       if(text?.length>0 && (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(text) || text === "")) {
+       if(text?.length>0) {
         setMonth(text)
         }else{
             setMonth('')
         }
     }
-
 
 
     return (
@@ -333,8 +332,6 @@ const IncomeDetails = ({ navigation, route }) => {
                             </View>
                             <View style={styles.SelectBox}>
                                 <Text style={[styles.RS, { color: Amount === '' ? '#808080' : '#1A051D' }]}>{!incomedetail?.occupation == 'SALARIED_EMPLOYEE' ?  '₹' : ''}</Text>
-                             
-                                <Text style={[styles.RS, { color: Amount === '' ? '#808080' : '#1A051D' }]}>₹</Text>
                                 <TextInput
                                     style={[{
                                         fontSize: 14, color: '#1A051D',
@@ -430,8 +427,8 @@ const IncomeDetails = ({ navigation, route }) => {
                 
                                     }} />
                             </View>
-                            {ZeroStatus &&
-                        <Text style={{ color: 'red', fontSize: 9, paddingTop: 3, fontFamily: FONTS.FontRegular }}>Amount cannot be ₹0</Text>}
+                            {/* {ZeroStatus &&
+                        <Text style={{ color: 'red', fontSize: 9, paddingTop: 3, fontFamily: FONTS.FontRegular }}>Amount cannot be ₹0</Text>} */}
                         </View>
                     </ScrollView>
 

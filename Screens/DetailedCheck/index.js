@@ -33,12 +33,26 @@ const DetailCheck = ({ navigation, route }) => {
     const [roadstatus, setRoadStatus] = useState('')
     const [postofficename, setPostofficename] = useState('')
     const [landmarkname, setLandmarkname] = useState('false')
+    const [poststatus, setpoststatus] = useState(false);
+    const [villagestatus, setvillagestatus] = useState(false);
+    const [backstate, setbackstate] = useState(false);
+    
 
     const activityId = useSelector(state => state.activityId);
 
     useEffect(() => {
         getConductDLEbasicdetail()
+       
     }, [])
+
+useEffect(()=>{
+    if(!villagestatus && !poststatus && backstate){
+        console.log('qqqqqq',villagestatus,poststatus)
+        setbackstate(false)
+    }
+
+},[villagestatus,poststatus])
+ 
 
     // ------------------ get Conduct DLE basic detail Village Api Call Start ------------------
     const updateRejection = async () => {
@@ -105,10 +119,16 @@ const DetailCheck = ({ navigation, route }) => {
     };
 
     const handleGoBack = useCallback(() => {
-        // navigation.goBack()
-        setModalVisible(true)
+    console.log('hhhhh',villagestatus,poststatus)
+    setvillagestatus(false)
+    setpoststatus(false)
+    setbackstate(true)
+        if(!villagestatus && !poststatus){
+            setModalVisible(true)
+        }
+    
         return true; // Returning true from onBackPress denotes that we have handled the event
-    }, [navigation]);
+    }, [navigation,villagestatus,poststatus,backstate]);
 
     useFocusEffect(
         React.useCallback(() => {
@@ -133,6 +153,9 @@ const DetailCheck = ({ navigation, route }) => {
                     setPostoffice1={setPostofficename}
                     setLandmarkname1={setLandmarkname}
                     setRoadStatus1={setRoadStatus}
+                    setpoststatus={setpoststatus}
+                    setvillagestatus={setvillagestatus}
+                   setbackstate={backstate}
                 />
             </View>
 
