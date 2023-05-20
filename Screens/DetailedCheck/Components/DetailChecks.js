@@ -10,7 +10,8 @@ import {
     ScrollView,
     Dimensions,
     TouchableOpacity,
-    ToastAndroid
+    ToastAndroid,
+    Pressable
 } from 'react-native'
 import React, { useCallback, useEffect, useState } from 'react'
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -28,11 +29,16 @@ import RoadAccessModal from './RoadAccessModal';
 import ModalSave from '../../../Components/ModalSave';
 import { api } from '../../../Services/Api';
 import { Checkbox } from 'react-native-paper';
+// import PostModal from './PostModal';
+
+
+
+
 const { height, width } = Dimensions.get('screen');
 
 const 
-DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLandmarkname1,setRoadStatus1 }) => {
-  //  console.log('????===>>123',details )
+DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLandmarkname1,setRoadStatus1,setpoststatus,setvillagestatus,setbackstate }) => {
+   console.log('????===>>123',setbackstate)
 
     const isDarkMode = true;
     const [text, onChangeText] = useState('');
@@ -51,6 +57,8 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
     const [postofficename, setPostofficename] = useState(details?.postOffice);
     const [PStatus, setPstatus] = useState(false);
     const [postofficenamedata, setPostofficenamedata] = useState('');
+    const [postpop, setpostpop] = useState(false);
+
 
     const toggleCheckbox = () => {
         console.log('66666',villagename ,postofficename,landmarkname,roadstatus,vstatus,poststatus)
@@ -66,6 +74,13 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
     String.prototype.replaceAt = function (index, replacement) {
         return this.substring(0, index) + replacement + this.substring(index + replacement.length);
     }
+
+    useEffect(()=>{
+        if(setbackstate == true)
+       { setBstatus(false),
+        setPstatus(false)}
+    },[setbackstate])
+     
 
     useEffect(()=>{
         setVillagename(details?.village)
@@ -110,6 +125,7 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
         if (text === ""){
             setVillagenamedata([])
             setBstatus(false)
+            setvillagestatus(false)
             setChecked(false)
             setVillagename('')
             console.log("text special",text)
@@ -118,6 +134,7 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
        else if (!(/^[^!-\/:-@\.,[-`{-~]+$/.test(text)) ){
             setVillagenamedata([])
             setBstatus(false)
+            setvillagestatus(false)
             setChecked(false)
        
             console.log("text special",text)
@@ -141,11 +158,13 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
         if (text == '') {
             setPostofficenamedata([])
             setPstatus(false)
+            setpoststatus(false)
             setChecked(false)
             setPostofficename('')
         } else if (!(/^[^!-\/:-@\.,[-`{-~]+$/.test(text)) ){
             setPostofficenamedata([])
             setPstatus(false)
+            setpoststatus(false)
             setChecked(false)
         }
         else {
@@ -203,6 +222,7 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
             if (res?.status) {
                 setVillagenamedata(res?.data?.body)
                 setBstatus(true)
+                setvillagestatus(true)
             }
         }).catch((err) => {
             console.log('-------------------err get Village', err?.response)
@@ -224,7 +244,9 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
             console.log('-------------------res get Post', res?.data?.body)
             if (res?.status) {
                 setPostofficenamedata(res?.data?.body)
+                //setModalVisible4(true)
                 setPstatus(true)
+                setpoststatus(true)
             }
         }).catch((err) => {
             console.log('-------------------err get Post', err?.response)
@@ -267,8 +289,8 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
     return (
 
 
-        <View style={styles.mainContainer}>
-            <ScrollView showsVerticalScrollIndicator={false}  keyboardShouldPersistTaps={'handled'}  >
+        <Pressable onPress={()=>{setPstatus(false),setpoststatus(false),setBstatus(false),setvillagestatus(false)}} style={styles.mainContainer}>
+            <ScrollView showsVerticalScrollIndicator={false} keyboardShouldPersistTaps ={'never'}  keyboardDismissMode={'on-drag'}  >
                 <View style={styles.searchBox}>
                     <View style={styles.boxStyle}>
                         <View style={{ flex: 1, flexDirection: 'row' }}>
@@ -356,8 +378,8 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
                                             searchvillagename(text)
                                         }}
                                         maxLength={25}
-                                        onFocus={() => setBstatus(false)}
-                                        onKeyPress={() => setBstatus(false)}
+                                        onFocus={() => {setBstatus(false),setvillagestatus(false)}}
+                                        onKeyPress={() => {setBstatus(false),setvillagestatus(false)}}
                                         blurOnSubmit={true}
                                     />
                                     {!details?.village
@@ -374,6 +396,7 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
                                                 return (
                                                     <TouchableOpacity onPress={() => {
                                                         setBstatus(false)
+                                                        setvillagestatus(false)
                                                         setVillagename(item)
                                                         setVillagename1(item)
                                                         setVstatus(true)
@@ -420,18 +443,20 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
                                             if(text?.length == 25){
                                                 Keyboard.dismiss();
                                             }
+                                          
                                              searchpostofficename(text)
                                         }}
                                         maxLength={25}
-                                        onFocus={() => setPstatus(false)}
-                                        onKeyPress={() => setPstatus(false)}
+                                        onFocus={() => {setPstatus(false),setpoststatus(false)}}
+                                        onKeyPress={() => {setPstatus(false),setpoststatus(false)}}
 
                                     />
                                     <Search name="search" size={17} style={{ marginRight: 15 }} color={'#1A051D'} />
                                 </View>
                             </View>
 
-                            {PStatus ?
+                            {PStatus  ?
+                           
                                 (<View style={{paddingTop:10}}>
                                     {postofficenamedata?.length > 0
                                         ? <>
@@ -440,7 +465,7 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
                                                 return (
                                                     <TouchableOpacity onPress={() => {
                                                         setPstatus(false)
-                                                       
+                                                        setpoststatus(false)
                                                         // setBranchStatus(false)
                                                         // setSearchStatus(true)
                                                         setPostofficename(item)
@@ -556,6 +581,25 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
                 setModalVisible={setModalReason}
             /> */}
 
+{/* 
+            <PostModal
+               press1={(value) => {
+
+                setPstatus(false)
+                setPostofficename(value)
+                setPostoffice1(value)
+                setPostStatus(true)
+                setModalVisible4(false)
+               }}
+                postlist={postofficenamedata}
+                ModalVisible={ModalVisible4}
+                onPressOut={() => setModalVisible4(false)}
+                setModalVisible={setModalVisible4}
+
+
+
+            /> */}
+
 
 
 
@@ -576,7 +620,7 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
 
         
 
-        </View>
+        </Pressable>
 
 
 

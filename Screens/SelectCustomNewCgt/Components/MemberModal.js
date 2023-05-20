@@ -112,7 +112,6 @@ const styles = StyleSheet.create({
     touchableStyle1: {
 
         height: Dimensions.get('window').width * 0.5,
-       
    
     },
     touchableStyle: {

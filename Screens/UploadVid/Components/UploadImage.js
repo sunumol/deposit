@@ -267,7 +267,7 @@ const UploadImage = ({ navigation, id ,setFrontimage,setBackimage}) => {
         await api.saveCGvoterid(data).then((res) => {
             console.log('-------------------res CG voter id upload', res)
             if (res?.status) {
-               //navigation.navigate('AddVehicle')
+               navigation.navigate('AddVehicle')
                 setStatus(false)
             }
         })
