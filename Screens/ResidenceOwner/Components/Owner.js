@@ -2,10 +2,7 @@ import {
     StyleSheet,
     Text,
     View,
-    BackHandler,
-    StatusBar,
-    SafeAreaView,
-    Platform,
+    ActivityIndicator,
     TextInput,
     ScrollView,
     Dimensions,
@@ -52,7 +49,7 @@ const DetailChecks = ({ navigation, setState, proofType1, imageUrl1, relation1, 
     const [Purposes, setPurposes] = useState(null)
     const [imageStatus, setImageStatus] = useState(false)
     const [Relation, setRelation] = useState('')
-    const [Image1, setImage] = useState('')
+    const [Image1, setImage] = useState(null)
     const [Imageurl, setImageurl] = useState('')
     const [status, setStatus] = useState(false)
     const [UploadStatus, setUploadStatus] = useState(false)
@@ -60,9 +57,9 @@ const DetailChecks = ({ navigation, setState, proofType1, imageUrl1, relation1, 
     const [spousedetail, setSpousedetail] = useState('')
     const [ownersName, setOwnersName] = useState('')
     const [error, setError] = useState('')
-    const [NameValid,setNameValid] = useState(false)
-    const [ImagesFSet, setImagesFSet] = useState()
-    const [ImagesBSet, setImagesBSet] = useState()
+    const [NameValid, setNameValid] = useState(false)
+    const [InvalidImage, setInvalidImage] = useState(false)
+    const [Loading, setLoading] = useState(true)
 
     useEffect(() => {
 
@@ -84,7 +81,12 @@ const DetailChecks = ({ navigation, setState, proofType1, imageUrl1, relation1, 
         //setStatus(true)
     }, [Purpose, Relation])
 
-
+    const handleImageError = () => {
+        // Handle invalid image here
+        setUploadStatus(true)
+        setInvalidImage(true)
+        console.log('Invalid image!');
+    };
     // ------------------spouse detail ------------------
 
     const getSpousedetail = async () => {
@@ -119,21 +121,26 @@ const DetailChecks = ({ navigation, setState, proofType1, imageUrl1, relation1, 
 
         }
         await api.getResidenceowner(data).then((res) => {
-            console.log('-------------------res Residence owner',res?.data?.body?.imageUrl)
+            console.log('-------------------res Residence owner', res?.data?.body?.imageUrl)
             if (res?.status) {
+
                 setPurposes(res?.data?.body?.relationShipWithCustomer)
                 setPurpose(res?.data?.body?.ownerShipProofType)
                 setImage(res?.data?.body?.imageUrl)
+
+                console.log("image null", res?.data?.body?.imageUrl)
                 if (res?.data?.body?.relationShipWithCustomer != 'Spouse') {
                     setOwnersName(res?.data?.body?.ownersName)
                     relative1(res?.data?.body?.ownersName)
                 }
 
-                if (res?.data?.body?.ownerShipProofType) {
+                if (res?.data?.body?.ownerShipProofType && res?.data?.body?.imageUrl !== null) {
                     setImageStatus(true)
                     setUploadStatus(false)
                 }
                 getSpousedetail()
+
+                setLoading(false)
             }
         }).catch((err) => {
             console.log('-------------------err Residence Owner', err?.response)
@@ -218,10 +225,10 @@ const DetailChecks = ({ navigation, setState, proofType1, imageUrl1, relation1, 
     }
 
     const getInitials = (name) => {
-      
+
         let initials;
         const nameSplit = name?.split(" ");
-         const nameLength = nameSplit?.length;
+        const nameLength = nameSplit?.length;
         if (nameLength > 1) {
             initials =
                 nameSplit[0].substring(0, 1) +
@@ -229,8 +236,8 @@ const DetailChecks = ({ navigation, setState, proofType1, imageUrl1, relation1, 
         } else if (nameLength === 1) {
             initials = nameSplit[0].substring(0, 1);
         } else return;
-    
-         return initials.toUpperCase();
+
+        return initials.toUpperCase();
     };
 
 
@@ -238,130 +245,137 @@ const DetailChecks = ({ navigation, setState, proofType1, imageUrl1, relation1, 
 
 
         <View style={styles.mainContainer}>
+            {/* {Loading ? 
+                <View style={{alignItems:'center',justifyContent:'center',flex:1,}}>
+                <ActivityIndicator size={30} color={COLORS.colorB}/>
+                </View>: */}
+            <>
+                <ScrollView>
+                    <View>
+                        <Text style={styles.proof}>Ownership proof type</Text>
+                    </View>
 
-            <ScrollView>
-                <View>
-                    <Text style={styles.proof}>Ownership proof type</Text>
-                </View>
-
-                <TouchableOpacity style={styles.SelectBox} onPress={() => setModalVisible(true)}>
+                    <TouchableOpacity style={styles.SelectBox} onPress={() => setModalVisible(true)}>
 
 
-                    {Purpose == 'ELECTRICITY_BILL' ?
-                        <Text style={[styles.textSelect, { color: '#1A051D', marginLeft: 8 }]}>Electricity Bill</Text> :
-                        Purpose == 'WATER_BILL' ?
-                            <Text style={[styles.textSelect, { color: '#1A051D', marginLeft: 8 }]}>Water Bill</Text> :
-                            Purpose == 'BUILDING_TAX_RECEIPT' ?
-                                <Text style={[styles.textSelect, { color: '#1A051D', marginLeft: 8 }]}>Building Tax Receipt</Text> :
+                        {Purpose == 'ELECTRICITY_BILL' ?
+                            <Text style={[styles.textSelect, { color: '#1A051D', marginLeft: 8 }]}>Electricity Bill</Text> :
+                            Purpose == 'WATER_BILL' ?
+                                <Text style={[styles.textSelect, { color: '#1A051D', marginLeft: 8 }]}>Water Bill</Text> :
+                                Purpose == 'BUILDING_TAX_RECEIPT' ?
+                                    <Text style={[styles.textSelect, { color: '#1A051D', marginLeft: 8 }]}>Building Tax Receipt</Text> :
 
-                                <Text style={[styles.textSelect, { color: '#1A051D', marginLeft: 8 }]}>Select</Text>}
+                                    <Text style={[styles.textSelect, { color: '#1A051D', marginLeft: 8 }]}>Select</Text>}
 
-                    <Icon1 name="chevron-down" size={18} color={'#808080'} style={{ marginRight: 10 }} />
-                </TouchableOpacity>
+                        <Icon1 name="chevron-down" size={18} color={'#808080'} style={{ marginRight: 10 }} />
+                    </TouchableOpacity>
 
-                <Pressable style={[styles.UploadCard, { opacity: Purpose ? 4 : 0.3 }]} onPress={() => { Purpose ? UploadImage() : null }} >
-                    {console.log("Purpose print.....", Purpose)}
+                    <Pressable style={[styles.UploadCard, { opacity: Purpose ? 4 : 0.3 }]} onPress={() => { Purpose ? UploadImage() : null }} >
+                        {console.log("Purpose print.....", Purpose)}
 
-                    {!imageStatus ?
-                        <View style={{ alignItems: 'flex-start', flex: 1, marginLeft: 25 }}>
-                            <View >
-                                <Media1 width={30} height={30} />
-                            </View>
-                        </View> : UploadStatus ?
+                        {!imageStatus ?
                             <View style={{ alignItems: 'flex-start', flex: 1, marginLeft: 25 }}>
                                 <View >
-                                    <Media width={30} height={30} />
+                                    <Media1 width={30} height={30} />
                                 </View>
-                            </View> : <View style={{ alignItems: 'flex-start', flex: 1, marginLeft: 10 }}>
-                                <Image source={{ uri: Image1 }} style={{ width: 55, height: 65, borderRadius: 6 }} />
-                            </View>}
-                    <View style={[styles.Line, { borderColor: Purpose ? "#F2F2F2" : "grey" }]} />
-                    <View style={{ flexDirection: 'column', left: -20 }}>
-                        <Text style={[styles.UploadText, { color: NameStatus || Purpose ? '#1A051D' : '#808080' }]}>Upload photo</Text>
-                        <Text style={[styles.Prooftext]}>Proof of ownership</Text>
-                    </View>
-
-                    <View style={{ flex: 1, alignItems: 'flex-end' }}>
-                        <Icon2 name="chevron-right" size={18} color={'#808080'} style={{ marginRight: 15 }} />
-                    </View>
-                </Pressable>
-                <View>
-                    <Text style={styles.proof}>Relationship with Customer</Text>
-                </View>
-                <TouchableOpacity style={styles.SelectBox} onPress={() => { setModalVisible1(true), getSpousedetail() }} >
-                    {Purposes === null ? <Text style={styles.textSelect}>Select</Text> :
-                        <Text style={[styles.textSelect, { color: '#1A051D', marginLeft: 8 }]}>{Purposes}</Text>}
-                    <Icon1 name="chevron-down" size={18} color={'#808080'} style={{ marginRight: 10 }} />
-                </TouchableOpacity>
-
-
-                {Purposes == 'Spouse' ?
-                    <View style={styles.containerBox}>
-                        <View style={{ flex: 1, flexDirection: 'row' }}>
-                            <View style={styles.circleView}>
-                                <Text style={styles.shortText}>{getInitials(spousedetail?.name)}</Text>
-                            </View>
-
-                            <View style={{ flexDirection: 'column', flex: 1, marginLeft: 12 }}>
-                                <Text style={styles.nameText}>{spousedetail?.name}</Text>
-                                {spousedetail?.occupation == 'DAILY_WAGE_LABOURER,' ?
-                                    <Text style={styles.underText}>Daily Wage Labourer</Text> :
-                                    spousedetail?.occupation == 'SALARIED_EMPLOYEE' ?
-                                        <Text style={styles.underText}>Salaried Employee</Text> :
-                                        spousedetail?.occupation == 'BUSINESS_SELF_EMPLOYED' ?
-                                            <Text style={styles.underText}>Business Self Employed</Text> :
-                                            <Text style={styles.underText}>Farmer</Text>}
-                            </View>
-                            <View style={{ flexDirection: 'row', }}>
-                                <Image2 width={11} height={11} top={3} />
-                                <Text style={styles.dateText}>{spousedetail?.dateOfBirth}</Text>
-                            </View>
+                            </View> : UploadStatus ?
+                                <View style={{ alignItems: 'flex-start', flex: 1, marginLeft: 25 }}>
+                                    <View >
+                                        <Media width={30} height={30} />
+                                    </View>
+                                </View> : <View style={{ alignItems: 'flex-start', flex: 1, marginLeft: 10 }}>
+                                    <Image source={{ uri: Image1 }}
+                                        onError={handleImageError}
+                                        style={{ width: 55, height: 65, borderRadius: 6 }} />
+                                </View>}
+                        <View style={[styles.Line, { borderColor: Purpose ? "#F2F2F2" : "grey" }]} />
+                        <View style={{ flexDirection: 'column', left: -20 }}>
+                            <Text style={[styles.UploadText, { color: NameStatus || Purpose ? '#1A051D' : '#808080' }]}>Upload photo</Text>
+                            <Text style={[styles.Prooftext]}>Proof of ownership</Text>
                         </View>
-                    </View> :
-                    Purposes ?
-                        <>
-                            <View>
-                                <Text style={styles.proof}>Name</Text>
+
+                        <View style={{ flex: 1, alignItems: 'flex-end' }}>
+                            <Icon2 name="chevron-right" size={18} color={'#808080'} style={{ marginRight: 15 }} />
+                        </View>
+                    </Pressable>
+                    <View>
+                        <Text style={styles.proof}>Relationship with Customer</Text>
+                    </View>
+                    <TouchableOpacity style={styles.SelectBox} onPress={() => { setModalVisible1(true), getSpousedetail() }} >
+                        {Purposes === null ? <Text style={styles.textSelect}>Select</Text> :
+                            <Text style={[styles.textSelect, { color: '#1A051D', marginLeft: 8 }]}>{Purposes}</Text>}
+                        <Icon1 name="chevron-down" size={18} color={'#808080'} style={{ marginRight: 10 }} />
+                    </TouchableOpacity>
+
+
+                    {Purposes == 'Spouse' ?
+                        <View style={styles.containerBox}>
+                            <View style={{ flex: 1, flexDirection: 'row' }}>
+                                <View style={styles.circleView}>
+                                    <Text style={styles.shortText}>{getInitials(spousedetail?.name)}</Text>
+                                </View>
+
+                                <View style={{ flexDirection: 'column', flex: 1, marginLeft: 12 }}>
+                                    <Text style={styles.nameText}>{spousedetail?.name}</Text>
+                                    {spousedetail?.occupation == 'DAILY_WAGE_LABOURER,' ?
+                                        <Text style={styles.underText}>Daily Wage Labourer</Text> :
+                                        spousedetail?.occupation == 'SALARIED_EMPLOYEE' ?
+                                            <Text style={styles.underText}>Salaried Employee</Text> :
+                                            spousedetail?.occupation == 'BUSINESS_SELF_EMPLOYED' ?
+                                                <Text style={styles.underText}>Business Self Employed</Text> :
+                                                <Text style={styles.underText}>Farmer</Text>}
+                                </View>
+                                <View style={{ flexDirection: 'row', }}>
+                                    <Image2 width={11} height={11} top={3} />
+                                    <Text style={styles.dateText}>{spousedetail?.dateOfBirth}</Text>
+                                </View>
                             </View>
-                            <View style={styles.SelectBox}>
-                                <TextInput
-                                    value={ownersName}
-                                    maxLength={30}
-                                    style={styles.TextInputBranch}
-                                    onChangeText={(text) => {
-                                        setNameValid(false)
-                                        const firstDigitStr = String(text)[0];
-                                        if (firstDigitStr == ' ') {
-                                            containsWhitespace(text)
-                                            // 👇️ this runs
-                                            setOwnersName('')
-                                            ToastAndroid.show("Please enter a valid name ", ToastAndroid.SHORT);
-                                           
-                                        }
-                                        
-                                       else  if (/^[^!-\/:-@\.,[-`{-~1234567890₹~`|•√π÷×¶∆€¥$¢^°={}%©®™✓]+$/.test(text) || text === '') {
-                                            setOwnersName(text),
-                                             relative1(text)
-                                        }
-                                    }}
-                                // onFocus={() => setPstatus(false)}
-                                // onKeyPress={() => setPstatus(false)}
+                        </View> :
+                        Purposes ?
+                            <>
+                                <View>
+                                    <Text style={styles.proof}>Name</Text>
+                                </View>
+                                <View style={styles.SelectBox}>
+                                    <TextInput
+                                        value={ownersName}
+                                        maxLength={30}
+                                        style={styles.TextInputBranch}
+                                        onChangeText={(text) => {
+                                            setNameValid(false)
+                                            const firstDigitStr = String(text)[0];
+                                            if (firstDigitStr == ' ') {
+                                                containsWhitespace(text)
+                                                // 👇️ this runs
+                                                setOwnersName('')
+                                                ToastAndroid.show("Please enter a valid name ", ToastAndroid.SHORT);
 
-                                />
-                            </View>
-                        </> : null
+                                            }
 
-                }
+                                            else if (/^[^!-\/:-@\.,[-`{-~1234567890₹~`|•√π÷×¶∆€¥$¢^°={}%©®™✓]+$/.test(text) || text === '') {
+                                                setOwnersName(text),
+                                                    relative1(text)
+                                            }
+                                        }}
+                                    // onFocus={() => setPstatus(false)}
+                                    // onKeyPress={() => setPstatus(false)}
 
-            </ScrollView>
+                                    />
+                                </View>
+                            </> : null
 
-            <View style={{ position: 'absolute', left: 0, right: 0, bottom: 0, alignItems: 'center', justifyContent: 'center' }}>
-                <TouchableOpacity onPress={() => (Purpose && Purposes == 'Spouse' ? Purposes : ownersName?.length>2 && Image1) ? UpdateResidenceowner() : console.log("helo")}
-                    style={[styles.Button1, { backgroundColor: (Purpose && Purposes == 'Spouse' ? Purposes : ownersName?.length>2 && Image1 ) ? COLORS.colorB : 'rgba(224, 224, 224, 1)' }]}
-                >
-                    <Text style={[styles.text1, { color: (Purpose && Purposes == 'Spouse' ? Purposes : ownersName?.length>2 && Image1 ) ? COLORS.colorBackground : '#979C9E' }]}>Continue</Text>
-                </TouchableOpacity>
-            </View>
+                    }
+
+                </ScrollView>
+
+                <View style={{ position: 'absolute', left: 0, right: 0, bottom: 0, alignItems: 'center', justifyContent: 'center' }}>
+                    <TouchableOpacity onPress={() => (Purpose && Purposes == 'Spouse' ? Purposes : ownersName?.length > 2 && Image1 && !InvalidImage) ? UpdateResidenceowner() : console.log("helo")}
+                        style={[styles.Button1, { backgroundColor: (Purpose && Purposes == 'Spouse' ? Purposes : ownersName?.length > 2 && Image1 && !InvalidImage) ? COLORS.colorB : 'rgba(224, 224, 224, 1)' }]}
+                    >
+                        <Text style={[styles.text1, { color: (Purpose && Purposes == 'Spouse' ? Purposes : ownersName?.length > 2 && Image1 && !InvalidImage) ? COLORS.colorBackground : '#979C9E' }]}>Continue</Text>
+                    </TouchableOpacity>
+                </View>
+            </>
             <OwnerModal
                 visible={ModalVisible}
                 setPurpose={setPurpose}

@@ -10,7 +10,7 @@ import { useDispatch } from 'react-redux';
 import { api } from '../../../../Services/Api';
 import CallModal from '../../../Profile/Components/Modal';
 const MeetTab = (props) => {
-   // console.log("props pass",props?.data)
+    console.log("props pass",props?.data?.length)
     const { t } = useTranslation();
     const [Lang, setLang] = useState('')
     const [modalVisible, setModalVisible] = useState(false)
@@ -107,6 +107,7 @@ const MeetTab = (props) => {
                 } else if (res?.data?.body == 6) {
                     props.navigation.navigate('EnergyUtility')
                 } else if (res?.data?.body == 7) {
+                  
                     props.navigation.navigate('IncomeDetails', { relationShip: 'Customer' })
                 } else if (res?.data?.body == 8) {
                     props.navigation.navigate('IncomeDetails', { relationShip: 'Spouse' })
@@ -152,7 +153,7 @@ const MeetTab = (props) => {
     return (
         <>
             <View style={{ marginBottom: 0 }}>
-                <Text style={[styles.timeDropStyle, { paddingTop: props.time ? 18 : 0 }]}>{props.time} {!props.meet ?'(':''}{!props.meet ?(`${props?.data?.length}`):''}{!props.meet ?')':''}</Text>
+                <Text style={[styles.timeDropStyle, { paddingTop: props.time ? 18 : 0 }]}>{props.time} ({props?.data?.length})</Text>
                 {/* <Text style={[styles.timeDropStyle, { paddingTop: props.time ? 18 : 0 }]}>{props?.time} ({props?.data?.length})</Text> */}
           
                 {props?.data?.map((item, index) => {
@@ -168,6 +169,7 @@ const MeetTab = (props) => {
                                     
                                    
                                     setDetails(item)
+                                    //props.navigation.navigate('IncomeDetails')
                                     getDlePageNumber(item.activityId)
                                     getSpousedetail(item?.activityId)
                                 } else if (item?.purpose == 'Conduct CGT'){

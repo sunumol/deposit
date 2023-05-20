@@ -32,6 +32,13 @@ import ModalSave from '../../Components/ModalSave';
 import ReasonModal from '../DetailedCheck/Components/ReasonModal';
 import ErrorModal from '../DetailedCheck/Components/ErrorModal';
 
+export function numberWithCommas(x) {
+
+    return x?.toString().replace(/^[+-]?\d+/, function (int) {
+        return int.replace(/(\d)(?=(\d{3})+$)/g, '$1,');
+    });
+}
+
 const IncomeDetails = ({ navigation, route }) => {
     console.log('IncomeD=====>>', route?.params?.relationShip)
     const isDarkMode = true
@@ -55,7 +62,7 @@ const IncomeDetails = ({ navigation, route }) => {
     const [incomedetailfield, setIncomedetailfield] = useState('')
     const activityId = useSelector(state => state.activityId);
     const [ZeroStatus,setZeroStatus] = useState(false)
-
+    const [spouseDetail,setSpousedetail] = useState('')
 
     const [ModalVisible1, setModalVisible1] = useState(false)
     const [ModalReason, setModalReason] = useState(false)
@@ -63,11 +70,19 @@ const IncomeDetails = ({ navigation, route }) => {
 
     useEffect(() => {
         getData()
+        getSpousedetail()
         // setRelationship(route?.params?.relationShip)
         getIncomeDetails('Customer')
         console.log("statecha nge.....", Buttons)
     }, [])
 
+    useEffect(()=>{
+       if( Amount && (Purpose || Month)  && Avg ){
+           numberWithCommas(Amount)
+          
+           console.log("numnerwith", numberWithCommas(Amount))
+       }
+    },[Amount])
     const getData = async () => {
         try {
             const lang = await AsyncStorage.getItem('user-language')
@@ -195,11 +210,14 @@ const IncomeDetails = ({ navigation, route }) => {
         }
         await api.saveIncomeDetails(data).then((res) => {
             console.log("data pass",data)
-            console.log('-------------------res saveIncomeDetails', res?.data?.body)
+            console.log('-------------------res saveIncomeDetails',spouseDetail)
             if (res?.status) {
-                if (res?.data?.body == 'MARRIED') {
+                if (res?.data?.body == 'MARRIED' && spouseDetail !== 'UNEMPLOYED') {
                     navigation.navigate('IncomeDetailsSpouse')
-                } else {
+                }else if (res?.data?.body == 'MARRIED' && spouseDetail == 'UNEMPLOYED'){
+                    navigation.navigate('Proceed')
+                }
+                 else {
                     navigation.navigate('Proceed')
                 }
                 // navigation.navigate('DebitDetails')
@@ -276,7 +294,21 @@ const IncomeDetails = ({ navigation, route }) => {
         }
     }
 
-
+    const getSpousedetail = async () => {
+        const data = {
+          "activityId": activityId
+        }
+        await api.getSpousedetail(data).then((res) => {
+          console.log('-------------------res spousedetail co-app',id)
+          if (res?.status) {
+              setSpousedetail(res?.data?.body?.occupation)
+            console.log("spose detail",res?.data?.body?.occupation)
+          
+          }
+        }).catch((err) => {
+          console.log('-------------------err spousedetail', err?.response)
+        })
+      };
 
     return (
         <SafeAreaProvider>
@@ -341,8 +373,9 @@ const IncomeDetails = ({ navigation, route }) => {
                                         fontFamily: FONTS.FontRegular, left: 5, width: '95%'
                                     }]}
                                     value={Amount?.toString()}
-                                    keyboardType={'number-pad'}
-                                    maxLength={incomedetail?.occupation == 'SALARIED_EMPLOYEE' ? 2 :6}
+                                    keyboardType={'numeric'}
+                                 
+                                    maxLength={incomedetail?.occupation == 'SALARIED_EMPLOYEE' ? 2 :7}
                                     onChangeText={(text) => 
                                         
                                         {  

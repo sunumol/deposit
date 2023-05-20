@@ -35,10 +35,12 @@ const Energy = ({ navigation, setAmount1, setPurpose1, setDays1, setCustomerId, 
     const activityId = useSelector(state => state.activityId);
     const [ZeroStatus, setZeroStatus] = useState(false)
     const [ZeroDays,setZeroDays] = useState(false)
+    const [customerdetail,setCustomerDetail] = useState('')
 
     useEffect(() => {
         getEnergyUtilities()
         getSpousedetail()
+        getCustomerdetail()
     }, [])
     // ------------------spouse detail ------------------
 
@@ -112,7 +114,12 @@ const Energy = ({ navigation, setAmount1, setPurpose1, setDays1, setCustomerId, 
         await api.saveEnergyUtilities(data).then((res) => {
             console.log('-------------------res saveEnergyUtilities', res)
             if (res?.status) {
+                if(customerdetail !== 'UNEMPLOYED'){
                 navigation.navigate('IncomeDetails', { relationShip: relationShip })
+                }
+                else{
+                    navigation.navigate('Proceed')
+                }
             }
         }).catch((err) => {
             console.log('-------------------err saveEnergyUtilities', err?.response)
@@ -138,7 +145,22 @@ const Energy = ({ navigation, setAmount1, setPurpose1, setDays1, setCustomerId, 
         }
     }, [Amount, days, Purpose])
 
-  
+    const getCustomerdetail = async () => {
+        console.log('api called')
+
+        const data = {
+            "activityId": activityId
+        }
+        await api.getCustomerdetail(data).then((res) => {
+            console.log('-------------------res customerdetail', res.data.body?.occupation)
+            if (res?.status) {
+                setCustomerDetail(res.data.body?.occupation)
+                //setSpousedetail(res?.data?.body)
+            }
+        }).catch((err) => {
+            console.log('-------------------err spousedetail', err?.response)
+        })
+    };
 
     return (
 
