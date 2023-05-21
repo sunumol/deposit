@@ -58,6 +58,11 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
     const [ModalReason, setModalReason] = useState(false)
     const [ModalError, setModalError] = useState(false)
     const [ZeroStatus, setZeroStatus] = useState(false)
+
+    const [AmountFocus, setAmountFocus] = useState(false)
+    const [MonthFocus, setMonthFocus] = useState(false)
+    const [NetMonth, setNetMonth] = useState(false)
+    
     useEffect(() => {
         getData()
         // setRelationship(route?.params?.relationShip)
@@ -95,9 +100,18 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
     const ButtonClick = () => {
 
         if (Amount !== '' && Avg !== '' && Month !== '') {
+            if(!NetMonth){
+
+                NumberFormat_avg()
+                setStateChange1(true)
+                // setStatusChange(true)
+                saveIncomeDetails_Proceed()
+          }else{
             setStateChange1(true)
             // setStatusChange(true)
             saveIncomeDetails_Proceed()
+            }
+        
 
         } else {
             setStateChange1(false)
@@ -257,7 +271,80 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
     };
 
 
+    const NumberFormats = () => {
+        setAmountFocus(true)
+        if (Amount?.length == 4) {
+            const firstDigitStr0 = String(Amount)[0]
+            const firstDigitStr1 = String(Amount)[1]
+            const firstDigitStr2 = String(Amount)[2]
+            const firstDigitStr3 = String(Amount)[3]
+            const digitForm = firstDigitStr0 + ',' + firstDigitStr1 + firstDigitStr2 + firstDigitStr3
+            setAmount(digitForm)
 
+        } else if (Amount?.length == 5) {
+            const firstDigitStr0 = String(Amount)[0]
+            const firstDigitStr1 = String(Amount)[1]
+            const firstDigitStr2 = String(Amount)[2]
+            const firstDigitStr3 = String(Amount)[3]
+            const firstDigitStr4 = String(Amount)[4]
+            const digitForm = firstDigitStr0 + firstDigitStr1 + ',' + firstDigitStr2 + firstDigitStr3 + firstDigitStr4
+            setAmount(digitForm)
+        } else if (Amount?.length == 6) {
+            const firstDigitStr0 = String(Amount)[0]
+            const firstDigitStr1 = String(Amount)[1]
+            const firstDigitStr2 = String(Amount)[2]
+            const firstDigitStr3 = String(Amount)[3]
+            const firstDigitStr4 = String(Amount)[4]
+            const firstDigitStr5 = String(Amount)[5]
+
+            const digitForm = firstDigitStr0 + firstDigitStr1 + firstDigitStr2 + ',' + firstDigitStr3 + firstDigitStr4 + firstDigitStr5
+            setAmount(digitForm)
+        } else if (Amount?.length == 7) {
+            setAmount('')
+            const firstDigitStr0 = String(Amount)[0]
+            const firstDigitStr1 = String(Amount)[1]
+            const firstDigitStr2 = String(Amount)[2]
+            const firstDigitStr3 = String(Amount)[3]
+            const firstDigitStr4 = String(Amount)[4]
+            const firstDigitStr5 = String(Amount)[5]
+
+            const digitForm = firstDigitStr0 + firstDigitStr1 + firstDigitStr2 + ',' + firstDigitStr3 + firstDigitStr4 + firstDigitStr5
+            setAmount(digitForm)
+        }
+    }
+
+    const NumberFormat_avg = () => {
+        setNetMonth(true)
+        if (Avg?.length == 4) {
+            const firstDigitStr0 = String(Avg)[0]
+            const firstDigitStr1 = String(Avg)[1]
+            const firstDigitStr2 = String(Avg)[2]
+            const firstDigitStr3 = String(Avg)[3]
+            const digitForm = firstDigitStr0 + ',' + firstDigitStr1 + firstDigitStr2 + firstDigitStr3
+            setAvg(digitForm)
+
+        } else if (Avg?.length == 5) {
+            const firstDigitStr0 = String(Avg)[0]
+            const firstDigitStr1 = String(Avg)[1]
+            const firstDigitStr2 = String(Avg)[2]
+            const firstDigitStr3 = String(Avg)[3]
+            const firstDigitStr4 = String(Avg)[4]
+            const digitForm = firstDigitStr0 + firstDigitStr1 + ',' + firstDigitStr2 + firstDigitStr3 + firstDigitStr4
+            setAvg(digitForm)
+        
+        } else if (Avg?.length == 6) {
+         
+            const firstDigitStr0 = String(Avg)[0]
+            const firstDigitStr1 = String(Avg)[1]
+            const firstDigitStr2 = String(Avg)[2]
+            const firstDigitStr3 = String(Avg)[3]
+            const firstDigitStr4 = String(Avg)[4]
+            const firstDigitStr5 = String(Avg)[5]
+
+            const digitForm = firstDigitStr0 + firstDigitStr1 + firstDigitStr2 + ',' + firstDigitStr3 + firstDigitStr4 + firstDigitStr5
+            setAvg(digitForm)
+        }
+    }
     return (
         <SafeAreaProvider>
             <SafeAreaView style={styles.container1} />
@@ -320,9 +407,19 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
                                     }]}
                                     value={Amount?.toString()}
                                     keyboardType={'number-pad'}
-                                    //label={'₹'}
+                                    onFocus={() => {
+
+                                        const Am1 = Amount.replace(/\,/g, '')
+                                        setAmount(Am1)
+                                        setAmountFocus(false)
+                                    }}
+                                    onSubmitEditing={(text) => {
+                                        console.log("onsubmit edit", Amount?.length)
+                                        NumberFormats()
+                                    }}
                                     maxLength={incomedetail?.occupation == 'SALARIED_EMPLOYEE' ? 2 : 6}
                                     onChangeText={(text) => {
+                                        setAmountFocus(false)
                                         if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(text) || text === "") {
                                             if (incomedetail?.occupation == 'SALARIED_EMPLOYEE') {
 
@@ -336,7 +433,7 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
                                                 //     setAmount(text)
                                                 // }
                                             } else {
-                                                if (Number(text) == 0) {
+                                                if (Number(text) == 0 || text?.length == 7) {
                                                     setAmount('')
                                                     console.log("inside occupation 2", incomedetail?.occupation)
                                                 } else {
@@ -364,6 +461,19 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
                                             value={Month?.toString()}
                                             keyboardType={'number-pad'}
                                             maxLength={2}
+                                            onFocus={() => {
+                                                console.log("amountfocus",AmountFocus)
+                                                if(!AmountFocus){
+                                                    NumberFormats()
+                                                }
+                                                else if(!NetMonth){
+                                                    NumberFormat_avg()
+                                                }
+                                                setMonthFocus(true)
+                                                // NumberFormats()
+                                                // NumberFormat_avg()
+
+                                            }}
                                             onChangeText={(text) => setMonthdata(text)} />
                                     </View>}
                                 {/* <TextInput
@@ -382,9 +492,21 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
                                     style={[{ fontSize: 14, color: '#1A051D', fontFamily: FONTS.FontRegular, left: 5, width: '95%' }]}
                                     value={Avg?.toString()}
                                     keyboardType={'number-pad'}
-                                    maxLength={5}
+                                    maxLength={6}
+                                    onSubmitEditing={(text) => {
+                                        NumberFormat_avg()
+                                    }}
+                                    onFocus={() => {
+                                        if(!AmountFocus){
+                                            NumberFormats()
+                                        }
+                                        const Am1 = Avg.replace(/\,/g, '')
+                                        setAvg(Am1)
+                                      
+                                        setNetMonth(false)
+                                    }}
                                     onChangeText={(text) => {
-                                        if (text === '') {
+                                        if (text === '' || text?.length == 6) {
                                             setZeroStatus(false)
                                             setAvg('')
                                         }

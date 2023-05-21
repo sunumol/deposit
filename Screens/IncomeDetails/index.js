@@ -47,9 +47,9 @@ const IncomeDetails = ({ navigation, route }) => {
     const [statusChange, setStatusChange] = useState(false)
     const [relationShip, setRelationship] = useState('Customer')
     const [Amount, setAmount] = useState('')
-    const [AmountFocus, setAmountFocus] = useState(false)
+    const [AmountFocus, setAmountFocus] = useState()
     const [MonthFocus, setMonthFocus] = useState(false)
-    const [NetMonth, setNetMonth] = useState(false)
+    const [NetMonth, setNetMonth] = useState()
     const [ModalVisible, setModalVisible] = useState(false)
     const [Purpose, setPurpose] = useState('')
     const [days, setDays] = useState('')
@@ -122,18 +122,19 @@ const IncomeDetails = ({ navigation, route }) => {
 
         if (Amount !== '' && Avg !== '' && Month !== '') {
             console.log("onsubmit",AmountFocus,NetMonth)
-            if(!AmountFocus){
-               // NumberFormats()
-                setStateChange1(true)
-    
-                saveIncomeDetails()
-            }else if(!NetMonth){
+        //     if(!AmountFocus){
+        //         NumberFormats()
+        //         setStateChange1(true)
+              
+        //        // saveIncomeDetails()
+        //     }
+           if(!NetMonth){
 
-               // NumberFormat_avg()
+                NumberFormat_avg()
                 setStateChange1(true)
     
-                saveIncomeDetails()
-            }else{
+              saveIncomeDetails()
+          }else{
                 setStateChange1(true)
     
                 saveIncomeDetails()
@@ -320,13 +321,7 @@ const IncomeDetails = ({ navigation, route }) => {
 
 
 
-    useEffect(() => {
-
-     if(Amount && (Purpose || Month) && Avg){
-       console.log("useeFECT")
-
-     }
-    }, [Amount,Purpose,Month,Avg])
+   
 
     const NumberFormats = () => {
         setAmountFocus(true)
@@ -463,7 +458,7 @@ const IncomeDetails = ({ navigation, route }) => {
                                         fontSize: 14, color: '#1A051D',
                                         fontFamily: FONTS.FontRegular, left: 5, width: '95%'
                                     }]}
-
+                                   
                                     value={Amount.toString()}
                                     keyboardType={'numeric'}
                                     onFocus={() => {
@@ -525,14 +520,15 @@ const IncomeDetails = ({ navigation, route }) => {
                                             value={Month?.toString()}
                                             keyboardType={'number-pad'}
                                             maxLength={2}
+                                           
                                             onFocus={() => {
                                                 console.log("amountfocus",AmountFocus)
-                                                // if(!AmountFocus){
-                                                //     NumberFormats()
-                                                // }
-                                                // else if(!NetMonth){
-                                                //     NumberFormat_avg()
-                                                // }
+                                                if(!AmountFocus){
+                                                    NumberFormats()
+                                                }
+                                                else if(!NetMonth){
+                                                    NumberFormat_avg()
+                                                }
                                                 setMonthFocus(true)
                                                 // NumberFormats()
                                                 // NumberFormat_avg()
@@ -562,9 +558,9 @@ const IncomeDetails = ({ navigation, route }) => {
                                         NumberFormat_avg()
                                     }}
                                     onFocus={() => {
-                                        // if(!AmountFocus){
-                                        //     NumberFormats()
-                                        // }
+                                        if(!AmountFocus){
+                                            NumberFormats()
+                                        }
                                         const Am1 = Avg.replace(/\,/g, '')
                                         setAvg(Am1)
                                       

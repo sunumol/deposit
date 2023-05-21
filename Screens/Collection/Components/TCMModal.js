@@ -7,7 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const { height, width } = Dimensions.get('screen');
 
 
-const TCMModal = ({ ModalVisible, onPressOut, setModalVisible,ModalVisible2,ModalVisible3,navigation ,TCMlist,setTCM,press1}) => {
+const TCMModal = ({ ModalVisible, onPressOut, setModalVisible, ModalVisible2, ModalVisible3, navigation, TCMlist, setTCM, press1 }) => {
     const [state, setState] = useState(null);
     const { t } = useTranslation();
     const [Lang, setLang] = useState('')
@@ -39,52 +39,52 @@ const TCMModal = ({ ModalVisible, onPressOut, setModalVisible,ModalVisible2,Moda
                 <TouchableOpacity
                     onPressOut={onPressOut}
                     style={styles.touchableStyle1} >
-        </TouchableOpacity>
+                </TouchableOpacity>
                 <View style={styles.modalContainer}>
 
-              
-                                        {TCMlist?.length > 0
-                                            ? <View style={{ alignItems: 'center' }}>
-                                                <View style={styles.ViewMapBranch1}>
-                                                    {TCMlist?.map((item) => {
-                                                        return (
 
-                                                            <TouchableOpacity onPress={() => {
-                                                                press1(item?.name)
-                                                                // setTCM(item?.name)
-                                                                setModalVisible(false)
+                    {TCMlist?.length > 0
+                        ? <View style={{ alignItems: 'center' }}>
+                            <View style={styles.ViewMapBranch1}>
+                                {TCMlist?.map((item) => {
+                                    return (
 
-                                                            }}>
-                                                                <>
-                                                                <View style={{ paddingTop: 8 }}>
+                                        <TouchableOpacity onPress={() => {
+                                            press1(item?.name)
+                                            // setTCM(item?.name)
+                                            setModalVisible(false)
 
-                                                                    <Text style={styles.ItemNameBranch}>{item?.name}</Text>
-                                                                  
+                                        }}>
+                                            <>
+                                                <View style={{ paddingTop: 8 }}>
 
-                                                                    <View style={styles.Line} />
-                                                               
+                                                    <Text style={styles.ItemNameBranch}>{item?.name}</Text>
 
-                                                                  
-                                                                </View>
-                                                               
+
+                                                    <View style={styles.Line} />
 
 
 
-
-                                                               
-
-
-
-                                                                </>
-                                                            </TouchableOpacity>
-
-                                                        )
-                                                    })}
                                                 </View>
-                                            </View>
-                                            : null}
-                                   
-                 
+
+
+
+
+
+
+
+
+
+                                            </>
+                                        </TouchableOpacity>
+
+                                    )
+                                })}
+                            </View>
+                        </View>
+                        : null}
+
+
 
 
                 </View>
@@ -107,21 +107,21 @@ const styles = StyleSheet.create({
     touchableStyle1: {
 
         height: Dimensions.get('window').height * 0.44,
-       
-   
+
+
     },
     touchableStyle: {
-    
+
         height: Dimensions.get('window').height * 0.5,
-     
-   
+
+
     },
     modalContainer: {
         width: Dimensions.get('window').width * 0.9,
         marginLeft: Dimensions.get('window').width * 0.04,
         backgroundColor: COLORS.colorBackground,
         borderRadius: 10,
-        paddingTop:7,
+        paddingTop: 7,
         shadowColor: 'rgba(0, 0, 0, 0.4)',
         shadowOffset: { width: 0, height: 1 },
         shadowOpacity: 0.5,
