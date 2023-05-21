@@ -81,7 +81,7 @@ const IncomeDetails = ({ navigation, route }) => {
 
     useEffect(() => {
 
-        if (Amount.length == 4) {
+        if (Amount?.length == 4) {
             const firstDigitStr0 = String(Amount)[0]
             const firstDigitStr1 = String(Amount)[1]
             const firstDigitStr2 = String(Amount)[2]
@@ -464,11 +464,11 @@ const IncomeDetails = ({ navigation, route }) => {
                                         fontFamily: FONTS.FontRegular, left: 5, width: '95%'
                                     }]}
 
-                                    value={Amount.toString()}
+                                    value={Amount?.toString()}
                                     keyboardType={'numeric'}
                                     onFocus={() => {
 
-                                        const Am1 = Amount.replace(/\,/g, '')
+                                        const Am1 = Amount?.replace(/\,/g, '')
                                         setAmount(Am1)
                                         setAmountFocus(false)
                                     }}
@@ -565,7 +565,7 @@ const IncomeDetails = ({ navigation, route }) => {
                                         // if(!AmountFocus){
                                         //     NumberFormats()
                                         // }
-                                        const Am1 = Avg.replace(/\,/g, '')
+                                        const Am1 = Avg?.replace(/\,/g, '')
                                         setAvg(Am1)
                                       
                                         setNetMonth(false)

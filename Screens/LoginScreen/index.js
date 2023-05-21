@@ -22,6 +22,7 @@ import DeviceInfo from 'react-native-device-info';
 import { NetworkInfo } from 'react-native-network-info';
 import { useIsFocused } from '@react-navigation/native';
 import { useNetInfo } from "@react-native-community/netinfo";
+import OTPInputView from '@twotalltotems/react-native-otp-input'
 
 // --------------- Component Imports ---------------------
 import { COLORS, FONTS } from '../../Constants/Constants';
@@ -30,7 +31,7 @@ import AllowModal from '../../Components/AllowModal';
 import ToastModal from '../../Components/ToastModal';
 import { api } from '../../Services/Api';
 import NetWorkError from '../NetWorkError';
-import OTPInputView from '../../Components/OTPInputView';
+// import OTPInputView from '../../Components/OTPInputView';
 import ModalExitApp from '../../Components/ModalExitApp';
 import { useFocusEffect } from '@react-navigation/native';
 
@@ -179,7 +180,7 @@ const LoginScreen = ({ navigation }) => {
         setIsOtp1(false)
         setTimer(0)
         setSelectedPhoneNum()
-        otpInput2?.current?.setValue('')
+        setOtpValue('')
         const firstDigitStr = String(PhoneNum)[0]
         if (PhoneNum?.length != 10 || PhoneNum == "") {
             setModalVisible1(true)
@@ -242,7 +243,7 @@ const LoginScreen = ({ navigation }) => {
             setMaxError(false)
             setOtp(false)
             setIsExpired(false)
-            otpInput2?.current?.setValue('')
+            setOtpValue('')
             setIsExpired(false)
 
             // --------------- getOtp Button Disable Start ------------
@@ -270,7 +271,7 @@ const LoginScreen = ({ navigation }) => {
 
     // ------------------ Login Api Call Start ------------------
     async function LoginApiCall() {
-        otpInput2?.current?.clear()
+        setOtpValue('')
         setConfirmDate(new Date().getTime())
         const data = {
             deviceId: DeviceId,
@@ -457,7 +458,7 @@ const LoginScreen = ({ navigation }) => {
 
     // ------------------ Resend Api Call Start ------------------
     async function ResendApiCall() {
-        otpInput2.current.clear()
+        // otpInput2.current.clear()
         setOtpValue('')
         setOtp(false)
         setIsExpired(false)
@@ -509,7 +510,6 @@ const LoginScreen = ({ navigation }) => {
                         ref={scrollViewRef}
                         onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: true })}
                         >
-
                             <KeyboardAvoidingView style={{ flex: 1 }}
                                 {...(Platform.OS === 'ios' && { behavior: 'position' })}>
 
@@ -617,26 +617,35 @@ const LoginScreen = ({ navigation }) => {
                                         </View> : null}
 
                                     {IsOtp1 ?
-                                        <OTPInputView
+                                       <OTPInputView
+                                            style={styles.OtpInput}
+                                            pinCount={4}
                                             ref={otpInput2}
-                                            autoFocus={true}
-                                            inputCount={4}
-                                            inputCellLength={1}
-                                            offTintColor={!otp ? "lightgrey" : "red"}
-                                            tintColor={!otp ? "lightgrey" : "red"}
-                                            textInputStyle={[styles.imputContainerStyle, { color: '#090A0A', borderRadius: 8, backgroundColor: '#FCFCFC', borderColor: !otp ? "lightgrey" : "red" }]}
+                                            value={OtpValue}
+                                           autoFocus={true}
+                                            onCodeChanged={otp => {
+                                            setOtpValue(otp)  
+                                            if (otp.length === 4) {
+                                              
+                                            } else {
+                                                setOtp(false)
+                                                setIsExpired(false)
+                                            }}}
+                                            code={OtpValue} //You can supply this prop or not. The component will be used as a controlled / uncontrolled component respectively.
+                                            autoFocusOnLoad={false}
                                             keyboardType="numeric"
-                                            containerStyle={{ marginTop: 7 }}
-                                            handleTextChange={(code => {
+                                            codeInputFieldStyle={[styles.imputContainerStyle, { color: '#090A0A', borderRadius: 8, backgroundColor: '#FCFCFC', borderColor: !otp ? "lightgrey" : "red" }]}
+                                            placeholderTextColor="black"
+                                            onCodeFilled={(code => {
                                                 setOtpValue(code)
-
                                                 if (code.length === 4) {
                                                     ConfirmOtp(code)
                                                 } else {
                                                     setOtp(false)
                                                     setIsExpired(false)
                                                 }
-                                            })} />
+                                            })}
+                                        />
                                         : null
                                     }
 
@@ -685,7 +694,10 @@ const LoginScreen = ({ navigation }) => {
                                 otpMessage={otpMessage}
                                 setModalVisible={setModalVisible}
                                 navigation={navigation}
-                                ConfirmOtp={(data) => otpInput2?.current?.setValue(data)}
+                                ConfirmOtp={(data) => 
+                                    {setOtpValue(data)
+                                        ConfirmOtp(data)
+                                    }}
                                 setOtpFetch={setOtpFetch}
                             /> : null}
                         <ToastModal
