@@ -158,7 +158,7 @@ const ForgotPin = ({ navigation }) => {
                 setMaxError(true)
                 setTimeout(() => {
                     setMaxError(false)
-                }, 3000);
+                }, 5000);
             }
         })
     }
@@ -312,7 +312,7 @@ const ForgotPin = ({ navigation }) => {
                 setErrorMessage(err?.response?.data?.message)
                 setTimeout(() => {
                     setMaxError(false)
-                }, 3000);
+                }, 5000);
                 // -----getOtp Button Disable Start-----
                 setGetOtpDisable(true)
                 setSelectedPhoneNum(PhoneNum)
