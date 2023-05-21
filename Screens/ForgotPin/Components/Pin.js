@@ -50,6 +50,8 @@ const ForgotPin = ({ navigation }) => {
     const [PhoneNum, setPhoneNum] = useState(null)
     const [button, setButton] = useState(true)
     const [otpAvailable, setOtpAvailable] = useState(false)
+    const [lang, setLang] = useState('')
+    const [errorMessage, setErrorMessage] = useState('')
 
     // --------------Device Configuration Start----------
     const [ipAdrress, setIPAddress] = useState();
@@ -86,6 +88,8 @@ const ForgotPin = ({ navigation }) => {
     const getData = async () => {
         try {
             const phone = await AsyncStorage.getItem('Mobile')
+            const lang = await AsyncStorage.getItem('user-language')
+            setLang(lang)
             setPhoneSet(phone)
         } catch (e) {
             console.log(e)
@@ -149,7 +153,8 @@ const ForgotPin = ({ navigation }) => {
         }).catch((err) => {
             console.log("err->", err?.response)
             setStatus(false)
-            if (err?.response?.data?.message === 'Maximum number of OTPs are exceeded. Please try after 30 minutes.') {
+            if (err?.response?.data?.message.includes('Maximum number of OTPs are exceeded.')) {
+                setErrorMessage(err?.response?.data?.message)
                 setMaxError(true)
                 setTimeout(() => {
                     setMaxError(false)
@@ -299,11 +304,12 @@ const ForgotPin = ({ navigation }) => {
             }
         }).catch((err) => {
             console.log("err PRINT->", err?.response)
-            if (err?.response?.data?.message == "Maximum number of OTPs are exceeded. Please try after 30 minutes.") {
+            if (err?.response?.data?.message.includes('Maximum number of OTPs are exceeded.')) {
                 setMaxError(true)
                 setOtpFetch(false)
                 setStatus(false)
                 setOtpAvailable(true)
+                setErrorMessage(err?.response?.data?.message)
                 setTimeout(() => {
                     setMaxError(false)
                 }, 3000);
@@ -468,9 +474,16 @@ const ForgotPin = ({ navigation }) => {
                                 : null}
 
                             {maxError === true
-                                ? <View style={{ marginTop: Dimensions.get('window').height * 0.03, }}>
+                                ? lang == "en" ?
+                                <View style={{ marginTop: Dimensions.get('window').height * 0.03, }}>
                                     <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center', width: width * 0.8 }}>{t('common:Valid2')}</Text>
-                                    <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center' }}>{t('common:Valid3')}</Text></View>
+                                    <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center' }}>Please try after {errorMessage.replace(/\D/g, '')} minutes</Text>
+                                </View>
+                                :
+                                <View style={{ marginTop: Dimensions.get('window').height * 0.03, }}>
+                                    <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center', width: width * 0.8 }}>{t('common:Valid2')}</Text>
+                                    <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center' }}>{errorMessage.replace(/\D/g, '')} {t('common:Valid3')}</Text>
+                                </View>
                                 : status === true
                                     ? <View style={{ justifyContent: 'center', alignItems: 'center', paddingTop: width * 0.07 }}>
                                         <Text style={styles.resendText}>{t('common:Resend')} 00:{timerCount < 10 ? '0' : ''}{timerCount}</Text>

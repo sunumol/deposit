@@ -33,7 +33,6 @@ import NetWorkError from '../NetWorkError';
 import OTPInputView from '../../Components/OTPInputView';
 import ModalExitApp from '../../Components/ModalExitApp';
 import { useFocusEffect } from '@react-navigation/native';
-import BackgroundTimer from 'react-native-background-timer';
 
 // --------------- Image Imports ---------------------
 import Resend from '../../assets/Images/resend.svg'
@@ -53,6 +52,7 @@ const LoginScreen = ({ navigation }) => {
     const [OtpValue, setOtpValue] = useState('')
     const [PhoneNum, setPhoneNum] = useState(null)
     const [lang, setLang] = useState('')
+    const [errorMessage, setErrorMessage] = useState('')
     const [timerCount, setTimer] = useState(0)
     const [isExpired, setIsExpired] = useState(false)
     const [ModalVisible, setModalVisible] = useState(false)
@@ -309,23 +309,16 @@ const LoginScreen = ({ navigation }) => {
                     setModalVisibleError(true)
                     setMaxError(false)
                     setMessage('This mobile is already registered with us. We are therefore unable to proceed further.')
-                } else if (err?.response?.data?.message === 'Maximum number of OTPs are exceeded. Please try after 30 minutes.') {
+                } else if (err?.response?.data?.message.includes('Maximum number of OTPs are exceeded.')) {
                     setOtpFetch(false)
                     setIsOtp1(true)
                     setStatus(false)
+                    setErrorMessage(err?.response?.data?.message)
                     setMaxError(true)
-                    
-                    BackgroundTimer.setTimeout(() => {
-                        // this will be executed once after 10 seconds
-                        // even when app is the the background
+                    setTimeout(() => {
                         setMaxError(false)
-                        setTimer(0) 
-                        console.log('jhhh')
-                    }, );
-                    // setTimeout(() => {
-                    //     setMaxError(false)
-                    //     setTimer(0)
-                    // }, 3000);
+                        setTimer(0)
+                    }, 5000);
                     // -----getOtp Button Disable Start-----
                     setGetOtpDisable(true)
                     setSelectedPhoneNum(PhoneNum)
@@ -492,20 +485,14 @@ const LoginScreen = ({ navigation }) => {
             }
         }).catch((err) => {
             console.log("err->", err?.response)
-            if (err?.response?.data?.message === 'Maximum number of OTPs are exceeded. Please try after 30 minutes.') {
+            if (err?.response?.data?.message.includes('Maximum number of OTPs are exceeded.')) {
                 setMaxError(true)
-                // setTimeout(() => {
-                //     setMaxError(false)
-                //     setTimer(0)
-                // }, 3000);
-                BackgroundTimer.setTimeout(() => {
-                    // this will be executed once after 10 seconds
-                    // even when app is the the background
+                setErrorMessage(err?.response?.data?.message)
+                setMaxError(true)
+                setTimeout(() => {
                     setMaxError(false)
                     setTimer(0)
-                    console.log('jhhh')
-                   
-                }, 1800000);
+                }, 5000);
             }
         })
     }
@@ -669,9 +656,16 @@ const LoginScreen = ({ navigation }) => {
                                         </View>
                                     }
                                     {maxError === true ?
+                                         lang == "en" ?
                                         <View style={{ marginTop: Dimensions.get('window').height * 0.03, }}>
                                             <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center', width: width * 0.8 }}>{t('common:Valid2')}</Text>
-                                            <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center' }}>{t('common:Valid3')}</Text></View>
+                                            <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center' }}>Please try after {errorMessage.replace(/\D/g, '')} minutes</Text>
+                                        </View>
+                                        :
+                                        <View style={{ marginTop: Dimensions.get('window').height * 0.03, }}>
+                                            <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center', width: width * 0.8 }}>{t('common:Valid2')}</Text>
+                                            <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center' }}>{errorMessage.replace(/\D/g, '')} {t('common:Valid3')}</Text>
+                                        </View>
                                         : IsOtp1 && timerCount === 0 ?
                                             <TouchableOpacity onPress={() => ResendApiCall()} style={{ padding: 18 }}>
                                                 <View style={{ flexDirection: 'row', }}>

@@ -73,9 +73,14 @@ const ContinuingGuarantor = ({ navigation, route }) => {
   const [PhoneValid, setPhoneValid] = useState(false)
   const [ResendState,setResendState] = useState()
 
+  const [lang, setLang] = useState('')
+  const [errorMessage, setErrorMessage] = useState('')
+
   const getData = async () => {
     try {
       const mob = await AsyncStorage.getItem('Mobile')
+      const lang = await AsyncStorage.getItem('user-language')
+      setLang(lang)
       setCustomerNumber(mob)
     } catch (e) {
       console.log('mob', e)
@@ -250,9 +255,10 @@ const ContinuingGuarantor = ({ navigation, route }) => {
       setStatus(false)
       setTimer(0)
       console.log('-------------------err verifyCG', err?.response?.data?.message)
-      if (err?.response?.data?.message === 'Maximum number of OTPs are exceeded. Please try after 30 minutes.') {
+      if (err?.response?.data?.message.includes('Maximum number of OTPs are exceeded.')) {
         setIsOtp1(true)
         setMaxError(true)
+        setErrorMessage(err?.response?.data?.message)
         setTimeout(() => {
           setMaxError(false)
           setTimer(0)
@@ -289,7 +295,8 @@ const ContinuingGuarantor = ({ navigation, route }) => {
         setStatus(false)
         setTimer(0)
       }
-      if (err?.response?.data?.message === 'Maximum number of OTPs are exceeded. Please try after 30 minutes.') {
+      if (err?.response?.data?.message.includes('Maximum number of OTPs are exceeded.')) {
+        setErrorMessage(err?.response?.data?.message)
         setMaxError(true)
         setTimeout(() => {
           setMaxError(false)
@@ -590,9 +597,16 @@ useEffect(()=>{
               {/* ############################################################################ */}
 
               {maxError === true ?
-                <View style={{ marginTop: Dimensions.get('window').height * 0.20, alignItems: 'center', justifyContent: 'center' }}>
-                  <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center', width: width * 0.8, }}>{t('common:Valid2')}</Text>
-                  <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center' }}>{t('common:Valid3')}</Text></View>
+                 lang == "en" ?
+                 <View style={{ marginTop: Dimensions.get('window').height * 0.03, }}>
+                     <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center', width: width * 0.8 }}>{t('common:Valid2')}</Text>
+                     <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center' }}>Please try after {errorMessage.replace(/\D/g, '')} minutes</Text>
+                 </View>
+                 :
+                 <View style={{ marginTop: Dimensions.get('window').height * 0.03, }}>
+                     <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center', width: width * 0.8 }}>{t('common:Valid2')}</Text>
+                     <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center' }}>{errorMessage.replace(/\D/g, '')} {t('common:Valid3')}</Text>
+                 </View>
                 : null}
 
               <Call />
