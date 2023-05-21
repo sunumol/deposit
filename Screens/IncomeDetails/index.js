@@ -47,6 +47,9 @@ const IncomeDetails = ({ navigation, route }) => {
     const [statusChange, setStatusChange] = useState(false)
     const [relationShip, setRelationship] = useState('Customer')
     const [Amount, setAmount] = useState('')
+    const [AmountFocus, setAmountFocus] = useState(false)
+    const [MonthFocus, setMonthFocus] = useState(false)
+    const [NetMonth, setNetMonth] = useState(false)
     const [ModalVisible, setModalVisible] = useState(false)
     const [Purpose, setPurpose] = useState('')
     const [days, setDays] = useState('')
@@ -61,8 +64,8 @@ const IncomeDetails = ({ navigation, route }) => {
     const [incomedetail, setIncomedetail] = useState('')
     const [incomedetailfield, setIncomedetailfield] = useState('')
     const activityId = useSelector(state => state.activityId);
-    const [ZeroStatus,setZeroStatus] = useState(false)
-    const [spouseDetail,setSpousedetail] = useState('')
+    const [ZeroStatus, setZeroStatus] = useState(false)
+    const [spouseDetail, setSpousedetail] = useState('')
 
     const [ModalVisible1, setModalVisible1] = useState(false)
     const [ModalReason, setModalReason] = useState(false)
@@ -76,13 +79,18 @@ const IncomeDetails = ({ navigation, route }) => {
         console.log("statecha nge.....", Buttons)
     }, [])
 
-    useEffect(()=>{
-       if( Amount && (Purpose || Month)  && Avg ){
-           numberWithCommas(Amount)
-          
-           console.log("numnerwith", numberWithCommas(Amount))
-       }
-    },[Amount])
+    useEffect(() => {
+
+        if (Amount.length == 4) {
+            const firstDigitStr0 = String(Amount)[0]
+            const firstDigitStr1 = String(Amount)[1]
+            const firstDigitStr2 = String(Amount)[2]
+            const firstDigitStr3 = String(Amount)[3]
+            console.log("fist didgit", firstDigitStr0)
+            // const digit = 
+            //setAmount(firstDigitStr0+','+firstDigitStr1+firstDigitStr2+firstDigitStr3)
+        }
+    }, [Amount])
     const getData = async () => {
         try {
             const lang = await AsyncStorage.getItem('user-language')
@@ -113,9 +121,24 @@ const IncomeDetails = ({ navigation, route }) => {
     const ButtonClick = () => {
 
         if (Amount !== '' && Avg !== '' && Month !== '') {
-            setStateChange1(true)
-            // setStatusChange(true)
-            saveIncomeDetails()
+            console.log("onsubmit",AmountFocus,NetMonth)
+            if(!AmountFocus){
+               // NumberFormats()
+                setStateChange1(true)
+    
+                saveIncomeDetails()
+            }else if(!NetMonth){
+
+               // NumberFormat_avg()
+                setStateChange1(true)
+    
+                saveIncomeDetails()
+            }else{
+                setStateChange1(true)
+    
+                saveIncomeDetails()
+            }
+        
 
         } else {
             setStateChange1(false)
@@ -131,15 +154,7 @@ const IncomeDetails = ({ navigation, route }) => {
         }
     }, [MonthsCustom, Purpose, Salary])
 
-    // useEffect(() => {
-    //     console.log('Use.....', Purpose,Amount,Avg)
-    //     if (Amount && (Purpose || Month)  && Avg) {
-    //         console.log("inside valid")
-    //         setButtons(false)
-    //     } else {
-    //         setButtons(true)
-    //     }
-    // }, [Amount, Avg, Month,Purpose])
+
 
 
 
@@ -148,14 +163,14 @@ const IncomeDetails = ({ navigation, route }) => {
     // ------------------getIncomeDetails detail ------------------
 
     const getIncomeDetails = async () => {
-        console.log('api called',activityId,relationShip)
+        console.log('api called', activityId, relationShip)
 
         const data = {
             "activityId": activityId,
             "relationShip": relationShip
 
         }
-        console.log("data pass",data)
+        console.log("data pass", data)
         await api.getIncomeDetails(data).then((res) => {
             console.log('-------------------res getIncomeDetails', res?.data?.body)
             if (res?.status) {
@@ -209,15 +224,15 @@ const IncomeDetails = ({ navigation, route }) => {
 
         }
         await api.saveIncomeDetails(data).then((res) => {
-            console.log("data pass",data)
-            console.log('-------------------res saveIncomeDetails',spouseDetail)
+            console.log("data pass", data)
+            console.log('-------------------res saveIncomeDetails', spouseDetail)
             if (res?.status) {
                 if (res?.data?.body == 'MARRIED' && spouseDetail !== 'UNEMPLOYED') {
                     navigation.navigate('IncomeDetailsSpouse')
-                }else if (res?.data?.body == 'MARRIED' && spouseDetail == 'UNEMPLOYED'){
+                } else if (res?.data?.body == 'MARRIED' && spouseDetail == 'UNEMPLOYED') {
                     navigation.navigate('Proceed')
                 }
-                 else {
+                else {
                     navigation.navigate('Proceed')
                 }
                 // navigation.navigate('DebitDetails')
@@ -244,13 +259,13 @@ const IncomeDetails = ({ navigation, route }) => {
             "field3": Avg
 
         }
-        
+
         await api.saveIncomeDetails(data).then((res) => {
             console.log('-------------------res saveIncomeDetails', res?.data?.body)
             if (res?.status) {
-            
-                    navigation.navigate('Profile')
-             
+
+                navigation.navigate('Profile')
+
                 // navigation.navigate('DebitDetails')
             }
         }).catch((err) => {
@@ -260,14 +275,7 @@ const IncomeDetails = ({ navigation, route }) => {
     // ------------------ ------------------
 
 
-    const getRandomColor = () => {
-        var letters = '0123456789ABCDEF';
-        var color = '#';
-        for (var i = 0; i < 3; i++) {
-            color += letters[Math.floor(Math.random() * 8)];
-        }
-        return color;
-    }
+
 
 
     const getInitials = (name) => {
@@ -287,29 +295,113 @@ const IncomeDetails = ({ navigation, route }) => {
     };
     const setMonthdata = (text) => {
         setAvg('')
-       if(text?.length>0) {
-        setMonth(text)
-        }else{
+        if (text?.length > 0) {
+            setMonth(text)
+        } else {
             setMonth('')
         }
     }
 
     const getSpousedetail = async () => {
         const data = {
-          "activityId": activityId
+            "activityId": activityId
         }
         await api.getSpousedetail(data).then((res) => {
-          console.log('-------------------res spousedetail co-app',id)
-          if (res?.status) {
-              setSpousedetail(res?.data?.body?.occupation)
-            console.log("spose detail",res?.data?.body?.occupation)
-          
-          }
-        }).catch((err) => {
-          console.log('-------------------err spousedetail', err?.response)
-        })
-      };
+            console.log('-------------------res spousedetail co-app', id)
+            if (res?.status) {
+                setSpousedetail(res?.data?.body?.occupation)
+                console.log("spose detail", res?.data?.body?.occupation)
 
+            }
+        }).catch((err) => {
+            console.log('-------------------err spousedetail', err?.response)
+        })
+    };
+
+
+
+    useEffect(() => {
+
+     if(Amount && (Purpose || Month) && Avg){
+       console.log("useeFECT")
+
+     }
+    }, [Amount,Purpose,Month,Avg])
+
+    const NumberFormats = () => {
+        setAmountFocus(true)
+        if (Amount?.length == 4) {
+            const firstDigitStr0 = String(Amount)[0]
+            const firstDigitStr1 = String(Amount)[1]
+            const firstDigitStr2 = String(Amount)[2]
+            const firstDigitStr3 = String(Amount)[3]
+            const digitForm = firstDigitStr0 + ',' + firstDigitStr1 + firstDigitStr2 + firstDigitStr3
+            setAmount(digitForm)
+
+        } else if (Amount?.length == 5) {
+            const firstDigitStr0 = String(Amount)[0]
+            const firstDigitStr1 = String(Amount)[1]
+            const firstDigitStr2 = String(Amount)[2]
+            const firstDigitStr3 = String(Amount)[3]
+            const firstDigitStr4 = String(Amount)[4]
+            const digitForm = firstDigitStr0 + firstDigitStr1 + ',' + firstDigitStr2 + firstDigitStr3 + firstDigitStr4
+            setAmount(digitForm)
+        } else if (Amount?.length == 6) {
+            const firstDigitStr0 = String(Amount)[0]
+            const firstDigitStr1 = String(Amount)[1]
+            const firstDigitStr2 = String(Amount)[2]
+            const firstDigitStr3 = String(Amount)[3]
+            const firstDigitStr4 = String(Amount)[4]
+            const firstDigitStr5 = String(Amount)[5]
+
+            const digitForm = firstDigitStr0 + firstDigitStr1 + firstDigitStr2 + ',' + firstDigitStr3 + firstDigitStr4 + firstDigitStr5
+            setAmount(digitForm)
+        } else if (Amount?.length == 7) {
+            setAmount('')
+            const firstDigitStr0 = String(Amount)[0]
+            const firstDigitStr1 = String(Amount)[1]
+            const firstDigitStr2 = String(Amount)[2]
+            const firstDigitStr3 = String(Amount)[3]
+            const firstDigitStr4 = String(Amount)[4]
+            const firstDigitStr5 = String(Amount)[5]
+
+            const digitForm = firstDigitStr0 + firstDigitStr1 + firstDigitStr2 + ',' + firstDigitStr3 + firstDigitStr4 + firstDigitStr5
+            setAmount(digitForm)
+        }
+    }
+
+    const NumberFormat_avg = () => {
+        setNetMonth(true)
+        if (Avg?.length == 4) {
+            const firstDigitStr0 = String(Avg)[0]
+            const firstDigitStr1 = String(Avg)[1]
+            const firstDigitStr2 = String(Avg)[2]
+            const firstDigitStr3 = String(Avg)[3]
+            const digitForm = firstDigitStr0 + ',' + firstDigitStr1 + firstDigitStr2 + firstDigitStr3
+            setAvg(digitForm)
+
+        } else if (Avg?.length == 5) {
+            const firstDigitStr0 = String(Avg)[0]
+            const firstDigitStr1 = String(Avg)[1]
+            const firstDigitStr2 = String(Avg)[2]
+            const firstDigitStr3 = String(Avg)[3]
+            const firstDigitStr4 = String(Avg)[4]
+            const digitForm = firstDigitStr0 + firstDigitStr1 + ',' + firstDigitStr2 + firstDigitStr3 + firstDigitStr4
+            setAvg(digitForm)
+        
+        } else if (Avg?.length == 6) {
+         
+            const firstDigitStr0 = String(Avg)[0]
+            const firstDigitStr1 = String(Avg)[1]
+            const firstDigitStr2 = String(Avg)[2]
+            const firstDigitStr3 = String(Avg)[3]
+            const firstDigitStr4 = String(Avg)[4]
+            const firstDigitStr5 = String(Avg)[5]
+
+            const digitForm = firstDigitStr0 + firstDigitStr1 + firstDigitStr2 + ',' + firstDigitStr3 + firstDigitStr4 + firstDigitStr5
+            setAvg(digitForm)
+        }
+    }
     return (
         <SafeAreaProvider>
             <SafeAreaView style={styles.container1} />
@@ -350,7 +442,7 @@ const IncomeDetails = ({ navigation, route }) => {
                                 </View>
                                 <View style={{ flexDirection: 'column', flex: 1, marginLeft: 12 }}>
                                     <Text style={styles.nameText}>{incomedetail?.name}</Text>
-                                    <Text style={styles.underText}>{incomedetail?.occupation =='SALARIED_EMPLOYEE' ? 'Salaried employee' :  incomedetail?.occupation == 'FARMER'  ? 'Farmer' : incomedetail?.occupation =="BUSINESS_SELF_EMPLOYED" ? "Business/Self employed" :'Daily wage labourer'}</Text>
+                                    <Text style={styles.underText}>{incomedetail?.occupation == 'SALARIED_EMPLOYEE' ? 'Salaried employee' : incomedetail?.occupation == 'FARMER' ? 'Farmer' : incomedetail?.occupation == "BUSINESS_SELF_EMPLOYED" ? "Business/Self employed" : 'Daily wage labourer'}</Text>
                                 </View>
                                 <View style={{ flexDirection: 'row', left: -5 }}>
                                     <Text style={styles.dateText}>{relationShip}</Text>
@@ -364,45 +456,55 @@ const IncomeDetails = ({ navigation, route }) => {
                                 <Text style={styles.TextElect}>{incomedetailfield?.field1}</Text>
                             </View>
                             <View style={styles.SelectBox}>
-                                <Text style={[styles.RS, { color: Amount === '' ? '#808080' : '#1A051D' }]}>{!incomedetail?.occupation == 'SALARIED_EMPLOYEE' ?  '₹' : ''}</Text>
+                                <Text style={[styles.RS, { color: Amount === '' ? '#808080' : '#1A051D' }]}>{incomedetail?.occupation !== 'SALARIED_EMPLOYEE' ? '₹' : ''}</Text>
+
                                 <TextInput
                                     style={[{
                                         fontSize: 14, color: '#1A051D',
                                         fontFamily: FONTS.FontRegular, left: 5, width: '95%'
                                     }]}
-                                    value={Amount?.toString()}
+
+                                    value={Amount.toString()}
                                     keyboardType={'numeric'}
-                                 
-                                    maxLength={incomedetail?.occupation == 'SALARIED_EMPLOYEE' ? 2 :7}
-                                    onChangeText={(text) => 
-                                        
-                                        {  
-                                          
-                                            if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(text) || text === "") {
-                                         
-                                            if(incomedetail?.occupation == 'SALARIED_EMPLOYEE'){
-                                                  setAmount(text)
-                                                    console.log("inside occupation 1",incomedetail?.occupation)
-                                               
-                                                console.log("inside occupation 3",incomedetail?.occupation)
-                                               // setAmount(text)
-           
+                                    onFocus={() => {
+
+                                        const Am1 = Amount.replace(/\,/g, '')
+                                        setAmount(Am1)
+                                        setAmountFocus(false)
+                                    }}
+                                    onSubmitEditing={(text) => {
+                                        console.log("onsubmit edit", Amount?.length)
+                                        NumberFormats()
+                                    }}
+                                    maxLength={incomedetail?.occupation == 'SALARIED_EMPLOYEE' ? 2 : 7}
+                                    onChangeText={(text) => {
+                                        setAmountFocus(false)
+                                        if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(text) || text === "") {
+
+                                            if (incomedetail?.occupation == 'SALARIED_EMPLOYEE') {
+                                                setAmount(text)
+                                                console.log("inside occupation 1", incomedetail?.occupation)
+
+                                                console.log("inside occupation 3", incomedetail?.occupation)
+                                                // setAmount(text)
+
                                                 // if(text<13){
                                                 //     setAmount(text)
                                                 // }
                                             }
-                                            else{
-                                             if (Number(text) == 0){
+                                            else {
+                                                if (Number(text) == 0 || text?.length == 7) {
                                                     setAmount('')
-                                                    console.log("inside occupation 2",incomedetail?.occupation)
-                                             }else{
-                                                setAmount(text)
-                                                console.log("inside occupation",incomedetail?.occupation)
+                                                    console.log("inside occupation 2", incomedetail?.occupation)
+                                                } else {
+                                                    setAmount(text)
+                                                    console.log("inside occupation", incomedetail?.occupation)
+                                                }
                                             }
                                         }
-                                        }
-                                        }
+                                    }
                                     } />
+
                             </View>
 
                             <View>
@@ -410,21 +512,35 @@ const IncomeDetails = ({ navigation, route }) => {
                             </View>
                             <View>
 
-                            {incomedetailfield?.field2 == 'Salary credit method' ? 
-                            <TouchableOpacity style={[styles.SelectBox,{justifyContent:'space-between'}]}
-                             onPress={() => setModalVisible(true)}>
-                                <Text style={[styles.textSelect]}>{Purpose ? Purpose :'Select'}</Text>
+                                {incomedetailfield?.field2 == 'Salary credit method' ?
+                                    <TouchableOpacity style={[styles.SelectBox, { justifyContent: 'space-between' }]}
+                                        onPress={() => setModalVisible(true)}>
+                                        <Text style={[styles.textSelect]}>{Purpose ? Purpose : 'Select'}</Text>
 
-                                <Icon1 name="chevron-down" size={18} color={'#808080'} style={{ marginRight: 10 }} />
-                            </TouchableOpacity>:
-                            <View style={styles.SelectBox}>
-                             <TextInput
-                             style={[{ fontSize: 14, color: '#1A051D', fontFamily: FONTS.FontRegular, left: 5,width: '95%'  }]}
-                             value={Month?.toString()}
-                             keyboardType={'number-pad'}
-                             maxLength={2}
-                             onChangeText={(text) => setMonthdata(text)} />
-                             </View> }
+                                        <Icon1 name="chevron-down" size={18} color={'#808080'} style={{ marginRight: 10 }} />
+                                    </TouchableOpacity> :
+                                    <View style={styles.SelectBox}>
+                                        <TextInput
+                                            style={[{ fontSize: 14, color: '#1A051D', fontFamily: FONTS.FontRegular, left: 5, width: '95%' }]}
+                                            value={Month?.toString()}
+                                            keyboardType={'number-pad'}
+                                            maxLength={2}
+                                            onFocus={() => {
+                                                console.log("amountfocus",AmountFocus)
+                                                // if(!AmountFocus){
+                                                //     NumberFormats()
+                                                // }
+                                                // else if(!NetMonth){
+                                                //     NumberFormat_avg()
+                                                // }
+                                                setMonthFocus(true)
+                                                // NumberFormats()
+                                                // NumberFormat_avg()
+
+                                            }}
+                                            //onSubmitEditing={()=>{NumberFormats()}}
+                                            onChangeText={(text) => setMonthdata(text)} />
+                                    </View>}
                                 {/* <TextInput
                                     style={[{ fontSize: 14, color: '#1A051D', fontFamily: FONTS.FontRegular, left: 5, width: '95%' }]}
                                     value={Month?.toString()}
@@ -441,24 +557,36 @@ const IncomeDetails = ({ navigation, route }) => {
                                     style={[{ fontSize: 14, color: '#1A051D', fontFamily: FONTS.FontRegular, left: 5, width: '95%' }]}
                                     value={Avg?.toString()}
                                     keyboardType={'number-pad'}
-                                    maxLength={5}
-                                    onChangeText={(text) =>{ 
-                                        if(text === ''){
+                                    maxLength={6}
+                                    onSubmitEditing={(text) => {
+                                        NumberFormat_avg()
+                                    }}
+                                    onFocus={() => {
+                                        // if(!AmountFocus){
+                                        //     NumberFormats()
+                                        // }
+                                        const Am1 = Avg.replace(/\,/g, '')
+                                        setAvg(Am1)
+                                      
+                                        setNetMonth(false)
+                                    }}
+                                    onChangeText={(text) => {
+                                        if (text === '' || text?.length == 6) {
                                             setZeroStatus(false)
                                             setAvg('')
-                                        }else if(incomedetail?.occupation == 'FARMER' && Month === '0'){
+                                        } else if (incomedetail?.occupation == 'FARMER' && Month === '0') {
                                             setAvg(text)
                                         }
-                                        else if ( Month !== '0' && Number(text) == 0) {
-        
+                                        else if (Month !== '0' && Number(text) == 0) {
+
                                             setZeroStatus(true)
-                                            console.log("number log", text,Month)
+                                            console.log("number log", text, Month)
                                         }
                                         else if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(text) || text === "") {
                                             setAvg(text)
                                             setZeroStatus(false)
                                         }
-                
+
                                     }} />
                             </View>
                             {/* {ZeroStatus &&
@@ -467,9 +595,9 @@ const IncomeDetails = ({ navigation, route }) => {
                     </ScrollView>
 
                     <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                        <TouchableOpacity style={[styles.buttonView, { backgroundColor: Amount && (Purpose || Month)  && Avg ? COLORS.colorB : 'rgba(224, 224, 224, 1)' }]}
-                            onPress={() =>Amount && (Purpose || Month)  && Avg ?  ButtonClick() : console.log("hello")}>
-                            <Text style={[styles.continueText, { color: Amount && (Purpose || Month)  && Avg ? COLORS.colorBackground : '#979C9E' }]}>Continue</Text>
+                        <TouchableOpacity style={[styles.buttonView, { backgroundColor: Amount && (Purpose || Month) && Avg ? COLORS.colorB : 'rgba(224, 224, 224, 1)' }]}
+                            onPress={() => Amount && (Purpose || Month) && Avg ? ButtonClick() : console.log("hello")}>
+                            <Text style={[styles.continueText, { color: Amount && (Purpose || Month) && Avg ? COLORS.colorBackground : '#979C9E' }]}>Continue</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
