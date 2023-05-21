@@ -312,7 +312,7 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
                                 <Text style={styles.TextElect}>{incomedetailfield?.field1}</Text>
                             </View>
                             <View style={styles.SelectBox}>
-
+                            <Text style={[styles.RS, { color: Amount === '' ? '#808080' : '#1A051D' }]}>{incomedetail?.occupation !== 'SALARIED_EMPLOYEE' ? '₹' : ''}</Text>
                                 <TextInput
                                     style={[{
                                         fontSize: 14, color: '#1A051D',

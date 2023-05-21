@@ -193,6 +193,7 @@ const DetailChecks = ({ navigation, setState, proofType1, imageUrl1, relation1, 
             console.log("IMAGE", image.path);
             setImage(image.path)
             setUploadStatus(false)
+            setImageStatus(true)
             uploadFile(image.path, image)
         });
     }
@@ -285,7 +286,7 @@ const DetailChecks = ({ navigation, setState, proofType1, imageUrl1, relation1, 
                                     </View>
                                 </View> : <View style={{ alignItems: 'flex-start', flex: 1, marginLeft: 10 }}>
                                     <Image source={{ uri: Image1 }}
-                                        onError={handleImageError}
+                                        // onError={handleImageError}
                                         style={{ width: 55, height: 65, borderRadius: 6 }} />
                                 </View>}
                         <View style={[styles.Line, { borderColor: Purpose ? "#F2F2F2" : "grey" }]} />
