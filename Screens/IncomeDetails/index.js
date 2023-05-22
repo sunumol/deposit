@@ -79,18 +79,8 @@ const IncomeDetails = ({ navigation, route }) => {
         console.log("statecha nge.....", Buttons)
     }, [])
 
-    useEffect(() => {
 
-        if (Amount.length == 4) {
-            const firstDigitStr0 = String(Amount)[0]
-            const firstDigitStr1 = String(Amount)[1]
-            const firstDigitStr2 = String(Amount)[2]
-            const firstDigitStr3 = String(Amount)[3]
-            console.log("fist didgit", firstDigitStr0)
-            // const digit = 
-            //setAmount(firstDigitStr0+','+firstDigitStr1+firstDigitStr2+firstDigitStr3)
-        }
-    }, [Amount])
+
     const getData = async () => {
         try {
             const lang = await AsyncStorage.getItem('user-language')
@@ -128,17 +118,17 @@ const IncomeDetails = ({ navigation, route }) => {
               
         //        // saveIncomeDetails()
         //     }
-           if(!NetMonth){
+        //    if(!NetMonth){
 
-                NumberFormat_avg()
-                setStateChange1(true)
+        //         NumberFormat_avg()
+        //         setStateChange1(true)
     
-              saveIncomeDetails()
-          }else{
+        //       saveIncomeDetails()
+        //   }else{
                 setStateChange1(true)
     
                 saveIncomeDetails()
-            }
+           // }
         
 
         } else {
@@ -177,9 +167,9 @@ const IncomeDetails = ({ navigation, route }) => {
             if (res?.status) {
                 setIncomedetail(res?.data?.body)
                 setIncomedetailfield(res?.data?.body?.incomeDetailsFieldHeadders)
-                setAmount(res?.data?.body?.field1)
+                setAmount(numberWithCommas(res?.data?.body?.field1))
                 setMonth(res?.data?.body?.field2)
-                setAvg(res?.data?.body?.field3)
+                setAvg(numberWithCommas(res?.data?.body?.field3))
                 setPurpose(res?.data?.body?.field2)
             }
         }).catch((err) => {
@@ -326,6 +316,7 @@ const IncomeDetails = ({ navigation, route }) => {
     const NumberFormats = () => {
         setAmountFocus(true)
         if (Amount?.length == 4) {
+           
             const firstDigitStr0 = String(Amount)[0]
             const firstDigitStr1 = String(Amount)[1]
             const firstDigitStr2 = String(Amount)[2]
@@ -524,11 +515,11 @@ const IncomeDetails = ({ navigation, route }) => {
                                             onFocus={() => {
                                                 console.log("amountfocus",AmountFocus)
                                                 if(!AmountFocus){
-                                                    NumberFormats()
+                                                   // NumberFormats()
                                                 }
-                                                else if(!NetMonth){
-                                                    NumberFormat_avg()
-                                                }
+                                                // else if(!NetMonth){
+                                                //     NumberFormat_avg()
+                                                // }
                                                 setMonthFocus(true)
                                                 // NumberFormats()
                                                 // NumberFormat_avg()
@@ -559,7 +550,7 @@ const IncomeDetails = ({ navigation, route }) => {
                                     }}
                                     onFocus={() => {
                                         if(!AmountFocus){
-                                            NumberFormats()
+                                           // NumberFormats()
                                         }
                                         const Am1 = Avg.replace(/\,/g, '')
                                         setAvg(Am1)

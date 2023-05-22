@@ -32,6 +32,13 @@ import ModalSave from '../../Components/ModalSave';
 import ReasonModal from '../DetailedCheck/Components/ReasonModal';
 import ErrorModal from '../DetailedCheck/Components/ErrorModal';
 
+export function numberWithCommas(x) {
+
+    return x?.toString().replace(/^[+-]?\d+/, function (int) {
+        return int.replace(/(\d)(?=(\d{3})+$)/g, '$1,');
+    });
+}
+
 const IncomeDetailsSpouse = ({ navigation, }) => {
 
     const isDarkMode = true
@@ -100,17 +107,17 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
     const ButtonClick = () => {
 
         if (Amount !== '' && Avg !== '' && Month !== '') {
-            if(!NetMonth){
+        //     if(!NetMonth){
 
-                NumberFormat_avg()
-                setStateChange1(true)
-                // setStatusChange(true)
-                saveIncomeDetails_Proceed()
-          }else{
+        //         NumberFormat_avg()
+        //         setStateChange1(true)
+        //         // setStatusChange(true)
+        //         saveIncomeDetails_Proceed()
+        //   }else{
             setStateChange1(true)
             // setStatusChange(true)
             saveIncomeDetails_Proceed()
-            }
+           // }
         
 
         } else {
@@ -175,10 +182,10 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
             if (res?.status) {
                 setIncomedetail(res?.data?.body)
                 setIncomedetailfield(res?.data?.body?.incomeDetailsFieldHeadders)
-                setAmount(res?.data?.body?.field1)
+                setAmount(numberWithCommas(res?.data?.body?.field1))
                 setMonth(res?.data?.body?.field2)
                 setPurpose(res?.data?.body?.field2)
-                setAvg(res?.data?.body?.field3)
+                setAvg(numberWithCommas(res?.data?.body?.field3))
             }
         }).catch((err) => {
             console.log('-------------------err getIncomeDetails', err?.response)
@@ -464,10 +471,10 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
                                             onFocus={() => {
                                                 console.log("amountfocus",AmountFocus)
                                                 if(!AmountFocus){
-                                                    NumberFormats()
+                                                   // NumberFormats()
                                                 }
                                                 else if(!NetMonth){
-                                                    NumberFormat_avg()
+                                                   // NumberFormat_avg()
                                                 }
                                                 setMonthFocus(true)
                                                 // NumberFormats()
@@ -498,7 +505,7 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
                                     }}
                                     onFocus={() => {
                                         if(!AmountFocus){
-                                            NumberFormats()
+                                           // NumberFormats()
                                         }
                                         const Am1 = Avg.replace(/\,/g, '')
                                         setAvg(Am1)
