@@ -80,7 +80,6 @@ const IncomeDetails = ({ navigation, route }) => {
     }, [])
 
 
-
     const getData = async () => {
         try {
             const lang = await AsyncStorage.getItem('user-language')
@@ -449,12 +448,12 @@ const IncomeDetails = ({ navigation, route }) => {
                                         fontSize: 14, color: '#1A051D',
                                         fontFamily: FONTS.FontRegular, left: 5, width: '95%'
                                     }]}
-                                   
-                                    value={Amount.toString()}
+
+                                    value={Amount?.toString()}
                                     keyboardType={'numeric'}
                                     onFocus={() => {
 
-                                        const Am1 = Amount.replace(/\,/g, '')
+                                        const Am1 = Amount?.replace(/\,/g, '')
                                         setAmount(Am1)
                                         setAmountFocus(false)
                                     }}
@@ -549,10 +548,10 @@ const IncomeDetails = ({ navigation, route }) => {
                                         NumberFormat_avg()
                                     }}
                                     onFocus={() => {
-                                        if(!AmountFocus){
-                                           // NumberFormats()
-                                        }
-                                        const Am1 = Avg.replace(/\,/g, '')
+                                        // if(!AmountFocus){
+                                        //     NumberFormats()
+                                        // }
+                                        const Am1 = Avg?.replace(/\,/g, '')
                                         setAvg(Am1)
                                       
                                         setNetMonth(false)
