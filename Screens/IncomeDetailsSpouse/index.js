@@ -414,16 +414,17 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
                                     }]}
                                     value={Amount?.toString()}
                                     keyboardType={'number-pad'}
-                                    // onFocus={() => {
+                                    contextMenuHidden={true}
+                                    onFocus={() => {
 
-                                    //     const Am1 = Amount?.replace(/\,/g, '')
-                                    //     setAmount(Am1)
-                                    //     setAmountFocus(false)
-                                    // }}
-                                    // onSubmitEditing={(text) => {
-                                    //     console.log("onsubmit edit", Amount?.length)
-                                    //     NumberFormats()
-                                    // }}
+                                        const Am1 = Amount?.replace(/\,/g, '')
+                                        setAmount(Am1)
+                                        setAmountFocus(false)
+                                    }}
+                                    onSubmitEditing={(text) => {
+                                        console.log("onsubmit edit", Amount?.length)
+                                        NumberFormats()
+                                     }}
                                     maxLength={incomedetail?.occupation == 'SALARIED_EMPLOYEE' ? 2 : 6}
                                     onChangeText={(text) => {
                                        // setAmountFocus(false)
@@ -468,19 +469,19 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
                                             value={Month?.toString()}
                                             keyboardType={'number-pad'}
                                             maxLength={2}
-                                            // onFocus={() => {
-                                            //     console.log("amountfocus",AmountFocus)
-                                            //     if(!AmountFocus){
-                                            //        // NumberFormats()
-                                            //     }
-                                            //     else if(!NetMonth){
-                                            //        // NumberFormat_avg()
-                                            //     }
-                                            //     setMonthFocus(true)
-                                            //     // NumberFormats()
-                                            //     // NumberFormat_avg()
+                                            onFocus={() => {
+                                                console.log("amountfocus",AmountFocus)
+                                                if(!AmountFocus){
+                                                   // NumberFormats()
+                                                }
+                                                else if(!NetMonth){
+                                                   // NumberFormat_avg()
+                                                }
+                                                setMonthFocus(true)
+                                                // NumberFormats()
+                                                // NumberFormat_avg()
 
-                                            // }}
+                                            }}
                                             onChangeText={(text) => setMonthdata(text)} />
                                     </View>}
                                 {/* <TextInput

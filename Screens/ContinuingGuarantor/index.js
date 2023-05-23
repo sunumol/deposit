@@ -476,6 +476,7 @@ useEffect(()=>{
                   placeholder=''
                   value={Name}
                   maxLength={25}
+                  contextMenuHidden={true}
                   style={[styles.textIn1,
                   {
 
@@ -510,6 +511,7 @@ useEffect(()=>{
               <Text style={styles.mobileText}>Mobile Number</Text>
               <View style={[styles.inPutStyle, { backgroundColor: IsOtp1 && status === true ? '#ECEBED' : COLORS.colorBackground, }]}>
                 <TextInput
+                 contextMenuHidden={true}
                   placeholder=''
                   value={number}
                   maxLength={10}

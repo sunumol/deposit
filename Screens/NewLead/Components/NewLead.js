@@ -149,11 +149,13 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus }) => {
             onSubmit()
         }
     }
+    
     async function onSubmit() {
         //    MobileRef.blur();
         //    adddressRef.blur();
         setResultError(true)
         const data = {
+            "employeeId":1,
             "leadName": Name,
             "mobileNumber": "+91" + Mobile,
             "pin": Pincode,
@@ -168,13 +170,16 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus }) => {
                 else if (res?.data?.body == 'Lead generated') {
                     setModalVisible(true)
                     setIsFocused(false)
-
                 }
             }
             console.log('-------------------res', res)
         })
             .catch((err) => {
                 console.log('-------------------err', err?.response)
+                if(err?.response?.data?.message === 'This PIN is not under your service area'){
+                    setMessage('This PIN is not under your service area')
+                    setValidModal1(true)
+                }
             })
     }
 
@@ -186,9 +191,6 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus }) => {
     function containsWhitespace(str) {
         return /\s/.test(str);
     }
-
-
-
 
     return (
         <>
@@ -293,6 +295,7 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus }) => {
                                             value={Village}
                                             keyboardType1={'email-address'}
                                             style={styles.TextInputBranch}
+                                            contextMenuHidden={true}
                                             onChangeText={(text) => {
 
                                                 setVillageEnable(false)

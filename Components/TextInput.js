@@ -36,6 +36,7 @@ const TextInputBox = ({ name, value, address, edit, multi, onChangeNumber, label
                             placeholderTextColor={COLORS.colorDSText}
                             keyboardType={keyboardType}
                             editable={date ? date : edit}
+                            contextMenuHidden={true}
                             multiline={multi}
                             maxLength={maxLength} />
                     </View> :
@@ -50,6 +51,7 @@ const TextInputBox = ({ name, value, address, edit, multi, onChangeNumber, label
                             onChangeText={onChangeNumber}
                             value={value}
                             placeholder={''}
+                            contextMenuHidden={true}
                             placeholderTextColor={COLORS.colorDSText}
                             keyboardType={keyboardType}
                             editable={date ? date : edit}
