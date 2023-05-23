@@ -16,13 +16,14 @@ import DeviceInfo from 'react-native-device-info';
 import { NetworkInfo } from 'react-native-network-info';
 import { useIsFocused } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import OTPInputView from '@twotalltotems/react-native-otp-input'
 
 // --------------- Component Import --------------------
 import { api } from '../../../Services/Api';
 import { COLORS } from '../../../Constants/Constants';
 import AllowModal from '../../../Components/AllowModal';
 import { FONTS } from '../../../Constants/Constants';
-import OTPInputView from '../../../Components/OTPInputView';
+// import OTPInputView from '../../../Components/OTPInputView';
 import ToastModal from '../../../Components/ToastModal';
 
 // --------------- Image Import --------------------
@@ -60,7 +61,7 @@ const ForgotPin = ({ navigation }) => {
     const [conDate, setConDate] = useState()
     const [maxError, setMaxError] = useState(false)
     const [status, setStatus] = useState(true)
-    const [phoneSet,setPhoneSet]= useState()
+    const [phoneSet, setPhoneSet] = useState()
     // --------------Device Configuration End----------
 
     // --------------- getOtp Button Disable Start ------------
@@ -80,7 +81,7 @@ const ForgotPin = ({ navigation }) => {
         // -------------- Get DeviceInfo start----------
         DeviceInfo.getUniqueId().then((uniqueId) => {
             setDeviceId(uniqueId)
-            console.log("deviceid 12345",uniqueId);
+            console.log("deviceid 12345", uniqueId);
         });
         // -------------- Get DeviceInfo End ----------
     }, [])
@@ -128,7 +129,7 @@ const ForgotPin = ({ navigation }) => {
     // ------------------ Resend Api Call Start ------------------
     async function ResendApiCall() {
         setIsExpired(false)
-        otpInput2.current.clear()
+        setOtpValue('')
         setConDate(new Date().getTime())
         const data = {
             deviceId: deviceId,
@@ -163,14 +164,6 @@ const ForgotPin = ({ navigation }) => {
         })
     }
     // ------------------ Resend Api Call End ----------------------
-
-    // useEffect(() => {
-    //     if (timerCount > 0) {
-    //         setTimeout(() => setTimer(timerCount - 1), 1000);
-    //     } else {
-    //         setStatus(false)
-    //     }
-    // }, [timerCount]);
 
     useEffect(() => {
         if (timerCount > 0) {
@@ -224,7 +217,6 @@ const ForgotPin = ({ navigation }) => {
                             setModalVisible(true)
                         }
                     }
-
                 });
             },
         );
@@ -255,10 +247,10 @@ const ForgotPin = ({ navigation }) => {
             setButton(true)
         }
         else {
-            if(phoneSet == '+91'+PhoneNum){
+            if (phoneSet == '+91' + PhoneNum) {
                 forgotApiCall()
                 setButton(false)
-            }else{
+            } else {
                 setModalVisibleError(true)
                 setPhoneNum('')
                 setMessage('Please enter the registered phone number')
@@ -323,7 +315,7 @@ const ForgotPin = ({ navigation }) => {
                 setPhoneNum('')
                 setButton(true)
                 setMaxError(false)
-              console.log("alert this")
+                console.log("alert this")
                 setMessage('Please enter the registered phone number')
             }
             if (err?.response?.data?.message === 'Sorry! We are unable to proceed further.') {
@@ -336,14 +328,12 @@ const ForgotPin = ({ navigation }) => {
             if (err?.response?.data?.message === 'Please enter valid agent mobile number') {
                 setModalVisible1(true)
                 setButton(true)
-
                 setPhoneNum('')
             }
 
         })
     }
     // ------------------ Login Api Call End ------------------
-
 
     React.useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
@@ -353,95 +343,131 @@ const ForgotPin = ({ navigation }) => {
     }, [navigation]);
 
     return (
-        <View style={styles.mainContainer}>
-            <ScrollView 
-             keyboardShouldPersistTaps={'handled'}
-            ref={scrollViewRef}
+
+        <>
+            <ScrollView
+                style={{ backgroundColor: COLORS.colorBackground }}
+                keyboardShouldPersistTaps={'handled'}
+                ref={scrollViewRef}
                 onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: true })}>
 
                 <KeyboardAvoidingView style={{ flex: 1 }}
                     {...(Platform.OS === 'ios' && { behavior: 'position' })}>
+                    <View style={{ paddingTop: height * 0.25, paddingHorizontal: 20 }}>
+                        <View style={styles.enterTextView}>
+                            <Text style={styles.enterText}>{t('common:EnterForgot')}</Text>
+                        </View>
 
-                    <View style={styles.enterTextView}>
-                        <Text style={styles.enterText}>{t('common:EnterForgot')}</Text>
-                    </View>
-
-                    <View style={{ alignItems: 'center' }}>
-                        <View style={styles.inputBoxView}>
-                            <View style={{ justifyContent: 'center' }}>
-                                <Text style={styles.codeText}>+91</Text>
-                            </View>
-                            <View style={styles.Line} />
-                            <View style={{ flex: 1 }}>
-                                <TextInput
-                                    ref={inputText}
-                                    editable={otpAvailable && status === true ? false : true}
-                                    style={[styles.enterTextInputView, {
-                                        borderBottomRightRadius: 8,
-                                        borderTopRightRadius: 8,
-                                        backgroundColor: otpAvailable && status === true ? '#ECEBED' : COLORS.colorBackground,
-                                        color: otpAvailable && status === true ? '#808080' : COLORS.colorDark,
-                                    }]}
-                                    placeholder={t('common:Placeholder')}
-                                    placeholderTextColor="#808080"
-                                    returnKeyType="done"
-                                    maxLength={10}
-                                    autoFocus={true}
-                                    value={PhoneNum}
-                                    onChangeText={(num) => {
-                                        setOtpAvailable(false)
-                                        //setTimer(30)
-                                        if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(num) || num === '') {
-                                            setPhoneNum(num)
-                                            setMaxError(false)
-                                            otpInput2?.current?.setValue('')
-                                            setIsExpired(false)
-                                            // --------------- getOtp Button Disable Start ------------
-                                            if (selectedPhoneNum) {
-                                                if (selectedPhoneNum !== num) {
-                                                    setGetOtpDisable(false)
-                                                    setButton(true)
-                                                    setOtpAvailable(false)
-                                                } else {
-                                                    setGetOtpDisable(true)
-                                                    setOtpAvailable(true)
+                        <View style={{ alignItems: 'center' }}>
+                            <View style={styles.inputBoxView}>
+                                <View style={{ justifyContent: 'center' }}>
+                                    <Text style={styles.codeText}>+91</Text>
+                                </View>
+                                <View style={styles.Line} />
+                                <View style={{ flex: 1 }}>
+                                    <TextInput
+                                        ref={inputText}
+                                        editable={otpAvailable && status === true ? false : true}
+                                        style={[styles.enterTextInputView, {
+                                            borderBottomRightRadius: 8,
+                                            borderTopRightRadius: 8,
+                                            backgroundColor: otpAvailable && status === true ? '#ECEBED' : COLORS.colorBackground,
+                                            color: otpAvailable && status === true ? '#808080' : COLORS.colorDark,
+                                        }]}
+                                        placeholder={t('common:Placeholder')}
+                                        placeholderTextColor="#808080"
+                                        returnKeyType="done"
+                                        maxLength={10}
+                                        autoFocus={true}
+                                        value={PhoneNum}
+                                        onChangeText={(num) => {
+                                            setOtpAvailable(false)
+                                            //setTimer(30)
+                                            if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(num) || num === '') {
+                                                setPhoneNum(num)
+                                                setMaxError(false)
+                                                setOtpValue('')
+                                                setIsExpired(false)
+                                                // --------------- getOtp Button Disable Start ------------
+                                                if (selectedPhoneNum) {
+                                                    if (selectedPhoneNum !== num) {
+                                                        setGetOtpDisable(false)
+                                                        setButton(true)
+                                                        setOtpAvailable(false)
+                                                    } else {
+                                                        setGetOtpDisable(true)
+                                                        setOtpAvailable(true)
+                                                    }
                                                 }
-                                            }
-                                            // --------------- getOtp Button Disable End ------------
+                                                // --------------- getOtp Button Disable End ------------
 
-                                        } else {
-                                            setModalVisible1(true)
-                                            console.log("restricted values", num, PhoneNum)
-                                        }
-                                    }}
-                                    keyboardType="numeric"
-                                />
+                                            } else {
+                                                setModalVisible1(true)
+                                                console.log("restricted values", num, PhoneNum)
+                                            }
+                                        }}
+                                        keyboardType="numeric"
+                                    />
+                                </View>
                             </View>
                         </View>
-                    </View>
-                    {!getOtpDisable
-                        ?
-                        <TouchableOpacity style={[styles.Button, {
-                            backgroundColor: button ? COLORS.colorB : "#ECEBED",
-                            shadowColor: "#000000",
-                            shadowOffset: { width: 0, height: 7 },
-                            shadowOpacity: button ? 0. : 0,
-                            elevation: button ? 5 : 0,
-                            shadowRadius: button ? 1 : 0,
-                            flexDirection: 'row'
-                        }]}
-                            onPress={() => GETOTP_Validation()} disabled={button ? false : true}>
-                            <Text style={[styles.getOtpText, { color: button ? COLORS.colorBackground : "#979C9E", paddingRight: 10 }]}>{t('common:GetOTP')}</Text>
-                        </TouchableOpacity>
-                        : null}
+                        {!getOtpDisable
+                            ?
+                            <TouchableOpacity style={[styles.Button, {
+                                backgroundColor: button ? COLORS.colorB : "#ECEBED",
+                                shadowColor: "#000000",
+                                shadowOffset: { width: 0, height: 7 },
+                                shadowOpacity: button ? 0. : 0,
+                                elevation: button ? 5 : 0,
+                                shadowRadius: button ? 1 : 0,
+                                flexDirection: 'row'
+                            }]}
+                                onPress={() => GETOTP_Validation()} disabled={button ? false : true}>
+                                <Text style={[styles.getOtpText, { color: button ? COLORS.colorBackground : "#979C9E", paddingRight: 10 }]}>{t('common:GetOTP')}</Text>
+                            </TouchableOpacity>
+                            : null}
 
-                    {otpAvailable
-                        ? <View style={styles.otpView}>
+                        {otpAvailable
+                            ?
+                            <>
+                                <View style={styles.otpView}>
 
-                            <Text style={styles.enterOtpText} >{t('common:EnterOtp')}</Text>
+                                    <Text style={styles.enterOtpText} >{t('common:EnterOtp')}</Text>
+                                </View>
 
-                            <View style={styles.otpInputView}>
-                                <OTPInputView
+                                <View style={{ alignItems: 'center', marginTop: 20, marginBottom: 10 }}>
+                                    <OTPInputView
+                                        style={styles.OtpInput}
+                                        pinCount={4}
+                                        ref={otpInput2}
+                                        value={OtpValue}
+                                        autoFocus={true}
+                                        autoCompleteType="off"
+                                        onCodeChanged={otp => {
+                                            setOtpValue(otp)
+                                            if (otp.length === 4) {
+
+                                            } else {
+                                                setOtpwrong(false)
+                                                setIsExpired(false)
+                                            }
+                                        }}
+                                        code={OtpValue} //You can supply this prop or not. The component will be used as a controlled / uncontrolled component respectively.
+                                        autoFocusOnLoad={true}
+                                        keyboardType="numeric"
+                                        codeInputFieldStyle={[styles.inputOtpContainerStyle, { borderColor: !Otpwrong ? "lightgrey" : "red" }]}
+                                        placeholderTextColor="black"
+                                        onCodeFilled={(code => {
+                                            setOtpValue(code)
+                                            if (code.length === 4) {
+                                                ConfirmOtp(code)
+                                            } else {
+                                                setOtpwrong(false)
+                                                setIsExpired(false)
+                                            }
+                                        })}
+                                    />
+                                    {/* <OTPInputView
                                     autoFocus={true}
                                     ref={otpInput2}
                                     inputCount={4}
@@ -461,48 +487,51 @@ const ForgotPin = ({ navigation }) => {
                                         }
 
                                     })}
-                                />
-                            </View>
-                            {isExpired
-                                ? <View style={{ alignItems: 'center' }}>
-                                    <Text style={styles.errrorText}>OTP has Expired</Text>
+                                /> */}
                                 </View>
-                                : null}
-
-                            {Otpwrong
-                                ? <Text style={[styles.successText, { color: COLORS.colorRed }]}>{t('common:otpValid')}</Text>
-                                : null}
-
-                            {maxError === true
-                                ? lang == "en" ?
-                                <View style={{ marginTop: Dimensions.get('window').height * 0.03, }}>
-                                    <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center', width: width * 0.8 }}>{t('common:Valid2')}</Text>
-                                    <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center' }}>Please try after {errorMessage.replace(/\D/g, '')} minutes</Text>
-                                </View>
-                                :
-                                <View style={{ marginTop: Dimensions.get('window').height * 0.03, }}>
-                                    <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center', width: width * 0.8 }}>{t('common:Valid2')}</Text>
-                                    <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center' }}>{errorMessage.replace(/\D/g, '')} {t('common:Valid3')}</Text>
-                                </View>
-                                : status === true
-                                    ? <View style={{ justifyContent: 'center', alignItems: 'center', paddingTop: width * 0.07 }}>
-                                        <Text style={styles.resendText}>{t('common:Resend')} 00:{timerCount < 10 ? '0' : ''}{timerCount}</Text>
-                                    </View>
-                                    :
-                                    <TouchableOpacity onPress={() => ResendApiCall()} style={{ padding: 18 }}>
-                                        <View style={{ flexDirection: 'row', }}>
-                                            <Resend style={{ width: 9, height: 11, top: 3, marginRight: 6, }} resizeMode="contain" />
-                                            <TouchableOpacity>
-                                                <Text style={styles.TextResend1} onPress={() => ResendApiCall()}>{t('common:Resend1')}</Text></TouchableOpacity>
+                                <View style={{ alignItems: 'center' }}>
+                                    {isExpired
+                                        ? <View style={{ alignItems: 'center' }}>
+                                            <Text style={styles.errrorText}>OTP has Expired</Text>
                                         </View>
-                                    </TouchableOpacity>
-                            }
+                                        : null}
 
-                        </View>
-                        : null}
+                                    {Otpwrong
+                                        ? <Text style={[styles.successText, { color: COLORS.colorRed }]}>{t('common:otpValid')}</Text>
+                                        : null}
+
+                                    {maxError === true
+                                        ? lang == "en" ?
+                                            <View style={{ marginTop: Dimensions.get('window').height * 0.03, }}>
+                                                <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center', width: width * 0.8 }}>{t('common:Valid2')}</Text>
+                                                <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center' }}>Please try after {errorMessage.replace(/\D/g, '')} minutes</Text>
+                                            </View>
+                                            :
+                                            <View style={{ marginTop: Dimensions.get('window').height * 0.03, }}>
+                                                <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center', width: width * 0.8 }}>{t('common:Valid2')}</Text>
+                                                <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center' }}>{errorMessage.replace(/\D/g, '')} {t('common:Valid3')}</Text>
+                                            </View>
+                                        : status === true
+                                            ? <View style={{ justifyContent: 'center', alignItems: 'center', paddingTop: width * 0.07 }}>
+                                                <Text style={styles.resendText}>{t('common:Resend')} 00:{timerCount < 10 ? '0' : ''}{timerCount}</Text>
+                                            </View>
+                                            :
+                                            <TouchableOpacity onPress={() => ResendApiCall()} style={{ padding: 18 }}>
+                                                <View style={{ flexDirection: 'row', }}>
+                                                    <Resend style={{ width: 9, height: 11, top: 3, marginRight: 6, }} resizeMode="contain" />
+                                                    <TouchableOpacity>
+                                                        <Text style={styles.TextResend1} onPress={() => ResendApiCall()}>{t('common:Resend1')}</Text></TouchableOpacity>
+                                                </View>
+                                            </TouchableOpacity>
+                                    }
+                                </View>
 
 
+                            </>
+                            : null}
 
+
+                    </View>
                 </KeyboardAvoidingView>
             </ScrollView>
             {screenIsFocused
@@ -512,7 +541,10 @@ const ForgotPin = ({ navigation }) => {
                     otpMessage={otpMessage}
                     setModalVisible={setModalVisible}
                     navigation={navigation}
-                    ConfirmOtp={(data) => otpInput2?.current?.setValue(data)}
+                    ConfirmOtp={(data) => {
+                        setOtpValue(data)
+                        ConfirmOtp(data)
+                    }}
                     setOtpFetch={setOtpFetch}
                 />
                 : null}
@@ -530,7 +562,7 @@ const ForgotPin = ({ navigation }) => {
                 onPressOut={() => setModalVisibleError(!ModalVisibleError)}
                 setModalVisible={setModalVisibleError}
             />
-        </View>
+        </>
     )
 }
 
@@ -600,9 +632,6 @@ const styles = StyleSheet.create({
         fontFamily: FONTS.FontBold,
         fontSize: 16
     },
-    otpInputView: {
-        width: '70%',
-    },
     inputOtpContainerStyle: {
         borderRadius: 8,
         borderWidth: 1,
@@ -613,6 +642,14 @@ const styles = StyleSheet.create({
         width: 48,
         fontSize: 12,
         fontWeight: 'bold',
+    },
+    OtpInput: {
+        width: '75%',
+        height: 50,
+        fontSize: 25,
+        borderRadius: 12,
+        fontWeight: 'bold',
+        color: "black",
     },
     resendText: {
         color: '#333333',

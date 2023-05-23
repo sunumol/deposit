@@ -511,7 +511,7 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
                                 <View style={{ flexDirection: 'row' }}>
                                     {console.log('lan====', details?.landMark)}
                                     <TextInput
-                                        placeholder={"Near Oakview Mall"}
+                                        placeholder={"Landmark"}
                                         placeholderTextColor="#808080"
                                        value={landmarkname}
                                        contextMenuHidden={true}

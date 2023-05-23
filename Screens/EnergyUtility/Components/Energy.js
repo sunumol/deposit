@@ -36,6 +36,7 @@ const Energy = ({ navigation, setAmount1, setPurpose1, setDays1, setCustomerId, 
     const [ZeroStatus, setZeroStatus] = useState(false)
     const [ZeroDays,setZeroDays] = useState(false)
     const [customerdetail,setCustomerDetail] = useState('')
+    const [spouseDetail,setSpousedetail] = useState()
 
     useEffect(() => {
         getEnergyUtilities()
@@ -56,6 +57,7 @@ const Energy = ({ navigation, setAmount1, setPurpose1, setDays1, setCustomerId, 
             console.log('-------------------res spousedetail', res)
             if (res?.status) {
                 setRelationship('Spouse')
+                setSpousedetail(res?.data?.body?.occupation)
                 // setRelationship('Customer')
             }
         }).catch((err) => {
@@ -116,6 +118,10 @@ const Energy = ({ navigation, setAmount1, setPurpose1, setDays1, setCustomerId, 
             if (res?.status) {
                 if(customerdetail !== 'UNEMPLOYED'){
                 navigation.navigate('IncomeDetails', { relationShip: relationShip })
+                }else if(customerdetail == 'UNEMPLOYED' && spouseDetail !== 'UNEMPLOYED' ){
+                    navigation.navigate('IncomeDetailsSpouse')
+                }else if(customerdetail == 'UNEMPLOYED' && spouseDetail == 'UNEMPLOYED'){
+                    navigation.navigate('Proceed')
                 }
                 else{
                     navigation.navigate('Proceed')
@@ -161,6 +167,7 @@ const Energy = ({ navigation, setAmount1, setPurpose1, setDays1, setCustomerId, 
             console.log('-------------------err spousedetail', err?.response)
         })
     };
+
 
     return (
 

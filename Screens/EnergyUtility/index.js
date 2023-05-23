@@ -123,6 +123,8 @@ const EnergyUtility = ({ navigation, }) => {
             })
         };
     
+
+
     return (
         <SafeAreaProvider>
             <SafeAreaView style={styles.container1} />
