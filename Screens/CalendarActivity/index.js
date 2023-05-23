@@ -1,4 +1,4 @@
-import React, { useState,useCallback } from 'react';
+import React, { useState} from 'react';
 import {
     StyleSheet,
     Text,
@@ -38,8 +38,6 @@ const Activities = ({ navigation, route }) => {
     const [getTimeData, setTimeData] = useState(route?.params?.data)
     const [errorMessage, setErrorMessage] = useState('')
 
-    { console.log('---------------->>>>>>>', route?.params) }
-
     const getRandomColor = () => {
         var letters = '0123456789ABCDEF';
         var color = '#';
@@ -48,10 +46,10 @@ const Activities = ({ navigation, route }) => {
         }
         return color;
     }
-
       String.prototype.replaceAt = function (index, replacement) {
         return this.substring(0, index) + replacement + this.substring(index + replacement.length);
     }
+    
     const getInitials = (name) => {
         let initials;
         const nameSplit = name?.split(" ");
@@ -157,33 +155,61 @@ const Activities = ({ navigation, route }) => {
                                         <TouchableOpacity
                                             style={[styles.viewCard, selectedData?.includes(item.activityId)
                                                 ? { borderColor: COLORS.colorB, borderWidth: 1 } : {}]}
-                                            onPress={() => {
-                                                const selecteItem = [...selectedData]
-                                                console.log(selecteItem?.length, '-----------------length of selected ||Item')
-                                                if (selectedData?.includes(item.activityId)) {
-                                                    var index = selecteItem.indexOf(item.activityId);
-                                                    if (index !== -1) {
-                                                        selecteItem.splice(index, 1)
-                                                        setSelectedData(selecteItem)
-                                                        setActivitySelected()
-                                                    }
-                                                } else {
-                                                    if (item.purpose === 'Conduct DLE' || item.purpose === 'Conduct CGT') {
-                                                        if (selecteItem?.length < 1) {
-                                                            selecteItem.push(item.activityId)
+                                                onLongPress={() => {
+                                                    const selecteItem = [...selectedData]
+                                                    console.log(selecteItem?.length, '-----------------length of selected ||Item')
+                                                    if (selectedData?.includes(item.activityId)) {
+                                                        var index = selecteItem.indexOf(item.activityId);
+                                                        if (index !== -1) {
+                                                            selecteItem.splice(index, 1)
                                                             setSelectedData(selecteItem)
-                                                            setActivitySelected(item.purpose)
-                                                        } else {
-                                                            setModalVisible1(true)
-                                                            setErrorMessage('Schedule this activity seperately')
+                                                            setActivitySelected()
                                                         }
                                                     } else {
-                                                        selecteItem.push(item.activityId)
-                                                        setSelectedData(selecteItem)
+                                                        if (item.purpose === 'Conduct DLE' || item.purpose === 'Conduct CGT') {
+                                                            if (selecteItem?.length < 1) {
+                                                                selecteItem.push(item.activityId)
+                                                                setSelectedData(selecteItem)
+                                                                setActivitySelected(item.purpose)
+                                                            } else {
+                                                                setModalVisible1(true)
+                                                                setErrorMessage('Schedule this activity seperately')
+                                                            }
+                                                        } else {
+                                                            selecteItem.push(item.activityId)
+                                                            setSelectedData(selecteItem)
+                                                        }
+    
                                                     }
-
-                                                }
-                                            }}>
+                                                }}
+                                                onPress={() => {
+                                                    const selecteItem = [...selectedData]
+                                                    console.log(selecteItem?.length, '-----------------length of selected ||Item')
+                                                    if (selectedData?.includes(item.activityId)) {
+                                                        var index = selecteItem.indexOf(item.activityId);
+                                                        if (index !== -1) {
+                                                            selecteItem.splice(index, 1)
+                                                            setSelectedData(selecteItem)
+                                                            setActivitySelected()
+                                                        }
+                                                    } else {
+                                                        if (item.purpose === 'Conduct DLE' || item.purpose === 'Conduct CGT') {
+                                                            if (selecteItem?.length < 1) {
+                                                                selecteItem.push(item.activityId)
+                                                                setSelectedData(selecteItem)
+                                                                setActivitySelected(item.purpose)
+                                                            } else {
+                                                                setModalVisible1(true)
+                                                                setErrorMessage('Schedule this activity seperately')
+                                                            }
+                                                        } else {
+                                                            selecteItem.push(item.activityId)
+                                                            setSelectedData(selecteItem)
+                                                        }
+    
+                                                    }
+                                                }}
+                                            >
 
                                             {selectedData?.includes(item.activityId)
                                                 ?
@@ -227,7 +253,6 @@ const Activities = ({ navigation, route }) => {
                                                     {item.purpose === 'Leads Follow Up' &&
                                                         <Text style={[styles.explainText, { color: COLORS.DarkYellow, backgroundColor: COLORS.LightYellow }]}>{item.purpose} </Text>
                                                     }
-
                                                 </View>
                                             </View>
                                         </TouchableOpacity>
@@ -245,6 +270,33 @@ const Activities = ({ navigation, route }) => {
                                         <TouchableOpacity
                                             style={[styles.viewCard, selectedData?.includes(item.activityId)
                                                 ? { borderColor: COLORS.colorB, borderWidth: 1 } : {}]}
+                                                
+                                                onLongPress={() => {
+                                                    const selecteItem = [...selectedData]
+                                                    console.log(selecteItem?.length, '-----------------length of selected ||Item')
+                                                    if (selectedData?.includes(item.activityId)) {
+                                                        var index = selecteItem.indexOf(item.activityId);
+                                                        if (index !== -1) {
+                                                            selecteItem.splice(index, 1)
+                                                            setSelectedData(selecteItem)
+                                                            setActivitySelected()
+                                                        }
+                                                    } else {
+                                                        if (item.purpose === 'Conduct DLE' || item.purpose === 'Conduct CGT') {
+                                                            if (selecteItem?.length < 1) {
+                                                                selecteItem.push(item.activityId)
+                                                                setSelectedData(selecteItem)
+                                                                setActivitySelected(item.purpose)
+                                                            } else {
+                                                                setModalVisible1(true)
+                                                                setErrorMessage('Schedule this activity seperately')
+                                                            }
+                                                        } else {
+                                                            selecteItem.push(item.activityId)
+                                                            setSelectedData(selecteItem)
+                                                        }
+                                                    }
+                                                }}
                                             onPress={() => {
                                                 const selecteItem = [...selectedData]
                                                 console.log(selecteItem?.length, '-----------------length of selected ||Item')

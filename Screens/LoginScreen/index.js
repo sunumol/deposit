@@ -619,6 +619,7 @@ const LoginScreen = ({ navigation }) => {
                                     {IsOtp1 ?
                                        <OTPInputView
                                             style={styles.OtpInput}
+                                            autoCompleteType="off"
                                             pinCount={4}
                                             ref={otpInput2}
                                             value={OtpValue}
@@ -632,7 +633,7 @@ const LoginScreen = ({ navigation }) => {
                                                 setIsExpired(false)
                                             }}}
                                             code={OtpValue} //You can supply this prop or not. The component will be used as a controlled / uncontrolled component respectively.
-                                            autoFocusOnLoad={false}
+                                            autoFocusOnLoad={true}
                                             keyboardType="numeric"
                                             codeInputFieldStyle={[styles.imputContainerStyle, { color: '#090A0A', borderRadius: 8, backgroundColor: '#FCFCFC', borderColor: !otp ? "lightgrey" : "red" }]}
                                             placeholderTextColor="black"
