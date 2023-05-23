@@ -439,6 +439,8 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
                                     <TextInput
                                         value={postofficename}
                                         style={styles.TextInputBranch}
+                                        //placeholder={"Post office"}
+                                       // placeholderTextColor="#808080"
                                         onChangeText={(text) =>{
                                             if(text?.length == 25){
                                                 Keyboard.dismiss();
@@ -509,7 +511,7 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
                                 <View style={{ flexDirection: 'row' }}>
                                     {console.log('lan====', details?.landMark)}
                                     <TextInput
-                                        placeholder={"Near Oakview Mall"}
+                                        placeholder={"Landmark"}
                                         placeholderTextColor="#808080"
                                        value={landmarkname}
                                         style={styles.TextInputBranch}

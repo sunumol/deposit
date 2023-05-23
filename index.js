@@ -26,7 +26,9 @@ messaging().setBackgroundMessageHandler(async remoteMessage => {
           RootNavigation.navigate('Proceed',{status:true,AcyivityId: remoteMessage.notification?.data?.activityId});
         }
         if (remoteMessage.notification?.title === 'DATA_CORRECTION_REQUEST') {
+          setTimeout(() => {
           RootNavigation.navigate('CorrectionScreen', { AcyivityId: remoteMessage.notification?.data?.activityId });
+            }, 3000);
         }
       }
     });

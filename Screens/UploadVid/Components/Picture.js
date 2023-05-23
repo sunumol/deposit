@@ -26,66 +26,9 @@ const Picture = ({ navigation }) => {
             <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                 <Text style={styles.textPhoto}>{t('common:HowTo')}</Text>
             </View>
-            <View style={{ flexDirection: 'row', alignItems: 'center', paddingTop: height * 0.03, justifyContent: 'center' }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', paddingTop: height * 0.02, justifyContent: 'center' }}>
 
-                <View style={styles.viewCard}>
-                    <Image1
-                        width={50}
-                        height={75}
-                        style={{
-                            marginLeft: 10,
-                            marginTop: 8,
-                            marginRight: 2,
-                            borderRadius: 5
-                        }} />
-
-                    <Close
-                        width={19}
-                        height={19}
-                        style={{ marginLeft: "52%", marginTop: -15 }}
-                    />
-
-                </View>
-
-                <View style={styles.viewCard}>
-
-                    <Image2
-                        source={require('../../../assets/Images/imageId2.png')}
-                        width={45}
-                        height={65}
-                        style={{ marginTop: 15, borderRadius: 4, }} />
-                    <Close
-                        width={19}
-                        height={19}
-                        style={{ marginLeft: "55%", marginTop: -10 }}
-                    />
-
-                </View>
-            </View>
-
-            <View style={{ flexDirection: 'row', paddingTop: 19, alignItems: 'center', justifyContent: 'center' }}>
-                <View style={styles.viewCard}>
-                    <Image1
-                        width={60}
-                        height={85}
-                        style={{ borderRadius: 4, }}
-                    />
-                    <Close
-                        style={{ marginLeft: "55%", marginTop: -20, height: 19, width: 19 }}
-                    />
-                </View>
-                <View style={styles.viewCard}>
-                    <Image4
-                        width={55}
-                        height={87}
-                        style={{ borderRadius: 6, }}
-                    />
-
-                    <Tick
-                        width={19}
-                        height={19}
-                        style={{ marginLeft: "58%", marginTop: -20 }} />
-                </View>
+              <Image source={require('../../../assets/Images/Group8810.png')} />
             </View>
 
         </View>
@@ -97,7 +40,7 @@ export default Picture;
 const styles = StyleSheet.create({
     View3: {
         width: width * 0.87,
-        height: height * 0.365,
+        height: height * 0.31,
         margin: 4,
         backgroundColor: "#F2F2F2",
         marginTop: width * 0.08,
