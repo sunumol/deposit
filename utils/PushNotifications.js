@@ -3,23 +3,6 @@ import messaging from '@react-native-firebase/messaging';
 import * as RootNavigation from '../Router/RootNavigation';
 
 export const requestUserPermission = async () => {
-  try {
-    const authStatus = await messaging().requestPermission();
-  const enabled =
-    authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-    authStatus === messaging.AuthorizationStatus.PROVISIONAL;
-
-  if (enabled) {
-    console.log('Authorization status:', authStatus);
-    getFcmToken();
-  }
-} catch (err) {
-    console.warn(err);
-}
-
-};
-
-const getFcmToken = async () => {
   let fcmToken = await AsyncStorage.getItem('fcmToken');
   console.log('Old FCM Token --> ', fcmToken);
   if (!fcmToken) {
