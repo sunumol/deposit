@@ -543,6 +543,7 @@ const LoginScreen = ({ navigation }) => {
                                                 maxLength={10}
                                                 autoFocus={true}
                                                 value={PhoneNum}
+                                                contextMenuHidden={true}
                                                 onChangeText={(num) => OnchangeNumber(num)}
                                                 keyboardType="numeric"
                                                 editable={IsOtp1 && status === true ? false : true}

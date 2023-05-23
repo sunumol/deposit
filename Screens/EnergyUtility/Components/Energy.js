@@ -179,6 +179,7 @@ const Energy = ({ navigation, setAmount1, setPurpose1, setDays1, setCustomerId, 
                             value={Amount?.toString()}
                             keyboardType={'number-pad'}
                             maxLength={5}
+                            contextMenuHidden={true}
                             onChangeText={(text) => {
                                 setZeroStatus(false)
                               //  setAmount(text)
@@ -226,6 +227,7 @@ const Energy = ({ navigation, setAmount1, setPurpose1, setDays1, setCustomerId, 
                                 value={days?.toString()}
                                 keyboardType={'number-pad'}
                                 maxLength={2}
+                                contextMenuHidden={true}
                                 onChangeText={(text) => {
                                     setZeroDays(false)
                                     if(text === ''){

@@ -110,25 +110,25 @@ const IncomeDetails = ({ navigation, route }) => {
     const ButtonClick = () => {
 
         if (Amount !== '' && Avg !== '' && Month !== '') {
-            console.log("onsubmit",AmountFocus,NetMonth)
-        //     if(!AmountFocus){
-        //         NumberFormats()
-        //         setStateChange1(true)
-              
-        //        // saveIncomeDetails()
-        //     }
-        //    if(!NetMonth){
+            console.log("onsubmit", AmountFocus, NetMonth)
+            // if(!AmountFocus){
+            // NumberFormats()
+            // setStateChange1(true)
 
-        //         NumberFormat_avg()
-        //         setStateChange1(true)
-    
-        //       saveIncomeDetails()
-        //   }else{
-                setStateChange1(true)
-    
-                saveIncomeDetails()
-           // }
-        
+            // // saveIncomeDetails()
+            // }
+            // if(!NetMonth){
+
+            // NumberFormat_avg()
+            // setStateChange1(true)
+
+            // saveIncomeDetails()
+            // }else{
+            setStateChange1(true)
+
+            saveIncomeDetails()
+            // }
+
 
         } else {
             setStateChange1(false)
@@ -310,12 +310,12 @@ const IncomeDetails = ({ navigation, route }) => {
 
 
 
-   
+
 
     const NumberFormats = () => {
         setAmountFocus(true)
         if (Amount?.length == 4) {
-           
+
             const firstDigitStr0 = String(Amount)[0]
             const firstDigitStr1 = String(Amount)[1]
             const firstDigitStr2 = String(Amount)[2]
@@ -373,9 +373,9 @@ const IncomeDetails = ({ navigation, route }) => {
             const firstDigitStr4 = String(Avg)[4]
             const digitForm = firstDigitStr0 + firstDigitStr1 + ',' + firstDigitStr2 + firstDigitStr3 + firstDigitStr4
             setAvg(digitForm)
-        
+
         } else if (Avg?.length == 6) {
-         
+
             const firstDigitStr0 = String(Avg)[0]
             const firstDigitStr1 = String(Avg)[1]
             const firstDigitStr2 = String(Avg)[2]
@@ -394,27 +394,27 @@ const IncomeDetails = ({ navigation, route }) => {
 
             <Header name="Income Details" navigation={navigation} onPress={handleGoBack} />
             {/* <View style={styles.Header}>
-            <View style={{ left: 15, alignItems: 'center', justifyContent: 'center', top: -3 }}>
-                <TouchableOpacity onPress={() => { StateChange1 === false ? navigation.goBack() : setStateChange1(false) }} style={{ padding: 0 }}>
-        
-                    <Icon size={17} color={"white"} name="left" />
-                </TouchableOpacity>
-            </View>
+ <View style={{ left: 15, alignItems: 'center', justifyContent: 'center', top: -3 }}>
+ <TouchableOpacity onPress={() => { StateChange1 === false ? navigation.goBack() : setStateChange1(false) }} style={{ padding: 0 }}>
+ 
+ <Icon size={17} color={"white"} name="left" />
+ </TouchableOpacity>
+ </View>
 
-            <View style={{ left: lang == 'en' ? -10 : 5 }}>
-                <Text style={[styles.textPrivacy, {
-                    fontSize: 16, color: COLORS.colorBackground,
+ <View style={{ left: lang == 'en' ? -10 : 5 }}>
+ <Text style={[styles.textPrivacy, {
+ fontSize: 16, color: COLORS.colorBackground,
 
-                    fontFamily: FONTS.FontRegular,
-                    fontWeight: '700',
-                    marginTop: 10,
-                    marginBottom: 16,
-                    left: -5
-                }]}>Income Details</Text>
-            </View>
+ fontFamily: FONTS.FontRegular,
+ fontWeight: '700',
+ marginTop: 10,
+ marginBottom: 16,
+ left: -5
+ }]}>Income Details</Text>
+ </View>
 
-            <View></View>
-        </View> */}
+ <View></View>
+ </View> */}
             <View style={styles.ViewContent}>
                 {/* <Details navigation={navigation} setStatusChange={setStatusChange} setStatusChange2={statusChange} /> */}
                 <View style={styles.mainContainer}>
@@ -448,7 +448,7 @@ const IncomeDetails = ({ navigation, route }) => {
                                         fontSize: 14, color: '#1A051D',
                                         fontFamily: FONTS.FontRegular, left: 5, width: '95%'
                                     }]}
-
+                                    contextMenuHidden={true}
                                     value={Amount?.toString()}
                                     keyboardType={'numeric'}
                                     onFocus={() => {
@@ -474,7 +474,7 @@ const IncomeDetails = ({ navigation, route }) => {
                                                 // setAmount(text)
 
                                                 // if(text<13){
-                                                //     setAmount(text)
+                                                // setAmount(text)
                                                 // }
                                             }
                                             else {
@@ -510,14 +510,15 @@ const IncomeDetails = ({ navigation, route }) => {
                                             value={Month?.toString()}
                                             keyboardType={'number-pad'}
                                             maxLength={2}
-                                           
+                                            contextMenuHidden={true}
+
                                             onFocus={() => {
-                                                console.log("amountfocus",AmountFocus)
-                                                if(!AmountFocus){
-                                                   // NumberFormats()
+                                                console.log("amountfocus", AmountFocus)
+                                                if (!AmountFocus) {
+                                                    // NumberFormats()
                                                 }
                                                 // else if(!NetMonth){
-                                                //     NumberFormat_avg()
+                                                // NumberFormat_avg()
                                                 // }
                                                 setMonthFocus(true)
                                                 // NumberFormats()
@@ -528,10 +529,10 @@ const IncomeDetails = ({ navigation, route }) => {
                                             onChangeText={(text) => setMonthdata(text)} />
                                     </View>}
                                 {/* <TextInput
-                                    style={[{ fontSize: 14, color: '#1A051D', fontFamily: FONTS.FontRegular, left: 5, width: '95%' }]}
-                                    value={Month?.toString()}
-                                    keyboardType={'number-pad'}
-                                    onChangeText={(text) => setMonthdata(text)} /> */}
+ style={[{ fontSize: 14, color: '#1A051D', fontFamily: FONTS.FontRegular, left: 5, width: '95%' }]}
+ value={Month?.toString()}
+ keyboardType={'number-pad'}
+ onChangeText={(text) => setMonthdata(text)} /> */}
                             </View>
 
                             <View>
@@ -544,16 +545,17 @@ const IncomeDetails = ({ navigation, route }) => {
                                     value={Avg?.toString()}
                                     keyboardType={'number-pad'}
                                     maxLength={6}
+                                    contextMenuHidden={true}
                                     onSubmitEditing={(text) => {
                                         NumberFormat_avg()
                                     }}
                                     onFocus={() => {
                                         // if(!AmountFocus){
-                                        //     NumberFormats()
+                                        // NumberFormats()
                                         // }
                                         const Am1 = Avg?.replace(/\,/g, '')
                                         setAvg(Am1)
-                                      
+
                                         setNetMonth(false)
                                     }}
                                     onChangeText={(text) => {
@@ -576,7 +578,7 @@ const IncomeDetails = ({ navigation, route }) => {
                                     }} />
                             </View>
                             {/* {ZeroStatus &&
-                        <Text style={{ color: 'red', fontSize: 9, paddingTop: 3, fontFamily: FONTS.FontRegular }}>Amount cannot be ₹0</Text>} */}
+ <Text style={{ color: 'red', fontSize: 9, paddingTop: 3, fontFamily: FONTS.FontRegular }}>Amount cannot be ₹0</Text>} */}
                         </View>
                     </ScrollView>
 
@@ -650,7 +652,7 @@ const styles = StyleSheet.create({
     },
     ViewContent: {
         // justifyContent: 'center',
-        //  alignItems: 'center',
+        // alignItems: 'center',
         flex: 1,
         backgroundColor: COLORS.colorBackground,
         padding: 20

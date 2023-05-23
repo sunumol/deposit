@@ -285,7 +285,7 @@ const Vehicle = ({ navigation }) => {
 
                                 <TextInput
                                     readOnly={true}
-
+                                    contextMenuHidden={true}
                                     // placeholder='KL34E3278'
                                     placeholderTextColor='#808080'
                                     value={numbers}

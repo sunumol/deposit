@@ -124,6 +124,7 @@ const Debit = ({ navigation }) => {
                                 <View style={styles.SelectBox1}>
                                     <Text style={[styles.RS, { color: Salary === '' ? '#808080' : '#1A051D' }]}>₹</Text>
                                     <TextInput
+                                     contextMenuHidden={true}
                                         maxLength={10}
                                         keyboardType={'number-pad'}
                                         style={[{
@@ -171,7 +172,7 @@ const Debit = ({ navigation }) => {
                                 <TouchableOpacity style={styles.SelectBox} onPress={() => setPurpose('Monthly')} >
                                     {!Purpose ?
                                         <Text style={styles.textSelect}>Select</Text> :
-                                        <Text style={[styles.textSelect], { color: '#1A051D', marginLeft: 8 }}>{Purpose}</Text>}
+                                        <Text style={[styles.textSelect, { color: '#1A051D', marginLeft: 8 }]}>{Purpose}</Text>}
                                     {/* <Icon1 name="chevron-down" size={18} color={'#808080'} style={{ marginRight: 10 }} /> */}
                                 </TouchableOpacity>
 
@@ -188,6 +189,7 @@ const Debit = ({ navigation }) => {
                                 <View style={styles.SelectBox1}>
                                     <Text style={[styles.RS, { color: EMI === '' ? '#808080' : '#1A051D' }]}>₹</Text>
                                     <TextInput
+                                     contextMenuHidden={true}
                                         keyboardType={'number-pad'}
                                         maxLength={10}
                                         value={EMI}
@@ -234,7 +236,7 @@ const Debit = ({ navigation }) => {
                                 <TouchableOpacity style={styles.SelectBox} onPress={() => setFrequency('Monthly')} >
                                     {!Frequency ?
                                         <Text style={styles.textSelect}>Select</Text> :
-                                        <Text style={[styles.textSelect], { color: '#1A051D', marginLeft: 8 }}>{Frequency}</Text>}
+                                        <Text style={[styles.textSelect, { color: '#1A051D', marginLeft: 8 }]}>{Frequency}</Text>}
                                     {/* <Icon1 name="chevron-down" size={18} color={'#808080'} style={{ marginRight: 10 }} /> */}
                                 </TouchableOpacity>
 

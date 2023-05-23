@@ -276,6 +276,7 @@ const totalcollection =() =>{
                                                         style={styles.CardAmt}
                                                         onChangeText={(text)=>onCollect(text == '' ? 0 : text,index)}
                                                        value={collectAmount}
+                                                       contextMenuHidden={true}
                                                         keyboardType="numeric"
                                                      
                                                     />

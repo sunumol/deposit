@@ -242,6 +242,7 @@ const ConfirmMembers = ({ navigation }) => {
             {!selectedItem ?
               <View style={styles.searchBox}>
                 <TextInput
+                 contextMenuHidden={true}
                   placeholder='Enter name or mobile number'
                   placeholderTextColor={"#808080"}
                   onChangeText={(text) => OnchangeNumber(text)}

@@ -130,6 +130,7 @@ const Details = ({ navigation,setStatusChange,setStatusChange2}) => {
                                         fontFamily: FONTS.FontRegular, left: 5
                                     }]}
                                     value={Amount}
+                                    contextMenuHidden={true}
                                     keyboardType={'number-pad'}
                                     //label={'₹'}
                                     onChangeText={(text) => setAmount(text)} />
@@ -142,6 +143,7 @@ const Details = ({ navigation,setStatusChange,setStatusChange2}) => {
                                 <TextInput
                                     style={[{ fontSize: 14, color: '#1A051D', fontFamily: FONTS.FontRegular, left: 5 }]}
                                     value={Month}
+                                    contextMenuHidden={true}
                                     keyboardType={'number-pad'}
                                     onChangeText={(text) => setMonth(text)} />
                             </View>
@@ -154,6 +156,7 @@ const Details = ({ navigation,setStatusChange,setStatusChange2}) => {
                                 <TextInput
                                     style={[{ fontSize: 14, color: '#1A051D', fontFamily: FONTS.FontRegular, left: 5 }]}
                                     value={Avg}
+                                    contextMenuHidden={true}
                                     keyboardType={'number-pad'}
                                     onChangeText={(text) => setAvg(text)} />
                             </View>
@@ -166,6 +169,7 @@ const Details = ({ navigation,setStatusChange,setStatusChange2}) => {
                                 <TextInput
                                     style={[{ fontSize: 14, color: '#1A051D', fontFamily: FONTS.FontRegular, left: 5 }]}
                                     value={MonthsCustom}
+                                    contextMenuHidden={true}
                                     onFocus={()=>setFocus(true)}
                                     keyboardType={'number-pad'}
                                     //label={'₹'}
@@ -191,6 +195,7 @@ const Details = ({ navigation,setStatusChange,setStatusChange2}) => {
                                     keyboardType={'number-pad'}
                                     style={[{ fontSize: 14, color: '#1A051D', fontFamily: FONTS.FontRegular, left: 5 }]}
                                     value={Salary}
+                                    contextMenuHidden={true}
                                     onChangeText={(text) => setSalary(text)} />
                             </View>
                         </View>}

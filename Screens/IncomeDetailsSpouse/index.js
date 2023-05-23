@@ -414,6 +414,7 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
                                     }]}
                                     value={Amount?.toString()}
                                     keyboardType={'number-pad'}
+                                    contextMenuHidden={true}
                                     onFocus={() => {
 
                                         const Am1 = Amount.replace(/\,/g, '')
@@ -468,6 +469,7 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
                                             value={Month?.toString()}
                                             keyboardType={'number-pad'}
                                             maxLength={2}
+                                            contextMenuHidden={true}
                                             onFocus={() => {
                                                 console.log("amountfocus",AmountFocus)
                                                 if(!AmountFocus){
@@ -500,6 +502,7 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
                                     value={Avg?.toString()}
                                     keyboardType={'number-pad'}
                                     maxLength={6}
+                                    contextMenuHidden={true}
                                     onSubmitEditing={(text) => {
                                         NumberFormat_avg()
                                     }}

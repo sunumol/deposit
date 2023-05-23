@@ -33,6 +33,7 @@ const TextInputBox = ({ name, value, onChangeText, onFocus, onBlur,blurOnSubmit,
                     placeholderTextColor="#808080"
                     returnKeyType="done"
                     ref={ref}
+                    contextMenuHidden={true}
                     //maxLength={10}
                     onSubmitEditing={Keyboard.dismiss}
                     // onFocus={onFocus}
