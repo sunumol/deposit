@@ -4,7 +4,7 @@ import Icon1 from 'react-native-vector-icons/Fontisto'
 import { COLORS, FONTS } from '../../../Constants/Constants';
 import { useTranslation } from 'react-i18next';
 
-const OwnerModal = ({ visible, onPressOut,setModalVisible,setPurpose,setNamestatus,
+const OwnerModal = ({ visible, onPressOut,setModalVisible,setPurpose,setNamestatus,setImage,
     setUploadStatus,setImageStatus}) => {
     const { t } = useTranslation();
     const [owner,setOwner] = useState('')
@@ -30,6 +30,7 @@ const OwnerModal = ({ visible, onPressOut,setModalVisible,setPurpose,setNamestat
                                 setPurpose('ELECTRICITY_BILL')
                                 setOwner('ELECTRICITY_BILL')
                                 setUploadStatus(true)
+                                setImage('')
                                 setModalVisible(!visible)
                                 setImageStatus(true)
                                 setNamestatus(true)
@@ -52,6 +53,7 @@ const OwnerModal = ({ visible, onPressOut,setModalVisible,setPurpose,setNamestat
                             setOwner('WATER_BILL')
                             setModalVisible(!visible)
                             setUploadStatus(true)
+                            setImage('')
                             setImageStatus(true)
                             setNamestatus(true)
                         }
@@ -73,7 +75,8 @@ const OwnerModal = ({ visible, onPressOut,setModalVisible,setPurpose,setNamestat
                             setOwner('BUILDING_TAX_RECEIPT')
                             setModalVisible(!visible)
                             setUploadStatus(true)
-                            setImageStatus(true)
+                            setImageStatus(true) 
+                            setImage('')
                             setNamestatus(true)
                         }
                         }>

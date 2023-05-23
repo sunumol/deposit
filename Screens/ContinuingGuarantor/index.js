@@ -598,12 +598,12 @@ useEffect(()=>{
 
               {maxError === true ?
                  lang == "en" ?
-                 <View style={{ marginTop: Dimensions.get('window').height * 0.03, }}>
+                 <View style={{ marginTop: Dimensions.get('window').height * 0.03,alignItems:'center',justifyContent:'center' }}>
                      <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center', width: width * 0.8 }}>{t('common:Valid2')}</Text>
                      <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center' }}>Please try after {errorMessage.replace(/\D/g, '')} minutes</Text>
                  </View>
                  :
-                 <View style={{ marginTop: Dimensions.get('window').height * 0.03, }}>
+                 <View style={{ marginTop: Dimensions.get('window').height * 0.03,alignItems:'center',justifyContent:'center'  }}>
                      <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center', width: width * 0.8 }}>{t('common:Valid2')}</Text>
                      <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center' }}>{errorMessage.replace(/\D/g, '')} {t('common:Valid3')}</Text>
                  </View>

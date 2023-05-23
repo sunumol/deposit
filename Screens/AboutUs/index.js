@@ -16,7 +16,7 @@ import Header from '../../Components/Header';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
 import { t } from 'i18next';
-import Logo from '../../assets/Images/svadhan.svg';
+import Logo from '../../assets/image/logofinpower.svg';
 
 const { height, width } = Dimensions.get('screen');
 
