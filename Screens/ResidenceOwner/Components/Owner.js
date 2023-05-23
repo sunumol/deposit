@@ -342,6 +342,7 @@ const DetailChecks = ({ navigation, setState, proofType1, imageUrl1, relation1, 
                                         value={ownersName}
                                         maxLength={30}
                                         style={styles.TextInputBranch}
+                                        contextMenuHidden={true}
                                         onChangeText={(text) => {
                                             setNameValid(false)
                                             const firstDigitStr = String(text)[0];

@@ -36,6 +36,7 @@ const Energy = ({ navigation, setAmount1, setPurpose1, setDays1, setCustomerId, 
     const [ZeroStatus, setZeroStatus] = useState(false)
     const [ZeroDays,setZeroDays] = useState(false)
     const [customerdetail,setCustomerDetail] = useState('')
+    const [spouseDetail,setSpousedetail] = useState()
 
     useEffect(() => {
         getEnergyUtilities()
@@ -56,6 +57,7 @@ const Energy = ({ navigation, setAmount1, setPurpose1, setDays1, setCustomerId, 
             console.log('-------------------res spousedetail', res)
             if (res?.status) {
                 setRelationship('Spouse')
+                setSpousedetail(res?.data?.body?.occupation)
                 // setRelationship('Customer')
             }
         }).catch((err) => {
@@ -116,6 +118,10 @@ const Energy = ({ navigation, setAmount1, setPurpose1, setDays1, setCustomerId, 
             if (res?.status) {
                 if(customerdetail !== 'UNEMPLOYED'){
                 navigation.navigate('IncomeDetails', { relationShip: relationShip })
+                }else if(customerdetail == 'UNEMPLOYED' && spouseDetail !== 'UNEMPLOYED' ){
+                    navigation.navigate('IncomeDetailsSpouse')
+                }else if(customerdetail == 'UNEMPLOYED' && spouseDetail == 'UNEMPLOYED'){
+                    navigation.navigate('Proceed')
                 }
                 else{
                     navigation.navigate('Proceed')
@@ -162,6 +168,7 @@ const Energy = ({ navigation, setAmount1, setPurpose1, setDays1, setCustomerId, 
         })
     };
 
+
     return (
 
         <>
@@ -179,6 +186,7 @@ const Energy = ({ navigation, setAmount1, setPurpose1, setDays1, setCustomerId, 
                             value={Amount?.toString()}
                             keyboardType={'number-pad'}
                             maxLength={5}
+                            contextMenuHidden={true}
                             onChangeText={(text) => {
                                 setZeroStatus(false)
                               //  setAmount(text)
@@ -226,6 +234,7 @@ const Energy = ({ navigation, setAmount1, setPurpose1, setDays1, setCustomerId, 
                                 value={days?.toString()}
                                 keyboardType={'number-pad'}
                                 maxLength={2}
+                                contextMenuHidden={true}
                                 onChangeText={(text) => {
                                     setZeroDays(false)
                                     if(text === ''){

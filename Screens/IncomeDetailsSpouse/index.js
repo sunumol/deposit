@@ -182,10 +182,10 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
             if (res?.status) {
                 setIncomedetail(res?.data?.body)
                 setIncomedetailfield(res?.data?.body?.incomeDetailsFieldHeadders)
-                setAmount(numberWithCommas(res?.data?.body?.field1))
+                setAmount(res?.data?.body?.field1)
                 setMonth(res?.data?.body?.field2)
                 setPurpose(res?.data?.body?.field2)
-                setAvg(numberWithCommas(res?.data?.body?.field3))
+                setAvg(res?.data?.body?.field3)
             }
         }).catch((err) => {
             console.log('-------------------err getIncomeDetails', err?.response)
@@ -414,19 +414,20 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
                                     }]}
                                     value={Amount?.toString()}
                                     keyboardType={'number-pad'}
+                                    contextMenuHidden={true}
                                     onFocus={() => {
 
-                                        const Am1 = Amount.replace(/\,/g, '')
+                                        const Am1 = Amount?.replace(/\,/g, '')
                                         setAmount(Am1)
                                         setAmountFocus(false)
                                     }}
                                     onSubmitEditing={(text) => {
                                         console.log("onsubmit edit", Amount?.length)
                                         NumberFormats()
-                                    }}
+                                     }}
                                     maxLength={incomedetail?.occupation == 'SALARIED_EMPLOYEE' ? 2 : 6}
                                     onChangeText={(text) => {
-                                        setAmountFocus(false)
+                                       // setAmountFocus(false)
                                         if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(text) || text === "") {
                                             if (incomedetail?.occupation == 'SALARIED_EMPLOYEE') {
 
@@ -440,7 +441,7 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
                                                 //     setAmount(text)
                                                 // }
                                             } else {
-                                                if (Number(text) == 0 || text?.length == 7) {
+                                                if (Number(text) == 0) {
                                                     setAmount('')
                                                     console.log("inside occupation 2", incomedetail?.occupation)
                                                 } else {
@@ -499,21 +500,21 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
                                     style={[{ fontSize: 14, color: '#1A051D', fontFamily: FONTS.FontRegular, left: 5, width: '95%' }]}
                                     value={Avg?.toString()}
                                     keyboardType={'number-pad'}
-                                    maxLength={6}
-                                    onSubmitEditing={(text) => {
-                                        NumberFormat_avg()
-                                    }}
-                                    onFocus={() => {
-                                        if(!AmountFocus){
-                                           // NumberFormats()
-                                        }
-                                        const Am1 = Avg.replace(/\,/g, '')
-                                        setAvg(Am1)
+                                    maxLength={5}
+                                    // onSubmitEditing={(text) => {
+                                    //     NumberFormat_avg()
+                                    // }}
+                                    // onFocus={() => {
+                                    //     if(!AmountFocus){
+                                    //        // NumberFormats()
+                                    //     }
+                                    //     const Am1 = Avg?.replace(/\,/g, '')
+                                    //     setAvg(Am1)
                                       
-                                        setNetMonth(false)
-                                    }}
+                                    //     setNetMonth(false)
+                                    // }}
                                     onChangeText={(text) => {
-                                        if (text === '' || text?.length == 6) {
+                                        if (text === '') {
                                             setZeroStatus(false)
                                             setAvg('')
                                         }

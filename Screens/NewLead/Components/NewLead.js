@@ -295,6 +295,7 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus }) => {
                                             value={Village}
                                             keyboardType1={'email-address'}
                                             style={styles.TextInputBranch}
+                                            contextMenuHidden={true}
                                             onChangeText={(text) => {
 
                                                 setVillageEnable(false)

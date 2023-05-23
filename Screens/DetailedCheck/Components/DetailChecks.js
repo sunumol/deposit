@@ -368,6 +368,7 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
                                     <TextInput
                                         value={villagename}
                                         placeholder={"Search village"}
+                                        contextMenuHidden={true}
                                         placeholderTextColor="#808080"
                                         editable={details?.village ?false:true}
                                         style={[styles.TextInputBranch, { width: width * 0.48, color: 'rgba(26, 5, 29, 1)', fontSize: 12, left:0 }]}
@@ -439,6 +440,7 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
                                     <TextInput
                                         value={postofficename}
                                         style={styles.TextInputBranch}
+                                        contextMenuHidden={true}
                                         onChangeText={(text) =>{
                                             if(text?.length == 25){
                                                 Keyboard.dismiss();
@@ -509,9 +511,10 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
                                 <View style={{ flexDirection: 'row' }}>
                                     {console.log('lan====', details?.landMark)}
                                     <TextInput
-                                        placeholder={"Near Oakview Mall"}
+                                        placeholder={"Landmark"}
                                         placeholderTextColor="#808080"
                                        value={landmarkname}
+                                       contextMenuHidden={true}
                                         style={styles.TextInputBranch}
                                         numberOfLines={2}
                                         maxLength={40}

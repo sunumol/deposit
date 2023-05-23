@@ -176,6 +176,7 @@ const SelectCustomer = ({ navigation, route }) => {
           </View>
           <View style={styles.searchBox}>
             <TextInput
+             contextMenuHidden={true}
               placeholder={t('common:EnterNORM')}
               placeholderTextColor={'#808080'}
               onChangeText={(text) => OnchangeNumber(text)}

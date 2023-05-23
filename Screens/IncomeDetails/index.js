@@ -110,25 +110,25 @@ const IncomeDetails = ({ navigation, route }) => {
     const ButtonClick = () => {
 
         if (Amount !== '' && Avg !== '' && Month !== '') {
-            console.log("onsubmit",AmountFocus,NetMonth)
-        //     if(!AmountFocus){
-        //         NumberFormats()
-        //         setStateChange1(true)
-              
-        //        // saveIncomeDetails()
-        //     }
-        //    if(!NetMonth){
+            console.log("onsubmit", AmountFocus, NetMonth)
+            // if(!AmountFocus){
+            // NumberFormats()
+            // setStateChange1(true)
 
-        //         NumberFormat_avg()
-        //         setStateChange1(true)
-    
-        //       saveIncomeDetails()
-        //   }else{
-                setStateChange1(true)
-    
-                saveIncomeDetails()
-           // }
-        
+            // // saveIncomeDetails()
+            // }
+            // if(!NetMonth){
+
+            // NumberFormat_avg()
+            // setStateChange1(true)
+
+            // saveIncomeDetails()
+            // }else{
+            setStateChange1(true)
+
+            saveIncomeDetails()
+            // }
+
 
         } else {
             setStateChange1(false)
@@ -166,9 +166,9 @@ const IncomeDetails = ({ navigation, route }) => {
             if (res?.status) {
                 setIncomedetail(res?.data?.body)
                 setIncomedetailfield(res?.data?.body?.incomeDetailsFieldHeadders)
-                setAmount(numberWithCommas(res?.data?.body?.field1))
+                setAmount(res?.data?.body?.field1)
                 setMonth(res?.data?.body?.field2)
-                setAvg(numberWithCommas(res?.data?.body?.field3))
+                setAvg(res?.data?.body?.field3)
                 setPurpose(res?.data?.body?.field2)
             }
         }).catch((err) => {
@@ -310,12 +310,12 @@ const IncomeDetails = ({ navigation, route }) => {
 
 
 
-   
+
 
     const NumberFormats = () => {
         setAmountFocus(true)
         if (Amount?.length == 4) {
-           
+
             const firstDigitStr0 = String(Amount)[0]
             const firstDigitStr1 = String(Amount)[1]
             const firstDigitStr2 = String(Amount)[2]
@@ -373,9 +373,9 @@ const IncomeDetails = ({ navigation, route }) => {
             const firstDigitStr4 = String(Avg)[4]
             const digitForm = firstDigitStr0 + firstDigitStr1 + ',' + firstDigitStr2 + firstDigitStr3 + firstDigitStr4
             setAvg(digitForm)
-        
+
         } else if (Avg?.length == 6) {
-         
+
             const firstDigitStr0 = String(Avg)[0]
             const firstDigitStr1 = String(Avg)[1]
             const firstDigitStr2 = String(Avg)[2]
@@ -394,27 +394,27 @@ const IncomeDetails = ({ navigation, route }) => {
 
             <Header name="Income Details" navigation={navigation} onPress={handleGoBack} />
             {/* <View style={styles.Header}>
-            <View style={{ left: 15, alignItems: 'center', justifyContent: 'center', top: -3 }}>
-                <TouchableOpacity onPress={() => { StateChange1 === false ? navigation.goBack() : setStateChange1(false) }} style={{ padding: 0 }}>
-        
-                    <Icon size={17} color={"white"} name="left" />
-                </TouchableOpacity>
-            </View>
+ <View style={{ left: 15, alignItems: 'center', justifyContent: 'center', top: -3 }}>
+ <TouchableOpacity onPress={() => { StateChange1 === false ? navigation.goBack() : setStateChange1(false) }} style={{ padding: 0 }}>
+ 
+ <Icon size={17} color={"white"} name="left" />
+ </TouchableOpacity>
+ </View>
 
-            <View style={{ left: lang == 'en' ? -10 : 5 }}>
-                <Text style={[styles.textPrivacy, {
-                    fontSize: 16, color: COLORS.colorBackground,
+ <View style={{ left: lang == 'en' ? -10 : 5 }}>
+ <Text style={[styles.textPrivacy, {
+ fontSize: 16, color: COLORS.colorBackground,
 
-                    fontFamily: FONTS.FontRegular,
-                    fontWeight: '700',
-                    marginTop: 10,
-                    marginBottom: 16,
-                    left: -5
-                }]}>Income Details</Text>
-            </View>
+ fontFamily: FONTS.FontRegular,
+ fontWeight: '700',
+ marginTop: 10,
+ marginBottom: 16,
+ left: -5
+ }]}>Income Details</Text>
+ </View>
 
-            <View></View>
-        </View> */}
+ <View></View>
+ </View> */}
             <View style={styles.ViewContent}>
                 {/* <Details navigation={navigation} setStatusChange={setStatusChange} setStatusChange2={statusChange} /> */}
                 <View style={styles.mainContainer}>
@@ -448,22 +448,22 @@ const IncomeDetails = ({ navigation, route }) => {
                                         fontSize: 14, color: '#1A051D',
                                         fontFamily: FONTS.FontRegular, left: 5, width: '95%'
                                     }]}
-
+                                    contextMenuHidden={true}
                                     value={Amount?.toString()}
                                     keyboardType={'numeric'}
-                                    onFocus={() => {
+                                    // onFocus={() => {
 
-                                        const Am1 = Amount?.replace(/\,/g, '')
-                                        setAmount(Am1)
-                                        setAmountFocus(false)
-                                    }}
-                                    onSubmitEditing={(text) => {
-                                        console.log("onsubmit edit", Amount?.length)
-                                        NumberFormats()
-                                    }}
-                                    maxLength={incomedetail?.occupation == 'SALARIED_EMPLOYEE' ? 2 : 7}
+                                    //     const Am1 = Amount?.replace(/\,/g, '')
+                                    //     setAmount(Am1)
+                                    //     setAmountFocus(false)
+                                    // }}
+                                    // onSubmitEditing={(text) => {
+                                    //     console.log("onsubmit edit", Amount?.length)
+                                    //     NumberFormats()
+                                    // }}
+                                    maxLength={incomedetail?.occupation == 'SALARIED_EMPLOYEE' ? 2 : 6}
                                     onChangeText={(text) => {
-                                        setAmountFocus(false)
+                                        //setAmountFocus(false)
                                         if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(text) || text === "") {
 
                                             if (incomedetail?.occupation == 'SALARIED_EMPLOYEE') {
@@ -474,11 +474,11 @@ const IncomeDetails = ({ navigation, route }) => {
                                                 // setAmount(text)
 
                                                 // if(text<13){
-                                                //     setAmount(text)
+                                                // setAmount(text)
                                                 // }
                                             }
                                             else {
-                                                if (Number(text) == 0 || text?.length == 7) {
+                                                if (Number(text) == 0) {
                                                     setAmount('')
                                                     console.log("inside occupation 2", incomedetail?.occupation)
                                                 } else {
@@ -510,14 +510,15 @@ const IncomeDetails = ({ navigation, route }) => {
                                             value={Month?.toString()}
                                             keyboardType={'number-pad'}
                                             maxLength={2}
-                                           
+                                            contextMenuHidden={true}
+
                                             onFocus={() => {
-                                                console.log("amountfocus",AmountFocus)
-                                                if(!AmountFocus){
-                                                   // NumberFormats()
+                                                console.log("amountfocus", AmountFocus)
+                                                if (!AmountFocus) {
+                                                    // NumberFormats()
                                                 }
                                                 // else if(!NetMonth){
-                                                //     NumberFormat_avg()
+                                                // NumberFormat_avg()
                                                 // }
                                                 setMonthFocus(true)
                                                 // NumberFormats()
@@ -528,10 +529,10 @@ const IncomeDetails = ({ navigation, route }) => {
                                             onChangeText={(text) => setMonthdata(text)} />
                                     </View>}
                                 {/* <TextInput
-                                    style={[{ fontSize: 14, color: '#1A051D', fontFamily: FONTS.FontRegular, left: 5, width: '95%' }]}
-                                    value={Month?.toString()}
-                                    keyboardType={'number-pad'}
-                                    onChangeText={(text) => setMonthdata(text)} /> */}
+ style={[{ fontSize: 14, color: '#1A051D', fontFamily: FONTS.FontRegular, left: 5, width: '95%' }]}
+ value={Month?.toString()}
+ keyboardType={'number-pad'}
+ onChangeText={(text) => setMonthdata(text)} /> */}
                             </View>
 
                             <View>
@@ -557,7 +558,7 @@ const IncomeDetails = ({ navigation, route }) => {
                                         setNetMonth(false)
                                     }}
                                     onChangeText={(text) => {
-                                        if (text === '' || text?.length == 6) {
+                                        if (text === '') {
                                             setZeroStatus(false)
                                             setAvg('')
                                         } else if (incomedetail?.occupation == 'FARMER' && Month === '0') {
@@ -576,7 +577,7 @@ const IncomeDetails = ({ navigation, route }) => {
                                     }} />
                             </View>
                             {/* {ZeroStatus &&
-                        <Text style={{ color: 'red', fontSize: 9, paddingTop: 3, fontFamily: FONTS.FontRegular }}>Amount cannot be ₹0</Text>} */}
+ <Text style={{ color: 'red', fontSize: 9, paddingTop: 3, fontFamily: FONTS.FontRegular }}>Amount cannot be ₹0</Text>} */}
                         </View>
                     </ScrollView>
 
@@ -650,7 +651,7 @@ const styles = StyleSheet.create({
     },
     ViewContent: {
         // justifyContent: 'center',
-        //  alignItems: 'center',
+        // alignItems: 'center',
         flex: 1,
         backgroundColor: COLORS.colorBackground,
         padding: 20
