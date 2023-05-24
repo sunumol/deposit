@@ -12,7 +12,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import * as Icon1 from "react-native-unicons";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTranslation } from 'react-i18next';
-import Logo from '../assets/image/logofinpower.svg';
+import Logo from '../assets/image/logofinpower1.svg';
 import { api } from '../Services/Api'
 import { COLORS, FONTS } from '../Constants/Constants';
 
@@ -56,12 +56,12 @@ const HeaderDashBoard = ({ navigation, notificationCounts }) => {
 
     return (
         <View style={styles.Header}>
-            <View style={{ marginBottom: 12, left: -15 }}>
-                <Image source={require('../assets/image/logo-white.png')}
+            <View style={{ marginBottom: 12, }}>
+                {/* <Image source={require('../assets/image/logo-white.png')}
                     style={{ width: 160, height: 35 }}
-                    resizeMode='contain' />
+                    resizeMode='contain' /> */}
 
-                    {/* <Logo width={100} height={50}/> */}
+                    <Logo width={120} height={50}/>
             </View>
 
             <View style={{ flexDirection: 'row', left: -8 }}>

@@ -59,6 +59,7 @@ import CalendarActivity from '../Screens/CalendarActivity';
 import SelectCalendar from '../Screens/SelectCalendar'
 
 import { navigationRef } from './RootNavigation';
+import GeneratePin from '../Screens/GeneratePin';
 
 const Stack = createNativeStackNavigator();
 
@@ -121,7 +122,7 @@ export default function Router() {
         <Stack.Screen name="SelectCustomerNewCgt" component={netInfo.isConnected ? SelectCustomerNewCgt : NetWorkError} />
         <Stack.Screen name="UploadVid" component={netInfo.isConnected ? UploadVid : NetWorkError} />
         <Stack.Screen name="CorrectionScreen" component={netInfo.isConnected ? CorrectionScreen : NetWorkError} />
-
+        <Stack.Screen name="GeneratePin" component={netInfo.isConnected ? GeneratePin : NetWorkError} />
         {/* --------------------------- Calendar Navigation Screens Start ---------------------------------------*/}
         <Stack.Screen name="Calendar" component={netInfo.isConnected ? Calendar : NetWorkError} />
         <Stack.Screen name="CalendarActivity" component={netInfo.isConnected ? CalendarActivity : NetWorkError} />

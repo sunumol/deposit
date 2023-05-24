@@ -26,7 +26,7 @@ import OTPInputView from '../../Components/OTPInputView';
 import ModalExitApp from '../../Components/ModalExitApp';
 import { useFocusEffect } from '@react-navigation/native';
 // ----------- Image Import ------------------------
-import Svadhan from '../../assets/image/AgentLogo.svg';
+import Svadhan from '../../assets/image/logofinpower1.svg';
 
 const { height, width } = Dimensions.get('screen');
 
@@ -179,7 +179,7 @@ const PinScreen = ({ navigation, }) => {
 
                 <ImageBackground source={require('./Images/bg.png')}
                     style={styles.Linear}>
-                    <Svadhan width={350} height={80} resizeMode='contain' style={{ top: -10 }} />
+                    <Svadhan width={320} height={70} resizeMode='contain' style={{ top: -10 }} />
                     <Text style={styles.Text1}>{t('common:Hi')}, {userName}</Text>
                 </ImageBackground>
 
