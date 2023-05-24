@@ -49,6 +49,7 @@ const DetailChecks = ({ navigation, setState, proofType1, imageUrl1, relation1, 
     const [Purposes, setPurposes] = useState(null)
     const [imageStatus, setImageStatus] = useState(false)
     const [Relation, setRelation] = useState('')
+    const [Button,setButton] = useState()
     const [Image1, setImage] = useState(null)
     const [Imageurl, setImageurl] = useState('')
     const [status, setStatus] = useState(false)
@@ -371,10 +372,10 @@ const DetailChecks = ({ navigation, setState, proofType1, imageUrl1, relation1, 
                 </ScrollView>
 
                 <View style={{ position: 'absolute', left: 0, right: 0, bottom: 0, alignItems: 'center', justifyContent: 'center' }}>
-                    <TouchableOpacity onPress={() => (Purpose && Purposes == 'Spouse' ? Purposes : ownersName?.length > 2 && Image1 && !InvalidImage) ? UpdateResidenceowner() : console.log("helo")}
+                    <TouchableOpacity onPress={() => (Purpose && Purposes == 'Spouse' ? Purposes : ownersName?.length > 2 && Image1 && !InvalidImage ) ? UpdateResidenceowner() : console.log("helo")}
                         style={[styles.Button1, { backgroundColor: (Purpose && Purposes == 'Spouse' ? Purposes : ownersName?.length > 2 && Image1 && !InvalidImage) ? COLORS.colorB : 'rgba(224, 224, 224, 1)' }]}
                     >
-                        <Text style={[styles.text1, { color: (Purpose && Purposes == 'Spouse' ? Purposes : ownersName?.length > 2 && Image1 && !InvalidImage) ? COLORS.colorBackground : '#979C9E' }]}>Continue</Text>
+                        <Text style={[styles.text1, { color: (Purpose && Purposes == 'Spouse' ? Purposes : ownersName?.length > 2 && Image1 && !InvalidImage ) ? COLORS.colorBackground : '#979C9E' }]}>Continue</Text>
                     </TouchableOpacity>
                 </View>
             </>
@@ -385,6 +386,7 @@ const DetailChecks = ({ navigation, setState, proofType1, imageUrl1, relation1, 
                 setModalVisible={setModalVisible}
                 setImageStatus={setImageStatus}
                 setNamestatus={setNamestatus}
+                setImage={setImage}
                 onPressOut={() => setModalVisible(!ModalVisible)}
             // navigation={navigation}
 

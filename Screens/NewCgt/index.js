@@ -36,7 +36,8 @@ const NewCgt = ({ navigation, route }) => {
     const [ModalVisible2, setModalVisible2] = useState(false)
     const [ModalVisible, setModalVisible] = useState(false)
     const [BStatus, setBstatus] = useState(false);
- 
+    const [Dates, setDate] = useState(new Date())
+
     useFocusEffect(
         React.useCallback(() => {
             console.log('Screen was focused', NewDates);
@@ -55,6 +56,10 @@ const NewCgt = ({ navigation, route }) => {
 
     // ------------------ get Slot Api Call Start ------------------
     const getCGTslot = async (date) => {
+        var date1 = moment(Dates, "HH:mm:ss").format("hh:mm A")
+        var date2 = "07:00 AM"
+        console.log("DATE 1 AND ADET",date1 > date2)
+        console.log("new date", moment(Dates, "HH:mm:ss").format("hh:mm A"))
         const data = {
             "employeeId": 1,
             "selectedDate": moment(NewDates).utc().format('DD-MM-YYYY')
@@ -64,7 +69,16 @@ const NewCgt = ({ navigation, route }) => {
                 type: 'SET_ACTIVITY',
                 payload: res?.data?.body[0].sloatActivityList,
             });
-             console.log('------------------- CGT slot res', res)
+            console.log('------------------- CGT slot res', res?.data?.body[0].sloatActivityList)
+            // const Temp = res?.data?.body[0].sloatActivityList.forEach((element, index) => {
+            //     if (moment(Dates, "HH:mm:ss").format("hh:mm A") > '7.00 PM') {
+            //         element.selection = true;
+            //         console.log("TRUE")
+            //     } else {
+            //         element.selection = false;
+            //         console.log("FALSE")
+            //     }
+            // });
             setSlotlist(res?.data?.body[0].sloatActivityList);
             setStatus(false)
         })
@@ -112,13 +126,13 @@ const NewCgt = ({ navigation, route }) => {
                     <ActivityIndicator size={30} color={COLORS.colorB} />
                 </View> :
                 <View style={styles.ViewContent}>
-                    
+
                     <CalendarStrips
                         callback={callback}
                         setNewDates={setNewDates}
                         getCGTslot={() => getCGTslot()}
                     />
-           
+
                     <Cgt
                         navigation={navigation}
                         data={slotlist}

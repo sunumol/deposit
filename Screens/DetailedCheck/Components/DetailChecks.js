@@ -211,7 +211,7 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
 
     // ------------------ get Conduct DLE basic detail Village Api Call Start ------------------
     const getVillage = async (value) => {
-        console.log('api called')
+        console.log('api called',details?.pin)
         const data = {
              "pin": details?.pin,
            // "pin": 688540,

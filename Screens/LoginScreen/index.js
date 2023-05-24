@@ -37,7 +37,7 @@ import { useFocusEffect } from '@react-navigation/native';
 
 // --------------- Image Imports ---------------------
 import Resend from '../../assets/Images/resend.svg'
-import Logo from '../../assets/Images/svadhan.svg';
+import Logo from '../../assets/image/logofinpower.svg';
 
 const { height, width } = Dimensions.get('screen');
 
@@ -517,7 +517,7 @@ const LoginScreen = ({ navigation }) => {
                                 <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
 
                                 <View style={{ marginBottom: IsOtp1 ? 0 : 0, marginTop: Dimensions.get('window').height * 0.2, alignItems: 'center', justifyContent: 'center', }}>
-                                    <Logo width={160} height={51} resizeMode='contain' />
+                                    <Logo width={180} height={54} resizeMode='contain' />
                                 </View>
 
                                 <View style={[styles.container, { marginTop: Dimensions.get('window').height * 0.05 }]}>
