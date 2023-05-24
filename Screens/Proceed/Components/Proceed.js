@@ -6,7 +6,7 @@ import {
     Dimensions,
     TouchableOpacity
 } from 'react-native'
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import LottieView from 'lottie-react-native';
 import { useRoute } from '@react-navigation/native';
 
@@ -17,8 +17,14 @@ const { height, width } = Dimensions.get('screen');
 const Energy = ({ navigation }) => {
     const route = useRoute();
 
-    const [ButtonS, setButtonS] = useState(route?.params?.status ? true : false)
-    { console.log('-----status-----', route) }
+    const [ButtonS, setButtonS] = useState( false)
+   
+    useEffect(() => {
+        if(route?.params?.status){
+            setButtonS(true)
+        }
+    }, [route])
+    
     return (
         <>
             <View style={styles.mainContainer}>
