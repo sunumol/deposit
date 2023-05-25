@@ -235,7 +235,7 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
 
         }
         await api.saveIncomeDetails(data).then((res) => {
-            console.log('-------------------res saveIncomeDetails', res?.data?.body)
+            console.log('-------------------res saveIncomeDetails',data)
             if (res?.status) {
                 navigation.navigate('Proceed')
             }
@@ -252,6 +252,7 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
 
             if (text < 13) {
                 setMonth(text)
+                setPurpose(text)
             } else {
                 setMonth('')
             }
@@ -392,7 +393,7 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
                                 </View>
                                 <View style={{ flexDirection: 'column', flex: 1, marginLeft: 12 }}>
                                     <Text style={styles.nameText}>{incomedetail?.name}</Text>
-                                    <Text style={styles.underText}>{incomedetail?.occupation == 'SALARIED_EMPLOYEE' ? 'Salaried employee' : incomedetail?.occupation == 'FARMER' ? 'Farmer' : incomedetail?.occupation == "BUSINESS_SELF_EMPLOYED" ? "Business/Self employed" : 'Daily wage labourer'}</Text>
+                                    <Text style={styles.underText}>{incomedetail?.occupation == 'SALARIED_EMPLOYEE' ? 'Salaried employee' : incomedetail?.occupation == 'FARMER' ? 'Farmer' : incomedetail?.occupation == "BUSINESS_SELF_EMPLOYED" ? "Business/Self employed" : incomedetail?.occupation=='UNEMPLOYED' ? 'Unemployed' : 'Daily wage labourer'}</Text>
                                 </View>
                                 <View style={{ flexDirection: 'row', left: -5 }}>
                                     <Text style={styles.dateText}>{relationShip}</Text>
@@ -461,7 +462,7 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
                                 {incomedetailfield?.field2 == 'Salary credit method' ? <TouchableOpacity style={[styles.SelectBox, { justifyContent: 'space-between' }]} onPress={() => setModalVisible(true)}>
                                     <Text style={[styles.textSelect]}>{Purpose ? Purpose : 'Select'}</Text>
 
-                                    <Icon1 name="chevron-down" size={18} color={'#808080'} style={{ marginRight: 10 }} />
+                                    {/* <Icon1 name="chevron-down" size={18} color={'#808080'} style={{ marginRight: 10 }} /> */}
                                 </TouchableOpacity> :
                                     <View style={styles.SelectBox}>
                                         <TextInput

@@ -457,7 +457,9 @@ useEffect(()=>{
                         <Text style={styles.underText}>Salaried Employee</Text> :
                         spousedetail?.occupation == 'BUSINESS_SELF_EMPLOYED' ?
                           <Text style={styles.underText}>Business Self Employed</Text> :
-                          <Text style={styles.underText}>Farmer</Text>}
+                          spousedetail?.occupation== 'UNEMPLOYED' ? 
+                          <Text style={styles.underText}>Unemployed</Text>:
+                          <Text style={styles.underText}>Farmer</Text>  }
 
                   </View>
                   <View style={{ flexDirection: 'row', left: -5 }}>

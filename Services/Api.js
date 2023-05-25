@@ -7,6 +7,7 @@ const baseURL2 = 'http://3.108.93.231:8686/'
 const baseURL3 = 'http://3.108.93.231:8086/'
 // --------- Base URL End--------------------
 const baseURLDPD = 'http://3.108.93.231:8084/'
+const baseURLVersion = 'http://3.108.93.231:8810/'
 
 export const api = {
 
@@ -587,7 +588,18 @@ export const api = {
   // ------------------   customerProfile listing---------------------
   getcompletedCollections: data => {
 
-    return axios.get(`${baseURL3}completedCollections/${data.agentId}`, {
+    return axios.get(`${baseURLVersion}completedCollections/${data.agentId}`, {
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+  },
+
+  //----------------------APP NEW VERSION CHECK
+
+  getAppNewVersion:() => {
+
+    return axios.post(`${baseURLVersion}getLatestAppVersion`, {
       headers: {
         'Content-Type': 'application/json',
       }

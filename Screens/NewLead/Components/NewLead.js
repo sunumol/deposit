@@ -164,7 +164,7 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus }) => {
         await api.createLead(data).then((res) => {
             if (res?.status == 200) {
                 if (res?.data?.body == 'This number is already registered') {
-                    setMessage('The number is already registered')
+                    setMessage('This number is already registered')
                     setValidModal1(true)
                 }
                 else if (res?.data?.body == 'Lead generated') {

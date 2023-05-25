@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useEffect,useState}from 'react';
 import {
     StyleSheet,
     SafeAreaView,
@@ -6,16 +6,21 @@ import {
 } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
-
+import { api } from '../../Services/Api';
 // ---------- Components Import --------------------------
 import Pin from './Components/Pin';
 import Statusbar from '../../Components/StatusBar';
 import Header from '../../Components/Header';
 
+
 const ForgotPin = ({ navigation }) => {
 
     const isDarkMode = true
     const { t } = useTranslation();
+ 
+
+
+   
 
     return (
         <SafeAreaProvider>

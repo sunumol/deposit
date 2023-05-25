@@ -50,8 +50,8 @@ const AnsModal = ({ ModalVisible, onPressOut,onPress1 }) => {
 
                     <View style={{ paddingTop: width * 0.02,paddingHorizontal: width *0.05 }}>
                       
-                        <Text style={styles.textdesc}>Mobile number cannot be same as</Text>
-                        <Text style={styles.textdesc}>that of the agent</Text>
+                        <Text style={styles.textdesc}>Your answers do not match with</Text>
+                        <Text style={styles.textdesc}>our records</Text>
                     </View>
 
 
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     },
     modalContainer: {
         width: Dimensions.get('window').width * 0.9,
-        height: Dimensions.get('window').width * 0.49,
+        height: Dimensions.get('window').width * 0.50,
         backgroundColor: COLORS.colorBackground,
         borderRadius: 8,
         alignItems: 'center',
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
     },
     buttonStyle: {
         backgroundColor: COLORS.colorB,
-        width: Dimensions.get('window').width * 0.30,
+        width: Dimensions.get('window').width * 0.32,
         height: 48,
         borderRadius: 54,
         alignItems: 'center',

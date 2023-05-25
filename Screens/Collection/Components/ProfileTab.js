@@ -130,7 +130,7 @@ useEffect(()=>{
             <View style={styles.mainContainer}>
                 <Profiles customerdata={custData} />
                 <View style={{ alignItems: 'flex-start', padding: 10 }}>
-                    <Text style={styles.GText}>Continuing Guarantor</Text>
+                    <Text style={styles.GText}>Co-Applicant</Text>
                 </View>
 
                 <View style={{ alignItems: 'center' }}>

@@ -65,7 +65,7 @@ const Vehicle = ({ navigation }) => {
     const [searchvehicledata, setSearchvehicledata] = useState({})
     const [VehicleStatus, setVehicleStatus] = useState(false)
     const [ModalVehicle, setModalVehicle] = useState(false)
-    const [CustomerDetail,setCustomerDetail] = useState([])
+    const [CustomerDetail, setCustomerDetail] = useState([])
     const toggleCheckbox = () => setChecked(!checked);
 
     const Data = [
@@ -144,7 +144,7 @@ const Vehicle = ({ navigation }) => {
 
 
         }
-        await api. getCustomerdetail(data).then((res) => {
+        await api.getCustomerdetail(data).then((res) => {
             console.log('-------------------res customerdetail', res.data.body)
             if (res?.status) {
                 setCustomerDetail(res.data.body)
@@ -203,7 +203,7 @@ const Vehicle = ({ navigation }) => {
         await api.saveVehicleDetails(data).then((res) => {
             console.log('-------------------res save vehicle', res)
             if (res?.status) {
-                setStatus(!Status) 
+                setStatus(!Status)
                 navigation.navigate('VehicleOwn')
             }
         }).catch((err) => {
@@ -241,10 +241,10 @@ const Vehicle = ({ navigation }) => {
 
 
     const getInitials = (name) => {
-      
+
         let initials;
         const nameSplit = name?.split(" ");
-         const nameLength = nameSplit?.length;
+        const nameLength = nameSplit?.length;
         if (nameLength > 1) {
             initials =
                 nameSplit[0].substring(0, 1) +
@@ -252,8 +252,8 @@ const Vehicle = ({ navigation }) => {
         } else if (nameLength === 1) {
             initials = nameSplit[0].substring(0, 1);
         } else return;
-    
-         return initials.toUpperCase();
+
+        return initials.toUpperCase();
     };
 
 
@@ -262,7 +262,7 @@ const Vehicle = ({ navigation }) => {
 
         <>
             <View style={styles.mainContainer}>
-                <ScrollView  keyboardShouldPersistTaps={'handled'}>
+                <ScrollView keyboardShouldPersistTaps={'handled'}>
                     <View>
                         <Text style={styles.TextOwner}>Vehicle owner</Text>
                     </View>
@@ -286,7 +286,7 @@ const Vehicle = ({ navigation }) => {
                                 <TextInput
                                     readOnly={true}
                                     contextMenuHidden={true}
-                                    // placeholder='KL34E3278'
+                                    placeholder='KL34E3278'
                                     placeholderTextColor='#808080'
                                     value={numbers}
                                     //maxLength={10}
@@ -312,11 +312,19 @@ const Vehicle = ({ navigation }) => {
 
                         </View>
                         :
-                        <View style={styles.SelectBox1}>
+                        <View style={styles.SelectBox}>
 
+                            <TextInput
+                                editable={false}
+                                placeholder='KL34E3278'
+                                placeholderTextColor='#808080'
+                                style={styles.Num}
 
+                            />
 
                             <View style={styles.SearhView} >
+
+
                                 <Search />
                             </View>
                         </View>}
@@ -331,13 +339,15 @@ const Vehicle = ({ navigation }) => {
                                     <Text style={styles.nameText}>{spousedetail?.name}</Text>
 
 
-                                    {spousedetail?.occupation == 'DAILY_WAGE_LABOURER,' ?
+                                    {spousedetail?.occupation == 'DAILY_WAGE_LABOURER' ?
                                         <Text style={styles.underText}>Daily Wage Labourer</Text> :
                                         spousedetail?.occupation == 'SALARIED_EMPLOYEE' ?
                                             <Text style={styles.underText}>Salaried Employee</Text> :
                                             spousedetail?.occupation == 'BUSINESS_SELF_EMPLOYED' ?
                                                 <Text style={styles.underText}>Business Self Employed</Text> :
-                                                <Text style={styles.underText}>Farmer</Text>}
+                                                spousedetail?.occupation == 'UNEMPLOYED' ?
+                                                    <Text style={styles.underText}>Unemployed</Text> :
+                                                    <Text style={styles.underText}>Farmer</Text>}
 
 
 
@@ -350,33 +360,35 @@ const Vehicle = ({ navigation }) => {
                                 </View>
 
                             </View>
-                        </View>:SearchStatus2 && Purpose == "Customer" &&
-                         <View style={styles.containerBox}>
-                         <View style={{ flex: 1, flexDirection: 'row' }}>
-                             <View style={[styles.circleView, { backgroundColor: 'rgba(206, 116, 143, 1)' }]}>
-                                 <Text style={styles.shortText}>{getInitials(CustomerDetail?.name)}</Text>
-                             </View>
-                             <View style={{ flexDirection: 'column', flex: 1, marginLeft: 12 }}>
-                                 <Text style={styles.nameText}>{CustomerDetail?.name}</Text>
+                        </View> : SearchStatus2 && Purpose == "Customer" &&
+                        <View style={styles.containerBox}>
+                            <View style={{ flex: 1, flexDirection: 'row' }}>
+                                <View style={[styles.circleView, { backgroundColor: 'rgba(206, 116, 143, 1)' }]}>
+                                    <Text style={styles.shortText}>{getInitials(CustomerDetail?.name)}</Text>
+                                </View>
+                                <View style={{ flexDirection: 'column', flex: 1, marginLeft: 12 }}>
+                                    <Text style={styles.nameText}>{CustomerDetail?.name}</Text>
 
 
-                                 {CustomerDetail?.occupation == 'DAILY_WAGE_LABOURER,' ?
-                                     <Text style={styles.underText}>Daily Wage Labourer</Text> :
-                                     CustomerDetail?.occupation == 'SALARIED_EMPLOYEE' ?
-                                         <Text style={styles.underText}>Salaried Employee</Text> :
-                                         CustomerDetail?.occupation == 'BUSINESS_SELF_EMPLOYED' ?
-                                             <Text style={styles.underText}>Business Self Employed</Text> :
-                                             <Text style={styles.underText}>Farmer</Text>}
-                             </View>
+                                    {CustomerDetail?.occupation == 'DAILY_WAGE_LABOURER' ?
+                                        <Text style={styles.underText}>Daily Wage Labourer</Text> :
+                                        CustomerDetail?.occupation == 'SALARIED_EMPLOYEE' ?
+                                            <Text style={styles.underText}>Salaried Employee</Text> :
+                                            CustomerDetail?.occupation == 'BUSINESS_SELF_EMPLOYED' ?
+                                                <Text style={styles.underText}>Business Self Employed</Text> :
+                                                CustomerDetail?.occupation == 'UNEMPLOYED' ?
+                                                    <Text style={styles.underText}>Unemployed</Text> :
+                                                    <Text style={styles.underText}>Farmer</Text>}
+                                </View>
 
 
-                             <View style={{ flexDirection: 'row', }}>
-                                 <Image1 width={11} height={11} top={3} />
-                                 <Text style={styles.dateText}>{CustomerDetail?.dateOfBirth}</Text>
-                             </View>
+                                <View style={{ flexDirection: 'row', }}>
+                                    <Image1 width={11} height={11} top={3} />
+                                    <Text style={styles.dateText}>{CustomerDetail?.dateOfBirth}</Text>
+                                </View>
 
-                         </View>
-                     </View>}
+                            </View>
+                        </View>}
 
                     {SearchStatus2 &&
 

@@ -12,6 +12,7 @@ import {
     BackHandler,
     Dimensions,
     ActivityIndicator,
+    Linking,
     PermissionsAndroid
 } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -34,7 +35,9 @@ import NetWorkError from '../NetWorkError';
 // import OTPInputView from '../../Components/OTPInputView';
 import ModalExitApp from '../../Components/ModalExitApp';
 import { useFocusEffect } from '@react-navigation/native';
-
+import UpdateModal from './Components/UpdateModal';
+import VersionModal from './Components/VersionModal';
+import AgentModal from './Components/AgentModal';
 // --------------- Image Imports ---------------------
 import Resend from '../../assets/Images/resend.svg'
 import Logo from '../../assets/image/logofinpower.svg';
@@ -63,7 +66,8 @@ const LoginScreen = ({ navigation }) => {
     const [button, setButton] = useState(true)
     const [status, setStatus] = useState(false)
     const [otpclick, setOtpclick] = useState(true)
-
+    const [ModalAgent, setModalAgent] = useState(false)
+    const [Mandatory, setMandatory] = useState()
     // --------------Device Configuration Start----------
     const [ipAdrress, setIPAddress] = useState();
     const [DeviceId, setDeviceId] = useState();
@@ -77,7 +81,8 @@ const LoginScreen = ({ navigation }) => {
     const [ModalVisibleError, setModalVisibleError] = useState(false)
     const [maxError, setMaxError] = useState(false)
     const [modalExitAppVisible, setModalExitAppVisible] = useState(false);
-
+    const [ModalVisibleVer, setModalVisibleVer] = useState(false)
+    const [ModalVisibleUp, setModalVisibleUp] = useState(false)
     // --------------- getOtp Button Disable Start ------------
     const [getOtpDisable, setGetOtpDisable] = useState(false);
     const [selectedPhoneNum, setSelectedPhoneNum] = useState()
@@ -86,6 +91,7 @@ const LoginScreen = ({ navigation }) => {
     useEffect(() => {
 
         getData()
+        getAppNewVersion()
         // Get IPV4 Address Start ------------------------
         NetworkInfo.getIPV4Address().then(ipv4Address => {
             console.log(ipv4Address);
@@ -97,7 +103,7 @@ const LoginScreen = ({ navigation }) => {
         DeviceInfo.getUniqueId().then((uniqueId) => {
             setDeviceId(uniqueId)
         });
-        console.log('-----------------', DeviceId)
+        console.log('----------------- device id print', DeviceId)
         // Get DeviceInfo End ------------------------
 
     }, [])
@@ -157,6 +163,30 @@ const LoginScreen = ({ navigation }) => {
             return true;
         }
     };
+
+    const getAppNewVersion = () => {
+        console.log("inside api")
+
+        api.getAppNewVersion().then(result => {
+            if (result?.data?.body == null) {
+                setMandatory(false)
+               
+            } else {
+                if (result?.data?.body?.mandatory) {
+                    setModalVisibleVer(true)
+                } else {
+                    setModalVisibleUp(true)
+                }
+            }
+            console.log("version checking....", result.data.body)
+            //  setModalVisible2(true)
+
+        })
+            .catch(err => {
+                console.log("banner 3333---->", err);
+
+            });
+    }
 
     useFocusEffect(
         React.useCallback(() => {
@@ -261,7 +291,7 @@ const LoginScreen = ({ navigation }) => {
             // --------------- getOtp Button Disable End ------------
 
         } else {
-            if(num.length === 1){
+            if (num.length === 1) {
                 setPhoneNum('')
             }
             setModalVisible1(true)
@@ -325,10 +355,10 @@ const LoginScreen = ({ navigation }) => {
                     setSelectedPhoneNum(PhoneNum)
                     // -----getOtp Button Disable End-----
                 } else if (err?.response?.data?.message === 'Please enter valid agent mobile number') {
-                    setModalVisibleError(true)
+                    //setModalVisibleError(true)
                     setButton(true)
                     setOtpclick(true)
-                   
+                    setModalAgent(true)
                     setMessage('Please enter valid agent mobile number')
                     setPhoneNum('')
                 } else if (err?.response?.data?.message === 'Sorry! We are unable to proceed further.') {
@@ -505,10 +535,10 @@ const LoginScreen = ({ navigation }) => {
                 {netInfo.isConnected
                     ?
                     <>
-                        <ScrollView 
-                        keyboardShouldPersistTaps={'handled'}
-                        ref={scrollViewRef}
-                        onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: true })}
+                        <ScrollView
+                            keyboardShouldPersistTaps={'handled'}
+                            ref={scrollViewRef}
+                            onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: true })}
                         >
                             <KeyboardAvoidingView style={{ flex: 1 }}
                                 {...(Platform.OS === 'ios' && { behavior: 'position' })}>
@@ -618,21 +648,22 @@ const LoginScreen = ({ navigation }) => {
                                         </View> : null}
 
                                     {IsOtp1 ?
-                                       <OTPInputView
+                                        <OTPInputView
                                             style={styles.OtpInput}
                                             autoCompleteType="off"
                                             pinCount={4}
                                             ref={otpInput2}
                                             value={OtpValue}
-                                           autoFocus={true}
+                                            autoFocus={true}
                                             onCodeChanged={otp => {
-                                            setOtpValue(otp)  
-                                            if (otp.length === 4) {
-                                              
-                                            } else {
-                                                setOtp(false)
-                                                setIsExpired(false)
-                                            }}}
+                                                setOtpValue(otp)
+                                                if (otp.length === 4) {
+
+                                                } else {
+                                                    setOtp(false)
+                                                    setIsExpired(false)
+                                                }
+                                            }}
                                             code={OtpValue} //You can supply this prop or not. The component will be used as a controlled / uncontrolled component respectively.
                                             autoFocusOnLoad={true}
                                             keyboardType="numeric"
@@ -667,16 +698,16 @@ const LoginScreen = ({ navigation }) => {
                                         </View>
                                     }
                                     {maxError === true ?
-                                         lang == "en" ?
-                                        <View style={{ marginTop: Dimensions.get('window').height * 0.03, }}>
-                                            <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center', width: width * 0.8 }}>{t('common:Valid2')}</Text>
-                                            <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center' }}>Please try after {errorMessage.replace(/\D/g, '')} minutes</Text>
-                                        </View>
-                                        :
-                                        <View style={{ marginTop: Dimensions.get('window').height * 0.03, }}>
-                                            <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center', width: width * 0.8 }}>{t('common:Valid2')}</Text>
-                                            <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center' }}>{errorMessage.replace(/\D/g, '')} {t('common:Valid3')}</Text>
-                                        </View>
+                                        lang == "en" ?
+                                            <View style={{ marginTop: Dimensions.get('window').height * 0.03, }}>
+                                                <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center', width: width * 0.8 }}>{t('common:Valid2')}</Text>
+                                                <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center' }}>Please try after {errorMessage.replace(/\D/g, '')} minutes</Text>
+                                            </View>
+                                            :
+                                            <View style={{ marginTop: Dimensions.get('window').height * 0.03, }}>
+                                                <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center', width: width * 0.8 }}>{t('common:Valid2')}</Text>
+                                                <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center' }}>{errorMessage.replace(/\D/g, '')} {t('common:Valid3')}</Text>
+                                            </View>
                                         : IsOtp1 && timerCount === 0 ?
                                             <TouchableOpacity onPress={() => ResendApiCall()} style={{ padding: 18 }}>
                                                 <View style={{ flexDirection: 'row', }}>
@@ -696,10 +727,10 @@ const LoginScreen = ({ navigation }) => {
                                 otpMessage={otpMessage}
                                 setModalVisible={setModalVisible}
                                 navigation={navigation}
-                                ConfirmOtp={(data) => 
-                                    {setOtpValue(data)
-                                        ConfirmOtp(data)
-                                    }}
+                                ConfirmOtp={(data) => {
+                                    setOtpValue(data)
+                                    ConfirmOtp(data)
+                                }}
                                 setOtpFetch={setOtpFetch}
                             /> : null}
                         <ToastModal
@@ -719,6 +750,24 @@ const LoginScreen = ({ navigation }) => {
                             onPressOut={() => setModalExitAppVisible(!modalExitAppVisible)}
                             setModalExitAppVisible={setModalExitAppVisible}
                         />
+                        <AgentModal
+                            // Validation={t('common:Valid')}
+                            ModalVisible={ModalAgent}
+                            onPressOut={() => setModalAgent(!ModalAgent)}
+                            setModalVisible={setModalAgent}
+                        />
+                        <VersionModal
+                            ModalVisible={ModalVisibleVer}
+                            navigation={navigation}
+                            onPressOut={() => setModalVisibleVer(!ModalVisibleVer)}
+                            setModalVisible2={setModalVisibleVer} />
+
+                        <UpdateModal
+                            ModalVisible={ModalVisibleUp}
+                            navigation={navigation}
+
+                            onPressOut={() => setModalVisibleUp(!ModalVisibleUp)}
+                            setModalVisible2={setModalVisibleUp} />
                     </>
                     :
                     <NetWorkError />
@@ -775,7 +824,7 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         flexDirection: 'row',
         borderColor: COLORS.colorBorder,
-        marginLeft: 3
+        marginLeft: 0
     },
     TextInput: {
         paddingLeft: 21,

@@ -399,7 +399,7 @@ export default {
 
     //iNSURANCE CLAIM
 
-    'deathG': 'Continuing Guarantor Death Intimation',
+    'deathG': 'Co-Applicant Death Intimation',
     'TCDeath': 'Trust Circle Member Death Intimation',
     'initimation': 'We have already received intimation',
     'Memberdetail': 'Member details',
@@ -578,7 +578,7 @@ export default {
     'TCM1': 'TC Member',
     'ALA': 'Active Loan Accounts',
     'AdhaarId':'Aadhaar ID',
-    'ConGTR':'Continuing Guarantor',
+    'ConGTR':'Co-Applicant',
     'Spouse':'Spouse'
 
 

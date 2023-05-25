@@ -22,6 +22,7 @@ const { height, width } = Dimensions.get('screen');
 const Generate = (navigation) => {
         const [dob,setDob] = useState('')
         const [MitraID,setSMitraID] = useState('')
+        const [ModalVisible,setModalVisible] = useState(false)
         
     return (
         <View style={styles.mainContainer}>
@@ -69,6 +70,13 @@ const Generate = (navigation) => {
                         <Text style={[styles.continueText, { color: dob && MitraID ? COLORS.colorBackground : 'rgba(151, 156, 158, 1)' }]}>Submit</Text>
                     </TouchableOpacity>
                 </View>
+
+                <AnsModal
+               
+                ModalVisible={ModalVisible}
+                onPressOut={() => setModalVisible(!ModalVisible)}
+                setModalVisible={setModalVisible}
+            />
         </View>
     )
 }
