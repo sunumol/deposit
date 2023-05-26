@@ -105,7 +105,7 @@ export default {
     'Business': 'Business/ Self Employed',
     'Terms1': 'Terms and Conditions',
     'Privacy1': 'Privacy Policy',
-    'Sms1': 'Allow Svadhan to read the SMS',
+    'Sms1': 'Allow Svadhan to input OTP',
     'PinError': 'PIN does not match',
     'MonthRepay': 'Monthly Loan Repayment',
     'UploadSpId1': "Your spouse guarantees your loan. Please capture your spouse's voter ID to know your eligibility",
