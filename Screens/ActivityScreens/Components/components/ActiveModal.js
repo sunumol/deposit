@@ -183,18 +183,13 @@ const styles = StyleSheet.create({
     modalContainer: {
         width: '100%',
         backgroundColor: COLORS.colorBackground,
-        // borderTopLeftRadius: 30,
-        // borderTopRightRadius: 30
-        // borderBottomStartRadius: 30,
-        // borderBottomEndRadius: 30,
     },
     statusText: {
         fontSize: 14,
         fontFamily: FONTS.FontBold,
         color: COLORS.colorBlack,
-        textAlign: 'center',
         paddingTop: 20,
-     
+        paddingLeft: 15,
     },
     circleStyle: {
         width: 50,

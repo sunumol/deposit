@@ -38,11 +38,13 @@ const Profile = ({ navigation }) => {
     const { t } = useTranslation();
     const dispatch = useDispatch()
     const netInfo = useNetInfo();
+
     const [notificationCount, SetNotificationCount] = useState()
     const [modalExitAppVisible, setModalExitAppVisible] = useState(false);
     const [custID, setCustId] = useState()
     const [fcmToken, setFcmToken] = useState()
     const [id,setId] = useState(null)
+
     useEffect(() => {
         AsyncStorage.getItem("CustomerId").then((value) => {
             setCustId(value)
@@ -57,6 +59,8 @@ const Profile = ({ navigation }) => {
             firebaseTokenSentTo()
         }
     }, [fcmToken ])
+
+    
 
     const [ModalCall, setModalCall] = useState(false)
     const isDarkMode = true;
@@ -139,20 +143,20 @@ const Profile = ({ navigation }) => {
     }, []);
 
     const getData = async () => {
-  
         try {
             const lang = await AsyncStorage.getItem('CallActivity')
-            console.log("no modal data",lang)
+            console.log(lang,'--------------')
             if (lang !== null) {
                 console.log("no modal data inside")
                 setId(lang)
                 setModalCall(true)
             }
-
         } catch (e) {
             console.log(e)
         }
     }
+
+    
 
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
@@ -242,7 +246,7 @@ const Profile = ({ navigation }) => {
                 id={id}
                 ModalVisible={ModalCall}
                 onPressOut={() => { setModalCall(!ModalCall),
-                     navigation.navigate('ActivityScreens',{id:id}) }}
+                     navigation.navigate('Profile') }}
                 setModalVisible={setModalCall}
             />
         </SafeAreaProvider>:<NetWorkError setModalCall={false}/>}

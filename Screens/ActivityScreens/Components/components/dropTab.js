@@ -109,6 +109,7 @@ const ActiveTab = (props) => {
 
     return (
         <>
+        {console.log("-----welcome call-----",props?.details?.purpose)}
             <TouchableOpacity
                 style={styles.boxStyle}
                 key={props?.id}
@@ -119,6 +120,9 @@ const ActiveTab = (props) => {
 
                         if (!props?.meet) {
                             openDialScreen(props?.phoneNumber)
+                            AsyncStorage.setItem('CallActivity', JSON.stringify(props?.details?.activityId));
+                            AsyncStorage.setItem('CallActivityDetails', JSON.stringify(props?.details));
+                            console.log('hehheheheh')
                         }
 
                         setModalVisible(true)

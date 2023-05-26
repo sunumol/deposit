@@ -2,6 +2,7 @@
 import axios from 'axios';
 
 // --------- Base URL Start------------------
+const baseUAT = 'http://13.235.213.160:'
 const baseURL = 'http://3.108.93.231:8383/'
 const baseURL2 = 'http://3.108.93.231:8686/'
 const baseURL3 = 'http://3.108.93.231:8086/'

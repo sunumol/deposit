@@ -178,7 +178,7 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
 
         }
         await api.getIncomeDetails(data).then((res) => {
-            console.log('-------------------res getIncomeDetails', res?.data?.body?.incomeDetailsFieldHeadders)
+            console.log('-------------------res getIncomeDetails', res?.data?.body)
             if (res?.status) {
                 setIncomedetail(res?.data?.body)
                 setIncomedetailfield(res?.data?.body?.incomeDetailsFieldHeadders)

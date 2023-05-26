@@ -562,6 +562,18 @@ const ForgotPin = ({ navigation }) => {
                 onPressOut={() => setModalVisibleError(!ModalVisibleError)}
                 setModalVisible={setModalVisibleError}
             />
+                        <VersionModal
+                            ModalVisible={ModalVisibleVer}
+                            navigation={navigation}
+                            onPressOut={() => setModalVisibleVer(!ModalVisibleVer)}
+                            setModalVisible2={setModalVisibleVer} />
+
+                        <UpdateModal
+                            ModalVisible={ModalVisibleUp}
+                            navigation={navigation}
+
+                            onPressOut={() => setModalVisibleUp(!ModalVisibleUp)}
+                            setModalVisible2={setModalVisibleUp} />
         </>
     )
 }

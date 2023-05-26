@@ -176,8 +176,6 @@ const MeetTab = (props) => {
                                                                     type: 'SET_CGT_ACTIVITY_ID',
                                                                     payload: item.activityId,
                                                                 });
-
-
                                                                 setDetails(item)
                                                                 getDlePageNumber(item.activityId)
                                                             } else if (item?.purpose == 'Conduct CGT') {
@@ -186,15 +184,13 @@ const MeetTab = (props) => {
                                                                     payload: item.activityId,
                                                                 });
                                                                 props.navigation.navigate('CGT')
-
-
                                                             } else {
                                                                 AsyncStorage.setItem('CallActivity', JSON.stringify(item?.activityId));
+                                                                AsyncStorage.setItem('CallActivityDetails', JSON.stringify(item));
                                                                 console.log("item id", item?.activityId)
                                                                 if (!props?.meet) {
                                                                     openDialScreen(item?.mobileNumber)
                                                                 }
-
                                                                 setModalVisible(true)
                                                                 setDetails(item)
                                                             }
