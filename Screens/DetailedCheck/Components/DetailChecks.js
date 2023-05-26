@@ -391,9 +391,9 @@ DetailChecks = ({ navigation, details,nav,setVillagename1,setPostoffice1,setLand
 
                             {BStatus ?
                                 (<View style={{paddingTop:10}}>
-                                    {villagenamedata.length > 0
+                                    {villagenamedata?.length > 0
                                         ? <>
-                                            {villagenamedata.map((item) => {
+                                            {villagenamedata?.map((item) => {
                                                 return (
                                                     <TouchableOpacity onPress={() => {
                                                         setBstatus(false)

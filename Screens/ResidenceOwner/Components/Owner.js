@@ -122,7 +122,7 @@ const DetailChecks = ({ navigation, setState, proofType1, imageUrl1, relation1, 
 
         }
         await api.getResidenceowner(data).then((res) => {
-            console.log('-------------------res Residence owner', res?.data?.body?.imageUrl)
+            console.log('-------------------res Residence owner', res?.data?.body)
             if (res?.status) {
 
                 setPurposes(res?.data?.body?.relationShipWithCustomer)
@@ -155,7 +155,7 @@ const DetailChecks = ({ navigation, setState, proofType1, imageUrl1, relation1, 
     // ------------------save and update residence owner detail ------------------
 
     const UpdateResidenceowner = async () => {
-        console.log('api called', activityId)
+        console.log('api called', activityId,Purposes)
 
         const data = {
             "activityId": activityId,
@@ -242,6 +242,7 @@ const DetailChecks = ({ navigation, setState, proofType1, imageUrl1, relation1, 
         return initials.toUpperCase();
     };
 
+  
 
     return (
 
@@ -303,7 +304,7 @@ const DetailChecks = ({ navigation, setState, proofType1, imageUrl1, relation1, 
                     <View>
                         <Text style={styles.proof}>Relationship with Customer</Text>
                     </View>
-                    <TouchableOpacity style={styles.SelectBox} onPress={() => { setModalVisible1(true), getSpousedetail() }} >
+                    <TouchableOpacity style={styles.SelectBox} onPress={() => { setModalVisible1(true), getSpousedetail(),setOwnersName(null) }} >
                         {Purposes === null ? <Text style={styles.textSelect}>Select</Text> :
                             <Text style={[styles.textSelect, { color: '#1A051D', marginLeft: 8 }]}>{Purposes}</Text>}
                         <Icon1 name="chevron-down" size={18} color={'#808080'} style={{ marginRight: 10 }} />
@@ -325,6 +326,8 @@ const DetailChecks = ({ navigation, setState, proofType1, imageUrl1, relation1, 
                                             <Text style={styles.underText}>Salaried Employee</Text> :
                                             spousedetail?.occupation == 'BUSINESS_SELF_EMPLOYED' ?
                                                 <Text style={styles.underText}>Business Self Employed</Text> :
+                                                spousedetail?.occupation == 'UNEMPLOYED' ? 
+                                                <Text style={styles.underText}>Unemployed</Text>:
                                                 <Text style={styles.underText}>Farmer</Text>}
                                 </View>
                                 <View style={{ flexDirection: 'row', }}>
@@ -342,10 +345,13 @@ const DetailChecks = ({ navigation, setState, proofType1, imageUrl1, relation1, 
                                     <TextInput
                                         value={ownersName}
                                         maxLength={30}
+                                        keyboardType="email-address"
                                         style={styles.TextInputBranch}
                                         contextMenuHidden={true}
                                         onChangeText={(text) => {
                                             setNameValid(false)
+                                           
+                                          
                                             const firstDigitStr = String(text)[0];
                                             if (firstDigitStr == ' ') {
                                                 containsWhitespace(text)
@@ -358,7 +364,7 @@ const DetailChecks = ({ navigation, setState, proofType1, imageUrl1, relation1, 
                                             else if (/^[^!-\/:-@\.,[-`{-~1234567890₹~`|•√π÷×¶∆€¥$¢^°={}%©®™✓]+$/.test(text) || text === '') {
                                                 setOwnersName(text),
                                                     relative1(text)
-                                            }
+                                            } 
                                         }}
                                     // onFocus={() => setPstatus(false)}
                                     // onKeyPress={() => setPstatus(false)}

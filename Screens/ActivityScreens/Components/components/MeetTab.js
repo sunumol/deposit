@@ -101,7 +101,7 @@ useEffect(()=>{
 },[spouseDetail])
     // ------------------getDlePageNumberdetail ------------------
 
-    const getDlePageNumber = async (id) => {
+    const getDlePageNumber = async (id,occupation) => {
        
 
         const data = {
@@ -111,7 +111,7 @@ useEffect(()=>{
         }
         await api.getDlePageNumber(data).then((res) => {
             console.log("cust api",customerdetail)
-            console.log('-------------------res getDlePageNumber', res?.data?.body)
+            console.log('-------------------res getDlePageNumber', res?.data?.body,spouseDetail)
             if (res?.status) {
                 if (res?.data?.body == 1) {
                     props.navigation.navigate('DetailCheck')
@@ -120,7 +120,7 @@ useEffect(()=>{
                 } else if (res?.data?.body == 3) {
                     props.navigation.navigate('ContinuingGuarantor')
                 } else if (res?.data?.body == 4) {
-                    if (spouseDetail) {
+                    if (occupation) {
                         props.navigation.navigate('AddVehicle')
                     } else {
                         props.navigation.navigate('UploadVid')
@@ -172,9 +172,10 @@ useEffect(()=>{
             "activityId": id
         }
         await api.getSpousedetail(data).then((res) => {
-            console.log('-------------------res spousedetail co-app', id)
+            console.log('-------------------res spousedetail co-app',res?.data?.body?.occupation)
             if (res?.status) {
                 setSpousedetail(res?.data?.body?.occupation)
+                getDlePageNumber(id,res?.data?.body?.occupation)
                 console.log("spose detail", res?.data?.body)
 
             }
@@ -206,7 +207,7 @@ useEffect(()=>{
                                
                                     getSpousedetail(item?.activityId)
                                     getCustomerdetail(item?.activityId)
-                                    getDlePageNumber(item?.activityId)
+                                   
                                 } else if (item?.purpose == 'Conduct CGT') {
                                     dispatch({
                                         type: 'SET_CGT_ACTIVITY_ID',

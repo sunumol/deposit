@@ -7,7 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Image1 from '../../../assets/image/Ex.svg';
 const { height, width } = Dimensions.get('screen');
 
-const ValidModal = ({ ModalVisible, onPressOut, setModalVisible, Validation }) => {
+const AgentModal = ({ ModalVisible, onPressOut, setModalVisible, Validation }) => {
     const [state, setState] = useState(null);
     const { t } = useTranslation();
     const [Lang, setLang] = useState('')
@@ -41,11 +41,13 @@ const ValidModal = ({ ModalVisible, onPressOut, setModalVisible, Validation }) =
                     style={styles.touchableStyle} >
                 </TouchableOpacity>
                 <View style={styles.modalContainer}>
-                    <Image1 style={{ marginTop: 18, marginBottom: 8 }} height={width*0.07} width={width*0.07}/>
+                    <Image1 style={{ marginTop: 15, marginBottom: 8 }} height={width*0.07} width={width*0.07}/>
    
                         <View>
                          
-                            <Text style={styles.textStyle}>{Validation}</Text>
+                            <Text style={styles.textStyle}>This App is for employees of Svadhan.</Text>
+                            <Text style={styles.textStyle}>If you are a Customer, please use</Text>
+                            <Text style={styles.textStyle}>Svadhan App</Text>
                         </View> 
                     <TouchableOpacity style={styles.buttonStyle} onPressOut={onPressOut}>
                         <Text style={styles.buttonTextStyle}>{t('common:Okay')}</Text>
@@ -70,7 +72,7 @@ const styles = StyleSheet.create({
     },
     modalContainer: {
         width: Dimensions.get('window').width * 0.9,
-        height: Dimensions.get('window').width * 0.44,
+       // height: Dimensions.get('window').width * 0.42,
         backgroundColor: COLORS.colorBackground,
         borderRadius: 8,
         alignItems: 'center',
@@ -105,4 +107,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default ValidModal;
+export default AgentModal;

@@ -25,8 +25,10 @@ import { api } from '../../Services/Api';
 import OTPInputView from '../../Components/OTPInputView';
 import ModalExitApp from '../../Components/ModalExitApp';
 import { useFocusEffect } from '@react-navigation/native';
+import UpdateModal from './Components/UpdateModal';
+import VersionModal from './Components/VersionModal';
 // ----------- Image Import ------------------------
-import Svadhan from '../../assets/image/AgentLogo.svg';
+import Svadhan from '../../assets/image/logofinpower1.svg';
 
 const { height, width } = Dimensions.get('screen');
 
@@ -47,10 +49,14 @@ const PinScreen = ({ navigation, }) => {
     const [invalidState, setInvalidState] = useState(1)
     const [userName, setUserName] = useState('Athira')
     const [status, setStatus] = useState(false)
+    const [ModalVisibleVer, setModalVisibleVer] = useState(false)
+    const [ModalVisibleUp, setModalVisibleUp] = useState(false)
+
     // --------------Device Configuration End----------
 
     useEffect(() => {
         getData()
+        getAppNewVersion()
     }, [userName])
 
     useEffect(() => {
@@ -61,10 +67,32 @@ const PinScreen = ({ navigation, }) => {
         });
     }, [navigation]);
 
+    const getAppNewVersion = () => {
+        console.log("inside api")
+
+        api.getAppNewVersion().then(result => {
+            if (result?.data?.body !== null) {
+
+                if (result?.data?.body?.mandatory) {
+                    setModalVisibleVer(true)
+                } else {
+                    setModalVisibleUp(true)
+                }
+            } 
+            console.log("version checking....", result.data.body)
+            //  setModalVisible2(true)
+
+        })
+            .catch(err => {
+                console.log("banner 3333---->", err);
+
+            });
+    }
+
     const getData = async () => {
         try {
             const id = await AsyncStorage.getItem('CustomerId')
-           // const userName = await AsyncStorage.getItem('userName')
+            // const userName = await AsyncStorage.getItem('userName')
             console.log("userName", userName)
             setUserName(userName)
             setCustId(id)
@@ -107,7 +135,7 @@ const PinScreen = ({ navigation, }) => {
             const pinDate = await AsyncStorage.getItem('PinDate')
             const dateToday = new Date()
             const dateExpired = new Date(addDays(new Date(pinDate), 90))
-           
+
             //  const dateExpired =new Date('2/2/2023')
             console.log('----', dateExpired, '-----', dateToday, pinDate, Pin)
 
@@ -134,8 +162,8 @@ const PinScreen = ({ navigation, }) => {
                     }
                     console.log('invalidState', invalidState)
                 }
-              
-            }   else{
+
+            } else {
                 setModalVisible(true)
             }
         } catch (e) {
@@ -179,7 +207,7 @@ const PinScreen = ({ navigation, }) => {
 
                 <ImageBackground source={require('./Images/bg.png')}
                     style={styles.Linear}>
-                    <Svadhan width={350} height={80} resizeMode='contain' style={{ top: -10 }} />
+                    <Svadhan width={320} height={70} resizeMode='contain' style={{ top: -10 }} />
                     <Text style={styles.Text1}>{t('common:Hi')}, {userName}</Text>
                 </ImageBackground>
 
@@ -204,11 +232,11 @@ const PinScreen = ({ navigation, }) => {
                             }
                         })}
                     />
-                    <Text style={styles.TextF}  
-                    onPress={() => {
-                        otpInput2?.current?.clear()
-                        navigation.navigate('ForgotPin')  
-                    }}>{t('common:ForgotPIN')}</Text>
+                    <Text style={styles.TextF}
+                        onPress={() => {
+                            otpInput2?.current?.clear()
+                            navigation.navigate('ForgotPin')
+                        }}>{t('common:ForgotPIN')}</Text>
                 </View>
 
                 {error
@@ -239,6 +267,18 @@ const PinScreen = ({ navigation, }) => {
                 onPressOut={() => setModalExitAppVisible(!modalExitAppVisible)}
                 setModalExitAppVisible={setModalExitAppVisible}
             />
+            <VersionModal
+                ModalVisible={ModalVisibleVer}
+                navigation={navigation}
+                onPressOut={() => setModalVisibleVer(!ModalVisibleVer)}
+                setModalVisible2={setModalVisibleVer} />
+
+            <UpdateModal
+                ModalVisible={ModalVisibleUp}
+                navigation={navigation}
+
+                onPressOut={() => setModalVisibleUp(!ModalVisibleUp)}
+                setModalVisible2={setModalVisibleUp} />
         </SafeAreaProvider>
     )
 }

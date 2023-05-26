@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, SafeAreaView, PermissionsAndroid } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -9,38 +9,42 @@ import messaging from '@react-native-firebase/messaging';
 import CustomStatusBar from './Component/CustomStatusbar';
 import Statusbar from '../../Components/StatusBar';
 import LinearGradient from 'react-native-linear-gradient';
+import VersionModal from './Component/VersionModal';
+import UpdateModal from './Component/UpdateModal';
 
 const SplashScreen = ({ navigation }) => {
 
-    const isDarkMode = true
+    const isDarkMode = true;
+    const [ModalVisible1, setModalVisible1] = useState(false)
+    const [ModalVisible2, setModalVisible2] = useState(false)
 
     const onBackGroundNotification = () => {
-            messaging()
-                .getInitialNotification()
-                .then(remoteMessage => {
-                    if (remoteMessage) {
-                        console.log(
-                            'Notification caused app to open from quit state:',
-                            remoteMessage.notification,
-                        );
-                        if (remoteMessage.notification?.title === 'DATA_CONFIRMATION') {
-                            setTimeout(() =>
+        messaging()
+            .getInitialNotification()
+            .then(remoteMessage => {
+                if (remoteMessage) {
+                    console.log(
+                        'Notification caused app to open from quit state:',
+                        remoteMessage.notification,
+                    );
+                    if (remoteMessage.notification?.title === 'DATA_CONFIRMATION') {
+                        setTimeout(() =>
                             RootNavigation.navigate('Proceed', { status: true, AcyivityId: remoteMessage.notification?.data?.activityId })
                             , 3000);
-                        }
-                        if (remoteMessage.notification?.title === 'DATA_CORRECTION_REQUEST') {
-                            setTimeout(() =>
+                    }
+                    if (remoteMessage.notification?.title === 'DATA_CORRECTION_REQUEST') {
+                        setTimeout(() =>
                             RootNavigation.navigate('CorrectionScreen', { AcyivityId: remoteMessage.notification?.data?.activityId })
                             , 3000);
-                        }
-                    }else{
-                        setTimeout(() => getData(), 3000);
                     }
-                });
+                } else {
+                    setTimeout(() => getData(), 3000);
+                }
+            });
     }
 
     useEffect(() => {
-       
+
         onBackGroundNotification()
     }, []);
 
@@ -68,7 +72,7 @@ const SplashScreen = ({ navigation }) => {
             const ExpiredDate = await AsyncStorage.getItem('ExpiredDate')
             console.log(Pin, PinDate, ExpiredDate)
             if (Pin && PinDate) {
-                navigation.navigate('PinScreen')
+                 navigation.navigate('PinScreen')
             } else {
                 navigation.navigate('CreatePin')
             }
@@ -86,7 +90,19 @@ const SplashScreen = ({ navigation }) => {
                 <CustomStatusBar
                     barStyle={isDarkMode ? 'light-content' : 'dark-content'}
                 />
+
             </LinearGradient>
+            <VersionModal
+                ModalVisible={ModalVisible1}
+                navigation={navigation}
+                onPressOut={() => setModalVisible1(!ModalVisible1)}
+                setModalVisible2={setModalVisible1} />
+
+            <UpdateModal
+                ModalVisible={ModalVisible2}
+                navigation={navigation}
+                onPressOut={() => setModalVisible2(!ModalVisible2)}
+                setModalVisible2={setModalVisible2} />
         </SafeAreaProvider>
     );
 }

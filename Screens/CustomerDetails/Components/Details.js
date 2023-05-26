@@ -188,13 +188,15 @@ const Details = ({ navigation, details, spouse }) => {
                                     <View style={{ flexDirection: 'column', flex: 1, marginLeft: 12 }}>
                                         <Text style={styles.nameText}>{spouse?.name}</Text>
 
-                                        {spouse?.occupation == 'DAILY_WAGE_LABOURER,' ?
+                                        {spouse?.occupation == 'DAILY_WAGE_LABOURER' ?
                                             <Text style={styles.underText}>Daily Wage Labourer</Text> :
                                             spouse?.occupation == 'SALARIED_EMPLOYEE' ?
                                                 <Text style={styles.underText}>Salaried Employee</Text> :
                                                 spouse?.occupation == 'BUSINESS_SELF_EMPLOYED' ?
                                                     <Text style={styles.underText}>Business Self Employed</Text> :
-                                                    <Text style={styles.underText}>Farmer</Text>}
+                                                    spouse?.occupation == 'UNEMPLOYED' ? 
+                                                    <Text style={styles.underText}>Unemployed</Text>:
+                                                    <Text style={styles.underText}>Farmer</Text>  }
 
 
 

@@ -1,8 +1,8 @@
 import React from 'react';
 import { Text, View, StatusBar, SafeAreaView, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
- import Svadhan from '../../../assets/image/AgentLogo.svg'
-//import Svadhan from '../../../assets/image/logofinpower.svg'
+ //import Svadhan from '../../../assets/image/AgentLogo.svg'
+import Svadhan from '../../../assets/image/logofinpower1.svg'
 
 const CustomStatusBar = ({ backgroundColor, ...props }) => {
     const { top } = useSafeAreaInsets()

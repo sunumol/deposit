@@ -50,6 +50,39 @@ const NewCgt = ({ navigation, route }) => {
         }, [])
     );
 
+    // const time1 = '7:00 AM';
+    // const time2 = '5:30 PM';
+
+    // // Function to convert time to minutes since midnight
+    // function convertToMinutes(time) {
+    //     // Split the time string into hours, minutes, and AM/PM
+    //     const [hourString, minuteString, period] = time.split(/:| /);
+    //     let hours = parseInt(hourString);
+    //     const minutes = parseInt(minuteString);
+
+    //     // Adjust hours for PM time
+    //     if (period === 'PM' && hours !== 12) {
+    //         hours += 12;
+    //     }
+
+    //     // Convert to minutes
+    //     const totalMinutes = hours * 60 + minutes;
+    //     return totalMinutes;
+    // }
+
+    // // Convert times to minutes
+    // const minutes1 = convertToMinutes(time1);
+    // const minutes2 = convertToMinutes(time2);
+
+    // // Compare the times
+    // if (minutes1 < minutes2) {
+    //     console.log(time1 + ' is earlier than ' + time2);
+    // } else if (minutes1 > minutes2) {
+    //     console.log(time1 + ' is later than ' + time2);
+    // } else {
+    //     console.log(time1 + ' is the same as ' + time2);
+    // }
+
     const callback = (value) => {
         getCGTslot()
     }
@@ -58,7 +91,7 @@ const NewCgt = ({ navigation, route }) => {
     const getCGTslot = async (date) => {
         var date1 = moment(Dates, "HH:mm:ss").format("hh:mm A")
         var date2 = "07:00 AM"
-        console.log("DATE 1 AND ADET",date1 > date2)
+        console.log("DATE 1 AND ADET", date1 > date2)
         console.log("new date", moment(Dates, "HH:mm:ss").format("hh:mm A"))
         const data = {
             "employeeId": 1,
