@@ -7,13 +7,16 @@ import {
     View,
     FlatList,
     ScrollView,
-    BackHandler
+    BackHandler,
+    ToastAndroid
 } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Statusbar from '../../Components/StatusBar';
 import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import NetWorkError from '../NetWorkError';
+import { NetworkInfo } from 'react-native-network-info';
+import DeviceInfo from 'react-native-device-info';
 // ----------------- Components Imports -----------------------
 import { FONTS, COLORS } from '../../Constants/Constants';
 import HeaderDashBoard from '../../Components/HeaderDashBoard';
@@ -41,9 +44,11 @@ const Profile = ({ navigation }) => {
 
     const [notificationCount, SetNotificationCount] = useState()
     const [modalExitAppVisible, setModalExitAppVisible] = useState(false);
-    const [custID, setCustId] = useState()
+    const [custID, setCustId] = useState('')
     const [fcmToken, setFcmToken] = useState()
-    const [id,setId] = useState(null)
+    const [mobileNumber, setMobileNumber] = useState('')
+    const [id, setId] = useState(null)
+    const [IpAddress, setIPAddress] = useState()
 
     useEffect(() => {
         AsyncStorage.getItem("CustomerId").then((value) => {
@@ -53,14 +58,14 @@ const Profile = ({ navigation }) => {
             setFcmToken(value)
         })
     }, [])
-   
+
     useEffect(() => {
-        if(fcmToken ){
+        if (fcmToken) {
             firebaseTokenSentTo()
         }
-    }, [fcmToken ])
+    }, [fcmToken])
 
-    
+
 
     const [ModalCall, setModalCall] = useState(false)
     const isDarkMode = true;
@@ -119,33 +124,47 @@ const Profile = ({ navigation }) => {
     };
     // ------------------ HomeScreen Api Call End ------------------
 
-     // ------------------ HomeScreen Api Call Start ------------------
-     const firebaseTokenSentTo = async () => {
+    // ------------------ HomeScreen Api Call Start ------------------
+    const firebaseTokenSentTo = async () => {
         console.log("inside api call")
         const data = {
             // "agentId":Number(custID),
-            "agentId":1,
-            "deviceToken":fcmToken
+            "agentId": 1,
+            "deviceToken": fcmToken
         };
         await api.firebaseToken(data).then((res) => {
             console.log('-------------------res-----notification', res?.data)
         })
-        .catch((err) => {
+            .catch((err) => {
                 console.log('-------------------err notification', err?.response)
-        })
+            })
     };
     // ------------------ HomeScreen Api Call End ------------------
 
     useEffect(() => {
         HomeScreenApiCall()
         getData()
+        NetworkInfo.getIPV4Address().then(ipv4Address => {
+            console.log(ipv4Address);
+            setIPAddress(ipv4Address)
+        });
+        // Get IPV4 Address End --------------------------
+
+        // Get DeviceInfo start-----------------------
+        DeviceInfo.getUniqueId().then((uniqueId) => {
+            console.log('----------------- device id print', uniqueId)
+            getHomeCheck(uniqueId)
+        });
+
         console.log("call api")
     }, []);
 
     const getData = async () => {
         try {
             const lang = await AsyncStorage.getItem('CallActivity')
-            console.log(lang,'--------------')
+            const mobileNumber = await AsyncStorage.getItem('Mobile');
+            setMobileNumber(mobileNumber)
+            console.log(lang, '--------------')
             if (lang !== null) {
                 console.log("no modal data inside")
                 setId(lang)
@@ -156,7 +175,7 @@ const Profile = ({ navigation }) => {
         }
     }
 
-    
+
 
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
@@ -197,59 +216,99 @@ const Profile = ({ navigation }) => {
         return unsubscribe;
     }, []);
 
+
+    const getHomeCheck = async (deviceiD) => {
+        console.log("inside api call")
+        const data = {
+            "id": custID,
+            "mobNumber": mobileNumber,
+            "simId": "1234",
+            "deviceId": deviceiD,
+            "deviceIpAddress": IpAddress
+        }
+        console.log("data of home", data)
+        await api.gethomeScreenDeviceCheck(data).then((res) => {
+            if(res?.data?.body?.newDevice == true){
+                 AsyncStorage.removeItem('Token')
+                AsyncStorage.removeItem('CustomerId')
+                AsyncStorage.removeItem('Mobile')
+                AsyncStorage.removeItem('userName')
+                ToastAndroid.show("Hi Athira, We have noticed that you are signing in from a new device", ToastAndroid.SHORT);
+                setTimeout(()=>{
+                    navigation.reset({
+                        index: 0,
+                        routes: [{name: 'LoginScreen'}],
+                    });
+                    
+                },10000)
+           
+            }
+            console.log('-------------------res check', res?.data)
+
+        })
+            .catch((err) => {
+   
+          
+                console.log('-------------------err notification check', err)
+            })
+    };
+
+
     return (
         <>
-          {netInfo.isConnected
-                    ?
-        <SafeAreaProvider>
-            <SafeAreaView style={styles.container1} />
-            <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} backgroundColor={"#002B59"} />
+            {netInfo.isConnected
+                ?
+                <SafeAreaProvider>
+                    <SafeAreaView style={styles.container1} />
+                    <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} backgroundColor={"#002B59"} />
 
-            <HeaderDashBoard navigation={navigation} notificationCounts={notificationCount} />
+                    <HeaderDashBoard navigation={navigation} notificationCounts={notificationCount} />
 
-            <View style={styles.container2}>
-                <ScrollView showsVerticalScrollIndicator={false}>
+                    <View style={styles.container2}>
+                        <ScrollView showsVerticalScrollIndicator={false}>
 
-                    <FlatList
-                        data={DATA}
-                        renderItem={({ item, index }) =>
-                            <ItemTabs
-                                index={index}
-                                id={item.id}
-                                title={item.title}
-                                image={item.image}
-                                notificationCounts={notificationCount}
-                                notification={item.notification}
-                                navigation={navigation} />}
-                        keyExtractor={item => item.id}
-                        horizontal={false}
-                        numColumns={2}
+                            <FlatList
+                                data={DATA}
+                                renderItem={({ item, index }) =>
+                                    <ItemTabs
+                                        index={index}
+                                        id={item.id}
+                                        title={item.title}
+                                        image={item.image}
+                                        notificationCounts={notificationCount}
+                                        notification={item.notification}
+                                        navigation={navigation} />}
+                                keyExtractor={item => item.id}
+                                horizontal={false}
+                                numColumns={2}
 
-                        columnWrapperStyle={{ justifyContent: 'space-between' }}
-                        contentContainerStyle={{ padding: 20, }}
-                    />
-                    {/* <Text style={{ color: 'black', textAlign: 'center' }} onPress={() => {
+                                columnWrapperStyle={{ justifyContent: 'space-between' }}
+                                contentContainerStyle={{ padding: 20, }}
+                            />
+                            {/* <Text style={{ color: 'black', textAlign: 'center' }} onPress={() => {
                         navigation.navigate('PinScreen')
 
                     }}>Existing UserFlow</Text> */}
 
-                </ScrollView>
-            </View>
-            <BottomTabs navigation={navigation} />
-            <ModalExitApp
-                ModalVisible={modalExitAppVisible}
-                onPressOut={() => setModalExitAppVisible(!modalExitAppVisible)}
-                setModalExitAppVisible={setModalExitAppVisible}
-            />
+                        </ScrollView>
+                    </View>
+                    <BottomTabs navigation={navigation} />
+                    <ModalExitApp
+                        ModalVisible={modalExitAppVisible}
+                        onPressOut={() => setModalExitAppVisible(!modalExitAppVisible)}
+                        setModalExitAppVisible={setModalExitAppVisible}
+                    />
 
-            <CallModal
-                id={id}
-                ModalVisible={ModalCall}
-                onPressOut={() => { setModalCall(!ModalCall),
-                     navigation.navigate('Profile') }}
-                setModalVisible={setModalCall}
-            />
-        </SafeAreaProvider>:<NetWorkError setModalCall={false}/>}
+                    <CallModal
+                        id={id}
+                        ModalVisible={ModalCall}
+                        onPressOut={() => {
+                            setModalCall(!ModalCall),
+                                navigation.navigate('Profile')
+                        }}
+                        setModalVisible={setModalCall}
+                    />
+                </SafeAreaProvider> : <NetWorkError setModalCall={false} />}
         </>
     );
 }

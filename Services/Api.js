@@ -3,12 +3,14 @@ import axios from 'axios';
 
 // --------- Base URL Start------------------
 const baseUAT = 'http://13.235.213.160:'
-const baseURL = 'http://3.108.93.231:8383/'
-const baseURL2 = 'http://3.108.93.231:8686/'
-const baseURL3 = 'http://3.108.93.231:8086/'
+const baseUAT2 = 'http://3.108.93.231:'
+
+const baseURL = `${baseUAT2}8383/`
+const baseURL2 = `${baseUAT2}8686/`
+const baseURL3 = `${baseUAT2}8086/`
 // --------- Base URL End--------------------
-const baseURLDPD = 'http://3.108.93.231:8084/'
-const baseURLVersion = 'http://3.108.93.231:8810/'
+const baseURLDPD = `${baseUAT2}8084/`
+const baseURLVersion = `${baseUAT2}8810/`
 
 export const api = {
 
@@ -601,6 +603,17 @@ export const api = {
   getAppNewVersion:() => {
 
     return axios.post(`${baseURLVersion}getLatestAppVersion`, {
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+  },
+
+  //gethomescreen device check
+
+  gethomeScreenDeviceCheck:() => {
+
+    return axios.post(`${baseURLVersion}homeScreenDeviceCheck`, {
       headers: {
         'Content-Type': 'application/json',
       }
