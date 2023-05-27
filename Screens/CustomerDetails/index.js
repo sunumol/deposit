@@ -27,12 +27,13 @@ import { useSelector } from 'react-redux';
 import ModalSave from '../../Components/ModalSave';
 import ErrorModal from './Components/ErrorModal';
 import ReasonModal from './Components/ReasonModal';
-
+import { useDispatch } from 'react-redux';
 
 const CustomerDetails= ({ navigation, }) => {
     const route = useRoute();
     console.log("route name",);
     const isDarkMode = true
+    const dispatch = useDispatch()
     const { t } = useTranslation();
     const [lang, setLang] = useState('')
     const [BStatus, setBstatus] = useState(false)
@@ -122,7 +123,35 @@ const CustomerDetails= ({ navigation, }) => {
     useEffect(()=>{
         getSpousedetail()
     },[])
+    const onsubmit = async (value) => {
 
+        console.log('api called')
+        const data = {
+            "customerId": basicdetail?.customerId,
+            "customerName": basicdetail?.customerName,
+            "address": basicdetail?.address,
+            "district": basicdetail?.district,
+            "village":basicdetail?.village,
+            "accessRoadType": basicdetail?.accessRoadType,
+            "postOffice":  basicdetail?.postOffice,
+            "landMark":  basicdetail?.landMark,
+            "pin": basicdetail?.pin
+        }
+        console.log("details check details",data)
+        await api.savebasicdetail(data).then((res) => {
+            console.log('-------------------res update', res?.data)
+            if (res?.status) {
+                dispatch({
+                    type: 'SET_DLE_STATUS',
+                    payload:true
+                  });
+                navigation.navigate('Profile')
+                setModalVisible(false)
+            }
+        }).catch((err) => {
+            console.log('-------------------err update', err?.response)
+        })
+    };
 
      // ------------------ get spouse det Api Call Start ------------------
      const getSpousedetail = async () => {
@@ -160,7 +189,7 @@ const CustomerDetails= ({ navigation, }) => {
                     setModalReason(true)
                
                 }}
-                Press1={()=>{navigation.navigate('Profile'),setModalVisible(false)}}
+                Press1={()=>{onsubmit()}}
                 ModalVisible={ModalVisible}
                 setModalVisible={setModalVisible}
                 onPressOut={() => {

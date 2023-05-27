@@ -339,15 +339,7 @@ const Vehicle = ({ navigation }) => {
                                     <Text style={styles.nameText}>{spousedetail?.name}</Text>
 
 
-                                    {spousedetail?.occupation == 'DAILY_WAGE_LABOURER' ?
-                                        <Text style={styles.underText}>Daily Wage Labourer</Text> :
-                                        spousedetail?.occupation == 'SALARIED_EMPLOYEE' ?
-                                            <Text style={styles.underText}>Salaried Employee</Text> :
-                                            spousedetail?.occupation == 'BUSINESS_SELF_EMPLOYED' ?
-                                                <Text style={styles.underText}>Business Self Employed</Text> :
-                                                spousedetail?.occupation == 'UNEMPLOYED' ?
-                                                    <Text style={styles.underText}>Unemployed</Text> :
-                                                    <Text style={styles.underText}>Farmer</Text>}
+                                    <Text style={[styles.underText,{textTransform:'capitalize'}]}>{spousedetail?.occupation?.replace(/_/g, ' ')}</Text> 
 
 
 
@@ -370,15 +362,7 @@ const Vehicle = ({ navigation }) => {
                                     <Text style={styles.nameText}>{CustomerDetail?.name}</Text>
 
 
-                                    {CustomerDetail?.occupation == 'DAILY_WAGE_LABOURER' ?
-                                        <Text style={styles.underText}>Daily Wage Labourer</Text> :
-                                        CustomerDetail?.occupation == 'SALARIED_EMPLOYEE' ?
-                                            <Text style={styles.underText}>Salaried Employee</Text> :
-                                            CustomerDetail?.occupation == 'BUSINESS_SELF_EMPLOYED' ?
-                                                <Text style={styles.underText}>Business Self Employed</Text> :
-                                                CustomerDetail?.occupation == 'UNEMPLOYED' ?
-                                                    <Text style={styles.underText}>Unemployed</Text> :
-                                                    <Text style={styles.underText}>Farmer</Text>}
+                                    <Text style={[styles.underText,{textTransform:'capitalize'}]}>{CustomerDetail?.occupation?.replace(/_/g, ' ')}</Text> 
                                 </View>
 
 

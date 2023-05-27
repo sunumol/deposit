@@ -221,10 +221,10 @@ const IncomeDetails = ({ navigation, route }) => {
                     navigation.navigate('IncomeDetailsSpouse')
                 } else if (res?.data?.body == 'MARRIED' && spouseDetail == 'UNEMPLOYED') {
                     navigation.navigate('Proceed')
-                }
-                else {
+                }else if(res?.data?.body !== 'MARRIED'){
                     navigation.navigate('Proceed')
                 }
+               
                 // navigation.navigate('DebitDetails')
             }
         }).catch((err) => {
@@ -308,7 +308,7 @@ const IncomeDetails = ({ navigation, route }) => {
         })
     };
 
-
+{console.log("spouse detail dsa",spouseDetail)}
 
 
 
@@ -427,7 +427,8 @@ const IncomeDetails = ({ navigation, route }) => {
                                 </View>
                                 <View style={{ flexDirection: 'column', flex: 1, marginLeft: 12 }}>
                                     <Text style={styles.nameText}>{incomedetail?.name}</Text>
-                                    <Text style={styles.underText}>{incomedetail?.occupation == 'SALARIED_EMPLOYEE' ? 'Salaried employee' : incomedetail?.occupation == 'FARMER' ? 'Farmer' : incomedetail?.occupation == "BUSINESS_SELF_EMPLOYED" ? "Business/Self employed" : incomedetail?.occupation=='UNEMPLOYED' ? 'Unemployed' : 'Daily wage labourer'}</Text>
+                                    <Text style={[styles.underText,{textTransform:'capitalize'}]}>{incomedetail?.occupation?.replace(/_/g, ' ')}</Text> 
+                                  
                                 </View>
                                 <View style={{ flexDirection: 'row', left: -5 }}>
                                     <Text style={styles.dateText}>{relationShip}</Text>
@@ -554,7 +555,7 @@ const IncomeDetails = ({ navigation, route }) => {
                                         // }
                                         const Am1 = Avg?.replace(/\,/g, '')
                                         setAvg(Am1)
-                                      
+
                                         setNetMonth(false)
                                     }}
                                     onChangeText={(text) => {
@@ -576,8 +577,11 @@ const IncomeDetails = ({ navigation, route }) => {
 
                                     }} />
                             </View>
-                            {/* {ZeroStatus &&
- <Text style={{ color: 'red', fontSize: 9, paddingTop: 3, fontFamily: FONTS.FontRegular }}>Amount cannot be ₹0</Text>} */}
+                            {ZeroStatus && incomedetail?.occupation !== 'FARMER' &&
+                                <Text style={{ color: 'red', fontSize: 9, paddingTop: 3, fontFamily: FONTS.FontRegular }}>Amount cannot be ₹0</Text>}
+
+                            {ZeroStatus && incomedetail?.occupation == 'FARMER' && Month !== '0' &&
+                                <Text style={{ color: 'red', fontSize: 9, paddingTop: 3, fontFamily: FONTS.FontRegular }}>Amount cannot be ₹0</Text>}
                         </View>
                     </ScrollView>
 

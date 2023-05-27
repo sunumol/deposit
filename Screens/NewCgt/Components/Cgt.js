@@ -25,10 +25,13 @@ const Cgt = ({ navigation, data, date, setModalVisible1, setModalVisible2, slotl
             <View style={{ justifyContent: 'space-around', margin: 5 }} key={index}>
                 <TouchableOpacity
                     onPress={() => {
-                        if (data[index + 1]?.availabilityStatu == "notAvailable") {
+                   if(item?.selection == true ){
+                        if (data[index + 1]?.availabilityStatu == "notAvailable"  ) {
                             setModalVisible1(true)
                         } else if (data[index]?.time == "06:30 PM") {
                             setModalVisible2(true)
+                        }else if( item.availabilityStatu == "fullyAvailable" && item?.selection == false ){
+                            console.log("helo")
                         }
                         else {
                             item.availabilityStatu == "notAvailable" ? navigation.navigate('Activities', { data: item }) :
@@ -36,9 +39,20 @@ const Cgt = ({ navigation, data, date, setModalVisible1, setModalVisible2, slotl
                                     data: item, date: date,
                                 })
                         }
+                    }
                     }}
-                    style={[styles.Touch, { borderColor: item.availabilityStatu == "partiallyAvailable" ? 'rgba(242, 153, 74, 1)' : item.availabilityStatu == "fullyAvailable" ? 'rgba(39, 174, 96, 1)' : item.availabilityStatu == "fullyAllocated" ? 'rgba(234, 64, 71, 1)' : item.availabilityStatu == "notAvailable" ? 'rgba(155, 81, 224, 1)' : null, backgroundColor: COLORS.colorBackground }]}>
-                    <Text style={[styles.timeText1, { color: item.availabilityStatu == "partiallyAvailable" ? 'rgba(242, 153, 74, 1)' : item.availabilityStatu == "fullyAvailable" ? 'rgba(39, 174, 96, 1)' : item.availabilityStatu == "fullyAllocated" ? 'rgba(234, 64, 71, 1)' : item.availabilityStatu == "notAvailable" ? 'rgba(155, 81, 224, 1)' : null }]}>{item.time}</Text>
+                    style={[styles.Touch, { borderColor: item.availabilityStatu == "partiallyAvailable" ? 'rgba(242, 153, 74, 1)' : 
+                    item.availabilityStatu == "fullyAvailable" && item?.selection == true  ? 'rgba(39, 174, 96, 1)' :
+                     item.availabilityStatu == "fullyAllocated" ? 'rgba(234, 64, 71, 1)' : 
+                     item.availabilityStatu == "notAvailable" && item?.selection == false ? 'rgb(211, 211, 211)'  :
+                     item.availabilityStatu == "fullyAvailable" && item?.selection == false && 'rgb(211, 211, 211)', backgroundColor: COLORS.colorBackground }]}>
+                    <Text style={[styles.timeText1, { color: 
+                        item.availabilityStatu == "partiallyAvailable" ? 'rgba(242, 153, 74, 1)' :
+                         item.availabilityStatu == "fullyAvailable" && item?.selection == true ? 'rgba(39, 174, 96, 1)' : 
+                         item.availabilityStatu == "fullyAllocated" ? 'rgba(234, 64, 71, 1)' : 
+                         item.availabilityStatu == "notAvailable" && item?.selection == false ? 'rgb(211, 211, 211)' :
+                          item.availabilityStatu == "fullyAvailable" && item?.selection == false &&
+                         'rgb(211, 211, 211)' }]}>{item.time}</Text>
                 </TouchableOpacity>
             </View>
         )
@@ -50,6 +64,7 @@ const Cgt = ({ navigation, data, date, setModalVisible1, setModalVisible2, slotl
             </View>
 
             <View style={{ alignItems: 'center', justifyContent: 'center', marginBottom: 10 }}>
+                {console.log("passed data",data)}
                 <FlatList
                     data={data}
                     style={{ marginTop: 10, }}

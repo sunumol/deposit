@@ -6,9 +6,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon1 from 'react-native-vector-icons/Ionicons'
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 import ActivityModal from '../components/ActiveModal';
-import { useDispatch } from 'react-redux';
+import { useDispatch,useSelector } from 'react-redux';
 import { api } from '../../../../Services/Api';
 import CallModal from '../../../Profile/Components/Modal';
+
+
 const MeetTab = (props) => {
     console.log("props pass", props?.data?.length)
     const { t } = useTranslation();
@@ -21,6 +23,7 @@ const MeetTab = (props) => {
     const [ModalCall, setModalCall] = useState(false)
     const [spouseDetail, setSpousedetail] = useState('')
     const [customerdetail, setCustomerDetail] = useState('')
+    const DLEStatus = useSelector(state => state?.DLEStatus);
     useEffect(() => {
         getData()
     }, [])
@@ -114,7 +117,12 @@ useEffect(()=>{
             console.log('-------------------res getDlePageNumber', res?.data?.body,spouseDetail)
             if (res?.status) {
                 if (res?.data?.body == 1) {
-                    props.navigation.navigate('DetailCheck')
+                    if(DLEStatus){
+                        props.navigation.navigate('CustomerDetails')
+                    }else{
+                        props.navigation.navigate('DetailCheck')
+                    }
+                   
                 } else if (res?.data?.body == 2) {
                     props.navigation.navigate('ResidenceOwner')
                 } else if (res?.data?.body == 3) {
@@ -142,7 +150,11 @@ useEffect(()=>{
                     // }
                    // props.navigation.navigate('IncomeDetails', { relationShip: 'Customer' })
                 } else if (res?.data?.body == 8) {
+                    if (occupation !== 'UNEMPLOYED') {
                     props.navigation.navigate('IncomeDetailsSpouse', { relationShip: 'Spouse' })
+                    }else{
+                        props.navigation.navigate('Proceed')
+                    }
                 } else if (res?.data?.body == 9) {
                     props.navigation.navigate('HousePhoto')
                 } else if (res?.data?.body == 10) {
@@ -175,7 +187,8 @@ useEffect(()=>{
             console.log('-------------------res spousedetail co-app',res?.data?.body?.occupation)
             if (res?.status) {
                 setSpousedetail(res?.data?.body?.occupation)
-                getDlePageNumber(id,res?.data?.body?.occupation)
+          
+              getDlePageNumber(id,res?.data?.body?.occupation)
                 console.log("spose detail", res?.data?.body)
 
             }
@@ -203,8 +216,7 @@ useEffect(()=>{
 
 
                                     setDetails(item)
-                                    //props.navigation.navigate('IncomeDetails')
-                               
+                                  
                                     getSpousedetail(item?.activityId)
                                     getCustomerdetail(item?.activityId)
                                    

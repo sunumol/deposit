@@ -14,7 +14,8 @@ const initialState={
     activityId:'',
     slot:[],
     NewcgtSlot:'',
-    CallFlag:''
+    CallFlag:'',
+    DLEStatus:''
 }
 
 export const baseReducer = (state = initialState, action) => {
@@ -79,6 +80,11 @@ export const baseReducer = (state = initialState, action) => {
             return {
                 ...state, // return the updated state
                 CallFlag: action.payload  
+            }
+            case  "SET_DLE_STATUS":  // for updating state
+            return {
+                ...state, // return the updated state
+                DLEStatus: action.payload  
             }
            
         default:

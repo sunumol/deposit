@@ -445,7 +445,7 @@ const LoginScreen = ({ navigation }) => {
         }
         await api.confirmLoginOtp(data).then((res) => {
             console.log('-------------------res', res?.data)
-            if (res?.data?.body?.newDevice == false) {
+           if (res?.data?.body?.newDevice == false) {
                 
                 setMaxError(false)
                 setOtpFetch(false)
@@ -674,6 +674,7 @@ const LoginScreen = ({ navigation }) => {
                                                     setIsExpired(false)
                                                 }
                                             }}
+                                            
                                             code={OtpValue} //You can supply this prop or not. The component will be used as a controlled / uncontrolled component respectively.
                                             autoFocusOnLoad={true}
                                             keyboardType="numeric"
