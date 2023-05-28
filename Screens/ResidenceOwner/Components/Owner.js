@@ -165,6 +165,7 @@ const DetailChecks = ({ navigation, setState, proofType1, imageUrl1, relation1, 
             "relationShipWithCustomer": Purposes,
             "ownersName": ownersName ? ownersName : spousedetail?.name
         }
+        console.log("data",data)
         await api.UpdateResidenceowner(data).then((res) => {
             console.log('-------------------res  update Residence owner', res)
             if (res?.status) {
@@ -340,12 +341,12 @@ const DetailChecks = ({ navigation, setState, proofType1, imageUrl1, relation1, 
                                     <Text style={styles.shortText}>{getInitials(spousedetail?.name)}</Text>
                                 </View>
 
-                                <View style={{ flexDirection: 'column', flex: 1, marginLeft: 12, marginTop: 10 }}>
+                                <View style={{ flexDirection: 'column', flex: 1, marginLeft: 12, }}>
 
-
+                                <Text style={styles.nameText}>{spousedetail?.name}</Text>
                                     <Text style={[styles.underText, { textTransform: 'capitalize' }]}>{spousedetail?.occupation?.replace(/_/g, ' ')}</Text>
                                 </View>
-                                <View style={{ flexDirection: 'row', marginTop: 10 }}>
+                                <View style={{ flexDirection: 'row', }}>
                                     <Image2 width={11} height={11} top={3} />
                                     <Text style={styles.dateText}>{spousedetail?.dateOfBirth}</Text>
                                 </View>

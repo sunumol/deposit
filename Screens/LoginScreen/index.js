@@ -457,11 +457,15 @@ const LoginScreen = ({ navigation }) => {
                 AsyncStorage.setItem('Token', 'dXNlckBleGFtcGxlLmNvbTpzZWNyZXQ=');
                 AsyncStorage.setItem('userName', res?.data?.customerName);
             } else {
-                AsyncStorage.removeItem('Token')
-                AsyncStorage.removeItem('CustomerId')
-                AsyncStorage.removeItem('Mobile')
-                AsyncStorage.removeItem('userName')
-                console.log(res?.data)
+                setMaxError(false)
+                setOtpFetch(false)
+                setOtp(false)
+                setConfirmDate(null)
+                AsyncStorage.setItem('Mobile', '+91' + selectedPhoneNum);
+                AsyncStorage.setItem('CustomerId', JSON.stringify(res?.data?.customerId));
+                isGrantedPermissions(res?.data?.status)
+                AsyncStorage.setItem('Token', 'dXNlckBleGFtcGxlLmNvbTpzZWNyZXQ=');
+                AsyncStorage.setItem('userName', res?.data?.customerName);
                 ToastAndroid.show("Hi Athira, We have noticed that you are signing in from a new device", ToastAndroid.SHORT);
             }
         }).catch((err) => {
@@ -660,7 +664,7 @@ const LoginScreen = ({ navigation }) => {
                                     {IsOtp1 ?
                                         <OTPInputView
                                             style={styles.OtpInput}
-                                            autoCompleteType="off"
+                                            //autoCompleteType="off"
                                             pinCount={4}
                                             ref={otpInput2}
                                             value={OtpValue}

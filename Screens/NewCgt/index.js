@@ -71,7 +71,7 @@ const NewCgt = ({ navigation, route }) => {
     }
 
     // Convert times to minutes
-  
+
     const callback = (value) => {
         getCGTslot()
     }
@@ -80,8 +80,9 @@ const NewCgt = ({ navigation, route }) => {
     const getCGTslot = async (date) => {
         var date1 = moment(Dates, "HH:mm:ss").format("hh:mm A")
         var date2 = "07:00 AM"
-        console.log("DATE 1 AND ADET", date1 > date2)
-        console.log("new date", moment(Dates, "HH:mm:ss").format("hh:mm A"))
+
+        console.log("selected date", moment(NewDates).utc().format('DD-MM-YYYY'))
+
         const data = {
             "employeeId": 1,
             "selectedDate": moment(NewDates).utc().format('DD-MM-YYYY')
@@ -92,30 +93,40 @@ const NewCgt = ({ navigation, route }) => {
                 payload: res?.data?.body[0].sloatActivityList,
             });
             console.log('------------------- CGT slot res', res?.data?.body[0].sloatActivityList)
-           
-        
-            // Compare the times
-            const temp =  res?.data?.body[0].sloatActivityList
-           temp.forEach((element, index) => {
-                console.log("inside  lopp99",element?.time)
-                console.log("min and min2",date1)
-                const minutes1 = convertToMinutes(date1);
-                const minutes2 = convertToMinutes(element?.time);
-                
-            if (minutes1 < minutes2 ) {
-                element.selection = true;
-                console.log(element?.time + ' is earlier than ' + date1);
-            } else if (minutes1 > minutes2 ) {
-                element.selection = false;
-                console.log(date1 + ' is later than ' + element?.time);
-            } else {
-                console.log(element?.time + ' is the same as ' + date1);
-            }
 
-            
-        })
-        
-            setSlotlist(temp);
+
+            // Compare the times
+            console.log("compare dates", moment(NewDates).utc().format('DD-MM-YYYY'), moment(Dates).utc().format('DD-MM-YYYY'))
+  //  if (moment(NewDates).utc().format('DD-MM-YYYY') === moment(Dates).utc().format('DD-MM-YYYY')) {
+                const temp = res?.data?.body[0].sloatActivityList
+                temp.forEach((element, index) => {
+
+                    const minutes1 = convertToMinutes(date1);
+                    const minutes2 = convertToMinutes(element?.time);
+                    if (minutes1 < minutes2 && moment(NewDates).utc().format('DD-MM-YYYY') === moment(Dates).utc().format('DD-MM-YYYY') ) {
+                        element.selection = true;
+
+                    } else if (minutes1 > minutes2 && moment(NewDates).utc().format('DD-MM-YYYY') === moment(Dates).utc().format('DD-MM-YYYY')) {
+                        element.selection = false;
+
+                    }else if(moment(NewDates).utc().format('DD-MM-YYYY') !== moment(Dates).utc().format('DD-MM-YYYY')){
+                        element.selection = true;
+                    }
+                   
+                    console.log("temp data", temp)
+                })
+                setSlotlist(temp);
+            // } else  {
+            //     console.log("hai i am in",moment(NewDates).utc().format('DD-MM-YYYY') > moment(Dates).utc().format('DD-MM-YYYY'))
+            //     const temp = res?.data?.body[0].sloatActivityList
+            //     temp.forEach((element, index) => {
+            //        element.selection = true;
+
+            //     })
+            //     setSlotlist(temp);
+            // }
+
+
             setStatus(false)
         })
             .catch((err) => {

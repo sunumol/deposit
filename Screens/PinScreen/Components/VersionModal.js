@@ -24,7 +24,7 @@ const VersionModal = ({ ModalVisible, setModalVisible2, navigation, title, Delet
     const { t } = useTranslation();
     
     const Update =()=>{
-        //setModalVisible2(false)
+        setModalVisible2(false)
       Linking.openURL(
             `https://play.google.com/store/apps`)
           

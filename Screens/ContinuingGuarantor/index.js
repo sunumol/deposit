@@ -34,6 +34,7 @@ import RelationModal from './components/RelationModal';
 import Resend from '../../assets/Images/resend.svg'
 import OTPInputView from '../../Components/OTPInputView'
 import { api } from '../../Services/Api';
+import SmsAndroid from 'react-native-get-sms-android';
 
 // -------------- Image Imports ---------------------
 import Call from '../../assets/image/calls.svg';
@@ -78,6 +79,8 @@ const ContinuingGuarantor = ({ navigation, route }) => {
   const [keyboard1, setKeyboard1] = useState(false)
   const [lang, setLang] = useState('')
   const [errorMessage, setErrorMessage] = useState('')
+  const [condirmDate, setConfirmDate] = useState()
+  const [fetOtp, setOtpFetch] = useState(false)
 
   const getData = async () => {
     try {
@@ -257,6 +260,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
         setVerifyotpstatus(true)
         setStatus(true)
         setTimer(30)
+        setOtpFetch(true)
       }
     }).catch((err) => {
       setVerifyotpstatus(true)
@@ -300,6 +304,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
       if (res?.status) {
         CountDownResend()
         setResends(true)
+        setOtpFetch(true)
 
       }
     }).catch((err) => {
@@ -435,6 +440,61 @@ const ContinuingGuarantor = ({ navigation, route }) => {
     }
   }, [PhoneValid])
   { console.log("isotp true", IsOtp1) }
+
+
+  useEffect(() => {
+    if (fetOtp) {
+        const interval = setInterval(() => {
+           //callMessage()
+        }, 3000);
+        return () => clearInterval(interval);
+    }
+    // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
+}, [fetOtp])
+
+   // -------------------------------- Fetch Message From device Start -------------------------------------------
+   const callMessage = () => {
+    var filter = {
+        box: 'inbox', // 'inbox' (default), 'sent', 'draft', 'outbox', 'failed', 'queued', and '' for all
+        minDate: condirmDate, // timestamp (in milliseconds since UNIX epoch)
+        maxDate: new Date().getTime(),
+        sp_id: 3001,
+    };
+    SmsAndroid.list(
+        JSON.stringify(filter),
+        (fail) => {
+            console.log('Failed with this error: ' + fail);
+        },
+        (count, smsList) => {
+            console.log('Count: ', count);
+            console.log('List: ', smsList);
+            var arr = JSON.parse(smsList);
+
+            arr.forEach(function (object) {
+                console.log('Object: ' + object);
+                console.log('--> sms date' + object.date);
+                console.log('--> sms body' + object.body);
+
+                if (object.body.includes('One Time Password')) {
+                    let match = object.body.match(/\b\d{4}\b/)
+                    setOtpFetch(false)
+                    if (match) {
+                        setOtpFetch(false)
+                        setOtpValue(match[0])
+                        //setOtpMessage(match[0])
+                        console.log("otpmessage.....", match[0])
+                        console.log("match exist", match)
+                        
+                    }
+                }
+
+            });
+        },
+    );
+};
+
+
+
   return (
     <SafeAreaProvider>
 

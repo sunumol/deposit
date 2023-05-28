@@ -28,13 +28,14 @@ import NewLead1 from './Components/NewLead';
 
 const NewLead = ({ navigation, }) => {
     const route = useRoute();
-    console.log("route name", );
+    console.log("route name",);
     const isDarkMode = true
     const { t } = useTranslation();
     const [lang, setLang] = useState('')
     const [BStatus, setBstatus] = useState(false)
-    const [VillageStatus,setVillageStatus] = useState(false)
-    const [VStatus,setVStatus] = useState(false)
+    const [VillageStatus, setVillageStatus] = useState(false)
+    const [VStatus, setVStatus] = useState(false)
+    const [backstate, setbackstate] = useState(false);
     useEffect(() => {
         getData()
     }, [])
@@ -49,53 +50,80 @@ const NewLead = ({ navigation, }) => {
         }
     }
 
+    useEffect(()=>{
+        if(!VillageStatus && backstate){
+           
+            setbackstate(false)
+        }
+    
+    },[VillageStatus])
     const handleGoBack = useCallback(() => {
-        if(BStatus){
+   
+        setVillageStatus(false)
+   
+        setbackstate(true)
+            if(VillageStatus){
+                setbackstate(false)
+            }else{
+                navigation.goBack()
+            }
+        
+            return true; // Returning true from onBackPress denotes that we have handled the event
+        }, [navigation,VillageStatus,backstate]);
+
+    const handleGoBack1 = useCallback(() => {
+        if (BStatus) {
             setBstatus(false)
-        }else{
+        } else {
             navigation.goBack()
         }
         return true; // Returning true from onBackPress denotes that we have handled the event
-      }, [navigation]);
-    
-      useFocusEffect(
+    }, [navigation]);
+
+    useFocusEffect(
         React.useCallback(() => {
-          BackHandler.addEventListener('hardwareBackPress', handleGoBack);
-    
-          return () =>
-            BackHandler.removeEventListener('hardwareBackPress', handleGoBack);
+            BackHandler.addEventListener('hardwareBackPress', handleGoBack);
+
+            return () =>
+                BackHandler.removeEventListener('hardwareBackPress', handleGoBack);
         }, [handleGoBack]),
-      );
+    );
     //   useEffect(()=>{
-     
+
     //           setVillageStatus(false)
     //           alert("hello usef")
-          
+
     //       console.log("VILLAGE ",VillageStatus)
     //   })
 
-      const OnstateUpdate = ()=>{
-        
+    const OnstateUpdate = () => {
+
         //   setTimeout(()=>{
         //     setVillageStatus(false)
         //    // alert("hello state")
         //   },1000)
-          setVillageStatus(false)
-         // alert("hello state")
-          console.log("villate",VillageStatus)
-      }
+        setVillageStatus(false)
+        // alert("hello state")
+        console.log("villate", VillageStatus)
+    }
     return (
         <SafeAreaProvider>
             <SafeAreaView style={styles.container1} />
             <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
 
-            <Header navigation={navigation} name={t('common:NewLead')} onPress={handleGoBack}/>
+            <Header navigation={navigation} name={t('common:NewLead')} onPress={handleGoBack} />
             <View style={styles.ViewContent} >
-         <TouchableOpacity  onPressOut={OnstateUpdate}  hitSlop={{ top: 30, bottom: 30, left: 30, right: 30 }}>
-            <NewLead1 BStatus={BStatus} setBstatus={setBstatus} setVillageStatus={setVillageStatus} VillageStatus={VillageStatus} navigation={navigation}/>
-          </TouchableOpacity>
+
+                <NewLead1
+                    BStatus={BStatus}
+                    setBstatus={setBstatus}
+                    setVillageStatus={setVillageStatus}
+                    VillageStatus={VillageStatus}
+                    navigation={navigation}
+                />
+
             </View>
-        
+
         </SafeAreaProvider>
     )
 }

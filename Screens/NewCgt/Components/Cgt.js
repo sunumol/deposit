@@ -16,7 +16,7 @@ import CgtModal from '../../SelectCustomNewCgt/Components/Modal';
 const { height, width } = Dimensions.get('screen');
 
 const Cgt = ({ navigation, data, date, setModalVisible1, setModalVisible2, slotlistrefresh }) => {
-
+console.log("passed data",data)
     const [ModalVisible, setModalVisible] = useState(false)
     
 
@@ -41,18 +41,27 @@ const Cgt = ({ navigation, data, date, setModalVisible1, setModalVisible2, slotl
                         }
                     }
                     }}
-                    style={[styles.Touch, { borderColor: item.availabilityStatu == "partiallyAvailable" ? 'rgba(242, 153, 74, 1)' : 
-                    item.availabilityStatu == "fullyAvailable" && item?.selection == true  ? 'rgba(39, 174, 96, 1)' :
-                     item.availabilityStatu == "fullyAllocated" ? 'rgba(234, 64, 71, 1)' : 
-                     item.availabilityStatu == "notAvailable" && item?.selection == false ? 'rgb(211, 211, 211)'  :
-                     item.availabilityStatu == "fullyAvailable" && item?.selection == false && 'rgb(211, 211, 211)', backgroundColor: COLORS.colorBackground }]}>
-                    <Text style={[styles.timeText1, { color: 
-                        item.availabilityStatu == "partiallyAvailable" ? 'rgba(242, 153, 74, 1)' :
+                    style={[styles.Touch, { borderColor:                         item.availabilityStatu == "partiallyAvailable" &&  item?.selection == true ? 'rgba(242, 153, 74, 1)' :
+                        item.availabilityStatu == "partiallyAvailable" &&  item?.selection == false ? 'rgb(211, 211, 211)' :
                          item.availabilityStatu == "fullyAvailable" && item?.selection == true ? 'rgba(39, 174, 96, 1)' : 
-                         item.availabilityStatu == "fullyAllocated" ? 'rgba(234, 64, 71, 1)' : 
+                         item.availabilityStatu == "fullyAllocated" && item?.selection == true ? 'rgba(234, 64, 71, 1)' : 
+                         item.availabilityStatu == "fullyAllocated" && item?.selection == false ? 'rgb(211, 211, 211)' :
                          item.availabilityStatu == "notAvailable" && item?.selection == false ? 'rgb(211, 211, 211)' :
+                         item.availabilityStatu == "notAvailable" && item?.selection == true ? 'rgba(39, 174, 96, 1)':
+                          item.availabilityStatu == "fullyAvailable" && item?.selection == false &&
+                         'rgb(211, 211, 211)' , backgroundColor: COLORS.colorBackground }]}>
+                
+                <Text style={[styles.timeText1, { color: 
+                        item.availabilityStatu == "partiallyAvailable" &&  item?.selection == true ? 'rgba(242, 153, 74, 1)' :
+                        item.availabilityStatu == "partiallyAvailable" &&  item?.selection == false ? 'rgb(211, 211, 211)' :
+                         item.availabilityStatu == "fullyAvailable" && item?.selection == true ? 'rgba(39, 174, 96, 1)' : 
+                         item.availabilityStatu == "fullyAllocated" && item?.selection == true ? 'rgba(234, 64, 71, 1)' : 
+                         item.availabilityStatu == "fullyAllocated" && item?.selection == false ? 'rgb(211, 211, 211)' :
+                         item.availabilityStatu == "notAvailable" && item?.selection == false ? 'rgb(211, 211, 211)' :
+                         item.availabilityStatu == "notAvailable" && item?.selection == true ? 'rgba(39, 174, 96, 1)':
                           item.availabilityStatu == "fullyAvailable" && item?.selection == false &&
                          'rgb(211, 211, 211)' }]}>{item.time}</Text>
+
                 </TouchableOpacity>
             </View>
         )
