@@ -288,11 +288,13 @@ const ContinuingGuarantor = ({ navigation, route }) => {
 
   // ------------------verifyCG detail -----------------------------
   async function ResendOtp() {
-    Keyboard.dismiss()
+  
     setInvalidotp(false)
 
-
+console.log('==================================',OtpValue?.length)
+if(OtpValue?.length > 0){
     otpInput2.current.clear()
+}
     const data = {
       "activityId": activityId,
       "mobileNumber": "+91" + number,
