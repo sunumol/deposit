@@ -6,7 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon1 from 'react-native-vector-icons/Ionicons'
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 import ActivityModal from '../components/ActiveModal';
-import { useDispatch,useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { api } from '../../../../Services/Api';
 import CallModal from '../../../Profile/Components/Modal';
 
@@ -88,7 +88,7 @@ const MeetTab = (props) => {
             console.log('-------------------res customerdetail', res.data.body?.occupation)
             if (res?.status) {
                 setCustomerDetail(res.data.body?.occupation)
-              
+
                 //setSpousedetail(res?.data?.body)
             }
         }).catch((err) => {
@@ -96,16 +96,16 @@ const MeetTab = (props) => {
         })
     };
 
-useEffect(()=>{
-    if(spouseDetail !== spouseDetail){
-        setSpousedetail(spouseDetail)
-    }
-    console.log("spousedetail useef",spouseDetail)
-},[spouseDetail])
+    useEffect(() => {
+        if (spouseDetail !== spouseDetail) {
+            setSpousedetail(spouseDetail)
+        }
+        console.log("spousedetail useef", spouseDetail)
+    }, [spouseDetail])
     // ------------------getDlePageNumberdetail ------------------
 
-    const getDlePageNumber = async (id,occupation) => {
-       
+    const getDlePageNumber = async (id, occupation) => {
+
 
         const data = {
             "activityId": id,
@@ -113,16 +113,16 @@ useEffect(()=>{
 
         }
         await api.getDlePageNumber(data).then((res) => {
-            console.log("cust api",customerdetail)
-            console.log('-------------------res getDlePageNumber', res?.data?.body,spouseDetail)
+            console.log("cust api", customerdetail)
+            console.log('-------------------res getDlePageNumber', res?.data?.body, spouseDetail)
             if (res?.status) {
                 if (res?.data?.body == 1) {
-                    if(DLEStatus){
-                        props.navigation.navigate('CustomerDetails')
-                    }else{
+                   // if (DLEStatus) {
+                   //     props.navigation.navigate('CustomerDetails')
+                   // } else {
                         props.navigation.navigate('DetailCheck')
-                    }
-                   
+                    //}
+
                 } else if (res?.data?.body == 2) {
                     props.navigation.navigate('ResidenceOwner')
                 } else if (res?.data?.body == 3) {
@@ -141,18 +141,18 @@ useEffect(()=>{
                 } else if (res?.data?.body == 7) {
                     props.navigation.navigate('IncomeDetails', { relationShip: 'Customer' })
                     // if (occupation !== 'UNEMPLOYED') {
-                      
+
                     //     props.navigation.navigate('IncomeDetails', { relationShip: 'Customer' })
                     // } else if (occupation == 'UNEMPLOYED' && spouseDetail !== 'UNEMPLOYED') {
                     //     props.navigation.navigate('IncomeDetailsSpouse', { relationShip: 'Spouse' })
                     // } else if (occupation == 'UNEMPLOYED' && spouseDetail == 'UNEMPLOYED') {
                     //     navigation.navigate('Proceed')
                     // }
-                   // props.navigation.navigate('IncomeDetails', { relationShip: 'Customer' })
+                    // props.navigation.navigate('IncomeDetails', { relationShip: 'Customer' })
                 } else if (res?.data?.body == 8) {
                     if (occupation !== 'UNEMPLOYED') {
-                    props.navigation.navigate('IncomeDetailsSpouse', { relationShip: 'Spouse' })
-                    }else{
+                        props.navigation.navigate('IncomeDetailsSpouse', { relationShip: 'Spouse' })
+                    } else {
                         props.navigation.navigate('Proceed')
                     }
                 } else if (res?.data?.body == 9) {
@@ -178,17 +178,22 @@ useEffect(()=>{
         Linking.openURL(number);
     };
 
-   
+
     const getSpousedetail = async (id) => {
         const data = {
             "activityId": id
         }
         await api.getSpousedetail(data).then((res) => {
-            console.log('-------------------res spousedetail co-app',res?.data?.body?.occupation)
+            console.log('-------------------res spousedetail co-app', res?.data?.body?.occupation)
             if (res?.status) {
+                dispatch({
+                    type: 'SET_SPOUSE_OCCUPATION',
+                    payload: res?.data?.body?.occupation,
+                });
+
                 setSpousedetail(res?.data?.body?.occupation)
-          
-              getDlePageNumber(id,res?.data?.body?.occupation)
+
+                getDlePageNumber(id, res?.data?.body?.occupation)
                 console.log("spose detail", res?.data?.body)
 
             }
@@ -216,10 +221,10 @@ useEffect(()=>{
 
 
                                     setDetails(item)
-                                  
+
                                     getSpousedetail(item?.activityId)
                                     getCustomerdetail(item?.activityId)
-                                   
+
                                 } else if (item?.purpose == 'Conduct CGT') {
                                     dispatch({
                                         type: 'SET_CGT_ACTIVITY_ID',

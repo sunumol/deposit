@@ -33,7 +33,7 @@ const ToastModal = ({ ModalVisible, onPressOut, setModalVisible, Validation }) =
 
                     <View>
 
-                        <Text style={[styles.textStyle,{marginHorizontal:15}]}>{Validation}</Text>
+                        <Text style={[styles.textStyle,{marginHorizontal:16}]}>{Validation}</Text>
                     </View>
                     <TouchableOpacity style={styles.buttonStyle} onPressOut={onPressOut}>
                         <Text style={styles.buttonTextStyle}>{t('common:Okay')}</Text>
@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
     },
     modalContainer: {
         marginHorizontal: 20,
-        height: Dimensions.get('window').width * 0.45,
+       // height: Dimensions.get('window').width * 0.45,
         backgroundColor: COLORS.colorBackground,
         borderRadius: 8,
         alignItems: 'center',
