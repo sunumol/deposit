@@ -99,7 +99,7 @@ const [searchcustomerlist, setsearchcustomerlist] = useState();
      setClearPop(true)
     }
     await api.getCustomerList(data).then((res) => {
-      console.log('------------------- customer list res', res.data.body,data.customerNameOrNumber)
+      console.log('------------------- customer list res', res,data.customerNameOrNumber)
       if(data.customerNameOrNumber){
         setsearchcustomerlist(res?.data?.body)
      

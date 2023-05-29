@@ -41,13 +41,13 @@ console.log("passed data",data)
                         }
                     }
                     }}
-                    style={[styles.Touch, { borderColor:                         item.availabilityStatu == "partiallyAvailable" &&  item?.selection == true ? 'rgba(242, 153, 74, 1)' :
+                    style={[styles.Touch, { borderColor:item.availabilityStatu == "partiallyAvailable" &&  item?.selection == true ? 'rgba(242, 153, 74, 1)' :
                         item.availabilityStatu == "partiallyAvailable" &&  item?.selection == false ? 'rgb(211, 211, 211)' :
                          item.availabilityStatu == "fullyAvailable" && item?.selection == true ? 'rgba(39, 174, 96, 1)' : 
                          item.availabilityStatu == "fullyAllocated" && item?.selection == true ? 'rgba(234, 64, 71, 1)' : 
                          item.availabilityStatu == "fullyAllocated" && item?.selection == false ? 'rgb(211, 211, 211)' :
                          item.availabilityStatu == "notAvailable" && item?.selection == false ? 'rgb(211, 211, 211)' :
-                         item.availabilityStatu == "notAvailable" && item?.selection == true ? 'rgba(39, 174, 96, 1)':
+                         item.availabilityStatu == "notAvailable" && item?.selection == true ? 'rgba(162, 148, 200, 1)':
                           item.availabilityStatu == "fullyAvailable" && item?.selection == false &&
                          'rgb(211, 211, 211)' , backgroundColor: COLORS.colorBackground }]}>
                 
@@ -58,7 +58,7 @@ console.log("passed data",data)
                          item.availabilityStatu == "fullyAllocated" && item?.selection == true ? 'rgba(234, 64, 71, 1)' : 
                          item.availabilityStatu == "fullyAllocated" && item?.selection == false ? 'rgb(211, 211, 211)' :
                          item.availabilityStatu == "notAvailable" && item?.selection == false ? 'rgb(211, 211, 211)' :
-                         item.availabilityStatu == "notAvailable" && item?.selection == true ? 'rgba(39, 174, 96, 1)':
+                         item.availabilityStatu == "notAvailable" && item?.selection == true ? 'rgba(162, 148, 200, 1)':
                           item.availabilityStatu == "fullyAvailable" && item?.selection == false &&
                          'rgb(211, 211, 211)' }]}>{item.time}</Text>
 
