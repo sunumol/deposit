@@ -449,8 +449,8 @@ const LoginScreen = ({ navigation }) => {
         const data = {
             otp: otp,
             mobNumber: '+91' + selectedPhoneNum,
-            simId:"11111",
-            //simId:DeviceId,
+            //simId:"11111",
+            simId:DeviceId,
             deviceId:DeviceId,
             deviceIpAddress: ipAdrress
         }
