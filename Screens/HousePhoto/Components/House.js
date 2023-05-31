@@ -221,7 +221,9 @@ const DetailChecks = ({ navigation, setState, setImagedata1,imagedata }) => {
                 <View style={[Image1 ? styles.ViewH: {}]}>
 
                     <View style={{ alignItems: 'center', flex: 0, }}>
-                        <Image source={{ uri: imagedata ? imagedata : null }} style={{ width: width * 0.55, height: width * 0.5, borderRadius: 2 }} />
+                        <Image 
+                        source={{ uri: imagedata ? imagedata : null }} style={{ width: width * 0.55, height: width * 0.5, borderRadius: 2 }}
+                        resizeMode='contain' />
                     </View>
 
                 </View>
