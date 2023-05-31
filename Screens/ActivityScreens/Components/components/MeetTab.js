@@ -221,7 +221,7 @@ const MeetTab = (props) => {
 
 
                                     setDetails(item)
-
+                                   // props.navigation.navigate('ContinuingGuarantor')
                                     getSpousedetail(item?.activityId)
                                     getCustomerdetail(item?.activityId)
 

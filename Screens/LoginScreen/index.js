@@ -312,7 +312,8 @@ const LoginScreen = ({ navigation }) => {
             },
             mobile: '+91' + PhoneNum,
             deviceIpAddress: ipAdrress,
-            simId: "11111",
+            simId:DeviceId, //NEED TO IMPLEMENT SIMID
+           // simId:"11111",
         }
         await api.getLoginOtp(data).then((res) => {
             console.log('-------------------res', res)
@@ -367,7 +368,16 @@ const LoginScreen = ({ navigation }) => {
                     setMaxError(false)
                     setButton(true)
                     setOtpclick(true)
+                    setPhoneNum('')
                     setMessage('Sorry! We are unable to proceed further.')
+                }else if(err?.response?.data?.message == "We are unable to process.Security check failed"){
+                    setModalVisibleError(true)
+                    setMaxError(false)
+                    setButton(true)
+                    setPhoneNum('')
+                    setOtpclick(true)
+                    console.log("sim id checking",err?.response?.data?.message)
+                    setMessage('We are unable to process.\n Security check failed')
                 }
                 else {
                     setMaxError(false)
@@ -439,7 +449,8 @@ const LoginScreen = ({ navigation }) => {
         const data = {
             otp: otp,
             mobNumber: '+91' + selectedPhoneNum,
-            simId: "1234",
+            simId:"11111",
+            //simId:DeviceId,
             deviceId:DeviceId,
             deviceIpAddress: ipAdrress
         }
@@ -516,7 +527,7 @@ const LoginScreen = ({ navigation }) => {
             },
             mobile: '+91' + selectedPhoneNum,
             deviceIpAddress: ipAdrress,
-            simId: "11111",
+            simId:DeviceId,
         }
         await api.resendLoginOtp(data).then((res) => {
             if (res?.data?.status) {
@@ -543,6 +554,8 @@ const LoginScreen = ({ navigation }) => {
     }
     // ------------------ Resend Api Call End ----------------------
 
+     
+        
     return (
         <>
             <SafeAreaProvider style={{ backgroundColor: COLORS.colorBackground }} >

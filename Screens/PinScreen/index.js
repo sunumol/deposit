@@ -15,7 +15,7 @@ import DeviceInfo from 'react-native-device-info';
 import { NetworkInfo } from 'react-native-network-info';
 import { useRoute } from '@react-navigation/native';
 import { addDays } from 'date-fns'
-
+import ToastModal from '../../Components/ToastModal';
 // ----------- Componenet Import ------------------------
 import { COLORS, FONTS } from '../../Constants/Constants';
 import Statusbar from '../../Components/StatusBar';
@@ -51,13 +51,29 @@ const PinScreen = ({ navigation, }) => {
     const [status, setStatus] = useState(false)
     const [ModalVisibleVer, setModalVisibleVer] = useState(false)
     const [ModalVisibleUp, setModalVisibleUp] = useState(false)
-
+    const [ipAdrress, setIPAddress] = useState();
+    const [deviceId, setDeviceId] = useState();
+    const [mobile, setMobile] = useState();
+    const [ModalVisibleError, setModalVisibleError] = useState(false)
+    const [message, setMessage] = useState()
     // --------------Device Configuration End----------
 
     useEffect(() => {
         getData()
         getAppNewVersion()
     }, [userName])
+
+    useEffect(() => {
+        NetworkInfo.getIPV4Address().then(ipv4Address => {
+            console.log(ipv4Address);
+            setIPAddress(ipv4Address)
+        });
+        // -------------- Get DeviceInfo start----------
+        DeviceInfo.getUniqueId().then((uniqueId) => {
+            setDeviceId(uniqueId)
+        });
+        // -------------- Get DeviceInfo End ----------
+    }, [])
 
     useEffect(() => {
         return navigation.addListener("focus", () => {
@@ -78,7 +94,7 @@ const PinScreen = ({ navigation, }) => {
                 } else {
                     setModalVisibleUp(true)
                 }
-            } 
+            }
             console.log("version checking....", result.data.body)
             //  setModalVisible2(true)
 
@@ -92,10 +108,17 @@ const PinScreen = ({ navigation, }) => {
     const getData = async () => {
         try {
             const id = await AsyncStorage.getItem('CustomerId')
-            // const userName = await AsyncStorage.getItem('userName')
+            const Phone = await AsyncStorage.getItem('Mobile')
+
+            const userName = await AsyncStorage.getItem('userName')
             console.log("userName", userName)
             setUserName(userName)
+            setMobile(Phone)
             setCustId(id)
+            // const userName = await AsyncStorage.getItem('userName')
+            console.log("userName", userName)
+
+
         } catch (e) {
             console.log(e)
         }
@@ -150,7 +173,8 @@ const PinScreen = ({ navigation, }) => {
                 + Difference_In_Days);
             if (Difference_In_Days && Difference_In_Days > 0 && Difference_In_Days < 91) {
                 if (Pin === code) {
-                    navigation.navigate('Profile')
+                    UpdateSIMID()
+                  //  navigation.navigate('Profile')
                     setMaxError(false);
                 } else {
                     otpInput2?.current?.clear()
@@ -190,6 +214,42 @@ const PinScreen = ({ navigation, }) => {
         })
 
     }
+
+    //SIMID check api
+
+    async function UpdateSIMID(otp) {
+        console.log("inside update simid",)
+
+        const data = {
+
+            "deviceId": deviceId,
+            "geoLocation": {
+                "latitude": "10.0302",
+                "longitude": "76.33553"
+            },
+            "mobile": mobile,
+            "deviceIpAddress": ipAdrress,
+            "simId": deviceId,
+            "id": custID
+
+        }
+        console.log("data of update sim id", data)
+        await api.UpdateSIMID(data).then((res) => {
+            console.log("inside update sim id", res?.data?.statusCodeValue)
+            if (res?.data?.statusCodeValue == 200) {
+                console.log("inside update sim id", res?.data)
+                navigation.navigate('Profile')
+            }
+        }).catch((err) => {
+            if (err?.response?.data?.message == "We are unable to process.Security check failed") {
+                setModalVisibleError(true)
+
+                setMessage('We are unable to process.\n Security check failed')
+            }
+            console.log("err->", err?.response)
+
+        })
+    }
     // ------------------ After 3 Err Api Call End ------------------
     // useEffect(() => {
     //     const unsubscribe = navigation.addListener('focus', () => {
@@ -225,6 +285,7 @@ const PinScreen = ({ navigation, }) => {
                         containerStyle={{ marginTop: 7 }}
                         handleTextChange={(code => {
                             if (code.length === 4) {
+                                
                                 getPinCheck(code)
                             }
                             if (code.length !== 4) {
@@ -279,6 +340,20 @@ const PinScreen = ({ navigation, }) => {
 
                 onPressOut={() => setModalVisibleUp(!ModalVisibleUp)}
                 setModalVisible2={setModalVisibleUp} />
+
+            <ToastModal
+                Validation={message}
+                ModalVisible={ModalVisibleError}
+                onPressOut={() => {
+                    setModalVisibleError(!ModalVisibleError),
+                    
+                     navigation.reset({
+                        index: 0,
+                        routes: [{ name: 'LoginScreen' }],
+                    });
+                }}
+                setModalVisible={setModalVisibleError}
+            />
         </SafeAreaProvider>
     )
 }

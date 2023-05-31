@@ -20,6 +20,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon1 from 'react-native-vector-icons/Entypo'
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import OccupationModal from '../../Components/OccupationModal';
 
 // -------------- Component Imports ------------------------------
 import Header from '../../Components/Header';
@@ -81,6 +82,9 @@ const ContinuingGuarantor = ({ navigation, route }) => {
   const [errorMessage, setErrorMessage] = useState('')
   const [condirmDate, setConfirmDate] = useState()
   const [fetOtp, setOtpFetch] = useState(false)
+  const [occupation, setOccupation] = useState('')
+  const [occupationModalVisible, setOccupationModalVisible] = useState(false);
+  const [OccupationD,setOccupationD] = useState('')
 
   const getData = async () => {
     try {
@@ -250,7 +254,8 @@ const ContinuingGuarantor = ({ navigation, route }) => {
       "activityId": activityId,
       "mobileNumber": "+91" + num,
       "name": relation !== 'Spouse' ? Name : "",
-      "relationShip": relation
+      "relationShip": relation,
+      "occupation":relation !== 'Spouse' ? OccupationD :null
     }
     await api.verifyCG(data).then((res) => {
       console.log('-------------------res verifyCG------1', res)
@@ -288,21 +293,23 @@ const ContinuingGuarantor = ({ navigation, route }) => {
 
   // ------------------verifyCG detail -----------------------------
   async function ResendOtp() {
-  
+
     setInvalidotp(false)
 
-console.log('==================================',OtpValue?.length)
-if(OtpValue?.length > 0){
-    otpInput2.current.clear()
-}
+    console.log('==================================', OtpValue?.length)
+    if (OtpValue?.length > 0) {
+      otpInput2.current.clear()
+    }
     const data = {
       "activityId": activityId,
       "mobileNumber": "+91" + number,
       "name": relation !== 'Spouse' ? Name : "",
-      "relationShip": relation
+      "relationShip": relation,
+      "occupation":relation !== 'Spouse' ? OccupationD :null
+      
     }
     await api.verifyCG(data).then((res) => {
-      console.log('-------------------res verifyCG', res)
+      console.log('-------------------res verifyCG',)
       if (res?.status) {
         CountDownResend()
         setResends(true)
@@ -418,6 +425,8 @@ if(OtpValue?.length > 0){
     }
   }
 
+  {console.log("occupate",OccupationD)}
+
   const getInitials = (name) => {
     let initials;
     const nameSplit = name?.split(" ");
@@ -446,54 +455,54 @@ if(OtpValue?.length > 0){
 
   useEffect(() => {
     if (fetOtp) {
-        const interval = setInterval(() => {
-           //callMessage()
-        }, 3000);
-        return () => clearInterval(interval);
+      const interval = setInterval(() => {
+        //callMessage()
+      }, 3000);
+      return () => clearInterval(interval);
     }
     // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
-}, [fetOtp])
+  }, [fetOtp])
 
-   // -------------------------------- Fetch Message From device Start -------------------------------------------
-   const callMessage = () => {
+  // -------------------------------- Fetch Message From device Start -------------------------------------------
+  const callMessage = () => {
     var filter = {
-        box: 'inbox', // 'inbox' (default), 'sent', 'draft', 'outbox', 'failed', 'queued', and '' for all
-        minDate: condirmDate, // timestamp (in milliseconds since UNIX epoch)
-        maxDate: new Date().getTime(),
-        sp_id: 3001,
+      box: 'inbox', // 'inbox' (default), 'sent', 'draft', 'outbox', 'failed', 'queued', and '' for all
+      minDate: condirmDate, // timestamp (in milliseconds since UNIX epoch)
+      maxDate: new Date().getTime(),
+      sp_id: 3001,
     };
     SmsAndroid.list(
-        JSON.stringify(filter),
-        (fail) => {
-            console.log('Failed with this error: ' + fail);
-        },
-        (count, smsList) => {
-            console.log('Count: ', count);
-            console.log('List: ', smsList);
-            var arr = JSON.parse(smsList);
+      JSON.stringify(filter),
+      (fail) => {
+        console.log('Failed with this error: ' + fail);
+      },
+      (count, smsList) => {
+        console.log('Count: ', count);
+        console.log('List: ', smsList);
+        var arr = JSON.parse(smsList);
 
-            arr.forEach(function (object) {
-                console.log('Object: ' + object);
-                console.log('--> sms date' + object.date);
-                console.log('--> sms body' + object.body);
+        arr.forEach(function (object) {
+          console.log('Object: ' + object);
+          console.log('--> sms date' + object.date);
+          console.log('--> sms body' + object.body);
 
-                if (object.body.includes('One Time Password')) {
-                    let match = object.body.match(/\b\d{4}\b/)
-                    setOtpFetch(false)
-                    if (match) {
-                        setOtpFetch(false)
-                        setOtpValue(match[0])
-                        //setOtpMessage(match[0])
-                        console.log("otpmessage.....", match[0])
-                        console.log("match exist", match)
-                        
-                    }
-                }
+          if (object.body.includes('One Time Password')) {
+            let match = object.body.match(/\b\d{4}\b/)
+            setOtpFetch(false)
+            if (match) {
+              setOtpFetch(false)
+              setOtpValue(match[0])
+              //setOtpMessage(match[0])
+              console.log("otpmessage.....", match[0])
+              console.log("match exist", match)
 
-            });
-        },
+            }
+          }
+
+        });
+      },
     );
-};
+  };
 
 
 
@@ -515,8 +524,10 @@ if(OtpValue?.length > 0){
             <View style={{ flex: 1 }}>
               <Text style={styles.headerText}>Relationship with Customer</Text>
               <TouchableOpacity onPress={() => relation == 'Spouse' ? setModalVisible1(false) : setModalVisible1(true)} style={styles.dropDown}>
-                <Text style={styles.spouseText}>{relation ? relation : 'Select'}</Text>
-                {relation !== 'Spouse' && <Icon1 name="chevron-down" size={18} color={'#808080'} />}
+                <Text style={[styles.spouseText, { color: relation ? COLORS.colorDark : COLORS.colorDSText }]}>{relation ? relation : 'Select'}</Text>
+
+
+                {/* {relation !== 'Spouse' && <Icon1 name="chevron-down" size={18} color={'#808080'} />} */}
               </TouchableOpacity>
               {relation == 'Spouse' ? <View style={styles.containerBox}>
                 <View style={{ flex: 1, flexDirection: 'row' }}>
@@ -526,9 +537,9 @@ if(OtpValue?.length > 0){
                   <View style={{ flexDirection: 'column', flex: 1, marginLeft: 12 }}>
                     <Text style={styles.nameText}>{spousedetail?.name}</Text>
 
-                   
-                      <Text style={[styles.underText,{textTransform:'capitalize'}]}>{spousedetail?.occupation?.replace(/_/g, ' ')}</Text> 
-                  
+
+                    <Text style={[styles.underText, { textTransform: 'capitalize' }]}>{spousedetail?.occupation?.replace(/_/g, ' ')}</Text>
+
 
                   </View>
                   <View style={{ flexDirection: 'row', left: -5 }}>
@@ -578,6 +589,18 @@ if(OtpValue?.length > 0){
                 </View> : null}
 
 
+              {relation !== 'Spouse' &&
+                <View >
+                  <Text style={styles.mobileText}>Occupation</Text>
+                  <TouchableOpacity style={[styles.dropDownContainmer, { borderColor: COLORS.colorBorder }]} onPress={() => {
+                    setOccupationModalVisible(true)
+                  }}>
+                    {occupation == ''
+                      ? <Text style={styles.textStyle}>{t('common:Select')}</Text>
+                      : <Text style={styles.textStyleDrop}>{occupation}</Text>
+                    }
+                  </TouchableOpacity>
+                </View>}
 
               <Text style={styles.mobileText}>Mobile Number</Text>
               <View style={[styles.inPutStyle, { backgroundColor: IsOtp1 && status === true ? '#ECEBED' : COLORS.colorBackground, }]}>
@@ -746,6 +769,15 @@ if(OtpValue?.length > 0){
               setModalReason(!ModalReason)
             }}
             setModalVisible={setModalError1}
+            navigation={navigation}
+          />
+          <OccupationModal
+            visible={occupationModalVisible}
+            setOccupation={setOccupation}
+            setState={setOccupationD}
+            state={OccupationD}
+            setOccupationModalVisible={setOccupationModalVisible}
+            onPressOut={() => setOccupationModalVisible(!occupationModalVisible)}
             navigation={navigation}
           />
 
@@ -919,5 +951,43 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.FontExtraBold,
     fontWeight: 'bold',
     marginTop: 2
+  },
+  textStyle: {
+    color: COLORS.colorDSText,
+    fontFamily: FONTS.FontRegular,
+    fontSize: 15,
+    fontWeight: '400',
+    paddingTop: 10
+  },
+  dropDownContainmer: {
+    backgroundColor: COLORS.colorBackground,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: COLORS.colorBorder,
+    width: '100%',
+    fontSize: 15,
+    fontWeight: FONTS.FontRegular,
+    fontWeight: '400',
+    paddingLeft: 13,
+    color: COLORS.colorDark,
+    height: 46,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 10
+
+  },
+  textStyleHead: {
+    color: '#3B3D43',
+    fontFamily: FONTS.FontRegular,
+    fontSize: 10,
+    fontWeight: '400',
+    paddingBottom: 7
+  },
+  textStyleDrop: {
+    fontSize: 15,
+    fontWeight: FONTS.FontRegular,
+    fontWeight: '400',
+    paddingTop: 12,
+    color: COLORS.colorDark,
   },
 })
