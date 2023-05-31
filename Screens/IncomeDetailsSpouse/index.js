@@ -393,7 +393,7 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
                                 </View>
                                 <View style={{ flexDirection: 'column', flex: 1, marginLeft: 12 }}>
                                     <Text style={styles.nameText}>{incomedetail?.name}</Text>
-                                    <Text style={styles.underText}>{incomedetail?.occupation == 'SALARIED_EMPLOYEE' ? 'Salaried employee' : incomedetail?.occupation == 'FARMER' ? 'Farmer' : incomedetail?.occupation == "BUSINESS_SELF_EMPLOYED" ? "Business/Self employed" : incomedetail?.occupation=='UNEMPLOYED' ? 'Unemployed' : 'Daily wage labourer'}</Text>
+                                    <Text style={[styles.underText,{textTransform:'capitalize'}]}>{incomedetail?.occupation?.replace(/_/g, ' ')}</Text> 
                                 </View>
                                 <View style={{ flexDirection: 'row', left: -5 }}>
                                     <Text style={styles.dateText}>{relationShip}</Text>

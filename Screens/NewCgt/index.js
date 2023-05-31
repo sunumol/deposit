@@ -50,38 +50,27 @@ const NewCgt = ({ navigation, route }) => {
         }, [])
     );
 
-    // const time1 = '7:00 AM';
-    // const time2 = '5:30 PM';
 
-    // // Function to convert time to minutes since midnight
-    // function convertToMinutes(time) {
-    //     // Split the time string into hours, minutes, and AM/PM
-    //     const [hourString, minuteString, period] = time.split(/:| /);
-    //     let hours = parseInt(hourString);
-    //     const minutes = parseInt(minuteString);
 
-    //     // Adjust hours for PM time
-    //     if (period === 'PM' && hours !== 12) {
-    //         hours += 12;
-    //     }
+    // Function to convert time to minutes since midnight
+    function convertToMinutes(time) {
 
-    //     // Convert to minutes
-    //     const totalMinutes = hours * 60 + minutes;
-    //     return totalMinutes;
-    // }
+        // Split the time string into hours, minutes, and AM/PM
+        const [hourString, minuteString, period] = time.split(/:| /);
+        let hours = parseInt(hourString);
+        const minutes = parseInt(minuteString);
 
-    // // Convert times to minutes
-    // const minutes1 = convertToMinutes(time1);
-    // const minutes2 = convertToMinutes(time2);
+        // Adjust hours for PM time
+        if (period === 'PM' && hours !== 12) {
+            hours += 12;
+        }
 
-    // // Compare the times
-    // if (minutes1 < minutes2) {
-    //     console.log(time1 + ' is earlier than ' + time2);
-    // } else if (minutes1 > minutes2) {
-    //     console.log(time1 + ' is later than ' + time2);
-    // } else {
-    //     console.log(time1 + ' is the same as ' + time2);
-    // }
+        // Convert to minutes
+        const totalMinutes = hours * 60 + minutes;
+        return totalMinutes;
+    }
+
+    // Convert times to minutes
 
     const callback = (value) => {
         getCGTslot()
@@ -91,8 +80,9 @@ const NewCgt = ({ navigation, route }) => {
     const getCGTslot = async (date) => {
         var date1 = moment(Dates, "HH:mm:ss").format("hh:mm A")
         var date2 = "07:00 AM"
-        console.log("DATE 1 AND ADET", date1 > date2)
-        console.log("new date", moment(Dates, "HH:mm:ss").format("hh:mm A"))
+
+        console.log("selected date", moment(NewDates).utc().format('DD-MM-YYYY'))
+
         const data = {
             "employeeId": 1,
             "selectedDate": moment(NewDates).utc().format('DD-MM-YYYY')
@@ -103,16 +93,40 @@ const NewCgt = ({ navigation, route }) => {
                 payload: res?.data?.body[0].sloatActivityList,
             });
             console.log('------------------- CGT slot res', res?.data?.body[0].sloatActivityList)
-            // const Temp = res?.data?.body[0].sloatActivityList.forEach((element, index) => {
-            //     if (moment(Dates, "HH:mm:ss").format("hh:mm A") > '7.00 PM') {
-            //         element.selection = true;
-            //         console.log("TRUE")
-            //     } else {
-            //         element.selection = false;
-            //         console.log("FALSE")
-            //     }
-            // });
-            setSlotlist(res?.data?.body[0].sloatActivityList);
+
+
+            // Compare the times
+            console.log("compare dates", moment(NewDates).utc().format('DD-MM-YYYY'), moment(Dates).utc().format('DD-MM-YYYY'))
+  //  if (moment(NewDates).utc().format('DD-MM-YYYY') === moment(Dates).utc().format('DD-MM-YYYY')) {
+                const temp = res?.data?.body[0].sloatActivityList
+                temp.forEach((element, index) => {
+
+                    const minutes1 = convertToMinutes(date1);
+                    const minutes2 = convertToMinutes(element?.time);
+                    if (minutes1 < minutes2 && moment(NewDates).utc().format('DD-MM-YYYY') === moment(Dates).utc().format('DD-MM-YYYY') ) {
+                        element.selection = true;
+
+                    } else if (minutes1 > minutes2 && moment(NewDates).utc().format('DD-MM-YYYY') === moment(Dates).utc().format('DD-MM-YYYY')) {
+                        element.selection = false;
+
+                    }else if(moment(NewDates).utc().format('DD-MM-YYYY') !== moment(Dates).utc().format('DD-MM-YYYY')){
+                        element.selection = true;
+                    }
+                   
+                    console.log("temp data", temp)
+                })
+                setSlotlist(temp);
+            // } else  {
+            //     console.log("hai i am in",moment(NewDates).utc().format('DD-MM-YYYY') > moment(Dates).utc().format('DD-MM-YYYY'))
+            //     const temp = res?.data?.body[0].sloatActivityList
+            //     temp.forEach((element, index) => {
+            //        element.selection = true;
+
+            //     })
+            //     setSlotlist(temp);
+            // }
+
+
             setStatus(false)
         })
             .catch((err) => {

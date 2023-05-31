@@ -31,6 +31,7 @@ const CreatePin = ({ navigation}) => {
     const [lang, setLang] = useState('')
     const [exitApp, setExitApp] = useState(0);
     const [error, setError] = useState(false);
+
     const [modalExitAppVisible, setModalExitAppVisible] = useState(false);
     const clearText = () => {
         otpInput2.current.clear();
@@ -60,6 +61,7 @@ const CreatePin = ({ navigation}) => {
     const getData = async () => {
         try {
             const lang = await AsyncStorage.getItem('user-language')
+    
             setLang(lang)
         } catch (e) {
             console.log(e)

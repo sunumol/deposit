@@ -49,7 +49,7 @@ const DetailChecks = ({ navigation, setState, proofType1, imageUrl1, relation1, 
     const [Purposes, setPurposes] = useState(null)
     const [imageStatus, setImageStatus] = useState(false)
     const [Relation, setRelation] = useState('')
-    const [Button,setButton] = useState()
+    const [Button, setButton] = useState()
     const [Image1, setImage] = useState(null)
     const [Imageurl, setImageurl] = useState('')
     const [status, setStatus] = useState(false)
@@ -58,6 +58,7 @@ const DetailChecks = ({ navigation, setState, proofType1, imageUrl1, relation1, 
     const [spousedetail, setSpousedetail] = useState('')
     const [ownersName, setOwnersName] = useState('')
     const [error, setError] = useState('')
+    const [emoji, setEmoji] = useState(false)
     const [NameValid, setNameValid] = useState(false)
     const [InvalidImage, setInvalidImage] = useState(false)
     const [Loading, setLoading] = useState(true)
@@ -155,7 +156,7 @@ const DetailChecks = ({ navigation, setState, proofType1, imageUrl1, relation1, 
     // ------------------save and update residence owner detail ------------------
 
     const UpdateResidenceowner = async () => {
-        console.log('api called', activityId,Purposes)
+        console.log('api called', activityId, Purposes)
 
         const data = {
             "activityId": activityId,
@@ -164,6 +165,7 @@ const DetailChecks = ({ navigation, setState, proofType1, imageUrl1, relation1, 
             "relationShipWithCustomer": Purposes,
             "ownersName": ownersName ? ownersName : spousedetail?.name
         }
+        console.log("data",data)
         await api.UpdateResidenceowner(data).then((res) => {
             console.log('-------------------res  update Residence owner', res)
             if (res?.status) {
@@ -242,7 +244,28 @@ const DetailChecks = ({ navigation, setState, proofType1, imageUrl1, relation1, 
         return initials.toUpperCase();
     };
 
-  
+    function hasEmoji(text) {
+        console.log("text has emogi")
+        const emojiRegex = /[\u{1F000}-\u{1FFFF}\u{200D}\u{FE0F}]/u; // Emoji regular expression pattern
+        if (emojiRegex.test(text)) {
+            setEmoji(true)
+            console.log("text true", text)
+            setOwnersName('')
+
+        } else {
+            console.log("text false", text)
+        }
+        //  return emojiRegex.test(text);
+    }
+    // useEffect(() => {
+    //     console.log("emoji pass", emoji)
+    //     if (emoji) {
+    //         setOwnersName('')
+    //     }
+    // })
+
+
+
 
     return (
 
@@ -304,7 +327,7 @@ const DetailChecks = ({ navigation, setState, proofType1, imageUrl1, relation1, 
                     <View>
                         <Text style={styles.proof}>Relationship with Customer</Text>
                     </View>
-                    <TouchableOpacity style={styles.SelectBox} onPress={() => { setModalVisible1(true), getSpousedetail(),setOwnersName(null) }} >
+                    <TouchableOpacity style={styles.SelectBox} onPress={() => { setModalVisible1(true), getSpousedetail(), setOwnersName(null) }} >
                         {Purposes === null ? <Text style={styles.textSelect}>Select</Text> :
                             <Text style={[styles.textSelect, { color: '#1A051D', marginLeft: 8 }]}>{Purposes}</Text>}
                         <Icon1 name="chevron-down" size={18} color={'#808080'} style={{ marginRight: 10 }} />
@@ -318,17 +341,10 @@ const DetailChecks = ({ navigation, setState, proofType1, imageUrl1, relation1, 
                                     <Text style={styles.shortText}>{getInitials(spousedetail?.name)}</Text>
                                 </View>
 
-                                <View style={{ flexDirection: 'column', flex: 1, marginLeft: 12 }}>
-                                    <Text style={styles.nameText}>{spousedetail?.name}</Text>
-                                    {spousedetail?.occupation == 'DAILY_WAGE_LABOURER,' ?
-                                        <Text style={styles.underText}>Daily Wage Labourer</Text> :
-                                        spousedetail?.occupation == 'SALARIED_EMPLOYEE' ?
-                                            <Text style={styles.underText}>Salaried Employee</Text> :
-                                            spousedetail?.occupation == 'BUSINESS_SELF_EMPLOYED' ?
-                                                <Text style={styles.underText}>Business Self Employed</Text> :
-                                                spousedetail?.occupation == 'UNEMPLOYED' ? 
-                                                <Text style={styles.underText}>Unemployed</Text>:
-                                                <Text style={styles.underText}>Farmer</Text>}
+                                <View style={{ flexDirection: 'column', flex: 1, marginLeft: 12, }}>
+
+                                <Text style={styles.nameText}>{spousedetail?.name}</Text>
+                                    <Text style={[styles.underText, { textTransform: 'capitalize' }]}>{spousedetail?.occupation?.replace(/_/g, ' ')}</Text>
                                 </View>
                                 <View style={{ flexDirection: 'row', }}>
                                     <Image2 width={11} height={11} top={3} />
@@ -350,8 +366,13 @@ const DetailChecks = ({ navigation, setState, proofType1, imageUrl1, relation1, 
                                         contextMenuHidden={true}
                                         onChangeText={(text) => {
                                             setNameValid(false)
-                                           
-                                          
+                                            // if (hasEmoji(text)) {
+                                            //     console.log('Input contains emojis');
+                                            //     // const textWithoutEmojis = removeEmojis(text);
+                                            //     // console.log('Text without emojis:', textWithoutEmojis);
+                                            //     setOwnersName(null)
+                                            // }
+
                                             const firstDigitStr = String(text)[0];
                                             if (firstDigitStr == ' ') {
                                                 containsWhitespace(text)
@@ -364,7 +385,7 @@ const DetailChecks = ({ navigation, setState, proofType1, imageUrl1, relation1, 
                                             else if (/^[^!-\/:-@\.,[-`{-~1234567890₹~`|•√π÷×¶∆€¥$¢^°={}%©®™✓]+$/.test(text) || text === '') {
                                                 setOwnersName(text),
                                                     relative1(text)
-                                            } 
+                                            }
                                         }}
                                     // onFocus={() => setPstatus(false)}
                                     // onKeyPress={() => setPstatus(false)}
@@ -378,10 +399,10 @@ const DetailChecks = ({ navigation, setState, proofType1, imageUrl1, relation1, 
                 </ScrollView>
 
                 <View style={{ position: 'absolute', left: 0, right: 0, bottom: 0, alignItems: 'center', justifyContent: 'center' }}>
-                    <TouchableOpacity onPress={() => (Purpose && Purposes == 'Spouse' ? Purposes : ownersName?.length > 2 && Image1 && !InvalidImage ) ? UpdateResidenceowner() : console.log("helo")}
+                    <TouchableOpacity onPress={() => (Purpose && Purposes == 'Spouse' ? Purposes : ownersName?.length > 2 && Image1 && !InvalidImage) ? UpdateResidenceowner() : console.log("helo")}
                         style={[styles.Button1, { backgroundColor: (Purpose && Purposes == 'Spouse' ? Purposes : ownersName?.length > 2 && Image1 && !InvalidImage) ? COLORS.colorB : 'rgba(224, 224, 224, 1)' }]}
                     >
-                        <Text style={[styles.text1, { color: (Purpose && Purposes == 'Spouse' ? Purposes : ownersName?.length > 2 && Image1 && !InvalidImage ) ? COLORS.colorBackground : '#979C9E' }]}>Continue</Text>
+                        <Text style={[styles.text1, { color: (Purpose && Purposes == 'Spouse' ? Purposes : ownersName?.length > 2 && Image1 && !InvalidImage) ? COLORS.colorBackground : '#979C9E' }]}>Continue</Text>
                     </TouchableOpacity>
                 </View>
             </>

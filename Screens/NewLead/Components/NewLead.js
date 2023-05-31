@@ -14,7 +14,8 @@ import {
     KeyboardAvoidingView,
     ScrollView,
     ToastAndroid,
-    Platform
+    Platform,
+    Pressable
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Entypo'
 import { COLORS, FONTS } from '../../../Constants/Constants';
@@ -29,7 +30,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import VillageModal from './VillageModal';
 
 
-const NewLead1 = ({ navigation, setVillageStatus, VillageStatus }) => {
+const NewLead1 = ({ navigation, setVillageStatus, VillageStatus,setbackstate }) => {
     const { t } = useTranslation();
     const [Name, setName] = useState('')
     const [Mobile, setMobile] = useState('')
@@ -192,9 +193,14 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus }) => {
         return /\s/.test(str);
     }
 
+    useEffect(() => {
+        if (setbackstate == true) {
+            setVillageStatus(false)
+        }
+    }, [setbackstate])
     return (
         <>
-            <View style={styles.ViewContent}>
+            <Pressable style={styles.ViewContent} onPress={()=>{setVillageStatus(false)}}>
 
                 <KeyboardAvoidingView
                     behavior={Platform.OS === "ios" ? "padding" : null}
@@ -393,7 +399,7 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus }) => {
                     setModalVisible={setValidModal1}
                 />
 
-
+{/* 
                 <VillageModal
                     ModalVisible={ModalVillage}
                     onPressOut={() => setModalVillage(!VillageModal)}
@@ -405,8 +411,8 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus }) => {
                     setVillageList={setVillageList}
                     setVillageStatus={setVillageStatus}
 
-                />
-            </View>
+                /> */}
+            </Pressable>
         </>
     )
 }

@@ -45,7 +45,7 @@ const ValidModal = ({ ModalVisible, onPressOut, setModalVisible, Validation }) =
    
                         <View>
                          
-                            <Text style={styles.textStyle}>{Validation}</Text>
+                            <Text style={[styles.textStyle,{marginHorizontal:15}]}>{Validation}</Text>
                         </View> 
                     <TouchableOpacity style={styles.buttonStyle} onPressOut={onPressOut}>
                         <Text style={styles.buttonTextStyle}>{t('common:Okay')}</Text>

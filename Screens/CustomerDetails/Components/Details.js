@@ -24,6 +24,7 @@ import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 import Search from 'react-native-vector-icons/Feather';
 import Image1 from '../../../assets/Images/cakes.svg';
 import { api } from '../../../Services/Api';
+import { useDispatch } from 'react-redux';
 
 const { height, width } = Dimensions.get('screen');
 
@@ -37,7 +38,7 @@ const Details = ({ navigation, details, spouse }) => {
     const [ModalError, setModalError] = useState(false)
     const [ModalReason, setModalReason] = useState(false)
     const [checked, setChecked] = useState(false);
-
+    const dispatch = useDispatch()
 
 
     String.prototype.replaceAt = function (index, replacement) {
@@ -59,6 +60,36 @@ const Details = ({ navigation, details, spouse }) => {
         } else return;
 
         return initials.toUpperCase();
+    };
+
+    const onsubmit = async (value) => {
+
+        console.log('api called')
+        const data = {
+            "customerId": details?.customerId,
+            "customerName": details?.customerName,
+            "address": details?.address,
+            "district": details?.district,
+            "village":details?.village,
+            "accessRoadType": details?.accessRoadType,
+            "postOffice":  details?.postOffice,
+            "landMark":  details?.landMark,
+            "pin": details?.pin
+        }
+        console.log("details check details",data)
+        await api.savebasicdetail(data).then((res) => {
+            console.log('-------------------res update', res?.data)
+            if (res?.status) {
+                dispatch({
+                    type: 'SET_DLE_STATUS',
+                    payload:true
+                  });
+                navigation.navigate('ResidenceOwner')
+              // navigation.navigate('VehicleOwn') 
+            }
+        }).catch((err) => {
+            console.log('-------------------err update', err?.response)
+        })
     };
 
 
@@ -188,23 +219,8 @@ const Details = ({ navigation, details, spouse }) => {
                                     <View style={{ flexDirection: 'column', flex: 1, marginLeft: 12 }}>
                                         <Text style={styles.nameText}>{spouse?.name}</Text>
 
-                                        {spouse?.occupation == 'DAILY_WAGE_LABOURER' ?
-                                            <Text style={styles.underText}>Daily Wage Labourer</Text> :
-                                            spouse?.occupation == 'SALARIED_EMPLOYEE' ?
-                                                <Text style={styles.underText}>Salaried Employee</Text> :
-                                                spouse?.occupation == 'BUSINESS_SELF_EMPLOYED' ?
-                                                    <Text style={styles.underText}>Business Self Employed</Text> :
-                                                    spouse?.occupation == 'UNEMPLOYED' ? 
-                                                    <Text style={styles.underText}>Unemployed</Text>:
-                                                    <Text style={styles.underText}>Farmer</Text>  }
-
-
-
-
-
-
-
-
+                                        <Text style={[styles.underText,{textTransform:'capitalize'}]}>{spouse?.occupation?.replace(/_/g, ' ')}</Text> 
+        
 
                                     </View>
                                     <View style={{ flexDirection: 'row', }}>
@@ -217,7 +233,7 @@ const Details = ({ navigation, details, spouse }) => {
                 </ScrollView>
 
                 <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                    <TouchableOpacity onPress={() => navigation.navigate('ResidenceOwner')}
+                    <TouchableOpacity onPress={() => onsubmit()}
                         style={[styles.Button1, { backgroundColor: COLORS.colorB }]}
                     >
                         <Text style={[styles.text1, { color: COLORS.colorBackground }]}>Continue</Text>

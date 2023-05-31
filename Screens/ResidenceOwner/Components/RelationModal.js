@@ -155,14 +155,14 @@ const RelationModal = ({ visible, onPressOut,setModalVisible,setRelation,setPurp
 
                         <View style={styles.lineView} />
                         <TouchableOpacity style={styles.textTouch} onPress={() => {
-                             setPurposes('Father-in-law')
-                             setRelate('Father-in-law')
+                             setPurposes("Father-in-Law")
+                             setRelate("Father-in-Law")
                             setModalVisible(!visible)
                         }
                         }>
                             <Text style={styles.modalText}>Father-in-law</Text>
                             <View style={{ paddingRight: 10 }}>
-                            { relate == 'Father-in-law'
+                            { relate == 'Father-in-Law'
                                 ?  
                                 <Icon1 name="radio-btn-active" size={18} color={COLORS.colorB} /> 
                                 :
@@ -177,14 +177,14 @@ const RelationModal = ({ visible, onPressOut,setModalVisible,setRelation,setPurp
 
                         <View style={styles.lineView} />
                         <TouchableOpacity style={styles.textTouch} onPress={() => {
-                             setPurposes('Mother-in-law')
-                             setRelate('Mother-in-law')
+                             setPurposes('Mother-in-Law')
+                             setRelate('Mother-in-Law')
                             setModalVisible(!visible)
                         }
                         }>
                             <Text style={styles.modalText}>Mother-in-law</Text>
                             <View style={{ paddingRight: 10 }}>
-                            { relate == 'Mother-in-law'
+                            { relate == 'Mother-in-Law'
                                 ?  
                                 <Icon1 name="radio-btn-active" size={18} color={COLORS.colorB} /> 
                                 :

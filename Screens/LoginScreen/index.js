@@ -13,6 +13,7 @@ import {
     Dimensions,
     ActivityIndicator,
     Linking,
+    ToastAndroid,
     PermissionsAndroid
 } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -438,10 +439,14 @@ const LoginScreen = ({ navigation }) => {
         const data = {
             otp: otp,
             mobNumber: '+91' + selectedPhoneNum,
+            simId: "1234",
+            deviceId:DeviceId,
+            deviceIpAddress: ipAdrress
         }
         await api.confirmLoginOtp(data).then((res) => {
-            console.log('-------------------res', res)
-            if (res?.data?.status) {
+            console.log('-------------------res', res?.data)
+           if (res?.data?.body?.newDevice == false) {
+                
                 setMaxError(false)
                 setOtpFetch(false)
                 setOtp(false)
@@ -452,7 +457,16 @@ const LoginScreen = ({ navigation }) => {
                 AsyncStorage.setItem('Token', 'dXNlckBleGFtcGxlLmNvbTpzZWNyZXQ=');
                 AsyncStorage.setItem('userName', res?.data?.customerName);
             } else {
-                console.log(res?.data)
+                setMaxError(false)
+                setOtpFetch(false)
+                setOtp(false)
+                setConfirmDate(null)
+                AsyncStorage.setItem('Mobile', '+91' + selectedPhoneNum);
+                AsyncStorage.setItem('CustomerId', JSON.stringify(res?.data?.customerId));
+                isGrantedPermissions(res?.data?.status)
+                AsyncStorage.setItem('Token', 'dXNlckBleGFtcGxlLmNvbTpzZWNyZXQ=');
+                AsyncStorage.setItem('userName', res?.data?.customerName);
+                ToastAndroid.show("Hi Athira, We have noticed that you are signing in from a new device", ToastAndroid.SHORT);
             }
         }).catch((err) => {
             console.log("err->", err?.response)
@@ -481,7 +495,7 @@ const LoginScreen = ({ navigation }) => {
                 navigation.navigate('CreatePin', { resgisted: register })
             }
         } else {
-            navigation.navigate('Permission', { resgisted: register })
+           navigation.navigate('Permission', { resgisted: register })
         }
     };
     // ------------------------------------ Permission Check End --------------------------------------------------
@@ -650,7 +664,7 @@ const LoginScreen = ({ navigation }) => {
                                     {IsOtp1 ?
                                         <OTPInputView
                                             style={styles.OtpInput}
-                                            autoCompleteType="off"
+                                            //autoCompleteType="off"
                                             pinCount={4}
                                             ref={otpInput2}
                                             value={OtpValue}
@@ -664,6 +678,7 @@ const LoginScreen = ({ navigation }) => {
                                                     setIsExpired(false)
                                                 }
                                             }}
+                                            
                                             code={OtpValue} //You can supply this prop or not. The component will be used as a controlled / uncontrolled component respectively.
                                             autoFocusOnLoad={true}
                                             keyboardType="numeric"
