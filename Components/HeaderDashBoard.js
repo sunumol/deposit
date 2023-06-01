@@ -94,7 +94,10 @@ const HeaderDashBoard = ({ navigation, notificationCounts }) => {
 
                         <Text style={[styles.TextDelete1, { textAlign: 'center' }]}>{t('common:LogoutMsg')}</Text>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingTop: 22, paddingBottom: 22 }}>
-                            <TouchableOpacity style={[styles.ButtonCancel, { marginRight: 10 }]} onPress={()=>LogoutApi()}  >
+                            <TouchableOpacity style={[styles.ButtonCancel, { marginRight: 10 }]} onPress={()=>  navigation.reset({
+                    index: 0,
+                    routes: [{name: 'PinScreen'}],
+                })}  >
                                 <Text style={styles.text2}>{t('common:Yes')}</Text>
                             </TouchableOpacity>
 
