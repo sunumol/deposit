@@ -5,12 +5,12 @@ import axios from 'axios';
 const baseUAT = 'http://13.235.213.160:'
 const baseUAT2 = 'http://3.108.93.231:' //test server
 
-const baseURL = `${baseUAT}8383/`
-const baseURL2 = `${baseUAT}8686/`
-const baseURL3 = `${baseUAT}8086/`
+const baseURL = `${baseUAT2}8383/`
+const baseURL2 = `${baseUAT2}8686/`
+const baseURL3 = `${baseUAT2}8086/`
 // --------- Base URL End--------------------
-const baseURLDPD = `${baseUAT}8084/`
-const baseURLVersion = `${baseUAT}8810/`
+const baseURLDPD = `${baseUAT2}8084/`
+const baseURLVersion = `${baseUAT2}8810/`
 
 export const api = {
 
@@ -61,7 +61,7 @@ export const api = {
 
   // ---------------- Resend Otp Api -----------------
   resendLoginOtp: data => {
-    return axios.post(`${baseURL}resendOtp`, data, {
+    return axios.post(`${baseURL2}resendOtp`, data, {
       headers: {
         'Content-Type': 'application/json',
       }
@@ -70,7 +70,7 @@ export const api = {
 
   // ---------------- confirm Login Otp Api -------------
   confirmLoginOtp: data => {
-    return axios.post(`${baseURL}confirm`, data, {
+    return axios.post(`${baseURL2}confirm`, data, {
       headers: {
         'Content-Type': 'application/json',
       }
@@ -79,7 +79,7 @@ export const api = {
 
   // ---------------- Get Forgot Api -----------------
   getForgotOtp: data => {
-    return axios.post(`${baseURL}agentRegister`, data, {
+    return axios.post(`${baseURL2}agentRegister`, data, {
       headers: {
         'Content-Type': 'application/json',
       }
@@ -613,7 +613,7 @@ export const api = {
 
   gethomeScreenDeviceCheck:() => {
 
-    return axios.post(`${baseURLVersion}homeScreenDeviceCheck`, {
+    return axios.post(`${baseURL2}homeScreenDeviceCheck`, {
       headers: {
         'Content-Type': 'application/json',
       }
@@ -623,7 +623,7 @@ export const api = {
 
     UpdateSIMID: (data) => {
 
-      return axios.post(`${baseURL}enterPinSimIdCheck`,data, {
+      return axios.post(`${baseURL2}enterPinSimIdCheck`,data, {
         headers: {
           'Content-Type': 'application/json',
         }
