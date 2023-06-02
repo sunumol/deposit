@@ -39,6 +39,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import UpdateModal from './Components/UpdateModal';
 import VersionModal from './Components/VersionModal';
 import AgentModal from './Components/AgentModal';
+import ToastMessage from '../../Components/ToastMessage'
 // --------------- Image Imports ---------------------
 import Resend from '../../assets/Images/resend.svg'
 import Logo from '../../assets/image/logofinpower.svg';
@@ -76,7 +77,7 @@ const LoginScreen = ({ navigation }) => {
     const [condirmDate, setConfirmDate] = useState()
     const [fetOtp, setOtpFetch] = useState(false)
     // --------------Device Configuration End----------
-
+    const [CustomerName, setCustomerName] = useState('')
     const [otpMessage, setOtpMessage] = useState()
     const [message, setMessage] = useState()
     const [ModalVisibleError, setModalVisibleError] = useState(false)
@@ -87,6 +88,7 @@ const LoginScreen = ({ navigation }) => {
     // --------------- getOtp Button Disable Start ------------
     const [getOtpDisable, setGetOtpDisable] = useState(false);
     const [selectedPhoneNum, setSelectedPhoneNum] = useState()
+    const [toastMessage, setToastMessage] = useState(false);
     // --------------- getOtp Button Disable End --------------
 
     useEffect(() => {
@@ -315,6 +317,7 @@ const LoginScreen = ({ navigation }) => {
             simId:DeviceId, //NEED TO IMPLEMENT SIMID
            // simId:"11111",
         }
+        console.log("data of register",data)
         await api.getLoginOtp(data).then((res) => {
             console.log('-------------------res', res)
             if (res?.status == 200) {
@@ -333,7 +336,7 @@ const LoginScreen = ({ navigation }) => {
 
             }
         }).catch((err) => {
-            console.log("err Login->", err?.response)
+            console.log("err Login->", err)
             setMaxError(false)
             setOtp(false)
             setIsExpired(false)
@@ -464,21 +467,23 @@ const LoginScreen = ({ navigation }) => {
                 setOtp(false)
                 setConfirmDate(null)
                 AsyncStorage.setItem('Mobile', '+91' + selectedPhoneNum);
-                AsyncStorage.setItem('CustomerId', JSON.stringify(res?.data?.customerId));
+                AsyncStorage.setItem('CustomerId', JSON.stringify(res?.data?.agentId));
                 isGrantedPermissions(res?.data?.status)
                 AsyncStorage.setItem('Token', 'dXNlckBleGFtcGxlLmNvbTpzZWNyZXQ=');
-                AsyncStorage.setItem('userName', res?.data?.customerName);
+                AsyncStorage.setItem('userName', res?.data?.agentName);
             } else {
+                setCustomerName(res?.data?.agentName)
                 setMaxError(false)
                 setOtpFetch(false)
                 setOtp(false)
                 setConfirmDate(null)
                 AsyncStorage.setItem('Mobile', '+91' + selectedPhoneNum);
-                AsyncStorage.setItem('CustomerId', JSON.stringify(res?.data?.customerId));
+                AsyncStorage.setItem('CustomerId', JSON.stringify(res?.data?.agentId));
                 isGrantedPermissions(res?.data?.status)
                 AsyncStorage.setItem('Token', 'dXNlckBleGFtcGxlLmNvbTpzZWNyZXQ=');
-                AsyncStorage.setItem('userName', res?.data?.customerName);
-                ToastAndroid.show("Hi Athira, We have noticed that you are signing in from a new device", ToastAndroid.SHORT);
+                AsyncStorage.setItem('userName', res?.data?.agentName);
+                setToastMessage(true)
+                // ToastAndroid.show("Hi Athira, We have noticed that you are signing in from a new device", ToastAndroid.SHORT);
             }
         }).catch((err) => {
             console.log("err->", err?.response)
@@ -761,6 +766,12 @@ const LoginScreen = ({ navigation }) => {
                                     ConfirmOtp(data)
                                 }}
                                 setOtpFetch={setOtpFetch}
+                            /> : null}
+                                  {screenIsFocused
+                            ? <ToastMessage
+                                ModalVisible={toastMessage}
+                                customerName={CustomerName}
+
                             /> : null}
                         <ToastModal
                             Validation={t('common:Valid')}
