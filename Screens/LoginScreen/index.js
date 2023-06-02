@@ -454,6 +454,7 @@ const LoginScreen = ({ navigation }) => {
             deviceId:DeviceId,
             deviceIpAddress: ipAdrress
         }
+        console.log("confirm data",data)
         await api.confirmLoginOtp(data).then((res) => {
             console.log('-------------------res', res?.data)
            if (res?.data?.body?.newDevice == false) {

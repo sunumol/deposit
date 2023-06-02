@@ -52,7 +52,7 @@ export const api = {
 
   // ---------------- Get Login Otp Api -----------------
   getLoginOtp: data => {
-    return axios.post(`${baseURL}agentRegister`, data, {
+    return axios.post(`${baseURL2}agentRegister`, data, {
       headers: {
         'Content-Type': 'application/json',
       }

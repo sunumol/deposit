@@ -296,7 +296,7 @@ const PinScreen = ({ navigation, }) => {
                     <Text style={styles.TextF}
                         onPress={() => {
                             otpInput2?.current?.clear()
-                            navigation.navigate('ForgotPin')
+                            navigation.navigate('GeneratePin')
                         }}>{t('common:ForgotPIN')}</Text>
                 </View>
 
