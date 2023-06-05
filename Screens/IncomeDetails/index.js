@@ -215,14 +215,12 @@ const IncomeDetails = ({ navigation, route }) => {
 
         }
         await api.saveIncomeDetails(data).then((res) => {
-            console.log("data pass", data)
-            console.log('-------------------res saveIncomeDetails',SpouseOccupation, res?.data?.body)
+            console.log("data pass",res?.data)
+            console.log('-------------------res saveIncomeDetails c',SpouseOccupation)
             if (res?.status) {
-                if (res?.data?.body == 'MARRIED' && SpouseOccupation !== 'UNEMPLOYED') {
+                if (SpouseOccupation !== 'UNEMPLOYED') {
                     navigation.navigate('IncomeDetailsSpouse')
-                } else if (res?.data?.body == 'MARRIED' && SpouseOccupation == 'UNEMPLOYED') {
-                    navigation.navigate('Proceed')
-                }else if(res?.data?.body !== 'MARRIED'){
+                } else if (SpouseOccupation == 'UNEMPLOYED') {
                     navigation.navigate('Proceed')
                 }
 
@@ -286,7 +284,7 @@ const IncomeDetails = ({ navigation, route }) => {
     };
     const setMonthdata = (text) => {
         setAvg('')
-        if (text?.length > 0) {
+        if (text<13) {
             setMonth(text)
         } else {
             setMonth('')

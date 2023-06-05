@@ -259,7 +259,7 @@ const CgtCustomer = ({ navigation, route }) => {
                         <View style={styles.lineView} />
                         <View style={{ paddingHorizontal: 17, marginTop: 10 }}>
                             <Text style={styles.headTextTitle}>Address</Text>
-                            <Text style={[styles.subText, { maxWidth: 200 }]}>{details?.address}</Text>
+                            <Text style={[styles.subText, { maxWidth: 270 }]}>{details?.address}</Text>
                         </View>
                         <View style={styles.lineView} />
                         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 17, }}>

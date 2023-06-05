@@ -291,7 +291,7 @@ const DetailChecks = ({ navigation, setState, proofType1, imageUrl1, relation1, 
                                 Purpose == 'BUILDING_TAX_RECEIPT' ?
                                     <Text style={[styles.textSelect, { color: '#1A051D', marginLeft: 8 }]}>Building Tax Receipt</Text> :
 
-                                    <Text style={[styles.textSelect, { color: '#1A051D', marginLeft: 8 }]}>Select</Text>}
+                                    <Text style={[styles.textSelect, {  color: 'rgba(128, 128, 128, 1)', marginLeft: 8 }]}>Select</Text>}
 
                         <Icon1 name="chevron-down" size={18} color={'#808080'} style={{ marginRight: 10 }} />
                     </TouchableOpacity>
@@ -328,7 +328,7 @@ const DetailChecks = ({ navigation, setState, proofType1, imageUrl1, relation1, 
                         <Text style={styles.proof}>Relationship with Customer</Text>
                     </View>
                     <TouchableOpacity style={styles.SelectBox} onPress={() => { setModalVisible1(true), getSpousedetail(), setOwnersName(null) }} >
-                        {Purposes === null ? <Text style={styles.textSelect}>Select</Text> :
+                        {Purposes === null ? <Text style={[styles.textSelect,{ color: 'rgba(128, 128, 128, 1)',}]}>Select</Text> :
                             <Text style={[styles.textSelect, { color: '#1A051D', marginLeft: 8 }]}>{Purposes}</Text>}
                         <Icon1 name="chevron-down" size={18} color={'#808080'} style={{ marginRight: 10 }} />
                     </TouchableOpacity>

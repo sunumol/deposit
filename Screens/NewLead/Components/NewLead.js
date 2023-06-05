@@ -131,18 +131,23 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus,setbackstate }) 
         const firstDigitStr = String(Mobile)[0];
         if (Mobile?.length != 10 || Mobile == "") {
             setMessage('Please enter a valid mobile number')
+            console.log("inside this1")
             setValidModal1(true)
         } else if (firstDigitStr === '1' || firstDigitStr === '2' || firstDigitStr === '3' || firstDigitStr === '4' || firstDigitStr === '5' || firstDigitStr === '0') {
             setMessage('Please enter a valid mobile number')
             setValidModal1(true)
+            console.log("inside this2")
         } else if (verifyPhone(Mobile)) {
             setMessage('Please enter a valid mobile number')
             setValidModal1(true)
+            console.log("inside this3")
         } else if (!(/^\d{10}$/.test(Mobile))) {
             setMessage('Please enter a valid mobile number')
             setValidModal1(true)
+            console.log("inside this4")
         }
         else if (Mobile === customerNumber) {
+            console.log("inside this5")
             setMessage('Please enter a valid mobile number')
             setValidModal1(true)
         }

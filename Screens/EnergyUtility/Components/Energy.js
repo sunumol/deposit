@@ -188,6 +188,7 @@ const Energy = ({ navigation, setAmount1, setPurpose1, setDays1, setCustomerId, 
                             maxLength={5}
                             contextMenuHidden={true}
                             onChangeText={(text) => {
+                                const firstDigitStr = String(text)[0];
                                 setZeroStatus(false)
                               //  setAmount(text)
                                 // const firstDigitStr = String(num)[0];
@@ -203,6 +204,8 @@ const Energy = ({ navigation, setAmount1, setPurpose1, setDays1, setCustomerId, 
                                 else if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(text) || text === "") {
                                     setAmount(text)
                                     setZeroStatus(false)
+                                }else if(firstDigitStr == 0){
+                                    setZeroStatus(true)
                                 }
                             }
                             } />

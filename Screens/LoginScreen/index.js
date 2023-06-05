@@ -363,7 +363,7 @@ const LoginScreen = ({ navigation }) => {
                     //setModalVisibleError(true)
                     setButton(true)
                     setOtpclick(true)
-                    setModalAgent(true)
+                   // setModalAgent(true)
                     setMessage('Please enter valid agent mobile number')
                     setPhoneNum('')
                 } else if (err?.response?.data?.message === 'Sorry! We are unable to proceed further.') {
@@ -381,6 +381,12 @@ const LoginScreen = ({ navigation }) => {
                     setOtpclick(true)
                     console.log("sim id checking",err?.response?.data?.message)
                     setMessage('We are unable to process.\n Security check failed')
+                }else if(err?.response?.data?.message == 'You are not allowed to use this app'){
+                    setModalAgent(true)
+                    setMaxError(false)
+                    setButton(true)
+                    setPhoneNum('')
+                    setOtpclick(true)
                 }
                 else {
                     setMaxError(false)

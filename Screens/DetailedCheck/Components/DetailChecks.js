@@ -385,7 +385,7 @@ const
                                 <View style={[styles.textInput, { flexDirection: 'row' }]}>
                                     <View style={styles.borderVillage}>
                                         <TextInput
-                                            value={villagename}
+                                            value={removeEmojis(villagename)}
                                             placeholder={"Search village"}
                                             contextMenuHidden={true}
                                             placeholderTextColor="#808080"
@@ -457,7 +457,7 @@ const
                                 <View style={[styles.textInput, { flexDirection: 'row' }]}>
                                     <View style={styles.borderVillage}>
                                         <TextInput
-                                            value={postofficename}
+                                            value={removeEmojis(postofficename)}
                                             style={styles.TextInputBranch}
                                             contextMenuHidden={true}
                                             maxLength={25}
