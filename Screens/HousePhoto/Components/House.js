@@ -22,7 +22,7 @@ import { useDispatch } from 'react-redux';
 import Icon1 from 'react-native-vector-icons/AntDesign';
 import Icon2 from 'react-native-vector-icons/Entypo';
 import Search from 'react-native-vector-icons/Feather';
-import Media from '../../../assets/image/media.svg';
+import Media from '../../../assets/image/house.svg';
 import Media1 from '../../../assets/image/Media2.svg'
 const { height, width } = Dimensions.get('screen');
 import DeleteModal from './DeleteModal';
