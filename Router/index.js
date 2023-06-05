@@ -57,7 +57,7 @@ import CorrectionScreen from '../Screens/CorrectionScreen';
 import Calendar from '../Screens/Calendar'
 import CalendarActivity from '../Screens/CalendarActivity';
 import SelectCalendar from '../Screens/SelectCalendar'
-
+import CameraPick from '../Screens/UploadVid/Components/CameraPick';
 import { navigationRef } from './RootNavigation';
 import GeneratePin from '../Screens/GeneratePin';
 
@@ -103,7 +103,7 @@ export default function Router() {
         <Stack.Screen name="DLESchedule" component={netInfo.isConnected ? DLESchedule : NetWorkError} />
         <Stack.Screen name="DetailCheck" component={netInfo.isConnected ? DetailCheck : NetWorkError} />
         <Stack.Screen name="ResidenceOwner" component={netInfo.isConnected ? ResidenceOwner : NetWorkError} />
-        <Stack.Screen name="HousePhoto" component={HousePhoto} />
+        <Stack.Screen name="HousePhoto"   component={netInfo.isConnected ? HousePhoto : NetWorkError}/>
         <Stack.Screen name="DLECompleted" component={netInfo.isConnected ? DLECompleted : NetWorkError} />
         <Stack.Screen name="CustomerDetails" component={netInfo.isConnected ? CustomerDetails : NetWorkError} />
         <Stack.Screen name="ScheduleMeet" component={netInfo.isConnected ? ScheduleMeet : NetWorkError} />
@@ -123,6 +123,7 @@ export default function Router() {
         <Stack.Screen name="UploadVid" component={netInfo.isConnected ? UploadVid : NetWorkError} />
         <Stack.Screen name="CorrectionScreen" component={netInfo.isConnected ? CorrectionScreen : NetWorkError} />
         <Stack.Screen name="GeneratePin" component={netInfo.isConnected ? GeneratePin : NetWorkError} />
+        <Stack.Screen name="CameraPick" component={netInfo.isConnected ? CameraPick : NetWorkError} />
         {/* --------------------------- Calendar Navigation Screens Start ---------------------------------------*/}
         <Stack.Screen name="Calendar" component={netInfo.isConnected ? Calendar : NetWorkError} />
         <Stack.Screen name="CalendarActivity" component={netInfo.isConnected ? CalendarActivity : NetWorkError} />

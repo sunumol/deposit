@@ -66,7 +66,7 @@ const IncomeDetails = ({ navigation, route }) => {
     const activityId = useSelector(state => state.activityId);
     const [ZeroStatus, setZeroStatus] = useState(false)
     const [spouseDetail, setSpousedetail] = useState('')
-
+    const [avgam,setavgam] = useState(false)
     const [ModalVisible1, setModalVisible1] = useState(false)
     const [ModalReason, setModalReason] = useState(false)
     const [ModalError, setModalError] = useState(false)
@@ -569,7 +569,14 @@ const IncomeDetails = ({ navigation, route }) => {
                                             setZeroStatus(false)
                                             setAvg('')
                                         } else if (incomedetail?.occupation == 'FARMER' && Month === '0') {
-                                            setAvg(text)
+                                         
+                                            if(parseInt(text) <= parseInt(Amount)){
+                                                setAvg(text)
+                                                setavgam(false)
+                                            }else{
+                                                setAvg('')
+                                                setavgam(true)
+                                            }
                                         }
                                         else if (Month !== '0' && Number(text) == 0) {
 
@@ -577,7 +584,18 @@ const IncomeDetails = ({ navigation, route }) => {
                                             console.log("number log", text, Month)
                                         }
                                         else if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(text) || text === "") {
-                                            setAvg(text)
+                                            if(incomedetail?.occupation == 'SALARIED_EMPLOYEE'){
+                                                setAvg(text)
+                                            }else{
+                                                if(parseInt(text) <= parseInt(Amount)){
+                                                    setAvg(text)
+                                                    setavgam(false)
+                                                }else{
+                                                    setAvg('')
+                                                    setavgam(true)
+                                                }
+                                            }
+                                           
                                             setZeroStatus(false)
                                         }
 
@@ -585,6 +603,8 @@ const IncomeDetails = ({ navigation, route }) => {
                             </View>
                             {ZeroStatus && incomedetail?.occupation !== 'FARMER' &&
                                 <Text style={{ color: 'red', fontSize: 9, paddingTop: 3, fontFamily: FONTS.FontRegular }}>Amount cannot be ₹0</Text>}
+                                 {avgam && incomedetail?.occupation !== 'SALARIED_EMPLOYEE' &&
+                                <Text style={{ color: 'red', fontSize: 9, paddingTop: 3, fontFamily: FONTS.FontRegular }}>Average monthly income must be less than or equal to highest monthly income</Text>}
 
                             {ZeroStatus && incomedetail?.occupation == 'FARMER' && Month !== '0' &&
                                 <Text style={{ color: 'red', fontSize: 9, paddingTop: 3, fontFamily: FONTS.FontRegular }}>Amount cannot be ₹0</Text>}
