@@ -29,7 +29,7 @@ import TrustModal from './Components/TrustModal';
 import { api } from '../../Services/Api';
 import NetWorkError from '../NetWorkError';
 import CGTCompleted from './Components/CGTCompleted'
-import AsyncStorage from '@react-native-async-storage/async-storage';
+
 // --------------- Image Import -------------------
 import Date from '../CGTCustomer/Images/Date.svg';
 import Plus from '../../assets/image/Plus.svg';
