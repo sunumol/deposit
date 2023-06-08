@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, SafeAreaView, PermissionsAndroid } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import * as RootNavigation from '../../Router/RootNavigation';
 import messaging from '@react-native-firebase/messaging';
+import PushNotification from "react-native-push-notification";
 
 // --------------- Component Imports ---------------------
 import CustomStatusBar from './Component/CustomStatusbar';
@@ -19,32 +19,98 @@ const SplashScreen = ({ navigation }) => {
     const [ModalVisible2, setModalVisible2] = useState(false)
 
     const onBackGroundNotification = () => {
+        messaging().onMessage(async (remoteMessage) => {
+            const { messageId, notification } = remoteMessage;
+            PushNotification.configure({
+                // (optional) Called when Token is generated (iOS and Android)
+                onRegister: (token) => {
+                    console.log("TOKEN:", token, "----------------", remoteMessage);
+                },
+                // (required) Called when a remote is received or opened, or local notification is opened
+                onNotification: (notification) => {
+                    console.log("NOTIFICATION:", notification);
+                    if (notification?.title !== "DATA_CONFIRMATION" || notification?.title !== "DATA_CORRECTION_REQUEST")
+                        PushNotification.localNotification({
+                            channelId: "MDChannelID",
+                            messageId: messageId,
+                            title: notification.title,
+                            message: notification.body,
+                            playSound: true,
+                            soundName: "default",
+                            vibrate: true,
+                        });
+
+                    if (notification?.title === 'DATA_CONFIRMATION') {
+                        setTimeout(() =>
+                            navigation.navigate('Proceed', { status: true, AcyivityId: notification?.data?.activityId })
+                            , 3000);
+                    }
+                    if (notification?.title === 'DATA_CORRECTION_REQUEST') {
+                        setTimeout(() =>
+                            navigation.navigate('CorrectionScreen', { AcyivityId: notification?.data?.activityId })
+                            , 3000);
+                    }
+                },
+
+                onRegistrationError: (err) => {
+                    console.error(err?.message, err);
+                },
+
+                permissions: {
+                    alert: true,
+                    badge: true,
+                    sound: true,
+                },
+                popInitialNotification: false,
+                requestPermissions: true,
+            });
+        });
+        messaging().onNotificationOpenedApp((remoteMessage) => {
+            console.log(
+                "Notification caused app to open from background state:",
+                remoteMessage?.notification
+            );
+            if (remoteMessage?.notification?.title === 'DATA_CONFIRMATION') {
+                setTimeout(() =>
+                    navigation.navigate('Proceed', { status: true, AcyivityId: remoteMessage?.notification?.data?.activityId })
+                    , 3000);
+            }
+            if (remoteMessage?.notification?.title === 'DATA_CORRECTION_REQUEST') {
+                setTimeout(() =>
+                    navigation.navigate('CorrectionScreen', { AcyivityId: remoteMessage?.notification?.data?.activityId })
+                    , 3000);
+            }
+
+
+        });
+
         messaging()
             .getInitialNotification()
-            .then(remoteMessage => {
+            .then((remoteMessage) => {
                 if (remoteMessage) {
                     console.log(
-                        'Notification caused app to open from quit state:',
-                        remoteMessage.notification,
+                        "Notification caused app to open from quit state:",
+                        remoteMessage?.notification
                     );
-                    if (remoteMessage.notification?.title === 'DATA_CONFIRMATION') {
+
+                    if (remoteMessage?.notification?.title === 'DATA_CONFIRMATION') {
                         setTimeout(() =>
-                            RootNavigation.navigate('Proceed', { status: true, AcyivityId: remoteMessage.notification?.data?.activityId })
+                            navigation.navigate('Proceed', { status: true, AcyivityId: remoteMessage?.notification?.data?.activityId })
                             , 3000);
                     }
-                    if (remoteMessage.notification?.title === 'DATA_CORRECTION_REQUEST') {
+                    if (remoteMessage?.notification?.title === 'DATA_CORRECTION_REQUEST') {
                         setTimeout(() =>
-                            RootNavigation.navigate('CorrectionScreen', { AcyivityId: remoteMessage.notification?.data?.activityId })
+                        navigation.navigate('CorrectionScreen', { AcyivityId: remoteMessage?.notification?.data?.activityId })
                             , 3000);
                     }
+
                 } else {
                     setTimeout(() => getData(), 3000);
                 }
             });
-    }
+    };
 
     useEffect(() => {
-
         onBackGroundNotification()
     }, []);
 
@@ -72,7 +138,7 @@ const SplashScreen = ({ navigation }) => {
             const ExpiredDate = await AsyncStorage.getItem('ExpiredDate')
             console.log(Pin, PinDate, ExpiredDate)
             if (Pin && PinDate) {
-                 navigation.navigate('PinScreen')
+                navigation.navigate('PinScreen')
             } else {
                 navigation.navigate('CreatePin')
             }

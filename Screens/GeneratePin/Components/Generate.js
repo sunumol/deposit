@@ -97,10 +97,10 @@ const Generate = ({navigation}) => {
             id: MitraID,
             dob: moment(dob).format('YYYY-DD-MM') + "T00:00:00"
         }
-        console.log("data", data)
+        console.log("data==============>>>", data)
         
         await api.getForgotOtp(data).then((res) => {
-            console.log('response Login Api', res?.data?.status)
+            console.log('response Login Api===================>>>>>>>>>', res?.data?.status)
             if (res?.data?.status == true) {
                 setSMitraID('')
                 setDob('')
@@ -120,6 +120,10 @@ const Generate = ({navigation}) => {
                 }, 5000);
             
 
+            }else{
+                setModalVisible(true)
+                setSMitraID('')
+                setDob('') 
             }
             console.log("err PRINT->", err?.response)
 
@@ -184,12 +188,13 @@ const Generate = ({navigation}) => {
                 <TextInput
                     style={[{ fontSize: 12, color: '#000', fontFamily: FONTS.FontRegular, left: 10, width: width * 0.84, }]}
                     value={MitraID}
-                    keyboardType={'number-pad'}
+                    keyboardType={'email-address'}
                     maxLength={9}
                     placeholder={"CXXXXXXXX"}
                     placeholderTextColor={"#808080"}
                     // contextMenuHidden={true}
                     onChangeText={(text) => {
+                     
                         if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(text) || text === '') {
                             setSMitraID(text)
                         }

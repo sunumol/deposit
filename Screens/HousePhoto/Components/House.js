@@ -128,9 +128,9 @@ const DetailChecks = ({ navigation, setState, setImagedata1,imagedata }) => {
 
         //Choose Image from gallery
         ImagePicker.openPicker({
-            width: 300,
-            height: 200,
-            cropping: true
+            // width: 300,
+            // height: 200,
+            // cropping: true
         }).then(image => {
             console.log("IMAGE", image.path);
             setImage(image.path)
@@ -223,7 +223,7 @@ const DetailChecks = ({ navigation, setState, setImagedata1,imagedata }) => {
 
                     <View style={{ alignItems: 'center', flex: 0, }}>
                         <Image 
-                        source={{ uri: imagedata ? imagedata : null }} style={{ width: width * 0.55, height: width * 0.5, borderRadius: 2 }}
+                        source={{ uri: imagedata ? imagedata : null }} style={{ width: width * 0.65, height: width * 0.5, borderRadius: 2 }}
                         resizeMode='contain' />
                     </View>
 

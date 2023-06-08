@@ -19,6 +19,7 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import moment from 'moment';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNetInfo } from "@react-native-community/netinfo";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // ----------------- Component Import --------------------
 import Statusbar from '../../Components/StatusBar';
@@ -51,7 +52,7 @@ const CreateTrustCircle = ({ navigation, route }) => {
     const [custID, setCustId] = useState('')
     const [minLimit, setMinLimit] = useState()
     const [maxLimit, setMaxLimit] = useState()
-
+    const activityId = useSelector(state => state.activityId);
     const handleGoBack = useCallback(() => {
         navigation.navigate('CGT')// -----> Todo back navigation with activity ID
         return true; // Returning true from onBackPress denotes that we have handled the event
@@ -216,7 +217,11 @@ const CreateTrustCircle = ({ navigation, route }) => {
                                     <Text style={styles.timeText}>{cgtCustomerDetails?.cgtTime?.slice(0, -3)} PM</Text>
                                     <Text style={styles.dateText}>{cgtCustomerDetails?.cgtDate ? moment(new Date(cgtCustomerDetails?.cgtDate)).format("ddd, DD MMM") : ''}</Text>
                                 </View>
-                                <TouchableOpacity style={styles.editView} onPress={() => navigation.navigate('NewCgt', { reschedule: cgtCustomerDetails })}>
+                                {/* <TouchableOpacity style={styles.editView} onPress={() => navigation.navigate('NewCgt', { reschedule: cgtCustomerDetails })}> */}
+                                <TouchableOpacity style={styles.editView} onPress={() => {
+                                  navigation.navigate('SelectCalendar', { selectedData: [activityId], title: 'New CGT' }),
+                                AsyncStorage.removeItem('DATECGT')
+                        }}>
                                     <Date />
                                     <Text style={styles.changeText}>Reschedule CGT</Text>
                                 </TouchableOpacity>

@@ -48,8 +48,10 @@ const ModalExit = ({ ModalVisible, onPressOut, setModalVisible, navigation }) =>
                     <Text style={[styles.textdesc, { paddingTop: width * 0.04, textAlign: 'center' }]}>{t('common:ExitModal')}
                     </Text>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingTop: 22, paddingBottom: 22 }}>
-                        <TouchableOpacity style={[styles.ButtonCancel, { marginRight: 10 }]}  onPress={() => navigation.navigate('Profile')}
->
+                        <TouchableOpacity style={[styles.ButtonCancel, { marginRight: 10 }]}  onPress={() =>{ 
+                            setModalVisible(false)
+                            navigation.navigate('Profile')
+                         }}>
                             <Text style={styles.text2}>{t('common:Yes')}</Text>
                         </TouchableOpacity>
 
