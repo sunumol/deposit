@@ -503,7 +503,10 @@ const LoginScreen = ({ navigation }) => {
                 setConfirmDate(null)
                 AsyncStorage.setItem('Mobile', '+91' + selectedPhoneNum);
                 AsyncStorage.setItem('CustomerId', JSON.stringify(res?.data?.agentId));
-                isGrantedPermissions(res?.data?.status)
+               
+                setTimeout(() => {
+                    isGrantedPermissions(res?.data?.status) 
+                }, 3000);
                 AsyncStorage.setItem('Token', 'dXNlckBleGFtcGxlLmNvbTpzZWNyZXQ=');
                 AsyncStorage.setItem('userName', res?.data?.agentName);
                 setToastMessage(true)
@@ -522,6 +525,7 @@ const LoginScreen = ({ navigation }) => {
 
     // ----------------------------------- Permission Check Start ----------------------------------------------
     const isGrantedPermissions = async (register) => {
+      
         const camera = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.CAMERA)
         const Location = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION)
         const Sms = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.READ_SMS)
@@ -536,7 +540,10 @@ const LoginScreen = ({ navigation }) => {
                 navigation.navigate('CreatePin', { resgisted: register })
             }
         } else {
-           navigation.navigate('Permission', { resgisted: register })
+          
+                navigation.navigate('Permission', { resgisted: register })   
+           
+          
         }
     };
     // ------------------------------------ Permission Check End --------------------------------------------------
