@@ -128,8 +128,8 @@ const Profile = ({ navigation }) => {
     const firebaseTokenSentTo = async () => {
         console.log("inside api call")
         const data = {
-            // "agentId":Number(custID),
-            "agentId": 1,
+             "agentId":Number(custID),
+            //"agentId": 1,
             "deviceToken": fcmToken
         };
         await api.firebaseToken(data).then((res) => {
