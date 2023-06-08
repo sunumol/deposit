@@ -11,7 +11,7 @@ import {
     ScrollView,
     BackHandler,
     Dimensions,
-    ActivityIndicator,
+    AppState,
     Linking,
     ToastAndroid,
     PermissionsAndroid
@@ -25,6 +25,7 @@ import { NetworkInfo } from 'react-native-network-info';
 import { useIsFocused } from '@react-navigation/native';
 import { useNetInfo } from "@react-native-community/netinfo";
 import OTPInputView from '@twotalltotems/react-native-otp-input'
+import Clipboard from "@react-native-community/clipboard";
 
 // --------------- Component Imports ---------------------
 import { COLORS, FONTS } from '../../Constants/Constants';
@@ -90,6 +91,23 @@ const LoginScreen = ({ navigation }) => {
     const [selectedPhoneNum, setSelectedPhoneNum] = useState()
     const [toastMessage, setToastMessage] = useState(false);
     // --------------- getOtp Button Disable End --------------
+
+    useEffect(() => {
+        AppState.addEventListener("change", handleAppStateChange);
+        return () => {
+          AppState.removeEventListener("change", handleAppStateChange);
+        };
+      }, []);
+    
+      const handleAppStateChange = (nextAppState) => {
+    
+        
+        if (nextAppState == "active") {
+          Clipboard.setString("");
+        }
+    
+      };
+     
 
     useEffect(() => {
 
@@ -566,7 +584,8 @@ const LoginScreen = ({ navigation }) => {
     }
     // ------------------ Resend Api Call End ----------------------
 
-     
+
+    
         
     return (
         <>

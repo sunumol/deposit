@@ -4,7 +4,8 @@ import {
     Text,
     View,
     Dimensions,
-    TouchableOpacity
+    TouchableOpacity,
+    AppState
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -12,6 +13,7 @@ import SmsAndroid from 'react-native-get-sms-android';
 import DeviceInfo from 'react-native-device-info';
 import { NetworkInfo } from 'react-native-network-info';
 import { useIsFocused } from '@react-navigation/native';
+import Clipboard from "@react-native-community/clipboard";
 
 // --------------- Component Import --------------------
 import { api } from '../../../Services/Api';
@@ -53,6 +55,23 @@ const Pin = ({ navigation, conFirmDate }) => {
     String.prototype.replaceAt = function (index, replacement) {
         return this.substring(0, index) + replacement + this.substring(index + replacement.length);
     }
+
+    useEffect(() => {
+        AppState.addEventListener("change", handleAppStateChange);
+        return () => {
+          AppState.removeEventListener("change", handleAppStateChange);
+        };
+      }, []);
+    
+      const handleAppStateChange = (nextAppState) => {
+    
+        
+        if (nextAppState == "active") {
+          Clipboard.setString("");
+        }
+    
+      };
+     
     useEffect(() => {
         setOtpFetch(true)
         getData()
