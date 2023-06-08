@@ -63,9 +63,10 @@ const UploadImage = ({ navigation, id ,setFrontimage,setBackimage}) => {
     const ChooseImageFront = () => {
         //Choose Image from gallery
         ImagePicker.openPicker({
+            width: (width * 3) / 5, 
+            height: width,
+            hideBottomControls:true,
             cropping: true,
-            width: 480,
-            height: 800
         }).then(image => {
             console.log("IMAGE", image.path);
             setImagesFSet(image)
@@ -79,9 +80,10 @@ const UploadImage = ({ navigation, id ,setFrontimage,setBackimage}) => {
     const ChooseImageBack = () => {
         //Choose Image from gallery
         ImagePicker.openPicker({
+            width: (width * 3) / 5, 
+            height: width,
+            hideBottomControls:true,
             cropping: true,
-            width: 480,
-            height: 800
         }).then(image => {
             console.log("IMAGE", image.path);
             setImagesB(image.path)
@@ -94,9 +96,10 @@ const UploadImage = ({ navigation, id ,setFrontimage,setBackimage}) => {
     const ChooseCameraFront = () => {
         // Choose Image from Camera
         ImagePicker.openCamera({
+            width: (width * 3) / 5, 
+            height: width,
+            hideBottomControls:true,
             cropping: true,
-            width: 480,
-            height: 800
         }).then(image => {
             console.log(image);
             setImagesF(image.path)
@@ -109,9 +112,10 @@ const UploadImage = ({ navigation, id ,setFrontimage,setBackimage}) => {
     const ChooseCameraBack = () => {
         // Choose Image from Camera
         ImagePicker.openCamera({
+            width: (width * 3) / 5, 
+            height: width,
+            hideBottomControls:true,
             cropping: true,
-            width: 480,
-            height: 800
         }).then(image => {
             console.log(image);
             setImagesB(image.path)
@@ -163,12 +167,7 @@ const UploadImage = ({ navigation, id ,setFrontimage,setBackimage}) => {
    
     }
 
-
-
-
-
-        // ------------------get Cg voter id detail ------------------
-
+    // ------------------get Cg voter id detail ------------------
         const getCGvoterid = async (mobnumber) => {
             console.log('api called')
       
@@ -186,13 +185,9 @@ const UploadImage = ({ navigation, id ,setFrontimage,setBackimage}) => {
                     setBackimage(res?.data?.body?.cgBackImage)
                     if(res?.data?.body?.cgFrontImage){
                         setDelf(true) 
-                    }
-                     if(res?.data?.body?.cgBackImage){
+                    }if(res?.data?.body?.cgBackImage){
                         setDelb(true)
-                    }
-                 
-                 
-                
+                    } 
                 }
             }).catch((err) => {
                 console.log('-------------------err  voter id CG', err)
