@@ -7,6 +7,7 @@ import {
     TouchableOpacity,
     TextInput,
     Image,
+    alert,
     KeyboardAvoidingView,
     StatusBar,
     ScrollView,
@@ -70,6 +71,8 @@ const IncomeDetails = ({ navigation, route }) => {
     const [ModalVisible1, setModalVisible1] = useState(false)
     const [ModalReason, setModalReason] = useState(false)
     const [ModalError, setModalError] = useState(false)
+    const [spouseavailable, setspouseavailable] = useState(false);
+    const [spousejob, setspousejob] = useState('');
     const SpouseOccupation = useSelector(state => state?.SpouseOccupation);
 
     useEffect(() => {
@@ -146,7 +149,25 @@ const IncomeDetails = ({ navigation, route }) => {
     }, [MonthsCustom, Purpose, Salary])
 
 
+    const getSpousedetail = async () => {
+        const data = {
+            "activityId": activityId
+        }
+        await api.getSpousedetail(data).then((res) => {
+            console.log('-------------------res spousedetail co-app', res?.data?.body)
+            if (res?.status) {
+             
+                    setspouseavailable(true)
+                    setspousejob(res?.data?.body?.occupation)
+            
 
+            }
+        }).catch((err) => {
+            console.log('-------------------err spousedetail1', err?.response)
+                     setspouseavailable(false)
+                     setspousejob(null)
+        })
+    };
 
 
 
@@ -215,15 +236,20 @@ const IncomeDetails = ({ navigation, route }) => {
 
         }
         await api.saveIncomeDetails(data).then((res) => {
-            console.log("data pass",res?.data)
-            console.log('-------------------res saveIncomeDetails c',SpouseOccupation)
+            console.log("data pass123",res)
+            console.log('-------------------res saveIncomeDetails c',spousejob,spouseavailable)
             if (res?.status) {
-                if (SpouseOccupation !== 'UNEMPLOYED') {
-                    navigation.navigate('IncomeDetailsSpouse')
-                } else if (SpouseOccupation == 'UNEMPLOYED') {
-                    navigation.navigate('Proceed')
-                }
-
+                if (spousejob !== 'UNEMPLOYED' ) {
+            
+                   navigation.navigate('IncomeDetailsSpouse')
+                } else if (spousejob == 'UNEMPLOYED' ) {
+               
+                   navigation.navigate('Proceed')
+                }else  (spouseavailable == 'false')(
+                
+                    navigation.navigate('Proceed') 
+                )
+             
                 // navigation.navigate('DebitDetails')
             }
         }).catch((err) => {
@@ -291,22 +317,7 @@ const IncomeDetails = ({ navigation, route }) => {
         }
     }
 
-    const getSpousedetail = async () => {
-        const data = {
-            "activityId": activityId
-        }
-        await api.getSpousedetail(data).then((res) => {
-            console.log('-------------------res spousedetail co-app', id)
-            if (res?.status) {
-                setSpousedetail(res?.data?.body?.occupation)
-                console.log("spose detail call", spouseDetail)
-
-            }
-        }).catch((err) => {
-            console.log('-------------------err spousedetail', err?.response)
-        })
-    };
-
+   
     { console.log("spouse detail dsa", spouseDetail) }
 
     useEffect(() => {
@@ -486,10 +497,14 @@ const IncomeDetails = ({ navigation, route }) => {
                                                 if (Number(text) == 0) {
                                                     setAmount('')
                                                     console.log("inside occupation 2", incomedetail?.occupation)
-                                                } else {
+                                                }else if( text[0] === '0'){
+                                                    console.log("number log", text)
+                                                } 
+                                                else {
                                                     setAmount(text)
                                                     console.log("inside occupation", incomedetail?.occupation)
                                                 }
+
                                             }
                                         }
                                     }
@@ -566,7 +581,11 @@ const IncomeDetails = ({ navigation, route }) => {
                                         if (text === '') {
                                             setZeroStatus(false)
                                             setAvg('')
-                                        } else if (incomedetail?.occupation == 'FARMER' && Month === '0') {
+                                        }
+                                        else if( text[0] === '0'){
+                                            console.log("number log", text)
+                                        } 
+                                        else if (incomedetail?.occupation == 'FARMER' && Month === '0') {
                                          
                                             if(parseInt(text) <= parseInt(Amount)){
                                                 setAvg(text)

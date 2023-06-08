@@ -141,12 +141,16 @@ const Energy = ({ navigation, setAmount1, setPurpose1, setDays1, setCustomerId, 
                 setButtons(false)
             } else {
                 setButtons(true)
+                setPurpose(Purpose)
+                setPurpose1(Purpose)
             }
         } else {
             if ((Amount === '' || Amount === null) || (Purpose === '' || Purpose === null)) {
                 setButtons(false)
             } else {
                 setButtons(true)
+                setPurpose(Purpose)
+                setPurpose1(Purpose)
             }
         }
     }, [Amount, days, Purpose])
@@ -192,20 +196,20 @@ const Energy = ({ navigation, setAmount1, setPurpose1, setDays1, setCustomerId, 
                                 setZeroStatus(false)
                               //  setAmount(text)
                                 // const firstDigitStr = String(num)[0];
-                                if(text === ''){
+                                if(text === ''|| text === ',' || text === '.'){
                                     setZeroStatus(false)
                                     setAmount('')
                                 }
-                                else if (Number(text) == 0) {
+                                else if (Number(text) == 0 ) {
 
                                     setZeroStatus(true)
+                                    console.log("number log", text)
+                                }else if( text[0] === '0'){
                                     console.log("number log", text)
                                 }
                                 else if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(text) || text === "") {
                                     setAmount(text)
                                     setZeroStatus(false)
-                                }else if(firstDigitStr == 0){
-                                    setZeroStatus(true)
                                 }
                             }
                             } />
@@ -240,13 +244,16 @@ const Energy = ({ navigation, setAmount1, setPurpose1, setDays1, setCustomerId, 
                                 contextMenuHidden={true}
                                 onChangeText={(text) => {
                                     setZeroDays(false)
-                                    if(text === ''){
+                                    if(text === '' || text === ',' || text === '.'){
                                         setZeroDays(false)
                                         setDays('')
                                     }
                                     else if (Number(text) == 0) {
     
                                         setZeroDays(true)
+                                        console.log("number log", text)
+                                    }
+                                    else if( text[0] === '0'){
                                         console.log("number log", text)
                                     }
                                     else if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(text) || text === "") {

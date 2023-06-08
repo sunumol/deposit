@@ -114,9 +114,10 @@ const EnergyUtility = ({ navigation, }) => {
         
             }
             await api.saveEnergyUtilities(data).then((res) => {
-                console.log('-------------------res saveEnergyUtilities', res)
+                console.log('-------------------res saveEnergyUtilities', res,data)
                 if (res?.status) {
-                    navigation.navigate('Profile')
+                    navigation.navigate('Profile'),
+                    setModalVisible(false)
                 }
             }).catch((err) => {
                 console.log('-------------------err saveEnergyUtilities', err?.response)
@@ -149,7 +150,7 @@ const EnergyUtility = ({ navigation, }) => {
                     setModalReason(true)
                
                 }}
-                Press1={()=>{saveEnergyUtilities(),setModalVisible(false)}}
+                Press1={()=>{saveEnergyUtilities()}}
                 ModalVisible={ModalVisible}
                 setModalVisible={setModalVisible}
                 onPressOut={() => {

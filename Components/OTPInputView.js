@@ -137,7 +137,7 @@ class OTPTextView extends Component {
         otpText: [],
       },
       () => {
-       // this.inputs[0].focus();
+        this.inputs[0].focus();
         this.props.handleTextChange("");
       }
     );

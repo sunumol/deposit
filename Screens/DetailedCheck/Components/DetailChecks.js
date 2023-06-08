@@ -13,7 +13,7 @@ import {
     ToastAndroid,
     Pressable
 } from 'react-native'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState,useRef } from 'react'
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Statusbar from '../../../Components/StatusBar';
 import { useFocusEffect } from '@react-navigation/native';
@@ -41,6 +41,8 @@ const
         console.log('????===>>123', setbackstate)
 
         const isDarkMode = true;
+        const villageinput = useRef();
+        const postinput = useRef();
         const [text, onChangeText] = useState('');
         const [vstatus, setVstatus] = useState(true)
         const [ButtonStatus, setButtonStatus] = useState(false)
@@ -123,7 +125,8 @@ const
             // setVillagename(text)
             setVstatus(false)
 
-            if (text === "") {
+            if (text === "" || !/^[a-zA-Z]+$/g.test(text)  ) {
+              
                 setVillagenamedata([])
                 setBstatus(false)
                 setvillagestatus(false)
@@ -132,7 +135,8 @@ const
                 console.log("text special", text)
 
             }
-            else if (!(/^[^!-\/:-@\.,[-`{-~]+$/.test(text))) {
+         else if(!/^[a-zA-Z]+$/g.test(text)){
+           
                 setVillagenamedata([])
                 setBstatus(false)
                 setvillagestatus(false)
@@ -142,6 +146,7 @@ const
 
             }
             else {
+              
                 console.log("text special", text)
                 setVillagename(text)
                 setVillagename1(text)
@@ -157,18 +162,21 @@ const
             // setVillagename(text)
             const firstDigitStr = String(text)[0];
             setPostStatus(false)
-            if (text == '') {
+            if (text == ''  || !/^[a-zA-Z]+$/g.test(text) ) {
+                
                 setPostofficenamedata([])
                 setPstatus(false)
                 setpoststatus(false)
                 setChecked(false)
                 setPostofficename('')
-            } else if (!(/^[^!-\/:-@\.,[-`{-~1234567890]+$/.test(text))) {
+            // } else if (!(/^[^!-\/:-@\.,[-`{-~1234567890]+$/.test(text))) {
+             } else if(!/^[a-zA-Z]+$/g.test(text)){
                 setPostofficenamedata([])
                 setPstatus(false)
                 setpoststatus(false)
                 setChecked(false)
             } else if (firstDigitStr == ' ') {
+           
                 containsWhitespace(text)
                 setPostofficenamedata([])
                 setPstatus(false)
@@ -178,9 +186,10 @@ const
             }
            
             else {
-                getpostoffice(text)
-                setPostofficename(text)
-                setPostoffice1(text)
+            
+                getpostoffice()
+                setPostofficename(text?.replace(/\s/g, ''))
+                setPostoffice1(text?.replace(/\s/g, ''))
             }
             //setPostofficename(text)
         }
@@ -385,6 +394,7 @@ const
                                 <View style={[styles.textInput, { flexDirection: 'row' }]}>
                                     <View style={styles.borderVillage}>
                                         <TextInput
+                                              ref={villageinput}
                                             value={removeEmojis(villagename)}
                                             placeholder={"Search village"}
                                             contextMenuHidden={true}
@@ -403,7 +413,11 @@ const
                                             blurOnSubmit={true}
                                         />
                                         {!details?.village
-                                            ? <Search name="search" size={17} style={{ marginRight: 15 }} color={'#1A051D'} />
+                                            ? 
+                                            <TouchableOpacity onPress={()=>villageinput?.current?.focus()} >
+                                                 <Search name="search" size={17} style={{ marginRight: 15 }} color={'#1A051D'} />
+                                            </TouchableOpacity>
+                                            
                                             : null}
                                     </View>
                                 </View>
@@ -457,6 +471,7 @@ const
                                 <View style={[styles.textInput, { flexDirection: 'row' }]}>
                                     <View style={styles.borderVillage}>
                                         <TextInput
+                                        ref={postinput}
                                             value={removeEmojis(postofficename)}
                                             style={styles.TextInputBranch}
                                             contextMenuHidden={true}
@@ -475,7 +490,9 @@ const
                                             onKeyPress={() => { setPstatus(false), setpoststatus(false) }}
 
                                         />
-                                        <Search name="search" size={17} style={{ marginRight: 15 }} color={'#1A051D'} />
+                                       <TouchableOpacity onPress={()=>postinput?.current?.focus()} >
+                                                 <Search name="search" size={17} style={{ marginRight: 15 }} color={'#1A051D'} />
+                                            </TouchableOpacity>
                                     </View>
                                 </View>
 

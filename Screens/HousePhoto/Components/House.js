@@ -118,6 +118,7 @@ const DetailChecks = ({ navigation, setState, setImagedata1,imagedata }) => {
     }
     await api.DeleteHousePhoto(data).then((res) => {
         console.log('-------------------res  delete house photo', res)
+        setImagedata1()
     }).catch((err) =>{
         console.log('-------------------res  delete house photo', res)
     })

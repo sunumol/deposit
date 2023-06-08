@@ -658,14 +658,11 @@ const ContinuingGuarantor = ({ navigation, route }) => {
                     handleTextChange={(code => {
                       setOtpValue(code)
                       setInvalidotp(false)
-                      // if (code.length === 4) {
-                      //   // if (code == '1091') {
-                      //   //   navigation.navigate('Permission')
-                      //   // }
-                      //   // else {
-                      //   //   console.log("otp value//...", OtpValue)
-                      //   // }
-                      // }
+
+
+                      if (code.length < 4) {
+                          setOtp(false)
+                      }
                     })}
                   />
 
