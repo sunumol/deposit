@@ -43,7 +43,7 @@ const ResidenceOwner = ({ navigation, }) => {
     const [ApiState,setStateApi] = useState(false)
     const [BStatus, setBstatus] = useState(false)
     const [state, setState] = useState(false)
-    const [imagedata, setImagedata] = useState(null)
+    const [imagedata, setImagedata1] = useState('')
     const [ModalVisible, setModalVisible] = useState(false)
     const [ModalVisible1, setModalVisible1] = useState(false)
     const [ModalReason, setModalReason] = useState(false)
@@ -106,19 +106,15 @@ const ResidenceOwner = ({ navigation, }) => {
     };
     // -
 
-
-
-    const handleGoBack = useCallback(() => {
-        console.log('8888', imagedata)
+    const handleGoBack = () => {
+        console.log('8888',imagedata)
         if (imagedata) {
             setModalVisible(true)
         } else {
             setModalVisible1(true)
         }
-
-
         return true; // Returning true from onBackPress denotes that we have handled the event
-    }, [navigation]);
+    }
 
     useFocusEffect(
         React.useCallback(() => {
@@ -151,7 +147,7 @@ const ResidenceOwner = ({ navigation, }) => {
                     <Header name="House Photo Capture" navigation={navigation} setState={state} onPress={handleGoBack} />
 
                     <View style={styles.ViewContent}>
-                        <House navigation={navigation} setState={setState} setImagedata1={setImagedata} imagedata={imagedata}/>
+                        <House navigation={navigation} setState={setState} setImagedata1={setImagedata1} imagedata={imagedata}/>
                     </View>
 
 

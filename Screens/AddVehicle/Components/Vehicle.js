@@ -30,7 +30,7 @@ import ErrorModal from './ErrorModal';
 import { useSelector } from 'react-redux';
 import VehicleModal from './VehicleModal';
 
-const Vehicle = ({ navigation }) => {
+const Vehicle = ({ navigation,setsearchvehicledata }) => {
 
     const activityId = useSelector(state => state.activityId);
 
@@ -172,6 +172,8 @@ const Vehicle = ({ navigation }) => {
             if (res?.status) {
                 if (res?.data?.body) {
                     setSearchvehicledata(res?.data?.body)
+                    setsearchvehicledata(res?.data?.body)
+
                     setSearchStatus2(true)
                 } else {
 

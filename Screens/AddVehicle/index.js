@@ -38,6 +38,7 @@ const AddVehicle = ({ navigation, }) => {
     const [ModalVisible, setModalVisible] = useState(false)
     const [ModalReason, setModalReason] = useState(false)
     const [ModalError, setModalError] = useState(false)
+    const [searchvehicledata, setsearchvehicledata] = useState();
     const activityId = useSelector(state => state.activityId);
     useEffect(() => {
         getData()
@@ -78,6 +79,20 @@ const AddVehicle = ({ navigation, }) => {
     // ------------------ HomeScreen Api Call End ------------------
 
 
+    const saveVehicleDetails = async () => {
+        console.log('api called1')
+
+        const data = [searchvehicledata]
+        await api.saveVehicleDetails(data).then((res) => {
+            console.log('-------------------res save vehicle', res)
+            if (res?.status) {
+                setModalVisible(false),
+                navigation.navigate('Profile')
+            }
+        }).catch((err) => {
+            console.log('-------------------err save vehicle', err)
+        })
+    };
     const handleGoBack = useCallback(() => {
 
         // navigation.goBack()
@@ -102,7 +117,7 @@ const AddVehicle = ({ navigation, }) => {
             <Header name="Add Vehicle" navigation={navigation} onPress={handleGoBack} />
 
             <View style={styles.ViewContent}>
-                <Vehicle navigation={navigation} />
+                <Vehicle navigation={navigation} setsearchvehicledata={setsearchvehicledata} />
             </View>
 
 
@@ -114,8 +129,8 @@ const AddVehicle = ({ navigation, }) => {
                 }}
                 Press1={() => {
                     {
-                        setModalVisible(false),
-                        navigation.navigate('Profile')
+                        saveVehicleDetails()
+                       
                     }
                 }}
                 ModalVisible={ModalVisible}
