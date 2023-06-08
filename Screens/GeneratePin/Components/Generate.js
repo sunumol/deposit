@@ -194,10 +194,10 @@ const Generate = ({navigation}) => {
                     placeholderTextColor={"#808080"}
                     // contextMenuHidden={true}
                     onChangeText={(text) => {
-                        setSMitraID(text)
-                        // if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(text) || text === '') {
-                        //     setSMitraID(text)
-                        // }
+                     
+                        if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(text) || text === '') {
+                            setSMitraID(text)
+                        }
                     }
                     } />
             </View>
