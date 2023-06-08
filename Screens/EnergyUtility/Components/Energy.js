@@ -121,9 +121,11 @@ const Energy = ({ navigation, setAmount1, setPurpose1, setDays1, setCustomerId, 
                 }else if(customerdetail == 'UNEMPLOYED' && spouseDetail !== 'UNEMPLOYED' ){
                     navigation.navigate('IncomeDetailsSpouse')
                 }else if(customerdetail == 'UNEMPLOYED' && spouseDetail == 'UNEMPLOYED'){
+                    saveIncomeDetails_Spouse()
                     navigation.navigate('Proceed')
                 }
                 else{
+                    saveIncomeDetails_Spouse()
                     navigation.navigate('Proceed')
                 }
             }
@@ -172,6 +174,27 @@ const Energy = ({ navigation, setAmount1, setPurpose1, setDays1, setCustomerId, 
         })
     };
 
+    const saveIncomeDetails_Spouse = async () => {
+        console.log('api called')
+
+        const data = {
+            "activityId": activityId,
+            "relationShip":'Spouse',
+            "field1":'',
+            "field2":'',
+            "field3":''
+
+        }
+        await api.saveIncomeDetails(data).then((res) => {
+            console.log('-------------------res saveIncomeDetails',data)
+            if (res?.status) {
+               
+            }
+        }).catch((err) => {
+            console.log('-------------------err saveIncomeDetails', err?.response)
+        })
+    };
+    
 
     return (
 

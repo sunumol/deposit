@@ -53,6 +53,7 @@ const Profile = ({ navigation }) => {
     useEffect(() => {
         AsyncStorage.getItem("CustomerId").then((value) => {
             setCustId(value)
+            HomeScreenApiCall(value)
         })
         AsyncStorage.getItem("fcmToken").then((value) => {
             setFcmToken(value)
@@ -62,6 +63,7 @@ const Profile = ({ navigation }) => {
     useEffect(() => {
         if (fcmToken) {
             firebaseTokenSentTo()
+            console.log("agentid pass",custID)
         }
     }, [fcmToken])
 
@@ -109,10 +111,10 @@ const Profile = ({ navigation }) => {
         },
     ];
     // ------------------ HomeScreen Api Call Start ------------------
-    const HomeScreenApiCall = async () => {
+    const HomeScreenApiCall = async (value) => {
         console.log("inside api call")
         const data = {
-            "employeeId": 1
+            "employeeId": custID ? Number(custID) :Number(value)
         };
         await api.homeScreenApi(data).then((res) => {
             console.log('-------------------res', res?.data)
@@ -142,7 +144,7 @@ const Profile = ({ navigation }) => {
     // ------------------ HomeScreen Api Call End ------------------
 
     useEffect(() => {
-        HomeScreenApiCall()
+        
         getData()
         NetworkInfo.getIPV4Address().then(ipv4Address => {
             console.log(ipv4Address);
@@ -210,7 +212,11 @@ const Profile = ({ navigation }) => {
 
     React.useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
-            HomeScreenApiCall()
+         
+            AsyncStorage.getItem("CustomerId").then((value) => {
+                setCustId(value)
+                HomeScreenApiCall(value)
+            })
             AsyncStorage.removeItem('DATECGT')
         });
         return unsubscribe;

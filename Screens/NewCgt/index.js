@@ -12,6 +12,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { useDispatch } from 'react-redux';
 import { useFocusEffect } from '@react-navigation/native';
 import moment from 'moment';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // ------------- Component Imports --------------------------
 import Cgt from './Components/Cgt';
@@ -37,6 +38,7 @@ const NewCgt = ({ navigation, route }) => {
     const [ModalVisible, setModalVisible] = useState(false)
     const [BStatus, setBstatus] = useState(false);
     const [Dates, setDate] = useState(new Date())
+    const [custID,setCustId] = useState('')
 
     useFocusEffect(
         React.useCallback(() => {
@@ -50,7 +52,12 @@ const NewCgt = ({ navigation, route }) => {
         }, [])
     );
 
-
+    useEffect(() => {
+        AsyncStorage.getItem("CustomerId").then((value) => {
+            setCustId(value)
+        })
+    
+    }, [])
 
     // Function to convert time to minutes since midnight
     function convertToMinutes(time) {
@@ -84,7 +91,7 @@ const NewCgt = ({ navigation, route }) => {
         console.log("selected date", moment(NewDates).utc().format('DD-MM-YYYY'))
 
         const data = {
-            "employeeId": 1,
+            "employeeId":Number(custID),
             "selectedDate": moment(NewDates).utc().format('DD-MM-YYYY')
         };
         await api.getCGTslot(data).then((res) => {

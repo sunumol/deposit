@@ -35,6 +35,7 @@ const ConfirmMembers = ({ navigation }) => {
   const [status,setStatus] = useState(false)
   const [ModalVisible4,setModalVisible4] = useState(false)
   const [clearpop,setClearPop] = useState(false)
+  const [custID,setCustId] = useState('')
   const [searchcustomerlist, setsearchcustomerlist] = useState();
   // -----------Redux State ---------------------------------
   const dispatch = useDispatch()
@@ -80,6 +81,7 @@ const ConfirmMembers = ({ navigation }) => {
     return true; // Returning true from onBackPress denotes that we have handled the event
   }, [navigation]);
 
+  
   useEffect(() => {
     const backHandler = BackHandler.addEventListener(
       'hardwareBackPress',
@@ -131,7 +133,9 @@ const ConfirmMembers = ({ navigation }) => {
   }, [navigation]);
 
   useEffect(() => {
-
+    AsyncStorage.getItem("CustomerId").then((value) => {
+      setCustId(value)
+  })
   getTCDetails(customerList)
     // getTclist()
     console.log("idbhh..", customerList,customerID)
@@ -158,7 +162,7 @@ const ConfirmMembers = ({ navigation }) => {
   const getCustomerLists = async (phone) => {
     console.log('List------>>', phone)
     const data = {
-      "employeeId": 1,
+      "employeeId":Number(custID),
       "customerNameOrNumber": phone ? phone : "",
       "addedTcIds": [cgtCustomerDetails?.primaryCustomerId]
 

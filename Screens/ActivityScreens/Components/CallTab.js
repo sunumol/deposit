@@ -26,6 +26,7 @@ const ItemTabs = ({ props, navigation }) => {
     const [modalVisible, setModalVisible] = useState(false)
     const [enab, setEnab] = useState(false)
     const netInfo = useNetInfo();
+    const [custID,setCustId] = useState('')
     const [meetData, setMeetData] = useState([
         {
             id: 1,
@@ -88,11 +89,12 @@ const ItemTabs = ({ props, navigation }) => {
 
 
 
-    const ActivityListingApiCall = async () => {
+    const ActivityListingApiCall = async (value) => {
         const data = {
-            "employeeId": 1,
+            "employeeId": Number(value),
             "activityType": "CALL"
         };
+        console.log("data call",data)
         await api.activitylistingscreenApi(data).then((res) => {
             console.log('-------------------res call', res?.data?.body?.slottedActivities)
             setListing(res?.data?.body?.slottedActivities)
@@ -109,8 +111,11 @@ const ItemTabs = ({ props, navigation }) => {
 
     React.useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
-
-            ActivityListingApiCall()
+            AsyncStorage.getItem("CustomerId").then((value) => {
+                setCustId(value)
+                ActivityListingApiCall(value)
+            })
+     
 
         });
         getData();
@@ -119,11 +124,16 @@ const ItemTabs = ({ props, navigation }) => {
 
     { console.log('====fkjkfjkjfkjrf', enab) }
 
+ 
+
     useEffect(() => {
-        ActivityListingApiCall()
+        AsyncStorage.getItem("CustomerId").then((value) => {
+            setCustId(value)
+            ActivityListingApiCall(value)
+        })
+        console.log("data",custID)
+      
     }, [enab]);
-
-
 
     const getData = async () => {
         try {

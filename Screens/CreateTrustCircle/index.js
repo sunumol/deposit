@@ -28,7 +28,7 @@ import TrustModal from './Components/TrustModal';
 import { api } from '../../Services/Api';
 import NetWorkError from '../NetWorkError';
 import CGTCompleted from './Components/CGTCompleted'
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 // --------------- Image Import -------------------
 import Date from '../CGTCustomer/Images/Date.svg';
 import Plus from '../../assets/image/Plus.svg';
@@ -48,7 +48,7 @@ const CreateTrustCircle = ({ navigation, route }) => {
     const customerID = useSelector(state => state.customerID);
     const cgtCustomerDetails = useSelector(state => state.cgtCustomerDetails);
     const dispatch = useDispatch()
-
+    const [custID, setCustId] = useState('')
     const [minLimit, setMinLimit] = useState()
     const [maxLimit, setMaxLimit] = useState()
 
@@ -68,6 +68,13 @@ const CreateTrustCircle = ({ navigation, route }) => {
                 BackHandler.removeEventListener('hardwareBackPress', handleGoBack);
         }, [handleGoBack]),
     );
+
+    useEffect(() => {
+        AsyncStorage.getItem("CustomerId").then((value) => {
+            setCustId(value)
+        })
+    
+    }, [])
 
     useEffect(() => {
         getTCLimitDetails()
@@ -91,10 +98,11 @@ const CreateTrustCircle = ({ navigation, route }) => {
     // ------------------ getTCLimitDetails Api Call Start ------------------
     const CreateTrustCircle = async () => {
         const data = {
-            "agentId": 1,
+            "agentId": Number(custID),
             "primaryCustomerId": cgtCustomerDetails.primaryCustomerId,
             "memberIds": customerID,
         }
+        console.log("data create trust circle",data)
         await api.createTrustCircles(data).then((res) => {
             console.log('-------------------res create', res)
             if (res?.status) {
@@ -114,7 +122,7 @@ const CreateTrustCircle = ({ navigation, route }) => {
     const getTclist = async () => {
         console.log('api called', customerID, cgtCustomerDetails?.primaryCustomerId)
         const data = {
-            "employeeId": 1,
+            "employeeId":Number(custID),
             "customerNameOrNumber": "",
             "addedTcIds": [customerID, cgtCustomerDetails?.primaryCustomerId]
         }

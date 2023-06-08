@@ -40,8 +40,13 @@ const AddVehicle = ({ navigation, }) => {
     const [ModalError, setModalError] = useState(false)
     const [searchvehicledata, setsearchvehicledata] = useState();
     const activityId = useSelector(state => state.activityId);
+    const [custID,setCustId] = useState('')
+
     useEffect(() => {
         getData()
+        AsyncStorage.getItem("CustomerId").then((value) => {
+            setCustId(value)
+        })
     }, [])
 
     const getData = async () => {
@@ -61,7 +66,7 @@ const AddVehicle = ({ navigation, }) => {
         console.log('api called for rejection')
         const data = {
             "activityStatus": 'Submitted wrong data',
-            "employeeId": 1,
+            "employeeId": Number(custID),
             "activityId": activityId
         }
         await api.updateActivity(data).then((res) => {

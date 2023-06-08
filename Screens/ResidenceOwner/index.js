@@ -43,11 +43,17 @@ const ResidenceOwner = ({ navigation, }) => {
     const [imageurl,setImageUrl] = useState('')
     const [relation,setRelation] = useState('')
     const [relative,setRelative] = useState('')
+    const [custID,setCustId] = useState('')
     const activityId = useSelector(state => state.activityId);
     useEffect(() => {
         getData()
     }, [])
-
+    useEffect(() => {
+        AsyncStorage.getItem("CustomerId").then((value) => {
+            setCustId(value)
+        })
+    
+    }, [])
     const getData = async () => {
         try {
             const lang = await AsyncStorage.getItem('user-language')
@@ -63,7 +69,7 @@ const ResidenceOwner = ({ navigation, }) => {
         console.log('api called for rejection')
         const data = {
             "activityStatus":'Submitted wrong data',
-            "employeeId":1,
+            "employeeId":Number(custID),
             "activityId":activityId
         }
         await api.updateActivity(data).then((res) => {

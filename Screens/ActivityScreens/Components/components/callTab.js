@@ -15,7 +15,7 @@ import { useNetInfo } from "@react-native-community/netinfo";
 import NetworkScreen from '../../../../Components/NetworkError2';
 
 const MeetTab = (props) => {
-    console.log("props pass data call", props.listing)
+
 
     const netInfo = useNetInfo();
 

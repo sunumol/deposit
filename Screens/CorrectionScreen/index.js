@@ -13,7 +13,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import { useRoute } from '@react-navigation/native';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import ExitModal from '../../Components/ModalExit';
 import { COLORS, FONTS } from '../../Constants/Constants';
 import Statusbar from '../../Components/StatusBar';
@@ -45,14 +45,20 @@ const CorrectionScreen = ({ navigation }) => {
     );
 
     useEffect(() => {
-        getCorrectionDetails()
+      
+            AsyncStorage.getItem("CallActivity").then((value) => {
+               // setCustId(value)
+                getCorrectionDetails(value)
+            })
+        
     }, [])
 
     // ------------------ get Conduct DLE basic detail Village Api Call Start ------------------
-    const getCorrectionDetails = async () => {
+    const getCorrectionDetails = async (value) => {
         const data = {
-            "activityId": route?.params?.AcyivityId    //-----> addd --- activityId
+            "activityId": activityId ?activityId:value   //-----> addd --- activityId
         }
+        console.log("correction ",data)
         await api.getCorrectionDetails(data).then((res) => {
             console.log('-------------------res getCorrection', res)
             if (res?.data) {
@@ -70,7 +76,7 @@ const CorrectionScreen = ({ navigation }) => {
             "activityId": activityId    //-----> addd --- activityId
         }
         await api.getCorrectionDLEPage(data).then((res) => {
-            console.log('-------------------res getCorrection', res)
+            console.log('-------------------res getCorrection', res?.data)
             if (res?.data) {
                 if (res?.data?.body == 1) {
                     navigation.navigate('DetailCheck')

@@ -24,16 +24,24 @@ const CallModal = ({ ModalVisible, onPressOut }) => {
     const [enableContinue, setEnableContinue] = useState(false)
     const [selectedCallData, setSelectedCallData] = useState()
     const [id, setId] = useState()
+    const [custID,setCustId] = useState('')
 
     String.prototype.replaceAt = function (index, replacement) {
         return this.substring(0, index) + replacement + this.substring(index + replacement.length);
     }
     { console.log('----datra--', selectedCallData) }
 
+    useEffect(() => {
+        AsyncStorage.getItem("CustomerId").then((value) => {
+            setCustId(value)
+        })
+    
+    }, [])
+
     // ------------------ Activity Update Api Call Start ------------------
     const updateActivity = async () => {
         const data = {
-            "employeeId": 1,
+            "employeeId":Number(custID),
             "activityStatus": id,
             "activityId": selectedCallData?.activityId
 

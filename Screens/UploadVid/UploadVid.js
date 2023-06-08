@@ -79,7 +79,7 @@ const UploadVid = ({ navigation }) => {
     console.log('api called for rejection')
     const data = {
       "activityStatus": 'Submitted wrong data',
-      "employeeId": 1,
+      "employeeId": Number(custID),
       "activityId": activityId
     }
     await api.updateActivity(data).then((res) => {

@@ -18,6 +18,7 @@ const App = ({ visible, onPressOut, meet, details ,setEnab}) => {
     //console.log("details of active modal",details)
     const [enableContinue, setEnableContinue] = useState(false)
     const [id, setId] = useState()
+    const [custID,setCustId] = useState('')
     const [data, setData] = useState([
         {
             id: "Not interested",
@@ -36,6 +37,11 @@ const App = ({ visible, onPressOut, meet, details ,setEnab}) => {
         }
     ])
 
+useEffect(()=>{
+    AsyncStorage.getItem("CustomerId").then((value) => {
+        setCustId(value)
+    })
+},[])
 
     String.prototype.replaceAt = function (index, replacement) {
         return this.substring(0, index) + replacement + this.substring(index + replacement.length);
@@ -46,7 +52,7 @@ const App = ({ visible, onPressOut, meet, details ,setEnab}) => {
 
 
             const data = {
-                "employeeId": 1,
+                "employeeId":Number(custID),
                 "activityStatus":id,
                 "activityId":details?.activityId
 

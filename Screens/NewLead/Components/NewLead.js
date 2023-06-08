@@ -50,6 +50,7 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus,setbackstate }) 
     const [addressFocus1, setAddressFocus1] = useState(false);
     const [customerNumber, setCustomerNumber] = useState('');
     const [ModalVillage, setModalVillage] = useState(false)
+    const [custID,setCustId] = useState('')
     const adddressRef = useRef();
     const PinRef = useRef();
     const MobileRef = useRef();
@@ -80,6 +81,12 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus,setbackstate }) 
         navigation.navigate('Profile')
         console.log("lead modal okay", Name, Mobile, Pincode, Village)
     }
+    useEffect(() => {
+        AsyncStorage.getItem("CustomerId").then((value) => {
+            setCustId(value)
+        })
+    
+    }, [])
 
     const OnchangeNumber = (num) => {
         if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(num) || num === '') {
@@ -172,7 +179,7 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus,setbackstate }) 
         //    adddressRef.blur();
         setResultError(true)
         const data = {
-            "employeeId":1,
+            "employeeId":Number(custID),
             "leadName": Name,
             "mobileNumber": "+91" + Mobile,
             "pin": Pincode,

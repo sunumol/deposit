@@ -34,7 +34,7 @@ const Calendar = ({ navigation, route }) => {
     const [status, setStatus] = useState(true)
     const [ModalVisible1, setModalVisible1] = useState(false)
     const [ModalVisible, setModalVisible] = useState(false)
-
+const [custID,setCustId] = useState('')
     useEffect(() => {
         getData()
     }, [])
@@ -48,7 +48,13 @@ const Calendar = ({ navigation, route }) => {
             console.log(e)
         }
     }
-
+    useEffect(() => {
+        AsyncStorage.getItem("CustomerId").then((value) => {
+            setCustId(value)
+            getCGTslot(value)
+        })
+    
+    }, [])
     useFocusEffect(
         React.useCallback(() => {
             getData()
@@ -65,9 +71,9 @@ const Calendar = ({ navigation, route }) => {
     }
 
     // ------------------ get Slot Api Call Start ------------------
-    const getCGTslot = async (date) => {
+    const getCGTslot = async (value) => {
         const data = {
-            "employeeId": 1,
+            "employeeId": custID?Number(custID): Number(value),
             "selectedDate": moment(NewDates).utc().format('DD-MM-YYYY')
         };
         await api.getCGTslot(data).then((res) => {
@@ -84,7 +90,7 @@ const Calendar = ({ navigation, route }) => {
     // ------------------ get Slot Api Call Start ------------------
     const getCGTslot_callback = async (cgtdate) => {
         const data = {
-            "employeeId": 1,
+            "employeeId":Number(custID),
             "selectedDate": moment(cgtdate ? cgtdate : NewDates).utc().format('DD-MM-YYYY')
         };
         await api.getCGTslot(data).then((res) => {
@@ -99,7 +105,7 @@ const Calendar = ({ navigation, route }) => {
     };
 
     useEffect(() => {
-        getCGTslot()
+ 
     }, []);
 
     useEffect(() => {
