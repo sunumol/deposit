@@ -142,13 +142,13 @@ const Generate = ({navigation}) => {
 
             <Pressable onPress={showDatePicker}  style={{  
                                                                borderRadius: 8,
-                                                               borderWidth: 1,
-                                                               borderColor: '#ECEBED',
+                                                              // borderWidth: 1,
+                                                              // borderColor: '#ECEBED',
                                                                alignContent:'center',
                                                                width: '100%',
                                                                paddingLeft: 13,
                                                                height:46}} >
-                                                   <Text style={{color:dob ? '#000' :'#808080',fontSize:12,fontFamily: FONTS.FontRegular, fontWeight: '400',marginTop:12}}>{dob ? dob : 'DD/MM/YYYY'}</Text>    
+                                                   <Text style={{color:dob ? '#000' :'#808080',fontSize:12,fontFamily: FONTS.FontRegular, fontWeight: '400',marginTop:15}}>{dob ? dob : 'DD/MM/YYYY'}</Text>    
                                                    <DateTimePickerModal
                                                                isVisible={isDatePickerVisible}
                                                                mode="date"
