@@ -39,11 +39,12 @@ const Energy = ({ navigation, setAmount1, setPurpose1, setDays1, setCustomerId, 
     const [spouseDetail,setSpousedetail] = useState()
 
     useEffect(() => {
-        getEnergyUtilities()
+      //  getEnergyUtilities()
         getSpousedetail()
         getCustomerdetail()
     }, [])
     // ------------------spouse detail ------------------
+ 
 
     const getSpousedetail = async () => {
         console.log('api called')
@@ -121,11 +122,9 @@ const Energy = ({ navigation, setAmount1, setPurpose1, setDays1, setCustomerId, 
                 }else if(customerdetail == 'UNEMPLOYED' && spouseDetail !== 'UNEMPLOYED' ){
                     navigation.navigate('IncomeDetailsSpouse')
                 }else if(customerdetail == 'UNEMPLOYED' && spouseDetail == 'UNEMPLOYED'){
-                    saveIncomeDetails_Spouse()
                     navigation.navigate('Proceed')
                 }
                 else{
-                    saveIncomeDetails_Spouse()
                     navigation.navigate('Proceed')
                 }
             }
@@ -174,26 +173,6 @@ const Energy = ({ navigation, setAmount1, setPurpose1, setDays1, setCustomerId, 
         })
     };
 
-    const saveIncomeDetails_Spouse = async () => {
-        console.log('api called')
-
-        const data = {
-            "activityId": activityId,
-            "relationShip":'Spouse',
-            "field1":'',
-            "field2":'',
-            "field3":''
-
-        }
-        await api.saveIncomeDetails(data).then((res) => {
-            console.log('-------------------res saveIncomeDetails',data)
-            if (res?.status) {
-               
-            }
-        }).catch((err) => {
-            console.log('-------------------err saveIncomeDetails', err?.response)
-        })
-    };
     
 
     return (
@@ -292,7 +271,7 @@ const Energy = ({ navigation, setAmount1, setPurpose1, setDays1, setCustomerId, 
                 <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                     <TouchableOpacity style={[styles.buttonView, { backgroundColor: Buttons ? COLORS.colorB : 'rgba(224, 224, 224, 1)' }]}
                         onPress={() => Buttons ? saveEnergyUtilities() :console.log("hello")}>
-                        <Text style={[styles.continueText, { color: Buttons ? COLORS.colorBackground : 'rgba(151, 156, 158, 1)' }]}>Continue</Text>
+                        <Text style={[styles.continueText, { color: Buttons ? COLORS.colorBackground : 'rgba(151, 156, 158, 1)' }]}>Submit</Text>
                     </TouchableOpacity>
                 </View>
             </View>

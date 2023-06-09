@@ -23,7 +23,7 @@ const ProfileScreen = ({ navigation }) => {
     const [details, SetDetails] = useState()
     const [custID, setCustId] = useState('S00001')
     const [status, setStatus] = useState(true)
-
+    const [userName, setUserName] = useState('')
 
     const handleGoBack = useCallback(() => {
         navigation.goBack()
@@ -44,6 +44,12 @@ const ProfileScreen = ({ navigation }) => {
             //setCustId(value)
             console.log("value", custID)
         })
+        AsyncStorage.getItem('userName').then((value) => {
+            setUserName(value)
+        })
+
+
+
     }, [])
 
     useEffect(() => {
@@ -79,14 +85,14 @@ const ProfileScreen = ({ navigation }) => {
                 <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1, }}>
                     <ActivityIndicator size={30} color={COLORS.colorB} />
                 </View> :
-                <ScrollView showsVerticalScrollIndicator={false} style={{flex:1,backgroundColor:COLORS.colorBackground}}>
+                <ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1, backgroundColor: COLORS.colorBackground }}>
                     <View style={styles.mainContainer}>
                         <View style={styles.boxShadow}>
                             <View style={styles.ProfileView}>
                                 <Profile />
                             </View>
                             <View style={{ flexDirection: 'column', paddingLeft: 19 }}>
-                                <Text style={styles.nameText}>Athira Anil</Text>
+                                <Text style={styles.nameText}>{userName}</Text>
                                 <Text style={styles.idText}>{details?.id}</Text>
                             </View>
                         </View>
@@ -170,7 +176,7 @@ const styles = StyleSheet.create({
     mainContainer: {
         flex: 1,
         backgroundColor: COLORS.colorBackground,
-       // height: '100%',
+        // height: '100%',
         paddingHorizontal: 20,
         paddingTop: 16,
         paddingBottom: 25

@@ -85,6 +85,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
   const [occupation, setOccupation] = useState('')
   const [occupationModalVisible, setOccupationModalVisible] = useState(false);
   const [OccupationD,setOccupationD] = useState('')
+  const [custID,setCustId] = useState('')
 
   const getData = async () => {
     try {
@@ -112,6 +113,9 @@ const ContinuingGuarantor = ({ navigation, route }) => {
   );
 
   useEffect(() => {
+    AsyncStorage.getItem("CustomerId").then((value) => {
+      setCustId(value)
+  })
     console.log("route?.params?.relation", route?.params?.relation)
     getCGdetails()
     getSpousedetail()
@@ -188,7 +192,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
   const updateRejection = async () => {
     const data = {
       "activityStatus": 'Submitted wrong data',
-      "employeeId": 1,
+      "employeeId":Number(custID),
       "activityId": activityId
     }
     await api.updateActivity(data).then((res) => {

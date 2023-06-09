@@ -60,6 +60,7 @@ import SelectCalendar from '../Screens/SelectCalendar'
 // import CameraPick from '../Screens/UploadVid/Components/CameraPick';
 import { navigationRef } from './RootNavigation';
 import GeneratePin from '../Screens/GeneratePin';
+import EnergyCorrection from '../Screens/EnergyCorrection';
 
 const Stack = createNativeStackNavigator();
 
@@ -123,7 +124,8 @@ export default function Router() {
         <Stack.Screen name="UploadVid" component={netInfo.isConnected ? UploadVid : NetWorkError} />
         <Stack.Screen name="CorrectionScreen" component={netInfo.isConnected ? CorrectionScreen : NetWorkError} />
         <Stack.Screen name="GeneratePin" component={netInfo.isConnected ? GeneratePin : NetWorkError} />
-        {/* <Stack.Screen name="CameraPick" component={netInfo.isConnected ? CameraPick : NetWorkError} /> */}
+        <Stack.Screen name="EnergyCorrection" component={netInfo.isConnected ? EnergyCorrection : NetWorkError} />
+ {/* <Stack.Screen name="CameraPick" component={netInfo.isConnected ? CameraPick : NetWorkError} /> */}
         {/* --------------------------- Calendar Navigation Screens Start ---------------------------------------*/}
         <Stack.Screen name="Calendar" component={netInfo.isConnected ? Calendar : NetWorkError} />
         <Stack.Screen name="CalendarActivity" component={netInfo.isConnected ? CalendarActivity : NetWorkError} />

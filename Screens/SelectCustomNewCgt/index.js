@@ -8,7 +8,7 @@ import Icon1 from 'react-native-vector-icons/Ionicons'
 import moment from 'moment';
 import SearchIcon from 'react-native-vector-icons/Feather'
 import { useTranslation } from 'react-i18next';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 // -------------- Component Imports ------------------------
 import Statusbar from '../../Components/StatusBar';
 import Header from '../../Components/RepayHeader';
@@ -38,7 +38,11 @@ const SelectCustomerNewCgt = ({ navigation, route }) => {
   const [ModalVisible4,setModalVisible4] = useState(false)
   const [reschedulecgt, setReschedulecgt] = useState('')
   const [clearpop,setClearPop] = useState(false)
-const [searchcustomerlist, setsearchcustomerlist] = useState();
+  const [custID,setCustId] = useState('')
+  const [searchcustomerlist, setsearchcustomerlist] = useState();
+
+
+  
   const handleGoBack = () => {
     if (text?.length > 0) {
       onChangeText('')
@@ -64,6 +68,13 @@ const [searchcustomerlist, setsearchcustomerlist] = useState();
   String.prototype.replaceAt = function (index, replacement) {
     return this.substring(0, index) + replacement + this.substring(index + replacement.length);
   }
+
+  useEffect(() => {
+    AsyncStorage.getItem("CustomerId").then((value) => {
+        setCustId(value)
+    })
+
+}, [])
 
   const OnchangeNumber = (num) => {
     setSelectedItem(null)
@@ -92,7 +103,7 @@ const [searchcustomerlist, setsearchcustomerlist] = useState();
 
     console.log('search------->>>>>', searchvalue,clearpop,text)
     const data = {
-      "employeeId": 1,
+      "employeeId":Number(custID),
       "customerNameOrNumber": searchvalue ? searchvalue : ''
     };
     if(searchvalue){
@@ -121,7 +132,7 @@ const [searchcustomerlist, setsearchcustomerlist] = useState();
     let selectedtime = moment(route?.params?.data?.time, ["h:mm A"]).format("HH:mm");
     let time = selectedtime.slice(0, 5);
     const data = {
-      "employeeId": 1,
+      "employeeId":Number(custID),
       "customerId": reschedulecgt ? reschedulecgt.primaryCustomerId : selectedItem.id,
       "scheduleStartTime": moment(route?.params?.date).format("DD-MM-YYYY") + " " + time
     }

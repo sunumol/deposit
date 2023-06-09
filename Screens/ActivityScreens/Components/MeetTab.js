@@ -14,19 +14,20 @@ import { useTranslation } from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import MeetTab from '../Components/components/MeetTab';
 import { api } from '../../../Services/Api';
-import { useNetInfo} from "@react-native-community/netinfo";
+import { useNetInfo } from "@react-native-community/netinfo";
 import NetworkScreen from '../../../Components/NetworkError2';
 
-const ItemTabs = ({navigation}) => {
+const ItemTabs = ({ navigation }) => {
     const { t } = useTranslation();
     const [Lang, setLang] = useState('')
     const [ModalVisible1, setModalVisible1] = useState(false)
-    const [slottedlisting,setSlottedListing] = useState ([])
-    const [nonSlottedActivities,setNonslottedListing] = useState ([])
+    const [slottedlisting, setSlottedListing] = useState([])
+    const [nonSlottedActivities, setNonslottedListing] = useState([])
     const netInfo = useNetInfo();
-    const [enab,setEnab]=useState(false)
+    const [enab, setEnab] = useState(false)
+    const [custID, setCustId] = useState('')
     const [meetData, setMeetData] = useState([
-       // {
+        // {
         //     id: 1,
         //     data: [{
         //         id: 1,
@@ -62,7 +63,7 @@ const ItemTabs = ({navigation}) => {
                 phoneNumber: '635XXXXX11',
                 color: '#80C475',
                 status: 'Conduct',
-                
+
             }],
             time: '03:30 PM (1)'
         },
@@ -78,7 +79,7 @@ const ItemTabs = ({navigation}) => {
                 color: '#8CCEC2',
                 status: 'Conduct DLE',
             }],
-           
+
             time: '05:00 PM (3)'
         },
         {
@@ -92,7 +93,7 @@ const ItemTabs = ({navigation}) => {
                 color: '#8CACCE',
                 status: 'Conduct DLE',
             }],
-            
+
         },
         {
             id: 7,
@@ -119,8 +120,8 @@ const ItemTabs = ({navigation}) => {
                 status: 'Conduct DLE',
             }],
             time: '05:00 PM (3)'
-        }, 
-             {
+        },
+        {
             id: 9,
             data: [{
                 id: 1,
@@ -131,16 +132,17 @@ const ItemTabs = ({navigation}) => {
                 color: '#C8AA94',
                 status: 'Conduct DLE',
             }],
-           
+
         },
     ])
 
 
-    const ActivityListingApiCall = async () => {
+    const ActivityListingApiCall = async (value) => {
         const data = {
-            "employeeId": 1,
-            "activityType":"MEET"
+            "employeeId": Number(value),
+            "activityType": "MEET"
         };
+        console.log("data call2",data)
         await api.activitylistingscreenApi(data).then((res) => {
             console.log('-------------------res meet', res?.data?.body?.slottedActivities)
             setSlottedListing(res?.data?.body?.slottedActivities)
@@ -155,19 +157,26 @@ const ItemTabs = ({navigation}) => {
 
     React.useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
-        
-           ActivityListingApiCall()
-       
-          
+            AsyncStorage.getItem("CustomerId").then((value) => {
+                setCustId(value)
+                ActivityListingApiCall(value)
+            })
+            
+
+
         });
-getData();
+        getData();
         return unsubscribe;
-    }, [navigation,enab]);
+    }, [navigation, enab]);
 
 
     useEffect(() => {
-        ActivityListingApiCall()
- }, [enab]);
+        AsyncStorage.getItem("CustomerId").then((value) => {
+            setCustId(value)
+            ActivityListingApiCall(value)
+        })
+    
+    }, [enab]);
 
 
     const getData = async () => {
@@ -181,44 +190,44 @@ getData();
     }
     return (
         <>
-        {netInfo.isConnected
-            ?
+            {netInfo.isConnected
+                ?
 
-        <ScrollView style={{ flex: 1, backgroundColor: COLORS.colorBackground }}>
+                <ScrollView style={{ flex: 1, backgroundColor: COLORS.colorBackground }}>
 
-            <View style={{ paddingHorizontal: 20 ,marginBottom:10}}>
-                <>
-                { nonSlottedActivities ?  ( <MeetTab
-                               // id={id}
+                    <View style={{ paddingHorizontal: 20, marginBottom: 10 }}>
+                        <>
+                            {nonSlottedActivities ? (<MeetTab
+                                // id={id}
                                 data={nonSlottedActivities}
                                 time={'DLE Activities'}
                                 setEnab={setEnab}
                                 meet={true}
                                 navigation={navigation}
-                            />) : null }
-                {
-                    slottedlisting.map((item, index) => {
-                  
-                        return (
-                            <>
-                        { item.data.length ?  ( <MeetTab
-                                id={item.id}
-                                data={item.data}
-                                time={item.time}
-                                setEnab={setEnab}
-                                meet={true}
-                                navigation={navigation}
-                            />) : null }
-                            </>
-                        )
-                    })
-                }
-                </>
-            </View>
-        </ScrollView>: 
-        <NetworkScreen />
-    }
-    </>
+                            />) : null}
+                            {
+                                slottedlisting.map((item, index) => {
+
+                                    return (
+                                        <>
+                                            {item.data.length ? (<MeetTab
+                                                id={item.id}
+                                                data={item.data}
+                                                time={item.time}
+                                                setEnab={setEnab}
+                                                meet={true}
+                                                navigation={navigation}
+                                            />) : null}
+                                        </>
+                                    )
+                                })
+                            }
+                        </>
+                    </View>
+                </ScrollView> :
+                <NetworkScreen />
+            }
+        </>
     )
 }
 

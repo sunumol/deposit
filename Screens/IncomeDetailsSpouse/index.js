@@ -65,13 +65,15 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
     const [ModalReason, setModalReason] = useState(false)
     const [ModalError, setModalError] = useState(false)
     const [ZeroStatus, setZeroStatus] = useState(false)
-
+    const [custID, setCustId] = useState('')
+    const [fcmToken, setFcmToken] = useState()
     const [AmountFocus, setAmountFocus] = useState(false)
     const [MonthFocus, setMonthFocus] = useState(false)
     const [NetMonth, setNetMonth] = useState(false)
     
     useEffect(() => {
         getData()
+      
         // setRelationship(route?.params?.relationShip)
         getIncomeDetails()
         console.log("statecha nge.....", Purpose)
@@ -86,7 +88,20 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
             console.log(e)
         }
     }
+    useEffect(() => {
+        AsyncStorage.getItem("CustomerId").then((value) => {
+            setCustId(value)
+        })
+        AsyncStorage.getItem("fcmToken").then((value) => {
+            setFcmToken(value)
+        })
+    }, [])
 
+    useEffect(() => {
+        if (fcmToken) {
+            firebaseTokenSentTo()
+        }
+    }, [fcmToken])
     const handleGoBack = useCallback(() => {
 
         // navigation.goBack()
@@ -134,7 +149,20 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
         }
     }, [MonthsCustom, Purpose, Salary])
 
-
+    const firebaseTokenSentTo = async () => {
+        console.log("inside api call")
+        const data = {
+             "agentId":Number(custID),
+           // "agentId": 1,
+            "deviceToken": fcmToken
+        };
+        await api.firebaseToken(data).then((res) => {
+            console.log('-------------------res-----notification', res?.data)
+        })
+            .catch((err) => {
+                console.log('-------------------err notification', err?.response)
+            })
+    };
 
     // useEffect(() => {
     //     console.log('Use.....', Amount, Avg, Purpose)
@@ -150,7 +178,7 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
         console.log('api called for rejection')
         const data = {
             "activityStatus": 'Submitted wrong data',
-            "employeeId": 1,
+            "employeeId": Number(custID),
             "activityId": activityId
         }
         await api.updateActivity(data).then((res) => {

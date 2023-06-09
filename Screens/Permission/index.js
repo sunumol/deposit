@@ -10,7 +10,7 @@ import {
     PermissionsAndroid,
     StatusBar,
     BackHandler,
-
+Linking
 } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
@@ -234,7 +234,7 @@ const Permission = ({ navigation }) => {
             <ToastModal
                 Validation={t('common:Toast')}
                 ModalVisible={ModalVisible1}
-                onPressOut={() => setModalVisible1(!ModalVisible1)}
+                onPressOut={() => {setModalVisible1(!ModalVisible1),Linking.openSettings()}}
                 setModalVisible={setModalVisible1}
             />
 

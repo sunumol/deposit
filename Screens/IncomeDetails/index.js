@@ -74,6 +74,7 @@ const IncomeDetails = ({ navigation, route }) => {
     const [spouseavailable, setspouseavailable] = useState(false);
     const [spousejob, setspousejob] = useState('');
     const SpouseOccupation = useSelector(state => state?.SpouseOccupation);
+    const [custID,setCustId] = useState('')
 
     useEffect(() => {
         getData()
@@ -83,7 +84,12 @@ const IncomeDetails = ({ navigation, route }) => {
         console.log("statecha nge.....", Buttons)
     }, [])
 
-
+    useEffect(() => {
+        AsyncStorage.getItem("CustomerId").then((value) => {
+            setCustId(value)
+        })
+    
+    }, [])
     const getData = async () => {
         try {
             const lang = await AsyncStorage.getItem('user-language')
@@ -205,7 +211,7 @@ const IncomeDetails = ({ navigation, route }) => {
         console.log('api called for rejection')
         const data = {
             "activityStatus": 'Submitted wrong data',
-            "employeeId": 1,
+            "employeeId":Number(custID),
             "activityId": activityId
         }
         await api.updateActivity(data).then((res) => {
@@ -243,12 +249,12 @@ const IncomeDetails = ({ navigation, route }) => {
             
                    navigation.navigate('IncomeDetailsSpouse')
                 } else if (spousejob == 'UNEMPLOYED' ) {
-               
+                    saveIncomeDetails_Spouse()
                    navigation.navigate('Proceed')
-                }else  (spouseavailable == 'false')(
+                }else if (spouseavailable == 'false'){
                 
                     navigation.navigate('Proceed') 
-                )
+                }
              
                 // navigation.navigate('DebitDetails')
             }
@@ -290,7 +296,26 @@ const IncomeDetails = ({ navigation, route }) => {
     // ------------------ ------------------
 
 
+    const saveIncomeDetails_Spouse = async () => {
+        console.log('api called')
 
+        const data = {
+            "activityId": activityId,
+            "relationShip":'Spouse',
+            "field1":'',
+            "field2":'',
+            "field3":''
+
+        }
+        await api.saveIncomeDetails(data).then((res) => {
+            console.log('-------------------res saveIncomeDetails',data)
+            if (res?.status) {
+               
+            }
+        }).catch((err) => {
+            console.log('-------------------err saveIncomeDetails', err?.response)
+        })
+    };
 
 
     const getInitials = (name) => {

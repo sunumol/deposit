@@ -20,6 +20,7 @@ import { api } from '../../Services/Api';
 import { COLORS, FONTS } from '../../Constants/Constants';
 import Statusbar from '../../Components/StatusBar';
 import Header from '../../Components/Header';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const DetailCheck = ({ navigation, route }) => {
 
@@ -36,11 +37,14 @@ const DetailCheck = ({ navigation, route }) => {
     const [poststatus, setpoststatus] = useState(false);
     const [villagestatus, setvillagestatus] = useState(false);
     const [backstate, setbackstate] = useState(false);
-    
+    const [custID,setCustId] = useState('')
 
     const activityId = useSelector(state => state.activityId);
 
     useEffect(() => {
+        AsyncStorage.getItem("CustomerId").then((value) => {
+            setCustId(value)
+        })
         getConductDLEbasicdetail()
        
     }, [])
@@ -59,7 +63,7 @@ useEffect(()=>{
         console.log('api called for rejection')
         const data = {
             "activityStatus": 'Submitted wrong data',
-            "employeeId": 1,
+            "employeeId": Number(custID),
             "activityId": activityId
         }
         await api.updateActivity(data).then((res) => {

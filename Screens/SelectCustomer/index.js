@@ -18,7 +18,7 @@ import SearchIcon from 'react-native-vector-icons/Feather'
 import { useTranslation } from 'react-i18next';
 import { api } from '../../Services/Api';
 import moment from 'moment';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
@@ -30,6 +30,7 @@ const SelectCustomer = ({ navigation, route }) => {
   const [customerList, setCustomerList] = useState([]);
   const [selectedDate, setSelectedDate] = useState(route?.params?.date)
   const { t } = useTranslation();
+  const [custID,setCustId] = useState('')
 
   const handleGoBack = () => {
 
@@ -50,14 +51,19 @@ const SelectCustomer = ({ navigation, route }) => {
     return () => backHandler.remove();
   }, [handleGoBack]);
 
+  useEffect(() => {
+    AsyncStorage.getItem("CustomerId").then((value) => {
+        setCustId(value)
+    })
 
+}, [])
 
 
   // ------------------ get Customer List Api Call Start ------------------
   const getCustomerList = async () => {
 
     const data = {
-      "employeeId": 1,
+      "employeeId": Number(custID),
       "customerNameOrNumber": ''
     };
     await api.getCustomerList(data).then((res) => {
@@ -119,7 +125,7 @@ const SelectCustomer = ({ navigation, route }) => {
     console.log('schedule time', time)
 
     const data = {
-      "employeeId": 1,
+      "employeeId":Number(custID),
       "customerId": selectedItem.id,
       "scheduleStartTime": date + " " + time
     }

@@ -32,19 +32,19 @@ import { useSelector } from 'react-redux';
 
 
 const VehicleOwn = ({ navigation, route }) => {
-   // const route = useRoute();
-   // console.log("route name",route?.params?.vehicle);
+    // const route = useRoute();
+    // console.log("route name",route?.params?.vehicle);
     const isDarkMode = true
     const { t } = useTranslation();
     const [lang, setLang] = useState('')
     const [BStatus, setBstatus] = useState(false)
     const activityId = useSelector(state => state.activityId);
-    const [ModalVisible,setModalVisible] = useState(false)
-    const [ModalReason,setModalReason] = useState(false)
+    const [ModalVisible, setModalVisible] = useState(false)
+    const [ModalReason, setModalReason] = useState(false)
     const [ModalError, setModalError] = useState(false)
-    const [state,setState] = useState(true)
+    const [state, setState] = useState(true)
     const [vehicleslist, setvehicleslist] = useState([])
-
+    const [custID, setCustId] = useState('')
 
     React.useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
@@ -52,20 +52,22 @@ const VehicleOwn = ({ navigation, route }) => {
             getVehicleDetails()
 
         });
-  
+
         return unsubscribe;
     }, []);
-    
+
     useEffect(() => {
         getData()
-   
-            console.log("inside state call")
-      
+
+        console.log("inside state call")
+
     }, [])
 
     const getData = async () => {
         try {
             const lang = await AsyncStorage.getItem('user-language')
+            const custID = await AsyncStorage.getItem("CustomerId")
+            setCustId(custID)
             setLang(lang)
 
         } catch (e) {
@@ -76,37 +78,37 @@ const VehicleOwn = ({ navigation, route }) => {
     const handleGoBack = useCallback(() => {
 
         // navigation.goBack()
-             setModalVisible(true)
-         return true; // Returning true from onBackPress denotes that we have handled the event
-     }, [navigation]);
- 
-     useFocusEffect(
-         React.useCallback(() => {
-             BackHandler.addEventListener('hardwareBackPress', handleGoBack);
- 
-             return () =>
-             
-                 BackHandler.removeEventListener('hardwareBackPress', handleGoBack);
-         }, [handleGoBack]),
-     );
+        setModalVisible(true)
+        return true; // Returning true from onBackPress denotes that we have handled the event
+    }, [navigation]);
+
+    useFocusEffect(
+        React.useCallback(() => {
+            BackHandler.addEventListener('hardwareBackPress', handleGoBack);
+
+            return () =>
+
+                BackHandler.removeEventListener('hardwareBackPress', handleGoBack);
+        }, [handleGoBack]),
+    );
 
 
-      // ------------------ get Conduct DLE basic detail Village Api Call Start ------------------
-      const updateRejection = async () => {
+    // ------------------ get Conduct DLE basic detail Village Api Call Start ------------------
+    const updateRejection = async () => {
         console.log('api called for rejection')
         const data = {
-            "activityStatus":'Submitted wrong data',
-            "employeeId":1,
-            "activityId":activityId
+            "activityStatus": 'Submitted wrong data',
+            "employeeId": Number(custID),
+            "activityId": activityId
         }
         await api.updateActivity(data).then((res) => {
             console.log('-------------------res get Village', res)
             setModalError(true)
             setModalReason(false)
             setTimeout(() => {
-                navigation.navigate('Profile')  
+                navigation.navigate('Profile')
             }, 1000);
-          
+
         }).catch((err) => {
             console.log('-------------------err get Village', err)
         })
@@ -123,10 +125,10 @@ const VehicleOwn = ({ navigation, route }) => {
         await api.getVehicleDetails(data).then((res) => {
             console.log('-------------------res getVehicleDetails', res?.data?.body)
             if (res?.data?.body) {
-              //  setNumbers(res?.data?.body?.length)
+                //  setNumbers(res?.data?.body?.length)
                 //let temp = vehicleslist
-               // console.log("vehickelost pass",vehicleslist)
-                console.log("vehcle api data",res?.data?.body)
+                // console.log("vehickelost pass",vehicleslist)
+                console.log("vehcle api data", res?.data?.body)
                 setvehicleslist(res?.data?.body)
                 // temp  = temp.concat(res?.data?.body)
                 // setvehicleslist([...temp])
@@ -140,26 +142,26 @@ const VehicleOwn = ({ navigation, route }) => {
             <SafeAreaView style={styles.container1} />
             <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
 
-            <Header name="Vehicles Owned" navigation={navigation} onPress={handleGoBack}/>
+            <Header name="Vehicles Owned" navigation={navigation} onPress={handleGoBack} />
 
             <View style={styles.ViewContent}>
-                <Vehicles navigation={navigation} vehicle ={route?.params?.vehicle} vehicleslist={vehicleslist} />
+                <Vehicles navigation={navigation} vehicle={route?.params?.vehicle} vehicleslist={vehicleslist} />
             </View>
 
 
 
             <ModalSave
-                Press ={()=>{
+                Press={() => {
                     setModalVisible(false),
-                    setModalReason(true)
-               
+                        setModalReason(true)
+
                 }}
-                Press1={()=>{navigation.navigate('Profile'),setModalVisible(false)}}
+                Press1={() => { navigation.navigate('Profile'), setModalVisible(false) }}
                 ModalVisible={ModalVisible}
                 setModalVisible={setModalVisible}
                 onPressOut={() => {
                     setModalVisible(false)
-                   
+
 
                 }}
                 navigation={navigation} />
@@ -167,8 +169,8 @@ const VehicleOwn = ({ navigation, route }) => {
 
             <ReasonModal
                 onPress1={() => {
-                     updateRejection()
-                   // setModalError(true)
+                    updateRejection()
+                    // setModalError(true)
                 }}
                 ModalVisible={ModalReason}
                 onPressOut={() => setModalReason(!ModalReason)}
@@ -183,7 +185,7 @@ const VehicleOwn = ({ navigation, route }) => {
                     setModalReason(!ModalReason)
                 }}
                 setModalVisible={setModalError}
-                navigation={navigation} 
+                navigation={navigation}
             />
 
         </SafeAreaProvider>

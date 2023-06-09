@@ -142,7 +142,7 @@ const CgtCustomer = ({ navigation, route }) => {
     const updateActivity = async () => {
         const data = {
             "activityStatus": "kyc verified",
-            "employeeId": 1,
+            "employeeId": Number(custID),
             "activityId": activityId
         };
         await api.updateActivity(data).then((res) => {
@@ -165,7 +165,7 @@ const CgtCustomer = ({ navigation, route }) => {
     const updateActivityReject = async () => {
         const data = {
             "activityStatus": rejectReason,
-            "employeeId": 1,
+            "employeeId": Number(custID),
             "activityId": activityId
         };
         await api.updateActivity(data).then((res) => {

@@ -13,6 +13,7 @@ import {
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
 import moment from 'moment';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const { height, width } = Dimensions.get('screen');
 // -------------- Component Imports -------------------------
 import { api } from '../../Services/Api';
@@ -31,6 +32,7 @@ const Calendar = ({ navigation, route }) => {
     const [NewDates, setNewDates] = useState(new Date())
     const [status, setStatus] = useState(true)
     const [BStatus, setBstatus] = useState(false);
+    const [custID,setCustId] = useState('')
     const [unScheduledActivities, setUnScheduledActivities] = useState();
 
     useFocusEffect(
@@ -50,7 +52,7 @@ const Calendar = ({ navigation, route }) => {
     // ------------------ get Slot Api Call Start ------------------
     const getCGTslot = async (date) => {
         const data = {
-            "employeeId": 1,
+            "employeeId":Number(custID),
             "selectedDate": moment(NewDates).utc().format('DD-MM-YYYY')
         };
         await api.getCGTslot(data).then((res) => {
@@ -86,6 +88,9 @@ const Calendar = ({ navigation, route }) => {
 
     useEffect(() => {
         getCGTslot()
+        AsyncStorage.getItem("CustomerId").then((value) => {
+            setCustId(value)
+        })
     }, []);
     
     useEffect(() => {

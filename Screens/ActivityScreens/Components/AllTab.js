@@ -30,12 +30,15 @@ const ItemTabs = ({ navigation }) => {
     const [dleopen, setDleopen] = useState(false)
     const [collectionopen, setCollectionopen] = useState(false)
     const [enab, setEnab] = useState(false)
+    const [custID,setCustId] = useState('')
 
     // ------------------ Activity Listing Api Call Start ------------------
-    const ActivityListingApiCall = async () => {
+    const ActivityListingApiCall = async (value) => {
+        console.log("inside api calls hai")
         const data = {
-            "employeeId": 1
+            "employeeId": Number(value)
         };
+        console.log("data call4",data)
         await api.activitylistingscreenApi(data).then((res) => {
             res?.data?.body?.slottedActivities.forEach(function (item) {
                 item.open = false
@@ -54,14 +57,32 @@ const ItemTabs = ({ navigation }) => {
         const unsubscribe = navigation.addListener('focus', () => {
             setDleopen(false)
             setCollectionopen(false)
-            ActivityListingApiCall()
+            AsyncStorage.getItem("CustomerId").then((value) => {
+                setCustId(value)
+                ActivityListingApiCall(value)
+            })
+          
         });
         return unsubscribe;
     }, [navigation, enab]);
 
     useEffect(() => {
-        ActivityListingApiCall()
+        AsyncStorage.getItem("CustomerId").then((value) => {
+            setCustId(value)
+            ActivityListingApiCall(value)
+        })
+        console.log("data",custID)
+      
     }, [enab]);
+
+    useEffect(() => {
+        AsyncStorage.getItem("CustomerId").then((value) => {
+            setCustId(value)
+            ActivityListingApiCall(value)
+        })
+        console.log("data",custID)
+      
+    }, []);
 
     return (
         <>
