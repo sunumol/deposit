@@ -66,7 +66,7 @@ const Pin = ({ navigation, conFirmDate }) => {
       const handleAppStateChange = (nextAppState) => {
     
         
-        if (nextAppState == "active") {
+        if (screenIsFocused && nextAppState == "active") {
           Clipboard.setString("");
         }
     

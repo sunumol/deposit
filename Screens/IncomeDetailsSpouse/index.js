@@ -473,6 +473,9 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
                                                 if (Number(text) == 0) {
                                                     setAmount('')
                                                     console.log("inside occupation 2", incomedetail?.occupation)
+                                                } 
+                                                else if( text[0] === '0'){
+                                                    console.log("number log", text)
                                                 } else {
                                                     setAmount(text)
                                                     console.log("inside occupation", incomedetail?.occupation)
@@ -552,6 +555,9 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
                                             setZeroStatus(true)
                                             console.log("number log", text)
                                         }
+                                        else if( text[0] === '0'){
+                                            console.log("number log", text)
+                                        } 
                                         else if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(text) || text === "") {
                                             setAvg(text)
                                             setZeroStatus(false)
