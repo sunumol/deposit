@@ -1,4 +1,4 @@
-import React,{useRef} from "react";
+import React, { useRef } from "react";
 import {
     Dimensions,
     SafeAreaView,
@@ -12,8 +12,8 @@ import { FONTS } from "../../../Constants/Constants";
 
 const { height, width } = Dimensions.get('screen');
 
-const TextInputBox = ({ name, value, onChangeText, onFocus, onBlur,blurOnSubmit,onSubmitEditing,
-    secureTextEntry, backgroundColor1, keyboardType1, color, edit,maxLength,ref }) => {
+const TextInputBox = ({ name, value, onChangeText, onFocus, onBlur, blurOnSubmit, onSubmitEditing,
+    secureTextEntry, backgroundColor1, keyboardType1, color, edit, maxLength, ref }) => {
 
     return (
         <SafeAreaView>
@@ -22,13 +22,14 @@ const TextInputBox = ({ name, value, onChangeText, onFocus, onBlur,blurOnSubmit,
                 <Text style={styles.TextName}>{name}</Text>
 
                 <TextInput
-              
+                    underlineColorAndroid='transparent'
                     style={[styles.textInput, {
                         backgroundColor: backgroundColor1,
                         color: color, borderColor: edit ? 'red' : 'rgba(236, 235, 237, 1)'
                     }]}
                     maxLength={maxLength}
                     value={value}
+
                     placeholder={''}
                     placeholderTextColor="#808080"
                     returnKeyType="done"
@@ -38,10 +39,10 @@ const TextInputBox = ({ name, value, onChangeText, onFocus, onBlur,blurOnSubmit,
                     onSubmitEditing={Keyboard.dismiss}
                     // onFocus={onFocus}
                     onBlur={onBlur}
-                   
+
                     secureTextEntry={secureTextEntry}
                     keyboardType={keyboardType1}
-            
+
                     onChangeText={onChangeText} />
 
             </View>
@@ -54,7 +55,7 @@ const styles = StyleSheet.create({
     textInput: {
         width: width * 0.9,
         height: width * 0.15,
-        backgroundColor:'#FCFCFC',
+        backgroundColor: '#FCFCFC',
         borderRadius: 8,
         borderWidth: 1,
         borderColor: 'rgba(236, 235, 237, 1)',

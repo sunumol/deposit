@@ -428,9 +428,10 @@ const LoginScreen = ({ navigation }) => {
                 LoginApiCall()
                 console.log("Permission true")
             } else {
+                setButton(false)
                 setPermissions(false)
-                
-                console.log("Permission false")
+                 
+                console.log("Permission false",button)
             }
         } catch (err) {
             console.warn(err);

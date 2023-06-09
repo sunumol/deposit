@@ -251,6 +251,7 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus,setbackstate }) 
                                 returnKeyType="next"
                                 ref={adddressRef}
                                 //pointerEvents="none"
+ 
                                 name={t('common:Name')}
                                 value={removeEmojis(Name)}
                                 color={"#1A051D"}
@@ -288,6 +289,8 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus,setbackstate }) 
                                                     }]}
                                                     maxLength={10}
                                                     value={Mobile}
+                                                    
+                                                   
                                                     returnKeyType="done"
                                                     ref={MobileRef}
                                                     contextMenuHidden={true}
