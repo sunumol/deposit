@@ -128,9 +128,9 @@ const DetailChecks = ({ navigation, setState, setImagedata1,imagedata }) => {
 
         //Choose Image from gallery
         ImagePicker.openPicker({
-            // width: 300,
-            // height: 200,
-            // cropping: true
+            width: 300,
+            height: 400,
+            cropping: true
         }).then(image => {
             console.log("IMAGE", image.path);
             setImage(image.path)

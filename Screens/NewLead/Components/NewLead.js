@@ -270,8 +270,8 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus,setbackstate }) 
                                         ToastAndroid.show("Please enter a valid name ", ToastAndroid.SHORT);
                                         console.log('The string contains whitespace', Name);
                                     }
-                                    // else if (/^[^!-\/:-@\.,[-`{-~1234567890₹~`|•√π÷×¶∆€¥$¢^°={}%©®™✓]+$/.test(text) || text === '') {
-                                        else if(/^[a-zA-Z]+$/g.test(text) || text === ''){
+                                     else if (/^[^!-\/:-@\.,[-`{-~1234567890₹~`|•√π÷×¶∆€¥$¢^°={}%©®™✓]+$/.test(text) || text === '') {
+                                        // else if(/^[a-zA-Z]+$/g.test(text) || text === ''){
                                         setName(text)
                                         console.log("verify daat1")
                                     }
@@ -393,7 +393,7 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus,setbackstate }) 
 
                                         <Image1 />
                                         <TextInput
-                                            value={Village}
+                                            value={removeEmojis(Village)}
                                             keyboardType1={'email-address'}
                                             style={styles.TextInputBranch}
                                             contextMenuHidden={true}
@@ -408,17 +408,20 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus,setbackstate }) 
                                                     setButton(false)
                                                     
                                                 }
-                                                else 
-                                                if (!(/^[^!-\/:-@\.,[-`{-~1234567890₹~`|•√π÷×¶∆€¥$¢^°={}%©®™✓]+$/.test(text))) {
+                                               // else 
+                                                // if ((/^[^!-\/:-@\.,[-`{-~1234567890₹~`|•√π÷×¶∆€¥$¢^°={}%©®™✓]+$/.test(text))) {
+                                                    else if (/^[^!-\/:-@\.,[-`{-~1234567890₹~`|•√π÷×¶∆€¥$¢^°={}%©®™✓]+$/.test(text) || text === '') {
                                                     setVillageList([])
                                                     setVillageStatus(false)
-                                                    setVillage('')
+                                                    setVillage(text)
+                                                    getVillage(text)
+                                                   // setVillage('')
                                                     // setBstatus(false)
                                                     setButton(false)
                                                     console.log("else if ", Village,text)
                                                 } else {
-                                                    setVillage(text)
-                                                    getVillage(text)
+                                                    // setVillage(text)
+                                                    // getVillage(text)
                                                 }
                                             }} />
                                     </View>
