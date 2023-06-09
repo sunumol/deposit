@@ -271,7 +271,7 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus,setbackstate }) 
                                         console.log('The string contains whitespace', Name);
                                     }
                                     // else if (/^[^!-\/:-@\.,[-`{-~1234567890₹~`|•√π÷×¶∆€¥$¢^°={}%©®™✓]+$/.test(text) || text === '') {
-                                        else if(/^[a-zA-Z]+$/g.test(text) || text === ''){
+                                        else if(/^[a-zA-Z ]+$/g.test(text) || text === ''){
                                         setName(text)
                                         console.log("verify daat1")
                                     }
@@ -393,12 +393,12 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus,setbackstate }) 
 
                                         <Image1 />
                                         <TextInput
-                                            value={Village}
+                                            value={removeEmojis(Village)}
                                             keyboardType1={'email-address'}
                                             style={styles.TextInputBranch}
                                             contextMenuHidden={true}
                                             onChangeText={(text) => {
-
+                                                const firstDigitStr = String(text)[0];
                                                 setVillageEnable(false)
                                                 if (text == '') {
                                                     console.log(" if ", Village)
@@ -407,7 +407,13 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus,setbackstate }) 
                                                     setVillage(text)
                                                     setButton(false)
                                                     
+                                                }else if (firstDigitStr == ' ') {
+                                                    setVillageList([])
+                                                    setVillageStatus(false)
+                                                    setVillage('')
+                                                    setButton(false)
                                                 }
+                                              
                                                 else 
                                                 if (!(/^[^!-\/:-@\.,[-`{-~1234567890₹~`|•√π÷×¶∆€¥$¢^°={}%©®™✓]+$/.test(text))) {
                                                     setVillageList([])

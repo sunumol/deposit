@@ -132,6 +132,7 @@ const LoginScreen = ({ navigation }) => {
     useEffect(() => {
         if (permissions && fetOtp) {
             const interval = setInterval(() => {
+                console.log("permission true",permissions)
                 callMessage()
             }, 3000);
             return () => clearInterval(interval);
@@ -255,7 +256,9 @@ const LoginScreen = ({ navigation }) => {
             setOtpclick(true)
         }
         else {
-            LoginApiCall()
+            requestPermission()
+            
+            // LoginApiCall()
         }
     }
 
@@ -340,7 +343,7 @@ const LoginScreen = ({ navigation }) => {
             console.log('-------------------res', res)
             if (res?.status == 200) {
                 setMaxError(false)
-                requestPermission()
+               // requestPermission()
                 setOtpFetch(true)
                 setIsOtp1(true)
                 getOtp();
@@ -422,8 +425,12 @@ const LoginScreen = ({ navigation }) => {
             );
             if (granted === PermissionsAndroid.RESULTS.GRANTED) {
                 setPermissions(true)
+                LoginApiCall()
+                console.log("Permission true")
             } else {
                 setPermissions(false)
+                
+                console.log("Permission false")
             }
         } catch (err) {
             console.warn(err);
