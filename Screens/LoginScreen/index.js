@@ -102,7 +102,7 @@ const LoginScreen = ({ navigation }) => {
       const handleAppStateChange = (nextAppState) => {
     
         
-        if (nextAppState == "active") {
+        if (screenIsFocused && nextAppState == "active") {
           Clipboard.setString("");
         }
     
