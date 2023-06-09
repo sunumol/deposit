@@ -177,7 +177,7 @@ const DetailChecks = ({ navigation, setState, setImagedata1,imagedata }) => {
                 setImagedata1(res?.data[0]?.body)
             }
         }).catch((err) => {
-            console.log('-------------------err file upload', err)
+            console.log('-------------------err file upload', err?.response)
             console.log("image type",imagevalue,image.mime)
         })
     };

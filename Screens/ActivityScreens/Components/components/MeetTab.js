@@ -12,7 +12,7 @@ import CallModal from '../../../Profile/Components/Modal';
 
 
 const MeetTab = (props) => {
-    console.log("props pass", props?.data?.length)
+ 
     const { t } = useTranslation();
     const [Lang, setLang] = useState('')
     const [modalVisible, setModalVisible] = useState(false)

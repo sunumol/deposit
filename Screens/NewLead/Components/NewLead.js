@@ -251,6 +251,7 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus,setbackstate }) 
                                 returnKeyType="next"
                                 ref={adddressRef}
                                 //pointerEvents="none"
+ 
                                 name={t('common:Name')}
                                 value={removeEmojis(Name)}
                                 color={"#1A051D"}
@@ -288,6 +289,8 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus,setbackstate }) 
                                                     }]}
                                                     maxLength={10}
                                                     value={Mobile}
+                                                    
+                                                   
                                                     returnKeyType="done"
                                                     ref={MobileRef}
                                                     contextMenuHidden={true}
@@ -398,7 +401,7 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus,setbackstate }) 
                                             style={styles.TextInputBranch}
                                             contextMenuHidden={true}
                                             onChangeText={(text) => {
-
+                                                const firstDigitStr = String(text)[0];
                                                 setVillageEnable(false)
                                                 if (text == '') {
                                                     console.log(" if ", Village)
@@ -407,6 +410,11 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus,setbackstate }) 
                                                     setVillage(text)
                                                     setButton(false)
                                                     
+                                                }else if (firstDigitStr == ' ') {
+                                                    setVillageList([])
+                                                    setVillageStatus(false)
+                                                    setVillage('')
+                                                    setButton(false)
                                                 }
                                                // else 
                                                 // if ((/^[^!-\/:-@\.,[-`{-~1234567890₹~`|•√π÷×¶∆€¥$¢^°={}%©®™✓]+$/.test(text))) {
