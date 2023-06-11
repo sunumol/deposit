@@ -417,8 +417,8 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus,setbackstate }) 
                                                     setButton(false)
                                                 }
                                                // else 
-                                                // if ((/^[^!-\/:-@\.,[-`{-~1234567890₹~`|•√π÷×¶∆€¥$¢^°={}%©®™✓]+$/.test(text))) {
-                                                    else if (/^[A-Za-z ]+$/.test(text) || text === '') {
+                                                if ((/^[^!-\/:-@\.,[-`{-~1234567890₹~`|•√π÷×¶∆€¥$¢^°={}%©®™✓]+$/.test(text))) {
+                                                    // else if (/^[A-Za-z ]+$/.test(text) || text === '') {
                                                     setVillageList([])
                                                     setVillageStatus(false)
                                                     setVillage(text)
