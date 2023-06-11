@@ -2,7 +2,6 @@ import {
     StyleSheet,
     Text,
     View,
-    ActivityIndicator,
     TextInput,
     ScrollView,
     Dimensions,
@@ -11,92 +10,58 @@ import {
     Pressable,
     ToastAndroid
 } from 'react-native'
-import React, { useCallback, useState, useEffect } from 'react'
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-import Statusbar from '../../../Components/StatusBar';
-import { useFocusEffect } from '@react-navigation/native';
-import Header from '../../../Components/RepayHeader';
-import { FONTS, COLORS } from '../../../Constants/Constants';
-import { useDispatch } from 'react-redux';
+import React, { useState, useEffect } from 'react'
+import { useSelector } from 'react-redux';
+
+// ------------- Component Imports -------------------------
 import Icon1 from 'react-native-vector-icons/Entypo'
 import Icon2 from 'react-native-vector-icons/Entypo';
-import Search from 'react-native-vector-icons/Feather';
 import Media from '../../../assets/image/media.svg';
-import Media1 from '../../../assets/image/Media2.svg'
-const { height, width } = Dimensions.get('screen');
+import Media1 from '../../../assets/image/Media2.svg';
+import { FONTS, COLORS } from '../../../Constants/Constants';
 import OwnerModal from './OwnerModal';
 import RelationModal from './RelationModal';
 import ImagePicker from 'react-native-image-crop-picker';
 import Image2 from '../../../assets/Images/cakes.svg';
 import { api } from '../../../Services/Api';
-import { useSelector } from 'react-redux';
 
+const { height, width } = Dimensions.get('screen');
 
 const DetailChecks = ({ navigation, setState, proofType1, imageUrl1, relation1, relative1 }) => {
 
-    const isDarkMode = true;
-    const [text, onChangeText] = useState('');
     const activityId = useSelector(state => state.activityId);
+
     const [ModalVisible, setModalVisible] = useState(false)
     const [ModalVisible1, setModalVisible1] = useState(false)
-    const [selectedItem, setSelectedItem] = useState()
-    const [ButtonStatus, setButtonStatus] = useState(false)
-    const [ModalError, setModalError] = useState(false)
-    const [ModalReason, setModalReason] = useState(false)
-    const [checked, setChecked] = useState(false);
-    const toggleCheckbox = () => setChecked(!checked);
     const [Purpose, setPurpose] = useState(null)
     const [Purposes, setPurposes] = useState(null)
     const [imageStatus, setImageStatus] = useState(false)
     const [Relation, setRelation] = useState('')
-    const [Button, setButton] = useState()
     const [Image1, setImage] = useState(null)
-    const [Imageurl, setImageurl] = useState('')
-    const [status, setStatus] = useState(false)
     const [UploadStatus, setUploadStatus] = useState(false)
     const [NameStatus, setNamestatus] = useState(false)
     const [spousedetail, setSpousedetail] = useState('')
     const [ownersName, setOwnersName] = useState('')
     const [error, setError] = useState('')
     const [emoji, setEmoji] = useState(false)
-    const [NameValid, setNameValid] = useState(false)
-    const [InvalidImage, setInvalidImage] = useState(false)
-    const [Loading, setLoading] = useState(true)
 
     useEffect(() => {
-
         getResidenceowner()
     }, [])
 
-
     useEffect(() => {
-
-        console.log("purpose print....", Purposes)
         setState(Purpose)
         setPurpose(Purpose)
         proofType1(Purpose)
         setPurposes(Purposes)
         relation1(Purposes)
         setRelation(Relation)
-
-
-        //setStatus(true)
     }, [Purpose, Relation])
 
-    const handleImageError = () => {
-        // Handle invalid image here
-        setUploadStatus(true)
-        setInvalidImage(true)
-        console.log('Invalid image!');
-    };
-    // ------------------spouse detail ------------------
-
+    // -------------------------------- spouse detail -----------------------------------------
     const getSpousedetail = async () => {
-        console.log('api called', activityId)
-
         const data = {
             "activityId": activityId
-
         }
         await api.getSpousedetail(data).then((res) => {
             console.log('-------------------res spousedetail', res)
@@ -108,56 +73,38 @@ const DetailChecks = ({ navigation, setState, proofType1, imageUrl1, relation1, 
             console.log('-------------------err spousedetail', err?.response?.status, activityId)
         })
     };
-    // ------------------ ------------------
+    // ----------------------------------  end  ---------------------------------------------------
 
-
-
-    // ------------------get residence owner detail ------------------
+    // -------------------------- get residence owner detail ------------------------------
 
     const getResidenceowner = async () => {
-        console.log('api called')
-
         const data = {
             "activityId": activityId
-
-
         }
         await api.getResidenceowner(data).then((res) => {
             console.log('-------------------res Residence owner', res?.data?.body)
             if (res?.status) {
-
                 setPurposes(res?.data?.body?.relationShipWithCustomer)
                 setPurpose(res?.data?.body?.ownerShipProofType)
                 setImage(res?.data?.body?.imageUrl)
-
-                console.log("image null", res?.data?.body?.imageUrl)
                 if (res?.data?.body?.relationShipWithCustomer != 'Spouse') {
                     setOwnersName(res?.data?.body?.ownersName)
                     relative1(res?.data?.body?.ownersName)
                 }
-
                 if (res?.data?.body?.ownerShipProofType && res?.data?.body?.imageUrl !== null) {
                     setImageStatus(true)
                     setUploadStatus(false)
                 }
                 getSpousedetail()
-
-                setLoading(false)
             }
         }).catch((err) => {
             console.log('-------------------err Residence Owner', err?.response)
         })
     };
-    // ------------------ ------------------
-
-
-
+    // ---------------------------------- End ------------------------------------------------
 
     // ------------------save and update residence owner detail ------------------
-
     const UpdateResidenceowner = async () => {
-        console.log('api called', activityId, Purposes)
-
         const data = {
             "activityId": activityId,
             "ownerShipProofType": Purpose,
@@ -165,28 +112,23 @@ const DetailChecks = ({ navigation, setState, proofType1, imageUrl1, relation1, 
             "relationShipWithCustomer": Purposes,
             "ownersName": ownersName ? ownersName : spousedetail?.name
         }
-        console.log("data",data)
+        console.log("data", data)
         await api.UpdateResidenceowner(data).then((res) => {
             console.log('-------------------res  update Residence owner', res)
             if (res?.status) {
                 if (Purposes == 'Spouse') {
-                    //navigation.navigate('ContinuingGuarantor') 
                     navigation.navigate('ContinuingGuarantor', { relation: 'Spouse' })
-
                 } else {
                     navigation.navigate('ContinuingGuarantor', { relation: 'other' })
-                    // navigation.navigate('ContinuingGuarantor')  
-
                 }
             }
         }).catch((err) => {
             console.log('-------------------err  update Residence Owner', err?.response)
         })
     };
-    // ------------------ ------------------
+    // ------------------------------------------ End ---------------------------------------
 
     const UploadImage = () => {
-
         //Choose Image from gallery
         ImagePicker.openPicker({
             //width: 300,
@@ -201,9 +143,7 @@ const DetailChecks = ({ navigation, setState, proofType1, imageUrl1, relation1, 
         });
     }
 
-
     async function uploadFile(imagevalue, image) {
-        console.log('api called')
         let data = new FormData();
         data.append('multipartFile', {
             name: 'aaa.jpg',
@@ -214,7 +154,6 @@ const DetailChecks = ({ navigation, setState, proofType1, imageUrl1, relation1, 
         await api.uploadFile(data).then((res) => {
             console.log('-------------------res file upload', res?.data[0]?.body)
             if (res?.status) {
-                setImageurl(res?.data[0]?.body)
                 setImage(res?.data[0]?.body)
                 imageUrl1(res?.data[0]?.body)
             }
@@ -229,7 +168,6 @@ const DetailChecks = ({ navigation, setState, proofType1, imageUrl1, relation1, 
     }
 
     const getInitials = (name) => {
-
         let initials;
         const nameSplit = name?.split(" ");
         const nameLength = nameSplit?.length;
@@ -255,26 +193,13 @@ const DetailChecks = ({ navigation, setState, proofType1, imageUrl1, relation1, 
         } else {
             console.log("text false", text)
         }
-        //  return emojiRegex.test(text);
     }
-    // useEffect(() => {
-    //     console.log("emoji pass", emoji)
-    //     if (emoji) {
-    //         setOwnersName('')
-    //     }
-    // })
-
-
-
 
     return (
 
 
         <View style={styles.mainContainer}>
-            {/* {Loading ? 
-                <View style={{alignItems:'center',justifyContent:'center',flex:1,}}>
-                <ActivityIndicator size={30} color={COLORS.colorB}/>
-                </View>: */}
+
             <>
                 <ScrollView>
                     <View>
@@ -282,8 +207,6 @@ const DetailChecks = ({ navigation, setState, proofType1, imageUrl1, relation1, 
                     </View>
 
                     <TouchableOpacity style={styles.SelectBox} onPress={() => setModalVisible(true)}>
-
-
                         {Purpose == 'ELECTRICITY_BILL' ?
                             <Text style={[styles.textSelect, { color: '#1A051D', marginLeft: 8 }]}>Electricity Bill</Text> :
                             Purpose == 'WATER_BILL' ?
@@ -291,29 +214,31 @@ const DetailChecks = ({ navigation, setState, proofType1, imageUrl1, relation1, 
                                 Purpose == 'BUILDING_TAX_RECEIPT' ?
                                     <Text style={[styles.textSelect, { color: '#1A051D', marginLeft: 8 }]}>Building Tax Receipt</Text> :
 
-                                    <Text style={[styles.textSelect, {  color: 'rgba(128, 128, 128, 1)', marginLeft: 8 }]}>Select</Text>}
+                                    <Text style={[styles.textSelect, { color: 'rgba(128, 128, 128, 1)', marginLeft: 8 }]}>Select</Text>}
 
                         <Icon1 name="chevron-down" size={18} color={'#808080'} style={{ marginRight: 10 }} />
                     </TouchableOpacity>
 
                     <Pressable style={[styles.UploadCard, { opacity: Purpose ? 4 : 0.3 }]} onPress={() => { Purpose ? UploadImage() : null }} >
-                        {console.log("Purpose print.....", Purpose)}
-
                         {!imageStatus ?
                             <View style={{ alignItems: 'flex-start', flex: 1, marginLeft: 25 }}>
                                 <View >
                                     <Media1 width={30} height={30} />
                                 </View>
-                            </View> : UploadStatus ?
+                            </View>
+                            : UploadStatus ?
                                 <View style={{ alignItems: 'flex-start', flex: 1, marginLeft: 25 }}>
                                     <View >
                                         <Media width={30} height={30} />
                                     </View>
-                                </View> : <View style={{ alignItems: 'flex-start', flex: 1, marginLeft: 10 }}>
+                                </View>
+                                :
+                                <View style={{ alignItems: 'flex-start', flex: 1, marginLeft: 10 }}>
                                     <Image source={{ uri: Image1 }}
-                                        // onError={handleImageError}
-                                        style={{ width: 55, height: 65, borderRadius: 6 }} />
-                                </View>}
+                                        style={{ width: 55, height: 65, borderRadius: 6 }}
+                                    />
+                                </View>
+                        }
                         <View style={[styles.Line, { borderColor: Purpose ? "#F2F2F2" : "grey" }]} />
                         <View style={{ flexDirection: 'column', left: -20 }}>
                             <Text style={[styles.UploadText, { color: NameStatus || Purpose ? '#1A051D' : '#808080' }]}>Upload photo</Text>
@@ -328,11 +253,13 @@ const DetailChecks = ({ navigation, setState, proofType1, imageUrl1, relation1, 
                         <Text style={styles.proof}>Relationship with Customer</Text>
                     </View>
                     <TouchableOpacity style={styles.SelectBox} onPress={() => { setModalVisible1(true), getSpousedetail(), setOwnersName(null) }} >
-                        {Purposes === null ? <Text style={[styles.textSelect,{ color: 'rgba(128, 128, 128, 1)',}]}>Select</Text> :
-                            <Text style={[styles.textSelect, { color: '#1A051D', marginLeft: 8 }]}>{Purposes}</Text>}
+                        {Purposes === null ?
+                            <Text style={[styles.textSelect, { color: 'rgba(128, 128, 128, 1)', }]}>Select</Text>
+                            :
+                            <Text style={[styles.textSelect, { color: '#1A051D', marginLeft: 8 }]}>{Purposes}</Text>
+                        }
                         <Icon1 name="chevron-down" size={18} color={'#808080'} style={{ marginRight: 10 }} />
                     </TouchableOpacity>
-
 
                     {Purposes == 'Spouse' ?
                         <View style={styles.containerBox}>
@@ -343,7 +270,7 @@ const DetailChecks = ({ navigation, setState, proofType1, imageUrl1, relation1, 
 
                                 <View style={{ flexDirection: 'column', flex: 1, marginLeft: 12, }}>
 
-                                <Text style={styles.nameText}>{spousedetail?.name}</Text>
+                                    <Text style={styles.nameText}>{spousedetail?.name}</Text>
                                     <Text style={[styles.underText, { textTransform: 'capitalize' }]}>{spousedetail?.occupation?.replace(/_/g, ' ')}</Text>
                                 </View>
                                 <View style={{ flexDirection: 'row', }}>
@@ -365,44 +292,30 @@ const DetailChecks = ({ navigation, setState, proofType1, imageUrl1, relation1, 
                                         style={styles.TextInputBranch}
                                         contextMenuHidden={true}
                                         onChangeText={(text) => {
-                                            setNameValid(false)
-                                            // if (hasEmoji(text)) {
-                                            //     console.log('Input contains emojis');
-                                            //     // const textWithoutEmojis = removeEmojis(text);
-                                            //     // console.log('Text without emojis:', textWithoutEmojis);
-                                            //     setOwnersName(null)
-                                            // }
-
                                             const firstDigitStr = String(text)[0];
                                             if (firstDigitStr == ' ') {
                                                 containsWhitespace(text)
                                                 // 👇️ this runs
                                                 setOwnersName('')
                                                 ToastAndroid.show("Please enter a valid name ", ToastAndroid.SHORT);
-
                                             }
-
                                             else if (/^[^!-\/:-@\.,[-`{-~1234567890₹~`|•√π÷×¶∆€¥$¢^°={}%©®™✓]+$/.test(text) || text === '') {
                                                 setOwnersName(text),
                                                     relative1(text)
                                             }
                                         }}
-                                    // onFocus={() => setPstatus(false)}
-                                    // onKeyPress={() => setPstatus(false)}
-
                                     />
                                 </View>
                             </> : null
-
                     }
 
                 </ScrollView>
 
                 <View style={{ position: 'absolute', left: 0, right: 0, bottom: 0, alignItems: 'center', justifyContent: 'center' }}>
-                    <TouchableOpacity onPress={() => (Purpose && Purposes == 'Spouse' ? Purposes : ownersName?.length > 2 && Image1 && !InvalidImage) ? UpdateResidenceowner() : console.log("helo")}
-                        style={[styles.Button1, { backgroundColor: (Purpose && Purposes == 'Spouse' ? Purposes : ownersName?.length > 2 && Image1 && !InvalidImage) ? COLORS.colorB : 'rgba(224, 224, 224, 1)' }]}
+                    <TouchableOpacity onPress={() => (Purpose && Purposes && Purposes != 'Spouse' ? ownersName?.length > 2 : Purposes && Image1) ? UpdateResidenceowner() : console.log("helo")}
+                        style={[styles.Button1, { backgroundColor: (Purpose && Purposes && Purposes != 'Spouse' ? ownersName?.length > 2 : Purposes && Image1) ? COLORS.colorB : 'rgba(224, 224, 224, 1)' }]}
                     >
-                        <Text style={[styles.text1, { color: (Purpose && Purposes == 'Spouse' ? Purposes : ownersName?.length > 2 && Image1 && !InvalidImage) ? COLORS.colorBackground : '#979C9E' }]}>Continue</Text>
+                        <Text style={[styles.text1, { color: (Purpose && Purposes && Purposes != 'Spouse' ? ownersName?.length > 2 : Purposes && Image1) ? COLORS.colorBackground : '#979C9E' }]}>Continue</Text>
                     </TouchableOpacity>
                 </View>
             </>
@@ -415,25 +328,15 @@ const DetailChecks = ({ navigation, setState, proofType1, imageUrl1, relation1, 
                 setNamestatus={setNamestatus}
                 setImage={setImage}
                 onPressOut={() => setModalVisible(!ModalVisible)}
-            // navigation={navigation}
-
             />
             <RelationModal
                 visible={ModalVisible1}
-                setRelation={setRelation}
                 setPurposes={setPurposes}
                 setModalVisible={setModalVisible1}
-                setStatus={setStatus}
                 Error={error}
                 onPressOut={() => setModalVisible1(!ModalVisible1)}
-            // navigation={navigation}
-
             />
         </View>
-
-
-
-
     )
 }
 
@@ -442,8 +345,6 @@ export default DetailChecks;
 const styles = StyleSheet.create({
     mainContainer: {
         flex: 1
-        // justifyContent:'center',
-        //  alignItems:'center'
     },
     proof: {
         color: 'rgba(59, 61, 67, 1)',
@@ -492,18 +393,13 @@ const styles = StyleSheet.create({
         marginLeft: 2,
         marginRight: 5,
         backgroundColor: '#FCFCFC',
-        //backgroundColor: 'pink',
         elevation: 1,
         shadowColor: '#000000',
         alignItems: 'center',
-        //justifyContent:'space-around',
         borderRadius: 6,
         flexDirection: 'row',
         marginTop: width * 0.02,
         marginBottom: width * 0.05,
-
-
-
     },
     NAMEFont: {
         color: 'rgba(26, 5, 29, 1)',
@@ -541,12 +437,9 @@ const styles = StyleSheet.create({
         marginLeft: 0
     },
     Line: {
-
         borderWidth: 0.3,
         height: 78,
-        // borderColor: '#F2F2F2',
         left: -38
-
     },
     cardView2: {
         backgroundColor: COLORS.colorBackground,
@@ -589,7 +482,6 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontFamily: FONTS.FontSemiB,
         color: COLORS.colorBackground,
-
     },
     nameText: {
         fontSize: 14,
@@ -615,8 +507,5 @@ const styles = StyleSheet.create({
         paddingLeft: width * 0.02,
         width: width * 0.88,
         height: width * 0.11,
-
     },
-
-
 })
