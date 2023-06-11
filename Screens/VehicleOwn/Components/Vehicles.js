@@ -172,7 +172,7 @@ const Vehicles = ({ navigation, vehicleslist }) => {
                 <ScrollView>
 
                     <View>
-                        <Text style={styles.vehText}>Vehicles owned ({vehicleslist?.length})</Text>
+                        <Text style={styles.vehText}>Vehicles owned ({vehicleslist1?.length})</Text>
                     </View>
                     <View>
 

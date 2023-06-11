@@ -15,7 +15,7 @@ const CalendarStrips = ({ setNewDates,NewDates }) => {
   const dispatch = useDispatch()
 
   const [Month, setMonth] = useState(new Date())
-  const [selectedDate, setSelectedDate] = useState(new Date())
+  const [selectedDate, setSelectedDate] = useState()
   const [endDate, setEndDate] = useState(new Date(new Date().setDate(new Date().getDate() + 29)))
   const [ArrowEnable, setArrowEnable] = useState(false)
   const [NewDate, setNewDate] = useState(new Date())

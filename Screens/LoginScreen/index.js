@@ -107,6 +107,7 @@ const LoginScreen = ({ navigation }) => {
     
       };
      
+      {console.log("screen focus",screenIsFocused)}
 
     useEffect(() => {
         getData()
@@ -146,7 +147,7 @@ const LoginScreen = ({ navigation }) => {
 
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
-
+         
         });
         return unsubscribe;
     }, [navigation]);
@@ -734,23 +735,23 @@ const LoginScreen = ({ navigation }) => {
                                             value={OtpValue}
                                             autoFocus={true}
                                             onCodeChanged={otp => {
-                                              //  setOtpValue(otp)
-                                                const firstDigitStr = String(otp)[0]
-                                                console.log("im insidet",firstDigitStr)
-                                                if(firstDigitStr == '.'){
-                                                    setOtpValue('')
+                                                setOtpValue(otp)
+                                                // const firstDigitStr = String(otp)[0]
+                                                // console.log("im insidet",firstDigitStr)
+                                                // if(firstDigitStr == '.'){
+                                                //     setOtpValue('')
                                                     
-                                                    console.log("firstz",OtpValue)
-                                                }
+                                                //     console.log("firstz",OtpValue)
+                                                // }
                                                 // if(!(/^[1234567890]+$/g.test(otp))){
                                                 //     setOtpValue('')
                                                 //     console.log("im inside",otp)
                                                 // }
                      
-                                                 else {
-                                                    setOtp(false)
-                                                    setIsExpired(false)
-                                                }
+                                                //  else {
+                                                //     setOtp(false)
+                                                //     setIsExpired(false)
+                                                // }
                                             }}
                                             
                                             code={OtpValue} //You can supply this prop or not. The component will be used as a controlled / uncontrolled component respectively.
