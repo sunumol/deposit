@@ -101,7 +101,6 @@ const LoginScreen = ({ navigation }) => {
     
       const handleAppStateChange = (nextAppState) => {
     
-        
         if (screenIsFocused && nextAppState == "active") {
           Clipboard.setString("");
         }
@@ -110,7 +109,6 @@ const LoginScreen = ({ navigation }) => {
      
 
     useEffect(() => {
-
         getData()
         getAppNewVersion()
         // Get IPV4 Address Start ------------------------
@@ -794,7 +792,7 @@ const LoginScreen = ({ navigation }) => {
                                         lang == "en" ?
                                             <View style={{ marginTop: Dimensions.get('window').height * 0.03, }}>
                                                 <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center', width: width * 0.8 }}>{t('common:Valid2')}</Text>
-                                                <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center' }}>Please try after {errorMessage.replace(/\D/g, '')} minutes</Text>
+                                                <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center' }}>Please try after {errorMessage.replace(/\D/g, '')} {errorMessage?.includes('minutes')?'minutes':'seconds'}</Text>
                                             </View>
                                             :
                                             <View style={{ marginTop: Dimensions.get('window').height * 0.03, }}>
