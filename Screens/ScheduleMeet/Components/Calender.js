@@ -15,12 +15,13 @@ const CalendarStrips = ({ setNewDates,NewDates }) => {
   const dispatch = useDispatch()
 
   const [Month, setMonth] = useState(new Date())
-  const [selectedDate, setSelectedDate] = useState()
+  const [selectedDate, setSelectedDate] = useState(new Date())
   const [endDate, setEndDate] = useState(new Date(new Date().setDate(new Date().getDate() + 29)))
   const [ArrowEnable, setArrowEnable] = useState(false)
   const [NewDate, setNewDate] = useState(new Date())
   const [MonthStatus, setMonthStatus] = useState(false)
   const [ArrowRight, setArrowRight] = useState(true)
+  const [currentD,setCurrentD] = useState(new Date())
 
   useEffect(() => {
     const today = new Date();

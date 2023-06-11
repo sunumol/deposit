@@ -28,7 +28,7 @@ const Picture = ({ navigation }) => {
             </View>
             <View style={{ flexDirection: 'row', alignItems: 'center', paddingTop: height * 0.02, justifyContent: 'center' }}>
 
-              <Image source={require('../../../assets/Images/Group8810.png')} />
+              <Image source={require('../../../assets/image/v.jpg')} />
             </View>
 
         </View>

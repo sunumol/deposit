@@ -135,6 +135,7 @@ console.log('12')
                     }
 
                 } else if (res?.data?.body == 5) {
+                    
                     props.navigation.navigate('VehicleOwn')
                 } else if (res?.data?.body == 6) {
                     props.navigation.navigate('EnergyUtility')

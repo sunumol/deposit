@@ -78,12 +78,13 @@ const SelectCustomerNewCgt = ({ navigation, route }) => {
 
   const OnchangeNumber = (num) => {
     setSelectedItem(null)
+    console.log("HELO EMOJI")
     const firstDigitStr = String(num)[0];
     if (firstDigitStr == ' ') {
       onChangeText('')
       setEmptyList(false)
     }
-    else if (/^[^!-\/:-@\.,[-`{-~]+$/.test(num) || num === '') {
+    else if (/^[a-zA-Z1234567890 ]+$/.test(num) || num === '') {
       onChangeText(num)
       let searchword = num;
       if (num !== '') {

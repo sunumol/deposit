@@ -92,7 +92,20 @@ const VehicleOwn = ({ navigation, route }) => {
         }, [handleGoBack]),
     );
 
+    const saveVehicleDetails = async () => {
+        console.log('api called1')
 
+       // const data = [searchvehicledata]
+        await api.saveVehicleDetails(data).then((res) => {
+            console.log('-------------------res save vehicle', res)
+            if (res?.status) {
+                setModalVisible(false),
+                navigation.navigate('Profile')
+            }
+        }).catch((err) => {
+            console.log('-------------------err save vehicle', err)
+        })
+    };
     // ------------------ get Conduct DLE basic detail Village Api Call Start ------------------
     const updateRejection = async () => {
         console.log('api called for rejection')
@@ -172,6 +185,7 @@ const VehicleOwn = ({ navigation, route }) => {
                     updateRejection()
                     // setModalError(true)
                 }}
+                Press1={()=>saveVehicleDetails()}
                 ModalVisible={ModalReason}
                 onPressOut={() => setModalReason(!ModalReason)}
                 setModalVisible={setModalReason}

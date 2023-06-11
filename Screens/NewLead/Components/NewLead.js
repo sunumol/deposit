@@ -251,7 +251,7 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus,setbackstate }) 
                                 returnKeyType="next"
                                 ref={adddressRef}
                                 //pointerEvents="none"
- 
+                              //  keyBoardType={securetextentry ? undefined : 'visible-password'}
                                 name={t('common:Name')}
                                 value={removeEmojis(Name)}
                                 color={"#1A051D"}
@@ -271,8 +271,8 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus,setbackstate }) 
                                         ToastAndroid.show("Please enter a valid name ", ToastAndroid.SHORT);
                                         console.log('The string contains whitespace', Name);
                                     }
-                                     else if (/^[^!-\/:-@\.,[-`{-~1234567890₹~`|•√π÷×¶∆€¥$¢^°={}%©®™✓]+$/.test(text) || text === '') {
-                                        // else if(/^[a-zA-Z]+$/g.test(text) || text === ''){
+                                     //else if (/^[^!-\/:-@\.,[-`{-~1234567890₹~`|•√π÷×¶∆€¥$¢^°={}%©®™✓]+$/.test(text) || text === '') {
+                                        else if(/^[a-zA-Z ]+$/g.test(text) || text === ''){
                                         setName(text)
                                         console.log("verify daat1")
                                     }
@@ -418,7 +418,7 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus,setbackstate }) 
                                                 }
                                                // else 
                                                 // if ((/^[^!-\/:-@\.,[-`{-~1234567890₹~`|•√π÷×¶∆€¥$¢^°={}%©®™✓]+$/.test(text))) {
-                                                    else if (/^[^!-\/:-@\.,[-`{-~1234567890₹~`|•√π÷×¶∆€¥$¢^°={}%©®™✓]+$/.test(text) || text === '') {
+                                                    else if (/^[A-Za-z ]+$/.test(text) || text === '') {
                                                     setVillageList([])
                                                     setVillageStatus(false)
                                                     setVillage(text)

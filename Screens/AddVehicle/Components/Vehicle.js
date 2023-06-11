@@ -230,7 +230,7 @@ const Vehicle = ({ navigation,setsearchvehicledata }) => {
     }
 
     const OnchangeNumbers = (num) => {
-        if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(num) || num === '') {
+        if (/^[A-Z1234567890]+$/.test(num) || num === '') {
             setNumbers(num)
 
         } else {
@@ -265,6 +265,7 @@ const Vehicle = ({ navigation,setsearchvehicledata }) => {
         return string?.replace(regex, '')
       }
 
+      
     return (
 
         <>
@@ -295,7 +296,7 @@ const Vehicle = ({ navigation,setsearchvehicledata }) => {
                                     // contextMenuHidden={true}
                                     placeholder='KL34E3278'
                                     placeholderTextColor='#808080'
-                                    value={removeEmojis(numbers)}
+                                    value={numbers}
                                     maxLength={9}
                                     style={styles.Num}
                                     //placeholderTextColor="#808080"
@@ -412,7 +413,9 @@ const Vehicle = ({ navigation,setsearchvehicledata }) => {
                                 <View style={{ flexDirection: 'row', justifyContent: 'space-around', paddingTop: width * 0.05 }}>
                                     <View style={{ flexDirection: 'column', marginLeft: width * 0.055 }}>
                                         <Text style={styles.owner}>Model</Text>
+                                        <View style={{maxWidth:width*0.5}}>
                                         <Text style={styles.NameStyle}>{searchvehicledata?.model}</Text>
+                                   </View>
                                     </View>
 
                                     <View style={{ flexDirection: 'column', alignItems: 'center', flex: 1, left: -15 }}>

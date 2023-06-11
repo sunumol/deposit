@@ -27,6 +27,7 @@ const TextInputBox = ({ name, value, onChangeText, onFocus, onBlur, blurOnSubmit
                         backgroundColor: backgroundColor1,
                         color: color, borderColor: edit ? 'red' : 'rgba(236, 235, 237, 1)'
                     }]}
+                
                     maxLength={maxLength}
                     value={value}
 

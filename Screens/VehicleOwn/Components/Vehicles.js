@@ -43,7 +43,7 @@ const Vehicles = ({ navigation, vehicleslist }) => {
     const [numbers, setNumbers] = useState('')
     const [number, setNumber] = useState(false)
     const [SearchStatus, setSearchStatus] = useState(false)
-   // const [vehicleslist, setvehicleslist] = useState([])
+    const [vehicleslist1, setvehicleslist] = useState([])
     const [mergedList, setmergedList] = useState([])
     const toggleCheckbox = () => setChecked(!checked);
     const activityId = useSelector(state => state.activityId);
@@ -159,7 +159,8 @@ const Vehicles = ({ navigation, vehicleslist }) => {
 
 
     useEffect(() => {
-       // getVehicleDetails()
+        getVehicleDetails()
+        console.log("veh",vehicleslist1)
         console.log("USEEFFECT INSIDE")
     }, [])
 
@@ -176,7 +177,7 @@ const Vehicles = ({ navigation, vehicleslist }) => {
                     <View>
 
                        
-                        {vehicleslist ? vehicleslist.map((item) => {
+                        {vehicleslist1 ? vehicleslist1.map((item) => {
                            
                             return (
                                 <View style={styles.containerBox1}>

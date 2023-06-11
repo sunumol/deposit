@@ -199,7 +199,10 @@ const
         const searchlandmarkname = (text) => {
             console.log('landmark NAME ===>>>', text)
             const firstDigitStr = String(text)[0];
-            if (firstDigitStr == ' ' || firstDigitStr === '1' || firstDigitStr === '2' || firstDigitStr === '3' || firstDigitStr === '4' || firstDigitStr === '5' || firstDigitStr === '0' || !(/^[^!-\/:-@\.,[-`{-~₹~`|•√π÷×¶∆€¥$¢^°={}%©®™✓]+$/.test(text)) || text === '') {
+            if (firstDigitStr == ' ' || firstDigitStr === '1' ||
+             firstDigitStr === '2' || firstDigitStr === '3' || 
+             firstDigitStr === '4' || firstDigitStr === '5' ||
+              firstDigitStr === '6'|| firstDigitStr === '7'|| firstDigitStr === '8' ||firstDigitStr === '0' || firstDigitStr === '9'|| !(/^[A-Za-z1234567890 ]+$/.test(text)) || text === '') {
                 containsWhitespace(text)
                 // 👇️ this runs
                 setLandmarkname('')
@@ -207,7 +210,7 @@ const
                 ToastAndroid.show("Please enter a valid landmark ", ToastAndroid.SHORT);
                 console.log('The string contains whitespace',);
             }
-            else if (/^[^!-\/:-@\.,[-`{-~₹~`|•√π÷×¶∆€¥$¢^°={}%©®™✓]+$/.test(text) || text === '') {
+            else if (/^[A-Za-z1234567890 ]+$/.test(text) || text === '') {
                 setLandmarkname(text)
                 setLandmarkname1(text)
                 setChecked(false)
@@ -315,10 +318,10 @@ const
 
 
             <Pressable onPress={() => { setPstatus(false), setpoststatus(false), setBstatus(false), setvillagestatus(false) }} style={styles.mainContainer}>
-                <ScrollView showsVerticalScrollIndicator={false}
-                    keyboardShouldPersistTaps={'handled'}
-                    //keyboardShouldPersistTaps ={'never'} 
-                    keyboardDismissMode={'on-drag'}  >
+                {/* <ScrollView showsVerticalScrollIndicator={false}
+                    //keyboardShouldPersistTaps={'handled'}
+                    keyboardShouldPersistTaps ={'never'} 
+                    keyboardDismissMode={'on-drag'}  > */}
                     <View style={styles.searchBox}>
                         <View style={styles.boxStyle}>
                             <View style={{ flex: 1, flexDirection: 'row' }}>
@@ -587,7 +590,7 @@ const
                     </View>
 
                     <View style={{
-                        flexDirection: 'row', justifyContent: 'space-between', marginTop: width * 0.05,
+                        flexDirection: 'row', justifyContent: 'space-between', marginTop: width * 0.0,
                         paddingLeft: 10, paddingRight: 10
                     }}>
 
@@ -601,7 +604,7 @@ const
                         </TouchableOpacity>
                     </View>
 
-                </ScrollView>
+                {/* </ScrollView> */}
                 {/* <ErrorModal
                 ModalVisible={ModalError}
                 onPressOut={() => {
@@ -791,7 +794,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: COLORS.colorBorder,
         borderRadius: 8,
-        marginTop: 20,
+        marginTop: 15,
 
 
     },

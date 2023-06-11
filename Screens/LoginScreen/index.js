@@ -428,9 +428,11 @@ const LoginScreen = ({ navigation }) => {
                 LoginApiCall()
                 console.log("Permission true")
             } else {
-                setButton(false)
+                setButton(true)
+                setOtpclick(true)
+                setGetOtpDisable(false)
                 setPermissions(false)
-                 
+                Linking.openSettings()
                 console.log("Permission false",button)
             }
         } catch (err) {
@@ -438,6 +440,11 @@ const LoginScreen = ({ navigation }) => {
         }
     };
 
+    useEffect(()=>{
+        if(!permissions){
+            setButton(true)
+        }
+    },[permissions])
     // -------------------------------- Fetch Message From device Start -------------------------------------------
     const callMessage = () => {
         var filter = {
@@ -729,10 +736,20 @@ const LoginScreen = ({ navigation }) => {
                                             value={OtpValue}
                                             autoFocus={true}
                                             onCodeChanged={otp => {
-                                                setOtpValue(otp)
-                                                if (otp.length === 4) {
-
-                                                } else {
+                                              //  setOtpValue(otp)
+                                                const firstDigitStr = String(otp)[0]
+                                                console.log("im insidet",firstDigitStr)
+                                                if(firstDigitStr == '.'){
+                                                    setOtpValue('')
+                                                    
+                                                    console.log("firstz",OtpValue)
+                                                }
+                                                // if(!(/^[1234567890]+$/g.test(otp))){
+                                                //     setOtpValue('')
+                                                //     console.log("im inside",otp)
+                                                // }
+                     
+                                                 else {
                                                     setOtp(false)
                                                     setIsExpired(false)
                                                 }
@@ -744,8 +761,10 @@ const LoginScreen = ({ navigation }) => {
                                             codeInputFieldStyle={[styles.imputContainerStyle, { color: '#090A0A', borderRadius: 8, backgroundColor: '#FCFCFC', borderColor: !otp ? "lightgrey" : "red" }]}
                                             placeholderTextColor="black"
                                             onCodeFilled={(code => {
+                                                console.log("im insidethiv",code)
                                                 setOtpValue(code)
                                                 if (code.length === 4) {
+                                                    console.log("im inside1",code)
                                                     ConfirmOtp(code)
                                                 } else {
                                                     setOtp(false)

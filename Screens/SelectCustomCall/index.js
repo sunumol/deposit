@@ -123,7 +123,7 @@ const SelectCustomerCall = ({ navigation,props }) => {
 
 
   const OnchangeNumber = (num) => {
-    if (/^[^!-\/:-@\.,[-`{-~]+$/.test(num) || num === '') {
+    if (/^[a-zA-Z1234567890 ]+$/.test(num) || num === '') {
       onChangeText(num)
 
       // } else {
