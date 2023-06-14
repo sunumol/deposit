@@ -127,12 +127,16 @@ const DetailChecks = ({ navigation, setState, setImagedata1,imagedata }) => {
     const UploadImage = () => {
 
         //Choose Image from gallery
-        ImagePicker.openPicker({
+       // ImagePicker.openPicker({
             // width: 300,
             // height: 400,
+            ImagePicker.openCamera({
+             width: width *1.2,
+            height: height,
+            hideBottomControls:true,
             cropping: true
         }).then(image => {
-            console.log("IMAGE", image.path);
+            console.log("IMAGE", image);
             setImage(image.path)
 
             setUploadStatus(false)
@@ -224,7 +228,7 @@ const DetailChecks = ({ navigation, setState, setImagedata1,imagedata }) => {
                     <View style={{ alignItems: 'center', flex: 0, }}>
                         <Image 
                         source={{ uri: imagedata ? imagedata : null }} style={{ width: width * 0.65, height: width * 0.5, borderRadius: 2 }}
-                        resizeMode='contain' />
+                        resizeMode='cover' />
                     </View>
 
                 </View>

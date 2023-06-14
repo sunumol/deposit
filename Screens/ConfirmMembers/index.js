@@ -283,7 +283,7 @@ const ConfirmMembers = ({ navigation }) => {
               ?
               <View style={{ borderWidth: 1, paddingTop: 12, paddingBottom: 15, borderColor: COLORS.colorBorder, marginTop: 10, borderRadius: 8 }}>
 
-{console.log('{=}{=}{=}{=}{=}',data,data?.length,status)}
+
 
                 {data?.length == 0 && status  && <Text style={{
                   fontSize: 14,

@@ -232,6 +232,10 @@ console.log('12')
                                         type: 'SET_CGT_ACTIVITY_ID',
                                         payload: item.activityId,
                                     });
+                                    dispatch({
+                                        type: 'SET_CGT_ACTIVITY',
+                                        payload: item,
+                                    });
                                     props.navigation.navigate('CGT')
 
 

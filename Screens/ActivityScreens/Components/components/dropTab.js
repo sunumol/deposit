@@ -131,6 +131,10 @@ const ActiveTab = (props) => {
                             type: 'SET_CGT_ACTIVITY_ID',
                             payload: props?.details?.activityId,
                         });
+                        dispatch({
+                            type: 'SET_CGT_ACTIVITY',
+                            payload:props?.details,
+                        });
 
                         //console.log("props passing",props?.details?.customerId)
                         props.navigation.navigate('CGT')
