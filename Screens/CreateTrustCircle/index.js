@@ -46,12 +46,14 @@ const CreateTrustCircle = ({ navigation, route }) => {
     const [ModalVisible3, setModalVisible3] = useState(false)
     // --------- Redux State -------------------------------------
     const customerList = useSelector(state => state.customerList);
+    
     const customerID = useSelector(state => state.customerID);
     const cgtCustomerDetails = useSelector(state => state.cgtCustomerDetails);
     const dispatch = useDispatch()
     const [custID, setCustId] = useState('')
     const [minLimit, setMinLimit] = useState()
     const [maxLimit, setMaxLimit] = useState()
+    const [customerList2, setCustomerList2] = useState()
     const activityId = useSelector(state => state.activityId);
     const cgtactivity = useSelector(state => state.cgtactivity);
     const handleGoBack = useCallback(() => {
@@ -121,6 +123,17 @@ const CreateTrustCircle = ({ navigation, route }) => {
         getDLEschedule()
         console.log('------------', customerList)
     }, [])
+
+    useEffect(() => {
+        const state= customerList?.filter((item,i)=>item?.mobileNumber === cgtactivity?.mobileNumber)
+        const states= customerList?.filter((item,i)=>item?.mobileNumber !== cgtactivity?.mobileNumber)
+        console.log('------jhjkshjkfherigfh------',state)
+        if(state?.length){
+            setCustomerList2(states)
+        }else{
+            setCustomerList2(customerList)
+        }
+    }, [cgtactivity,customerList])
 
     const getTclist = async () => {
         console.log('api called', customerID, cgtCustomerDetails?.primaryCustomerId)
@@ -200,6 +213,9 @@ const CreateTrustCircle = ({ navigation, route }) => {
         return initials.toUpperCase();
     };
 
+    
+    
+
     return (
         <SafeAreaProvider>
             <SafeAreaView style={styles.container1} />
@@ -261,14 +277,14 @@ const CreateTrustCircle = ({ navigation, route }) => {
                             {/* --------------------------------- Customer Details End--------------------------------------------------------------------------------------------------------------------- */}
 
                             {/* --------------------------------- Trust Circle Members Start--------------------------------------------------------------------------------------------------------------------- */}
-                            {customerList?.length > 0
+                            {customerList2?.length > 0
                                 ? <View>
-                                    <Text style={styles.Trust}>Trust Circle Members ({customerList?.length})</Text>
+                                    <Text style={styles.Trust}>Trust Circle Members ({customerList2?.length})</Text>
                                 </View> : null}
 
-                            {customerList && customerList?.map((item) => {
-                                { console.log('--trust circle members========>',item) }
-                                if(item?.mobileNumber != cgtactivity?.mobileNumber){
+                            {customerList2 && customerList2?.map((item) => {
+                               
+                               
                                 return (
                                     <View style={[styles.viewCard, { flex: 1, flexDirection: 'row', }]}>
 
@@ -297,7 +313,6 @@ const CreateTrustCircle = ({ navigation, route }) => {
                                         </View>
                                     </View>
                                 )
-                                }
                             })}
 
                             {customerList?.length > 0 && customerList?.length <= maxLimit

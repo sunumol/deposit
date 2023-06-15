@@ -231,7 +231,7 @@ const Vehicle = ({ navigation,setsearchvehicledata }) => {
     }
 
     const OnchangeNumbers = (num) => {
-        if (/^[A-Z1234567890]+$/.test(num) || num === '') {
+        if (/^[A-Za-z1234567890]+$/.test(num) || num === '') {
             setNumbers(num)
 
         } else {

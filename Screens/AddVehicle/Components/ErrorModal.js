@@ -50,7 +50,7 @@ const ErrorModal = ({ ModalVisible, onPressOut,onPress1 }) => {
                     <View style={{ paddingTop: width * 0.03,paddingHorizontal: width *0.05 }}>
                       
                         <Text style={styles.textdesc}>Invalid vehicle number.</Text>
-                        <Text style={styles.textdesc}>Avoid spaces, Lower Cases and special characters.</Text>
+                        <Text style={styles.textdesc}>Avoid spaces and special characters.</Text>
                     </View>
 
 
