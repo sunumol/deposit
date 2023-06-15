@@ -121,7 +121,7 @@ const [custID,setCustId] = useState('')
     return (
         <SafeAreaProvider>
             <SafeAreaView style={styles.container1} />
-            <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+            <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} backgroundColor={"#002B59"}/>
 
             <Header navigation={navigation} name={route?.params?.title} />
             {status ?

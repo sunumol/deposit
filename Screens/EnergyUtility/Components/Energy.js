@@ -22,26 +22,44 @@ import Icon1 from 'react-native-vector-icons/Entypo'
 import EnergyModal from './EnergyModal';
 import { api } from '../../../Services/Api';
 import { useSelector } from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import CorrectionModal from './CorrectionModal';
 const { height, width } = Dimensions.get('screen');
 
-const Energy = ({ navigation, setAmount1, setPurpose1, setDays1, setCustomerId, setEnergyUtilityId }) => {
-    const [Amount, setAmount] = useState('')
+const Energy = ({ navigation, setAmount1, setPurpose1, setDays1,
+    setCustomerId, setEnergyUtilityId, route,isCheck }) => {
+    const [Amount, setAmount] = useState(null)
     const [ModalVisible, setModalVisible] = useState(false)
+    const [ModalVisibleC, setModalVisibleC] = useState(false)
+    const isLastPage = useSelector(state => state.isLastPage);
     const [Purpose, setPurpose] = useState('')
     const [days, setDays] = useState('')
     const [utilities, setUtilities] = useState('')
     const [relationShip, setRelationship] = useState('')
     const [Buttons, setButtons] = useState(false)
+
     const activityId = useSelector(state => state.activityId);
     const [ZeroStatus, setZeroStatus] = useState(false)
-    const [ZeroDays,setZeroDays] = useState(false)
-    const [customerdetail,setCustomerDetail] = useState('')
-    const [spouseDetail,setSpousedetail] = useState()
-
+    const [ZeroDays, setZeroDays] = useState(false)
+    const [customerdetail, setCustomerDetail] = useState('')
+    const [spouseDetail, setSpousedetail] = useState()
+    const [LastPage, setLastPage] = useState(isCheck)
+    const [ActivityId, setActivityId] = useState()
+    { console.log("activityid print", activityId, route?.params?.isLastPage, isLastPage,isCheck) }
     useEffect(() => {
+        // getLastPage1()
         getEnergyUtilities()
         getSpousedetail()
         getCustomerdetail()
+    }, [])
+    useEffect(() => {
+
+        AsyncStorage.getItem("CallActivity").then((value) => {
+            console.log("value od asybc", value)
+            setActivityId(value)
+            // getLastPage1(value)
+
+        })
     }, [])
     // ------------------spouse detail ------------------
 
@@ -116,21 +134,29 @@ const Energy = ({ navigation, setAmount1, setPurpose1, setDays1, setCustomerId, 
         await api.saveEnergyUtilities(data).then((res) => {
             console.log('-------------------res saveEnergyUtilities', res)
             if (res?.status) {
-                if(customerdetail !== 'UNEMPLOYED'){
-                navigation.navigate('IncomeDetails', { relationShip: relationShip })
-                }else if(customerdetail == 'UNEMPLOYED' && spouseDetail !== 'UNEMPLOYED' ){
-                    navigation.navigate('IncomeDetailsSpouse')
-                }else if(customerdetail == 'UNEMPLOYED' && spouseDetail == 'UNEMPLOYED'){
-                    saveIncomeDetails_Spouse()
-                    navigation.navigate('Proceed')
+                if (isCheck == true) {
+                    console.log("inside")
+                    setModalVisibleC(true)
+                } else {
+                    getLastPage()
+                   
                 }
-                else{
-                    saveIncomeDetails_Spouse()
-                    navigation.navigate('Proceed')
-                }
+
+                // if(customerdetail !== 'UNEMPLOYED'){
+                // navigation.navigate('IncomeDetails', { relationShip: relationShip })
+                // }else if(customerdetail == 'UNEMPLOYED' && spouseDetail !== 'UNEMPLOYED' ){
+                //     navigation.navigate('IncomeDetailsSpouse')
+                // }else if(customerdetail == 'UNEMPLOYED' && spouseDetail == 'UNEMPLOYED'){
+                //     saveIncomeDetails_Spouse()
+                //     navigation.navigate('Proceed')
+                // }
+                // else{
+                //     saveIncomeDetails_Spouse()
+                //     navigation.navigate('Proceed')
+                // }
             }
         }).catch((err) => {
-            console.log('-------------------err saveEnergyUtilities', err?.response)
+            console.log('-------------------err saveEnergyUtilities', err)
         })
     };
     // ------------------ ------------------
@@ -179,22 +205,123 @@ const Energy = ({ navigation, setAmount1, setPurpose1, setDays1, setCustomerId, 
 
         const data = {
             "activityId": activityId,
-            "relationShip":'Spouse',
-            "field1":'',
-            "field2":'',
-            "field3":''
+            "relationShip": 'Spouse',
+            "field1": '',
+            "field2": '',
+            "field3": ''
 
         }
         await api.saveIncomeDetails(data).then((res) => {
-            console.log('-------------------res saveIncomeDetails',data)
+            console.log('-------------------res saveIncomeDetails', data)
             if (res?.status) {
-               
+
             }
         }).catch((err) => {
             console.log('-------------------err saveIncomeDetails', err?.response)
         })
     };
-    
+
+    const getLastPage = async () => {
+        console.log("LASTPAGE", activityId)
+        const data = {
+            "activityId": activityId
+        }
+        await api.getLastPage(data).then((res) => {
+            console.log("last page upadte", res?.data)
+            if (res?.data?.body?.isLasCorrectin == false && res?.data?.body?.nextPage == 6) {
+                if (customerdetail !== 'UNEMPLOYED') {
+                    navigation.navigate('IncomeDetails', { relationShip: relationShip })
+                } else if (customerdetail == 'UNEMPLOYED' && spouseDetail !== 'UNEMPLOYED') {
+                    navigation.navigate('IncomeDetailsSpouse')
+                } else if (customerdetail == 'UNEMPLOYED' && spouseDetail == 'UNEMPLOYED') {
+                    saveIncomeDetails_Spouse()
+                    navigation.navigate('Proceed')
+                }
+                else {
+                    saveIncomeDetails_Spouse()
+                    navigation.navigate('Proceed')
+                }
+            }
+            else if (res?.data?.body?.isLasCorrectin == true && res?.data?.body?.nextPage == 1) {
+                navigation.navigate('DetailCheck')
+            } else if (res?.data?.body?.isLasCorrectin == true && res?.data?.body?.nextPage == 2) {
+                navigation.navigate('ResidenceOwner')
+            } else if (res?.data?.body?.isLasCorrectin == true && res?.data?.body?.nextPage == 3) {
+                navigation.navigate('ContinuingGuarantor')
+            } else if (res?.data?.body?.isLasCorrectin == true && res?.data?.body?.nextPage == 4) {
+                navigation.navigate('AddVehicle')
+            } else if (res?.data?.body?.isLasCorrectin == true && res?.data?.body?.nextPage == 5) {
+                navigation.navigate('VehicleOwn')
+            } else if (res?.data?.body?.isLasCorrectin == true && res?.data?.body?.nextPage == 7) {
+                if (customerdetail !== 'UNEMPLOYED') {
+                    navigation.navigate('IncomeDetails', { relationShip: relationShip,isCheck:res?.data?.body?.isLasCorrectin })
+                } else if (customerdetail == 'UNEMPLOYED' && spouseDetail !== 'UNEMPLOYED') {
+                    navigation.navigate('IncomeDetailsSpouse',{isCheck:res?.data?.body?.isLasCorrectin})
+                } else if (customerdetail == 'UNEMPLOYED' && spouseDetail == 'UNEMPLOYED') {
+                    saveIncomeDetails_Spouse()
+                    navigation.navigate('Proceed')
+                }
+                else {
+                    saveIncomeDetails_Spouse()
+                    navigation.navigate('Proceed')
+                }
+            } else if (res?.data?.body?.isLasCorrectin == false && res?.data?.body?.nextPage == 7) {
+                navigation.navigate('IncomeDetails')
+            } else if (res?.data?.body?.isLasCorrectin == false && res?.data?.body?.nextPage == 8) {
+                navigation.navigate('IncomeDetailsSpouse')
+            }
+
+        }).catch((err) => {
+            console.log('-------------------err spousedetail1', err?.response)
+
+        })
+    };
+
+
+    const getDLEConfirmation = async () => {
+        const data = {
+            "activityId": activityId
+        }
+        await api.getCorrectionNotify(data).then((res) => {
+
+            if (res?.status) {
+                setModalVisibleC(false)
+                navigation.reset({
+                    index: 0,
+                    routes: [{ name: 'Proceed' }],
+                });
+                // navigation.navigate('Proceed')
+
+            }
+
+        }).catch((err) => {
+            console.log('-------------------err spousedetail1', err?.response)
+
+        })
+    };
+
+    { console.log("modalvisibel", ModalVisibleC) }
+
+    const getLastPage1 = async (value) => {
+        console.log("LASTPAGE called", value)
+        const data = {
+            "activityId": value ? value : act
+        }
+        await api.getLastPage(data).then((res) => {
+            console.log("last page upadte CA;LL", res?.data)
+            if (res?.data?.body?.isLasCorrectin == true) {
+
+                setLastPage(res?.data?.body?.isLasCorrectin)
+
+            }
+
+        }).catch((err) => {
+            console.log('-------------------err DLESTAUS', err?.response)
+
+        })
+    };
+
+
 
     return (
 
@@ -207,7 +334,7 @@ const Energy = ({ navigation, setAmount1, setPurpose1, setDays1, setCustomerId, 
                     </View>
 
                     <View style={styles.SelectBox}>
-                        <Text style={[styles.RS, { color: Amount === '' ? '#808080' : '#1A051D' }]}>₹</Text>
+                        <Text style={[styles.RS, { color: Amount === null ? '#808080' : '#1A051D' }]}>₹</Text>
                         <TextInput
                             style={[{ fontSize: 14, color: '#000', fontFamily: FONTS.FontRegular, left: 5, width: width * 0.84, }]}
                             value={Amount?.toString()}
@@ -217,17 +344,17 @@ const Energy = ({ navigation, setAmount1, setPurpose1, setDays1, setCustomerId, 
                             onChangeText={(text) => {
                                 const firstDigitStr = String(text)[0];
                                 setZeroStatus(false)
-                              //  setAmount(text)
+                                //  setAmount(text)
                                 // const firstDigitStr = String(num)[0];
-                                if(text === ''|| text === ',' || text === '.'){
+                                if (text === '' || text === ',' || text === '.') {
                                     setZeroStatus(false)
                                     setAmount('')
                                 }
-                                else if (Number(text) == 0 ) {
+                                else if (Number(text) == 0) {
 
                                     setZeroStatus(true)
                                     console.log("number log", text)
-                                }else if( text[0] === '0'){
+                                } else if (text[0] === '0') {
                                     console.log("number log", text)
                                 }
                                 else if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(text) || text === "") {
@@ -267,32 +394,32 @@ const Energy = ({ navigation, setAmount1, setPurpose1, setDays1, setCustomerId, 
                                 contextMenuHidden={true}
                                 onChangeText={(text) => {
                                     setZeroDays(false)
-                                    if(text === '' || text === ',' || text === '.'){
+                                    if (text === '' || text === ',' || text === '.') {
                                         setZeroDays(false)
                                         setDays('')
                                     }
                                     else if (Number(text) == 0) {
-    
+
                                         setZeroDays(true)
                                         console.log("number log", text)
                                     }
-                                    else if( text[0] === '0'){
+                                    else if (text[0] === '0') {
                                         console.log("number log", text)
                                     }
                                     else if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(text) || text === "") {
                                         setDays(text),
-                                        setDays1(text)
+                                            setDays1(text)
                                     }
                                 }
                                 } />
                         </View>}
-                        {ZeroDays &&
+                    {ZeroDays &&
                         <Text style={{ color: 'red', fontSize: 9, paddingTop: 3, fontFamily: FONTS.FontRegular }}>Days cannot be 0</Text>}
                 </ScrollView>
                 <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                     <TouchableOpacity style={[styles.buttonView, { backgroundColor: Buttons ? COLORS.colorB : 'rgba(224, 224, 224, 1)' }]}
-                        onPress={() => Buttons ? saveEnergyUtilities() :console.log("hello")}>
-                        <Text style={[styles.continueText, { color: Buttons ? COLORS.colorBackground : 'rgba(151, 156, 158, 1)' }]}>Continue</Text>
+                        onPress={() => Buttons ? saveEnergyUtilities() : console.log("hello")}>
+                        <Text style={[styles.continueText, { color: Buttons ? COLORS.colorBackground : 'rgba(151, 156, 158, 1)' }]}>{isCheck == true ? 'Submit' : 'Continue'}</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -304,7 +431,17 @@ const Energy = ({ navigation, setAmount1, setPurpose1, setDays1, setCustomerId, 
                 setModalVisible={setModalVisible}
                 onPressOut={() => setModalVisible(!ModalVisible)}
             />
-
+            <CorrectionModal
+                visible1={ModalVisibleC}
+                onPress1={() =>
+                    navigation.reset({
+                        index: 0,
+                        routes: [{ name: 'Proceed' }],
+                    })}
+                //getDLEConfirmation={()=>}
+                setModalVisible1={setModalVisibleC}
+                onPressOut={() => getDLEConfirmation()}
+            />
 
         </>
     )

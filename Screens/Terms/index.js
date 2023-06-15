@@ -46,7 +46,7 @@ const Terms = ({ navigation }) => {
     return (
         <SafeAreaProvider>
             <SafeAreaView style={styles.container1} />
-            <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+            <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} backgroundColor={"#002B59"} />
 
             <Header navigation={navigation} name={t('common:Terms1')} onPress={handleGoBack} />
             <ScrollView>

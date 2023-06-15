@@ -156,13 +156,14 @@ const EnergyUtility = ({ navigation, }) => {
     return (
         <SafeAreaProvider>
             <SafeAreaView style={styles.container1} />
-            <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+            <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} backgroundColor={"#002B59"}/>
 
             <Header name="Energy Utilities" navigation={navigation} onPress={handleGoBack} />
 
             <View style={styles.ViewContent}>
                 <Energy navigation={navigation}
                     setAmount1={setAmount1}
+                    isCheck={route?.params?.isCheck}
                     setPurpose1={setPurpose1}
                     setDays1={setDays1}
                     setCustomerId={setCustomerId}

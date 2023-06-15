@@ -297,14 +297,14 @@ export const api = {
     })
   },
 
-    // ------------------ get Spouse details---------------------
-    getCustomerdetail: data => {
-      return axios.post(`${baseURL2}getCustomerDetails`, data, {
-        headers: {
-          'Content-Type': 'application/json',
-        }
-      })
-    },
+  // ------------------ get Spouse details---------------------
+  getCustomerdetail: data => {
+    return axios.post(`${baseURL2}getCustomerDetails`, data, {
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+  },
   // ------------------ get Residence owner details---------------------
   getResidenceowner: data => {
     return axios.post(`${baseURL2}getCurrentResidenceOwner`, data, {
@@ -461,14 +461,14 @@ export const api = {
   },
 
 
-    // ------------------   DeleteHousePhoto details---------------------
-    DeleteHousePhoto: data => {
-      return axios.post(`${baseURL2}deleteHousePhoto`, data, {
-        headers: {
-          'Content-Type': 'application/json',
-        }
-      })
-    },
+  // ------------------   DeleteHousePhoto details---------------------
+  DeleteHousePhoto: data => {
+    return axios.post(`${baseURL2}deleteHousePhoto`, data, {
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+  },
 
   // ------------------   getDlePageNumber details---------------------
   getDlePageNumber: data => {
@@ -516,8 +516,8 @@ export const api = {
     })
   },
 
-   // ---------------- Firebase Token Api ---------------------------------
-   firebaseToken: data => {
+  // ---------------- Firebase Token Api ---------------------------------
+  firebaseToken: data => {
     return axios.post(`${baseURL2}updateAgentToken`, data, {
       headers: {
         'Content-Type': 'application/json',
@@ -601,7 +601,7 @@ export const api = {
 
   //----------------------APP NEW VERSION CHECK
 
-  getAppNewVersion:() => {
+  getAppNewVersion: () => {
 
     return axios.post(`${baseURLVersion}getLatestAppVersion`, {
       headers: {
@@ -612,7 +612,7 @@ export const api = {
 
   //gethomescreen device check
 
-  gethomeScreenDeviceCheck:() => {
+  gethomeScreenDeviceCheck: () => {
 
     return axios.post(`${baseURL2}homeScreenDeviceCheck`, {
       headers: {
@@ -620,15 +620,34 @@ export const api = {
       }
     })
   },
-    //SIMID check
+  //SIMID check
 
-    UpdateSIMID: (data) => {
+  UpdateSIMID: (data) => {
 
-      return axios.post(`${baseURL2}enterPinSimIdCheck`,data, {
-        headers: {
-          'Content-Type': 'application/json',
-        }
-      })
-    },
+    return axios.post(`${baseURL2}enterPinSimIdCheck`, data, {
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+  },
+
+  //isLastCorrectionPage
+  getLastPage: (data) => {
+    return axios.post(`${baseURL2}isLastCorrectionPage`, data, {
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+  },
+
+  //Data confirmation notification
+  getCorrectionNotify: (data) => {
+    return axios.post(`${baseURL2}dleConfemation`, data, {
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+  },
+
 };
 

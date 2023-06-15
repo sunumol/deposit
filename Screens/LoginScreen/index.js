@@ -356,7 +356,7 @@ const LoginScreen = ({ navigation }) => {
 
             }
         }).catch((err) => {
-            console.log("err Login->", err)
+            console.log("err Login->", err.response)
             setMaxError(false)
             setOtp(false)
             setIsExpired(false)
@@ -623,7 +623,7 @@ const LoginScreen = ({ navigation }) => {
                                 {...(Platform.OS === 'ios' && { behavior: 'position' })}>
 
                                 <SafeAreaView style={styles.container1} />
-                                <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+                                <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} backgroundColor={"#002B59"}/>
 
                                 <View style={{ marginBottom: IsOtp1 ? 0 : 0, marginTop: Dimensions.get('window').height * 0.2, alignItems: 'center', justifyContent: 'center', }}>
                                     <Logo width={180} height={54} resizeMode='contain' />

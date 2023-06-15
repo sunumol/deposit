@@ -36,7 +36,7 @@ import Resend from '../../assets/Images/resend.svg'
 import OTPInputView from '../../Components/OTPInputView'
 import { api } from '../../Services/Api';
 import SmsAndroid from 'react-native-get-sms-android';
-
+import CorrectionModal from './components/CorrectionModal';
 // -------------- Image Imports ---------------------
 import Call from '../../assets/image/calls.svg';
 import Image1 from '../../assets/Images/cakes.svg';
@@ -45,7 +45,7 @@ import Image1 from '../../assets/Images/cakes.svg';
 const { height, width } = Dimensions.get('screen');
 
 const ContinuingGuarantor = ({ navigation, route }) => {
-
+  console.log("route params", route?.params?.isCheck)
   const isDarkMode = true;
   const { t } = useTranslation();
   const otpInput2 = React.createRef();
@@ -86,6 +86,8 @@ const ContinuingGuarantor = ({ navigation, route }) => {
   const [occupationModalVisible, setOccupationModalVisible] = useState(false);
   const [OccupationD, setOccupationD] = useState('')
   const [custID, setCustId] = useState('')
+  const [ModalVisibleC, setModalVisibleC] = useState(false)
+  const isLastPage = useSelector(state => state.isLastPage);
 
   const getData = async () => {
     try {
@@ -348,11 +350,18 @@ const ContinuingGuarantor = ({ navigation, route }) => {
       console.log('-------------------res verifyCG', res)
       if (res?.status) {
         setIsOtp1(false)
-        if (relation !== 'Spouse') {
-          navigation.navigate('UploadVid')
+        if (route?.params?.isCheck == false) {
+          
+          getLastPage()
         } else {
-          navigation.navigate('AddVehicle')
+          setModalVisibleC(true)
         }
+
+        // if (relation !== 'Spouse') {
+        //   navigation.navigate('UploadVid')
+        // } else {
+        //   navigation.navigate('AddVehicle')
+        // }
 
       }
     }).catch((err) => {
@@ -515,7 +524,81 @@ const ContinuingGuarantor = ({ navigation, route }) => {
     return string?.replace(regex, '')
   }
 
+  const getLastPage = async () => {
+    console.log("LASTPAGE", activityId)
+    const data = {
+      "activityId": activityId
+    }
+    await api.getLastPage(data).then((res) => {
+      console.log("last page upadte", res?.data, res?.data?.body?.nextPage)
+      if (res?.data?.body?.isLasCorrectin == false && res?.data?.body?.nextPage == 1) {
+        navigation.navigate('CustomerDetails')
+      } else if (res?.data?.body?.isLasCorrectin == false && res?.data?.body?.nextPage == 2) {
+        if (Purposes == 'Spouse') {
+          navigation.navigate('ContinuingGuarantor', { relation: 'Spouse' })
+        } else {
+          navigation.navigate('ContinuingGuarantor', { relation: 'other' })
+        }
 
+      } else if (res?.data?.body?.isLasCorrectin == false && res?.data?.body?.nextPage == 4) {
+        if (relation !== 'Spouse') {
+          navigation.navigate('UploadVid')
+        } else {
+          navigation.navigate('AddVehicle')
+        }
+      } else if (res?.data?.body?.isLasCorrectin == false && res?.data?.body?.nextPage == 5) {
+        navigation.navigate('VehicleOwn')
+      } else if (res?.data?.body?.isLasCorrectin == false && res?.data?.body?.nextPage == 6) {
+        navigation.navigate('EnergyUtility')
+      } else if (res?.data?.body?.isLasCorrectin == false && res?.data?.body?.nextPage == 7) {
+        navigation.navigate('IncomeDetails')
+      } else if (res?.data?.body?.isLasCorrectin == false && res?.data?.body?.nextPage == 8) {
+        navigation.navigate('IncomeDetailsSpouse')
+      }
+      else if (res?.data?.body?.isLasCorrectin == true && res?.data?.body?.nextPage == 2) {
+        navigation.navigate('ResidenceOwner',{isCheck:res?.data?.body?.isLasCorrectin})
+    } else if (res?.data?.body?.isLasCorrectin == true && res?.data?.body?.nextPage == 3) {
+        navigation.navigate('ContinuingGuarantor',{isCheck:res?.data?.body?.isLasCorrectin})
+    }
+
+
+    else if (res?.data?.body?.isLasCorrectin == true && res?.data?.body?.nextPage == 6) {
+        navigation.navigate('EnergyUtility',{isCheck:res?.data?.body?.isLasCorrectin})
+    }
+    else if (res?.data?.body?.isLasCorrectin == true && res?.data?.body?.nextPage == 7) {
+        navigation.navigate('IncomeDetails',{isCheck:res?.data?.body?.isLasCorrectin})
+    } else if (res?.data?.body?.isLasCorrectin == true && res?.data?.body?.nextPage == 8) {
+        navigation.navigate('IncomeDetailsSpouse')
+    }
+
+    }).catch((err) => {
+      console.log('-------------------err spousedetail1', err?.response)
+
+    })
+  };
+
+
+  const getDLEConfirmation = async () => {
+    const data = {
+      "activityId": activityId
+    }
+    await api.getCorrectionNotify(data).then((res) => {
+
+      if (res?.status) {
+
+        setModalVisibleC(false)
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'Proceed' }],
+        })
+
+      }
+
+    }).catch((err) => {
+      console.log('-------------------err spousedetail1', err?.response)
+
+    })
+  };
   return (
     <SafeAreaProvider>
 
@@ -790,12 +873,22 @@ const ContinuingGuarantor = ({ navigation, route }) => {
 
           <TouchableOpacity onPress={() => OtpValue?.length === 4 && number?.length === 10 && relation ? verifyCGOTP() : console.log("geki")}
             style={[styles.buttonView, { backgroundColor: OtpValue?.length === 4 && number?.length === 10 && relation ? COLORS.colorB : '#E0E0E0' }]}>
-            <Text style={[styles.continueText, { color: OtpValue?.length === 4 && number?.length === 10 && relation ? COLORS.colorBackground : COLORS.colorWhite3 }]}>Continue</Text>
+            <Text style={[styles.continueText, { color: OtpValue?.length === 4 && number?.length === 10 && relation ? COLORS.colorBackground : COLORS.colorWhite3 }]}>{route?.params?.isCheck? 'Confirm' : 'Continue'}</Text>
           </TouchableOpacity>
         </KeyboardAvoidingView>
 
       </View>
-
+      <CorrectionModal
+        visible1={ModalVisibleC}
+        onPress1={() =>
+          navigation.reset({
+            index: 0,
+            routes: [{ name: 'Proceed' }],
+          })}
+        //getDLEConfirmation={()=>}
+        setModalVisible1={setModalVisibleC}
+        onPressOut={() => getDLEConfirmation()}
+      />
     </SafeAreaProvider>
   )
 }

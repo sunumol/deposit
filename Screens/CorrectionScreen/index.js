@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
-import { useSelector } from 'react-redux';
+import { useSelector,useDispatch } from 'react-redux';
 import { useRoute } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ExitModal from '../../Components/ModalExit';
@@ -30,7 +30,9 @@ const CorrectionScreen = ({ navigation }) => {
     const activityId = useSelector(state => state.activityId);
     const [dataDetails, setDataDetails] = useState()
     const [ModalVisible, setModalVisible] = useState(false)
-
+    const [CorrectionStatus,setCorrectionStatus] = useState()
+    const [custID,setCustId] = useState()
+    const dispatch = useDispatch()
     const handleGoBack = useCallback(() => {
         setModalVisible(true)
         return true; // Returning true from onBackPress denotes that we have handled the event
@@ -47,7 +49,7 @@ const CorrectionScreen = ({ navigation }) => {
     useEffect(() => {
       
             AsyncStorage.getItem("CallActivity").then((value) => {
-               // setCustId(value)
+                setCustId(value)
                 getCorrectionDetails(value)
             })
         
@@ -72,34 +74,41 @@ const CorrectionScreen = ({ navigation }) => {
 
     // ------------------ get Conduct DLE basic detail Village Api Call Start ------------------
     const onProceed = async () => {
+        
         const data = {
-            "activityId": activityId    //-----> addd --- activityId
+            "activityId": activityId ? activityId:custID  //-----> addd --- activityId
         }
-        await api.getCorrectionDLEPage(data).then((res) => {
-            console.log('-------------------res getCorrection', res?.data)
+        await api.getLastPage(data).then((res) => {
+            console.log('-------------------res getCorrection',res?.data?.body)
             if (res?.data) {
-                if (res?.data?.body == 1) {
-                    navigation.navigate('DetailCheck')
-                } else if (res?.data?.body == 2) {
-                    navigation.navigate('ResidenceOwner')
-                } else if (res?.data?.body == 3) {
-                    navigation.navigate('ContinuingGuarantor')
-                } else if (res?.data?.body == 4) {
+                dispatch({
+                    type: 'SET_LASTPAGE',
+                    payload:res?.data?.body?.isLasCorrectin ,
+                });
+                AsyncStorage.setItem('CorrectionStatus',JSON.stringify(res?.data?.body?.isLasCorrectin))
+                if (res?.data?.body?.nextPage == 1) {
+                    navigation.navigate('DetailCheck',{isCheck:res?.data?.body?.isLasCorrectin})
+                } else if (res?.data?.body?.nextPage == 2) {
+                    navigation.navigate('ResidenceOwner',{isCheck:res?.data?.body?.isLasCorrectin})
+                } else if (res?.data?.body?.nextPage == 3) {
+                    navigation.navigate('ContinuingGuarantor',{isCheck:res?.data?.body?.isLasCorrectin})
+                } else if (res?.data?.body?.nextPage == 4) {
                     navigation.navigate('UploadVid')
-                } else if (res?.data?.body == 5) {
-                    navigation.navigate('EnergyUtility')
-                } else if (res?.data?.body == 6) {
+                } else if (res?.data?.body?.nextPage == 5) {
                     navigation.navigate('VehicleOwn')
-                } else if (res?.data?.body == 7) {
+                } else if (res?.data?.body?.nextPage == 6) {
+                   
+                    navigation.navigate('EnergyUtility',{isCheck:res?.data?.body?.isLasCorrectin})
+                } else if (res?.data?.body?.nextPage == 7) {
                     navigation.navigate('IncomeDetails', { relationShip: 'Customer' })
-                } else if (res?.data?.body == 8) {
-                    navigation.navigate('IncomeDetails', { relationShip: 'Spouse' })
-                } else if (res?.data?.body == 9) {
+                } else if (res?.data?.body?.nextPage == 8) {
+                    navigation.navigate('IncomeDetails', { relationShip: 'Spouse',isCheck:res?.data?.body?.isLasCorrectin })
+                } else if (res?.data?.body?.nextPage == 9) {
                     navigation.navigate('HousePhoto')
                 }
             }
         }).catch((err) => {
-            console.log('-------------------err getCorrection', err?.response)
+            console.log('-------------------err getCorrection', err)
         })
     };
     // ------------------saveIncomeDetails detail ------------------
@@ -107,7 +116,7 @@ const CorrectionScreen = ({ navigation }) => {
     return (
         <SafeAreaProvider>
             <SafeAreaView style={styles.container1} />
-            <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+            <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} backgroundColor={"#002B59"} />
 
             <Header navigation={navigation} />
             <View style={styles.mainContainerView}>

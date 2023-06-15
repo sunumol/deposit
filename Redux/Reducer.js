@@ -16,7 +16,8 @@ const initialState={
     NewcgtSlot:'',
     CallFlag:'',
     DLEStatus:'',
-    SpouseOccupation:''
+    SpouseOccupation:'',
+    isLastPage:''
 }
 
 export const baseReducer = (state = initialState, action) => {
@@ -91,6 +92,11 @@ export const baseReducer = (state = initialState, action) => {
             return {
                 ...state, // return the updated state
                 SpouseOccupation: action.payload  
+            }
+            case  "SET_LASTPAGE":  // for updating state
+            return {
+                ...state, // return the updated state
+                isLastPage: action.payload  
             }
         default:
             return state;

@@ -33,7 +33,7 @@ const LoginScreen = ({ navigation }) => {
     return (
         <SafeAreaProvider style={{ backgroundColor: COLORS.colorBackground }} >
             <SafeAreaView style={styles.container1} />
-            <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+            <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} backgroundColor={"#002B59"} />
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                 <NetworkImage />
                 <View style={{ marginTop: 34 }}>

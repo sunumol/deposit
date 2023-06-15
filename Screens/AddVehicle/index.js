@@ -117,7 +117,7 @@ const AddVehicle = ({ navigation, }) => {
     return (
         <SafeAreaProvider>
             <SafeAreaView style={styles.container1} />
-            <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+            <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'}  backgroundColor={"#002B59"}/>
 
             <Header name="Add Vehicle" navigation={navigation} onPress={handleGoBack} />
 

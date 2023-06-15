@@ -23,7 +23,7 @@ import Header from '../../Components/Header';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const DetailCheck = ({ navigation, route }) => {
-
+console.log("api correction",route?.params?.isCheck)
     const isDarkMode = true
 
     const [basicdetail, setBasicdetail] = useState('')
@@ -145,7 +145,7 @@ useEffect(()=>{
     return (
         <SafeAreaProvider>
             <SafeAreaView style={styles.container1} />
-            <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+            <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} backgroundColor={"#002B59"}  />
 
             <Header name="Detailed Eligibility Check" navigation={navigation} onPress={handleGoBack} />
 
@@ -153,6 +153,7 @@ useEffect(()=>{
                 <DetailChecks
                     navigation={navigation}
                     details={basicdetail}
+                    isCheck={route?.params?.isCheck}
                     setVillagename1={setVillagename}
                     setPostoffice1={setPostofficename}
                     setLandmarkname1={setLandmarkname}

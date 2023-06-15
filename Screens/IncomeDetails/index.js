@@ -55,7 +55,7 @@ const IncomeDetails = ({ navigation, route }) => {
     const [Purpose, setPurpose] = useState('')
     const [days, setDays] = useState('')
     const [Month, setMonth] = useState('')
-    const [Avg, setAvg] = useState('')
+    const [Avg, setAvg] = useState(null)
     const [Buttons, setButtons] = useState(false)
     const [MonthsCustom, setMonthCustom] = useState('')
     const [Credit, setCredit] = useState('')
@@ -75,6 +75,7 @@ const IncomeDetails = ({ navigation, route }) => {
     const [spousejob, setspousejob] = useState('');
     const SpouseOccupation = useSelector(state => state?.SpouseOccupation);
     const [custID,setCustId] = useState('')
+    const [CorrectionStatus,setCorrectionStatus] = useState()
 
     useEffect(() => {
         getData()
@@ -99,7 +100,15 @@ const IncomeDetails = ({ navigation, route }) => {
             console.log(e)
         }
     }
-
+    useEffect(() => {
+      
+        AsyncStorage.getItem("CorrectionStatus").then((value) => {
+            console.log("getincome details correction",value)
+            
+                getIncomeDetails(value)
+         
+        })
+    }, [])
     const handleGoBack = useCallback(() => {
 
         // navigation.goBack()
@@ -180,7 +189,7 @@ const IncomeDetails = ({ navigation, route }) => {
 
     // ------------------getIncomeDetails detail ------------------
 
-    const getIncomeDetails = async () => {
+    const getIncomeDetails = async (value) => {
         console.log('api called', activityId, relationShip)
 
         const data = {
@@ -194,10 +203,13 @@ const IncomeDetails = ({ navigation, route }) => {
             if (res?.status) {
                 setIncomedetail(res?.data?.body)
                 setIncomedetailfield(res?.data?.body?.incomeDetailsFieldHeadders)
-                setAmount(res?.data?.body?.field1)
-                setMonth(res?.data?.body?.field2)
-                setAvg(res?.data?.body?.field3)
-                setPurpose(res?.data?.body?.field2)
+                //if(value == null){
+                    setAmount(res?.data?.body?.field1)
+                    setMonth(res?.data?.body?.field2)
+                    setAvg(res?.data?.body?.field3)
+                    setPurpose(res?.data?.body?.field2)
+               // }
+               
             }
         }).catch((err) => {
             console.log('-------------------err getIncomeDetails', err?.response)
@@ -247,7 +259,7 @@ const IncomeDetails = ({ navigation, route }) => {
             if (res?.status) {
                 if (spousejob !== 'UNEMPLOYED' ) {
             
-                   navigation.navigate('IncomeDetailsSpouse')
+                   navigation.navigate('IncomeDetailsSpouse',{isCheck:res?.data?.body?.isLasCorrectin})
                 } else if (spousejob == 'UNEMPLOYED' ) {
                     saveIncomeDetails_Spouse()
                    navigation.navigate('Proceed')
@@ -430,7 +442,7 @@ const IncomeDetails = ({ navigation, route }) => {
     return (
         <SafeAreaProvider>
             <SafeAreaView style={styles.container1} />
-            <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+            <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} backgroundColor={"#002B59"}/>
 
             <Header name="Income Details" navigation={navigation} onPress={handleGoBack} />
             {/* <View style={styles.Header}>
@@ -584,7 +596,7 @@ const IncomeDetails = ({ navigation, route }) => {
                                 <Text style={styles.TextElect}>{incomedetailfield?.field3}</Text>
                             </View>
                             <View style={styles.SelectBox}>
-                                <Text style={[styles.RS, { color: Avg === '' ? '#808080' : '#1A051D' }]}>₹</Text>
+                                <Text style={[styles.RS, { color: Avg === null ? '#808080' : '#1A051D' }]}>₹</Text>
                                 <TextInput
                                     style={[{ fontSize: 14, color: '#1A051D', fontFamily: FONTS.FontRegular, left: 5, width: '95%' }]}
                                     value={Avg?.toString()}

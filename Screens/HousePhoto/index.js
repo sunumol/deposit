@@ -147,7 +147,7 @@ const ResidenceOwner = ({ navigation, }) => {
                 <SafeAreaProvider>
 
                     <SafeAreaView style={styles.container1} />
-                    <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+                    <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} backgroundColor={"#002B59"}/>
 
                     <Header name="House Photo Capture" navigation={navigation} setState={state} onPress={handleGoBack} />
 

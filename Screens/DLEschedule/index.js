@@ -105,7 +105,7 @@ console.log('focus==========')
     return (
         <SafeAreaProvider>
             <SafeAreaView style={styles.container1} />
-            <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+            <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} backgroundColor={"#002B59"}/>
 
             <Header name="Schedule DLE Check" navigation={navigation} onPress={handleGoBack} />
 

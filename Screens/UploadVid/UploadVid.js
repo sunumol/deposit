@@ -121,6 +121,59 @@ const UploadVid = ({ navigation }) => {
   }
   // --------
 
+  const getLastPage = async () => {
+    console.log("LASTPAGE", activityId)
+    const data = {
+        "activityId": activityId
+    }
+    await api.getLastPage(data).then((res) => {
+        console.log("last page upadte", res?.data)
+        if (res?.data?.body?.isLasCorrectin == true) {
+
+            getDLEConfirmation()
+
+        } else if (res?.data?.body?.isLasCorrectin == false && res?.data?.body?.nextPage == 1) {
+            navigation.navigate('DetailCheck')
+        } else if (res?.data?.body?.isLasCorrectin == false && res?.data?.body?.nextPage == 2) {
+            navigation.navigate('ResidenceOwner')
+        } else if (res?.data?.body?.isLasCorrectin == false && res?.data?.body?.nextPage == 3) {
+            navigation.navigate('ContinuingGuarantor')
+        } else if (res?.data?.body?.isLasCorrectin == false && res?.data?.body?.nextPage == 4) {
+            navigation.navigate('AddVehicle')
+        } else if (res?.data?.body?.isLasCorrectin == false && res?.data?.body?.nextPage == 5) {
+            navigation.navigate('VehicleOwn')
+        } else if (res?.data?.body?.isLasCorrectin == false && res?.data?.body?.nextPage == 6) {
+            navigation.navigate('EnergyUtility')
+        } else if (res?.data?.body?.isLasCorrectin == false && res?.data?.body?.nextPage == 7) {
+            navigation.navigate('IncomeDetails')
+        } else if (res?.data?.body?.isLasCorrectin == false && res?.data?.body?.nextPage == 8) {
+            navigation.navigate('IncomeDetailsSpouse')
+        } 
+
+    }).catch((err) => {
+        console.log('-------------------err spousedetail1', err?.response)
+
+    })
+};
+
+
+const getDLEConfirmation = async () => {
+    const data = {
+        "activityId": activityId
+    }
+    await api.getCorrectionNotify(data).then((res) => {
+
+        if (res?.status) {
+            navigation.navigate('Proceed')
+
+        }
+
+    }).catch((err) => {
+        console.log('-------------------err spousedetail1', err?.response)
+
+    })
+};  
+
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container1} />

@@ -37,7 +37,7 @@ const ScheduleMeet = ({ navigation, route }) => {
     const { t } = useTranslation();
     const [lang, setLang] = useState('')
     const [BStatus, setBstatus] = useState(false)
-    const [selectedDate, setSelectedDate] = useState('')
+    const [selectedDate, setSelectedDate] = useState(new Date())
     const [ModalVisible, setModalVisible] = useState(false)
     const [ModalVisible1, setModalVisible1] = useState(false)
     const cgtCustomerDetails = useSelector(state => state.cgtCustomerDetails);
@@ -88,6 +88,7 @@ const ScheduleMeet = ({ navigation, route }) => {
             "tcMemberId": route?.params?.id,
             "scheduleDate": moment(selectedDate).utc().format('DD-MM-YYYY')
         };
+        console.log("data",data)
         await api.ScheduleDLE(data).then((res) => {
 
             console.log('------------------- Schedule DLE res', res)

@@ -177,7 +177,7 @@ const CustomerDetails = ({ navigation, }) => {
     return (
         <SafeAreaProvider>
             <SafeAreaView style={styles.container1} />
-            <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+            <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} backgroundColor={"#002B59"} />
 
             <Header name="Detailed Eligibility Check" navigation={navigation} onPress={handleGoBack} />
 

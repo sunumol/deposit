@@ -31,7 +31,7 @@ import { useSelector } from 'react-redux';
 import ModalSave from '../../Components/ModalSave';
 import ReasonModal from '../DetailedCheck/Components/ReasonModal';
 import ErrorModal from '../DetailedCheck/Components/ErrorModal';
-
+import CorrectionModal from '../IncomeDetailsSpouse/Components/CorrectionModal';
 export function numberWithCommas(x) {
 
     return x?.toString().replace(/^[+-]?\d+/, function (int) {
@@ -39,7 +39,7 @@ export function numberWithCommas(x) {
     });
 }
 
-const IncomeDetailsSpouse = ({ navigation, }) => {
+const IncomeDetailsSpouse = ({ navigation,route }) => {
 
     const isDarkMode = true
     const { t } = useTranslation();
@@ -64,19 +64,20 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
     const [ModalVisible1, setModalVisible1] = useState(false)
     const [ModalReason, setModalReason] = useState(false)
     const [ModalError, setModalError] = useState(false)
+    const [ModalVisibleC, setModalVisibleC] = useState(false)
     const [ZeroStatus, setZeroStatus] = useState(false)
     const [custID, setCustId] = useState('')
     const [fcmToken, setFcmToken] = useState()
     const [AmountFocus, setAmountFocus] = useState(false)
     const [MonthFocus, setMonthFocus] = useState(false)
     const [NetMonth, setNetMonth] = useState(false)
-    
+    const isLastPage = useSelector(state => state.isLastPage);
     useEffect(() => {
         getData()
-      
+
         // setRelationship(route?.params?.relationShip)
-        getIncomeDetails()
-        console.log("statecha nge.....", Purpose)
+        // getIncomeDetails()
+        console.log("statecha nge.....",route?.params?.isCheck)
     }, [])
 
     const getData = async () => {
@@ -122,18 +123,18 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
     const ButtonClick = () => {
 
         if (Amount !== '' && Avg !== '' && Month !== '') {
-        //     if(!NetMonth){
+            //     if(!NetMonth){
 
-        //         NumberFormat_avg()
-        //         setStateChange1(true)
-        //         // setStatusChange(true)
-        //         saveIncomeDetails_Proceed()
-        //   }else{
+            //         NumberFormat_avg()
+            //         setStateChange1(true)
+            //         // setStatusChange(true)
+            //         saveIncomeDetails_Proceed()
+            //   }else{
             setStateChange1(true)
             // setStatusChange(true)
             saveIncomeDetails_Proceed()
-           // }
-        
+            // }
+
 
         } else {
             setStateChange1(false)
@@ -152,8 +153,8 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
     const firebaseTokenSentTo = async () => {
         console.log("inside api call")
         const data = {
-             "agentId":Number(custID),
-           // "agentId": 1,
+            "agentId": Number(custID),
+            // "agentId": 1,
             "deviceToken": fcmToken
         };
         await api.firebaseToken(data).then((res) => {
@@ -164,6 +165,15 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
             })
     };
 
+    useEffect(() => {
+
+        AsyncStorage.getItem("CorrectionStatus").then((value) => {
+            console.log("getincome details correction", value)
+
+            getIncomeDetails(value)
+
+        })
+    }, [])
     // useEffect(() => {
     //     console.log('Use.....', Amount, Avg, Purpose)
     //     if ((Amount === null || Amount === '') || (Avg === null || Avg === '') || (Purpose === null || Purpose === '')) {
@@ -197,8 +207,8 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
 
     // ------------------getIncomeDetails detail ------------------
 
-    const getIncomeDetails = async () => {
-        console.log('api called')
+    const getIncomeDetails = async (value) => {
+        console.log('api called asyn value', value)
 
         const data = {
             "activityId": activityId,
@@ -210,10 +220,14 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
             if (res?.status) {
                 setIncomedetail(res?.data?.body)
                 setIncomedetailfield(res?.data?.body?.incomeDetailsFieldHeadders)
+                //if (value == null) {
                 setAmount(res?.data?.body?.field1)
                 setMonth(res?.data?.body?.field2)
                 setPurpose(res?.data?.body?.field2)
                 setAvg(res?.data?.body?.field3)
+
+
+
             }
         }).catch((err) => {
             console.log('-------------------err getIncomeDetails', err?.response)
@@ -263,9 +277,26 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
 
         }
         await api.saveIncomeDetails(data).then((res) => {
-            console.log('-------------------res saveIncomeDetails',data)
+            console.log('-------------------res saveIncomeDetails',route?.params?.isCheck )
             if (res?.status) {
-                navigation.navigate('Proceed')
+                if(route?.params?.isCheck){
+                    setModalVisibleC()
+                }else{
+                    navigation.reset({
+                        index: 0,
+                        routes: [{ name: 'Proceed' }],
+                    })
+                }
+               
+                // if(isLastPage){
+                //     setModalVisibleC(true)
+
+                // }else{
+                //     setModalVisibleC(false)
+                //     navigation.navigate('Proceed')
+                // }
+
+                //navigation.navigate('Proceed')
             }
         }).catch((err) => {
             console.log('-------------------err saveIncomeDetails', err?.response)
@@ -367,9 +398,9 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
             const firstDigitStr4 = String(Avg)[4]
             const digitForm = firstDigitStr0 + firstDigitStr1 + ',' + firstDigitStr2 + firstDigitStr3 + firstDigitStr4
             setAvg(digitForm)
-        
+
         } else if (Avg?.length == 6) {
-         
+
             const firstDigitStr0 = String(Avg)[0]
             const firstDigitStr1 = String(Avg)[1]
             const firstDigitStr2 = String(Avg)[2]
@@ -381,10 +412,65 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
             setAvg(digitForm)
         }
     }
+
+    const getLastPage = async () => {
+        console.log("LASTPAGE", activityId)
+        const data = {
+            "activityId": activityId
+        }
+        await api.getLastPage(data).then((res) => {
+            console.log("last page upadte", res?.data)
+            if (res?.data?.body?.isLasCorrectin == true && res?.data?.body?.nextPage == 8) {
+                setModalVisibleC(true)
+            } else {
+
+                navigation.reset({
+                    index: 0,
+                    routes: [{ name: 'Proceed' }],
+                })
+            }
+            // if (isLastPage == true) {
+
+            //   setModalVisibleC(true)
+
+            // }
+            //  else {
+            //     navigation.reset({
+            //         index: 0,
+            //         routes: [{ name: 'Proceed' }],
+            //     })
+            // }
+        }).catch((err) => {
+            console.log('-------------------err spousedetail1', err?.response)
+
+        })
+    };
+
+
+    const getDLEConfirmation = async () => {
+        const data = {
+            "activityId": activityId
+        }
+        await api.getCorrectionNotify(data).then((res) => {
+
+            if (res?.status) {
+                setModalVisibleC(false)
+                navigation.reset({
+                    index: 0,
+                    routes: [{ name: 'Proceed' }],
+                });
+
+            }
+
+        }).catch((err) => {
+            console.log('-------------------err spousedetail1', err?.response)
+
+        })
+    };
     return (
         <SafeAreaProvider>
             <SafeAreaView style={styles.container1} />
-            <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+            <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} backgroundColor={"#002B59"} />
 
             <Header name="Income Details" navigation={navigation} onPress={handleGoBack} />
             {/* <View style={styles.Header}>
@@ -421,7 +507,7 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
                                 </View>
                                 <View style={{ flexDirection: 'column', flex: 1, marginLeft: 12 }}>
                                     <Text style={styles.nameText}>{incomedetail?.name}</Text>
-                                    <Text style={[styles.underText,{textTransform:'capitalize'}]}>{incomedetail?.occupation?.replace(/_/g, ' ')}</Text> 
+                                    <Text style={[styles.underText, { textTransform: 'capitalize' }]}>{incomedetail?.occupation?.replace(/_/g, ' ')}</Text>
                                 </View>
                                 <View style={{ flexDirection: 'row', left: -5 }}>
                                     <Text style={styles.dateText}>{relationShip}</Text>
@@ -435,7 +521,7 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
                                 <Text style={styles.TextElect}>{incomedetailfield?.field1}</Text>
                             </View>
                             <View style={styles.SelectBox}>
-                            <Text style={[styles.RS, { color: Amount === '' ? '#808080' : '#1A051D' }]}>{incomedetail?.occupation !== 'SALARIED_EMPLOYEE' ? '₹' : ''}</Text>
+                                <Text style={[styles.RS, { color: Amount === '' ? '#808080' : '#1A051D' }]}>{incomedetail?.occupation !== 'SALARIED_EMPLOYEE' ? '₹' : ''}</Text>
                                 <TextInput
                                     style={[{
                                         fontSize: 14, color: '#1A051D',
@@ -453,10 +539,10 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
                                     onSubmitEditing={(text) => {
                                         console.log("onsubmit edit", Amount?.length)
                                         NumberFormats()
-                                     }}
+                                    }}
                                     maxLength={incomedetail?.occupation == 'SALARIED_EMPLOYEE' ? 2 : 6}
                                     onChangeText={(text) => {
-                                       // setAmountFocus(false)
+                                        // setAmountFocus(false)
                                         if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(text) || text === "") {
                                             if (incomedetail?.occupation == 'SALARIED_EMPLOYEE') {
 
@@ -473,8 +559,8 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
                                                 if (Number(text) == 0) {
                                                     setAmount('')
                                                     console.log("inside occupation 2", incomedetail?.occupation)
-                                                } 
-                                                else if( text[0] === '0'){
+                                                }
+                                                else if (text[0] === '0') {
                                                     console.log("number log", text)
                                                 } else {
                                                     setAmount(text)
@@ -502,12 +588,12 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
                                             keyboardType={'number-pad'}
                                             maxLength={2}
                                             onFocus={() => {
-                                                console.log("amountfocus",AmountFocus)
-                                                if(!AmountFocus){
-                                                   // NumberFormats()
+                                                console.log("amountfocus", AmountFocus)
+                                                if (!AmountFocus) {
+                                                    // NumberFormats()
                                                 }
-                                                else if(!NetMonth){
-                                                   // NumberFormat_avg()
+                                                else if (!NetMonth) {
+                                                    // NumberFormat_avg()
                                                 }
                                                 setMonthFocus(true)
                                                 // NumberFormats()
@@ -542,7 +628,7 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
                                     //     }
                                     //     const Am1 = Avg?.replace(/\,/g, '')
                                     //     setAvg(Am1)
-                                      
+
                                     //     setNetMonth(false)
                                     // }}
                                     onChangeText={(text) => {
@@ -555,9 +641,9 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
                                             setZeroStatus(true)
                                             console.log("number log", text)
                                         }
-                                        else if( text[0] === '0'){
+                                        else if (text[0] === '0') {
                                             console.log("number log", text)
-                                        } 
+                                        }
                                         else if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(text) || text === "") {
                                             setAvg(text)
                                             setZeroStatus(false)
@@ -615,7 +701,22 @@ const IncomeDetailsSpouse = ({ navigation, }) => {
                 setModalVisible={setModalReason}
             />
 
-
+            <CorrectionModal
+                visible1={ModalVisibleC}
+                onPress1={() =>
+                    navigation.reset({
+                        index: 0,
+                        routes: [{ name: 'Proceed' }],
+                    })}
+                //getDLEConfirmation={()=>}
+                setModalVisible1={setModalVisibleC}
+                onPressOut={() => {
+                    navigation.reset({
+                        index: 0,
+                        routes: [{ name: 'Proceed' }],
+                    }), setModalVisibleC(false)
+                }}
+            />
             <ErrorModal
                 ModalVisible={ModalError}
                 onPressOut={() => {

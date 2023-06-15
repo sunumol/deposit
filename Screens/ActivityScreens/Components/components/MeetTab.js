@@ -66,11 +66,6 @@ const MeetTab = (props) => {
 
             const lang = await AsyncStorage.getItem('user-language')
             const lang1 = await AsyncStorage.getItem('CallActivity')
-            //  console.log("no modal data inside",lang1)
-            if (lang1 !== null) {
-
-                //  setModalCall(true)
-            }
             setLang(lang)
         } catch (e) {
             console.log(e)
@@ -105,7 +100,7 @@ const MeetTab = (props) => {
     // ------------------getDlePageNumberdetail ------------------
 
     const getDlePageNumber = async (id, occupation) => {
-console.log('12')
+
 
         const data = {
             "activityId": id,
@@ -193,7 +188,7 @@ console.log('12')
                 });
 
                 setSpousedetail(res?.data?.body?.occupation)
-
+                //props.navigation.navigate('DetailCheck')
                 getDlePageNumber(id, res?.data?.body?.occupation)
                 console.log("spose detail", res?.data?.body)
 
@@ -221,11 +216,12 @@ console.log('12')
                                         payload: item.activityId,
                                     });
 
-
+                                    AsyncStorage.setItem('CallActivity', JSON.stringify(item?.activityId));
                                     setDetails(item)
-                                   // props.navigation.navigate('ContinuingGuarantor')
+                                  //  props.navigation.navigate('ContinuingGuarantor')
                                     getSpousedetail(item?.activityId)
-                                    getCustomerdetail(item?.activityId)
+                                   
+                                   // getCustomerdetail(item?.activityId)
 
                                 } else if (item?.purpose == 'Conduct CGT') {
                                     dispatch({

@@ -171,12 +171,18 @@ const UpdateResidenceowner_backButton = async () => {
     return (
         <SafeAreaProvider>
             <SafeAreaView style={styles.container1} />
-            <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+            <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} backgroundColor={"#002B59"} />
 
             <Header name="Current Residence Owner" navigation={navigation} setState={state} onPress={handleGoBack} />
 
             <View style={styles.ViewContent}>
-                <Owner navigation={navigation} setState={setState} proofType1={setProoftype}imageUrl1={setImageUrl} relation1={setRelation} relative1={setRelative}  />
+                <Owner navigation={navigation} 
+                setState={setState}
+                 proofType1={setProoftype}
+                 imageUrl1={setImageUrl}
+                  relation1={setRelation} 
+                  relative1={setRelative}
+                  isCheck={route?.params?.isCheck}  />
             </View>
 
 

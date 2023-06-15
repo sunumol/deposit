@@ -24,7 +24,7 @@ import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 import Search from 'react-native-vector-icons/Feather';
 import Image1 from '../../../assets/Images/cakes.svg';
 import { api } from '../../../Services/Api';
-import { useDispatch } from 'react-redux';
+import { useDispatch ,useSelector} from 'react-redux';
 
 const { height, width } = Dimensions.get('screen');
 
@@ -38,8 +38,9 @@ const Details = ({ navigation, details, spouse }) => {
     const [ModalError, setModalError] = useState(false)
     const [ModalReason, setModalReason] = useState(false)
     const [checked, setChecked] = useState(false);
+    const [LastPage,setLastPage] = useState()
     const dispatch = useDispatch()
-
+    const activityId = useSelector(state => state.activityId);
 
     String.prototype.replaceAt = function (index, replacement) {
         return this.substring(0, index) + replacement + this.substring(index + replacement.length);
@@ -92,6 +93,29 @@ const Details = ({ navigation, details, spouse }) => {
         })
     };
 
+
+    const getLastPage = async () => {
+        console.log("LASTPAGE", activityId)
+        const data = {
+            "activityId": activityId
+        }
+        await api.getLastPage(data).then((res) => {
+            console.log("last page upadte", res?.data)
+            if (res?.data?.body?.isLasCorrectin == true) {
+    
+                setLastPage(res?.data?.body?.isLasCorrectin)
+    
+            }
+    
+        }).catch((err) => {
+            console.log('-------------------err DLESTAUS', err?.response)
+    
+        })
+    };
+    
+    useEffect(()=>{
+        getLastPage()
+    },[])
 
     return (
 
@@ -236,7 +260,7 @@ const Details = ({ navigation, details, spouse }) => {
                     <TouchableOpacity onPress={() => onsubmit()}
                         style={[styles.Button1, { backgroundColor: COLORS.colorB }]}
                     >
-                        <Text style={[styles.text1, { color: COLORS.colorBackground }]}>Continue</Text>
+                        <Text style={[styles.text1, { color: COLORS.colorBackground }]}>{LastPage ? 'Confirm' :'Continue' }</Text>
                     </TouchableOpacity>
                 </View>
             </View>
