@@ -535,25 +535,25 @@ const ContinuingGuarantor = ({ navigation, route }) => {
         navigation.navigate('CustomerDetails')
       } else if (res?.data?.body?.isLasCorrectin == false && res?.data?.body?.nextPage == 2) {
         if (Purposes == 'Spouse') {
-          navigation.navigate('ContinuingGuarantor', { relation: 'Spouse' })
+          navigation.navigate('ContinuingGuarantor', { relation: 'Spouse',isCheck:res?.data?.body?.isLasCorrectin})
         } else {
-          navigation.navigate('ContinuingGuarantor', { relation: 'other' })
+          navigation.navigate('ContinuingGuarantor', { relation: 'other',isCheck:res?.data?.body?.isLasCorrectin })
         }
 
       } else if (res?.data?.body?.isLasCorrectin == false && res?.data?.body?.nextPage == 4) {
         if (relation !== 'Spouse') {
-          navigation.navigate('UploadVid')
+          navigation.navigate('UploadVid',{isCheck:res?.data?.body?.isLasCorrectin})
         } else {
-          navigation.navigate('AddVehicle')
+          navigation.navigate('AddVehicle',{isCheck:res?.data?.body?.isLasCorrectin})
         }
       } else if (res?.data?.body?.isLasCorrectin == false && res?.data?.body?.nextPage == 5) {
-        navigation.navigate('VehicleOwn')
+        navigation.navigate('VehicleOwn',{isCheck:res?.data?.body?.isLasCorrectin})
       } else if (res?.data?.body?.isLasCorrectin == false && res?.data?.body?.nextPage == 6) {
-        navigation.navigate('EnergyUtility')
+        navigation.navigate('EnergyUtility',{isCheck:res?.data?.body?.isLasCorrectin})
       } else if (res?.data?.body?.isLasCorrectin == false && res?.data?.body?.nextPage == 7) {
-        navigation.navigate('IncomeDetails')
+        navigation.navigate('IncomeDetails',{isCheck:res?.data?.body?.isLasCorrectin})
       } else if (res?.data?.body?.isLasCorrectin == false && res?.data?.body?.nextPage == 8) {
-        navigation.navigate('IncomeDetailsSpouse')
+        navigation.navigate('IncomeDetailsSpouse',{isCheck:res?.data?.body?.isLasCorrectin})
       }
       else if (res?.data?.body?.isLasCorrectin == true && res?.data?.body?.nextPage == 2) {
         navigation.navigate('ResidenceOwner',{isCheck:res?.data?.body?.isLasCorrectin})
