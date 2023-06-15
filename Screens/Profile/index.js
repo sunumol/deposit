@@ -41,7 +41,7 @@ const Profile = ({ navigation }) => {
     const { t } = useTranslation();
     const dispatch = useDispatch()
     const netInfo = useNetInfo();
-
+    const [notificationCountHeader, setNotificationCountHeader] = useState()
     const [notificationCount, SetNotificationCount] = useState()
     const [modalExitAppVisible, setModalExitAppVisible] = useState(false);
     const [custID, setCustId] = useState('')
@@ -49,7 +49,6 @@ const Profile = ({ navigation }) => {
     const [mobileNumber, setMobileNumber] = useState('')
     const [id, setId] = useState(null)
     const [IpAddress, setIPAddress] = useState()
-
     useEffect(() => {
         AsyncStorage.getItem("CustomerId").then((value) => {
             setCustId(value)
@@ -110,6 +109,22 @@ const Profile = ({ navigation }) => {
             notification: false,
         },
     ];
+
+    useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+            dispatch({
+                type: 'SET_SELECTED_CUSTOMERLIST',
+                payload: [],
+            });
+            dispatch({
+                type: 'SET_SELECTED_CUSTOMERID',
+                payload: [],
+            });
+        });
+        return unsubscribe;
+    }, [navigation]);
+
+
     // ------------------ HomeScreen Api Call Start ------------------
     const HomeScreenApiCall = async (value) => {
         console.log("inside api call")
@@ -142,7 +157,7 @@ const Profile = ({ navigation }) => {
             })
     };
     // ------------------ HomeScreen Api Call End ------------------
-
+  
     useEffect(() => {
         
         getData()
@@ -179,20 +194,7 @@ const Profile = ({ navigation }) => {
 
 
 
-    useEffect(() => {
-        const unsubscribe = navigation.addListener('focus', () => {
-            dispatch({
-                type: 'SET_SELECTED_CUSTOMERLIST',
-                payload: [],
-            });
-            dispatch({
-                type: 'SET_SELECTED_CUSTOMERID',
-                payload: [],
-            });
-        });
-        return unsubscribe;
-    }, [navigation]);
-
+    
 
     const backAction = () => {
         setModalExitAppVisible(true)

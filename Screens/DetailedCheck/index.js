@@ -5,7 +5,10 @@ import {
     View,
     StatusBar,
     Dimensions,
-    BackHandler
+    BackHandler,
+    ScrollView,
+    Platform,
+    KeyboardAvoidingView
 } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
@@ -144,6 +147,7 @@ useEffect(()=>{
 
     return (
         <SafeAreaProvider>
+    
             <SafeAreaView style={styles.container1} />
             <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} backgroundColor={"#002B59"}  />
 

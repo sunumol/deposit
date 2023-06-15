@@ -183,6 +183,10 @@ const MeetTab = (props) => {
                                                                     type: 'SET_CGT_ACTIVITY_ID',
                                                                     payload: item.activityId,
                                                                 });
+                                                                dispatch({
+                                                                    type: 'SET_CGT_ACTIVITY',
+                                                                    payload: item,
+                                                                });
                                                                 props.navigation.navigate('CGT')
                                                             } else {
                                                                 AsyncStorage.setItem('CallActivity', JSON.stringify(item?.activityId));

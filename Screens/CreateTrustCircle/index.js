@@ -53,6 +53,7 @@ const CreateTrustCircle = ({ navigation, route }) => {
     const [minLimit, setMinLimit] = useState()
     const [maxLimit, setMaxLimit] = useState()
     const activityId = useSelector(state => state.activityId);
+    const cgtactivity = useSelector(state => state.cgtactivity);
     const handleGoBack = useCallback(() => {
         navigation.navigate('CGT')// -----> Todo back navigation with activity ID
         return true; // Returning true from onBackPress denotes that we have handled the event
@@ -80,12 +81,13 @@ const CreateTrustCircle = ({ navigation, route }) => {
     useEffect(() => {
         getTCLimitDetails()
         getTclist()
+        console.log('++++++=======',customerList,'==========+++++++++++',cgtactivity?.mobileNumber)
     }, [customerList, customerID])
 
     // ------------------ getTCLimitDetails Api Call Start ------------------
     const getTCLimitDetails = async () => {
         await api.getTCLimitCount().then((res) => {
-            console.log('-------------------res limit', res?.data)
+            console.log('-------------------res limit========', res?.data)
             // setTCLimit(res?.data?.body)
             setMinLimit(res?.data?.body?.minimumCount)
             setMaxLimit(res?.data?.body?.maximumCount)
@@ -265,7 +267,8 @@ const CreateTrustCircle = ({ navigation, route }) => {
                                 </View> : null}
 
                             {customerList && customerList?.map((item) => {
-                                { console.log('--',) }
+                                { console.log('--trust circle members========>',item) }
+                                if(item?.mobileNumber != cgtactivity?.mobileNumber){
                                 return (
                                     <View style={[styles.viewCard, { flex: 1, flexDirection: 'row', }]}>
 
@@ -294,6 +297,7 @@ const CreateTrustCircle = ({ navigation, route }) => {
                                         </View>
                                     </View>
                                 )
+                                }
                             })}
 
                             {customerList?.length > 0 && customerList?.length <= maxLimit

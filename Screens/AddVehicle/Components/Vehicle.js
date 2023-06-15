@@ -347,10 +347,10 @@ const Vehicle = ({ navigation,setsearchvehicledata }) => {
                                 <TextInput
                                     // readOnly={true}
                                     // contextMenuHidden={true}
-                                    placeholder='KL34E3278'
-                                    placeholderTextColor='#808080'
+                                   // placeholder='KL34E3278'
+                                   // placeholderTextColor='#808080'
                                     value={numbers}
-                                    maxLength={9}
+                                    maxLength={10}
                                     style={styles.Num}
                                     //placeholderTextColor="#808080"
 
@@ -377,8 +377,8 @@ const Vehicle = ({ navigation,setsearchvehicledata }) => {
 
                             <TextInput
                                 editable={false}
-                                placeholder='KL34E3278'
-                                placeholderTextColor='#808080'
+                               // placeholder='KL34E3278'
+                               // placeholderTextColor='#808080'
                                 style={styles.Num}
 
                             />
