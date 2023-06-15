@@ -61,6 +61,7 @@ import SelectCalendar from '../Screens/SelectCalendar'
 import { navigationRef } from './RootNavigation';
 import GeneratePin from '../Screens/GeneratePin';
 import EnergyCorrection from '../Screens/EnergyCorrection';
+import NotificationScreen from '../Screens/NotificationScreen'
 
 const Stack = createNativeStackNavigator();
 
@@ -131,6 +132,7 @@ export default function Router() {
         <Stack.Screen name="CalendarActivity" component={netInfo.isConnected ? CalendarActivity : NetWorkError} />
         <Stack.Screen name="SelectCalendar" component={netInfo.isConnected ? SelectCalendar : NetWorkError} />
         {/* --------------------------- Calendar Navigation Screens End -----------------------------------------*/}
+        <Stack.Screen name="NotificationScreen" component={netInfo.isConnected ? NotificationScreen : NetWorkError} />
 
       </Stack.Navigator>
     </NavigationContainer>

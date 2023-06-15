@@ -5,6 +5,8 @@ import axios from 'axios';
 const baseUAT = 'http://13.235.213.160:'
 const baseUAT2 = 'http://3.108.93.231:' //test server
 
+const baseURL5 = `${baseUAT2}8488/`;
+
 const baseURL = `${baseUAT2}8383/`
 const baseURL2 = `${baseUAT2}8686/`
 const baseURL3 = `${baseUAT2}8086/`
@@ -630,5 +632,17 @@ export const api = {
         }
       })
     },
+    //---------------- In App Notification ------------------------
+  getNotification: (data) => {
+    return axios.post(`${baseURL5}notificationsHistory`, data, {
+      "Content-Type": "application/json",
+    });
+  },
+  //---------------- In App Notification ------------------------
+  getNotificationCount: (data) => {
+    return axios.post(`${baseURL5}agentNotificationCount`, data, {
+      "Content-Type": "application/json",
+    });
+  },
 };
 

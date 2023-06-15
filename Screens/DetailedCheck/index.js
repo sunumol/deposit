@@ -5,7 +5,10 @@ import {
     View,
     StatusBar,
     Dimensions,
-    BackHandler
+    BackHandler,
+    ScrollView,
+    Platform,
+    KeyboardAvoidingView
 } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
@@ -144,57 +147,65 @@ useEffect(()=>{
 
     return (
         <SafeAreaProvider>
+    
             <SafeAreaView style={styles.container1} />
+           
             <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
 
-            <Header name="Detailed Eligibility Check" navigation={navigation} onPress={handleGoBack} />
+<Header name="Detailed Eligibility Check" navigation={navigation} onPress={handleGoBack} />
 
-            <View style={styles.ViewContent}>
-                <DetailChecks
-                    navigation={navigation}
-                    details={basicdetail}
-                    setVillagename1={setVillagename}
-                    setPostoffice1={setPostofficename}
-                    setLandmarkname1={setLandmarkname}
-                    setRoadStatus1={setRoadStatus}
-                    setpoststatus={setpoststatus}
-                    setvillagestatus={setvillagestatus}
-                   setbackstate={backstate}
-                />
-            </View>
+<ScrollView showsVerticalScrollIndicator={false} style={styles.ViewContent}>
+    <DetailChecks
+        navigation={navigation}
+        details={basicdetail}
+        setVillagename1={setVillagename}
+        setPostoffice1={setPostofficename}
+        setLandmarkname1={setLandmarkname}
+        setRoadStatus1={setRoadStatus}
+        setpoststatus={setpoststatus}
+        setvillagestatus={setvillagestatus}
+       setbackstate={backstate}
+    />
+</ScrollView>
 
-            <ModalSave
-                Press={() => {
-                    setModalVisible(false),
-                        setModalReason(true)
-                }}
-                Press1={() => { onsubmit(), setModalVisible(false) }}
-                ModalVisible={ModalVisible}
-                setModalVisible={setModalVisible}
-                onPressOut={() => {
-                    setModalVisible(false)
-                }}
-                navigation={navigation}
-            />
 
-            <ReasonModal
-                onPress1={() => {
-                    updateRejection()
-                }}
-                ModalVisible={ModalReason}
-                onPressOut={() => setModalReason(!ModalReason)}
-                setModalReason={setModalReason}
-            />
+     
 
-            <ErrorModal
-                ModalVisible={ModalError}
-                onPressOut={() => {
-                    setModalError(!ModalError)
-                    setModalReason(!ModalReason)
-                }}
-                setModalVisible={setModalError}
-                navigation={navigation}
-            />
+
+<ModalSave
+    Press={() => {
+        setModalVisible(false),
+            setModalReason(true)
+    }}
+    Press1={() => { onsubmit(), setModalVisible(false) }}
+    ModalVisible={ModalVisible}
+    setModalVisible={setModalVisible}
+    onPressOut={() => {
+        setModalVisible(false)
+    }}
+    navigation={navigation}
+/>
+
+<ReasonModal
+    onPress1={() => {
+        updateRejection()
+    }}
+    ModalVisible={ModalReason}
+    onPressOut={() => setModalReason(!ModalReason)}
+    setModalReason={setModalReason}
+/>
+
+<ErrorModal
+    ModalVisible={ModalError}
+    onPressOut={() => {
+        setModalError(!ModalError)
+        setModalReason(!ModalReason)
+    }}
+    setModalVisible={setModalError}
+    navigation={navigation}
+/>
+      
+          
 
         </SafeAreaProvider>
     )
