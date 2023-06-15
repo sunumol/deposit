@@ -137,7 +137,7 @@ const Vehicles = ({ navigation, vehicleslist }) => {
             console.log('-------------------res fetchVehicleDetailsForDle', res)
             if (res?.status) {
                 //getLastPage()
-                navigation.navigate('EnergyUtility')
+                navigation.navigate('EnergyUtility',{isCheck:false})
             }
         }).catch((err) => {
             console.log('-------------------err fetchVehicleDetailsForDle', err?.response)
