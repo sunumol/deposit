@@ -94,7 +94,7 @@ const Generate = ({ navigation }) => {
             deviceIpAddress: ipAdrress,
             simId: deviceId,
             "otpReason": "FORGOT_PIN",
-            id: MitraID,
+            id:CustomerId,
             dob: moment(dob).format('YYYY-DD-MM') + "T00:00:00"
         }
         console.log("data==============>>>", data)

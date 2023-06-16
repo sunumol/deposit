@@ -40,7 +40,7 @@ export function numberWithCommas(x) {
 }
 
 const IncomeDetailsSpouse = ({ navigation,route }) => {
-
+console.log("next screen ",route?.params?.isCheck)
     const isDarkMode = true
     const { t } = useTranslation();
     const [lang, setLang] = useState('')
@@ -71,6 +71,7 @@ const IncomeDetailsSpouse = ({ navigation,route }) => {
     const [AmountFocus, setAmountFocus] = useState(false)
     const [MonthFocus, setMonthFocus] = useState(false)
     const [NetMonth, setNetMonth] = useState(false)
+    const [LastPage,setLastPage] = useState(route?.params?.isCheck)
     const isLastPage = useSelector(state => state.isLastPage);
     useEffect(() => {
         getData()
@@ -659,7 +660,7 @@ const IncomeDetailsSpouse = ({ navigation,route }) => {
                     <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                         <TouchableOpacity style={[styles.buttonView, { backgroundColor: Amount && (Purpose || Month) && Avg ? COLORS.colorB : 'rgba(224, 224, 224, 1)' }]}
                             onPress={() => Amount && (Purpose || Month) && Avg ? ButtonClick() : console.log("hekk")}>
-                            <Text style={[styles.continueText, { color: Amount && (Purpose || Month) && Avg ? COLORS.colorBackground : '#979C9E' }]}>Continue</Text>
+                            <Text style={[styles.continueText, { color: Amount && (Purpose || Month) && Avg ? COLORS.colorBackground : '#979C9E' }]}>{LastPage?'Confirm':'Continue'}</Text>
                         </TouchableOpacity>
                     </View>
                 </View>

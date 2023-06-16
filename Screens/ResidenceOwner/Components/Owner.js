@@ -248,6 +248,8 @@ console.log("sauccess")
                 navigation.navigate('EnergyUtility',{isCheck:res?.data?.body?.isLasCorrectin})
             } else if (res?.data?.body?.isLasCorrectin == false && res?.data?.body?.nextPage == 3) {
                 navigation.navigate('ContinuingGuarantor',{isCheck:res?.data?.body?.isLasCorrectin})
+            }else if (res?.data?.body?.isLasCorrectin == true && res?.data?.body?.nextPage == 3) {
+                navigation.navigate('ContinuingGuarantor',{isCheck:res?.data?.body?.isLasCorrectin})
             }
             else if (res?.data?.body?.isLasCorrectin == false && res?.data?.body?.nextPage == 7) {
                 navigation.navigate('IncomeDetails',{isCheck:res?.data?.body?.isLasCorrectin})

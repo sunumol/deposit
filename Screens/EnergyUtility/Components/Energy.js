@@ -266,7 +266,18 @@ const Energy = ({ navigation, setAmount1, setPurpose1, setDays1,
                     navigation.navigate('Proceed')
                 }
             } else if (res?.data?.body?.isLasCorrectin == false && res?.data?.body?.nextPage == 7) {
-                navigation.navigate('IncomeDetails')
+                if (customerdetail !== 'UNEMPLOYED') {
+                    navigation.navigate('IncomeDetails', { relationShip: relationShip,isCheck:res?.data?.body?.isLasCorrectin })
+                } else if (customerdetail == 'UNEMPLOYED' && spouseDetail !== 'UNEMPLOYED') {
+                    navigation.navigate('IncomeDetailsSpouse',{isCheck:res?.data?.body?.isLasCorrectin})
+                } else if (customerdetail == 'UNEMPLOYED' && spouseDetail == 'UNEMPLOYED') {
+                    saveIncomeDetails_Spouse()
+                    navigation.navigate('Proceed')
+                }
+                else {
+                    saveIncomeDetails_Spouse()
+                    navigation.navigate('Proceed')
+                }
             } else if (res?.data?.body?.isLasCorrectin == false && res?.data?.body?.nextPage == 8) {
                 navigation.navigate('IncomeDetailsSpouse')
             }

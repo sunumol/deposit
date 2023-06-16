@@ -100,7 +100,7 @@ const CorrectionScreen = ({ navigation }) => {
                    
                     navigation.navigate('EnergyUtility',{isCheck:res?.data?.body?.isLasCorrectin})
                 } else if (res?.data?.body?.nextPage == 7) {
-                    navigation.navigate('IncomeDetails', { relationShip: 'Customer' })
+                    navigation.navigate('IncomeDetails', { relationShip: 'Customer',isCheck:res?.data?.body?.isLasCorrectin })
                 } else if (res?.data?.body?.nextPage == 8) {
                     navigation.navigate('IncomeDetails', { relationShip: 'Spouse',isCheck:res?.data?.body?.isLasCorrectin })
                 } else if (res?.data?.body?.nextPage == 9) {

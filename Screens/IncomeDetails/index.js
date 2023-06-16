@@ -41,7 +41,7 @@ export function numberWithCommas(x) {
 }
 
 const IncomeDetails = ({ navigation, route }) => {
-    console.log('IncomeD=====>>', route?.params?.relationShip)
+    console.log('IncomeD=====>>', route?.params?.isCheck)
     const isDarkMode = true
     const { t } = useTranslation();
     const [lang, setLang] = useState('')
@@ -259,7 +259,7 @@ const IncomeDetails = ({ navigation, route }) => {
             if (res?.status) {
                 if (spousejob !== 'UNEMPLOYED' ) {
             
-                   navigation.navigate('IncomeDetailsSpouse',{isCheck:res?.data?.body?.isLasCorrectin})
+                   navigation.navigate('IncomeDetailsSpouse',{isCheck:route?.params?.isCheck})
                 } else if (spousejob == 'UNEMPLOYED' ) {
                     saveIncomeDetails_Spouse()
                    navigation.navigate('Proceed')
