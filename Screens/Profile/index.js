@@ -307,7 +307,7 @@ const Profile = ({ navigation }) => {
                         setModalExitAppVisible={setModalExitAppVisible}
                     />
 
-                    <CallModal
+                   <CallModal
                         id={id}
                         ModalVisible={ModalCall}
                         onPressOut={() => {
@@ -315,7 +315,7 @@ const Profile = ({ navigation }) => {
                                 navigation.navigate('Profile')
                         }}
                         setModalVisible={setModalCall}
-                    />
+                    /> 
                 </SafeAreaProvider> : <NetWorkError setModalCall={false} />}
         </>
     );
