@@ -194,7 +194,7 @@ const Profile = ({ navigation }) => {
 
 
 
-    
+
 
     const backAction = () => {
         setModalExitAppVisible(true)
