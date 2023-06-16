@@ -20,8 +20,8 @@ const ProfileScreen = ({ navigation }) => {
     const isDarkMode = true;
     const { t } = useTranslation();
 
-    const [details, SetDetails] = useState()
-    const [custID, setCustId] = useState('S00001')
+    const [details, setDetails] = useState()
+    const [custID, setCustId] = useState('')
     const [status, setStatus] = useState(true)
     const [userName, setUserName] = useState('')
 
@@ -41,13 +41,13 @@ const ProfileScreen = ({ navigation }) => {
 
     useEffect(() => {
         AsyncStorage.getItem("CustomerId").then((value) => {
-            //setCustId(value)
-            console.log("value", custID)
+            setCustId(value)
+            console.log("value", value)
         })
         AsyncStorage.getItem('userName').then((value) => {
             setUserName(value)
         })
-
+    
 
 
     }, [])
@@ -60,18 +60,21 @@ const ProfileScreen = ({ navigation }) => {
     //.............Profile api calling.........//
 
     async function getProfileDetails() {
-
-        await api.getAgentProfile(custID).then((res) => {
+        const data = {
+            id: custID
+        }
+        await api.getAgentProfile(data).then((res) => {
             console.log('-------------------res', res)
             if (res?.status == 200) {
-                SetDetails(res?.data?.body)
+                setDetails(res?.data?.body)
                 setStatus(false)
-                console.log('-------------------res of profile', res?.data?.body)
+                AsyncStorage.setItem('SvadhanmitraID', res?.data?.body?.idToShow);
+                console.log('-------------------res of profile', res?.data?.body,'++++',custID)
             }
         })
             .catch((err) => {
                 setStatus(false)
-                console.log('-------------------err Profile', err?.response)
+                console.log('-------------------err Profile', err?.response,'++++',custID)
             })
     }
 

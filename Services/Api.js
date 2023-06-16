@@ -485,7 +485,7 @@ export const api = {
   // ------------------   get agent Profile details---------------------
   getAgentProfile: data => {
 
-    return axios.get(`${baseURL}agentProfile/${data}`, {
+    return axios.get(`${baseURL2}agentProfile/${data.id}`, {
       headers: {
         'Content-Type': 'application/json',
       }
