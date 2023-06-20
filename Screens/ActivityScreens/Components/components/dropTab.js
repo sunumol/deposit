@@ -9,6 +9,7 @@ import Icon1 from 'react-native-vector-icons/Ionicons'
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 import ActivityModal from '../components/ActiveModal';
 import { useDispatch } from 'react-redux';
+import { api } from '../../../../Services/Api';
 const ActiveTab = (props) => {
   
     const { t } = useTranslation();
@@ -55,6 +56,46 @@ const ActiveTab = (props) => {
             console.log(e)
         }
     }
+
+
+
+    // ------------------get cgt status ------------------
+
+    const getCgtStatus = async (id) => {
+        console.log('api called')
+
+        const data = {
+            "activityId": id,
+
+
+        }
+        await api.getCgtStatus(data).then((res) => {
+            console.log('-------------------res getCgtStatus', res?.data?.body)
+      
+                
+                if (res?.data?.body?.status == 'START') {
+                    props.navigation.navigate('CgtCustomer')
+                } else if (res?.data?.body?.status  == 'KCY_VERIFIED') {
+                    props.navigation.navigate('CreateTrustCircle')
+                } else if (res?.data?.body?.status  == 'ADD_TC') {
+                    props.navigation.navigate('CreateTrustCircle')
+                } else if (res?.data?.body?.status  == 'TC_CREATED') {
+                    props. navigation.navigate('DLESchedule')
+                } else if (res?.data?.body?.status  == 'FAILED') {
+                    console.log('failed+++')
+                   // props.navigation.navigate('EnergyUtility')
+                }else if (res?.data?.body?.status  == null){
+                    props.navigation.navigate('CGT')
+                }
+            
+        }).catch((err) => {
+            console.log('-------------------err  getCgtStatus', err)
+        })
+    };
+    // ------------------ ------------------
+
+
+
 
     // ------------------getDlePageNumberdetail ------------------
 
@@ -135,9 +176,9 @@ const ActiveTab = (props) => {
                             type: 'SET_CGT_ACTIVITY',
                             payload:props?.details,
                         });
-
+                        getCgtStatus(props?.details?.activityId)
                         //console.log("props passing",props?.details?.customerId)
-                        props.navigation.navigate('CGT')
+                       // props.navigation.navigate('CGT')
                     } else if (props?.details?.purpose === 'Conduct DLE') {
                         // setModalVisible(true)
 

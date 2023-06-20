@@ -33,6 +33,7 @@ import CGTCompleted from './Components/CGTCompleted'
 // --------------- Image Import -------------------
 import Date from '../CGTCustomer/Images/Date.svg';
 import Plus from '../../assets/image/Plus.svg';
+import CGTstatus from '../../Components/CGTstatus';
 
 const { height, width } = Dimensions.get('screen');
 
@@ -43,21 +44,25 @@ const CreateTrustCircle = ({ navigation, route }) => {
 
     const [ModalVisible, setModalVisible] = useState(false)
     const [ModalVisible1, setModalVisible1] = useState(false)
+    const [ModalVisible2, setModalVisible2] = useState(false)
     const [ModalVisible3, setModalVisible3] = useState(false)
     // --------- Redux State -------------------------------------
     const customerList = useSelector(state => state.customerList);
     
     const customerID = useSelector(state => state.customerID);
-    const cgtCustomerDetails = useSelector(state => state.cgtCustomerDetails);
+   // const cgtCustomerDetails = useSelector(state => state.cgtCustomerDetails);
     const dispatch = useDispatch()
     const [custID, setCustId] = useState('')
     const [minLimit, setMinLimit] = useState()
     const [maxLimit, setMaxLimit] = useState()
+    const [cgtCustomerDetails,setcgtCustomerDetails] = useState()
+    const [tcmember,settcmember] = useState()
     const [customerList2, setCustomerList2] = useState()
     const activityId = useSelector(state => state.activityId);
     const cgtactivity = useSelector(state => state.cgtactivity);
     const handleGoBack = useCallback(() => {
-        navigation.navigate('CGT')// -----> Todo back navigation with activity ID
+        setModalVisible2(true)
+       // navigation.navigate('CGT')// -----> Todo back navigation with activity ID
         return true; // Returning true from onBackPress denotes that we have handled the event
     }, [navigation]);
 
@@ -76,6 +81,8 @@ const CreateTrustCircle = ({ navigation, route }) => {
     useEffect(() => {
         AsyncStorage.getItem("CustomerId").then((value) => {
             setCustId(value)
+            getDetails()
+            
         })
     
     }, [])
@@ -83,8 +90,45 @@ const CreateTrustCircle = ({ navigation, route }) => {
     useEffect(() => {
         getTCLimitDetails()
         getTclist()
+        getAllTrustCircleMembers()
         console.log('++++++=======',customerList,'==========+++++++++++',cgtactivity?.mobileNumber)
     }, [customerList, customerID])
+
+
+    const getDetails = async () => {
+        const data = {
+            "activityId": activityId
+        };
+        await api.getCGTDetails(data).then((res) => {
+            console.log('-------------------res123 crt', res)
+            setcgtCustomerDetails(res?.data?.body)
+            getDLEschedule(res?.data?.body?.primaryCustomerId)
+            getAllTrustCircleMembers()
+        })
+            .catch((err) => {
+                setStatus(false)
+                console.log('-------------------err123 crt', err?.response)
+            })
+    };
+
+
+
+    const getAllTrustCircleMembers = async () => {
+        const data = {
+            "activityId": activityId
+        };
+        await api.getAllTrustCircleMembers(data).then((res) => {
+            console.log('-------------------getAllTrustCircleMembers', res)
+            settcmember(res?.data?.body)
+            // getDLEschedule(res?.data?.body?.primaryCustomerId)
+        })
+            .catch((err) => {
+                setStatus(false)
+                console.log('-------------------getAllTrustCircleMembers', err?.response)
+            })
+    };
+
+
 
     // ------------------ getTCLimitDetails Api Call Start ------------------
     const getTCLimitDetails = async () => {
@@ -119,21 +163,21 @@ const CreateTrustCircle = ({ navigation, route }) => {
     };
     // ------------------ HomeScreen Api Call End ------------------
 
-    useEffect(() => {
-        getDLEschedule()
-        console.log('------------', customerList)
-    }, [])
+    // useEffect(() => {
+    //     getDLEschedule()
+    //     console.log('------------', customerList)
+    // }, [])
 
     useEffect(() => {
-        const state= customerList?.filter((item,i)=>item?.mobileNumber === cgtactivity?.mobileNumber)
-        const states= customerList?.filter((item,i)=>item?.mobileNumber !== cgtactivity?.mobileNumber)
+        const state= tcmember?.filter((item,i)=>item?.mobileNumber === cgtactivity?.mobileNumber)
+        const states= tcmember?.filter((item,i)=>item?.mobileNumber !== cgtactivity?.mobileNumber)
         console.log('------jhjkshjkfherigfh------',state)
         if(state?.length){
             setCustomerList2(states)
         }else{
-            setCustomerList2(customerList)
+            setCustomerList2(tcmember)
         }
-    }, [cgtactivity,customerList])
+    }, [cgtactivity,tcmember])
 
     const getTclist = async () => {
         console.log('api called', customerID, cgtCustomerDetails?.primaryCustomerId)
@@ -153,9 +197,12 @@ const CreateTrustCircle = ({ navigation, route }) => {
     // ------------------ HomeScreen Api Call End -----------------------
 
     // ------------------ get Slot Api Call Start -----------------------
-    const getDLEschedule = async () => {
+    const getDLEschedule = async (value) => {
+
+
+        console.log('1=================================')
         const data = {
-            "customerId": cgtCustomerDetails?.primaryCustomerId,
+            "customerId": value,
         };
         await api.getDLEschedule(data).then((res) => {
             console.log('------------------- DLE res123', res)
@@ -315,7 +362,7 @@ const CreateTrustCircle = ({ navigation, route }) => {
                                 )
                             })}
 
-                            {customerList?.length > 0 && customerList?.length <= maxLimit
+                            {tcmember?.length > 0 && tcmember?.length <= 4
                                 ? <TouchableOpacity style={styles.viewCard} onPress={() => navigation.navigate('ConfirmMembers', { id: route?.params?.customerDetails?.primaryCustomerId })}>
 
                                     <View style={{ marginLeft: width * 0.05 }}>
@@ -330,10 +377,10 @@ const CreateTrustCircle = ({ navigation, route }) => {
 
                         {/* --------------------------------- Button Start--------------------------------------------------------------------------------------------------------------------- */}
                         <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                            {customerList?.length > 0
+                            {tcmember?.length > 0
                                 ? <TouchableOpacity style={[styles.Button1,
-                                { backgroundColor: customerList?.length >= minLimit ? COLORS.colorB : '#ECEBED' }]} onPress={() => customerList?.length >= minLimit ? CreateTrustCircle() : null}>
-                                    <Text style={[styles.text1, { color: customerList?.length >= minLimit ? COLORS.colorBackground : '#979C9E', paddingLeft: width * 0.02 }]}>Create Trust Circle</Text>
+                                { backgroundColor: tcmember?.length >= minLimit ? COLORS.colorB : '#ECEBED' }]} onPress={() => tcmember?.length >= minLimit ? CreateTrustCircle() : null}>
+                                    <Text style={[styles.text1, { color: tcmember?.length >= minLimit ? COLORS.colorBackground : '#979C9E', paddingLeft: width * 0.02 }]}>Create Trust Circle</Text>
                                 </TouchableOpacity>
                                 :
                                 <TouchableOpacity style={[styles.Button1, { backgroundColor: COLORS.colorB }]}
@@ -353,6 +400,17 @@ const CreateTrustCircle = ({ navigation, route }) => {
                 :
                 <NetWorkError />
             }
+
+<CGTstatus
+                Press={() => {setModalVisible2(false) }}
+                Press1={() => {setModalVisible2(false),navigation.navigate('ActivityScreens') }}
+                ModalVisible={ModalVisible2}
+                setModalVisible={setModalVisible2}
+                onPressOut={() => {
+                    setModalVisible2(false)
+                }}
+                navigation={navigation}
+            />
 
 
             <TrustModal

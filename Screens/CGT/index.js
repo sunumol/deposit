@@ -19,6 +19,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import Cgt from './Components/cgt'
 import { useSelector } from 'react-redux';
+import CGTstatus from '../../Components/CGTstatus';
 
 const CgtScreen = ({ navigation,route }) => {
 
@@ -27,7 +28,7 @@ const CgtScreen = ({ navigation,route }) => {
     const { t } = useTranslation();
     const [lang, setLang] = useState('')
     const [BStatus, setBstatus] = useState(false)
-
+    const [ModalVisible2,setModalVisible2] = useState(false)
     const activityId = useSelector(state => state.activityId);
 
 
@@ -50,7 +51,8 @@ const CgtScreen = ({ navigation,route }) => {
         if (BStatus) {
             setBstatus(false)
         } else {
-            navigation.goBack()
+           // navigation.goBack()
+           setModalVisible2(true)
         }
         return true; // Returning true from onBackPress denotes that we have handled the event
     }, [navigation]);
@@ -73,6 +75,17 @@ const CgtScreen = ({ navigation,route }) => {
             <View style={styles.ViewContent}>
                 <Cgt navigation={navigation} activityId={activityId}  />
             </View>
+
+            <CGTstatus
+                Press={() => {setModalVisible2(false) }}
+                Press1={() => {setModalVisible2(false),navigation.navigate('ActivityScreens') }}
+                ModalVisible={ModalVisible2}
+                setModalVisible={setModalVisible2}
+                onPressOut={() => {
+                    setModalVisible2(false)
+                }}
+                navigation={navigation}
+            />
 
         </SafeAreaProvider>
     )

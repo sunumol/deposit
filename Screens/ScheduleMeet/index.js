@@ -37,7 +37,7 @@ const ScheduleMeet = ({ navigation, route }) => {
     const { t } = useTranslation();
     const [lang, setLang] = useState('')
     const [BStatus, setBstatus] = useState(false)
-    const [selectedDate, setSelectedDate] = useState()
+    const [selectedDate, setSelectedDate] = useState(new Date())
     const [ModalVisible, setModalVisible] = useState(false)
     const [ModalVisible1, setModalVisible1] = useState(false)
     const cgtCustomerDetails = useSelector(state => state.cgtCustomerDetails);

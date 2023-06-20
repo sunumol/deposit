@@ -42,7 +42,7 @@ const ConfirmMembers = ({ navigation }) => {
   const customerList = useSelector(state => state.customerList);
   const customerID = useSelector(state => state.customerID);
   const cgtCustomerDetails = useSelector(state => state.cgtCustomerDetails);
-
+  const activityId = useSelector(state => state.activityId);
 
 
   const datas = [
@@ -210,6 +210,27 @@ const ConfirmMembers = ({ navigation }) => {
   };
 
 
+
+
+
+
+  // ------------------ Update Activity Reject Api Call Start ------------------
+  const TCMemberadded = async () => {
+    const data = {
+      "activityId": activityId,
+      "memberId": selectedItem,
+    
+    };
+    await api.addNewTrustCircleMember(data).then((res) => {
+      console.log('-------------------addNewTrustCircleMember', res?.data)
+
+    })
+      .catch((err) => {
+        console.log('-------------------addNewTrustCircleMember error', err?.response,activityId)
+      })
+  };
+
+
   //   // ------------------ Update Activity Reject Api Call End ------------------
   //   const getTclist = async (phone) => {
   //     console.log('api called confirm',cgtCustomerDetails.primaryCustomerId,customerID)
@@ -361,6 +382,7 @@ const ConfirmMembers = ({ navigation }) => {
                 type: 'SET_SELECTED_CUSTOMERID',
                 payload: ids,
               });
+              TCMemberadded()
               navigation.navigate('CreateTrustCircle')
             }}
               style={[styles.buttonView, { backgroundColor: COLORS.colorB }]}>

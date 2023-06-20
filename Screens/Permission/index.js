@@ -129,6 +129,8 @@ const Permission = ({ navigation }) => {
                 PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
 
             ]);
+            console.log(granted,'----------------------------------------------------------------------------------------------------')
+
 
             if (granted['android.permission.CAMERA'] === PermissionsAndroid.RESULTS.GRANTED && granted['android.permission.ACCESS_FINE_LOCATION'] === PermissionsAndroid.RESULTS.GRANTED && granted['android.permission.READ_SMS'] === PermissionsAndroid.RESULTS.GRANTED && granted['android.permission.WRITE_EXTERNAL_STORAGE'] === PermissionsAndroid.RESULTS.GRANTED ) {
                 Geolocation.getCurrentPosition(

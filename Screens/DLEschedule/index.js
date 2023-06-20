@@ -25,6 +25,7 @@ import DLE from './Components/DLE';
 import CGTModal from './Components/CGTModal';
 import { api } from '../../Services/Api';
 import { useSelector } from 'react-redux';
+import CGTstatus from '../../Components/CGTstatus';
 
 const DLESchedule = ({ navigation,route}) => {
     //const route = useRoute();
@@ -35,6 +36,7 @@ const DLESchedule = ({ navigation,route}) => {
     const [BStatus, setBstatus] = useState(false)
     const [tcdetail,setTcdetail] = useState('')
     const [ModalVisible1, setModalVisible1] = useState(false)
+    const [ModalVisible2, setModalVisible2] = useState(false)
     const cgtCustomerDetails = useSelector(state => state.cgtCustomerDetails);
 
     useEffect(() => {
@@ -77,7 +79,8 @@ const DLESchedule = ({ navigation,route}) => {
 
     const handleGoBack = useCallback(() => {
 
-        navigation.navigate('Profile')
+        //navigation.navigate('Profile')
+        setModalVisible2(true)
 
         return true; // Returning true from onBackPress denotes that we have handled the event
     }, [navigation]);
@@ -115,6 +118,16 @@ console.log('focus==========')
                  set={route?.params?.set} 
                  list ={tcdetail}/>}
             </View>
+            <CGTstatus
+                Press={() => {setModalVisible2(false) }}
+                Press1={() => {setModalVisible2(false),navigation.navigate('Profile') }}
+                ModalVisible={ModalVisible2}
+                setModalVisible={setModalVisible2}
+                onPressOut={() => {
+                    setModalVisible2(false)
+                }}
+                navigation={navigation}
+            />
             <CGTModal
 
                 ModalVisible={ModalVisible1}
