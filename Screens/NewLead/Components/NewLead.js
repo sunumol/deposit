@@ -50,6 +50,8 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus,setbackstate }) 
     const [addressFocus1, setAddressFocus1] = useState(false);
     const [customerNumber, setCustomerNumber] = useState('');
     const [ModalVillage, setModalVillage] = useState(false)
+    const [moberror,setMoberror] = useState(false);
+    const [pinerror,setPinerror] = useState(false);
     const [custID,setCustId] = useState('')
     const adddressRef = useRef();
     const PinRef = useRef();
@@ -91,6 +93,7 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus,setbackstate }) 
     const OnchangeNumber = (num) => {
         if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(num) || num === '') {
             setMobile(num)
+            setMoberror(false)
 
         } else {
             ToastAndroid.show(t('common:Valid'), ToastAndroid.SHORT);
@@ -141,12 +144,14 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus,setbackstate }) 
             setMessage('Please enter a valid mobile number')
             setMobile(''),
             MobileRef?.current?.focus()
+            setMoberror(true)
             console.log("inside this1")
             setValidModal1(true)
         } else if (firstDigitStr === '1' || firstDigitStr === '2' || firstDigitStr === '3' || firstDigitStr === '4' || firstDigitStr === '5' || firstDigitStr === '0') {
             setMessage('Please enter a valid mobile number')
             setMobile('')
             MobileRef?.current?.focus()
+            setMoberror(true)
             setValidModal1(true)
             console.log("inside this2")
         } else if (verifyPhone(Mobile)) {
@@ -154,11 +159,13 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus,setbackstate }) 
             setValidModal1(true)
             setMobile('')
             MobileRef?.current?.focus()
+            setMoberror(true)
             console.log("inside this3")
         } else if (!(/^\d{10}$/.test(Mobile))) {
             setMessage('Please enter a valid mobile number')
             setMobile('')
             MobileRef?.current?.focus()
+            setMoberror(true)
             setValidModal1(true)
             console.log("inside this4")
         }
@@ -167,6 +174,7 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus,setbackstate }) 
             setMessage('Please enter a valid mobile number')
             setMobile('')
             MobileRef?.current?.focus()
+            setMoberror(true)
             setValidModal1(true)
         }
         else {
@@ -191,6 +199,7 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus,setbackstate }) 
                     setMessage('This number is already registered')
                     setMobile('')
                     MobileRef?.current?.focus()
+                    setMoberror(true)
                     setValidModal1(true)
                 }
                 else if (res?.data?.body == 'Lead generated') {
@@ -206,6 +215,7 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus,setbackstate }) 
                     setMessage('This PIN is not under your service area')
                     setPincode('')
                     PinRef?.current?.focus()
+                    setPinerror(true)
                     setValidModal1(true)
                 }
             })
@@ -285,7 +295,7 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus,setbackstate }) 
                                         <TextInput
                                                     
                                                     style={[styles.textInput, {
-                                                        color:'#1A051D', borderColor:  'rgba(236, 235, 237, 1)'
+                                                        color:'#1A051D', borderColor:moberror ? 'red' :  'rgba(236, 235, 237, 1)'
                                                     }]}
                                                     maxLength={10}
                                                     value={Mobile}
@@ -321,7 +331,7 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus,setbackstate }) 
                                         <TextInput
                                                     
                                                     style={[styles.textInput, {
-                                                        color:'#1A051D', borderColor:  'rgba(236, 235, 237, 1)'
+                                                        color:'#1A051D', borderColor: pinerror ? 'red' : 'rgba(236, 235, 237, 1)'
                                                     }]}
                                                     maxLength={6}
                                                     value={Pincode}
@@ -338,8 +348,10 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus,setbackstate }) 
                     
                                                         if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(text) || text === '') {
                                                             setPincode(text)
+                                                            setPinerror(false)
                                                             console.log("pincode", text)
                                                             setPincode(text)
+                                                            setPinerror(false)
                     
                                                             if (text?.length === 6) {
                                                                 setVStatus(true)

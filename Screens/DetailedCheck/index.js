@@ -153,7 +153,7 @@ useEffect(()=>{
 
             <Header name="Detailed Eligibility Check" navigation={navigation} onPress={handleGoBack} />
 
-            <View style={styles.ViewContent}>
+            <ScrollView showsVerticalScrollIndicator={false} style={styles.ViewContent}>
                 <DetailChecks
                     navigation={navigation}
                     details={basicdetail}
@@ -166,7 +166,7 @@ useEffect(()=>{
                     setvillagestatus={setvillagestatus}
                    setbackstate={backstate}
                 />
-            </View>
+            </ScrollView>
 
             <ModalSave
                 Press={() => {

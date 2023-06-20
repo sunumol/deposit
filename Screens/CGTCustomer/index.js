@@ -33,7 +33,7 @@ import Verified from '../../assets/Verified.svg'
 // ------------- Import Image --------
 import Date from './Images/Date.svg';
 import { useSelector } from 'react-redux';
-
+import CGTstatus from '../../Components/CGTstatus';
 const { height, width } = Dimensions.get('screen');
 
 const CgtCustomer = ({ navigation, route }) => {
@@ -44,7 +44,7 @@ const CgtCustomer = ({ navigation, route }) => {
     const [ModalVisible, setModalVisible] = useState(false)
     const [ModalError, setModalError] = useState(false)
     const [ModalReason, setModalReason] = useState(false)
-
+    const [ModalVisible2, setModalVisible2] = useState(false)
     const [details, setDetails] = useState()
     const [custID, setCustId] = useState()
     const [Status,setStatus] = useState(true)
@@ -84,8 +84,8 @@ const CgtCustomer = ({ navigation, route }) => {
     const dispatch = useDispatch()
 
     const handleGoBack = useCallback(() => {
-
-        navigation.goBack()
+        setModalVisible2(true)
+       // navigation.goBack()
 
         return true; // Returning true from onBackPress denotes that we have handled the event
     }, [navigation]);
@@ -337,6 +337,17 @@ const CgtCustomer = ({ navigation, route }) => {
                 setModalVisible={setModalReason}
                 setRejectReason={setRejectReason}
                 data={data}
+            />
+
+<CGTstatus
+                Press={() => {setModalVisible2(false) }}
+                Press1={() => {setModalVisible2(false),navigation.navigate('ActivityScreens') }}
+                ModalVisible={ModalVisible2}
+                setModalVisible={setModalVisible2}
+                onPressOut={() => {
+                    setModalVisible2(false)
+                }}
+                navigation={navigation}
             />
 
         </SafeAreaProvider>

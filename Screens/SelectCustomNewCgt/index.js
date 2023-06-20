@@ -101,10 +101,11 @@ const SelectCustomerNewCgt = ({ navigation, route }) => {
 
   // ------------------ get Customer List Api Call Start ------------------
   const getCustomerList = async (searchvalue) => {
-
+const empid = await AsyncStorage.getItem("CustomerId")
     console.log('search------->>>>>', searchvalue,clearpop,text)
     const data = {
-      "employeeId":Number(custID),
+      // "employeeId":Number(custID),
+      "employeeId":Number(empid),
       "customerNameOrNumber": searchvalue ? searchvalue : ''
     };
     if(searchvalue){
@@ -150,6 +151,12 @@ const SelectCustomerNewCgt = ({ navigation, route }) => {
   useEffect(() => {
     getCustomerList()
   }, [enab])
+
+
+  useEffect(() => {
+    getCustomerList()
+
+  }, [])
 
   const removeEmojis = (string) => {
     // emoji regex from the emoji-regex library

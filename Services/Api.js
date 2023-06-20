@@ -650,6 +650,43 @@ export const api = {
       }
     })
   },
+
+
+
+    //CGT Status
+    getCgtStatus: (data) => {
+      return axios.post(`${baseURL2}getCgtStatus`, data, {
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      })
+    },
+
+
+      //CGT add a new trust circle member
+      addNewTrustCircleMember: (data) => {
+        return axios.post(`${baseURL2}addNewTrustCircleMember`, data, {
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        })
+      },
+
+
+
+      //CGT gettrust circle member
+      getAllTrustCircleMembers: (data) => {
+        return axios.post(`${baseURL2}getAllTrustCircleMembers`, data, {
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        })
+      },
+
+
+
+
+
    //---------------- In App Notification ------------------------
    getNotification: (data) => {
     return axios.post(`${baseURL5}notificationsHistory`, data, {
