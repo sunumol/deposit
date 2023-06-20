@@ -72,7 +72,6 @@ const LoanDetails = ({ navigation,route }) => {
                                     }
                                 }
                                 }>
-                                    <Second />
                                     <View style={styles.columContainer}>
                                         <Text style={styles.KycText}>{item?.message.replace(/[0-9]/g, '')}</Text>
                                         <Text style={styles.timeText}>{moment(item?.createdOn).format('dddd LT')}</Text>
@@ -109,7 +108,6 @@ const styles = StyleSheet.create({
     },
     columContainer: {
         flexDirection: 'column',
-        paddingLeft: 21
     },
     lineView: {
         height: 1, 
