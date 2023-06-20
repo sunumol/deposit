@@ -75,7 +75,9 @@ const Cgt = ({ navigation, data, date, selectedData, status }) => {
         return (
             <View style={{ justifyContent: 'space-around', margin: 5 }} key={index}>
                 <TouchableOpacity
+        
                     onPress={() => {
+                        if(item?.selection == true ){
                         if (data[index + 1]?.availabilityStatu == "notAvailable" || item.availabilityStatu == "notAvailable") {
                             setModalVisible(true)
                             setErrorMessage('Reschedule meet activities from calendar')
@@ -86,9 +88,27 @@ const Cgt = ({ navigation, data, date, selectedData, status }) => {
                         else {
                             rescheduleAPi(item.time)
                         }
+                    }
                     }}
-                    style={[styles.Touch, { borderColor: item.availabilityStatu == "partiallyAvailable" ? 'rgba(242, 153, 74, 1)' : item.availabilityStatu == "fullyAvailable" ? 'rgba(39, 174, 96, 1)' : item.availabilityStatu == "fullyAllocated" ? 'rgba(234, 64, 71, 1)' : item.availabilityStatu == "notAvailable" ? 'rgba(155, 81, 224, 1)' : null, backgroundColor: COLORS.colorBackground }]}>
-                    <Text style={[styles.timeText1, { color: item.availabilityStatu == "partiallyAvailable" ? 'rgba(242, 153, 74, 1)' : item.availabilityStatu == "fullyAvailable" ? 'rgba(39, 174, 96, 1)' : item.availabilityStatu == "fullyAllocated" ? 'rgba(234, 64, 71, 1)' : item.availabilityStatu == "notAvailable" ? 'rgba(155, 81, 224, 1)' : null }]}>{item.time}</Text>
+                    style={[styles.Touch, { borderColor:item.availabilityStatu == "partiallyAvailable" &&  item?.selection == true ? 'rgba(242, 153, 74, 1)' :
+                        item.availabilityStatu == "partiallyAvailable" &&  item?.selection == false ? 'rgb(211, 211, 211)' :
+                         item.availabilityStatu == "fullyAvailable" && item?.selection == true ? 'rgba(39, 174, 96, 1)' : 
+                         item.availabilityStatu == "fullyAllocated" && item?.selection == true ? 'rgba(234, 64, 71, 1)' : 
+                         item.availabilityStatu == "fullyAllocated" && item?.selection == false ? 'rgb(211, 211, 211)' :
+                         item.availabilityStatu == "notAvailable" && item?.selection == false ? 'rgb(211, 211, 211)' :
+                         item.availabilityStatu == "notAvailable" && item?.selection == true ? 'rgba(162, 148, 200, 1)':
+                          item.availabilityStatu == "fullyAvailable" && item?.selection == false &&
+                         'rgb(211, 211, 211)' , backgroundColor: COLORS.colorBackground }]}>
+                    <Text style={[styles.timeText1, { color: 
+                        item.availabilityStatu == "partiallyAvailable" &&  item?.selection == true ? 'rgba(242, 153, 74, 1)' :
+                        item.availabilityStatu == "partiallyAvailable" &&  item?.selection == false ? 'rgb(211, 211, 211)' :
+                         item.availabilityStatu == "fullyAvailable" && item?.selection == true ? 'rgba(39, 174, 96, 1)' : 
+                         item.availabilityStatu == "fullyAllocated" && item?.selection == true ? 'rgba(234, 64, 71, 1)' : 
+                         item.availabilityStatu == "fullyAllocated" && item?.selection == false ? 'rgb(211, 211, 211)' :
+                         item.availabilityStatu == "notAvailable" && item?.selection == false ? 'rgb(211, 211, 211)' :
+                         item.availabilityStatu == "notAvailable" && item?.selection == true ? 'rgba(162, 148, 200, 1)':
+                          item.availabilityStatu == "fullyAvailable" && item?.selection == false &&
+                         'rgb(211, 211, 211)' }]}>{item.time}</Text>
                 </TouchableOpacity>
             </View>
         )

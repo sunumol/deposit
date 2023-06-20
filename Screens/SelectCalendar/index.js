@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     StyleSheet,
     SafeAreaView,
@@ -34,7 +34,9 @@ const Calendar = ({ navigation, route }) => {
     const [status, setStatus] = useState(true)
     const [ModalVisible1, setModalVisible1] = useState(false)
     const [ModalVisible, setModalVisible] = useState(false)
-const [custID,setCustId] = useState('')
+    const [custID, setCustId] = useState('')
+    const [Dates, setDate] = useState(new Date())
+
     useEffect(() => {
         getData()
     }, [])
@@ -53,7 +55,7 @@ const [custID,setCustId] = useState('')
             setCustId(value)
             getCGTslot(value)
         })
-    
+
     }, [])
     useFocusEffect(
         React.useCallback(() => {
@@ -70,15 +72,53 @@ const [custID,setCustId] = useState('')
         getCGTslot()
     }
 
+    // Function to convert time to minutes since midnight
+    function convertToMinutes(time) {
+
+        // Split the time string into hours, minutes, and AM/PM
+        const [hourString, minuteString, period] = time.split(/:| /);
+        let hours = parseInt(hourString);
+        const minutes = parseInt(minuteString);
+
+        // Adjust hours for PM time
+        if (period === 'PM' && hours !== 12) {
+            hours += 12;
+        }
+
+        // Convert to minutes
+        const totalMinutes = hours * 60 + minutes;
+        return totalMinutes;
+    }
+
+
     // ------------------ get Slot Api Call Start ------------------
     const getCGTslot = async (value) => {
+        var date1 = moment(Dates, "HH:mm:ss").format("hh:mm A")
         const data = {
-            "employeeId": custID?Number(custID): Number(value),
+            "employeeId": custID ? Number(custID) : Number(value),
             "selectedDate": moment(NewDates).utc().format('DD-MM-YYYY')
         };
         await api.getCGTslot(data).then((res) => {
             console.log("data print", NewDates)
-            setSlotlist(res?.data?.body[0].sloatActivityList);
+            const temp = res?.data?.body[0].sloatActivityList
+            temp.forEach((element, index) => {
+
+                const minutes1 = convertToMinutes(date1);
+                const minutes2 = convertToMinutes(element?.time);
+                if (minutes1 < minutes2 && moment(NewDates).utc().format('DD-MM-YYYY') === moment(Dates).utc().format('DD-MM-YYYY')) {
+                    element.selection = true;
+
+                } else if (minutes1 > minutes2 && moment(NewDates).utc().format('DD-MM-YYYY') === moment(Dates).utc().format('DD-MM-YYYY')) {
+                    element.selection = false;
+
+                } else if (moment(NewDates).utc().format('DD-MM-YYYY') !== moment(Dates).utc().format('DD-MM-YYYY')) {
+                    element.selection = true;
+                }
+
+                console.log("temp data", temp)
+            })
+            setSlotlist(temp);
+            //setSlotlist(res?.data?.body[0].sloatActivityList);
             setStatus(false)
         }).catch((err) => {
             console.log('-------------------err', err?.response)
@@ -89,13 +129,31 @@ const [custID,setCustId] = useState('')
 
     // ------------------ get Slot Api Call Start ------------------
     const getCGTslot_callback = async (cgtdate) => {
+        var date1 = moment(Dates, "HH:mm:ss").format("hh:mm A")
         const data = {
-            "employeeId":Number(custID),
+            "employeeId": Number(custID),
             "selectedDate": moment(cgtdate ? cgtdate : NewDates).utc().format('DD-MM-YYYY')
         };
         await api.getCGTslot(data).then((res) => {
+            const temp = res?.data?.body[0].sloatActivityList
+            temp.forEach((element, index) => {
 
-            setSlotlist(res?.data?.body[0].sloatActivityList);
+                const minutes1 = convertToMinutes(date1);
+                const minutes2 = convertToMinutes(element?.time);
+                if (minutes1 < minutes2 && moment(NewDates).utc().format('DD-MM-YYYY') === moment(Dates).utc().format('DD-MM-YYYY')) {
+                    element.selection = true;
+
+                } else if (minutes1 > minutes2 && moment(NewDates).utc().format('DD-MM-YYYY') === moment(Dates).utc().format('DD-MM-YYYY')) {
+                    element.selection = false;
+
+                } else if (moment(NewDates).utc().format('DD-MM-YYYY') !== moment(Dates).utc().format('DD-MM-YYYY')) {
+                    element.selection = true;
+                }
+
+                console.log("temp data", temp)
+            })
+            setSlotlist(temp);
+            //setSlotlist(res?.data?.body[0].sloatActivityList);
             setStatus(false)
         })
             .catch((err) => {
@@ -105,7 +163,7 @@ const [custID,setCustId] = useState('')
     };
 
     useEffect(() => {
- 
+
     }, []);
 
     useEffect(() => {
@@ -121,7 +179,7 @@ const [custID,setCustId] = useState('')
     return (
         <SafeAreaProvider>
             <SafeAreaView style={styles.container1} />
-            <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} backgroundColor={"#002B59"}/>
+            <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} backgroundColor={"#002B59"} />
 
             <Header navigation={navigation} name={route?.params?.title} />
             {status ?
@@ -136,8 +194,8 @@ const [custID,setCustId] = useState('')
                         NewDates={NewDates}
                         getCGTslot={() => getCGTslot()}
                     />
-            
-                  <View style={{ flex: 1 }}>
+
+                    <View style={{ flex: 1 }}>
                         <Cgt
                             navigation={navigation}
                             data={slotlist}
@@ -222,5 +280,5 @@ const styles = StyleSheet.create({
         color: COLORS.colorB,
         paddingRight: 10
     },
-  
+
 })

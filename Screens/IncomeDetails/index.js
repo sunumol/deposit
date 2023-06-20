@@ -67,15 +67,15 @@ const IncomeDetails = ({ navigation, route }) => {
     const activityId = useSelector(state => state.activityId);
     const [ZeroStatus, setZeroStatus] = useState(false)
     const [spouseDetail, setSpousedetail] = useState('')
-    const [avgam,setavgam] = useState(false)
+    const [avgam, setavgam] = useState(false)
     const [ModalVisible1, setModalVisible1] = useState(false)
     const [ModalReason, setModalReason] = useState(false)
     const [ModalError, setModalError] = useState(false)
     const [spouseavailable, setspouseavailable] = useState(false);
     const [spousejob, setspousejob] = useState('');
     const SpouseOccupation = useSelector(state => state?.SpouseOccupation);
-    const [custID,setCustId] = useState('')
-    const [CorrectionStatus,setCorrectionStatus] = useState()
+    const [custID, setCustId] = useState('')
+    const [CorrectionStatus, setCorrectionStatus] = useState()
 
     useEffect(() => {
         getData()
@@ -89,7 +89,7 @@ const IncomeDetails = ({ navigation, route }) => {
         AsyncStorage.getItem("CustomerId").then((value) => {
             setCustId(value)
         })
-    
+
     }, [])
     const getData = async () => {
         try {
@@ -101,12 +101,12 @@ const IncomeDetails = ({ navigation, route }) => {
         }
     }
     useEffect(() => {
-      
+
         AsyncStorage.getItem("CorrectionStatus").then((value) => {
-            console.log("getincome details correction",value)
-            
-                getIncomeDetails(value)
-         
+            console.log("getincome details correction", value)
+
+            getIncomeDetails(value)
+
         })
     }, [])
     const handleGoBack = useCallback(() => {
@@ -171,16 +171,16 @@ const IncomeDetails = ({ navigation, route }) => {
         await api.getSpousedetail(data).then((res) => {
             console.log('-------------------res spousedetail co-app', res?.data?.body)
             if (res?.status) {
-             
-                    setspouseavailable(true)
-                    setspousejob(res?.data?.body?.occupation)
-            
+
+                setspouseavailable(true)
+                setspousejob(res?.data?.body?.occupation)
+
 
             }
         }).catch((err) => {
             console.log('-------------------err spousedetail1', err?.response)
-                     setspouseavailable(false)
-                     setspousejob(null)
+            setspouseavailable(false)
+            setspousejob(err?.response?.status)
         })
     };
 
@@ -204,12 +204,12 @@ const IncomeDetails = ({ navigation, route }) => {
                 setIncomedetail(res?.data?.body)
                 setIncomedetailfield(res?.data?.body?.incomeDetailsFieldHeadders)
                 //if(value == null){
-                    setAmount(res?.data?.body?.field1)
-                    setMonth(res?.data?.body?.field2)
-                    setAvg(res?.data?.body?.field3)
-                    setPurpose(res?.data?.body?.field2)
-               // }
-               
+                setAmount(res?.data?.body?.field1)
+                setMonth(res?.data?.body?.field2)
+                setAvg(res?.data?.body?.field3)
+                setPurpose(res?.data?.body?.field2)
+                // }
+
             }
         }).catch((err) => {
             console.log('-------------------err getIncomeDetails', err?.response)
@@ -223,7 +223,7 @@ const IncomeDetails = ({ navigation, route }) => {
         console.log('api called for rejection')
         const data = {
             "activityStatus": 'Submitted wrong data',
-            "employeeId":Number(custID),
+            "employeeId": Number(custID),
             "activityId": activityId
         }
         await api.updateActivity(data).then((res) => {
@@ -254,20 +254,21 @@ const IncomeDetails = ({ navigation, route }) => {
 
         }
         await api.saveIncomeDetails(data).then((res) => {
-            console.log("data pass123",res)
-            console.log('-------------------res saveIncomeDetails c',spousejob,spouseavailable)
+            console.log("data pass123", res)
+            console.log('-------------------res saveIncomeDetails c', spousejob, spouseavailable)
             if (res?.status) {
-                if (spousejob !== 'UNEMPLOYED' ) {
-            
-                   navigation.navigate('IncomeDetailsSpouse',{isCheck:route?.params?.isCheck})
-                } else if (spousejob == 'UNEMPLOYED' ) {
+                if (spousejob === 500) {
                     saveIncomeDetails_Spouse()
-                   navigation.navigate('Proceed')
-                }else if (spouseavailable == 'false'){
-                
-                    navigation.navigate('Proceed') 
+                    navigation.navigate('Proceed')
+                } else if (spousejob == 'UNEMPLOYED') {
+                    saveIncomeDetails_Spouse()
+                    navigation.navigate('Proceed')
+                   
+                } else if (spousejob !== 'UNEMPLOYED') {
+                    navigation.navigate('IncomeDetailsSpouse', { isCheck: route?.params?.isCheck })
+                  
                 }
-             
+
                 // navigation.navigate('DebitDetails')
             }
         }).catch((err) => {
@@ -313,16 +314,16 @@ const IncomeDetails = ({ navigation, route }) => {
 
         const data = {
             "activityId": activityId,
-            "relationShip":'Spouse',
-            "field1":'',
-            "field2":'',
-            "field3":''
+            "relationShip": 'Spouse',
+            "field1": '',
+            "field2": '',
+            "field3": ''
 
         }
         await api.saveIncomeDetails(data).then((res) => {
-            console.log('-------------------res saveIncomeDetails',data)
+            console.log('-------------------res saveIncomeDetails', data)
             if (res?.status) {
-               
+
             }
         }).catch((err) => {
             console.log('-------------------err saveIncomeDetails', err?.response)
@@ -347,14 +348,14 @@ const IncomeDetails = ({ navigation, route }) => {
     };
     const setMonthdata = (text) => {
         setAvg('')
-        if (text<13) {
+        if (text < 13) {
             setMonth(text)
         } else {
             setMonth('')
         }
     }
 
-   
+
     { console.log("spouse detail dsa", spouseDetail) }
 
     useEffect(() => {
@@ -442,7 +443,7 @@ const IncomeDetails = ({ navigation, route }) => {
     return (
         <SafeAreaProvider>
             <SafeAreaView style={styles.container1} />
-            <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} backgroundColor={"#002B59"}/>
+            <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} backgroundColor={"#002B59"} />
 
             <Header name="Income Details" navigation={navigation} onPress={handleGoBack} />
             {/* <View style={styles.Header}>
@@ -534,9 +535,9 @@ const IncomeDetails = ({ navigation, route }) => {
                                                 if (Number(text) == 0) {
                                                     setAmount('')
                                                     console.log("inside occupation 2", incomedetail?.occupation)
-                                                }else if( text[0] === '0'){
+                                                } else if (text[0] === '0') {
                                                     console.log("number log", text)
-                                                } 
+                                                }
                                                 else {
                                                     setAmount(text)
                                                     console.log("inside occupation", incomedetail?.occupation)
@@ -619,15 +620,15 @@ const IncomeDetails = ({ navigation, route }) => {
                                             setZeroStatus(false)
                                             setAvg('')
                                         }
-                                        else if( text[0] === '0'){
+                                        else if (text[0] === '0') {
                                             console.log("number log", text)
-                                        } 
+                                        }
                                         else if (incomedetail?.occupation == 'FARMER' && Month === '0') {
-                                         
-                                            if(parseInt(text) <= parseInt(Amount)){
+
+                                            if (parseInt(text) <= parseInt(Amount)) {
                                                 setAvg(text)
                                                 setavgam(false)
-                                            }else{
+                                            } else {
                                                 setAvg('')
                                                 setavgam(true)
                                             }
@@ -638,18 +639,18 @@ const IncomeDetails = ({ navigation, route }) => {
                                             console.log("number log", text, Month)
                                         }
                                         else if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(text) || text === "") {
-                                            if(incomedetail?.occupation == 'SALARIED_EMPLOYEE'){
+                                            if (incomedetail?.occupation == 'SALARIED_EMPLOYEE') {
                                                 setAvg(text)
-                                            }else{
-                                                if(parseInt(text) <= parseInt(Amount)){
+                                            } else {
+                                                if (parseInt(text) <= parseInt(Amount)) {
                                                     setAvg(text)
                                                     setavgam(false)
-                                                }else{
+                                                } else {
                                                     setAvg('')
                                                     setavgam(true)
                                                 }
                                             }
-                                           
+
                                             setZeroStatus(false)
                                         }
 
@@ -657,7 +658,7 @@ const IncomeDetails = ({ navigation, route }) => {
                             </View>
                             {ZeroStatus && incomedetail?.occupation !== 'FARMER' &&
                                 <Text style={{ color: 'red', fontSize: 9, paddingTop: 3, fontFamily: FONTS.FontRegular }}>Amount cannot be ₹0</Text>}
-                                 {avgam && incomedetail?.occupation !== 'SALARIED_EMPLOYEE' &&
+                            {avgam && incomedetail?.occupation !== 'SALARIED_EMPLOYEE' &&
                                 <Text style={{ color: 'red', fontSize: 9, paddingTop: 3, fontFamily: FONTS.FontRegular }}>Average monthly income must be less than or equal to highest monthly income</Text>}
 
                             {ZeroStatus && incomedetail?.occupation == 'FARMER' && Month !== '0' &&

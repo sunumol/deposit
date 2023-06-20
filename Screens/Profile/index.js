@@ -59,6 +59,8 @@ const Profile = ({ navigation }) => {
         })
     }, [])
 
+
+
     useEffect(() => {
         if (fcmToken) {
             firebaseTokenSentTo()
@@ -180,10 +182,12 @@ const Profile = ({ navigation }) => {
         try {
             const lang = await AsyncStorage.getItem('CallActivity')
             const mobileNumber = await AsyncStorage.getItem('Mobile');
+           const details = await AsyncStorage.getItem("CallActivityDetails");
+       
             setMobileNumber(mobileNumber)
             console.log(lang, '--------------')
-            if (lang !== null) {
-                console.log("no modal data inside")
+            if (lang !== null && details !== null) {
+                console.log("no modal data inside",lang)
                 setId(lang)
                 setModalCall(true)
             }

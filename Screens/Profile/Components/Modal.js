@@ -84,6 +84,7 @@ const CallModal = ({ ModalVisible, onPressOut }) => {
     useEffect(() => {
         AsyncStorage.getItem("CallActivityDetails").then((value) => {
             setSelectedCallData(JSON.parse(value))
+            console.log("selected data".selectedCallData)
         })
     }, [])
     const [data, setData] = useState([

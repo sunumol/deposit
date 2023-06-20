@@ -335,7 +335,7 @@ const LoginScreen = ({ navigation }) => {
             mobile: '+91' + PhoneNum,
             deviceIpAddress: ipAdrress,
             simId:DeviceId, //NEED TO IMPLEMENT SIMID
-           // simId:"11111",
+           // simId:"11111",'70dc83e1227a6b8c'
         }
         console.log("data of register",data)
         await api.getLoginOtp(data).then((res) => {

@@ -259,7 +259,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
     const data = {
       "activityId": activityId,
       "mobileNumber": "+91" + num,
-      "name": relation !== 'Spouse' ? Name : "",
+      "name": relation !== 'Spouse' ? Name :'',
       "relationShip": relation,
       "occupation": relation !== 'Spouse' ? OccupationD : null
     }

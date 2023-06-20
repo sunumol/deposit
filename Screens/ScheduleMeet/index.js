@@ -88,7 +88,7 @@ const ScheduleMeet = ({ navigation, route }) => {
             "tcMemberId": route?.params?.id,
             "scheduleDate": moment(selectedDate).utc().format('DD-MM-YYYY')
         };
-        console.log("data",data)
+        console.log("data", data)
         await api.ScheduleDLE(data).then((res) => {
 
             console.log('------------------- Schedule DLE res', res)
@@ -98,7 +98,7 @@ const ScheduleMeet = ({ navigation, route }) => {
             } else {
                 setModalVisible(true)
             }
-
+            setSelectedDate()
         })
             .catch((err) => {
                 console.log('-------------------err', err?.response)
@@ -110,13 +110,13 @@ const ScheduleMeet = ({ navigation, route }) => {
     return (
         <SafeAreaProvider>
             <SafeAreaView style={styles.container1} />
-            <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'}  backgroundColor={"#002B59"}/>
+            <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} backgroundColor={"#002B59"} />
 
             <Header navigation={navigation} name={"Schedule Meeting"} onPress={handleGoBack} />
             <View style={styles.ViewContent}>
 
 
-                <CalendarStrips callback={callback}  setNewDates={setSelectedDate} NewDates={selectedDate}/>
+                <CalendarStrips callback={callback} setNewDates={setSelectedDate} NewDates={selectedDate} />
                 {/* <Cgt navigation={navigation} /> */}
 
 

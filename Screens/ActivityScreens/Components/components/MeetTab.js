@@ -24,6 +24,7 @@ const MeetTab = (props) => {
     const [spouseDetail, setSpousedetail] = useState('')
     const [customerdetail, setCustomerDetail] = useState('')
     const DLEStatus = useSelector(state => state?.DLEStatus);
+    const [error,setError] = useState()
     useEffect(() => {
         getData()
     }, [])
@@ -100,7 +101,7 @@ const MeetTab = (props) => {
     // ------------------getDlePageNumberdetail ------------------
 
     const getDlePageNumber = async (id, occupation) => {
-
+console.log("error",occupation)
 
         const data = {
             "activityId": id,
@@ -146,9 +147,14 @@ const MeetTab = (props) => {
                     // }
                     // props.navigation.navigate('IncomeDetails', { relationShip: 'Customer' })
                 } else if (res?.data?.body == 8) {
-                    if (occupation !== 'UNEMPLOYED') {
+                    console.log("error handle",error)
+                    if(occupation == 500){
+                      //  props.navigation.navigate('IncomeDetails', { relationShip: 'Customer' })
+                        props.navigation.navigate('Proceed')
+                    }
+                    else if (occupation !== 'UNEMPLOYED') {
                         props.navigation.navigate('IncomeDetailsSpouse', { relationShip: 'Spouse' })
-                    } else {
+                    } else{
                         props.navigation.navigate('Proceed')
                     }
                 } else if (res?.data?.body == 9) {
@@ -189,15 +195,19 @@ const MeetTab = (props) => {
 
                 setSpousedetail(res?.data?.body?.occupation)
                 //props.navigation.navigate('DetailCheck')
-                getDlePageNumber(id, res?.data?.body?.occupation)
+                getDlePageNumber(id, res?.data?.body?.occupation,res?.data?.body)
                 console.log("spose detail", res?.data?.body)
 
             }
         }).catch((err) => {
-            console.log('-------------------err spousedetail1', err?.response)
-            getDlePageNumber(id)
+            setError(err?.response?.status)
+       
+            console.log('-------------------err spousedetail1', err?.response?.status)
+            getDlePageNumber(id,err?.response?.status)
         })
     };
+
+ 
 
     return (
         <>

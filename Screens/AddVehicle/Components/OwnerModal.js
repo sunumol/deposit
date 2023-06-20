@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { COLORS, FONTS } from '../../../Constants/Constants';
 import { useTranslation } from 'react-i18next';
 import Icon1 from 'react-native-vector-icons/Fontisto';
-const OwnerModal = ({ visible, onPressOut,setModalVisible,setRelation,setPurpose,Purpose}) => {
+const OwnerModal = ({ visible, onPressOut,setModalVisible,setRelation,setPurpose,Purpose,Error}) => {
     const { t } = useTranslation();
    // console.log("setRelation....",setRelation)
 
@@ -43,6 +43,8 @@ const OwnerModal = ({ visible, onPressOut,setModalVisible,setRelation,setPurpose
                                 <Icon1 name="radio-btn-passive" size={18}  color={COLORS.DSMuted} />}
                             </View>
                         </TouchableOpacity >
+                        {!Error &&
+                        <>
                         <View style={styles.lineView} />
                         <TouchableOpacity style={styles.textTouch} onPress={() => {
                             setPurpose("Spouse")
@@ -58,6 +60,7 @@ const OwnerModal = ({ visible, onPressOut,setModalVisible,setRelation,setPurpose
                                 <Icon1 name="radio-btn-passive" size={18}  color={COLORS.DSMuted}/>}
                             </View>
                         </TouchableOpacity>
+                        </>}
                      
 
 

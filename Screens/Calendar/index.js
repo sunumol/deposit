@@ -34,6 +34,32 @@ const Calendar = ({ navigation, route }) => {
     const [BStatus, setBstatus] = useState(false);
     const [custID,setCustId] = useState('')
     const [unScheduledActivities, setUnScheduledActivities] = useState();
+    const [MissedActivity,setMissedActivity] = useState([])
+    const Data = [
+        {
+            id: 1,
+            name: 'Elizabeth Immanuel',
+            place: '682025',
+            phone: '828XXXXX00',
+            Initial: 'EI',
+            purpose: 'Conduct CGT',
+            color: 'rgba(158, 200, 148, 1)',
+            Date: '15 June 2023'
+        },
+        {
+            id: 2,
+            name: 'Sismi Joseph',
+            place: '682025',
+            phone: '666XXXXX00',
+            Initial: 'SJ',
+            purpose: 'Conduct DLE',
+            color: 'rgba(148, 200, 169, 1)',
+            Date: '14 June 2023'
+        },
+
+
+
+    ]
 
     useFocusEffect(
         React.useCallback(() => {
@@ -51,13 +77,14 @@ const Calendar = ({ navigation, route }) => {
 
     // ------------------ get Slot Api Call Start ------------------
     const getCGTslot = async (date) => {
+        console.log("employe id",custID)
         const data = {
             "employeeId":Number(custID),
             "selectedDate": moment(NewDates).utc().format('DD-MM-YYYY')
         };
         await api.getCGTslot(data).then((res) => {
             console.log("data print", NewDates)
-            console.log('------------------- CGT slot res', res?.data?.body[0]?.nonTimeSlotedActivities)
+            console.log('------------------- CGT slot res', res?.data)
             setSlotlist(res?.data?.body[0].sloatActivityList);
             setUnScheduledActivities(res?.data?.body[0].nonTimeSlotedActivities)
             setStatus(false)
@@ -97,6 +124,36 @@ const Calendar = ({ navigation, route }) => {
         getCGTslot(NewDates)
     }, [NewDates]);
 
+    useEffect(()=>{
+        getData()
+  
+    },[])
+    const getData = async () => {
+        try {
+            const id = await AsyncStorage.getItem('CustomerId')
+            ActivityListingApiCall(id)
+    
+
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
+    const ActivityListingApiCall = async (id) => {
+        const data = {
+            "employeeId": id,
+            "activityType": "MEET"
+        };
+        console.log("data call2",data)
+        await api.activitylistingscreenApi(data).then((res) => {
+            console.log('-------------------res meet', res?.data?.body)
+     setMissedActivity(res?.data?.body?.missedActivities
+        )
+        })
+            .catch((err) => {
+                console.log('-------------------err', err?.response)
+            })
+    };
     return (
         <SafeAreaProvider>
             <SafeAreaView style={styles.container1} />
@@ -124,14 +181,24 @@ const Calendar = ({ navigation, route }) => {
                         slotlistrefresh={getCGTslot} 
                         />
                     </View>
-                    <View style={{ flex: 0.2, justifyContent: 'flex-end' }}>
+                    <View style={{ justifyContent:'space-around' ,flexDirection:'row',alignItems:'center'}}>
                         <TouchableOpacity 
-                        style={styles.scheduleButton} 
+                        style={[styles.scheduleButton,{}]} 
                         onPress={() => navigation.navigate('CalendarActivity', {
                             data: unScheduledActivities, 
                             date: NewDates,
                         })}>
                             <Text style={styles.scheduleText}>Unscheduled Activities</Text>
+                            <Icon name="arrow-right" size={12} color={COLORS.colorB} />
+                        </TouchableOpacity>
+
+                        <TouchableOpacity 
+                        style={styles.scheduleButton} 
+                        onPress={() => navigation.navigate('MissedActivities', {
+                            data:MissedActivity, 
+                            date: NewDates,
+                        })}>
+                            <Text style={styles.scheduleText}>Missed Activities</Text>
                             <Icon name="arrow-right" size={12} color={COLORS.colorB} />
                         </TouchableOpacity>
                     </View>
@@ -179,16 +246,19 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.unScheduleBackground,
         height: 48,
         marginBottom: 27,
-        marginHorizontal: 20,
+        marginHorizontal:0,
         borderRadius: 8,
         alignItems: 'center',
         justifyContent: 'center',
-        flexDirection: 'row'
+        flexDirection: 'row',
+       paddingLeft:6,
+       paddingRight:6
     },
     scheduleText: {
         fontFamily: FONTS.FontSemiB,
         fontSize: 14,
         color: COLORS.colorB,
-        paddingRight: 10
+        paddingRight: 5
+        
     }
 })

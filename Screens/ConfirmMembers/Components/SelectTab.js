@@ -131,7 +131,7 @@ const SelectTab = (props) => {
 
                         <View style={{ paddingHorizontal: 17,marginBottom: 15 }}>
                             <Text style={styles.headTextTitle}>Address</Text>
-                            <Text style={[styles.subText, { maxWidth: 200 }]}>{props?.item?.address}</Text>
+                            <Text style={[styles.subText, { width: 260 }]}>{props?.item?.address}</Text>
                         </View>
 
                         <View style={styles.lineView} />

@@ -67,6 +67,7 @@ const Vehicle = ({ navigation,setsearchvehicledata }) => {
     const [ModalVehicle, setModalVehicle] = useState(false)
     const [CustomerDetail, setCustomerDetail] = useState([])
     const toggleCheckbox = () => setChecked(!checked);
+    const [error,setError] = useState()
 
     const Data = [
         {
@@ -129,6 +130,7 @@ const Vehicle = ({ navigation,setsearchvehicledata }) => {
                 setSpousedetail(res?.data?.body)
             }
         }).catch((err) => {
+            setError(err?.response?.status)
             console.log('-------------------err spousedetail', err?.response)
         })
     };
@@ -522,6 +524,7 @@ const Vehicle = ({ navigation,setsearchvehicledata }) => {
                 setPurpose={setPurpose}
                 setModalVisible={setModalVisible1}
                 setStatus={setStatus}
+                Error={error}
                 onPressOut={() => setModalVisible1(!ModalVisible1)}
             />
             <VehicleModal
