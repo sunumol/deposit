@@ -10,6 +10,7 @@ import {
     KeyboardAvoidingView,
     StatusBar,
     ScrollView,
+    ActivityIndicator,
     Dimensions,
     BackHandler
 } from 'react-native';
@@ -33,15 +34,17 @@ const DLESchedule = ({ navigation,route}) => {
     const isDarkMode = true
     const { t } = useTranslation();
     const [lang, setLang] = useState('')
-    const [BStatus, setBstatus] = useState(false)
+    const [status, setstatus] = useState(true)
     const [tcdetail,setTcdetail] = useState('')
+    const [details, setdetails] = useState();
     const [ModalVisible1, setModalVisible1] = useState(false)
     const [ModalVisible2, setModalVisible2] = useState(false)
     const cgtCustomerDetails = useSelector(state => state.cgtCustomerDetails);
-
+    const activityId = useSelector(state => state.activityId);
     useEffect(() => {
         getData()
         getDLEschedule()
+        getDetails()
     }, [])
 
     const getData = async () => {
@@ -53,25 +56,40 @@ const DLESchedule = ({ navigation,route}) => {
             console.log(e)
         }
     }
-
+    const getDetails = async () => {
+        const data = {
+            "activityId": activityId
+        };
+        await api.getCGTDetails(data).then((res) => {
+            console.log('-------------------res123', res)
+            setdetails(res?.data?.body)
+            getDLEschedule(res?.data?.body?.primaryCustomerId)
+        })
+            .catch((err) => {
+             
+                console.log('-------------------err123', err?.response)
+            })
+    };
     
 
             // ------------------ get Slot Api Call Start ------------------
-            const getDLEschedule = async () => {
+            const getDLEschedule = async (value) => {
                 console.log('api called')
                  const data = {
                     //"employeeId": route?.params?.customerID,
-                    "customerId":cgtCustomerDetails.primaryCustomerId,
+                    "customerId":value,
                  };
                  await api.getDLEschedule(data).then((res) => {
                  
-                     console.log('------------------- DLE res', res)
+                     console.log('------------------- DLE res', res,data)
                      setTcdetail(res?.data?.body)
+                     setstatus(false)
                     
                    
          
                  })
                      .catch((err) => {
+                        setstatus(false)
                          console.log('-------------------err', err?.response)
                      })
              };
@@ -112,12 +130,23 @@ console.log('focus==========')
 
             <Header name="Schedule DLE Check" navigation={navigation} onPress={handleGoBack} />
 
-            <View style={styles.ViewContent}>
+        {status
+         ?
+
+         <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1, }}>
+         <ActivityIndicator size={30} color={COLORS.colorB} />
+     </View>
+        :  <View style={styles.ViewContent}>
                 {/* <Text style={{color:'red'}} onPress={()=>setModalVisible1(true)}>MODAL</Text> */}
              {  tcdetail && <DLE navigation={navigation}
                  set={route?.params?.set} 
                  list ={tcdetail}/>}
             </View>
+}
+
+
+
+
             <CGTstatus
                 Press={() => {setModalVisible2(false) }}
                 Press1={() => {setModalVisible2(false),navigation.navigate('Profile') }}

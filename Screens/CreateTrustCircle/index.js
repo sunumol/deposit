@@ -8,7 +8,8 @@ import {
     Platform,
     ScrollView,
     Dimensions,
-    TouchableOpacity
+    TouchableOpacity,
+    ActivityIndicator
 } from 'react-native'
 import React, { useCallback, useState, useEffect } from 'react'
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -60,6 +61,8 @@ const CreateTrustCircle = ({ navigation, route }) => {
     const [customerList2, setCustomerList2] = useState()
     const activityId = useSelector(state => state.activityId);
     const cgtactivity = useSelector(state => state.cgtactivity);
+    const [detstatus, setdetstatus] = useState(true);
+    const [tcstatus, settcstatus] = useState(true);
     const handleGoBack = useCallback(() => {
         setModalVisible2(true)
        // navigation.navigate('CGT')// -----> Todo back navigation with activity ID
@@ -104,9 +107,10 @@ const CreateTrustCircle = ({ navigation, route }) => {
             setcgtCustomerDetails(res?.data?.body)
             getDLEschedule(res?.data?.body?.primaryCustomerId)
             getAllTrustCircleMembers()
+            setdetstatus(false)
         })
             .catch((err) => {
-                setStatus(false)
+               setdetstatus(false)
                 console.log('-------------------err123 crt', err?.response)
             })
     };
@@ -119,11 +123,12 @@ const CreateTrustCircle = ({ navigation, route }) => {
         };
         await api.getAllTrustCircleMembers(data).then((res) => {
             console.log('-------------------getAllTrustCircleMembers', res)
+            settcstatus(false)
             settcmember(res?.data?.body)
             // getDLEschedule(res?.data?.body?.primaryCustomerId)
         })
             .catch((err) => {
-                setStatus(false)
+                settcstatus(false)
                 console.log('-------------------getAllTrustCircleMembers', err?.response)
             })
     };
@@ -142,7 +147,7 @@ const CreateTrustCircle = ({ navigation, route }) => {
         })
     };
     // ------------------ HomeScreen Api Call End ------------------
-    { console.log('-----------------', customerList) }
+
      
     // ------------------ getTCLimitDetails Api Call Start ------------------
     const CreateTrustCircle = async () => {
@@ -171,16 +176,32 @@ const CreateTrustCircle = ({ navigation, route }) => {
     useEffect(() => {
         const state= tcmember?.filter((item,i)=>item?.mobileNumber === cgtactivity?.mobileNumber)
         const states= tcmember?.filter((item,i)=>item?.mobileNumber !== cgtactivity?.mobileNumber)
-        console.log('------jhjkshjkfherigfh------',state)
+        console.log('------jhjkshjkfherigfh------',tcmember)
         if(state?.length){
             setCustomerList2(states)
+            const idData = []
+            states?.map((item) => {
+                idData.push(item?.id)
+            })
+            dispatch({
+                type: 'SET_SELECTED_CUSTOMERID',
+                payload: idData,
+            });
         }else{
             setCustomerList2(tcmember)
+            const idData = []
+            tcmember?.map((item) => {
+                idData.push(item?.id)
+            })
+            dispatch({
+                type: 'SET_SELECTED_CUSTOMERID',
+                payload: idData,
+            });
         }
     }, [cgtactivity,tcmember])
 
     const getTclist = async () => {
-        console.log('api called', customerID, cgtCustomerDetails?.primaryCustomerId)
+        console.log('api called1234', customerID)
         const data = {
             "employeeId":Number(custID),
             "customerNameOrNumber": "",
@@ -210,14 +231,14 @@ const CreateTrustCircle = ({ navigation, route }) => {
                 type: 'SET_SELECTED_CUSTOMERLIST',
                 payload: res?.data?.body,
             });
-            const idData = []
-            res?.data?.body?.map((item) => {
-                idData.push(item?.id)
-            })
-            dispatch({
-                type: 'SET_SELECTED_CUSTOMERID',
-                payload: idData,
-            });
+            // const idData = []
+            // res?.data?.body?.map((item) => {
+            //     idData.push(item?.id)
+            // })
+            // dispatch({
+            //     type: 'SET_SELECTED_CUSTOMERID',
+            //     payload: idData,
+            // });
         }).catch((err) => {
             console.log('-------------------errytttyrtty', err)
         })
@@ -272,7 +293,9 @@ const CreateTrustCircle = ({ navigation, route }) => {
                 <>
                     <Header navigation={navigation} name="CGT" back={true} onPress={handleGoBack} />
 
-                    <View style={styles.mainContainer}>
+                  {detstatus? <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1, }}>
+                    <ActivityIndicator size={30} color={COLORS.colorB} />
+                </View> : <View style={styles.mainContainer}>
 
                         <ScrollView showsVerticalScrollIndicator={false} >
 
@@ -324,6 +347,12 @@ const CreateTrustCircle = ({ navigation, route }) => {
                             {/* --------------------------------- Customer Details End--------------------------------------------------------------------------------------------------------------------- */}
 
                             {/* --------------------------------- Trust Circle Members Start--------------------------------------------------------------------------------------------------------------------- */}
+                          
+                         {
+                          tcstatus? <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1, }}>
+                          <ActivityIndicator size={30} color={COLORS.colorB} />
+                      </View>
+                          :  <>
                             {customerList2?.length > 0
                                 ? <View>
                                     <Text style={styles.Trust}>Trust Circle Members ({customerList2?.length})</Text>
@@ -371,6 +400,8 @@ const CreateTrustCircle = ({ navigation, route }) => {
                                     <Text style={styles.AddText}>Add new member</Text>
                                 </TouchableOpacity> : null}
 
+                                </>}
+
                             {/* --------------------------------- Trust Circle Members End--------------------------------------------------------------------------------------------------------------------- */}
 
                         </ScrollView>
@@ -395,7 +426,7 @@ const CreateTrustCircle = ({ navigation, route }) => {
 
                         {/* --------------------------------- Button End--------------------------------------------------------------------------------------------------------------------- */}
 
-                    </View>
+                    </View>}
                 </>
                 :
                 <NetWorkError />
