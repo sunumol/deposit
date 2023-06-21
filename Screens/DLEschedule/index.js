@@ -130,25 +130,27 @@ console.log('focus==========')
 
             <Header name="Schedule DLE Check" navigation={navigation} onPress={handleGoBack} />
 
-        {status
+        {/* {status
          ?
 
          <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1, }}>
          <ActivityIndicator size={30} color={COLORS.colorB} />
      </View>
-        :  <View style={styles.ViewContent}>
+        :   */}
+        <View style={styles.ViewContent}>
                 {/* <Text style={{color:'red'}} onPress={()=>setModalVisible1(true)}>MODAL</Text> */}
-             {  tcdetail && <DLE navigation={navigation}
+          {tcdetail &&   <DLE navigation={navigation}
                  set={route?.params?.set} 
-                 list ={tcdetail}/>}
+                 list ={tcdetail}/>
+                 }
             </View>
-}
+{/* } */}
 
 
 
 
             <CGTstatus
-                Press={() => {setModalVisible2(false) }}
+                Press={() => {setModalVisible2(false),navigation.navigate('ActivityScreens') }}
                 Press1={() => {setModalVisible2(false),navigation.navigate('Profile') }}
                 ModalVisible={ModalVisible2}
                 setModalVisible={setModalVisible2}

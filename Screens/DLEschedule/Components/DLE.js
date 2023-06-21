@@ -7,6 +7,7 @@ import {
     TouchableOpacity,
     TextInput,
     Image,
+    ActivityIndicator,
     KeyboardAvoidingView,
     StatusBar,
     ScrollView,
@@ -68,68 +69,7 @@ const DLE = ({ navigation, set, list }) => {
     //     }, [handleGoBack]),
     //);
 
-    const Data = [
-        {
-            id: 1,
-            name: 'Athira Anil',
-            number: '961XXXXX77',
-            Pincode: '682555',
-            Status: 'Schedule DLE',
-            Initial: 'AA',
-            color: 'rgba(140, 206, 194, 1)',
-            color1: 'rgba(155, 81, 224, 1)',
-            backgroundColor: 'rgba(155, 81, 224, 0.1)',
-            width: width * 0.24
-        },
-        {
-            id: 2,
-            name: 'Aiswarya Thomas',
-            number: '987XXXXX22',
-            Pincode: '686666',
-            Status: 'Schedule DLE',
-            Initial: 'AT',
-            color: 'rgba(140, 172, 206, 1)',
-            color1: 'rgba(155, 81, 224, 1)',
-            backgroundColor: 'rgba(155, 81, 224, 0.1)',
-            width: width * 0.24
-        },
-        {
-            id: 3,
-            name: 'Elizabeth Immanuel',
-            number: '828XXXXX00',
-            Pincode: '686666',
-            Status: 'Schedule DLE',
-            Initial: 'EI',
-            color: 'rgba(158, 200, 148, 1)',
-            color1: 'rgba(155, 81, 224, 1)',
-            backgroundColor: 'rgba(155, 81, 224, 0.1)',
-            width: width * 0.24
-        },
-        {
-            id: 4,
-            name: 'Manjusha Mohan',
-            number: '777XXXXX12',
-            Pincode: 'Kakkanad',
-            Status: 'Schedule DLE',
-            Initial: 'MM',
-            color: 'rgba(200, 148, 148, 1)',
-            color1: 'rgba(155, 81, 224, 1)',
-            backgroundColor: 'rgba(155, 81, 224, 0.1)',
-            width: width * 0.24
-        },
-        {
-            id: 5,
-            name: 'Bestin Babu',
-            number: '678XXXXX99',
-            Pincode: 'Kakkanad',
-            Status: 'TC approval pending',
-            Initial: 'BB',
-            color: 'rgba(200, 170, 148, 1)',
-            color1: 'rgba(39, 174, 96, 1)',
-            backgroundColor: 'rgba(39, 174, 96, 0.1)',
-            width: width * 0.35
-        },
-    ]
+
 
     const getRandomColor = () => {
         var letters = '0123456789ABCDEF';
@@ -164,7 +104,14 @@ const DLE = ({ navigation, set, list }) => {
         <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1, marginTop: 0 }}>
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={{marginBottom:width*0.25}}>
-                {list?.map((item) => {
+             {list == '' ?
+               
+                <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1,marginTop:400 }}>
+                <ActivityIndicator size={30} color={COLORS.colorB} />
+            </View>
+           
+             : <>
+              {list?.map((item) => {
                     return (
                         <TouchableOpacity  onPress={() => { item.dleScheduleStatus == "Conduct DLE" ? setModalVisible2(true) : item.dleScheduleStatus == "TC approval pending" ? setModalVisible(true) : navigation.navigate('ScheduleMeet',{id:item.id}) }} style={[styles.viewCard, { borderColor: 'white', borderWidth: 2 }]}>
 
@@ -205,6 +152,8 @@ const DLE = ({ navigation, set, list }) => {
 
                     )
                 })}
+                </>  
+                }
                 </View>
             </ScrollView>
 

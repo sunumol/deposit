@@ -85,8 +85,9 @@ getPendingCollection()
   // ------------------ get Slot Api Call Start ------------------
   const getPendingCollection = async () => {
     console.log('api called')
+    const id = await  AsyncStorage.getItem("CustomerId")
     const data = {
-        "agentId": 1,
+        "agentId": id,
         "sortOrder": Purposes ? Purposes : 'DPD_LOWEST_TO_HIGHEST'
     };
     await api.getCollection(data).then((res) => {

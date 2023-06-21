@@ -63,6 +63,7 @@ const CreateTrustCircle = ({ navigation, route }) => {
     const cgtactivity = useSelector(state => state.cgtactivity);
     const [detstatus, setdetstatus] = useState(true);
     const [tcstatus, settcstatus] = useState(true);
+    const [createtcstatus, setcreatetcstatus] = useState(false);
     const handleGoBack = useCallback(() => {
         setModalVisible2(true)
        // navigation.navigate('CGT')// -----> Todo back navigation with activity ID
@@ -151,6 +152,8 @@ const CreateTrustCircle = ({ navigation, route }) => {
      
     // ------------------ getTCLimitDetails Api Call Start ------------------
     const CreateTrustCircle = async () => {
+   
+        setcreatetcstatus(true)
         const data = {
             "agentId": Number(custID),
             "primaryCustomerId": cgtCustomerDetails.primaryCustomerId,
@@ -161,9 +164,11 @@ const CreateTrustCircle = ({ navigation, route }) => {
             console.log('-------------------res create', res)
             if (res?.status) {
                 getDLEschedulestatus()
+                setcreatetcstatus(false)
             }
         }).catch((err) => {
             console.log('-------------------err', err)
+            setcreatetcstatus(false)
         })
     };
     // ------------------ HomeScreen Api Call End ------------------
@@ -410,8 +415,11 @@ const CreateTrustCircle = ({ navigation, route }) => {
                         <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                             {tcmember?.length > 0
                                 ? <TouchableOpacity style={[styles.Button1,
-                                { backgroundColor: tcmember?.length >= minLimit ? COLORS.colorB : '#ECEBED' }]} onPress={() => tcmember?.length >= minLimit ? CreateTrustCircle() : null}>
-                                    <Text style={[styles.text1, { color: tcmember?.length >= minLimit ? COLORS.colorBackground : '#979C9E', paddingLeft: width * 0.02 }]}>Create Trust Circle</Text>
+                                { backgroundColor: tcmember?.length >= minLimit ? COLORS.colorB : '#ECEBED' }]} onPress={() => (!createtcstatus  && tcmember?.length >= minLimit) ? CreateTrustCircle() : null}>
+                                    {createtcstatus ?   <ActivityIndicator size={20} color={'#fff'} /> : 
+                                     <Text style={[styles.text1, { color: tcmember?.length >= minLimit ? COLORS.colorBackground : '#979C9E', paddingLeft: width * 0.02 }]}>Create Trust Circle</Text>
+
+                                    }
                                 </TouchableOpacity>
                                 :
                                 <TouchableOpacity style={[styles.Button1, { backgroundColor: COLORS.colorB }]}

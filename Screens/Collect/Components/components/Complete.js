@@ -41,45 +41,9 @@ const CompleteTab = ({ navigation }) => {
     const [pendopen,setPendopen] = useState(false)
     const [deposopen,setDeposopen] = useState(false)
    
-    const [data, setData] = useState([{
-        id: 1,
-        title: 'Deposit Pending ₹33,000',
-        badge: 3,
-        color: 'rgba(235, 87, 87, 0.1)',
-        open: false
-    }, {
-        id: 2,
-        title: 'Deposited ₹15,224',
-        badge: 2,
-        color: 'rgba(39, 174, 96, 0.1)',
-        open: false
-    },
-
-    ])
+ 
 
 
-    const Data1 = [
-        {
-            id: 1,
-            name: 'Aiswarya Thomas',
-            place: 'Kakkanad',
-            phone: '987XXXXX22',
-            Initial: 'AT',
-            Amount: '₹18,724',
-            color1: 'rgba(39, 174, 96, 1)',
-            color: 'rgba(148, 166, 200, 1)'
-        },
-        {
-            id: 2,
-            name: 'Anjana Thomas',
-            place: 'Kakkanad',
-            phone: '987XXXXX22',
-            Initial: 'AT',
-            Amount: '₹14,276',
-            color1: 'rgba(235, 87, 87, 1)',
-            color: 'rgba(148, 200, 153, 1)'
-        },
-    ]
 
     const Data2 = [
         {
@@ -125,15 +89,15 @@ useEffect(()=>{
 
        // ------------------getcompletedCollections Call Start ------------------
        async function getcompletedCollections()  {
-       
+        const id = await  AsyncStorage.getItem("CustomerId")
         console.log('search------->>>>>123', )
         const data = {
-            agentId: 1
+            agentId: id
         }
 
         await api.getcompletedCollections(data).then((res) => {
           console.log('------------------- getcompletedCollections res', res.data.body)
-   setCompleteloan(res?.data?.body)
+            setCompleteloan(res?.data?.body)
          
          
         })
@@ -174,7 +138,7 @@ useEffect(()=>{
                                         </View> 
                                        
                                     <View style={{ marginLeft: width * 0.025 }}>
-                                        <Text style={styles.badgeText}>3</Text>
+                                        <Text style={styles.badgeText}>{completeloan?.depositPendingDetailsDTOS?.length}</Text>
                                     </View>
                                     <View style={{ marginLeft:  width * 0.033 }}>
 
@@ -262,7 +226,7 @@ useEffect(()=>{
                                         <View style={[styles.Card1, { backgroundColor: 'rgba(39, 174, 96, 0.1)', marginLeft: width * 0.155 }]}>
                                             <Img1 /></View>
                                     <View style={{ marginLeft: width * 0.025 }}>
-                                        <Text style={styles.badgeText}>3</Text>
+                                        <Text style={styles.badgeText}>{completeloan?.depositedDetailsDTOS?.length}</Text>
                                     </View>
                                     <View style={{ marginLeft: width * 0.036 }}>
 

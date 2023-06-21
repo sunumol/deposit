@@ -23,6 +23,8 @@ import Image4 from '../../Collect/Images/c2.svg';
 import ActiveLoans from './activeLoans';
 import { api } from '../../../Services/Api';
 import { useSelector } from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 const { height, width } = Dimensions.get('screen');
 
 const LoanTab = ({ navigation }) => {
@@ -35,14 +37,18 @@ const LoanTab = ({ navigation }) => {
      // ------------------ get Customer List Api Call Start ------------------
      async function getActiveLoansdetails()  {
         console.log('loan customer id',LoancustomerID)
-        console.log('search------->>>>>123', )
+        const id = await  AsyncStorage.getItem("CustomerId")
+
+        console.log('search------->>>>>123',id )
+
+
         const data = {
-            customerId: 1
+            customerId: id
         }
 
         await api.getActiveLoansdetails(data).then((res) => {
           console.log('------------------- Active loan res', res.data.body)
-   setActiveloandetail(res?.data?.body)
+            setActiveloandetail(res?.data?.body)
          
          
         })
