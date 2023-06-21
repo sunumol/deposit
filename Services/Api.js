@@ -594,7 +594,7 @@ export const api = {
   // ------------------   customerProfile listing---------------------
   getcompletedCollections: data => {
 
-    return axios.get(`${baseURLVersion}completedCollections/${data.agentId}`, {
+    return axios.get(`${baseURL3}completedCollections/${data.agentId}`, {
       headers: {
         'Content-Type': 'application/json',
       }
