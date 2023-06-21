@@ -40,6 +40,7 @@ import CorrectionModal from './components/CorrectionModal';
 // -------------- Image Imports ---------------------
 import Call from '../../assets/image/calls.svg';
 import Image1 from '../../assets/Images/cakes.svg';
+import Verifypop from './components/Verifypop';
 
 
 const { height, width } = Dimensions.get('screen');
@@ -88,6 +89,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
   const [OccupationD, setOccupationD] = useState('')
   const [custID, setCustId] = useState('')
   const [ModalVisibleC, setModalVisibleC] = useState(false)
+  const [verifypop, setverifypop] = useState(false);
   const isLastPage = useSelector(state => state.isLastPage);
 
   const getData = async () => {
@@ -376,8 +378,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
         setInvalidotp(true)
         setOtp(true)
       }else{
-        
-        setInvalidotp1(true)
+       setverifypop(true)
         setOtp(true)
         setResendOtp(true)
       }
@@ -863,6 +864,11 @@ const ContinuingGuarantor = ({ navigation, route }) => {
             onPressOut={() => setModalReason(!ModalReason)}
             setModalVisible={setModalReason}
           />
+               <Verifypop
+                ModalVisible={verifypop}
+                onPressOut={() => setverifypop(!verifypop)}
+                setModalVisible={setverifypop}
+            />
 
           <ErrorModal1
             ModalVisible={ModalError1}
