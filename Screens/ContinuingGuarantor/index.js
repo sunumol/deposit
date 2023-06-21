@@ -259,9 +259,9 @@ const ContinuingGuarantor = ({ navigation, route }) => {
     const data = {
       "activityId": activityId,
       "mobileNumber": "+91" + num,
-      "name": relation !== 'Spouse' ? Name :'',
+      "name": relation !== 'Spouse' ? Name :spousedetail?.name,
       "relationShip": relation,
-      "occupation": relation !== 'Spouse' ? OccupationD : null
+      "occupation": relation !== 'Spouse' ? OccupationD : spousedetail?.occupation
     }
     await api.verifyCG(data).then((res) => {
       console.log('-------------------res verifyCG------1', res)
@@ -277,7 +277,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
       setVerifyotpstatus(true)
       setStatus(false)
       setTimer(0)
-      console.log('-------------------err verifyCG', err?.response?.data?.message)
+      console.log('-------------------err verifyCG12', err)
       if (err?.response?.data?.message.includes('Maximum number of OTPs are exceeded.')) {
         setIsOtp1(true)
         setMaxError(true)
@@ -309,9 +309,9 @@ const ContinuingGuarantor = ({ navigation, route }) => {
     const data = {
       "activityId": activityId,
       "mobileNumber": "+91" + number,
-      "name": relation !== 'Spouse' ? Name : "",
+      "name": relation !== 'Spouse' ? Name : spousedetail?.name,
       "relationShip": relation,
-      "occupation": relation !== 'Spouse' ? OccupationD : null
+      "occupation": relation !== 'Spouse' ? OccupationD : spousedetail?.occupation
 
     }
     await api.verifyCG(data).then((res) => {
@@ -335,7 +335,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
           setMaxError(false)
         }, 3000);
       }
-      console.log('-------------------err verifyCG', err?.response)
+      console.log('-------------------err verifyCG34', err)
     })
   };
   // ------------------ ----------------------------------------------

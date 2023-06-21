@@ -174,8 +174,8 @@ const CreateTrustCircle = ({ navigation, route }) => {
     // }, [])
 
     useEffect(() => {
-        const state= tcmember?.filter((item,i)=>item?.mobileNumber === cgtactivity?.mobileNumber)
-        const states= tcmember?.filter((item,i)=>item?.mobileNumber !== cgtactivity?.mobileNumber)
+        const state= tcmember?.filter((item,i)=>item?.mobileNumber === cgtCustomerDetails?.mobileNumber)
+        const states= tcmember?.filter((item,i)=>item?.mobileNumber !== cgtCustomerDetails?.mobileNumber)
         console.log('------jhjkshjkfherigfh------',tcmember)
         if(state?.length){
             setCustomerList2(states)
