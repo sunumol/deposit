@@ -60,6 +60,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
   const [customerNumber, setCustomerNumber] = useState('')
   const [spousedetail, setSpousedetail] = useState('')
   const [invalidotp, setInvalidotp] = useState(false)
+  const [invalidotp1, setInvalidotp1] = useState(false)
   const [OtpValue, setOtpValue] = useState('')
   const [timerCount, setTimer] = useState(30)
   const [IsOtp1, setIsOtp1] = useState(false)
@@ -301,6 +302,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
   async function ResendOtp() {
 
     setInvalidotp(false)
+    setInvalidotp1(false)
 
     console.log('==================================', OtpValue?.length)
     if (OtpValue?.length > 0) {
@@ -373,6 +375,11 @@ const ContinuingGuarantor = ({ navigation, route }) => {
         setResendOtp(false)
         setInvalidotp(true)
         setOtp(true)
+      }else{
+        
+        setInvalidotp1(true)
+        setOtp(true)
+        setResendOtp(true)
       }
     })
   };
@@ -712,6 +719,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
 
                     OnchangeNumbers(text)
                     setInvalidotp(false)
+                    setInvalidotp1(false)
                     setMaxError(false)
                   }}
                   placeholderTextColor={COLORS.colorDark}
@@ -751,7 +759,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
                     handleTextChange={(code => {
                       setOtpValue(code)
                       setInvalidotp(false)
-
+                      setInvalidotp1(false)
 
                       if (code.length < 4) {
                         setOtp(false)
@@ -762,6 +770,10 @@ const ContinuingGuarantor = ({ navigation, route }) => {
                   {invalidotp ?
                     <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 12, marginBottom: 5 }}>
                       <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center' }}>{t('common:otpValid')}</Text>
+                    </View> : null}
+                    {invalidotp1 ?
+                    <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 12, marginBottom: 5 }}>
+                      <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center' }}>Could not Verify OTP</Text>
                     </View> : null}
 
                   {IsOtp1 && status === true &&
