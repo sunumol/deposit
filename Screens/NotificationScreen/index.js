@@ -74,7 +74,8 @@ const LoanDetails = ({ navigation,route }) => {
                                 }>
                                     <View style={styles.columContainer}>
                                         <Text style={styles.KycText}>{item?.message.replace(/[0-9]/g, '')}</Text>
-                                        <Text style={styles.timeText}>{moment(item?.createdOn).format('dddd LT')}</Text>
+                                        <Text style={styles.timeText}>{moment(item?.createdOn).format('DD MMM')} {moment(item?.createdOn).format('LT')}</Text>
+                                       
                                     </View>
                                 </TouchableOpacity>
                                 {details.length > 0 && index !== details.length - 1
