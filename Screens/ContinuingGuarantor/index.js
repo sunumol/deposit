@@ -773,7 +773,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
                     </View> : null}
                     {invalidotp1 ?
                     <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 12, marginBottom: 5 }}>
-                      <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center' }}>Could not Verify OTP</Text>
+                      <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center' }}>Could not Verify</Text>
                     </View> : null}
 
                   {IsOtp1 && status === true &&
