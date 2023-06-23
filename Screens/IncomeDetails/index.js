@@ -169,6 +169,7 @@ const IncomeDetails = ({ navigation, route }) => {
 
 
     const getSpousedetail = async () => {
+        console.log('api called123  ')
         const data = {
             "activityId": activityId
         }
@@ -182,7 +183,7 @@ const IncomeDetails = ({ navigation, route }) => {
 
             }
         }).catch((err) => {
-            console.log('-------------------err spousedetail1', err?.response)
+            console.log('-------------------err spousedetail1', err?.response?.status)
             setspouseavailable(false)
             setspousejob(err?.response?.status)
         })
@@ -375,7 +376,7 @@ const IncomeDetails = ({ navigation, route }) => {
     }
 
 
-    { console.log("spouse detail dsa", spouseDetail) }
+   
 
     useEffect(() => {
         if (spouseDetail !== spouseDetail) {

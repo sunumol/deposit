@@ -22,8 +22,13 @@ const CalenderModal = ({ ModalVisible, onPressOut, setModalVisible2, navigation 
             transparent={true}
             visible={ModalVisible}
             onRequestClose={()=>navigation.navigate('Profile')}
+          // onRequestClose={()=> navigation.goBack()}
         >
             <View style={styles.mainContainer} >
+            <TouchableOpacity
+                    onPress={()=> onPressOut()}
+                    style={styles.touchableStyle} >
+                </TouchableOpacity>
 
                 <View style={styles.modalContainer}>
                     <View style={{ paddingTop: width * 0.045 }}>
@@ -41,6 +46,10 @@ const CalenderModal = ({ ModalVisible, onPressOut, setModalVisible2, navigation 
                         <Text style={styles.buttonTextStyle}>{t('common:Okay')}</Text>
                     </TouchableOpacity>
                 </View>
+                <TouchableOpacity
+                   onPress={()=> onPressOut()}
+                    style={styles.touchableStyle} >
+                </TouchableOpacity>
             </View>
         </Modal>
 
@@ -51,16 +60,23 @@ const styles = StyleSheet.create({
     mainContainer: {
         backgroundColor: "#000000aa",
         flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center'
+        // alignItems: 'center',
+        // justifyContent: 'center'
     },
     modalContainer: {
         width: Dimensions.get('window').width * 0.92,
         height: Dimensions.get('window').width * 0.56,
+        marginHorizontal:Dimensions.get('window').width * 0.04,
         backgroundColor: COLORS.colorBackground,
         borderRadius: 20,
         alignItems: 'center',
         justifyContent: 'center'
+    },
+    touchableStyle: {
+        flex: 1,
+        height: Dimensions.get('window').height,
+       
+   
     },
     textStyle: {
         fontFamily: FONTS.FontRegular,

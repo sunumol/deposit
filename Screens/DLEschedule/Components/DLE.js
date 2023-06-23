@@ -30,7 +30,7 @@ import ModalDLESchedule from '../../../Components/ModalDLESchedule';
 const { height, width } = Dimensions.get('screen');
 
 const DLE = ({ navigation, set, list }) => {
-    console.log('====>>>', list)
+    console.log('====>>>********************', list)
     const isDarkMode = true;
     const [lang, setLang] = useState('')
     const [ModalVisible, setModalVisible] = useState(false)
@@ -71,14 +71,42 @@ const DLE = ({ navigation, set, list }) => {
 
 
 
-    const getRandomColor = () => {
-        var letters = '0123456789ABCDEF';
-        var color = '#';
-        for (var i = 0; i < 3; i++) {
-            color += letters[Math.floor(Math.random() * 8)];
-        }
-        return color;
-    }
+    const getRandomColor = (value) => {
+        // console.log('Random',value)
+         let mobilenum = value.charAt(value.length-1)
+         if (mobilenum == '0'){
+           var color = '#4287f5'
+         }else if (mobilenum == '1'){
+           var color ='#2a255c'
+         }else if (mobilenum == '2'){
+             var color ='#5142f5'
+           }else if (mobilenum == '3'){
+             var color ='#f54242'
+           }else if (mobilenum == '4'){
+             var color ='#f57e42'
+           }else if (mobilenum == '5'){
+             var color ='#3e6650'
+           }else if (mobilenum == '6'){
+             var color ='#3e4366'
+           }else if (mobilenum == '7'){
+             var color ='#663e3f'
+           }else if (mobilenum == '8'){
+             var color ='#1c3612'
+           }else if (mobilenum == '9'){
+             var color ='#123623'
+           }else if(value == null || '' ){
+             var color = '#122a36'
+           }
+ 
+         //  console.log('Random',mobilenum)
+         // var letters = '0123456789ABCDEF';
+         // var color = '#';
+         // for (var i = 0; i < 3; i++) {
+         //     color += letters[Math.floor(Math.random() * 8)];
+         // }
+         return color;
+     }
+
 
 
     const getInitials = (name) => {
@@ -116,7 +144,7 @@ const DLE = ({ navigation, set, list }) => {
                         <TouchableOpacity  onPress={() => { item.dleScheduleStatus == "Conduct DLE" ? setModalVisible2(true) : item.dleScheduleStatus == "TC approval pending" ? setModalVisible(true) : navigation.navigate('ScheduleMeet',{id:item.id}) }} style={[styles.viewCard, { borderColor: 'white', borderWidth: 2 }]}>
 
 
-                            <View style={[styles.circleStyle, { backgroundColor: getRandomColor() }]}>
+                            <View style={[styles.circleStyle, { backgroundColor: getRandomColor(item?.mobileNumber) }]}>
                                 {/* <Text numberOfLines={1} style={styles.circleText}>{(item.customerName)}</Text> */}
                                 <Text numberOfLines={1} style={styles.circleText}>{getInitials(item.name)}</Text>
                             </View>

@@ -125,8 +125,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
     AsyncStorage.getItem("CustomerId").then((value) => {
       setCustId(value)
     })
-    console.log("route?.params?.relation", route?.params?.relation)
-   // if(!Correct1){
+   // console.log("route?.params?.relation", route?.params?.relation)
     getCGdetails()
     getSpousedetail()
   //  }
@@ -208,7 +207,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
       "activityId": activityId
     }
     await api.updateActivity(data).then((res) => {
-      console.log('-------------------res get Village', res)
+     // console.log('-------------------res get Village', res)
       setModalError(true)
       setModalReason(false)
       setTimeout(() => {
@@ -232,7 +231,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
       "activityId": activityId
     }
     await api.getSpousedetail(data).then((res) => {
-      console.log('-------------------res spousedetail co-app', activityId)
+     // console.log('-------------------res spousedetail co-app', activityId)
       if (res?.status) {
         console.log('-------------------res spousedetail co-app', res?.data?.body)
         setSpousedetail(res?.data?.body)
@@ -265,7 +264,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
 
   // ------------------ verifyCG detail --------------------------------
   const verifyCG = async (num) => {
-    console.log("verify resend come", maxError, IsOtp1, timerCount)
+    //console.log("verify resend come", maxError, IsOtp1, timerCount)
     const data = {
       "activityId": activityId,
       "mobileNumber": "+91" + num,
@@ -317,7 +316,7 @@ console.log("enyer",res?.data)
     setInvalidotp(false)
     setInvalidotp1(false)
 
-    console.log('==================================', OtpValue?.length)
+   // console.log('==================================', OtpValue?.length)
     if (OtpValue?.length > 0) {
       otpInput2.current.clear()
     }
@@ -365,7 +364,7 @@ console.log("enyer",res?.data)
       "otp": OtpValue
     }
     await api.verifyCGOTP(data).then((res) => {
-      console.log('-------------------res verifyCG', route?.params?.isCheck)
+      console.log('-------------------res verifyCG', isLasCorrectin)
       if (res?.status) {
         setIsOtp1(false)
         if (route?.params?.isCheck == true) {
@@ -421,16 +420,16 @@ console.log("enyer",res?.data)
         onChangeNumber('')
 
       }
-      console.log("inside first digit", number)
+     // console.log("inside first digit", number)
 
     } else if (verifyPhone(num)) {
       setPhoneValid(true)
-      console.log("inside second digit")
+      //console.log("inside second digit")
 
     } else if (!(/^\d{10}$/.test(num))) {
       setPhoneValid(true)
 
-      console.log("inside third digit")
+     // console.log("inside third digit")
     }
     // else if(PhoneValid && num?.length === 10){
     //   onChangeNumber(null)
@@ -450,7 +449,7 @@ console.log("enyer",res?.data)
         setTimer(null)
         setResendOtp(false)
         onChangeNumber('')
-        console.log("")
+        //console.log("")
       } else {
         onChangeNumber(num)
         if (num?.length == 10) {
@@ -464,7 +463,7 @@ console.log("enyer",res?.data)
     }
   }
 
-  { console.log("occupate", OccupationD) }
+ // { console.log("occupate", OccupationD) }
 
   const getInitials = (name) => {
     let initials;
@@ -489,7 +488,7 @@ console.log("enyer",res?.data)
       onChangeNumber('')
     }
   }, [PhoneValid])
-  { console.log("isotp true", IsOtp1) }
+ // { console.log("isotp true", IsOtp1) }
 
 
   useEffect(() => {

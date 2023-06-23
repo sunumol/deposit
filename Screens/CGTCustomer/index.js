@@ -121,6 +121,17 @@ const CgtCustomer = ({ navigation, route }) => {
         })
     }, [])
 
+    React.useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+console.log('focus==========')
+getDetails()
+
+        });
+     
+        return unsubscribe;
+    }, [navigation]);
+    
+
     // ------------------ GET Setails Cgt Api Call Start ------------------
     const getDetails = async () => {
         const data = {

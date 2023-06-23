@@ -202,7 +202,7 @@ const MeetTab = (props) => {
                                                         style={[styles.boxStyle, { marginTop: props.time ? 10 : 12 }]} key={props.id}>
                                                         <View style={{ flex: 1, flexDirection: 'row' }}>
 
-                                                            <View style={[styles.circleStyle, { backgroundColor: getRandomColor() }]}>
+                                                            <View style={[styles.circleStyle, { backgroundColor: 'red' }]}>
                                                                 <Text numberOfLines={1} style={styles.circleText}>{getInitials(item?.customerName)}</Text>
                                                             </View>
 
@@ -227,23 +227,23 @@ const MeetTab = (props) => {
                                                                 <Text style={[styles.numText, { paddingLeft: 6 }]}>{item?.mobileNumber?.replace(/^.{0}/g, '', " ").slice(-10).replaceAt(3, "X").replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X")}</Text>
                                                             </View>
                                                             {item.purpose == "Conduct DLE"
-                                                                ? <TouchableOpacity
+                                                                ? <View
 
                                                                     style={[styles.leadContainer, { backgroundColor: COLORS.LightPurple }]}>
                                                                     <Text style={[styles.leadText, { color: COLORS.DarkPurple }]}>Conduct DLE</Text>
-                                                                </TouchableOpacity>
+                                                                </View>
                                                                 : item.purpose == 'Conduct CGT' ?
-                                                                    <TouchableOpacity style={[styles.leadContainer, { backgroundColor: props.meet ? COLORS.LightBlue : COLORS.LightPurple }]}>
+                                                                    <View style={[styles.leadContainer, { backgroundColor: props.meet ? COLORS.LightBlue : COLORS.LightPurple }]}>
                                                                         <Text style={[styles.leadText, { color: props.meet ? COLORS.DarkBlue : COLORS.DarkPurple }]}>{t('common:ConductCGT')}</Text>
-                                                                    </TouchableOpacity> :
+                                                                    </View> :
                                                                     item.purpose == 'Leads Follow Up' ?
-                                                                        <TouchableOpacity
+                                                                        <View
                                                                             style={[styles.leadContainer, { backgroundColor: COLORS.LightYellow }]}>
                                                                             <Text style={[styles.leadText, { color: COLORS.DarkYellow }]}>{t('common:LeadsFollowUp')}</Text>
-                                                                        </TouchableOpacity> :
-                                                                        <TouchableOpacity style={[styles.leadContainer, { backgroundColor: COLORS.LightPurple }]}>
+                                                                        </View> :
+                                                                        <View style={[styles.leadContainer, { backgroundColor: COLORS.LightPurple }]}>
                                                                             <Text style={[styles.leadText, { color: COLORS.DarkPurple }]}>{t('common:ExplainTrustCircle')}</Text>
-                                                                        </TouchableOpacity>}
+                                                                        </View>}
 
                                                         </View>
 
