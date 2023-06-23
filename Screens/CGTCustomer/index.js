@@ -351,7 +351,7 @@ getDetails()
             />
 
 <CGTstatus
-                Press={() => {setModalVisible2(false) }}
+                Press={() => {setModalVisible2(false),updateActivity(),navigation.navigate('ActivityScreens') }}
                 Press1={() => {setModalVisible2(false),navigation.navigate('ActivityScreens') }}
                 ModalVisible={ModalVisible2}
                 setModalVisible={setModalVisible2}

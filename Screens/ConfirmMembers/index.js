@@ -174,9 +174,9 @@ const ConfirmMembers = ({ navigation }) => {
 
   // ------------------ get Slot Api Call Start ------------------
   const getCustomerLists = async (phone) => {
-    console.log('List------>>', phone)
+    console.log('List------>>',custID)
     const data = {
-      "employeeId":Number(custID),
+      "employeeId":custID,
       "customerNameOrNumber": phone ? phone : "",
       "addedTcIds": [cgtCustomerDetails?.primaryCustomerId]
 

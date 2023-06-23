@@ -76,7 +76,7 @@ const LoanDetails = ({ navigation,route }) => {
                   
                         return (
                             <>
-                                <TouchableOpacity style={[styles.renderComponent, { alignItems: 'center',backgroundColor:item.readStatus?COLORS.colorBackground:'#00387426' }]} 
+                                <TouchableOpacity style={[styles.renderComponent, { alignItems: 'center', backgroundColor:item.readStatus?COLORS.colorBackground:'#00387426' }]} 
                                 onPress={()=>
                                   {  if(item?.notificationType === 'DATA_CONFIRMATION'){
                                     navigation.navigate('Proceed', { status: true });

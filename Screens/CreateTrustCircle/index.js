@@ -107,8 +107,7 @@ getDetails()
         getTCLimitDetails()
         getTclist()
         getAllTrustCircleMembers()
-       // console.log('++++++=======',customerList,'==========+++++++++++',cgtactivity?.mobileNumber)
-    }, [customerList, customerID])
+    }, [])
 
 
     const getDetails = async () => {
@@ -193,7 +192,7 @@ getDetails()
     useEffect(() => {
         const state= tcmember?.filter((item,i)=>item?.mobileNumber === cgtCustomerDetails?.mobileNumber)
         const states= tcmember?.filter((item,i)=>item?.mobileNumber !== cgtCustomerDetails?.mobileNumber)
-       // console.log('------jhjkshjkfherigfh------',tcmember)
+      
         if(state?.length){
             setCustomerList2(states)
             const idData = []
@@ -218,18 +217,18 @@ getDetails()
     }, [cgtactivity,tcmember])
 
     const getTclist = async () => {
-       // console.log('api called1234', customerID)
+      //  console.log('api called1234', customerID)
         const data = {
             "employeeId":Number(custID),
             "customerNameOrNumber": "",
             "addedTcIds": [customerID, cgtCustomerDetails?.primaryCustomerId]
         }
-        //console.log("DATA PRINT", data)
+       // console.log("DATA PRINT", data)
         await api.getCustomerListForTc(data).then((res) => {
            // console.log('-------------------res getCustomerListForTc', res)
 
         }).catch((err) => {
-           // console.log('-------------------getCustomerListForTc', err?.response)
+            //console.log('-------------------getCustomerListForTc', err?.response)
         })
     };
     // ------------------ HomeScreen Api Call End -----------------------
@@ -453,7 +452,7 @@ getDetails()
             }
 
 <CGTstatus
-                Press={() => {setModalVisible2(false) }}
+                Press={() => {setModalVisible2(false),navigation.navigate('ActivityScreens')  }}
                 Press1={() => {setModalVisible2(false),navigation.navigate('ActivityScreens') }}
                 ModalVisible={ModalVisible2}
                 setModalVisible={setModalVisible2}

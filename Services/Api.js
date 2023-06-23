@@ -699,7 +699,11 @@ export const api = {
       "Content-Type": "application/json",
     });
   },
-
+  pinCodeValidation: (data) => {
+    return axios.post(`${baseURL2}pinCodeValidation`, data, {
+      "Content-Type": "application/json",
+    });
+  },
 
   //     return axios.post(`${baseURL2}enterPinSimIdCheck`,data, {
   //       headers: {

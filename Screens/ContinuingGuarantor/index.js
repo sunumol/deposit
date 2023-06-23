@@ -26,6 +26,7 @@ import OccupationModal from '../../Components/OccupationModal';
 import Header from '../../Components/Header';
 import ErrorModal1 from './components/ErrorModal1';
 import ErrorModal2 from './components/ErrorModal2';
+import ErrorModal3 from './components/ErrorModal3'
 import ReasonModal from '../DetailedCheck/Components/ReasonModal';
 import ModalSave from '../../Components/ModalSave';
 import { COLORS, FONTS } from '../../Constants/Constants';
@@ -72,6 +73,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
   const [ModalVisible1, setModalVisible1] = useState(false)
   const [status, setStatus] = useState(false)
   const [ModalError2, setModalError2] = useState(false)
+  const [ModalError3, setModalError3] = useState(false)
   const [maxError, setMaxError] = useState(false)
   const [otp, setOtp] = useState(false)
   const [ResendOtps, setResendOtp] = useState()
@@ -273,7 +275,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
       "occupation": relation !== 'Spouse' ? OccupationD : spousedetail?.occupation
     }
     await api.verifyCG(data).then((res) => {
-      console.log('-------------------res verifyCG------1', res)
+      console.log('-------------------res verifyCG------otp requesr', res)
       if (res?.status) {
         setMaxError(false)
         setIsOtp1(true)
@@ -286,7 +288,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
       setVerifyotpstatus(true)
       setStatus(false)
       setTimer(0)
-      console.log('-------------------err verifyCG12', err)
+      console.log('-------------------err verifyCG12 otp request', err)
       if (err?.response?.data?.message.includes('Maximum number of OTPs are exceeded.')) {
         setIsOtp1(true)
         setMaxError(true)
@@ -299,11 +301,12 @@ const ContinuingGuarantor = ({ navigation, route }) => {
         setModalError2(true)
         setResends(false)
         setTimer(0)
-      } else {
-console.log("enyer",res?.data)
-        setverifypop2(true)
-
-        onChangeNumber('')
+      } else if (err?.response?.data?.message === "This mobile number already registered") {
+        setModalError3(true)
+        setResends(false)
+        setTimer(0)
+      }
+      else {
         setMaxError(false)
       }
     })
@@ -876,6 +879,14 @@ console.log("enyer",res?.data)
               onChangeNumber('')
             }}
             setModalVisible={setModalError2}
+          />
+            <ErrorModal3
+            ModalVisible={ModalError3}
+            onPressOut={() => {
+              setModalError3(!ModalError3)
+              onChangeNumber('')
+            }}
+            setModalVisible={setModalError3}
           />
 
           <ModalSave
