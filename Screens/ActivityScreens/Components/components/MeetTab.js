@@ -12,7 +12,7 @@ import CallModal from '../../../Profile/Components/Modal';
 
 
 const MeetTab = (props) => {
- 
+ console.log('Meet------------->',props)
     const { t } = useTranslation();
     const [Lang, setLang] = useState('')
     const [modalVisible, setModalVisible] = useState(false)
@@ -33,15 +33,41 @@ const MeetTab = (props) => {
         return this.substring(0, index) + replacement + this.substring(index + replacement.length);
     }
 
-    const getRandomColor = () => {
-        var letters = '0123456789ABCDEF';
-        var color = '#';
-        for (var i = 0; i < 3; i++) {
-            color += letters[Math.floor(Math.random() * 8)];
-        }
-        return color;
-    }
-
+    const getRandomColor = (value) => {
+        // console.log('Random',value)
+         let mobilenum = value.charAt(value.length-1)
+         if (mobilenum == '0'){
+           var color = '#4287f5'
+         }else if (mobilenum == '1'){
+           var color ='#2a255c'
+         }else if (mobilenum == '2'){
+             var color ='#5142f5'
+           }else if (mobilenum == '3'){
+             var color ='#f54242'
+           }else if (mobilenum == '4'){
+             var color ='#f57e42'
+           }else if (mobilenum == '5'){
+             var color ='#3e6650'
+           }else if (mobilenum == '6'){
+             var color ='#3e4366'
+           }else if (mobilenum == '7'){
+             var color ='#663e3f'
+           }else if (mobilenum == '8'){
+             var color ='#1c3612'
+           }else if (mobilenum == '9'){
+             var color ='#123623'
+           }else if(value == null || '' ){
+             var color = '#122a36'
+           }
+ 
+         //  console.log('Random',mobilenum)
+         // var letters = '0123456789ABCDEF';
+         // var color = '#';
+         // for (var i = 0; i < 3; i++) {
+         //     color += letters[Math.floor(Math.random() * 8)];
+         // }
+         return color;
+     }
 
     const getInitials = (name) => {
 
@@ -301,8 +327,8 @@ console.log("error",occupation)
                             style={[styles.boxStyle, { marginTop: props.time ? 10 : 0 }]} key={props.id}>
                             <View style={{ flex: 1, flexDirection: 'row' }}>
 
-                                <View style={[styles.circleStyle, { backgroundColor: getRandomColor() }]}>
-                                    <Text numberOfLines={1} style={styles.circleText}>{getInitials(item.customerName)}</Text>
+                                <View style={[styles.circleStyle, { backgroundColor: getRandomColor(item?.mobileNumber)}]}>
+                                    <Text numberOfLines={1} style={styles.circleText}>{getInitials(item?.customerName)}</Text>
                                 </View>
 
                                 <View style={{ flexDirection: 'column', paddingLeft: 12, paddingTop: 5 }}>

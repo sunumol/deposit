@@ -91,6 +91,18 @@ const CreateTrustCircle = ({ navigation, route }) => {
     
     }, [])
 
+    React.useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+console.log('focus==========')
+getDetails()
+
+        });
+     
+        return unsubscribe;
+    }, [navigation]);
+    
+
+
     useEffect(() => {
         getTCLimitDetails()
         getTclist()

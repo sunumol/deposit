@@ -42,7 +42,7 @@ const ReasonModal = ({ ModalVisible, onPressOut, onPress1 }) => {
 
     useEffect(() => {
         const check = Data.every(element => element.isChecked === false);
-        console.log('----------------CHECKED-------------', check)
+   
         if (check === false) {
             setButtonStatus(true)
         } else {
@@ -86,7 +86,7 @@ const ReasonModal = ({ ModalVisible, onPressOut, onPress1 }) => {
                         <Text style={styles.modalTextHead}>Reason for reject</Text>
 
                         {Data.map((item, index) => {
-                            { console.log('-------', item.isChecked, '----', item?.id) }
+                          
                             return (
                                 <View style={{ flexDirection: 'column', }} key={item?.id}>
                                     <View style={{

@@ -107,8 +107,9 @@ const DLESchedule = ({ navigation,route}) => {
 
     React.useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
-console.log('focus==========')
-            getDLEschedule()
+            console.log('focus==========')
+
+            getDetails()
 
         });
         getData();
@@ -130,13 +131,13 @@ console.log('focus==========')
 
             <Header name="Schedule DLE Check" navigation={navigation} onPress={handleGoBack} />
 
-        {/* {status
+     {status
          ?
 
          <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1, }}>
          <ActivityIndicator size={30} color={COLORS.colorB} />
      </View>
-        :   */}
+        :  
         <View style={styles.ViewContent}>
                 {/* <Text style={{color:'red'}} onPress={()=>setModalVisible1(true)}>MODAL</Text> */}
           {tcdetail &&   <DLE navigation={navigation}
@@ -144,7 +145,7 @@ console.log('focus==========')
                  list ={tcdetail}/>
                  }
             </View>
-{/* } */}
+ } 
 
 
 

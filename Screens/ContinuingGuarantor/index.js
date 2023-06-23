@@ -121,7 +121,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
     AsyncStorage.getItem("CustomerId").then((value) => {
       setCustId(value)
     })
-    console.log("route?.params?.relation", route?.params?.relation)
+   // console.log("route?.params?.relation", route?.params?.relation)
     getCGdetails()
     getSpousedetail()
   }, [])
@@ -201,7 +201,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
       "activityId": activityId
     }
     await api.updateActivity(data).then((res) => {
-      console.log('-------------------res get Village', res)
+     // console.log('-------------------res get Village', res)
       setModalError(true)
       setModalReason(false)
       setTimeout(() => {
@@ -225,7 +225,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
       "activityId": activityId
     }
     await api.getSpousedetail(data).then((res) => {
-      console.log('-------------------res spousedetail co-app', activityId)
+     // console.log('-------------------res spousedetail co-app', activityId)
       if (res?.status) {
         console.log('-------------------res spousedetail co-app', res?.data?.body)
         setSpousedetail(res?.data?.body)
@@ -258,7 +258,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
 
   // ------------------ verifyCG detail --------------------------------
   const verifyCG = async (num) => {
-    console.log("verify resend come", maxError, IsOtp1, timerCount)
+    //console.log("verify resend come", maxError, IsOtp1, timerCount)
     const data = {
       "activityId": activityId,
       "mobileNumber": "+91" + num,
@@ -306,7 +306,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
     setInvalidotp(false)
     setInvalidotp1(false)
 
-    console.log('==================================', OtpValue?.length)
+   // console.log('==================================', OtpValue?.length)
     if (OtpValue?.length > 0) {
       otpInput2.current.clear()
     }
@@ -351,7 +351,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
       "otp": OtpValue
     }
     await api.verifyCGOTP(data).then((res) => {
-      console.log('-------------------res verifyCG', res)
+      console.log('-------------------res verifyCG', isLasCorrectin)
       if (res?.status) {
         setIsOtp1(false)
         if (route?.params?.isCheck == false) {
@@ -378,6 +378,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
         setInvalidotp(true)
         setOtp(true)
       }else{
+        console.log('----------------!2333#####=============',err)
        setverifypop(true)
         setOtp(true)
         setResendOtp(true)
@@ -403,16 +404,16 @@ const ContinuingGuarantor = ({ navigation, route }) => {
         onChangeNumber('')
 
       }
-      console.log("inside first digit", number)
+     // console.log("inside first digit", number)
 
     } else if (verifyPhone(num)) {
       setPhoneValid(true)
-      console.log("inside second digit")
+      //console.log("inside second digit")
 
     } else if (!(/^\d{10}$/.test(num))) {
       setPhoneValid(true)
 
-      console.log("inside third digit")
+     // console.log("inside third digit")
     }
     // else if(PhoneValid && num?.length === 10){
     //   onChangeNumber(null)
@@ -432,7 +433,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
         setTimer(null)
         setResendOtp(false)
         onChangeNumber('')
-        console.log("")
+        //console.log("")
       } else {
         onChangeNumber(num)
         if (num?.length == 10) {
@@ -446,7 +447,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
     }
   }
 
-  { console.log("occupate", OccupationD) }
+ // { console.log("occupate", OccupationD) }
 
   const getInitials = (name) => {
     let initials;
@@ -471,7 +472,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
       onChangeNumber('')
     }
   }, [PhoneValid])
-  { console.log("isotp true", IsOtp1) }
+ // { console.log("isotp true", IsOtp1) }
 
 
   useEffect(() => {

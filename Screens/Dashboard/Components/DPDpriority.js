@@ -112,7 +112,7 @@ const DPDPriority = ({CustomDetails,setStateRefresh,setSort}) => {
                     return (
                         <View style={styles.CustomerCard}>
 
-                            <View style={[styles.CardInit, { backgroundColor: getRandomColor() }]}>
+                            <View style={[styles.CardInit, { backgroundColor: '#2a255c'}]}>
                                 <Text style={styles.InitialText}>{getInitials(item?.customerName)}</Text>
                             </View>
 

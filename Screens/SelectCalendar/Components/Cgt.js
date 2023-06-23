@@ -155,6 +155,7 @@ const Cgt = ({ navigation, data, date, selectedData, status }) => {
             <SuccessModal
                 ModalVisible={ModalVisible2}
                 setModalVisible2={setModalVisible2}
+                onPressOut={()=> { navigation.navigate('Profile'),setModalVisible2(false)}}
                 navigation={navigation} />
         </View>
     )

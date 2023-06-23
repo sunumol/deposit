@@ -21,12 +21,39 @@ const ActiveTab = (props) => {
     useEffect(() => {
         getData()
     }, [])
-    const getRandomColor = () => {
-        var letters = '0123456789ABCDEF';
-        var color = '#';
-        for (var i = 0; i < 3; i++) {
-            color += letters[Math.floor(Math.random() * 8)];
-        }
+    const getRandomColor = (value) => {
+       // console.log('Random',value)
+        let mobilenum = value.charAt(value.length-1)
+        if (mobilenum == '0'){
+          var color = '#4287f5'
+        }else if (mobilenum == '1'){
+          var color ='#2a255c'
+        }else if (mobilenum == '2'){
+            var color ='#5142f5'
+          }else if (mobilenum == '3'){
+            var color ='#f54242'
+          }else if (mobilenum == '4'){
+            var color ='#f57e42'
+          }else if (mobilenum == '5'){
+            var color ='#3e6650'
+          }else if (mobilenum == '6'){
+            var color ='#3e4366'
+          }else if (mobilenum == '7'){
+            var color ='#663e3f'
+          }else if (mobilenum == '8'){
+            var color ='#1c3612'
+          }else if (mobilenum == '9'){
+            var color ='#123623'
+          }else if(value == null || '' ){
+            var color = '#122a36'
+          }
+
+        //  console.log('Random',mobilenum)
+        // var letters = '0123456789ABCDEF';
+        // var color = '#';
+        // for (var i = 0; i < 3; i++) {
+        //     color += letters[Math.floor(Math.random() * 8)];
+        // }
         return color;
     }
 
@@ -150,7 +177,7 @@ const ActiveTab = (props) => {
 
     return (
         <>
-        {console.log("-----welcome call-----",props?.details?.purpose)}
+      
             <TouchableOpacity
                 style={styles.boxStyle}
                 key={props?.id}
@@ -191,7 +218,13 @@ const ActiveTab = (props) => {
             >
                 <View style={{ flex: 1, flexDirection: 'row' }}>
 
-                    <View style={[styles.circleStyle, { backgroundColor: getRandomColor() }]}>
+                    <View style={{ backgroundColor: getRandomColor(props?.phoneNumber),
+                          width: 50,
+                          height: 50,
+                          borderRadius: 25,
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                    }}>
                         <Text style={styles.circleText}>{getInitials(props?.name)}</Text>
                     </View>
 
@@ -214,28 +247,28 @@ const ActiveTab = (props) => {
                             {props?.phoneNumber?.replace(/^.{0}/g, '', " ").slice(-10).replaceAt(3, "X").replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X")}</Text>
                     </View>
                     {props?.details?.purpose === 'Leads Follow Up' &&
-                        <TouchableOpacity
+                        <View
                             style={[styles.leadContainer, { backgroundColor: COLORS.LightYellow }]}>
                             <Text style={[styles.leadText, { color: COLORS.DarkYellow }]}>{t('common:LeadsFollowUp')}</Text>
-                        </TouchableOpacity>
+                        </View>
                     }
                     {props?.details?.purpose === 'Explain Trust Circle' &&
-                        <TouchableOpacity
+                        <View
                             style={[styles.leadContainer, { backgroundColor: COLORS.LightPurple }]}>
                             <Text style={[styles.leadText, { color: COLORS.DarkPurple }]}>{t('common:ExplainTrustCircle')}</Text>
-                        </TouchableOpacity>
+                        </View>
                     }
 
                     {props?.details?.purpose === 'Conduct CGT' &&
-                        <TouchableOpacity style={[styles.leadContainer, { backgroundColor: COLORS.LightBlue }]}>
+                        <View style={[styles.leadContainer, { backgroundColor: COLORS.LightBlue }]}>
                             <Text style={[styles.leadText, { color: COLORS.DarkBlue }]}>{t('common:ConductCGT')}</Text>
-                        </TouchableOpacity>
+                        </View>
                     }
                     {props?.details?.purpose === 'Conduct DLE' &&
-                        <TouchableOpacity
+                        <View
                             style={[styles.leadContainer, { backgroundColor: COLORS.LightPurple }]}>
                             <Text style={[styles.leadText, { color: COLORS.DarkPurple }]}>Conduct DLE</Text>
-                        </TouchableOpacity>
+                        </View>
                     }
                 </View>
 
