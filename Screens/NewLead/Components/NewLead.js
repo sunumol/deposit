@@ -196,7 +196,7 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus,setbackstate }) 
         await api.createLead(data).then((res) => {
             if (res?.status == 200) {
                 if (res?.data?.body == 'This number is already registered') {
-                    setMessage('This number is already registered')
+                    setMessage('Lead has already been created with this number')
                     setMobile('')
                     MobileRef?.current?.focus()
                     setMoberror(true)

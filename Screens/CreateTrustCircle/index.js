@@ -95,7 +95,7 @@ const CreateTrustCircle = ({ navigation, route }) => {
         getTCLimitDetails()
         getTclist()
         getAllTrustCircleMembers()
-        console.log('++++++=======',customerList,'==========+++++++++++',cgtactivity?.mobileNumber)
+       // console.log('++++++=======',customerList,'==========+++++++++++',cgtactivity?.mobileNumber)
     }, [customerList, customerID])
 
 
@@ -123,14 +123,14 @@ const CreateTrustCircle = ({ navigation, route }) => {
             "activityId": activityId
         };
         await api.getAllTrustCircleMembers(data).then((res) => {
-            console.log('-------------------getAllTrustCircleMembers', res)
+           // console.log('-------------------getAllTrustCircleMembers', res)
             settcstatus(false)
             settcmember(res?.data?.body)
             // getDLEschedule(res?.data?.body?.primaryCustomerId)
         })
             .catch((err) => {
                 settcstatus(false)
-                console.log('-------------------getAllTrustCircleMembers', err?.response)
+               // console.log('-------------------getAllTrustCircleMembers', err?.response)
             })
     };
 
@@ -139,7 +139,7 @@ const CreateTrustCircle = ({ navigation, route }) => {
     // ------------------ getTCLimitDetails Api Call Start ------------------
     const getTCLimitDetails = async () => {
         await api.getTCLimitCount().then((res) => {
-            console.log('-------------------res limit========', res?.data)
+           // console.log('-------------------res limit========', res?.data)
             // setTCLimit(res?.data?.body)
             setMinLimit(res?.data?.body?.minimumCount)
             setMaxLimit(res?.data?.body?.maximumCount)
@@ -181,7 +181,7 @@ const CreateTrustCircle = ({ navigation, route }) => {
     useEffect(() => {
         const state= tcmember?.filter((item,i)=>item?.mobileNumber === cgtCustomerDetails?.mobileNumber)
         const states= tcmember?.filter((item,i)=>item?.mobileNumber !== cgtCustomerDetails?.mobileNumber)
-        console.log('------jhjkshjkfherigfh------',tcmember)
+       // console.log('------jhjkshjkfherigfh------',tcmember)
         if(state?.length){
             setCustomerList2(states)
             const idData = []
@@ -206,18 +206,18 @@ const CreateTrustCircle = ({ navigation, route }) => {
     }, [cgtactivity,tcmember])
 
     const getTclist = async () => {
-        console.log('api called1234', customerID)
+       // console.log('api called1234', customerID)
         const data = {
             "employeeId":Number(custID),
             "customerNameOrNumber": "",
             "addedTcIds": [customerID, cgtCustomerDetails?.primaryCustomerId]
         }
-        console.log("DATA PRINT", data)
+        //console.log("DATA PRINT", data)
         await api.getCustomerListForTc(data).then((res) => {
-            console.log('-------------------res getCustomerListForTc', res)
+           // console.log('-------------------res getCustomerListForTc', res)
 
         }).catch((err) => {
-            console.log('-------------------getCustomerListForTc', err?.response)
+           // console.log('-------------------getCustomerListForTc', err?.response)
         })
     };
     // ------------------ HomeScreen Api Call End -----------------------

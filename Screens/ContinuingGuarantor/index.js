@@ -37,6 +37,7 @@ import OTPInputView from '../../Components/OTPInputView'
 import { api } from '../../Services/Api';
 import SmsAndroid from 'react-native-get-sms-android';
 import CorrectionModal from './components/CorrectionModal';
+import Verifypop2 from './components/VerifyPop2';
 // -------------- Image Imports ---------------------
 import Call from '../../assets/image/calls.svg';
 import Image1 from '../../assets/Images/cakes.svg';
@@ -90,7 +91,10 @@ const ContinuingGuarantor = ({ navigation, route }) => {
   const [custID, setCustId] = useState('')
   const [ModalVisibleC, setModalVisibleC] = useState(false)
   const [verifypop, setverifypop] = useState(false);
+  const [verifypop2, setverifypop2] = useState(false);
   const isLastPage = useSelector(state => state.isLastPage);
+  const [Correct1, setCorrect1] = useState(route?.params?.Correction)
+
 
   const getData = async () => {
     try {
@@ -122,8 +126,11 @@ const ContinuingGuarantor = ({ navigation, route }) => {
       setCustId(value)
     })
     console.log("route?.params?.relation", route?.params?.relation)
+   // if(!Correct1){
     getCGdetails()
     getSpousedetail()
+  //  }
+    
   }, [])
 
   useEffect(() => {
@@ -262,7 +269,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
     const data = {
       "activityId": activityId,
       "mobileNumber": "+91" + num,
-      "name": relation !== 'Spouse' ? Name :spousedetail?.name,
+      "name": relation !== 'Spouse' ? Name : spousedetail?.name,
       "relationShip": relation,
       "occupation": relation !== 'Spouse' ? OccupationD : spousedetail?.occupation
     }
@@ -294,6 +301,10 @@ const ContinuingGuarantor = ({ navigation, route }) => {
         setResends(false)
         setTimer(0)
       } else {
+console.log("enyer",res?.data)
+        setverifypop2(true)
+
+        onChangeNumber('')
         setMaxError(false)
       }
     })
@@ -338,8 +349,11 @@ const ContinuingGuarantor = ({ navigation, route }) => {
         setTimeout(() => {
           setMaxError(false)
         }, 3000);
+      } else {
+        onChangeNumber('')
+        setverifypop2(true)
       }
-      console.log('-------------------err verifyCG34', err)
+      console.log('-------------------err verifyCG34', err?.response)
     })
   };
   // ------------------ ----------------------------------------------
@@ -351,14 +365,16 @@ const ContinuingGuarantor = ({ navigation, route }) => {
       "otp": OtpValue
     }
     await api.verifyCGOTP(data).then((res) => {
-      console.log('-------------------res verifyCG', res)
+      console.log('-------------------res verifyCG', route?.params?.isCheck)
       if (res?.status) {
         setIsOtp1(false)
-        if (route?.params?.isCheck == false) {
-          
-          getLastPage()
-        } else {
+        if (route?.params?.isCheck == true) {
           setModalVisibleC(true)
+         
+        } else {
+          getLastPage()
+          console.log("route para")
+         // 
         }
 
         // if (relation !== 'Spouse') {
@@ -377,9 +393,11 @@ const ContinuingGuarantor = ({ navigation, route }) => {
         setResendOtp(false)
         setInvalidotp(true)
         setOtp(true)
-      }else{
-       setverifypop(true)
+      } else {
+        
+        setverifypop(true)
         setOtp(true)
+
         setResendOtp(true)
       }
     })
@@ -540,44 +558,44 @@ const ContinuingGuarantor = ({ navigation, route }) => {
     await api.getLastPage(data).then((res) => {
       console.log("last page upadte", res?.data, res?.data?.body?.nextPage)
       if (res?.data?.body?.isLasCorrectin == false && res?.data?.body?.nextPage == 1) {
-        navigation.navigate('CustomerDetails')
+        navigation.navigate('CustomerDetails',{Correction:Correct1})
       } else if (res?.data?.body?.isLasCorrectin == false && res?.data?.body?.nextPage == 2) {
         if (Purposes == 'Spouse') {
-          navigation.navigate('ContinuingGuarantor', { relation: 'Spouse',isCheck:res?.data?.body?.isLasCorrectin})
+          navigation.navigate('ContinuingGuarantor', { relation: 'Spouse', isCheck: res?.data?.body?.isLasCorrectin,Correction:Correct1 })
         } else {
-          navigation.navigate('ContinuingGuarantor', { relation: 'other',isCheck:res?.data?.body?.isLasCorrectin })
+          navigation.navigate('ContinuingGuarantor', { relation: 'other', isCheck: res?.data?.body?.isLasCorrectin,Correction:Correct1 })
         }
 
       } else if (res?.data?.body?.isLasCorrectin == false && res?.data?.body?.nextPage == 4) {
         if (relation !== 'Spouse') {
-          navigation.navigate('UploadVid',{isCheck:res?.data?.body?.isLasCorrectin})
+          navigation.navigate('UploadVid', { isCheck: res?.data?.body?.isLasCorrectin,Correction:Correct1 })
         } else {
-          navigation.navigate('AddVehicle',{isCheck:res?.data?.body?.isLasCorrectin})
+          navigation.navigate('AddVehicle', { isCheck: res?.data?.body?.isLasCorrectin,Correction:Correct1 })
         }
       } else if (res?.data?.body?.isLasCorrectin == false && res?.data?.body?.nextPage == 5) {
-        navigation.navigate('VehicleOwn',{isCheck:res?.data?.body?.isLasCorrectin})
+        navigation.navigate('VehicleOwn', { isCheck: res?.data?.body?.isLasCorrectin,Correction:Correct1 })
       } else if (res?.data?.body?.isLasCorrectin == false && res?.data?.body?.nextPage == 6) {
-        navigation.navigate('EnergyUtility',{isCheck:res?.data?.body?.isLasCorrectin})
+        navigation.navigate('EnergyUtility', { isCheck: res?.data?.body?.isLasCorrectin,Correction:Correct1 })
       } else if (res?.data?.body?.isLasCorrectin == false && res?.data?.body?.nextPage == 7) {
-        navigation.navigate('IncomeDetails',{isCheck:res?.data?.body?.isLasCorrectin})
+        navigation.navigate('IncomeDetails', { isCheck: res?.data?.body?.isLasCorrectin,Correction:Correct1 })
       } else if (res?.data?.body?.isLasCorrectin == false && res?.data?.body?.nextPage == 8) {
-        navigation.navigate('IncomeDetailsSpouse',{isCheck:res?.data?.body?.isLasCorrectin})
+        navigation.navigate('IncomeDetailsSpouse', { isCheck: res?.data?.body?.isLasCorrectin,Correction:Correct1 })
       }
       else if (res?.data?.body?.isLasCorrectin == true && res?.data?.body?.nextPage == 2) {
-        navigation.navigate('ResidenceOwner',{isCheck:res?.data?.body?.isLasCorrectin})
-    } else if (res?.data?.body?.isLasCorrectin == true && res?.data?.body?.nextPage == 3) {
-        navigation.navigate('ContinuingGuarantor',{isCheck:res?.data?.body?.isLasCorrectin})
-    }
+        navigation.navigate('ResidenceOwner', { isCheck: res?.data?.body?.isLasCorrectin ,Correction:Correct1})
+      } else if (res?.data?.body?.isLasCorrectin == true && res?.data?.body?.nextPage == 3) {
+        navigation.navigate('ContinuingGuarantor', { isCheck: res?.data?.body?.isLasCorrectin,Correction:Correct1 })
+      }
 
 
-    else if (res?.data?.body?.isLasCorrectin == true && res?.data?.body?.nextPage == 6) {
-        navigation.navigate('EnergyUtility',{isCheck:res?.data?.body?.isLasCorrectin})
-    }
-    else if (res?.data?.body?.isLasCorrectin == true && res?.data?.body?.nextPage == 7) {
-        navigation.navigate('IncomeDetails',{isCheck:res?.data?.body?.isLasCorrectin})
-    } else if (res?.data?.body?.isLasCorrectin == true && res?.data?.body?.nextPage == 8) {
-        navigation.navigate('IncomeDetailsSpouse')
-    }
+      else if (res?.data?.body?.isLasCorrectin == true && res?.data?.body?.nextPage == 6) {
+        navigation.navigate('EnergyUtility', { isCheck: res?.data?.body?.isLasCorrectin,Correction:Correct1 })
+      }
+      else if (res?.data?.body?.isLasCorrectin == true && res?.data?.body?.nextPage == 7) {
+        navigation.navigate('IncomeDetails', { isCheck: res?.data?.body?.isLasCorrectin,Correction:Correct1 })
+      } else if (res?.data?.body?.isLasCorrectin == true && res?.data?.body?.nextPage == 8) {
+        navigation.navigate('IncomeDetailsSpouse',{Correction:Correct1})
+      }
 
     }).catch((err) => {
       console.log('-------------------err spousedetail1', err?.response)
@@ -607,6 +625,25 @@ const ContinuingGuarantor = ({ navigation, route }) => {
 
     })
   };
+
+   // ------------------verifyCG detail ------------------------------------------------------------------------------
+   const verifyCGOTPBackSave = async (mobnumber) => {
+    const data = {
+      "activityId": activityId,
+      "otp": OtpValue
+    }
+    await api.verifyCGOTP(data).then((res) => {
+      console.log('-------------------res verifyCG', res)
+      if (res?.status) {
+        navigation.navigate('Profile'),
+         setModalVisible(false)
+      }
+    }).catch((err) => {
+  
+    
+    })
+  };
+
   return (
     <SafeAreaProvider>
 
@@ -772,7 +809,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
                     <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 12, marginBottom: 5 }}>
                       <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center' }}>{t('common:otpValid')}</Text>
                     </View> : null}
-                    {invalidotp1 ?
+                  {invalidotp1 ?
                     <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 12, marginBottom: 5 }}>
                       <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center' }}>Could not Verify</Text>
                     </View> : null}
@@ -847,7 +884,8 @@ const ContinuingGuarantor = ({ navigation, route }) => {
               setModalVisible(false),
                 setModalReason(true)
             }}
-            Press1={() => { navigation.navigate('Profile'), setModalVisible(false) }}
+            Press1={() => {navigation.navigate('Profile'),
+            setModalVisible(false)}}
             ModalVisible={ModalVisible}
             setModalVisible={setModalVisible}
             onPressOut={() => {
@@ -864,12 +902,16 @@ const ContinuingGuarantor = ({ navigation, route }) => {
             onPressOut={() => setModalReason(!ModalReason)}
             setModalVisible={setModalReason}
           />
-               <Verifypop
-                ModalVisible={verifypop}
-                onPressOut={() => setverifypop(!verifypop)}
-                setModalVisible={setverifypop}
-            />
-
+          <Verifypop
+            ModalVisible={verifypop}
+            onPressOut={() => setverifypop(!verifypop)}
+            setModalVisible={setverifypop}
+          />
+          <Verifypop2
+            ModalVisible={verifypop2}
+            onPressOut={() => setverifypop2(!verifypop2)}
+            setModalVisible={setverifypop2}
+          />
           <ErrorModal1
             ModalVisible={ModalError1}
             onPressOut={() => {
@@ -891,7 +933,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
 
           <TouchableOpacity onPress={() => OtpValue?.length === 4 && number?.length === 10 && relation ? verifyCGOTP() : console.log("geki")}
             style={[styles.buttonView, { backgroundColor: OtpValue?.length === 4 && number?.length === 10 && relation ? COLORS.colorB : '#E0E0E0' }]}>
-            <Text style={[styles.continueText, { color: OtpValue?.length === 4 && number?.length === 10 && relation ? COLORS.colorBackground : COLORS.colorWhite3 }]}>{route?.params?.isCheck? 'Confirm' : 'Continue'}</Text>
+            <Text style={[styles.continueText, { color: OtpValue?.length === 4 && number?.length === 10 && relation ? COLORS.colorBackground : COLORS.colorWhite3 }]}>{route?.params?.isCheck ? 'Submit' : 'Continue'}</Text>
           </TouchableOpacity>
         </KeyboardAvoidingView>
 

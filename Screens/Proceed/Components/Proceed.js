@@ -36,7 +36,7 @@ const Energy = ({ navigation }) => {
 
                         {ButtonS
                             ? <LottieView source={require('../Assets/shakehand.json')} autoPlay loop={true} style={{ width: 200, height: 200 }} />
-                            : <LottieView source={require('../Assets/clocktime.json')} autoPlay loop={true} style={{ width: 200, height: 200 }} />
+                            : <LottieView source={require('../Assets/hour-glass.json')} autoPlay loop={true} style={{ width: 200, height: 200 }} />
                         }
                     </View>
 

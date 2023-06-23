@@ -10,8 +10,10 @@ import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 import ActivityModal from '../components/ActiveModal';
 import { useDispatch } from 'react-redux';
 import { api } from '../../../../Services/Api';
+import moment from 'moment';
+
 const ActiveTab = (props) => {
-  
+  console.log("droptab data",)
     const { t } = useTranslation();
     const [Lang, setLang] = useState('')
     const [modalVisible, setModalVisible] = useState(false)
@@ -150,7 +152,9 @@ const ActiveTab = (props) => {
 
     return (
         <>
-        {console.log("-----welcome call-----",props?.details?.purpose)}
+          {/* <Text style={styles.timeDropStyle}>{moment(props?.details?.fromTime).format("hh:mm A")}   (1)</Text>
+         <Text style={styles.headText}>{t('common:Meet')}</Text> */}
+        {console.log("-----welcome call-----",props?.details?.fromTime)}
             <TouchableOpacity
                 style={styles.boxStyle}
                 key={props?.id}
@@ -227,7 +231,18 @@ const ActiveTab = (props) => {
                     }
 
                     {props?.details?.purpose === 'Conduct CGT' &&
-                        <TouchableOpacity style={[styles.leadContainer, { backgroundColor: COLORS.LightBlue }]}>
+                        <TouchableOpacity style={[styles.leadContainer, { backgroundColor: COLORS.LightBlue }]} 
+                        onPress={()=>{
+                            dispatch({
+                                type: 'SET_CGT_ACTIVITY_ID',
+                                payload: props?.details?.activityId,
+                            });
+                            dispatch({
+                                type: 'SET_CGT_ACTIVITY',
+                                payload:props?.details,
+                            });
+                            getCgtStatus(props?.details?.activityId)
+                        }}>
                             <Text style={[styles.leadText, { color: COLORS.DarkBlue }]}>{t('common:ConductCGT')}</Text>
                         </TouchableOpacity>
                     }
@@ -277,6 +292,12 @@ const styles = StyleSheet.create({
         color: COLORS.colorBackground,
         fontWeight: '600',
     },
+    timeDropStyle: {
+        fontSize: 11,
+        fontFamily: FONTS.FontMedium,
+        color: COLORS.colorDSText,
+        paddingTop: 10,
+    },
     circleText: {
         fontSize: 18,
         fontFamily: FONTS.FontSemiB,
@@ -288,6 +309,14 @@ const styles = StyleSheet.create({
         fontFamily: FONTS.FontBold,
         color: COLORS.colorDark,
         fontWeight: '600',
+    },
+    headText: {
+        fontSize: 12,
+        fontFamily: FONTS.FontSemiB,
+        color: COLORS.colorDark,
+        letterSpacing: 0.64,
+        paddingTop: 5,
+        paddingLeft: 8
     },
     idText: {
         fontSize: 11,

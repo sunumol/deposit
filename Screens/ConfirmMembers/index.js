@@ -325,7 +325,7 @@ const ConfirmMembers = ({ navigation }) => {
                   fontFamily: FONTS.FontRegular,
                   color: COLORS.colorDark,
                   fontWeight: '400', paddingHorizontal: 10, paddingTop: 5
-                }}>No results Found</Text>}
+                }}>No results found</Text>}
 
 
                 { data && data?.map((item, index) =>

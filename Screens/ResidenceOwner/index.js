@@ -35,16 +35,18 @@ const ResidenceOwner = ({ navigation, }) => {
     const { t } = useTranslation();
     const [lang, setLang] = useState('')
     const [BStatus, setBstatus] = useState(false)
-    const [state,setState] = useState()
-    const [ModalVisible,setModalVisible] = useState(false)
-    const [ModalReason,setModalReason] = useState(false)
+    const [state, setState] = useState()
+    const [ModalVisible, setModalVisible] = useState(false)
+    const [ModalReason, setModalReason] = useState(false)
     const [ModalError, setModalError] = useState(false)
-    const [proofType,setProoftype] = useState('')
-    const [imageurl,setImageUrl] = useState('')
-    const [relation,setRelation] = useState('')
-    const [relative,setRelative] = useState('')
-    const [custID,setCustId] = useState('')
+    const [proofType, setProoftype] = useState('')
+    const [imageurl, setImageUrl] = useState('')
+    const [relation, setRelation] = useState('')
+    const [relative, setRelative] = useState('')
+    const [custID, setCustId] = useState('')
     const activityId = useSelector(state => state.activityId);
+    const [Correct1, setCorrect1] = useState(route?.params?.Correction)
+
     useEffect(() => {
         getData()
     }, [])
@@ -52,7 +54,7 @@ const ResidenceOwner = ({ navigation, }) => {
         AsyncStorage.getItem("CustomerId").then((value) => {
             setCustId(value)
         })
-    
+
     }, [])
     const getData = async () => {
         try {
@@ -64,22 +66,22 @@ const ResidenceOwner = ({ navigation, }) => {
         }
     }
 
-      // ------------------ get Conduct DLE basic detail Village Api Call Start ------------------
-      const updateRejection = async () => {
+    // ------------------ get Conduct DLE basic detail Village Api Call Start ------------------
+    const updateRejection = async () => {
         console.log('api called for rejection')
         const data = {
-            "activityStatus":'Submitted wrong data',
-            "employeeId":Number(custID),
-            "activityId":activityId
+            "activityStatus": 'Submitted wrong data',
+            "employeeId": Number(custID),
+            "activityId": activityId
         }
         await api.updateActivity(data).then((res) => {
             console.log('-------------------res get Village', res)
             setModalError(true)
             setModalReason(false)
             setTimeout(() => {
-                navigation.navigate('Profile')  
+                navigation.navigate('Profile')
             }, 1000);
-          
+
         }).catch((err) => {
             console.log('-------------------err get Village', err)
         })
@@ -87,10 +89,10 @@ const ResidenceOwner = ({ navigation, }) => {
     // ------------------ HomeScreen Api Call End ------------------
 
 
-     // ------------------save and update residence owner detail ------------------
+    // ------------------save and update residence owner detail ------------------
 
-     const UpdateResidenceowner = async () => {
-        console.log('api called',activityId,proofType,imageurl,relation,relative)
+    const UpdateResidenceowner = async () => {
+        console.log('api called', activityId, proofType, imageurl, relation, relative)
 
         const data = {
             "activityId": activityId,
@@ -102,12 +104,12 @@ const ResidenceOwner = ({ navigation, }) => {
         await api.UpdateResidenceowner(data).then((res) => {
             console.log('-------------------res  update Residence owner', res)
             if (res?.status) {
-                if(Purposes == 'Spouse'){
-               // navigation.navigate('ContinuingGuarantor') 
-               navigation.navigate('ContinuingGuarantor',{relation:'Spouse'}) 
+                if (Purposes == 'Spouse') {
+                    // navigation.navigate('ContinuingGuarantor') 
+                    navigation.navigate('ContinuingGuarantor', { relation: 'Spouse' })
 
-                }else{
-                    navigation.navigate('ContinuingGuarantor',{relation:'other'})  
+                } else {
+                    navigation.navigate('ContinuingGuarantor', { relation: 'other' })
                     //navigation.navigate('ContinuingGuarantor')  
 
                 }
@@ -119,52 +121,52 @@ const ResidenceOwner = ({ navigation, }) => {
 
 
 
-// device back api call------------------
+    // device back api call------------------
 
-const UpdateResidenceowner_backButton = async () => {
-    console.log('api called',activityId,proofType,imageurl,relation,relative)
+    const UpdateResidenceowner_backButton = async () => {
+        console.log('api called', activityId, proofType, imageurl, relation, relative)
 
-    const data = {
-        "activityId": activityId,
-        "ownerShipProofType": proofType,
-        "imageUrl": imageurl,
-        "relationShipWithCustomer": relation,
-        "ownersName": relative
-    }
-    await api.UpdateResidenceowner(data).then((res) => {
-        console.log('-------------------res  update Residence owner', res)
-        if (res?.status) {
-          
-           // navigation.navigate('ContinuingGuarantor') 
-           navigation.navigate('Profile') 
-
+        const data = {
+            "activityId": activityId,
+            "ownerShipProofType": proofType,
+            "imageUrl": imageurl,
+            "relationShipWithCustomer": relation,
+            "ownersName": relative
         }
-    }).catch((err) => {
-        console.log('-------------------err  update Residence Owner', err?.response)
-    })
-};
+        await api.UpdateResidenceowner(data).then((res) => {
+            console.log('-------------------res  update Residence owner', res)
+            if (res?.status) {
+
+                // navigation.navigate('ContinuingGuarantor') 
+                navigation.navigate('Profile')
+
+            }
+        }).catch((err) => {
+            console.log('-------------------err  update Residence Owner', err?.response)
+        })
+    };
 
 
 
 
 
-   
+
     const handleGoBack = useCallback(() => {
 
         // navigation.goBack()
-             setModalVisible(true)
-         return true; // Returning true from onBackPress denotes that we have handled the event
-     }, [navigation]);
- 
-     useFocusEffect(
-         React.useCallback(() => {
-             BackHandler.addEventListener('hardwareBackPress', handleGoBack);
- 
-             return () =>
-             
-                 BackHandler.removeEventListener('hardwareBackPress', handleGoBack);
-         }, [handleGoBack]),
-     );
+        setModalVisible(true)
+        return true; // Returning true from onBackPress denotes that we have handled the event
+    }, [navigation]);
+
+    useFocusEffect(
+        React.useCallback(() => {
+            BackHandler.addEventListener('hardwareBackPress', handleGoBack);
+
+            return () =>
+
+                BackHandler.removeEventListener('hardwareBackPress', handleGoBack);
+        }, [handleGoBack]),
+    );
 
 
 
@@ -176,28 +178,29 @@ const UpdateResidenceowner_backButton = async () => {
             <Header name="Current Residence Owner" navigation={navigation} setState={state} onPress={handleGoBack} />
 
             <View style={styles.ViewContent}>
-                <Owner navigation={navigation} 
-                setState={setState}
-                 proofType1={setProoftype}
-                 imageUrl1={setImageUrl}
-                  relation1={setRelation} 
-                  relative1={setRelative}
-                  isCheck={route?.params?.isCheck}  />
+                <Owner navigation={navigation}
+                    setState={setState}
+                    proofType1={setProoftype}
+                    imageUrl1={setImageUrl}
+                    relation1={setRelation}
+                    relative1={setRelative}
+                    Correction={route?.params?.Correction}
+                    isCheck={route?.params?.isCheck} />
             </View>
 
 
             <ModalSave
-                Press ={()=>{
+                Press={() => {
                     setModalVisible(false),
-                    setModalReason(true)
-               
+                        setModalReason(true)
+
                 }}
-                Press1={()=>{UpdateResidenceowner_backButton(),setModalVisible(false)}}
+                Press1={() => { UpdateResidenceowner_backButton(), setModalVisible(false) }}
                 ModalVisible={ModalVisible}
                 setModalVisible={setModalVisible}
                 onPressOut={() => {
                     setModalVisible(false)
-                   
+
 
                 }}
                 navigation={navigation} />
@@ -205,8 +208,8 @@ const UpdateResidenceowner_backButton = async () => {
 
             <ReasonModal
                 onPress1={() => {
-                     updateRejection()
-                   // setModalError(true)
+                    updateRejection()
+                    // setModalError(true)
                 }}
                 ModalVisible={ModalReason}
                 onPressOut={() => setModalReason(!ModalReason)}
@@ -221,7 +224,7 @@ const UpdateResidenceowner_backButton = async () => {
                     setModalReason(!ModalReason)
                 }}
                 setModalVisible={setModalError}
-                navigation={navigation} 
+                navigation={navigation}
             />
 
         </SafeAreaProvider>

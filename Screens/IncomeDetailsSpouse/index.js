@@ -11,7 +11,8 @@ import {
     StatusBar,
     ScrollView,
     Dimensions,
-    BackHandler
+    BackHandler,
+    ActivityIndicator
 } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -73,6 +74,8 @@ console.log("next screen ",route?.params?.isCheck)
     const [NetMonth, setNetMonth] = useState(false)
     const [LastPage,setLastPage] = useState(route?.params?.isCheck)
     const isLastPage = useSelector(state => state.isLastPage);
+    const [status,setStatus] = useState(true)
+    const [CorrectionStatus,setCorrectionStatus] = useState(route?.params?.Correction)
     useEffect(() => {
         getData()
 
@@ -122,8 +125,9 @@ console.log("next screen ",route?.params?.isCheck)
     );
 
     const ButtonClick = () => {
-
-        if (Amount !== '' && Avg !== '' && Month !== '') {
+console.log("button click data",Amount,Avg)
+console.log("button click data",Purpose,Month)
+        if (Amount !== '' && Avg !== '' && Purpose !== '') {
             //     if(!NetMonth){
 
             //         NumberFormat_avg()
@@ -169,9 +173,11 @@ console.log("next screen ",route?.params?.isCheck)
     useEffect(() => {
 
         AsyncStorage.getItem("CorrectionStatus").then((value) => {
-            console.log("getincome details correction", value)
-
-            getIncomeDetails(value)
+            console.log("getincome details correction", value,CorrectionStatus)
+         
+                getIncomeDetails(value)
+           
+          
 
         })
     }, [])
@@ -219,6 +225,7 @@ console.log("next screen ",route?.params?.isCheck)
         await api.getIncomeDetails(data).then((res) => {
             console.log('-------------------res getIncomeDetails', res?.data?.body)
             if (res?.status) {
+                if(!CorrectionStatus){
                 setIncomedetail(res?.data?.body)
                 setIncomedetailfield(res?.data?.body?.incomeDetailsFieldHeadders)
                 //if (value == null) {
@@ -226,11 +233,21 @@ console.log("next screen ",route?.params?.isCheck)
                 setMonth(res?.data?.body?.field2)
                 setPurpose(res?.data?.body?.field2)
                 setAvg(res?.data?.body?.field3)
-
+                setStatus(false)
+                }else{
+                    setIncomedetail(res?.data?.body)
+                    setIncomedetailfield(res?.data?.body?.incomeDetailsFieldHeadders)
+                    setAmount('')
+                    setMonth('')
+                    setPurpose('')
+                    setAvg('')
+                    setStatus(false)
+                }
 
 
             }
         }).catch((err) => {
+            setStatus(false)
             console.log('-------------------err getIncomeDetails', err?.response)
         })
     };
@@ -496,6 +513,14 @@ console.log("next screen ",route?.params?.isCheck)
 
             <View></View>
         </View> */}
+
+{status ? (
+          <View
+            style={{ alignItems: "center", justifyContent: "center", flex: 1 }}
+          >
+            <ActivityIndicator size={30} color={COLORS.colorB} />
+          </View>
+        ) : (
             <View style={styles.ViewContent}>
                 {/* <Details navigation={navigation} setStatusChange={setStatusChange} setStatusChange2={statusChange} /> */}
                 <View style={styles.mainContainer}>
@@ -660,11 +685,11 @@ console.log("next screen ",route?.params?.isCheck)
                     <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                         <TouchableOpacity style={[styles.buttonView, { backgroundColor: Amount && (Purpose || Month) && Avg ? COLORS.colorB : 'rgba(224, 224, 224, 1)' }]}
                             onPress={() => Amount && (Purpose || Month) && Avg ? ButtonClick() : console.log("hekk")}>
-                            <Text style={[styles.continueText, { color: Amount && (Purpose || Month) && Avg ? COLORS.colorBackground : '#979C9E' }]}>{LastPage?'Confirm':'Continue'}</Text>
+                            <Text style={[styles.continueText, { color: Amount && (Purpose || Month) && Avg ? COLORS.colorBackground : '#979C9E' }]}>{LastPage?'Submit':'Continue'}</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
-            </View>
+            </View>)}
 
             <CreditModal
                 visible={ModalVisible}

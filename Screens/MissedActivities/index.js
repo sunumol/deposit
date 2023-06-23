@@ -242,32 +242,28 @@ console.log("missed activir",route?.params)
             <View style={styles.ViewContent}>
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                        <View style={{ flex: 1 }}>
+                        <View style={{ flex: 0.5 }}>
                             <View style={styles.headBox}>
                                 <Text style={styles.headText}>Date</Text>
                                 <Text style={styles.headText2}>{moment(route?.params?.date).utc().format("DD ddd ‘YY")}</Text>
                             </View>
                         </View>
-
-                        <View style={{ flex: 1 }}>
-                            {route?.params?.time
-                                ? <View style={{ backgroundColor: COLORS.colorBackground, borderColor: '#E5E7FA', borderWidth: 1, borderRadius: 8, marginLeft: 7, paddingLeft: 17, paddingVertical: 11 }}>
+                        {route?.params?.time &&
+                        <View style={{ flex: 0.5 }}>
+                             <View style={{ backgroundColor: COLORS.colorBackground, borderColor: '#E5E7FA', borderWidth: 1, borderRadius: 8, marginLeft: 7, paddingLeft: 17, paddingVertical: 11 }}>
                                     <Text style={styles.headText}>Time Slot</Text>
                                     <Text style={styles.headText2}>{route?.params?.time}</Text>
                                 </View>
-                                : null}
-                        </View>
+                               
+                        </View>}
                     </View>
 
-                    {route?.params?.time
-                        ? <Text style={styles.headTextActivity}>Activities</Text>
-                        :
-                        <>
-                            <Text style={styles.headTextActivity}>Missed Activities</Text>
+   
+                            <Text style={[styles.headTextActivity,{marginTop:10}]}>Missed Activities</Text>
                             <Text style={styles.headTextActivity2}>Missed activities from previous days. Please</Text>
                         <Text style={styles.headTextActivity2}>reschedule to another slot.</Text>
-                        </>
-                    }
+                       
+                    
 
                     <View style={{ paddingTop: width * 0.03 }}>
 

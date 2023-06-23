@@ -12,7 +12,7 @@ import CallModal from '../../../Profile/Components/Modal';
 
 
 const MeetTab = (props) => {
- 
+ console.log("meettab meet",props)
     const { t } = useTranslation();
     const [Lang, setLang] = useState('')
     const [modalVisible, setModalVisible] = useState(false)
@@ -160,9 +160,14 @@ console.log("error",occupation)
                         props.navigation.navigate('DetailCheck')
                     //}
 
-                } else if (res?.data?.body == 2) {
+                }else if (res?.data?.body == 10) {
+                    props.navigation.navigate('CustomerDetails')
+                  
+                }
+                 else if (res?.data?.body == 2) {
                     props.navigation.navigate('ResidenceOwner')
                 } else if (res?.data?.body == 3) {
+                
                     props.navigation.navigate('ContinuingGuarantor')
                 } else if (res?.data?.body == 4) {
                     if (occupation) {
@@ -235,7 +240,7 @@ console.log("error",occupation)
                 });
 
                 setSpousedetail(res?.data?.body?.occupation)
-                //props.navigation.navigate('DetailCheck')
+                //props.navigation.navigate('ContinuingGuarantor')
                 getDlePageNumber(id, res?.data?.body?.occupation,res?.data?.body)
                 console.log("spose detail", res?.data?.body)
 
@@ -257,7 +262,7 @@ console.log("error",occupation)
                 {/* <Text style={[styles.timeDropStyle, { paddingTop: props.time ? 18 : 0 }]}>{props?.time} ({props?.data?.length})</Text> */}
 
                 {props?.data?.map((item, index) => {
-                    console.log("props data", item)
+                   
                     return (
                         <TouchableOpacity
                             onPress={() => {
@@ -332,9 +337,20 @@ console.log("error",occupation)
                                         <Text style={[styles.leadText, { color: COLORS.DarkPurple }]}>Conduct DLE</Text>
                                     </View>
                                     : item.purpose == 'Conduct CGT' ?
-                                        <View style={[styles.leadContainer, { backgroundColor: props.meet ? COLORS.LightBlue : COLORS.LightPurple }]}>
+                                        <TouchableOpacity style={[styles.leadContainer, { backgroundColor: props.meet ? COLORS.LightBlue : COLORS.LightPurple }]}
+                                        onPress={()=>{
+                                            dispatch({
+                                                type: 'SET_CGT_ACTIVITY_ID',
+                                                payload: item.activityId,
+                                            });
+                                            dispatch({
+                                                type: 'SET_CGT_ACTIVITY',
+                                                payload: item,
+                                            });
+                                            getCgtStatus(item?.activityId)
+                                        }}>
                                             <Text style={[styles.leadText, { color: props.meet ? COLORS.DarkBlue : COLORS.DarkPurple }]}>{t('common:ConductCGT')}</Text>
-                                        </View> :
+                                        </TouchableOpacity> :
                                         item.purpose == 'Leads Follow Up' ?
                                             <View
                                                 style={[styles.leadContainer, { backgroundColor: COLORS.LightYellow }]}>

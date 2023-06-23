@@ -67,9 +67,10 @@ const HeaderDashBoard = ({ navigation, notificationCounts }) => {
             <View style={{ flexDirection: 'row', left: -8 }}>
                 <TouchableOpacity onPress={() => navigation.navigate('NotificationScreen',{custID:custID})}>
                     <Icon1.Bell color={COLORS.colorBackground} width={25} height={25} />
+                    {notificationCounts?.notificationCount>0 &&
                     <View style={styles.IconView}>
                         <Text style={styles.textCount}>{notificationCounts?.notificationCount}</Text>
-                    </View>
+                    </View>}
                 </TouchableOpacity>
 
                 <View style={{ marginLeft: 25 }}>

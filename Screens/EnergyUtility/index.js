@@ -167,6 +167,7 @@ const EnergyUtility = ({ navigation, }) => {
                     setPurpose1={setPurpose1}
                     setDays1={setDays1}
                     setCustomerId={setCustomerId}
+                    Correction={route?.params?.Correction}
                     setEnergyUtilityId={setEnergyUtilityId} />
 
             </View>

@@ -35,7 +35,9 @@ const { height, width } = Dimensions.get('screen');
 
 const
     DetailChecks = ({ navigation, details, nav,isCheck,
-         setVillagename1, setPostoffice1, setLandmarkname1, setRoadStatus1, setpoststatus, setvillagestatus, setbackstate }) => {
+         setVillagename1, setPostoffice1, setLandmarkname1,
+          setRoadStatus1, setpoststatus, setvillagestatus,
+           setbackstate,Correction }) => {
         console.log('????===>>123', setbackstate)
 
         const isDarkMode = true;
@@ -63,6 +65,7 @@ const
         const [ModalVisibleC, setModalVisibleC] = useState(false)
         const isLastPage = useSelector(state => state.isLastPage);
         const [CorrectionStatus,setCorrectionStatus] = useState()
+        const [Correct1, setCorrect1] = useState(Correction)
 
         const toggleCheckbox = () => {
             console.log('66666', villagename, postofficename, landmarkname, roadstatus, vstatus, poststatus)
@@ -89,9 +92,13 @@ const
 
         useEffect(() => {
             setVillagename(details?.village)
+           
+            setRoadStatus(details?.accessRoadType)
+
+            if(!Correct1){
             setPostofficename(details?.postOffice)
             setLandmarkname(details?.landMark)
-            setRoadStatus(details?.accessRoadType)
+            }
 
         }, [details])
 
@@ -336,33 +343,37 @@ const
                     navigation.navigate('CustomerDetails')
                 }
                 else if (res?.data?.body?.isLasCorrectin == false && res?.data?.body?.nextPage == 2) {
-                    navigation.navigate('ResidenceOwner')
+                    navigation.navigate('ResidenceOwner',{Correction:Correct1})
                 }
                 else if (res?.data?.body?.isLasCorrectin == false && res?.data?.body?.nextPage == 6) {
-                    navigation.navigate('EnergyUtility')
+                    navigation.navigate('EnergyUtility',{Correction:Correct1})
                 } else if (res?.data?.body?.isLasCorrectin == false && res?.data?.body?.nextPage == 3) {
-                    navigation.navigate('ContinuingGuarantor')
+                    navigation.navigate('ContinuingGuarantor',{Correction:Correct1})
                 }
                 else if (res?.data?.body?.isLasCorrectin == false && res?.data?.body?.nextPage == 7) {
-                    navigation.navigate('IncomeDetails')
+                    navigation.navigate('IncomeDetails',{Correction:Correct1})
                 } else if (res?.data?.body?.isLasCorrectin == false && res?.data?.body?.nextPage == 8) {
                     navigation.navigate('IncomeDetailsSpouse')
                 }
-
+                else if (res?.data?.body?.isLasCorrectin == false && res?.data?.body?.nextPage == 10) {
+                    navigation.navigate('CustomerDetails')
+                }
                 else if (res?.data?.body?.isLasCorrectin == true && res?.data?.body?.nextPage == 2) {
-                    navigation.navigate('ResidenceOwner',{isCheck:res?.data?.body?.isLasCorrectin})
+                    navigation.navigate('ResidenceOwner',{isCheck:res?.data?.body?.isLasCorrectin,Correction:Correct1})
                 } else if (res?.data?.body?.isLasCorrectin == true && res?.data?.body?.nextPage == 3) {
-                    navigation.navigate('ContinuingGuarantor',{isCheck:res?.data?.body?.isLasCorrectin})
+                    navigation.navigate('ContinuingGuarantor',{isCheck:res?.data?.body?.isLasCorrectin,Correction:Correct1})
                 }
 
 
                 else if (res?.data?.body?.isLasCorrectin == true && res?.data?.body?.nextPage == 6) {
-                    navigation.navigate('EnergyUtility',{isCheck:res?.data?.body?.isLasCorrectin})
+                    navigation.navigate('EnergyUtility',{isCheck:res?.data?.body?.isLasCorrectin,Correction:Correct1})
                 }
                 else if (res?.data?.body?.isLasCorrectin == true && res?.data?.body?.nextPage == 7) {
-                    navigation.navigate('IncomeDetails',{isCheck:res?.data?.body?.isLasCorrectin})
+                    navigation.navigate('IncomeDetails',{isCheck:res?.data?.body?.isLasCorrectin,Correction:Correct1})
                 } else if (res?.data?.body?.isLasCorrectin == true && res?.data?.body?.nextPage == 8) {
                     navigation.navigate('IncomeDetailsSpouse')
+                } else if (res?.data?.body?.isLasCorrectin == true && res?.data?.body?.nextPage == 10) {
+                  setModalVisibleC(true)
                 }
 
             }).catch((err) => {
@@ -678,7 +689,7 @@ const
                     </TouchableOpacity> */}
                     <TouchableOpacity onPress={() => checked ? onsubmit() : console.log('')}
                         style={[styles.buttonView, { backgroundColor: checked ? COLORS.colorB : 'rgba(236, 235, 237, 1)' }]}>
-                        <Text style={[styles.continueText, { color: checked ? COLORS.colorBackground : '#979C9E' }]}>Confirm</Text>
+                        <Text style={[styles.continueText, { color: checked ? COLORS.colorBackground : '#979C9E' }]}>{!isCheck ? 'Confirm' :'Submit'}</Text>
                     </TouchableOpacity>
                 </View>
                 <CorrectionModal

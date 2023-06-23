@@ -106,8 +106,8 @@ const DLE = ({ navigation, set, list }) => {
                 <View style={{marginBottom:width*0.25}}>
              {list == '' ?
                
-                <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1,marginTop:400 }}>
-                <ActivityIndicator size={30} color={COLORS.colorB} />
+                <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1,marginTop:width*0.8 }}>
+                {/* <ActivityIndicator size={30} color={COLORS.colorB} /> */}
             </View>
            
              : <>
@@ -142,7 +142,7 @@ const DLE = ({ navigation, set, list }) => {
                                     <Text style={[styles.numText, {}]}>{item?.mobileNumber?.replace(/^.{0}/g, '', " ").slice(-10).replaceAt(3, "X").replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X")}</Text>
                                     <View
 
-                                        style={[styles.ViewExplain, { right: 0, backgroundColor: item.dleScheduleStatus == "Conduct DLE" ? "rgba(186, 134, 205, 0.1)" : item.dleScheduleStatus == "TC approval pending" ? "rgba(39, 174, 96, 0.1)" : "rgba(155, 81, 224, 0.1)", width: item.width }]}>
+                                        style={[styles.ViewExplain, { right: 0, backgroundColor: item.dleScheduleStatus == "Conduct DLE" ? "rgba(186, 134, 205, 0.1)" : item.dleScheduleStatus == "TC approval pending" ? "rgba(39, 174, 96, 0.1)" : "rgba(155, 81, 224, 0.1)",width:item?.dleScheduleStatus== "TC approval pending" ? 126:item?.width}]}>
                                         <Text style={[styles.explainText, { marginHorizontal: 7, marginVertical: 1, color: item.dleScheduleStatus == "Conduct DLE" ? "rgba(242, 153, 74, 1)" : item.dleScheduleStatus == "TC approval pending" ? "rgba(39, 174, 96, 1)" : "rgba(155, 81, 224, 1)" }]}>{item.dleScheduleStatus}</Text>
                                     </View>
                                 </View>
@@ -371,11 +371,12 @@ const styles = StyleSheet.create({
     explainText: {
         fontSize: 11,
         fontFamily: FONTS.FontSemiB,
-        color: '#9B51E0'
+        color: '#9B51E0',
+    
     },
     ViewExplain: {
         backgroundColor: 'rgba(155, 81, 224, 0.1)',
-        width: width * 0.32,
+       // width:126,
         // backgroundColor:'red',
         borderRadius: 3,
        // height: width * 0.06,

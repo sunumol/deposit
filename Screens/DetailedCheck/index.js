@@ -26,7 +26,7 @@ import Header from '../../Components/Header';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const DetailCheck = ({ navigation, route }) => {
-console.log("api correction",route?.params?.isCheck)
+    console.log("api correction", route?.params?.isCheck)
     const isDarkMode = true
 
     const [basicdetail, setBasicdetail] = useState('')
@@ -40,7 +40,8 @@ console.log("api correction",route?.params?.isCheck)
     const [poststatus, setpoststatus] = useState(false);
     const [villagestatus, setvillagestatus] = useState(false);
     const [backstate, setbackstate] = useState(false);
-    const [custID,setCustId] = useState('')
+    const [custID, setCustId] = useState('')
+    const [Correct1, setCorrect1] = useState(route?.params?.Correction)
 
     const activityId = useSelector(state => state.activityId);
 
@@ -49,17 +50,17 @@ console.log("api correction",route?.params?.isCheck)
             setCustId(value)
         })
         getConductDLEbasicdetail()
-       
+
     }, [])
 
-useEffect(()=>{
-    if(!villagestatus && !poststatus && backstate){
-        console.log('qqqqqq',villagestatus,poststatus)
-        setbackstate(false)
-    }
+    useEffect(() => {
+        if (!villagestatus && !poststatus && backstate) {
+            console.log('qqqqqq', villagestatus, poststatus)
+            setbackstate(false)
+        }
 
-},[villagestatus,poststatus])
- 
+    }, [villagestatus, poststatus])
+
 
     // ------------------ get Conduct DLE basic detail Village Api Call Start ------------------
     const updateRejection = async () => {
@@ -126,16 +127,16 @@ useEffect(()=>{
     };
 
     const handleGoBack = useCallback(() => {
-    console.log('hhhhh',villagestatus,poststatus)
-    setvillagestatus(false)
-    setpoststatus(false)
-    setbackstate(true)
-        if(!villagestatus && !poststatus){
+        console.log('hhhhh', villagestatus, poststatus)
+        setvillagestatus(false)
+        setpoststatus(false)
+        setbackstate(true)
+        if (!villagestatus && !poststatus) {
             setModalVisible(true)
         }
-    
+
         return true; // Returning true from onBackPress denotes that we have handled the event
-    }, [navigation,villagestatus,poststatus,backstate]);
+    }, [navigation, villagestatus, poststatus, backstate]);
 
     useFocusEffect(
         React.useCallback(() => {
@@ -147,9 +148,9 @@ useEffect(()=>{
 
     return (
         <SafeAreaProvider>
-    
+
             <SafeAreaView style={styles.container1} />
-            <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} backgroundColor={"#002B59"}  />
+            <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} backgroundColor={"#002B59"} />
 
             <Header name="Detailed Eligibility Check" navigation={navigation} onPress={handleGoBack} />
 
@@ -164,7 +165,8 @@ useEffect(()=>{
                     setRoadStatus1={setRoadStatus}
                     setpoststatus={setpoststatus}
                     setvillagestatus={setvillagestatus}
-                   setbackstate={backstate}
+                    setbackstate={backstate}
+                    Correction={Correct1}
                 />
             </ScrollView>
 

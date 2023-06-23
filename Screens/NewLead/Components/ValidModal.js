@@ -43,7 +43,7 @@ const ValidModal = ({ ModalVisible, onPressOut, setModalVisible, Validation }) =
                 <View style={styles.modalContainer}>
                     <Image1 style={{ marginTop: 18, marginBottom: 8 }} height={width*0.07} width={width*0.07}/>
    
-                        <View>
+                        <View style={{marginHorizontal:4}}>
                          
                             <Text style={styles.textStyle}>{Validation}</Text>
                         </View> 
@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     },
     modalContainer: {
         width: Dimensions.get('window').width * 0.9,
-        height: Dimensions.get('window').width * 0.44,
+        height: Dimensions.get('window').width * 0.46,
         backgroundColor: COLORS.colorBackground,
         borderRadius: 8,
         alignItems: 'center',

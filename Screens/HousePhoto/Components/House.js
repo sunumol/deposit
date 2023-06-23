@@ -125,11 +125,6 @@ const DetailChecks = ({ navigation, setState, setImagedata1,imagedata }) => {
   }
 
     const UploadImage = () => {
-
-        //Choose Image from gallery
-       // ImagePicker.openPicker({
-            // width: 300,
-            // height: 400,
             ImagePicker.openCamera({
              width: width *1.2,
             height: height,

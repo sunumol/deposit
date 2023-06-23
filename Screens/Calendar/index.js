@@ -83,8 +83,8 @@ const Calendar = ({ navigation, route }) => {
             "selectedDate": moment(NewDates).utc().format('DD-MM-YYYY')
         };
         await api.getCGTslot(data).then((res) => {
-            console.log("data print", NewDates)
-            console.log('------------------- CGT slot res', res?.data)
+            //console.log("data print", NewDates)
+           // console.log('------------------- CGT slot res', res?.data)
             setSlotlist(res?.data?.body[0].sloatActivityList);
             setUnScheduledActivities(res?.data?.body[0].nonTimeSlotedActivities)
             setStatus(false)

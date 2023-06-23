@@ -12,7 +12,8 @@ import {
     ScrollView,
     ActivityIndicator,
     Dimensions,
-    BackHandler
+    BackHandler,
+    RefreshControl
 } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { COLORS, FONTS } from '../../Constants/Constants';
@@ -28,14 +29,14 @@ import { api } from '../../Services/Api';
 import { useSelector } from 'react-redux';
 import CGTstatus from '../../Components/CGTstatus';
 
-const DLESchedule = ({ navigation,route}) => {
+const DLESchedule = ({ navigation, route }) => {
     //const route = useRoute();
-    console.log("route name=======>",route?.params);
+    console.log("route name=======>", route?.params);
     const isDarkMode = true
     const { t } = useTranslation();
     const [lang, setLang] = useState('')
     const [status, setstatus] = useState(true)
-    const [tcdetail,setTcdetail] = useState('')
+    const [tcdetail, setTcdetail] = useState('')
     const [details, setdetails] = useState();
     const [ModalVisible1, setModalVisible1] = useState(false)
     const [ModalVisible2, setModalVisible2] = useState(false)
@@ -43,7 +44,7 @@ const DLESchedule = ({ navigation,route}) => {
     const activityId = useSelector(state => state.activityId);
     useEffect(() => {
         getData()
-        getDLEschedule()
+        // getDLEschedule()
         getDetails()
     }, [])
 
@@ -56,6 +57,17 @@ const DLESchedule = ({ navigation,route}) => {
             console.log(e)
         }
     }
+
+    const [refreshing, setRefreshing] = React.useState(false);
+
+    const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        setTimeout(() => {
+            console.log("refresh con trol")
+            getDetails()
+        }, 2000);
+    }, []);
+
     const getDetails = async () => {
         const data = {
             "activityId": activityId
@@ -64,36 +76,37 @@ const DLESchedule = ({ navigation,route}) => {
             console.log('-------------------res123', res)
             setdetails(res?.data?.body)
             getDLEschedule(res?.data?.body?.primaryCustomerId)
+            setRefreshing(false);
         })
             .catch((err) => {
-             
+                setRefreshing(false);
                 console.log('-------------------err123', err?.response)
             })
     };
-    
 
-            // ------------------ get Slot Api Call Start ------------------
-            const getDLEschedule = async (value) => {
-                console.log('api called')
-                 const data = {
-                    //"employeeId": route?.params?.customerID,
-                    "customerId":value,
-                 };
-                 await api.getDLEschedule(data).then((res) => {
-                 
-                     console.log('------------------- DLE res', res,data)
-                     setTcdetail(res?.data?.body)
-                     setstatus(false)
-                    
-                   
-         
-                 })
-                     .catch((err) => {
-                        setstatus(false)
-                         console.log('-------------------err', err?.response)
-                     })
-             };
-             // 
+
+    // ------------------ get Slot Api Call Start ------------------
+    const getDLEschedule = async (value) => {
+        console.log('api called')
+        const data = {
+            //"employeeId": route?.params?.customerID,
+            "customerId": value,
+        };
+        await api.getDLEschedule(data).then((res) => {
+
+            console.log('------------------- DLE res', res, data)
+            setTcdetail(res?.data?.body)
+            setstatus(false)
+
+
+
+        })
+            .catch((err) => {
+                setstatus(false)
+                console.log('-------------------err', err?.response)
+            })
+    };
+    // 
 
     const handleGoBack = useCallback(() => {
 
@@ -102,16 +115,17 @@ const DLESchedule = ({ navigation,route}) => {
 
         return true; // Returning true from onBackPress denotes that we have handled the event
     }, [navigation]);
-    
+
 
 
     React.useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
-console.log('focus==========')
-            getDLEschedule()
+            console.log('focus========== data')
+            getData();
+            getDetails()
 
         });
-        getData();
+
         return unsubscribe;
     }, [navigation]);
 
@@ -126,32 +140,36 @@ console.log('focus==========')
     return (
         <SafeAreaProvider>
             <SafeAreaView style={styles.container1} />
-            <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} backgroundColor={"#002B59"}/>
+            <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} backgroundColor={"#002B59"} />
 
             <Header name="Schedule DLE Check" navigation={navigation} onPress={handleGoBack} />
 
-        {/* {status
-         ?
+            {status
+                ?
 
-         <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1, }}>
-         <ActivityIndicator size={30} color={COLORS.colorB} />
-     </View>
-        :   */}
-        <View style={styles.ViewContent}>
-                {/* <Text style={{color:'red'}} onPress={()=>setModalVisible1(true)}>MODAL</Text> */}
-          {tcdetail &&   <DLE navigation={navigation}
-                 set={route?.params?.set} 
-                 list ={tcdetail}/>
-                 }
-            </View>
-{/* } */}
+                <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1, }}>
+                    <ActivityIndicator size={30} color={COLORS.colorB} />
+                </View>
+                :
+                <ScrollView style={{backgroundColor:COLORS.colorBackground}} refreshControl={
+                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh}  colors={["#003874", "#003874"]}/>
+                }>
+                    <View style={styles.ViewContent}>
+                        {/* <Text style={{color:'red'}} onPress={()=>setModalVisible1(true)}>MODAL</Text> */}
+                        {tcdetail && <DLE navigation={navigation}
+                            set={route?.params?.set}
+                            list={tcdetail} />
+                        }
+                    </View>
+                </ScrollView>
+            }
 
 
 
 
             <CGTstatus
-                Press={() => {setModalVisible2(false),navigation.navigate('ActivityScreens') }}
-                Press1={() => {setModalVisible2(false),navigation.navigate('Profile') }}
+                Press={() => { setModalVisible2(false), navigation.navigate('ActivityScreens') }}
+                Press1={() => { setModalVisible2(false), navigation.navigate('Profile') }}
                 ModalVisible={ModalVisible2}
                 setModalVisible={setModalVisible2}
                 onPressOut={() => {

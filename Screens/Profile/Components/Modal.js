@@ -55,7 +55,10 @@ const CallModal = ({ ModalVisible, onPressOut }) => {
             setEnableContinue(false)
         })
             .catch((err) => {
-                console.log('-------------------err123', err)
+                onPressOut();
+                AsyncStorage.removeItem('CallActivity')
+                AsyncStorage.removeItem('CallActivityDetails')
+                console.log('-------------------err123', err?.response)
             })
     };
     // ------------------ Activity Update Api Call End ------------------

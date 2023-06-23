@@ -87,22 +87,22 @@ const CorrectionScreen = ({ navigation }) => {
                 });
                 AsyncStorage.setItem('CorrectionStatus',JSON.stringify(res?.data?.body?.isLasCorrectin))
                 if (res?.data?.body?.nextPage == 1) {
-                    navigation.navigate('DetailCheck',{isCheck:res?.data?.body?.isLasCorrectin})
+                    navigation.navigate('DetailCheck',{isCheck:res?.data?.body?.isLasCorrectin,Correction:true})
                 } else if (res?.data?.body?.nextPage == 2) {
-                    navigation.navigate('ResidenceOwner',{isCheck:res?.data?.body?.isLasCorrectin})
+                    navigation.navigate('ResidenceOwner',{isCheck:res?.data?.body?.isLasCorrectin,Correction:true})
                 } else if (res?.data?.body?.nextPage == 3) {
-                    navigation.navigate('ContinuingGuarantor',{isCheck:res?.data?.body?.isLasCorrectin})
+                    navigation.navigate('ContinuingGuarantor',{isCheck:res?.data?.body?.isLasCorrectin,Correction:true})
                 } else if (res?.data?.body?.nextPage == 4) {
                     navigation.navigate('UploadVid')
                 } else if (res?.data?.body?.nextPage == 5) {
                     navigation.navigate('VehicleOwn')
                 } else if (res?.data?.body?.nextPage == 6) {
                    
-                    navigation.navigate('EnergyUtility',{isCheck:res?.data?.body?.isLasCorrectin})
+                    navigation.navigate('EnergyUtility',{isCheck:res?.data?.body?.isLasCorrectin,Correction:true})
                 } else if (res?.data?.body?.nextPage == 7) {
-                    navigation.navigate('IncomeDetails', { relationShip: 'Customer',isCheck:res?.data?.body?.isLasCorrectin })
+                    navigation.navigate('IncomeDetails', { relationShip: 'Customer',isCheck:res?.data?.body?.isLasCorrectin,Correction:true })
                 } else if (res?.data?.body?.nextPage == 8) {
-                    navigation.navigate('IncomeDetails', { relationShip: 'Spouse',isCheck:res?.data?.body?.isLasCorrectin })
+                    navigation.navigate('IncomeDetails', { relationShip: 'Spouse',isCheck:res?.data?.body?.isLasCorrectin,Correction:true })
                 } else if (res?.data?.body?.nextPage == 9) {
                     navigation.navigate('HousePhoto')
                 }

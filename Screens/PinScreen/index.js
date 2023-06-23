@@ -229,7 +229,8 @@ const PinScreen = ({ navigation, }) => {
             },
             "mobile": mobile,
             "deviceIpAddress": ipAdrress,
-            "simId":deviceId,
+           // "simId":deviceId,
+            "simId":'70dc83e1227a6b8c',
             "id": custID
 
         }

@@ -8,6 +8,7 @@ import {
     TouchableOpacity,
     Text,
     ScrollView,
+    ActivityIndicator
 } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Statusbar from '../../Components/StatusBar';
@@ -28,6 +29,7 @@ const LoanDetails = ({ navigation,route }) => {
     const isDarkMode = true;
     const { t } = useTranslation();
     console.log('----route',route)
+    const [status,setStatus] = useState(true)
 
     const [details, SetDetails] = useState()
 
@@ -44,10 +46,12 @@ const LoanDetails = ({ navigation,route }) => {
             console.log('-------------------res', res)
             if (res?.status == 200) {
                 SetDetails(res?.data?.agentsNotificationHistoryList)
+                setStatus(false)
                 console.log('-------------------res', res?.data?.agentsNotificationHistoryList)
             }
         })
             .catch((err) => {
+                setStatus(false)
                 console.log('-------------------err', err?.response)
             })
     }
@@ -58,6 +62,14 @@ const LoanDetails = ({ navigation,route }) => {
             <SafeAreaView style={styles.container1} />
             <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} backgroundColor={'#002B59'} />
             <Header name={t('common:Notification')} navigation={navigation} />
+
+{status ? (
+          <View
+            style={{ alignItems: "center", justifyContent: "center", flex: 1 }}
+          >
+            <ActivityIndicator size={30} color={COLORS.colorB} />
+          </View>
+        ) : (
             <ScrollView style={styles.mainContainer}>
                 {details?.length > 0 && details?.map((item, index) => {
                   
@@ -86,7 +98,7 @@ const LoanDetails = ({ navigation,route }) => {
                 })
                 }
                 <View style={styles.lineView} />
-            </ScrollView>
+            </ScrollView>)}
         </SafeAreaProvider>
     )
 }

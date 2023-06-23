@@ -24,7 +24,7 @@ const { height, width } = Dimensions.get('screen');
 
 const Cgt = ({ navigation,activityId,customerId}) => {
    // const route = useRoute();
-    console.log("route name======>>>>>", activityId,customerId  );
+   // console.log("route name======>>>>>", activityId,customerId  );
     const isDarkMode = true
     const { t } = useTranslation();
     const [lang, setLang] = useState('')

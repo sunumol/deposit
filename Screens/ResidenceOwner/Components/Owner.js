@@ -26,9 +26,12 @@ import Image2 from '../../../assets/Images/cakes.svg';
 import { api } from '../../../Services/Api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CorrectionModal from './CorrectionModal';
+import Image1s from '../../../assets/Images/cakes.svg';
+
 const { height, width } = Dimensions.get('screen');
 
-const DetailChecks = ({ navigation, setState, proofType1, imageUrl1, relation1, relative1 ,isCheck}) => {
+const DetailChecks = ({ navigation, setState, proofType1,
+    imageUrl1, relation1, relative1, isCheck, Correction }) => {
 
     const activityId = useSelector(state => state.activityId);
 
@@ -39,7 +42,7 @@ const DetailChecks = ({ navigation, setState, proofType1, imageUrl1, relation1, 
     const [imageStatus, setImageStatus] = useState(false)
     const [Relation, setRelation] = useState('')
     const [Image1, setImage] = useState(null)
-    
+    const [Correct1, setCorrect1] = useState(Correction)
     const [UploadStatus, setUploadStatus] = useState(false)
     const [NameStatus, setNamestatus] = useState(false)
     const [spousedetail, setSpousedetail] = useState('')
@@ -48,20 +51,22 @@ const DetailChecks = ({ navigation, setState, proofType1, imageUrl1, relation1, 
     const [emoji, setEmoji] = useState(false)
     const [ModalVisibleC, setModalVisibleC] = useState(false)
     const isLastPage = useSelector(state => state.isLastPage);
-    const [CorrectionStatus,setCorrectionStatus] = useState(isCheck)
+    const [CorrectionStatus, setCorrectionStatus] = useState(isCheck)
+    const [CustomerDetail, setCustomerDetail] = useState([])
 
     useEffect(() => {
-        
+        if (!Correct1) {
             getResidenceowner()
-    
-  
+            getCustomerdetail()
+        }
+
     }, [])
 
     useEffect(() => {
 
         AsyncStorage.getItem("CorrectionStatus").then((value) => {
             if (!value) {
-              //  getResidenceowner()
+                //  getResidenceowner()
             }
         })
     }, [])
@@ -131,11 +136,11 @@ const DetailChecks = ({ navigation, setState, proofType1, imageUrl1, relation1, 
         }
         console.log("data", data)
         await api.UpdateResidenceowner(data).then((res) => {
-            console.log('-------------------res  update Residence owner',isCheck)
+            console.log('-------------------res  update Residence owner', isCheck)
             if (isCheck) {
-               setModalVisibleC(true)
-console.log("sauccess")
-            }else{
+                setModalVisibleC(true)
+                console.log("sauccess")
+            } else {
                 getLastPage()
             }
         }).catch((err) => {
@@ -146,9 +151,10 @@ console.log("sauccess")
 
     const UploadImage = () => {
         //Choose Image from gallery
-        ImagePicker.openPicker({
-            //width: 300,
-            // height: 200,
+        ImagePicker.openCamera({
+            width: width * 1.2,
+            height: height*0.7,
+            hideBottomControls: true,
             cropping: true
         }).then(image => {
             console.log("IMAGE", image.path);
@@ -237,39 +243,39 @@ console.log("sauccess")
             "activityId": activityId
         }
         await api.getLastPage(data).then((res) => {
-            console.log("last page upadte", res?.data, res?.data?.body?.nextPage,CorrectionStatus)
-       
-           if ( res?.data?.body?.isLasCorrectin == false  && res?.data?.body?.nextPage == 2) {
-              
-                navigation.navigate('ContinuingGuarantor',{isCheck:res?.data?.body?.isLasCorrectin})
-            }   
-            else
-             if (res?.data?.body?.isLasCorrectin == false && res?.data?.body?.nextPage == 6) {
-                navigation.navigate('EnergyUtility',{isCheck:res?.data?.body?.isLasCorrectin})
-            } else if (res?.data?.body?.isLasCorrectin == false && res?.data?.body?.nextPage == 3) {
-                navigation.navigate('ContinuingGuarantor',{isCheck:res?.data?.body?.isLasCorrectin})
-            }else if (res?.data?.body?.isLasCorrectin == true && res?.data?.body?.nextPage == 3) {
-                navigation.navigate('ContinuingGuarantor',{isCheck:res?.data?.body?.isLasCorrectin})
-            }
-            else if (res?.data?.body?.isLasCorrectin == false && res?.data?.body?.nextPage == 7) {
-                navigation.navigate('IncomeDetails',{isCheck:res?.data?.body?.isLasCorrectin})
-            } else if (res?.data?.body?.isLasCorrectin == false && res?.data?.body?.nextPage == 8) {
-                navigation.navigate('IncomeDetailsSpouse',{isCheck:res?.data?.body?.isLasCorrectin})
-            }
-           else if (res?.data?.body?.isLasCorrectin == true && res?.data?.body?.nextPage == 2) {
-                if (Purposes == 'Spouse') {
-                    navigation.navigate('ContinuingGuarantor', { relation: 'Spouse',isCheck:res?.data?.body?.isLasCorrectin })
-                } else {
-                    navigation.navigate('ContinuingGuarantor', { relation: 'other',isCheck:res?.data?.body?.isLasCorrectin })
-                }
+            console.log("last page upadte", res?.data, res?.data?.body?.nextPage, CorrectionStatus)
 
-            } else if (res?.data?.body?.isLasCorrectin == true && res?.data?.body?.nextPage == 6) {
-                navigation.navigate('EnergyUtility',{isCheck:res?.data?.body?.isLasCorrectin})
-            } else if (res?.data?.body?.isLasCorrectin == true && res?.data?.body?.nextPage == 7) {
-                navigation.navigate('IncomeDetails',{isCheck:res?.data?.body?.isLasCorrectin})
-            } else if (res?.data?.body?.isLasCorrectin == true && res?.data?.body?.nextPage == 8) {
-                navigation.navigate('IncomeDetailsSpouse',{isCheck:res?.data?.body?.isLasCorrectin})
+            if (res?.data?.body?.isLasCorrectin == false && res?.data?.body?.nextPage == 2) {
+
+                navigation.navigate('ContinuingGuarantor', { isCheck: res?.data?.body?.isLasCorrectin, Correction: Correct1 })
             }
+            else
+                if (res?.data?.body?.isLasCorrectin == false && res?.data?.body?.nextPage == 6) {
+                    navigation.navigate('EnergyUtility', { isCheck: res?.data?.body?.isLasCorrectin, Correction: Correct1 })
+                } else if (res?.data?.body?.isLasCorrectin == false && res?.data?.body?.nextPage == 3) {
+                    navigation.navigate('ContinuingGuarantor', { isCheck: res?.data?.body?.isLasCorrectin, Correction: Correct1 })
+                } else if (res?.data?.body?.isLasCorrectin == true && res?.data?.body?.nextPage == 3) {
+                    navigation.navigate('ContinuingGuarantor', { isCheck: res?.data?.body?.isLasCorrectin, Correction: Correct1 })
+                }
+                else if (res?.data?.body?.isLasCorrectin == false && res?.data?.body?.nextPage == 7) {
+                    navigation.navigate('IncomeDetails', { isCheck: res?.data?.body?.isLasCorrectin, Correction: Correct1 })
+                } else if (res?.data?.body?.isLasCorrectin == false && res?.data?.body?.nextPage == 8) {
+                    navigation.navigate('IncomeDetailsSpouse', { isCheck: res?.data?.body?.isLasCorrectin, Correction: Correct1 })
+                }
+                else if (res?.data?.body?.isLasCorrectin == true && res?.data?.body?.nextPage == 2) {
+                    if (Purposes == 'Spouse') {
+                        navigation.navigate('ContinuingGuarantor', { relation: 'Spouse', isCheck: res?.data?.body?.isLasCorrectin, Correction: Correct1 })
+                    } else {
+                        navigation.navigate('ContinuingGuarantor', { relation: 'other', isCheck: res?.data?.body?.isLasCorrectin, Correction: Correct1 })
+                    }
+
+                } else if (res?.data?.body?.isLasCorrectin == true && res?.data?.body?.nextPage == 6) {
+                    navigation.navigate('EnergyUtility', { isCheck: res?.data?.body?.isLasCorrectin, Correction: Correct1 })
+                } else if (res?.data?.body?.isLasCorrectin == true && res?.data?.body?.nextPage == 7) {
+                    navigation.navigate('IncomeDetails', { isCheck: res?.data?.body?.isLasCorrectin, Correction: Correct1 })
+                } else if (res?.data?.body?.isLasCorrectin == true && res?.data?.body?.nextPage == 8) {
+                    navigation.navigate('IncomeDetailsSpouse', { isCheck: res?.data?.body?.isLasCorrectin, Correction: Correct1 })
+                }
 
         }).catch((err) => {
             console.log('-------------------err spousedetail1', err?.response)
@@ -298,6 +304,24 @@ console.log("sauccess")
 
         })
     };
+
+    const getCustomerdetail = async () => {
+        console.log('api called')
+
+        const data = {
+            "activityId": activityId
+        }
+        await api.getCustomerdetail(data).then((res) => {
+            console.log('-------------------res customerdetail', res.data.body)
+            if (res?.status) {
+                setCustomerDetail(res.data.body)
+                //setSpousedetail(res?.data?.body)
+            }
+        }).catch((err) => {
+            console.log('-------------------err spousedetail', err?.response)
+        })
+    };
+
 
     return (
 
@@ -383,7 +407,7 @@ console.log("sauccess")
                                 </View>
                             </View>
                         </View> :
-                        Purposes ?
+                        Purposes !== 'Self' ?
                             <>
                                 <View>
                                     <Text style={styles.proof}>Name</Text>
@@ -411,18 +435,37 @@ console.log("sauccess")
                                         }}
                                     />
                                 </View>
-                            </> : null
+                            </> : <View style={styles.containerBox}>
+                                <View style={{ flex: 1, flexDirection: 'row' }}>
+                                    <View style={[styles.circleView, { backgroundColor: 'rgba(206, 116, 143, 1)' }]}>
+                                        <Text style={styles.shortText}>{getInitials(CustomerDetail?.name)}</Text>
+                                    </View>
+                                    <View style={{ flexDirection: 'column', flex: 1, marginLeft: 12 }}>
+                                        <Text style={styles.nameText}>{CustomerDetail?.name}</Text>
+
+
+                                        <Text style={[styles.underText, { textTransform: 'capitalize' }]}>{CustomerDetail?.occupation?.replace(/_/g, ' ')}</Text>
+                                    </View>
+
+
+                                    <View style={{ flexDirection: 'row', }}>
+                                        <Image1s width={11} height={11} top={3} />
+                                        <Text style={styles.dateText}>{CustomerDetail?.dateOfBirth}</Text>
+                                    </View>
+
+                                </View>
+                            </View>
                     }
 
                 </ScrollView>
 
                 <View style={{ position: 'absolute', left: 0, right: 0, bottom: 0, alignItems: 'center', justifyContent: 'center' }}>
-               
-                    <TouchableOpacity onPress={() => (Purpose && Purposes && (Purposes != 'Spouse' ? ownersName?.length > 2 : Purposes )&& Image1) ? UpdateResidenceowner() : console.log("helo")}
 
-                        style={[styles.Button1, { backgroundColor: (Purpose && Image1  && Purposes  &&( Purposes != 'Spouse' ? ownersName?.length > 2 : Purposes ) ) ? COLORS.colorB : 'rgba(224, 224, 224, 1)' }]}
+                    <TouchableOpacity onPress={() => (Purpose && Purposes && (Purposes != 'Spouse' ? ownersName?.length > 2 : Purposes) && Image1) ? UpdateResidenceowner() : console.log("helo")}
+
+                        style={[styles.Button1, { backgroundColor: (Purpose && Image1 && Purposes && (Purposes != 'Spouse' ? ownersName?.length > 2 : Purposes)) ? COLORS.colorB : 'rgba(224, 224, 224, 1)' }]}
                     >
-                        <Text style={[styles.text1, { color: (Purpose && Purposes &&( Purposes != 'Spouse' ? ownersName?.length > 2 : Purposes )&& Image1) ? COLORS.colorBackground : '#979C9E' }]}>{isCheck? 'Confirm' : 'Continue'}</Text>
+                        <Text style={[styles.text1, { color: (Purpose && Purposes && (Purposes != 'Spouse' ? ownersName?.length > 2 : Purposes) && Image1) ? COLORS.colorBackground : '#979C9E' }]}>{isCheck ? 'Submit' : 'Continue'}</Text>
                     </TouchableOpacity>
                 </View>
             </>

@@ -201,9 +201,10 @@ const ItemTabs = ({ navigation }) => {
                         </>
 
                         {slottedlisting?.map((item, index) => {
+                            console.log("item lenghieur",slottedlisting?.length)
                             return (
                                 <>
-                                    {item.data.length > 0 ? <TouchableOpacity
+                                    {item?.data?.length > 0 ? <TouchableOpacity
                                         onPress={() => {
 
                                             const updatedItems = [...slottedlisting];
@@ -284,6 +285,7 @@ const ItemTabs = ({ navigation }) => {
                                                                 phoneNumber={item.mobileNumber}
                                                                 color={item.color}
                                                                 setEnab={setEnab}
+                                                               
                                                                 status={item.purpose}
                                                                 details={item}
                                                             />
@@ -298,7 +300,9 @@ const ItemTabs = ({ navigation }) => {
                                                         <Text style={styles.timeDropStyle}>{item.startTime}   ({item.meetCount})</Text>
                                                         <Text style={styles.headText}>{t('common:Meet')}</Text>
                                                     </>) : null}
+                                                    {console.log("meet up here",item?.data)}
                                                 {item.data.map((item) => {
+                                                    
                                                     if (item.activityType == 'MEET') {
                                                         return (
                                                             <DropTab
@@ -308,10 +312,12 @@ const ItemTabs = ({ navigation }) => {
                                                                 text={item?.pin}
                                                                 village={item?.villageName}
                                                                 phoneNumber={item.mobileNumber}
-                                                                color={item.color}
-                                                                status={item.purpose}
+                                                                color={item?.color}
+                                                                status={item?.purpose}
                                                                 setEnab={setEnab}
                                                                 details={item}
+                                                              //  length={item?.length}
+                                                                time={item?.time}
                                                                 navigation={navigation}
                                                             />
                                                         );

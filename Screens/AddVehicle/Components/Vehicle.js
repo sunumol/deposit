@@ -143,8 +143,6 @@ const Vehicle = ({ navigation,setsearchvehicledata }) => {
 
         const data = {
             "activityId": activityId
-
-
         }
         await api.getCustomerdetail(data).then((res) => {
             console.log('-------------------res customerdetail', res.data.body)
@@ -233,7 +231,7 @@ const Vehicle = ({ navigation,setsearchvehicledata }) => {
     }
 
     const OnchangeNumbers = (num) => {
-        if (/^[A-Za-z1234567890]+$/.test(num) || num === '') {
+        if (/^[A-Z1234567890]+$/.test(num) || num === '') {
             setNumbers(num)
 
         } else {

@@ -99,7 +99,7 @@ const Calendar = ({ navigation, route }) => {
             "selectedDate": moment(NewDates).utc().format('DD-MM-YYYY')
         };
         await api.getCGTslot(data).then((res) => {
-            console.log("data print", NewDates)
+           // console.log("data print", NewDates)
             const temp = res?.data?.body[0].sloatActivityList
             temp.forEach((element, index) => {
 

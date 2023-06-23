@@ -96,7 +96,7 @@ const ProfileScreen = ({ navigation }) => {
                             </View>
                             <View style={{ flexDirection: 'column', paddingLeft: 19 }}>
                                 <Text style={styles.nameText}>{userName}</Text>
-                                <Text style={styles.idText}>{details?.id}</Text>
+                                <Text style={styles.idText}>{details?.idToShow}</Text>
                             </View>
                         </View>
                         <View style={{ marginTop: 24 }}>

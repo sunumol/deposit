@@ -206,11 +206,11 @@ const ItemTabs = ({ navigation }) => {
                                 navigation={navigation}
                             />) : null}
                             {
-                                slottedlisting.map((item, index) => {
+                                slottedlisting?.map((item, index) => {
 
                                     return (
                                         <>
-                                            {item.data.length ? (<MeetTab
+                                            {item?.data?.length ? (<MeetTab
                                                 id={item.id}
                                                 data={item.data}
                                                 time={item.time}

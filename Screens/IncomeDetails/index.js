@@ -32,7 +32,7 @@ import { useSelector } from 'react-redux';
 import ModalSave from '../../Components/ModalSave';
 import ReasonModal from '../DetailedCheck/Components/ReasonModal';
 import ErrorModal from '../DetailedCheck/Components/ErrorModal';
-
+import CorrectionModal from './Components/CorrectionModal';
 export function numberWithCommas(x) {
 
     return x?.toString().replace(/^[+-]?\d+/, function (int) {
@@ -75,14 +75,18 @@ const IncomeDetails = ({ navigation, route }) => {
     const [spousejob, setspousejob] = useState('');
     const SpouseOccupation = useSelector(state => state?.SpouseOccupation);
     const [custID, setCustId] = useState('')
-    const [CorrectionStatus, setCorrectionStatus] = useState()
-
+    const [ModalVisibleC, setModalVisibleC] = useState(false)
+    const [CorrectionStatus, setCorrectionStatus] = useState(route?.params?.Correction)
+    // const [Correction1,setCorrection1] =  useState(route?.params?.)
     useEffect(() => {
         getData()
         getSpousedetail()
         // setRelationship(route?.params?.relationShip)
+
         getIncomeDetails('Customer')
-        console.log("statecha nge.....", Buttons)
+        //  }
+
+        console.log("statecha nge.....", Buttons, route?.params?.Correction)
     }, [])
 
     useEffect(() => {
@@ -201,13 +205,23 @@ const IncomeDetails = ({ navigation, route }) => {
         await api.getIncomeDetails(data).then((res) => {
             console.log('-------------------res getIncomeDetails', res?.data?.body)
             if (res?.status) {
-                setIncomedetail(res?.data?.body)
-                setIncomedetailfield(res?.data?.body?.incomeDetailsFieldHeadders)
-                //if(value == null){
-                setAmount(res?.data?.body?.field1)
-                setMonth(res?.data?.body?.field2)
-                setAvg(res?.data?.body?.field3)
-                setPurpose(res?.data?.body?.field2)
+                if (!CorrectionStatus) {
+                    setIncomedetail(res?.data?.body)
+                    setIncomedetailfield(res?.data?.body?.incomeDetailsFieldHeadders)
+                    //if(value == null){
+                    setAmount(res?.data?.body?.field1)
+                    setMonth(res?.data?.body?.field2)
+                    setAvg(res?.data?.body?.field3)
+                    setPurpose(res?.data?.body?.field2)
+                } else {
+                    setIncomedetail(res?.data?.body)
+                    setIncomedetailfield(res?.data?.body?.incomeDetailsFieldHeadders)
+                    //if(value == null){
+                    setAmount('')
+                    setMonth('')
+                    setAvg(null)
+                    setPurpose('')
+                }
                 // }
 
             }
@@ -257,17 +271,22 @@ const IncomeDetails = ({ navigation, route }) => {
             console.log("data pass123", res)
             console.log('-------------------res saveIncomeDetails c', spousejob, spouseavailable)
             if (res?.status) {
-                if (spousejob === 500) {
-                    saveIncomeDetails_Spouse()
-                    navigation.navigate('Proceed')
-                } else if (spousejob == 'UNEMPLOYED') {
-                    saveIncomeDetails_Spouse()
-                    navigation.navigate('Proceed')
-                   
-                } else if (spousejob !== 'UNEMPLOYED') {
-                    navigation.navigate('IncomeDetailsSpouse', { isCheck: route?.params?.isCheck })
-                  
+                if(route?.params?.isCheck == true){
+                    setModalVisibleC()
+                }else{
+                    if (spousejob === 500) {
+                        saveIncomeDetails_Spouse()
+                        navigation.navigate('Proceed')
+                    } else if (spousejob == 'UNEMPLOYED') {
+                        saveIncomeDetails_Spouse()
+                        navigation.navigate('Proceed')
+    
+                    } else if (spousejob !== 'UNEMPLOYED') {
+                        navigation.navigate('IncomeDetailsSpouse', { isCheck: route?.params?.isCheck, Correction: CorrectionStatus })
+    
+                    }
                 }
+           
 
                 // navigation.navigate('DebitDetails')
             }
@@ -669,7 +688,7 @@ const IncomeDetails = ({ navigation, route }) => {
                     <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                         <TouchableOpacity style={[styles.buttonView, { backgroundColor: Amount && (Purpose || Month) && Avg ? COLORS.colorB : 'rgba(224, 224, 224, 1)' }]}
                             onPress={() => Amount && (Purpose || Month) && Avg ? ButtonClick() : console.log("hello")}>
-                            <Text style={[styles.continueText, { color: Amount && (Purpose || Month) && Avg ? COLORS.colorBackground : '#979C9E' }]}>Continue</Text>
+                            <Text style={[styles.continueText, { color: Amount && (Purpose || Month) && Avg ? COLORS.colorBackground : '#979C9E' }]}>{!route?.params?.isCheck ?  'Continue' : 'Submit'}</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -719,6 +738,23 @@ const IncomeDetails = ({ navigation, route }) => {
                 }}
                 setModalVisible={setModalError}
                 navigation={navigation}
+            />
+
+            <CorrectionModal
+                visible1={ModalVisibleC}
+                onPress1={() =>
+                    navigation.reset({
+                        index: 0,
+                        routes: [{ name: 'Proceed' }],
+                    })}
+                //getDLEConfirmation={()=>}
+                setModalVisible1={setModalVisibleC}
+                onPressOut={() => {
+                    navigation.reset({
+                        index: 0,
+                        routes: [{ name: 'Proceed' }],
+                    }), setModalVisibleC(false)
+                }}
             />
 
         </SafeAreaProvider>
