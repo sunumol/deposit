@@ -288,7 +288,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
       setVerifyotpstatus(true)
       setStatus(false)
       setTimer(0)
-      console.log('-------------------err verifyCG12 otp request', err)
+      console.log('-------------------err verifyCG12 otp request', err?.response)
       if (err?.response?.data?.message.includes('Maximum number of OTPs are exceeded.')) {
         setIsOtp1(true)
         setMaxError(true)

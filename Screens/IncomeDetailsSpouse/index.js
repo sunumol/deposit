@@ -601,9 +601,11 @@ console.log("button click data",Purpose,Month)
                             <View>
                                 <Text style={styles.TextElect}>{incomedetailfield?.field2}</Text>
                             </View>
+                            
                             <View>
                                 {incomedetailfield?.field2 == 'Salary credit method' ? <TouchableOpacity style={[styles.SelectBox, { justifyContent: 'space-between' }]} onPress={() => setModalVisible(true)}>
-                                    <Text style={[styles.textSelect]}>{Purpose ? Purpose : 'Select'}</Text>
+                                    <Text style={[styles.textSelect
+                                        ,{color:Purpose ? COLORS.colorDark : 'rgba(128, 128, 128, 1)'}]}>{Purpose ? Purpose : 'Select'}</Text>
 
                                     {/* <Icon1 name="chevron-down" size={18} color={'#808080'} style={{ marginRight: 10 }} /> */}
                                 </TouchableOpacity> :
