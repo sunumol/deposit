@@ -77,7 +77,7 @@ const CgtScreen = ({ navigation,route }) => {
             </View>
 
             <CGTstatus
-                Press={() => {setModalVisible2(false) }}
+                Press={() => {setModalVisible2(false),navigation.navigate('ActivityScreens')  }}
                 Press1={() => {setModalVisible2(false),navigation.navigate('ActivityScreens') }}
                 ModalVisible={ModalVisible2}
                 setModalVisible={setModalVisible2}

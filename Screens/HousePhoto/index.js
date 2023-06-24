@@ -93,7 +93,7 @@ const ResidenceOwner = ({ navigation, }) => {
     // ------------------save and update residence owner detail ------------------
 
     const saveHousePhoto = async () => {
-        console.log('api called')
+        console.log('api called====',activityId)
 
         const data = {
             "activityId": activityId,
