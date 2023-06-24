@@ -11,6 +11,7 @@ import {
     ActivityIndicator
 } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Statusbar from '../../Components/StatusBar';
 import { useTranslation } from 'react-i18next';
 import moment from 'moment'
@@ -75,7 +76,7 @@ const LoanDetails = ({ navigation,route }) => {
                   
                         return (
                             <>
-                                <TouchableOpacity style={[styles.renderComponent, { alignItems: 'center' }]} 
+                                <TouchableOpacity style={[styles.renderComponent, { alignItems: 'center', backgroundColor:item.readStatus?COLORS.colorBackground:'#00387426' }]} 
                                 onPress={()=>
                                   {  if(item?.notificationType === 'DATA_CONFIRMATION'){
                                     navigation.navigate('Proceed', { status: true });
@@ -84,6 +85,10 @@ const LoanDetails = ({ navigation,route }) => {
                                     }
                                 }
                                 }>
+                                    <Icon
+                                            name="bell-circle"
+                                            color={COLORS.colorB}
+                                            size={30}/>
                                     <View style={styles.columContainer}>
                                         <Text style={styles.KycText}>{item?.message.replace(/[0-9]/g, '')}</Text>
                                         <Text style={styles.timeText}>{moment(item?.createdOn).format('DD MMM')} {moment(item?.createdOn).format('LT')}</Text>
@@ -121,6 +126,7 @@ const styles = StyleSheet.create({
     },
     columContainer: {
         flexDirection: 'column',
+        paddingLeft :8
     },
     lineView: {
         height: 1, 

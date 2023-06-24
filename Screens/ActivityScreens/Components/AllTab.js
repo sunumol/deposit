@@ -43,7 +43,7 @@ const ItemTabs = ({ navigation }) => {
             res?.data?.body?.slottedActivities.forEach(function (item) {
                 item.open = false
             })
-            console.log('-------------------res all', res?.data?.body?.slottedActivities)
+            console.log('-------------------res all', res?.data?.body)
             setSlottedListing(res?.data?.body?.slottedActivities)
             setNonslottedActivities(res?.data?.body?.nonSlottedActivities)
             setEnab(false)
@@ -231,6 +231,7 @@ const ItemTabs = ({ navigation }) => {
                                         </View>
                                         <View style={{ justifyContent: 'flex-end', flexDirection: 'row', alignItems: 'center' }}>
                                             <View style={styles.badgeContainer}>
+                                                {console.log('123123123123=====',item?.data?.length,'=====',item?.meetCount,'++++',item?.callCount)}
                                                 <Text style={styles.badgeText}>{item.data.length}</Text>
                                             </View>
                                             <TouchableOpacity
@@ -269,59 +270,70 @@ const ItemTabs = ({ navigation }) => {
                                         ?
                                         <>
                                             <View>
-                                                {item.callCount > 0 ? (
+                                                {/* {item.callCount > 0 ? (
                                                     <>
                                                         <Text style={styles.timeDropStyle}>{item.startTime} ({item.callCount})</Text>
                                                         <Text style={styles.headText}>{t('common:Call')}</Text>
-                                                    </>) : null}
+                                                    </>) : null} */}
                                                 {item.data.map((item, index) => {
-                                                    if (item.activityType == 'CALL') {
+                                                 
                                                         return (
-                                                            <DropTab
+                                                            (<MeetTab
                                                                 id={item.id}
-                                                                short={item.short}
-                                                                name={item.customerName}
-                                                                text={item.pin}
-                                                                phoneNumber={item.mobileNumber}
-                                                                color={item.color}
+                                                                data={item.data}
+                                                                time={item.time}
                                                                 setEnab={setEnab}
-                                                               
-                                                                status={item.purpose}
-                                                                details={item}
-                                                            />
+                                                                meet={true}
+                                                                navigation={navigation}
+                                                            />)
+                                                            // <DropTab
+                                                            //     id={item.id}
+                                                            //     short={item.short}
+                                                            //     name={item.customerName}
+                                                            //     text={item.pin}
+                                                            //     phoneNumber={item.mobileNumber}
+                                                            //     color={item.color}
+                                                            //     setEnab={setEnab}
+                                                            //     status={item.purpose}
+                                                            //     details={item}
+                                                            // />
                                                         );
-                                                    }
+                                                    
                                                 })}
 
                                             </View>
                                             <View>
-                                                {item.meetCount > 0 ? (
+                                                {/* {item.meetCount > 0 ? (
                                                     <>
                                                         <Text style={styles.timeDropStyle}>{item.startTime}   ({item.meetCount})</Text>
                                                         <Text style={styles.headText}>{t('common:Meet')}</Text>
-                                                    </>) : null}
-                                                    {console.log("meet up here",item?.data)}
+                                                    </>) : null} */}
                                                 {item.data.map((item) => {
-                                                    
-                                                    if (item.activityType == 'MEET') {
-                                                        return (
-                                                            <DropTab
-                                                                id={item.id}
-                                                                short={item.short}
-                                                                name={item.customerName}
-                                                                text={item?.pin}
-                                                                village={item?.villageName}
-                                                                phoneNumber={item.mobileNumber}
-                                                                color={item?.color}
-                                                                status={item?.purpose}
-                                                                setEnab={setEnab}
-                                                                details={item}
-                                                              //  length={item?.length}
-                                                                time={item?.time}
-                                                                navigation={navigation}
-                                                            />
-                                                        );
-                                                    }
+                                                    (<MeetTab
+                                                        id={item.id}
+                                                        data={item.data}
+                                                        time={item.time}
+                                                        setEnab={setEnab}
+                                                        meet={true}
+                                                        navigation={navigation}
+                                                    />)
+                                                    // if (item.activityType == 'MEET') {
+                                                    //     return (
+                                                    //         <DropTab
+                                                    //             id={item.id}
+                                                    //             short={item.short}
+                                                    //             name={item.customerName}
+                                                    //             text={item?.pin}
+                                                    //             village={item?.villageName}
+                                                    //             phoneNumber={item.mobileNumber}
+                                                    //             color={item.color}
+                                                    //             status={item.purpose}
+                                                    //             setEnab={setEnab}
+                                                    //             details={item}
+                                                    //             navigation={navigation}
+                                                    //         />
+                                                    //     );
+                                                    // }
                                                 })}
                                             </View>
                                         </> : null}

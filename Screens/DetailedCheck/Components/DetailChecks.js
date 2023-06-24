@@ -337,7 +337,7 @@ const
             }
             await api.getLastPage(data).then((res) => {
                 console.log("last page upadte", res?.data,CorrectionStatus)
-               if (res?.data?.body?.isLasCorrectin == false && res?.data?.body?.nextPage == 1) {
+               if (res?.data?.body?.isLasCorrectin == false && res?.data?.body?.nextPage == 10) {
                      //setModalVisibleC(true)
                     console.log("am here",CorrectionStatus)
                     navigation.navigate('CustomerDetails')

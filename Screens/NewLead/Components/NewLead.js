@@ -137,6 +137,32 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus,setbackstate }) 
                 console.log('-------------------err', err?.response)
             })
     }
+
+    async function pinCodeValidation(text) {
+        const data = {
+            "agentId": custID,
+            "pinCode": text,
+        }
+        await api.pinCodeValidation(data).then((res) => {
+            console.log('-------------------res pinCodeValidation', res?.data?.body)
+            if(res?.data?.body){
+            setVStatus(true)
+            }else{
+                setMessage('This PIN is not under your service area')
+                setPincode('')
+                PinRef?.current?.focus()
+                setPinerror(true)
+                setValidModal1(true)
+            }
+        })
+            .catch((err) => {
+                console.log('-------------------err pinCodeValidation', err?.response)
+            })
+    }
+
+
+
+
     const Validation = () => {
         console.log('££££233', Mobile)
         const firstDigitStr = String(Mobile)[0];
@@ -360,7 +386,7 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus,setbackstate }) 
                                                             setPinerror(false)
                     
                                                             if (text?.length === 6) {
-                                                                setVStatus(true)
+                                                                pinCodeValidation(text)
                                                             }
                                                         }
                                                         //      else if(text?.length==6){
