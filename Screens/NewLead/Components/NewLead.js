@@ -217,6 +217,12 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus,setbackstate }) 
                     PinRef?.current?.focus()
                     setPinerror(true)
                     setValidModal1(true)
+                }else  if(err?.response?.data?.message === 'Customer is already registered'){
+                    setMessage('Customer is already registered')
+                    setMobile('')
+                    MobileRef?.current?.focus()
+                    setMoberror(true)
+                    setValidModal1(true)
                 }
             })
     }
