@@ -367,7 +367,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
       "otp": OtpValue
     }
     await api.verifyCGOTP(data).then((res) => {
-      console.log('-------------------res verifyCG', isLasCorrectin)
+      console.log('-------------------res verifyCG')
       if (res?.status) {
         setIsOtp1(false)
         if (route?.params?.isCheck == true) {
@@ -387,6 +387,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
 
       }
     }).catch((err) => {
+      console.log('1231241231231231332!@@£@$$!@!',err)
       if (err?.response?.data?.message == 'You entered wrong OTP') {
         setInvalidotp(true)
         setOtp(true)

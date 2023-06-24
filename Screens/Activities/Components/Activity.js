@@ -109,15 +109,40 @@ const Activities = ({ navigation ,data}) => {
         }
     }
 
-    const  getRandomColor =()=> {
-        var letters = '0123456789ABCDEF';
-        var color = '#';
-        for (var i = 0; i < 3; i++) {
-          color += letters[Math.floor(Math.random() * 8)];
-        }
+    const getRandomColor = (value) => {
+        // console.log('Random',value)
+         let mobilenum = value?.charAt(value.length-1)
+         if (mobilenum == '0'){
+           var color = '#5a8ae8'
+         }else if (mobilenum == '1'){
+           var color ='#356e8f'
+         }else if (mobilenum == '2'){
+             var color ='#1a445c'
+           }else if (mobilenum == '3'){
+             var color ='#1a5c5a'
+           }else if (mobilenum == '4'){
+             var color ='#5c4c1a'
+           }else if (mobilenum == '5'){
+             var color = '#5a8ae8'
+           }else if (mobilenum == '6'){
+             var color ='#356e8f'
+           }else if (mobilenum == '7'){
+             var color ='#1a5c5a'
+           }else if (mobilenum == '8'){
+             var color ='#5c4c1a'
+           }else if (mobilenum == '9'){
+             var color ='#1a445c'
+           }else if(value == null || '' ){
+             var color = '#1a445c'
+           }
+        //  console.log('Random',mobilenum)
+        // var letters = '0123456789ABCDEF';
+        // var color = '#';
+        // for (var i = 0; i < 3; i++) {
+        //     color += letters[Math.floor(Math.random() * 8)];
+        // }
         return color;
-      }
-    
+    }
     
       const getInitials = (name) => {
       
@@ -153,7 +178,7 @@ const Activities = ({ navigation ,data}) => {
                             setcallavail(true)
                         return (
                             <View style={styles.viewCard}>
-                                <View style={[styles.circleStyle, { backgroundColor: getRandomColor(), marginLeft: width * 0.03 }]}>
+                                <View style={[styles.circleStyle, { backgroundColor: getRandomColor(item?.mobileNumber), marginLeft: width * 0.03 }]}>
                                     <Text style={styles.circleText}>{getInitials(item.customerName ? item.customerName : (item.mobileNumber.replace(/^.{0}/g, '').replaceAt(6, "X").replaceAt(7, "X").replaceAt(8, "X").replaceAt(9, "X").slice(3)))}</Text>
                                 </View>
 

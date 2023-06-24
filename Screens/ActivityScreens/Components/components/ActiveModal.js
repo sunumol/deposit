@@ -123,7 +123,7 @@ useEffect(()=>{
                         </View>
                         <View style={{ flexDirection: 'row', paddingTop: 4 }}>
                             <Icon2 name="phone-in-talk-outline" color={"black"} size={15} />
-                            <Text style={[styles.numText, { paddingLeft: 6 }]}>{details?.mobileNumber.replace(/^.{0}/g, '').slice(-10).replaceAt(3, "X").replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X")}</Text>
+                            <Text style={[styles.numText, { paddingLeft: 6 }]}>{details?.mobileNumber?.replace(/^.{0}/g, '').slice(-10).replaceAt(3, "X").replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X")}</Text>
                         </View>
 
                     </View>

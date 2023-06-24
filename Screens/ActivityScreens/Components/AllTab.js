@@ -231,8 +231,8 @@ const ItemTabs = ({ navigation }) => {
                                         </View>
                                         <View style={{ justifyContent: 'flex-end', flexDirection: 'row', alignItems: 'center' }}>
                                             <View style={styles.badgeContainer}>
-                                                {console.log('123123123123=====',item?.data?.length,'=====',item?.meetCount,'++++',item?.callCount)}
-                                                <Text style={styles.badgeText}>{item.data.length}</Text>
+                                            
+                                                <Text style={styles.badgeText}>{item?.meetCount + item?.callCount }</Text>
                                             </View>
                                             <TouchableOpacity
                                                 onPress={() => {
@@ -275,29 +275,85 @@ const ItemTabs = ({ navigation }) => {
                                                         <Text style={styles.timeDropStyle}>{item.startTime} ({item.callCount})</Text>
                                                         <Text style={styles.headText}>{t('common:Call')}</Text>
                                                     </>) : null} */}
-                                                {item.data.map((item, index) => {
-                                                 
-                                                        return (
-                                                            (<MeetTab
-                                                                id={item.id}
-                                                                data={item.data}
-                                                                time={item.time}
+                                                
+                                            
+                                                {item.data.map((items, index) => {
+                                                console.log('---listing firt -----',items?.data[0]?.activityType)
+                                                  return(
+                                                    <>
+                                                   <Text style={[styles.timeDropStyle, { paddingTop: items.time ? 18 : 0 }]}>{items?.time} ({items?.data?.length})</Text>
+                                                    {items?.data[0]?.activityType == 'CALL' ?  <Text style={styles.headText}>{t('common:Call')}</Text> :     <Text style={styles.headText}>{t('common:Meet')}</Text> } 
+                                                    {items?.data?.map((item1,i)=>{
+                                                        console.log('ALLLLLL',item1?.activityType)
+                                                        if(item1?.activityType == 'CALL'){
+                                                         
+                                                            return(
+                                                                <>
+                                                                {/* <Text style={styles.headText}>{t('common:Call')}</Text> */}
+                                                                <DropTab
+                                                                id={item1.activityId}
+                                                                short={item1.short}
+                                                                name={item1.customerName}
+                                                                text={item1.pin}
+                                                                phoneNumber={item1.mobileNumber}
+                                                                color={item1.color}
                                                                 setEnab={setEnab}
-                                                                meet={true}
+                                                                details={item1}
+                                                                status={item1.purpose}
                                                                 navigation={navigation}
-                                                            />)
-                                                            // <DropTab
-                                                            //     id={item.id}
-                                                            //     short={item.short}
-                                                            //     name={item.customerName}
-                                                            //     text={item.pin}
-                                                            //     phoneNumber={item.mobileNumber}
-                                                            //     color={item.color}
-                                                            //     setEnab={setEnab}
-                                                            //     status={item.purpose}
-                                                            //     details={item}
-                                                            // />
-                                                        );
+                                                                /> 
+                                                                </> 
+                                                            )
+                                                        }else{
+                                                          
+                                                            return(
+                                                                <>
+                                                                  {/* <Text style={styles.headText}>{t('common:Meet')}</Text> */}
+                                                                <DropTab
+                                                                id={item1.activityId}
+                                                                short={item1.short}
+                                                                name={item1.customerName}
+                                                                text={item1.pin}
+                                                                phoneNumber={item1.mobileNumber}
+                                                                color={item1.color}
+                                                                setEnab={setEnab}
+                                                                details={item1}
+                                                                status={item1.purpose}
+                                                                navigation={navigation}
+                                                                />  
+                                                                </>
+                                                            )
+                                                        }
+                                                       
+                                                        })}
+                                                            </>
+                                                  )
+                                                 
+                                             
+                                             
+                                                   // return (
+                                                        // (<MeetTab
+                                                        //     id={item.id}
+                                                        //     data={item.data}
+                                                        //     time={item.time}
+                                                        //     setEnab={setEnab}
+                                                        //     meet={true}
+                                                        //     navigation={navigation}
+                                                        // />)
+                                                        // <DropTab
+                                                        //     id={item.data.id}
+                                                        //     short={item.data.short}
+                                                        //     name={item.data.customerName}
+                                                        //     text={item.data.pin}
+                                                        //     phoneNumber={item.data.mobileNumber}
+                                                        //     color={item.data.color}
+                                                        //     setEnab={setEnab}
+                                                        //     status={item.data.purpose}
+                                                        //     details={item.data}
+                                                        // />
+                                                   // );
+                                                
+                                                      
                                                     
                                                 })}
 
@@ -308,33 +364,33 @@ const ItemTabs = ({ navigation }) => {
                                                         <Text style={styles.timeDropStyle}>{item.startTime}   ({item.meetCount})</Text>
                                                         <Text style={styles.headText}>{t('common:Meet')}</Text>
                                                     </>) : null} */}
-                                                {item.data.map((item) => {
-                                                    (<MeetTab
-                                                        id={item.id}
-                                                        data={item.data}
-                                                        time={item.time}
-                                                        setEnab={setEnab}
-                                                        meet={true}
-                                                        navigation={navigation}
-                                                    />)
-                                                    // if (item.activityType == 'MEET') {
-                                                    //     return (
-                                                    //         <DropTab
-                                                    //             id={item.id}
-                                                    //             short={item.short}
-                                                    //             name={item.customerName}
-                                                    //             text={item?.pin}
-                                                    //             village={item?.villageName}
-                                                    //             phoneNumber={item.mobileNumber}
-                                                    //             color={item.color}
-                                                    //             status={item.purpose}
-                                                    //             setEnab={setEnab}
-                                                    //             details={item}
-                                                    //             navigation={navigation}
-                                                    //         />
-                                                    //     );
-                                                    // }
-                                                })}
+                                                {/* {item.data.map((item) => {
+                                                    // (<MeetTab
+                                                    //     id={item.id}
+                                                    //     data={item.data}
+                                                    //     time={item.time}
+                                                    //     setEnab={setEnab}
+                                                    //     meet={true}
+                                                    //     navigation={navigation}
+                                                    // />)
+                                                    if (item.activityType == 'MEET') {
+                                                        return (
+                                                            <DropTab
+                                                                id={item.id}
+                                                                short={item.short}
+                                                                name={item.customerName}
+                                                                text={item?.pin}
+                                                                village={item?.villageName}
+                                                                phoneNumber={item.mobileNumber}
+                                                                color={item.color}
+                                                                status={item.purpose}
+                                                                setEnab={setEnab}
+                                                                details={item}
+                                                                navigation={navigation}
+                                                            />
+                                                        );
+                                                    }
+                                                })} */}
                                             </View>
                                         </> : null}
                                 </>

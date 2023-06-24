@@ -10,7 +10,7 @@ import {
     ScrollView,
     Dimensions,
     TouchableOpacity,
-    Image
+    Image,ActivityIndicator
 } from 'react-native'
 import React, { useCallback, useState, useEffect } from 'react'
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -68,7 +68,8 @@ const DetailChecks = ({ navigation, setState, setImagedata1,imagedata }) => {
         console.log('api called')
 
         const data = {
-            "activityId": activityId
+             "activityId": activityId
+          
 
 
         }
@@ -92,10 +93,11 @@ const DetailChecks = ({ navigation, setState, setImagedata1,imagedata }) => {
     // ------------------save and update residence owner detail ------------------
 
     const saveHousePhoto = async () => {
-        console.log('api called',Image1,activityId)
+        console.log('api called',activityId)
 
         const data = {
-            "activityId": activityId,
+             "activityId": activityId,
+          
             "housePhotoUrl": Image1,
 
         }
@@ -114,7 +116,8 @@ const DetailChecks = ({ navigation, setState, setImagedata1,imagedata }) => {
 
   const  DeleteHousePhoto = async () =>{
     const data ={
-    "activityId": activityId
+     "activityId": activityId
+   
     }
     await api.DeleteHousePhoto(data).then((res) => {
         console.log('-------------------res  delete house photo', res)
@@ -126,14 +129,14 @@ const DetailChecks = ({ navigation, setState, setImagedata1,imagedata }) => {
 
     const UploadImage = () => {
             ImagePicker.openCamera({
-             width: width *1.2,
-            height: height,
+            width: width *1.2,
+           height: height,
             hideBottomControls:true,
             cropping: true
         }).then(image => {
             console.log("IMAGE", image);
             setImage(image.path)
-
+            setStatus(true)
             setUploadStatus(false)
             setDelf(true)
             uploadFile(image.path, image)
@@ -160,6 +163,7 @@ const DetailChecks = ({ navigation, setState, setImagedata1,imagedata }) => {
 
 
     async function uploadFile(imagevalue, image) {
+       
         console.log('api called frm',imagevalue,image.mime)
         let data = new FormData();
         data.append('multipartFile', {
@@ -174,10 +178,12 @@ const DetailChecks = ({ navigation, setState, setImagedata1,imagedata }) => {
                 setImageurl(res?.data[0]?.body)
                 setImage(res?.data[0]?.body)
                 setImagedata1(res?.data[0]?.body)
+                setStatus(false)
             }
         }).catch((err) => {
-            console.log('-------------------err file upload', err?.response)
+            console.log('-------------------err file upload', err)
             console.log("image type",imagevalue,image.mime)
+            setStatus(false)
         })
     };
     // ------------------ HomeScreen Api Call End ------------------
@@ -201,8 +207,8 @@ const DetailChecks = ({ navigation, setState, setImagedata1,imagedata }) => {
                     </View>
                     <View style={styles.Line} />
                     <View style={{ flexDirection: 'column', left: -20 }}>
-                        <Text style={[styles.UploadText, { color: NameStatus ? '#1A051D' : '#808080' }]}>Upload photo</Text>
-                        <Text style={styles.Prooftext}>Upload photo of the house</Text>
+                        <Text style={[styles.UploadText, { color: NameStatus ? '#1A051D' : '#808080' }]}>Take photo</Text>
+                        <Text style={styles.Prooftext}>Take photo of the house</Text>
                     </View>
 
                     <View style={{ flex: 1, alignItems: 'flex-end' }}>
@@ -221,9 +227,11 @@ const DetailChecks = ({ navigation, setState, setImagedata1,imagedata }) => {
                 <View style={[Image1 ? styles.ViewH: {}]}>
 
                     <View style={{ alignItems: 'center', flex: 0, }}>
-                        <Image 
+                     { status ?
+                       <ActivityIndicator size={30} color={COLORS.DarkBlue} />
+                      : <Image 
                         source={{ uri: imagedata ? imagedata : null }} style={{ width: width * 0.65, height: width * 0.5, borderRadius: 2 }}
-                        resizeMode='cover' />
+                        resizeMode='cover' />}
                     </View>
 
                 </View>
