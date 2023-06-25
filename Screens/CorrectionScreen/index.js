@@ -104,7 +104,9 @@ const CorrectionScreen = ({ navigation }) => {
                 } else if (res?.data?.body?.nextPage == 8) {
                     navigation.navigate('IncomeDetails', { relationShip: 'Spouse',isCheck:res?.data?.body?.isLasCorrectin,Correction:true })
                 } else if (res?.data?.body?.nextPage == 9) {
-                    navigation.navigate('HousePhoto')
+                    navigation.navigate('UploadAdhaar',{isCheck:res?.data?.body?.isLasCorrectin,Correction:true})
+                }else if (res?.data?.body?.nextPage == 10) {
+                    navigation.navigate('CustomerDetails',{isCheck:res?.data?.body?.isLasCorrectin,Correction:true})
                 }
             }
         }).catch((err) => {

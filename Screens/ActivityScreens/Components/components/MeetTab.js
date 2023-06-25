@@ -195,10 +195,11 @@ console.log("error",occupation)
                 
                     props.navigation.navigate('ContinuingGuarantor')
                 } else if (res?.data?.body == 4) {
-                    if (occupation) {
-                        props.navigation.navigate('AddVehicle')
+                    if (occupation == 500) {
+                        props.navigation.navigate('UploadAdhaar')
+                      
                     } else {
-                        props.navigation.navigate('UploadVid')
+                        props.navigation.navigate('AddVehicle')
                     }
 
                 } else if (res?.data?.body == 5) {
@@ -229,10 +230,18 @@ console.log("error",occupation)
                         props.navigation.navigate('Proceed')
                     }
                 } else if (res?.data?.body == 9) {
-                    props.navigation.navigate('HousePhoto')
-                } else if (res?.data?.body == 10) {
-                    props.navigation.navigate('AddVehicle')
-                }
+                    console.log("occ",occupation)
+                    if (occupation == 500) {
+                        props.navigation.navigate('UploadVid')
+                       //
+                    } else {
+                        props.navigation.navigate('AddVehicle')
+                    }
+                   
+                } 
+                // else if (res?.data?.body == 10) {
+                //     props.navigation.navigate('AddVehicle')
+                // }
                 //props.navigation.navigate('DetailCheck')
             }
         }).catch((err) => {
@@ -265,7 +274,7 @@ console.log("error",occupation)
                 });
 
                 setSpousedetail(res?.data?.body?.occupation)
-                //props.navigation.navigate('ContinuingGuarantor')
+                //props.navigation.navigate('UploadAdhaar')
                 getDlePageNumber(id, res?.data?.body?.occupation,res?.data?.body)
                 console.log("spose detail", res?.data?.body)
 

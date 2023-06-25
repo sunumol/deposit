@@ -88,7 +88,7 @@ const ProfileScreen = ({ navigation }) => {
                 <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1, }}>
                     <ActivityIndicator size={30} color={COLORS.colorB} />
                 </View> :
-                <ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1, backgroundColor: COLORS.colorBackground }}>
+                // <ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1, backgroundColor: COLORS.colorBackground }}>
                     <View style={styles.mainContainer}>
                         <View style={styles.boxShadow}>
                             <View style={styles.ProfileView}>
@@ -99,7 +99,7 @@ const ProfileScreen = ({ navigation }) => {
                                 <Text style={styles.idText}>{details?.idToShow}</Text>
                             </View>
                         </View>
-                        <View style={{ marginTop: 24 }}>
+                        <View style={{ marginTop: 18 }}>
                             <Text style={styles.mobileText}>{t('common:MobileNum')}</Text>
                             <TextInput
                                 style={styles.TextInputStyle}
@@ -108,7 +108,7 @@ const ProfileScreen = ({ navigation }) => {
                             />
                         </View>
 
-                        <View style={{ marginTop: 18 }}>
+                        <View style={{ marginTop: 15 }}>
                             <Text style={styles.mobileText}>Marital Status</Text>
                             <TextInput
                                 style={styles.TextInputStyle}
@@ -118,7 +118,7 @@ const ProfileScreen = ({ navigation }) => {
                         </View>
 
 
-                        <View style={{ marginTop: 18 }}>
+                        <View style={{ marginTop: 15 }}>
                             <Text style={styles.mobileText}>Date Of Birth</Text>
                             <View style={[styles.TextInputStyle2, { paddingVertical: 10 }]}>
                                 <Text style={{
@@ -126,14 +126,14 @@ const ProfileScreen = ({ navigation }) => {
                                     fontSize: 15,
                                     fontWeight: '400',
                                     color: COLORS.colorDark,
-                                }}>{moment(details?.dob).format("DD MMM")} ‘{moment(details?.dob).format('YY')}
+                                }}>{moment(details?.dateOfBirth).format("DD MMM")} ‘{moment(details?.dateOfBirth).format('YY')}
                                 </Text>
 
                             </View>
 
                         </View>
 
-                        <View style={{ marginTop: 18 }}>
+                        <View style={{ marginTop: 15 }}>
                             <Text style={styles.mobileText}>{t('common:AddressB')}</Text>
 
                             <View style={[styles.TextInputStyle2, { paddingVertical: 10 }]}>
@@ -148,7 +148,7 @@ const ProfileScreen = ({ navigation }) => {
                             </View>
 
                         </View>
-                        <View style={{ marginTop: 18 }}>
+                        <View style={{ marginTop: 15 }}>
                             <Text style={styles.mobileText}>Aadhaar ID</Text>
                             <TextInput
                                 style={styles.TextInputStyle}
@@ -156,7 +156,7 @@ const ProfileScreen = ({ navigation }) => {
                                 editable={false}
                             />
                         </View>
-                        <View style={{ marginTop: 18 }}>
+                        <View style={{ marginTop: 15 }}>
                             <Text style={styles.mobileText}>PAN No</Text>
                             <TextInput
                                 style={styles.TextInputStyle}
@@ -165,7 +165,8 @@ const ProfileScreen = ({ navigation }) => {
                             />
                         </View>
                     </View>
-                </ScrollView>}
+                // </ScrollView>
+                }
         </SafeAreaProvider>
     );
 }

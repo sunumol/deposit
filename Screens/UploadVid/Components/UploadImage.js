@@ -104,6 +104,7 @@ const UploadImage = ({ navigation, id ,setFrontimage,setBackimage}) => {
             console.log(image);
             setImagesF(image.path)
             setImagesFSet(image)
+            uploadFilefront(image)
             setDelf(true)
             setModalVisible(false)
         });
@@ -120,6 +121,7 @@ const UploadImage = ({ navigation, id ,setFrontimage,setBackimage}) => {
             console.log(image);
             setImagesB(image.path)
             setImagesBSet(image)
+            uploadFileback(image)
             setDelb(true)
             setModalVisible(false)
         });

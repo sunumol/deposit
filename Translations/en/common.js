@@ -541,7 +541,7 @@ export default {
     'kycMain': 'KYC mismatch',
 
     //Create Trust Circle
-
+    'AdharToast':'Could not read the details.\nPlease upload a new image.',
     'createTC': 'Create Trust Circle',
     'ReCGT': 'Reschedule CGT',
     'TrustCM': 'Trust Circle Members',

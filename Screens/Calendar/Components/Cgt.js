@@ -14,7 +14,7 @@ import { COLORS, FONTS } from '../../../Constants/Constants';
 const { height, width } = Dimensions.get('screen');
 
 const Cgt = ({ navigation, data, date }) => {
-
+console.log("partial data",data)
     const renderItem = ({ item, index }) => {
         return (
             <View style={{ justifyContent: 'space-around', margin: 5 }} key={index}>

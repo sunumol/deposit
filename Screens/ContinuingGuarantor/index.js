@@ -571,7 +571,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
 
       } else if (res?.data?.body?.isLasCorrectin == false && res?.data?.body?.nextPage == 4) {
         if (relation !== 'Spouse') {
-          navigation.navigate('UploadVid', { isCheck: res?.data?.body?.isLasCorrectin,Correction:Correct1 })
+          navigation.navigate('UploadAdhaar', { isCheck: res?.data?.body?.isLasCorrectin,Correction:Correct1 })
         } else {
           navigation.navigate('AddVehicle', { isCheck: res?.data?.body?.isLasCorrectin,Correction:Correct1 })
         }
@@ -598,7 +598,21 @@ const ContinuingGuarantor = ({ navigation, route }) => {
         navigation.navigate('IncomeDetails', { isCheck: res?.data?.body?.isLasCorrectin,Correction:Correct1 })
       } else if (res?.data?.body?.isLasCorrectin == true && res?.data?.body?.nextPage == 8) {
         navigation.navigate('IncomeDetailsSpouse',{Correction:Correct1})
+      } else if (res?.data?.body?.isLasCorrectin == true && res?.data?.body?.nextPage == 9) {
+        if (relation !== 'Spouse') {
+          navigation.navigate('UploadVid', { isCheck: res?.data?.body?.isLasCorrectin,Correction:Correct1 })
+        } else {
+          navigation.navigate('AddVehicle', { isCheck: res?.data?.body?.isLasCorrectin,Correction:Correct1 })
+        }
+       
+      } else if (res?.data?.body?.isLasCorrectin == false && res?.data?.body?.nextPage == 9) {
+        if (relation !== 'Spouse') {
+          navigation.navigate('UploadVid', { isCheck: res?.data?.body?.isLasCorrectin,Correction:Correct1 })
+        } else {
+          navigation.navigate('AddVehicle', { isCheck: res?.data?.body?.isLasCorrectin,Correction:Correct1 })
+        }
       }
+
 
     }).catch((err) => {
       console.log('-------------------err spousedetail1', err?.response)

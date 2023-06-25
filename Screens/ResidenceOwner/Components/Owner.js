@@ -461,11 +461,11 @@ const DetailChecks = ({ navigation, setState, proofType1,
 
                 <View style={{ position: 'absolute', left: 0, right: 0, bottom: 0, alignItems: 'center', justifyContent: 'center' }}>
 
-                    <TouchableOpacity onPress={() => (Purpose && Purposes && (Purposes != 'Spouse' ? ownersName?.length > 2 : Purposes) && Image1) ? UpdateResidenceowner() : console.log("helo")}
+                    <TouchableOpacity onPress={() => (Purpose && Purposes && (Purposes != 'Spouse' && Purposes != 'Self'  ? ownersName?.length > 2 : Purposes) && Image1) ? UpdateResidenceowner() : console.log("helo")}
 
-                        style={[styles.Button1, { backgroundColor: (Purpose && Image1 && Purposes && (Purposes != 'Spouse' ? ownersName?.length > 2 : Purposes)) ? COLORS.colorB : 'rgba(224, 224, 224, 1)' }]}
+                        style={[styles.Button1, { backgroundColor: (Purpose && Image1 && Purposes && (Purposes != 'Spouse'&& Purposes != 'Self'  ? ownersName?.length > 2 : Purposes)) ? COLORS.colorB : 'rgba(224, 224, 224, 1)' }]}
                     >
-                        <Text style={[styles.text1, { color: (Purpose && Purposes && (Purposes != 'Spouse' ? ownersName?.length > 2 : Purposes) && Image1) ? COLORS.colorBackground : '#979C9E' }]}>{isCheck ? 'Submit' : 'Continue'}</Text>
+                        <Text style={[styles.text1, { color: (Purpose && Purposes && (Purposes != 'Spouse' && Purposes != 'Self'  ? ownersName?.length > 2 : Purposes) && Image1) ? COLORS.colorBackground : '#979C9E' }]}>{isCheck ? 'Submit' : 'Continue'}</Text>
                     </TouchableOpacity>
                 </View>
             </>

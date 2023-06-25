@@ -63,6 +63,7 @@ import GeneratePin from '../Screens/GeneratePin';
 import EnergyCorrection from '../Screens/EnergyCorrection';
 import NotificationScreen from '../Screens/NotificationScreen'
 import MissedActivities from '../Screens/MissedActivities';
+import UploadAdhaar from '../Screens/UploadCoAdhaar/UploadAdhaar';
 const Stack = createNativeStackNavigator();
 
 export default function Router() {
@@ -93,6 +94,7 @@ export default function Router() {
         <Stack.Screen name="Activities" component={netInfo.isConnected ? Activities : NetWorkError} />
         <Stack.Screen name="CgtCustomer" component={netInfo.isConnected ? CgtCustomer : NetWorkError} />
         <Stack.Screen name="CreateTrustCircle" component={CreateTrustCircle} />
+        <Stack.Screen name="UploadAdhaar" component={netInfo.isConnected ? UploadAdhaar : NetWorkError} />
         <Stack.Screen name="ConfirmMembers" component={netInfo.isConnected ? ConfirmMembers : NetWorkError} />
         <Stack.Screen name="ContinuingGuarantor" component={netInfo.isConnected ? ContinuingGuarantor : NetWorkError} />
         <Stack.Screen name="SelectCustomerCall" component={netInfo.isConnected ? SelectCustomerCall : NetWorkError} />
