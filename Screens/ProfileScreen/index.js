@@ -79,16 +79,16 @@ const ProfileScreen = ({ navigation }) => {
     }
 
     return (
-        <SafeAreaProvider>
+        <SafeAreaProvider style={{backgroundColor: COLORS.colorBackground }}>
             <SafeAreaView style={styles.container1} />
             <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} backgroundColor="#002B59" />
-
+            <View style={{flex:1,backgroundColor: COLORS.colorBackground ,marginBottom:20}} >
             <Header name={t('common:Profile')} navigation={navigation} />
             {status ?
                 <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1, }}>
                     <ActivityIndicator size={30} color={COLORS.colorB} />
                 </View> :
-                <ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1, backgroundColor: COLORS.colorBackground }}>
+                <View showsVerticalScrollIndicator={false} style={{ flex: 1, backgroundColor: COLORS.colorBackground }}>
                     <View style={styles.mainContainer}>
                         <View style={styles.boxShadow}>
                             <View style={styles.ProfileView}>
@@ -112,7 +112,7 @@ const ProfileScreen = ({ navigation }) => {
                             <Text style={styles.mobileText}>Marital Status</Text>
                             <TextInput
                                 style={styles.TextInputStyle}
-                                value={details?.maritalStatus}
+                                value={details?.maritalStatus == 'true' ? 'Married' :  'Unmarried'}
                                 editable={false}
                             />
                         </View>
@@ -126,7 +126,9 @@ const ProfileScreen = ({ navigation }) => {
                                     fontSize: 15,
                                     fontWeight: '400',
                                     color: COLORS.colorDark,
-                                }}>{moment(details?.dob).format("DD MMM")} ‘{moment(details?.dob).format('YY')}
+                                // }}>{details?.dateOfBirth}
+
+                                 }}>{moment(details?.dateOfBirth).format("DD MMM")} ‘{moment(details?.dateOfBirth).format('YY')}
                                 </Text>
 
                             </View>
@@ -165,7 +167,8 @@ const ProfileScreen = ({ navigation }) => {
                             />
                         </View>
                     </View>
-                </ScrollView>}
+                </View>}
+                </View>
         </SafeAreaProvider>
     );
 }

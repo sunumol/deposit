@@ -17,7 +17,7 @@ const ItemTabs = (props) => {
     const { t } = useTranslation();
     const [Lang, setLang] = useState('')
     const [ModalVisible, setModalVisible] = useState(false)
-
+        console.log('Home Screen=========',props)
 
     useEffect(() => {
         getData()
@@ -55,11 +55,39 @@ const ItemTabs = (props) => {
                 <Text style={styles.titleText}>{props.title}</Text>
 
                 {props.notification
-                    ? <View style={styles.badgeView}>
+                    ?
+                    <>
+                    
                         {props.index === 0 ?
-                            <Text style={[styles.badgeText,{color:'white'}]}>{props?.notificationCounts?.activityCount}</Text> : props.index === 4 ?
-                                <Text style={[styles.badgeText,{color:'white'}]}>{props?.notificationCounts?.collectCount}</Text> : null}
-                    </View> : null}
+
+                            <>
+                           {
+                            props?.notificationCounts?.activityCount != 0 ? <View style={styles.badgeView}>
+                            <Text style={[styles.badgeText,{color:'white'}]}>{props?.notificationCounts?.activityCount}</Text>
+                            </View>: null
+                             }
+                            </>
+
+                       
+                            
+                            
+                            
+                            : props.index === 4 ?
+
+
+                            <>
+                            {
+                             props?.notificationCounts?.collectCount != 0 ?
+                             <View style={styles.badgeView}>
+                             <Text style={[styles.badgeText,{color:'white'}]}>{props?.notificationCounts?.collectCount}</Text>
+                             </View>: null
+                              }
+                             </>
+                             : null}
+                  
+                    
+                    </>
+                    : null}
                 {console.log("pros pass", props.notificationCounts)}
             </TouchableOpacity>
 

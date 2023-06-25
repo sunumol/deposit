@@ -36,7 +36,10 @@ const ItemTabs = ({ navigation }) => {
     const ActivityListingApiCall = async (value) => {
         console.log("inside api calls hai")
         const data = {
-            "employeeId": Number(value)
+             "employeeId": Number(value)
+
+
+           
         };
         console.log("data call4",data)
         await api.activitylistingscreenApi(data).then((res) => {
@@ -277,8 +280,8 @@ const ItemTabs = ({ navigation }) => {
                                                     </>) : null} */}
                                                 
                                             
-                                                {item.data.map((items, index) => {
-                                                console.log('---listing firt -----',items?.data[0]?.activityType)
+                                                {item?.data.map((items, index) => {
+                                                console.log('---listing firt -----',items)
                                                   return(
                                                     <>
                                                    <Text style={[styles.timeDropStyle, { paddingTop: items.time ? 18 : 0 }]}>{items?.time} ({items?.data?.length})</Text>
@@ -291,15 +294,15 @@ const ItemTabs = ({ navigation }) => {
                                                                 <>
                                                                 {/* <Text style={styles.headText}>{t('common:Call')}</Text> */}
                                                                 <DropTab
-                                                                id={item1.activityId}
-                                                                short={item1.short}
-                                                                name={item1.customerName}
-                                                                text={item1.pin}
-                                                                phoneNumber={item1.mobileNumber}
-                                                                color={item1.color}
+                                                                id={item1?.activityId}
+                                                                short={item1?.short}
+                                                                name={item1?.customerName}
+                                                                text={item1?.pin}
+                                                                phoneNumber={item1?.mobileNumber}
+                                                                color={item1?.color}
                                                                 setEnab={setEnab}
                                                                 details={item1}
-                                                                status={item1.purpose}
+                                                                status={item1?.purpose}
                                                                 navigation={navigation}
                                                                 /> 
                                                                 </> 
@@ -310,15 +313,15 @@ const ItemTabs = ({ navigation }) => {
                                                                 <>
                                                                   {/* <Text style={styles.headText}>{t('common:Meet')}</Text> */}
                                                                 <DropTab
-                                                                id={item1.activityId}
-                                                                short={item1.short}
-                                                                name={item1.customerName}
-                                                                text={item1.pin}
-                                                                phoneNumber={item1.mobileNumber}
-                                                                color={item1.color}
+                                                                id={item1?.activityId}
+                                                                short={item1?.short}
+                                                                name={item1?.customerName}
+                                                                text={item1?.pin}
+                                                                phoneNumber={item1?.mobileNumber}
+                                                                color={item1?.color}
                                                                 setEnab={setEnab}
                                                                 details={item1}
-                                                                status={item1.purpose}
+                                                                status={item1?.purpose}
                                                                 navigation={navigation}
                                                                 />  
                                                                 </>
