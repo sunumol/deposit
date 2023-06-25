@@ -8,7 +8,8 @@ import {
     FlatList,
     ScrollView,
     BackHandler,
-    ToastAndroid
+    ToastAndroid,
+    ActivityIndicator
 } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Statusbar from '../../Components/StatusBar';
@@ -43,6 +44,7 @@ const Profile = ({ navigation }) => {
     const netInfo = useNetInfo();
     const [notificationCountHeader, setNotificationCountHeader] = useState()
     const [notificationCount, SetNotificationCount] = useState()
+    const [status, setstatus] = useState(true);
     const [modalExitAppVisible, setModalExitAppVisible] = useState(false);
     const [custID, setCustId] = useState('')
     const [fcmToken, setFcmToken] = useState()
@@ -136,9 +138,11 @@ const Profile = ({ navigation }) => {
         await api.homeScreenApi(data).then((res) => {
             console.log('-------------------res', res?.data)
             SetNotificationCount(res?.data?.body)
+            setstatus(false)
         })
             .catch((err) => {
                 console.log('-------------------err notification', err)
+                setstatus(false)
             })
     };
     // ------------------ HomeScreen Api Call End ------------------
@@ -279,7 +283,11 @@ const Profile = ({ navigation }) => {
                     <View style={styles.container2}>
                         <ScrollView showsVerticalScrollIndicator={false}>
 
-                            <FlatList
+                      {status?
+                              <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1,marginTop:300 }}>
+                              <ActivityIndicator size={30} color={COLORS.colorB} />
+                          </View> :     
+                       <FlatList
                                 data={DATA}
                                 renderItem={({ item, index }) =>
                                     <ItemTabs
@@ -296,7 +304,7 @@ const Profile = ({ navigation }) => {
 
                                 columnWrapperStyle={{ justifyContent: 'space-between' }}
                                 contentContainerStyle={{ padding: 20, }}
-                            />
+                            />}
                             {/* <Text style={{ color: 'black', textAlign: 'center' }} onPress={() => {
                         navigation.navigate('PinScreen')
 

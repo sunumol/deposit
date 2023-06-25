@@ -78,12 +78,14 @@ const Generate = ({ navigation }) => {
 
     const handleConfirm = (date) => {
         console.log("A date has been picked: ", date);
-        setDob(moment(date).format("DD/MM/YYYY"))
+        // setDob(moment(date).format("DD/MM/YYYY"))
+        setDob(date)
         hideDatePicker();
     };
 
     async function forgotApiCall() {
-        console.log("moment format", moment(dob).format('YYYY-MM-YY') + "T00:00:00")
+        console.log("moment format11", dob)
+        console.log("moment format", moment(dob).format('DD/MM/YYYY') + "T00:00:00")
         const data = {
             deviceId: deviceId,
             geoLocation: {
@@ -95,7 +97,7 @@ const Generate = ({ navigation }) => {
             simId: deviceId,
             "otpReason": "FORGOT_PIN",
             id:CustomerId,
-            dob: moment(dob).format('YYYY-DD-MM') + "T00:00:00"
+            dob: moment(dob).format('YYYY-MM-DD') + "T00:00:00"
         }
         console.log("data==============>>>", data)
 
@@ -125,7 +127,7 @@ const Generate = ({ navigation }) => {
                 setSMitraID('')
                 setDob('')
             }
-            console.log("err PRINT->", err?.response)
+            console.log("err PRINT->", err)
 
 
 
@@ -157,7 +159,7 @@ const Generate = ({ navigation }) => {
                     paddingLeft: 13,
                     height: 46
                 }} >
-                    <Text style={{ color: dob ? '#000' : '#808080', fontSize: 12, fontFamily: FONTS.FontRegular, fontWeight: '400', marginTop: 15 }}>{dob ? dob : 'DD/MM/YYYY'}</Text>
+                    <Text style={{ color: dob ? '#000' : '#808080', fontSize: 12, fontFamily: FONTS.FontRegular, fontWeight: '400', marginTop: 15 }}>{dob ? moment(dob).format('DD/MM/YYYY'): 'DD/MM/YYYY'}</Text>
                     <DateTimePickerModal
                         isVisible={isDatePickerVisible}
                         mode="date"
