@@ -110,6 +110,10 @@ const ChangeMPIN = ({ navigation }) => {
                                                 setError(false)
                                                 setSuccess(true)
                                                 Keyboard.dismiss()
+                                                setTimeout(() => {
+
+                                                    navigation.navigate('Profile');
+                                                }, 2000)
                                             }
                                         }
                                     }

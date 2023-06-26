@@ -159,7 +159,7 @@ const Energy = ({ navigation, setAmount1, setPurpose1, setDays1,
                 // }
             }
         }).catch((err) => {
-            console.log('-------------------err saveEnergyUtilities', err)
+            console.log('-------------------err saveEnergyUtilities', err?.response)
         })
     };
     // ------------------ ------------------
@@ -199,7 +199,7 @@ const Energy = ({ navigation, setAmount1, setPurpose1, setDays1,
                 //setSpousedetail(res?.data?.body)
             }
         }).catch((err) => {
-            console.log('-------------------err spousedetail', err?.response)
+            console.log('-------------------err spousedetail', activityId)
         })
     };
 

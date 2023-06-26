@@ -127,7 +127,7 @@ const Generate = ({ navigation }) => {
                 setSMitraID('')
                 setDob('')
             }
-            console.log("err PRINT->", err)
+            console.log("err PRINT->", err?.response)
 
 
 

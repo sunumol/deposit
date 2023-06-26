@@ -26,7 +26,7 @@ const CorrectionScreen = ({ navigation }) => {
 
     const isDarkMode = true
     const route = useRoute();
-    console.log('---------', route?.params?.AcyivityId)
+    console.log('--------- AcyivityId', route?.params?.AcyivityId)
     const activityId = useSelector(state => state.activityId);
     const [dataDetails, setDataDetails] = useState()
     const [ModalVisible, setModalVisible] = useState(false)
@@ -47,7 +47,10 @@ const CorrectionScreen = ({ navigation }) => {
     );
 
     useEffect(() => {
-      
+        dispatch({
+            type: 'SET_CGT_ACTIVITY_ID',
+            payload:route?.params?.AcyivityId ,
+        });
             AsyncStorage.getItem("CallActivity").then((value) => {
                 setCustId(value)
                 getCorrectionDetails(value)
@@ -85,7 +88,7 @@ const CorrectionScreen = ({ navigation }) => {
                     type: 'SET_LASTPAGE',
                     payload:res?.data?.body?.isLasCorrectin ,
                 });
-                AsyncStorage.setItem('CorrectionStatus',JSON.stringify(res?.data?.body?.isLasCorrectin))
+               // AsyncStorage.setItem('CorrectionStatus',JSON.stringify(res?.data?.body?.isLasCorrectin))
                 if (res?.data?.body?.nextPage == 1) {
                     navigation.navigate('DetailCheck',{isCheck:res?.data?.body?.isLasCorrectin,Correction:true})
                 } else if (res?.data?.body?.nextPage == 2) {
