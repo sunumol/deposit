@@ -40,9 +40,12 @@ const ScheduleMeet = ({ navigation, route }) => {
     const [selectedDate, setSelectedDate] = useState(new Date())
     const [ModalVisible, setModalVisible] = useState(false)
     const [ModalVisible1, setModalVisible1] = useState(false)
+    const [details, setdetails] = useState('');
     const cgtCustomerDetails = useSelector(state => state.cgtCustomerDetails);
+    const activityId = useSelector(state => state.activityId);
     useEffect(() => {
-        getData()
+        getData(),
+        getDetails()
     }, [])
 
     const getData = async () => {
@@ -80,11 +83,25 @@ const ScheduleMeet = ({ navigation, route }) => {
 
     }
 
+    const getDetails = async () => {
+        const data = {
+            "activityId": activityId
+        };
+        await api.getCGTDetails(data).then((res) => {
+            console.log('-------------------res123', res)
+            setdetails(res?.data?.body)
+        })
+            .catch((err) => {
+             
+                console.log('-------------------err123', err?.response)
+            })
+    };
+
     // ------------------ get Slot Api Call Start ------------------
     const ScheduleDLE = async () => {
-        console.log('api called')
+        console.log('api called', details)
         const data = {
-            "customerId": cgtCustomerDetails.primaryCustomerId,
+            "customerId": details?.primaryCustomerId,
             "tcMemberId": route?.params?.id,
             "scheduleDate": moment(selectedDate).utc().format('DD-MM-YYYY')
         };

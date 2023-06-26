@@ -47,7 +47,10 @@ const CorrectionScreen = ({ navigation }) => {
     );
 
     useEffect(() => {
-      
+        dispatch({
+            type: 'SET_CGT_ACTIVITY_ID',
+            payload:route?.params?.AcyivityId ,
+        });
             AsyncStorage.getItem("CallActivity").then((value) => {
                 setCustId(value)
                 getCorrectionDetails(value)

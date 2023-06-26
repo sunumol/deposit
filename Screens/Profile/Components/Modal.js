@@ -40,6 +40,9 @@ const CallModal = ({ ModalVisible, onPressOut }) => {
 
     // ------------------ Activity Update Api Call Start ------------------
     const updateActivity = async () => {
+
+
+        console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ACTIVITY REJECYED profile componenets')
         const data = {
             "employeeId":Number(custID),
             "activityStatus": id,
