@@ -136,7 +136,8 @@ const styles = StyleSheet.create({
         fontSize: 13,
         fontWeight: '400',
         fontFamily: FONTS.FontRegular,
-        color: COLORS.Black
+        color: COLORS.Black,
+        paddingRight:25
     },
     timeText: {
         fontSize: 11,
