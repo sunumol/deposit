@@ -74,7 +74,7 @@ const EnergyCorrection = ({ navigation, }) => {
                 "activityId":activityId
             }
             await api.updateActivity(data).then((res) => {
-                console.log('-------------------res get Village', res)
+                console.log('-------------------updateActivity', res)
                 setModalError(true)
                 setModalReason(false)
                 setTimeout(() => {

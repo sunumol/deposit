@@ -111,6 +111,7 @@ getDetails()
 
 
     const getDetails = async () => {
+        console.log('###############################get details')
         const data = {
             "activityId": activityId
         };

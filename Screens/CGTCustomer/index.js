@@ -157,7 +157,7 @@ getDetails()
             "activityId": activityId
         };
         await api.updateActivity(data).then((res) => {
-            console.log('-------------------res246', res)
+            console.log('-------------------updateActivity', res)
             if (res?.status) {
                 setModalVisible(true)
                 dispatch({
@@ -174,6 +174,7 @@ getDetails()
 
     // ------------------ Update Activity Reject Api Call Start ------------------
     const updateActivityReject = async () => {
+        console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ACTIVITY REJECYED')
         const data = {
             "activityStatus": rejectReason,
             "employeeId": Number(custID),
@@ -307,7 +308,7 @@ getDetails()
                         onPress={() => setModalReason(true)}>
                         <Text style={[styles.continueText, { color: COLORS.colorB }]}>Reject</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={updateActivity}
+                    <TouchableOpacity onPress={()=>updateActivity()}
                         style={[styles.buttonView, { backgroundColor: COLORS.colorB }]}>
                         <Text style={[styles.continueText, { color: COLORS.colorBackground }]}>Confirm</Text>
                     </TouchableOpacity>

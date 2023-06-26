@@ -50,7 +50,7 @@ useEffect(()=>{
         // ------------------ Activity Update Api Call Start ------------------
         const updateActivity = async () => {
 
-
+console.log('@@@@@@@@@@@@@@@@@@@@@@@@@ Active Modal ACtivity REJECTion')
             const data = {
                 "employeeId":Number(custID),
                 "activityStatus":id,
