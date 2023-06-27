@@ -334,7 +334,11 @@ const LoginScreen = ({ navigation }) => {
             },
             mobile: '+91' + PhoneNum,
             deviceIpAddress: ipAdrress,
+<<<<<<< HEAD
            simId:DeviceId, //NEED TO IMPLEMENT SIMID
+=======
+            simId:DeviceId, //NEED TO IMPLEMENT SIMID
+>>>>>>> 5294362 (changes-27-6)
             //simId:'70dc83e1227a6b8c'
         }
         console.log("data of register",data)

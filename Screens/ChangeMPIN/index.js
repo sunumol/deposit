@@ -111,7 +111,10 @@ const ChangeMPIN = ({ navigation }) => {
                                                 setSuccess(true)
                                                 Keyboard.dismiss()
                                                 setTimeout(() => {
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5294362 (changes-27-6)
                                                     navigation.navigate('Profile');
                                                 }, 2000)
                                             }
