@@ -9,6 +9,7 @@ import {
 import React, { useState,useEffect } from 'react'
 import LottieView from 'lottie-react-native';
 import { useRoute } from '@react-navigation/native';
+import { useDispatch } from 'react-redux';
 
 import { FONTS, COLORS } from '../../../Constants/Constants';
 
@@ -16,6 +17,7 @@ const { height, width } = Dimensions.get('screen');
 
 const Energy = ({ navigation }) => {
     const route = useRoute();
+    const dispatch = useDispatch()
 
     const [ButtonS, setButtonS] = useState( false)
    
@@ -54,7 +56,13 @@ const Energy = ({ navigation }) => {
                 </ScrollView>
                 <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                     {ButtonS ? <TouchableOpacity style={[styles.buttonView, { backgroundColor: COLORS.colorB }]}
-                        onPress={() => navigation.navigate('HousePhoto')}
+                        onPress={() => 
+                           { 
+                            dispatch({
+                                type: 'SET_CGT_ACTIVITY_ID',
+                                payload: route?.params?.AcyivityId,
+                            });
+                            navigation.navigate('HousePhoto')}}
                         >
                         <Text style={[styles.continueText, { color: COLORS.colorBackground }]}>Proceed</Text>
                     </TouchableOpacity> :
