@@ -155,7 +155,8 @@ const DetailChecks = ({ navigation, setState, proofType1,
             width: width * 1.2,
             height: height*0.7,
             hideBottomControls: true,
-            cropping: true
+            cropping: true,
+            useFrontCamera:false
         }).then(image => {
             console.log("IMAGE", image.path);
             setImage(image.path)
@@ -369,7 +370,7 @@ const DetailChecks = ({ navigation, setState, proofType1,
                         }
                         <View style={[styles.Line, { borderColor: Purpose ? "#F2F2F2" : "grey" }]} />
                         <View style={{ flexDirection: 'column', left: -20 }}>
-                            <Text style={[styles.UploadText, { color: NameStatus || Purpose ? '#1A051D' : '#808080' }]}>Upload photo</Text>
+                            <Text style={[styles.UploadText, { color: NameStatus || Purpose ? '#1A051D' : '#808080' }]}>Take Photo</Text>
                             <Text style={[styles.Prooftext]}>Proof of ownership</Text>
                         </View>
 

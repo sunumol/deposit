@@ -149,7 +149,7 @@ const DLE = ({ navigation, set, list }) => {
                             </View>
 
                             <View style={{ flexDirection: 'row', justifyContent: 'space-between', flex: 1 }}>
-                                <View style={{ flexDirection: 'column', paddingLeft: 12, paddingTop: 5 }}>
+                                <View style={{ flexDirection: 'column', paddingLeft: 12, paddingTop: 0 }}>
 
                                     <Text style={styles.nameText}>{item.name}</Text>
 
@@ -367,7 +367,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         marginLeft: width * 0.03,
-        marginTop: width * 0.03
+        marginTop: width * 0.0
     },
     circleText: {
         fontSize: 18,
@@ -408,7 +408,8 @@ const styles = StyleSheet.create({
         borderRadius: 3,
        // height: width * 0.06,
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        top:5
 
 
     }

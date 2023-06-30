@@ -45,7 +45,7 @@ const Verifypop = ({ ModalVisible, onPressOut, setModalVisible, navigation }) =>
                         <Image1 />
                     </View>
 
-                    <Text style={[styles.textdesc, { paddingTop: width * 0.04, textAlign: 'center' }]}>Could not Verify
+                    <Text style={[styles.textdesc, { paddingTop: width * 0.04, textAlign: 'center' }]}>Unable to verify this phone number
                     </Text>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingTop: 22, paddingBottom: 22 }}>
                      

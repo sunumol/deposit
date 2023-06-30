@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, BackHandler, StatusBar, SafeAreaView, Platform, TextInput, ScrollView, TouchableOpacity, Pressable } from 'react-native'
-import React, { useCallback, useState, useEffect } from 'react'
+import React, { useCallback, useState, useEffect,useRef } from 'react'
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import SearchIcon from 'react-native-vector-icons/Feather'
 import Icon1 from 'react-native-vector-icons/Ionicons';
@@ -16,6 +16,7 @@ import ErrorModal from './Components/ErrorModal';
 import { api } from '../../Services/Api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import MemberModal from './Components/MemberModal';
+import IconD from 'react-native-vector-icons/AntDesign';
 
 String.prototype.replaceAt = function (index, replacement) {
   return this.substring(0, index) + replacement + this.substring(index + replacement.length);
@@ -23,7 +24,9 @@ String.prototype.replaceAt = function (index, replacement) {
 const ConfirmMembers = ({ navigation }) => {
 
   const isDarkMode = true;
+  const searchRef = useRef();
 
+  const dispatch = useDispatch()
   const [text, onChangeText] = useState('');
   const [selectedItem, setSelectedItem] = useState();
   const [dataSelected, setDataSelected] = useState();
@@ -38,12 +41,12 @@ const ConfirmMembers = ({ navigation }) => {
   const [custID,setCustId] = useState('')
   const [searchcustomerlist, setsearchcustomerlist] = useState();
   // -----------Redux State ---------------------------------
-  const dispatch = useDispatch()
+
   const customerList = useSelector(state => state.customerList);
   const customerID = useSelector(state => state.customerID);
   const cgtCustomerDetails = useSelector(state => state.cgtCustomerDetails);
   const activityId = useSelector(state => state.activityId);
-
+  const agentId = useSelector(state => state.AgentId);
 
   const datas = [
     {
@@ -148,19 +151,23 @@ const ConfirmMembers = ({ navigation }) => {
 
   useEffect(() => {
     AsyncStorage.getItem("CustomerId").then((value) => {
+   
       setCustId(value)
+      getCustomerLists()
+      console.log("custis",value)
   })
   getTCDetails(customerList)
+  
     // getTclist()
     console.log("idbhh..", customerList,customerID)
-    getCustomerLists()
+  
   }, []);
 
   // ------------------ get Slot Api Call Start ------------------
   const getTCDetails = async (id) => {
     console.log("id..", id)
     const data = {
-      "customerId": Number(id)
+      "customerId": Number(agentId)
     };
     await api.getCGTDetailsTCMembers(data).then((res) => {
       console.log('------------------- CGT slot res', res?.data?.body)
@@ -174,9 +181,9 @@ const ConfirmMembers = ({ navigation }) => {
 
   // ------------------ get Slot Api Call Start ------------------
   const getCustomerLists = async (phone) => {
-    console.log('List------>>',custID)
+    console.log('List------>>',phone,custID,agentId)
     const data = {
-      "employeeId":custID,
+      "employeeId":custID?Number(custID):Number(agentId),
       "customerNameOrNumber": phone ? phone : "",
       "addedTcIds": [cgtCustomerDetails?.primaryCustomerId]
 
@@ -186,9 +193,11 @@ const ConfirmMembers = ({ navigation }) => {
       setClearPop(true)
      }
     await api.getCustomerListForTc(data).then((res) => {
-      console.log("api response123",res)
+  
+      console.log("api response123",res?.data?.body?.length)
       const data1 = res?.data?.body?.filter((item, index) => !customerID.includes(item?.id))
       console.log('?????????',data.customerNameOrNumber)
+ 
       if(data?.customerNameOrNumber){
         setData(data1)
       }else{
@@ -196,7 +205,7 @@ const ConfirmMembers = ({ navigation }) => {
       }
 
       setStatus(true)
-    //  console.log("data length")
+      console.log("data length",data?.length)
     }).catch((err) => {
       console.log('-------------------err123', err?.response)
       setData('')
@@ -265,6 +274,16 @@ const ConfirmMembers = ({ navigation }) => {
   //     })
   // };
 
+  const OnSearchAction = () => {
+   
+    searchRef?.current?.focus()
+       setClearPop(false),
+       onChangeText('')
+      // getCustomerList(''),
+      // setStatus(false)
+   }
+ 
+
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container1} />
@@ -272,15 +291,18 @@ const ConfirmMembers = ({ navigation }) => {
 
       <Header navigation={navigation} name="Confirm Member" onPress={handleGoBack} />
 
-      <Pressable  onPress={()=>{setClearPop(false),
-          onChangeText('')
+      <Pressable  onPress={()=>{
+        // setClearPop(false),
+        //   onChangeText('')
         
          }} style={styles.mainContainer}>
-        <ScrollView showsVerticalScrollIndicator={false}   keyboardShouldPersistTaps={'handled'} >
+        <ScrollView showsVerticalScrollIndicator={false}   keyboardShouldPersistTaps={'always'} >
           <View style={{ padding: 20, paddingTop: 2 }}>
             {!selectedItem ?
               <View style={styles.searchBox}>
+                 <SearchIcon color={"#808080"} name="search" size={18} style={{ right: 5 }} />
                 <TextInput
+                ref={searchRef}
                  contextMenuHidden={true}
                   placeholder='Enter name or mobile number'
                   placeholderTextColor={"#808080"}
@@ -290,7 +312,11 @@ const ConfirmMembers = ({ navigation }) => {
                   style={{ flex: 1, color: COLORS.colorDark, fontSize: 14, fontFamily: FONTS.FontMedium }}
 
                 />
-                <SearchIcon color={"#808080"} name="search" size={18} style={{ right: 5 }} />
+                       {text?.length>0 &&
+              <TouchableOpacity onPress={()=>OnSearchAction()}>
+              <IconD size={16}  color={"#808080"} name="close" style={{ right: 5 }} />
+              {/* <SearchIcon color={"#808080"} name="search" size={18} style={{ right: 5 }} /> */}
+              </TouchableOpacity>}
               </View> : null}
             {text?.length === 0 && !selectedItem
               ?
@@ -317,8 +343,6 @@ const ConfirmMembers = ({ navigation }) => {
             {text.length > 0 && clearpop && !selectedItem
               ?
               <View style={{ borderWidth: 1, paddingTop: 12, paddingBottom: 15, borderColor: COLORS.colorBorder, marginTop: 10, borderRadius: 8 }}>
-
-
 
                 {data?.length == 0 && status  && <Text style={{
                   fontSize: 14,

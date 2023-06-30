@@ -68,7 +68,7 @@ const DetailChecks = ({ navigation, setState, setImagedata1,imagedata }) => {
         console.log('api called')
 
         const data = {
-             "activityId": activityId
+             "activityId": Number(activityId)
           
 
 
@@ -96,7 +96,7 @@ const DetailChecks = ({ navigation, setState, setImagedata1,imagedata }) => {
         console.log('api called',activityId)
 
         const data = {
-             "activityId": activityId,
+             "activityId":Number(activityId),
           
             "housePhotoUrl": Image1,
 
@@ -116,7 +116,7 @@ const DetailChecks = ({ navigation, setState, setImagedata1,imagedata }) => {
 
   const  DeleteHousePhoto = async () =>{
     const data ={
-     "activityId": activityId
+     "activityId": Number(activityId)
    
     }
     await api.DeleteHousePhoto(data).then((res) => {

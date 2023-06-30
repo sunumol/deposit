@@ -18,7 +18,8 @@ const initialState={
     CallFlag:'',
     DLEStatus:'',
     SpouseOccupation:'',
-    isLastPage:''
+    isLastPage:'',
+    AgentId:''
 }
 
 export const baseReducer = (state = initialState, action) => {
@@ -103,6 +104,11 @@ export const baseReducer = (state = initialState, action) => {
             return {
                 ...state, // return the updated state
                 isLastPage: action.payload  
+            }
+            case  "SET_AGENT_ID":  // for updating state
+            return {
+                ...state, // return the updated state
+                AgentId: action.payload  
             }
         default:
             return state;

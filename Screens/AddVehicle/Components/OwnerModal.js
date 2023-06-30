@@ -61,16 +61,6 @@ const OwnerModal = ({ visible, onPressOut,setModalVisible,setRelation,setPurpose
                             </View>
                         </TouchableOpacity>
                         </>}
-                     
-
-
-           
-            
-
-
-            
-            
-            
 
                     </View>
                 </View>

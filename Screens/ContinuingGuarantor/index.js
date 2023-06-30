@@ -11,7 +11,8 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   BackHandler,
-  Keyboard
+  Keyboard,
+  ActivityIndicator
 } from 'react-native'
 import React, { useState, useEffect, useRef, useCallback } from 'react'
 import { useFocusEffect } from '@react-navigation/native';
@@ -53,6 +54,9 @@ const ContinuingGuarantor = ({ navigation, route }) => {
   const isDarkMode = true;
   const { t } = useTranslation();
   const otpInput2 = React.createRef();
+  const [otperror,setOtperror] = useState(false);
+
+  const OtpRef = useRef();
   const activityId = useSelector(state => state.activityId);
   const scrollViewRef = useRef();
 
@@ -81,7 +85,8 @@ const ContinuingGuarantor = ({ navigation, route }) => {
   const [ModalVisible, setModalVisible] = useState(false)
   const [ModalReason, setModalReason] = useState(false)
   const [ModalError1, setModalError1] = useState(false)
-  const [PhoneValid, setPhoneValid] = useState(false)
+  const [PhoneValid, setPhoneValid] = useState(null)
+  const [EnterStatus,setEnterStatus] = useState(false)
   const [ResendState, setResendState] = useState()
   const [keyboard1, setKeyboard1] = useState(false)
   const [lang, setLang] = useState('')
@@ -96,6 +101,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
   const [verifypop, setverifypop] = useState(false);
   const [verifypop2, setverifypop2] = useState(false);
   const isLastPage = useSelector(state => state.isLastPage);
+  const [Loader,setLoader] = useState(false)
   const [Correct1, setCorrect1] = useState(route?.params?.Correction)
 
 
@@ -278,6 +284,8 @@ const ContinuingGuarantor = ({ navigation, route }) => {
     await api.verifyCG(data).then((res) => {
       console.log('-------------------res verifyCG------otp requesr', res)
       if (res?.status) {
+        setPhoneValid(false)
+        OtpRef?.current?.focus()
         setMaxError(false)
         setIsOtp1(true)
         setVerifyotpstatus(true)
@@ -316,7 +324,8 @@ const ContinuingGuarantor = ({ navigation, route }) => {
 
   // ------------------verifyCG detail -----------------------------
   async function ResendOtp() {
-
+    CountDownResend()
+    OtpRef?.current?.focus()
     setInvalidotp(false)
     setInvalidotp1(false)
 
@@ -335,7 +344,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
     await api.verifyCG(data).then((res) => {
       console.log('-------------------res verifyCG',)
       if (res?.status) {
-        CountDownResend()
+      
         setResends(true)
         setOtpFetch(true)
 
@@ -354,7 +363,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
         }, 3000);
       } else {
         onChangeNumber('')
-        setverifypop2(true)
+        setverifypop(true)
       }
       console.log('-------------------err verifyCG34', err?.response)
     })
@@ -363,6 +372,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
 
   // ------------------verifyCG detail ------------------------------------------------------------------------------
   const verifyCGOTP = async (mobnumber) => {
+    setLoader(true)
     const data = {
       "activityId": activityId,
       "otp": OtpValue
@@ -370,6 +380,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
     await api.verifyCGOTP(data).then((res) => {
       console.log('-------------------res verifyCG')
       if (res?.status) {
+        setLoader(false)
         setIsOtp1(false)
         if (route?.params?.isCheck == true) {
           setModalVisibleC(true)
@@ -388,21 +399,25 @@ const ContinuingGuarantor = ({ navigation, route }) => {
 
       }
     }).catch((err) => {
-      console.log("data of verifycg",data)
+      setLoader(false)
+      console.log("data of verifycg", data)
       console.log('1231241231231231332!@@£@$$!@!', err?.response)
       if (err?.response?.data?.message == 'You entered wrong OTP') {
         setInvalidotp(true)
         setOtp(true)
         setResendOtp(true)
+        setOtpValue('')
+        //onChangeNumber('')
       } else if (err?.response?.data?.message === 'Maximum number of OTPs are exceeded. Please try after 30 minutes.') {
         setResendOtp(false)
         setInvalidotp(true)
         setOtp(true)
       } else {
-
+       // setOtpValue('')
+       // onChangeNumber('')
         setverifypop(true)
         setOtp(true)
-
+       // setPhoneValid()
         setResendOtp(true)
       }
     })
@@ -415,7 +430,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
   }
 
   const GETOTP_Validation = (num) => {
-    setPhoneValid(false)
+    // setPhoneValid(false)
 
     const firstDigitStr = String(num)[0];
     if (num?.length != 10 || num == "") {
@@ -441,13 +456,14 @@ const ContinuingGuarantor = ({ navigation, route }) => {
     //   onChangeNumber(null)
     // }
     else {
-
+      console.log("phone validation",PhoneValid)
+      //OtpRef?.current?.focus()
       verifyCG(num)
     }
   }
 
   const OnchangeNumbers = (num) => {
-    setPhoneValid(false)
+    //setPhoneValid(false)
     setMaxError(false)
     if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(num) || num === '') {
       if ("+91" + num == customerNumber) {
@@ -459,6 +475,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
       } else {
         onChangeNumber(num)
         if (num?.length == 10) {
+          //OtpRef?.current?.focus()
           GETOTP_Validation(num)
         }
         onChangeNumber(num)
@@ -645,23 +662,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
     })
   };
 
-  // ------------------verifyCG detail ------------------------------------------------------------------------------
-  const verifyCGOTPBackSave = async (mobnumber) => {
-    const data = {
-      "activityId": activityId,
-      "otp": OtpValue
-    }
-    await api.verifyCGOTP(data).then((res) => {
-      console.log('-------------------res verifyCG', res)
-      if (res?.status) {
-        navigation.navigate('Profile'),
-          setModalVisible(false)
-      }
-    }).catch((err) => {
 
-
-    })
-  };
 
   return (
     <SafeAreaProvider>
@@ -773,7 +774,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
                   }]}
                   onChangeText={(text) => {
                     console.log("text length", text?.length)
-
+                    //OtpRef?.current?.focus()
                     OnchangeNumbers(text)
                     setInvalidotp(false)
                     setInvalidotp1(false)
@@ -805,30 +806,35 @@ const ContinuingGuarantor = ({ navigation, route }) => {
                   </TouchableOpacity>
                   </View> */}
               {/* </View> */}
-              {(number?.length === 10 && !PhoneValid) &&
+              {(number?.length === 10 && PhoneValid == false) &&
                 <View style={[styles.ViewOtp, {}]}>
                   <Text style={styles.textOtp}>{t('common:EnterOtp')} </Text>
 
-                  <View style={[styles.inPutStyle1, { 
-                    backgroundColor: COLORS.colorBackground, }]}>
+                  <View style={[styles.inPutStyle1, {
+                    backgroundColor: COLORS.colorBackground,
+                  }]}>
                     <TextInput
-                      contextMenuHidden={true}
+                      autoFocus={true}
+                      //contextMenuHidden={true}
+                      ref={OtpRef}
                       placeholder=''
                       value={OtpValue}
                       maxLength={6}
                       style={[styles.textIn3,
                       {
-                        textAlign:'center',
-                       // alignItems:'center',justifyContent:'center'
+                        textAlign: 'center',
+                        // alignItems:'center',justifyContent:'center'
                         //color: IsOtp1 && status === true ? '#808080' : COLORS.colorDark
                       }]}
                       onChangeText={(text) => {
                         console.log("text length", text?.length)
+                        if (/^[0123456789]+$/.test(text) || text === '') {
+                          setOtpValue(text)
+                          setInvalidotp(false)
+                          setInvalidotp1(false)
+                          setMaxError(false)
+                        }
 
-                        setOtpValue(text)
-                        setInvalidotp(false)
-                        setInvalidotp1(false)
-                        setMaxError(false)
                       }}
                       placeholderTextColor={COLORS.colorDark}
                       keyboardType="numeric"
@@ -946,7 +952,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
             }}
             Press1={() => {
               navigation.navigate('Profile'),
-              setModalVisible(false)
+                setModalVisible(false)
             }}
             ModalVisible={ModalVisible}
             setModalVisible={setModalVisible}
@@ -996,6 +1002,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
           <TouchableOpacity onPress={() => OtpValue && number?.length === 10 && relation ? verifyCGOTP() : console.log("geki")}
             style={[styles.buttonView, { backgroundColor: OtpValue && number?.length === 10 && relation ? COLORS.colorB : '#E0E0E0' }]}>
             <Text style={[styles.continueText, { color: OtpValue && number?.length === 10 && relation ? COLORS.colorBackground : COLORS.colorWhite3 }]}>{route?.params?.isCheck ? 'Submit' : 'Continue'}</Text>
+            {Loader && <ActivityIndicator size={15} color={COLORS.colorBackground} />}
           </TouchableOpacity>
         </KeyboardAvoidingView>
 
@@ -1070,7 +1077,7 @@ const styles = StyleSheet.create({
   },
   inPutStyle1: {
     borderWidth: 1,
-    width:width*0.5,
+    width: width * 0.45,
     borderColor: COLORS.colorBorder,
     borderRadius: 8,
     //paddingLeft: 15,
@@ -1079,7 +1086,7 @@ const styles = StyleSheet.create({
     marginTop: 9,
     height: width * 0.14,
     backgroundColor: '#FCFCFC',
- 
+
   },
   mobileText: {
     fontSize: 12,
@@ -1157,19 +1164,21 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: 54,
     height: 48,
-    marginBottom: 20
+    marginBottom: 20,
+    flexDirection:'row'
   },
   continueText: {
     fontSize: 14,
     fontFamily: FONTS.FontBold,
     color: COLORS.colorBackground,
-    letterSpacing: 0.64
+    letterSpacing: 0.64,
+    right:5
   },
   textIn3: {
     fontSize: 14,
     color: '#1A051D',
     fontFamily: FONTS.FontRegular,
-   // width: width * 0.7
+    // width: width * 0.7
   },
   textIn1: {
     fontSize: 14,
