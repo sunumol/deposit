@@ -51,34 +51,29 @@ const MeetTab = (props) => {
         // console.log('Random',value)
          let mobilenum = value?.charAt(value.length-1)
          if (mobilenum == '0'){
-           var color = '#5a8ae8'
+           var color = '#94BCC8'
          }else if (mobilenum == '1'){
-           var color ='#356e8f'
+           var color ='#9EC894'
          }else if (mobilenum == '2'){
-             var color ='#1a445c'
+             var color ='#8CACCE'
            }else if (mobilenum == '3'){
-             var color ='#1a5c5a'
+             var color ='#CE748F'
            }else if (mobilenum == '4'){
-             var color ='#5c4c1a'
+             var color ='#8CA785'
            }else if (mobilenum == '5'){
-             var color = '#5a8ae8'
+             var color = '#6979F8'
            }else if (mobilenum == '6'){
-             var color ='#356e8f'
+             var color ='#9EC894'
            }else if (mobilenum == '7'){
-             var color ='#1a5c5a'
+             var color ='#8CACCE'
            }else if (mobilenum == '8'){
-             var color ='#5c4c1a'
+             var color ='#CE748F'
            }else if (mobilenum == '9'){
-             var color ='#1a445c'
+             var color ='#8CA785'
            }else if(value == null || '' ){
-             var color = '#1a445c'
+             var color = '#C8BD94'
            }
-        //  console.log('Random',mobilenum)
-        // var letters = '0123456789ABCDEF';
-        // var color = '#';
-        // for (var i = 0; i < 3; i++) {
-        //     color += letters[Math.floor(Math.random() * 8)];
-        // }
+
         return color;
     }
 

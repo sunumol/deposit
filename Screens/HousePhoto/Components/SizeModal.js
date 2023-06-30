@@ -50,7 +50,7 @@ const SizeModal = ({ ModalVisible, onPressOut,onPress1 }) => {
 
                     <View style={{ paddingTop: width * 0.02,paddingHorizontal: width *0.05 }}>
                       
-                        <Text style={styles.textdesc}>Please upload image lesser than 5 MB</Text>
+                        <Text style={styles.textdesc}>Please upload image between than 10 KB - 500Kb</Text>
                      
                     </View>
 

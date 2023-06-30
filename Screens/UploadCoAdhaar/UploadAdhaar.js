@@ -108,6 +108,7 @@ const UploadAdhaar = ({ navigation }) => {
             width: width,
             height:  (width * 3) / 5,
             hideBottomControls:true,
+            freeStyleCropEnabled:true,
             cropping: true,
         }).then(image => {
             console.log("IMAGE", image);
@@ -125,6 +126,7 @@ const UploadAdhaar = ({ navigation }) => {
             width: width,
             height:  (width * 3) / 5,
             hideBottomControls:true,
+            freeStyleCropEnabled:true,
             cropping: true,
         }).then(image => {
             console.log("IMAGE", image);
@@ -142,6 +144,7 @@ const UploadAdhaar = ({ navigation }) => {
             width: width,
             height:  (width * 3) / 5,
             hideBottomControls:true,
+            freeStyleCropEnabled:true,
             cropping: true,
         }).then(image => {
             console.log(image);
@@ -159,6 +162,7 @@ const UploadAdhaar = ({ navigation }) => {
             width: width,
             height:  (width * 3) / 5,
             hideBottomControls:true,
+            freeStyleCropEnabled:true,
             cropping: true,
         }).then(image => {
             console.log(image);

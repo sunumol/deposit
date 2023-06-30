@@ -339,7 +339,8 @@ const LoginScreen = ({ navigation }) => {
         }
         console.log("data of register",data)
         await api.getLoginOtp(data).then((res) => {
-            console.log('-------------------res', res)
+            console.log('-------------------res', res
+            )
             if (res?.status == 200) {
                 setMaxError(false)
                // requestPermission()

@@ -298,7 +298,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
       setStatus(false)
       setTimer(0)
       console.log('-------------------err verifyCG12 otp request', err?.response)
-      if (err?.response?.data?.message.includes('Maximum number of OTPs are exceeded.')) {
+      if (err?.response?.data?.message.includes('Maximum number of OTPs are exceeded.' || 'Max attempts exceeded')) {
         setIsOtp1(true)
         setMaxError(true)
         setErrorMessage(err?.response?.data?.message)
@@ -328,11 +328,11 @@ const ContinuingGuarantor = ({ navigation, route }) => {
     OtpRef?.current?.focus()
     setInvalidotp(false)
     setInvalidotp1(false)
-
+    setOtpValue('')
     // console.log('==================================', OtpValue?.length)
-    if (OtpValue?.length > 0) {
-      otpInput2.current.clear()
-    }
+    // if (OtpValue?.length > 0) {
+    //   otpInput2.current.clear()
+    // }
     const data = {
       "activityId": activityId,
       "mobileNumber": "+91" + number,
@@ -342,7 +342,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
 
     }
     await api.verifyCG(data).then((res) => {
-      console.log('-------------------res verifyCG',)
+      console.log('-------------------res Resend otp',data)
       if (res?.status) {
       
         setResends(true)
@@ -355,7 +355,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
         setStatus(false)
         setTimer(0)
       }
-      if (err?.response?.data?.message.includes('Maximum number of OTPs are exceeded.')) {
+      if (err?.response?.data?.message.includes('Maximum number of OTPs are exceeded.' || 'Max attempts exceeded')) {
         setErrorMessage(err?.response?.data?.message)
         setMaxError(true)
         setTimeout(() => {
@@ -867,10 +867,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
                     <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 12, marginBottom: 5 }}>
                       <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center' }}>{t('common:otpValid')}</Text>
                     </View> : null}
-                  {invalidotp1 ?
-                    <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 12, marginBottom: 5 }}>
-                      <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center' }}>Could not Verify</Text>
-                    </View> : null}
+               
 
                   {IsOtp1 && status === true &&
                     <View style={{ marginTop: Dimensions.get('window').height * 0.03 }}>

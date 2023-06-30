@@ -30,6 +30,10 @@ import ImagePicker from 'react-native-image-crop-picker';
 import Image2 from '../../../assets/Images/cakes.svg';
 import { api } from '../../../Services/Api';
 import { useSelector } from 'react-redux';
+import SizeModal from  './SizeModal.js'
+
+
+
 
 const DetailChecks = ({ navigation, setState, setImagedata1,imagedata }) => {
 
@@ -37,7 +41,7 @@ const DetailChecks = ({ navigation, setState, setImagedata1,imagedata }) => {
     const [text, onChangeText] = useState('');
     const activityId = useSelector(state => state.activityId);
     const [ModalVisible2, setModalVisible2] = useState(false)
-
+    const [sizemodalvisble, setsizemodalvisble] = useState(false);
     const [checked, setChecked] = useState(false);
     const toggleCheckbox = () => setChecked(!checked);
 
@@ -129,10 +133,11 @@ const DetailChecks = ({ navigation, setState, setImagedata1,imagedata }) => {
 
     const UploadImage = () => {
             ImagePicker.openCamera({
-            width: width *1.2,
-           height: height,
-            hideBottomControls:true,
-            cropping: true
+                width: (width * 3) / 5, 
+                height: width,
+                hideBottomControls:true,
+                freeStyleCropEnabled:true,
+                cropping: true,
         }).then(image => {
             console.log("IMAGE", image);
             setImage(image.path)
@@ -181,7 +186,15 @@ const DetailChecks = ({ navigation, setState, setImagedata1,imagedata }) => {
                 setStatus(false)
             }
         }).catch((err) => {
-            console.log('-------------------err file upload', err)
+            console.log('-------------------err file upload', err?.response?.data?.message)
+            if( err?.response?.data?.message == 'Maximum upload size exceeded'){
+                setsizemodalvisble(true)
+                setImageurl('')
+                setImage('')
+                setImagedata1('')
+                setStatus(false)
+                setDelf(false)
+            }
             console.log("image type",imagevalue,image.mime)
             setStatus(false)
         })
@@ -253,6 +266,15 @@ const DetailChecks = ({ navigation, setState, setImagedata1,imagedata }) => {
                 DeleteImage={DeleteImage}
                 onPressOut={() => setModalVisible2(!ModalVisible2)}
                 setModalVisible2={setModalVisible2} />
+
+
+<SizeModal
+            ModalVisible={sizemodalvisble}
+            onPressOut={() => {
+              setsizemodalvisble(!sizemodalvisble)
+            }}
+            setModalVisible={setsizemodalvisble}
+          />
         </View>
 
 
