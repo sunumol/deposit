@@ -44,29 +44,52 @@ const CompleteTab = ({ navigation }) => {
  
 
 
+    const getRandomColor = (value) => {
+        // console.log('Random',value)
+         let mobilenum = value?.charAt(value.length-1)
+         if (mobilenum == '0'){
+           var color = '#94BCC8'
+         }else if (mobilenum == '1'){
+           var color ='#9EC894'
+         }else if (mobilenum == '2'){
+             var color ='#8CACCE'
+           }else if (mobilenum == '3'){
+             var color ='#CE748F'
+           }else if (mobilenum == '4'){
+             var color ='#8CA785'
+           }else if (mobilenum == '5'){
+             var color = '#6979F8'
+           }else if (mobilenum == '6'){
+             var color ='#9EC894'
+           }else if (mobilenum == '7'){
+             var color ='#8CACCE'
+           }else if (mobilenum == '8'){
+             var color ='#CE748F'
+           }else if (mobilenum == '9'){
+             var color ='#8CA785'
+           }else if(value == null || '' ){
+             var color = '#C8BD94'
+           }
 
-    const Data2 = [
-        {
-            id: 1,
-            name: 'Ashly James',
-            place: 'Kakkanad',
-            phone: '987XXXXX22',
-            Initial: 'AT',
-            Amount: '₹7,500',
-            color1: 'rgba(39, 174, 96, 1)',
-            color: 'rgba(148, 166, 200, 1)'
-        },
-        {
-            id: 2,
-            name: 'Anupama S',
-            place: 'Kakkanad',
-            phone: '987XXXXX22',
-            Initial: 'AJ',
-            Amount: '₹7,724',
-            color1: 'rgba(235, 87, 87, 1)',
-            color: 'rgba(200, 148, 148, 1)'
-        },
-    ]
+        return color;
+    }
+
+
+    const getInitials = (name) => {
+
+        let initials;
+        const nameSplit = name?.split(" ");
+        const nameLength = nameSplit?.length;
+        if (nameLength > 1) {
+            initials =
+                nameSplit[0].substring(0, 1) +
+                nameSplit[nameLength - 1].substring(0, 1);
+        } else if (nameLength === 1) {
+            initials = nameSplit[0].substring(0, 1);
+        } else return;
+
+        return initials.toUpperCase();
+    };
 
 
     useEffect(() => {
@@ -176,8 +199,8 @@ useEffect(()=>{
                                                         style={styles.boxStyle} >
                                                         <View style={{ flex: 1, flexDirection: 'row' }}>
 
-                                                            <View style={[styles.circleStyle, { backgroundColor: 'rgba(148, 166, 200, 1)' }]}>
-                                                                <Text style={styles.circleText}>K</Text>
+                                                            <View style={[styles.circleStyle, { backgroundColor: getRandomColor(item?.mobileNumber)}]}>
+                                                                <Text style={styles.circleText}>{getInitials(item?.customerName)}</Text>
                                                             </View>
 
                                                             <View style={{ flexDirection: 'column', paddingLeft: 12, paddingTop: 5 }}>
@@ -212,23 +235,25 @@ useEffect(()=>{
 
                                 </>
 
-                            <View style={[styles.containerTab, { backgroundColor: 'rgba(255, 255, 255, 1)' }]}>
-                              
+                            <View style={[styles.containerTab]}>
+                            {/* <View style={[styles.containerTab, { backgroundColor: 'rgba(255, 255, 255, 1)' }]}> */}
                                     <View style={[styles.Card1, { backgroundColor: 'rgba(39, 174, 96, 0.1)' }]}>
-                                        <Image2 /></View>
+                                        <Image2 />
+                                        </View>
 
-                                <View style={{ justifyContent: 'space-around', flexDirection: 'row', alignItems: 'center' }}>
+                                <View style={{ justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center' ,width:width * 0.78}}>
                                     <View style={{ marginLeft: width * 0.03 }}>
                                         <Text style={styles.timeText}>Deposited ₹15,224</Text>
                                     </View>
 
                                  
                                         <View style={[styles.Card1, { backgroundColor: 'rgba(39, 174, 96, 0.1)', marginLeft: width * 0.155 }]}>
-                                            <Img1 /></View>
-                                    <View style={{ marginLeft: width * 0.025 }}>
+                                            <Img1 />
+                                            </View>
+                                    <View>
                                         <Text style={styles.badgeText}>{completeloan?.depositedDetailsDTOS?.length}</Text>
                                     </View>
-                                    <View style={{ marginLeft: width * 0.036 }}>
+                                    <View>
 
                                         <TouchableOpacity
                                             onPress={() => {
@@ -268,8 +293,8 @@ useEffect(()=>{
                                                         style={styles.boxStyle} >
                                                         <View style={{ flex: 1, flexDirection: 'row' }}>
 
-                                                            <View style={[styles.circleStyle, { backgroundColor: 'rgba(148, 166, 200, 1)' }]}>
-                                                                <Text style={styles.circleText}>K</Text>
+                                                            <View style={[styles.circleStyle, { backgroundColor: getRandomColor(item?.mobileNumber)}]}>
+                                                                <Text style={styles.circleText}>{getInitials(item?.customerName)}</Text>
                                                             </View>
 
                                                             <View style={{ flexDirection: 'column', paddingLeft: 12, paddingTop: 5 }}>
@@ -539,7 +564,8 @@ const styles = StyleSheet.create({
     },
     containerTab: {
         width: width * 0.90,
-        backgroundColor: 'rgba(242, 242, 242, 1)',
+         backgroundColor: 'rgba(242, 242, 242, 1)',
+   
         //elevation:2,
         flexDirection: 'row',
         marginTop: width * 0.06,

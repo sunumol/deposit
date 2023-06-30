@@ -34,62 +34,8 @@ const CustomDetails = ({ navigation,details }) => {
 String.prototype.replaceAt = function (index, replacement) {
     return this.substring(0, index) + replacement + this.substring(index + replacement.length);
 }
-    const Data = [
-        {
-            id: 1,
-            name: 'Aiswarya Thomas',
-            place: 'CSEZ',
-            phone: '987XXXXX22',
-            Initial: 'AT',
-            Amount: '₹14,724',
-            color1: 'rgba(234, 64, 71, 1)',
-            color: 'rgba(148, 166, 200, 1)'
-        },
-        {
-            id: 2,
-            name: 'Ashly James',
-            place: 'Thrikkakara North',
-            phone: '987XXXXX22',
-            Initial: 'AJ',
-            Amount: '₹8,000',
-            color1: 'rgba(26, 5, 29, 1)',
-            color: 'rgba(168, 200, 148, 1)'
-        },
-        {
-            id: 3,
-            name: 'Sismi Joseph',
-            place: 'Edakkattuvayal',
-            phone: '987XXXXX22',
-            Initial: 'SJ',
-            Amount: '₹5,000',
-            color1: 'rgba(234, 64, 71, 1)',
-            color: 'rgba(148, 200, 188, 1)'
-        },
-        {
-            id: 4,
-            name: 'Reshmi P',
-            place: 'Kaippattur',
-            phone: '987XXXXX22',
-            Initial: 'RP',
-            Amount: '₹10,500',
-            color1: 'rgba(234, 64, 71, 1)',
-            color: 'rgba(200, 148, 170, 1)'
-        },
 
-    ]
-
-    const CGT = [
-        {
-            id: 1,
-            name: 'Dayana James',
-            place: 'Aimurikara',
-            phone: '987XXXXX22',
-            Initial: 'DJ',
-            Amount: '₹10,000',
-            color1: 'rgba(26, 5, 29, 1)',
-            color: 'rgba(148, 166, 200, 1)'
-        },
-    ]
+  
     useEffect(() => {
         getData()
     }, [])
@@ -158,7 +104,7 @@ String.prototype.replaceAt = function (index, replacement) {
                 <View style={{ justifyContent: 'center', paddingBottom: 10 }}>
 
                     <View style={{ paddingLeft: width * 0.03, marginTop: width * 0.035 }}>
-                        <Text    onPress={()=>navigation.navigate('Collection')} style={styles.PlaceText}>{details?.[0].village}({details?.length})</Text>
+                      {details?.[0].village ? <Text    onPress={()=>navigation.navigate('Collection')} style={styles.PlaceText}>{details?.[0].village}({details?.length})</Text> : null}
                     </View>
                 
                     <View style={{ alignItems: 'center', justifyContent: 'center' }}>
@@ -197,7 +143,7 @@ String.prototype.replaceAt = function (index, replacement) {
                                         </View>
 
 
-                                        <Text style={[styles.leadText, { color: item?.DPD>30 ?  'rgba(234, 64, 71, 1)' :'rgba(26, 5, 29, 1)'}]}>{item.dueAmount}</Text>
+                                        <Text style={[styles.leadText, { color: item?.DPD>30 ?  'rgba(234, 64, 71, 1)' :'rgba(26, 5, 29, 1)'}]}>₹{item.dueAmount}</Text>
 
 
                                     </View>
@@ -310,9 +256,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     leadText: {
-        fontSize: 11,
+        fontSize: 12,
         fontFamily: FONTS.FontSemiB,
         fontWeight: '600',
+        marginTop:2
 
     },
     leadContainer: {
