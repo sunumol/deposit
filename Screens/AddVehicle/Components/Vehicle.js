@@ -131,6 +131,7 @@ const Vehicle = ({ navigation,setsearchvehicledata }) => {
             }
         }).catch((err) => {
             setError(err?.response?.status)
+            setPurpose('Customer')
             console.log('-------------------err spousedetail', err?.response)
         })
     };
@@ -329,12 +330,12 @@ const Vehicle = ({ navigation,setsearchvehicledata }) => {
                     </View>
 
                     <TouchableOpacity style={styles.SelectBox} onPress={() => {
-                        setModalVisible1(true)
+                       error==500 ? setModalVisible1(false) :  setModalVisible1(true)
                     }} >
 
                         <Text style={[styles.textSelect, { color: '#1A051D', marginLeft: 8 }]}>{Purpose ? Purpose : 'Select'}</Text>
 
-                        <Icon1 name="chevron-down" size={18} color={'#808080'} style={{ marginRight: 10 }} />
+                        {/* <Icon1 name="chevron-down" size={18} color={'#808080'} style={{ marginRight: 10 }} /> */}
                     </TouchableOpacity>
                     <View>
                         <Text style={[styles.TextOwner, { marginTop: 10 }]}>Enter the vehicle number</Text>

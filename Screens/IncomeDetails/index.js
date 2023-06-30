@@ -230,6 +230,7 @@ const IncomeDetails = ({ navigation, route }) => {
             console.log('-------------------err getIncomeDetails', err?.response)
         })
     };
+    {console.log("amount",Amount)}
     // ------------------ ------------------
 
 
@@ -515,7 +516,7 @@ const IncomeDetails = ({ navigation, route }) => {
                                 <Text style={styles.TextElect}>{incomedetailfield?.field1}</Text>
                             </View>
                             <View style={styles.SelectBox}>
-                                <Text style={[styles.RS, { color: Amount === '' ? '#808080' : '#1A051D' }]}>{incomedetail?.occupation !== 'SALARIED_EMPLOYEE' ? '₹' : ''}</Text>
+                                <Text style={[styles.RS, { color: Amount === '' || Amount === null ? '#808080' : '#1A051D' }]}>{incomedetail?.occupation !== 'SALARIED_EMPLOYEE' ? '₹' : ''}</Text>
 
                                 <TextInput
                                     style={[{

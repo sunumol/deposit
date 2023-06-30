@@ -86,6 +86,11 @@ const MeetTab = (props) => {
 
             const lang = await AsyncStorage.getItem('user-language')
             const lang1 = await AsyncStorage.getItem('CallActivity')
+            const custId= await  AsyncStorage.getItem("CustomerId")
+                dispatch({
+                  type: 'SET_AGENT_ID',
+                  payload:custId,
+                });
             setLang(lang)
         } catch (e) {
             console.log(e)
@@ -268,6 +273,7 @@ console.log("error",occupation)
                 });
 
                 setSpousedetail(res?.data?.body?.occupation)
+               // props.navigation.navigate('ResidenceOwner')
                 //props.navigation.navigate('UploadAdhaar')
                 getDlePageNumber(id, res?.data?.body?.occupation,res?.data?.body)
                 console.log("spose detail", res?.data?.body)
@@ -275,7 +281,7 @@ console.log("error",occupation)
             }
         }).catch((err) => {
             setError(err?.response?.status)
-       
+            //props.navigation.navigate('ContinuingGuarantor')
             console.log('-------------------err spousedetail1', err?.response?.status)
             getDlePageNumber(id,err?.response?.status)
         })
