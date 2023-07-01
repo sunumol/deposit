@@ -128,7 +128,7 @@ getPendingCollection()
 
                             <View style={{ flexDirection: 'column',paddingLeft:width*0.03 }}>
                                 <Text style={styles.TextCust}>Customer's Due</Text>
-                                <Text style={styles.NumText}>{pendingdata?.customersDue}</Text>
+                                <Text style={styles.NumText}>{pendingdata?.customersDue ? pendingdata?.customersDue : 0}</Text>
                             </View>
                         </View>
 
@@ -138,7 +138,7 @@ getPendingCollection()
                             </View>
                             <View style={{ flexDirection: 'column',paddingLeft:width*0.03  }}>
                                 <Text style={styles.TextCust}>Amount Due</Text>
-                                <Text style={styles.AmtText}>₹{pendingdata?.amountsDue}</Text>
+                                <Text style={styles.AmtText}>₹{pendingdata?.amountsDue ? pendingdata?.amountsDue : 0}</Text>
                             </View>
                         </View>
                         </View>
@@ -149,7 +149,7 @@ getPendingCollection()
                         </View>
                         <View style={{ flexDirection: 'column' ,paddingLeft:width*0.03 }}>
                             <Text style={styles.TextCust}>Loans Due</Text>
-                            <Text style={styles.NumText}>{pendingdata?.loansDue}</Text>
+                            <Text style={styles.NumText}>{pendingdata?.loansDue ? pendingdata?.loansDue : 0}</Text>
                         </View>
                     </View>
                     </View>

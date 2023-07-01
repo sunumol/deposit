@@ -132,19 +132,46 @@ const DetailChecks = ({ navigation, setState, setImagedata1,imagedata }) => {
   }
 
     const UploadImage = () => {
+   
             ImagePicker.openCamera({
-                width: (width * 3) / 5, 
-                height: width,
+                width: width, 
+                height: height,
                 hideBottomControls:true,
                 freeStyleCropEnabled:true,
                 cropping: true,
         }).then(image => {
             console.log("IMAGE", image);
-            setImage(image.path)
-            setStatus(true)
-            setUploadStatus(false)
-            setDelf(true)
-            uploadFile(image.path, image)
+            cropimage(image)
+            // if(image?.size < 100000){
+            //     setsizemodalvisble(true)
+            // }else{
+            // setImage(image.path)
+            // setStatus(true)
+            // setUploadStatus(false)
+            // setDelf(true)
+            // uploadFile(image.path, image)
+            // }
+        });
+    }
+
+    const cropimage=(image) =>{
+            ImagePicker.openCropper({
+                path: image.path,
+                width: width,
+                height: (width * 3) / 5,
+                hideBottomControls:true,
+             freeStyleCropEnabled:true,
+        }).then(image => {
+            console.log("IMAGE1", image);
+            // if(image?.size < 100000){
+            //     setsizemodalvisble(true)
+            // }else{
+            // setImage(image.path)
+            // setStatus(true)
+            // setUploadStatus(false)
+            // setDelf(true)
+            // uploadFile(image.path, image)
+            // }
         });
     }
 
