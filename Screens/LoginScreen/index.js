@@ -231,7 +231,7 @@ const LoginScreen = ({ navigation }) => {
         setIsOtp1(false)
         setTimer(0)
         setSelectedPhoneNum()
-        setOtpValue('')
+        otpInput2?.current?.setValue('')
         const firstDigitStr = String(PhoneNum)[0]
         if (PhoneNum?.length != 10 || PhoneNum == "") {
             setModalVisible1(true)
@@ -296,7 +296,7 @@ const LoginScreen = ({ navigation }) => {
             setMaxError(false)
             setOtp(false)
             setIsExpired(false)
-            setOtpValue('')
+            otpInput2?.current?.setValue('')
             setIsExpired(false)
 
             // --------------- getOtp Button Disable Start ------------
