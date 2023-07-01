@@ -43,7 +43,7 @@ const Privacy = ({ navigation }) => {
 
             <Header navigation={navigation} name={t('common:PrivacyHead')} onPress={handleGoBack} />
             <ScrollView style={{ flex: 1, paddingBottom: 20 }}>
-                <View style={styles.ViewContent}>
+                <View style={[styles.ViewContent,{paddingTop:14}]}>
                     <Text style={styles.text}>This privacy policy (“<Text style={{ fontFamily: FONTS.FontBold }}>Privacy Policy</Text>”) is published pursuant to, and in accordance with the
                         provisions of the Information Technology Act, 2000, and the rules framed thereunder and as
                         amended from time to time, including, but not limited to the Information Technology
@@ -83,7 +83,6 @@ const Privacy = ({ navigation }) => {
                         Further, if you are using our Services on behalf of someone else, or an entity, you shall at all
                         times represent, that you are duly authorised by such person, or entity to enter into and accept
                         and be bound by the terms of this Privacy Policy.</Text>
-
                     <Text style={styles.text}>If you do not agree with this Privacy Policy, please do not download or install our Mobile App,
                         or access our Website or proceed beyond the Privacy Policy screen after launching the Mobile
                         App or Website on your device for the first time. If you continue to use the Mobile App or
@@ -213,7 +212,7 @@ const styles = StyleSheet.create({
         fontWeight: '400',
         fontFamily: FONTS.FontRegular,
         fontSize: 14,
-        marginTop: 20,
+        marginTop: 14,
         textAlign: 'justify',
         color: "#1A051D",
     },

@@ -616,7 +616,7 @@ const LoginScreen = ({ navigation }) => {
                
                 setTimeout(() => {
                     isGrantedPermissions(res?.data?.status) 
-                }, 3000);
+                }, 4000);
                 AsyncStorage.setItem('Token', 'dXNlckBleGFtcGxlLmNvbTpzZWNyZXQ=');
                 AsyncStorage.setItem('userName', res?.data?.agentName);
                 setToastMessage(true)
