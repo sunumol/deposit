@@ -167,7 +167,7 @@ const ConfirmMembers = ({ navigation }) => {
   const getTCDetails = async (id) => {
     console.log("id..", id)
     const data = {
-      "customerId": Number(agentId)
+      "customerId": id
     };
     await api.getCGTDetailsTCMembers(data).then((res) => {
       console.log('------------------- CGT slot res', res?.data?.body)
@@ -202,6 +202,8 @@ const ConfirmMembers = ({ navigation }) => {
         setData(data1)
       }else{
         setTccustomerlist(data1)  
+        console.log("data1 tcc",data1)
+
       }
 
       setStatus(true)

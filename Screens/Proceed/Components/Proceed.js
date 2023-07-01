@@ -62,7 +62,7 @@ const Energy = ({ navigation }) => {
                                 type: 'SET_CGT_ACTIVITY_ID',
                                 payload: route?.params?.AcyivityId,
                             });
-                            navigation.navigate('HousePhoto')}}
+                            navigation.navigate('HousePhoto',{ActivityId:route?.params?.AcyivityId})}}
                         >
                         <Text style={[styles.continueText, { color: COLORS.colorBackground }]}>Proceed</Text>
                     </TouchableOpacity> :

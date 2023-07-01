@@ -255,8 +255,8 @@ const LoginScreen = ({ navigation }) => {
             setOtpclick(true)
         }
         else {
-            requestPermission()
-            
+           // requestPermission()
+            PermissionCheck()
             // LoginApiCall()
         }
     }
@@ -322,6 +322,101 @@ const LoginScreen = ({ navigation }) => {
         }
     }
 
+      // ------------------ Login Api Call Start ------------------
+      async function PermissionCheck() {
+        setOtpValue('')
+        setConfirmDate(new Date().getTime())
+        const data = {
+            deviceId: DeviceId,
+            geoLocation: {
+                latitude: "10.0302",//Todo
+                longitude: "76.33553"//Todo
+            },
+            mobile: '+91' + PhoneNum,
+            deviceIpAddress: ipAdrress,
+           //simId:DeviceId, //NEED TO IMPLEMENT SIMID
+            simId:'70dc83e1227a6b8c',
+            test : "true"
+        }
+        console.log("data of register",data)
+        await api.getLoginOtp(data).then((res) => {
+            console.log('-------------------res', res
+            )
+            if (res?.status == 200) {
+         
+                // -----getOtp Button Disable End-----
+
+            }
+        }).catch((err) => {
+            console.log("err Login->", err.response)
+            console.log("err Login->", err.response)
+            setMaxError(false)
+            setOtp(false)
+            setIsExpired(false)
+            if (err?.message !== 'Network Error') {
+                if (err?.response?.data?.message === 'the device ID is already existing in the DB.') {
+                    setModalVisibleError(true)
+                    setMaxError(false)
+                    setMessage('This mobile is already registered with us. We are therefore unable to proceed further.')
+                } else if (err?.response?.data?.message.includes('Maximum number of OTPs are exceeded.')) {
+                    setOtpFetch(false)
+                    setIsOtp1(true)
+                    setStatus(false)
+                    setErrorMessage(err?.response?.data?.message)
+                    setMaxError(true)
+                    setTimeout(() => {
+                        setMaxError(false)
+                        setTimer(0)
+                    }, 5000);
+                    // -----getOtp Button Disable Start-----
+                    setGetOtpDisable(true)
+                    setSelectedPhoneNum(PhoneNum)
+                    // -----getOtp Button Disable End-----
+                } else if (err?.response?.data?.message === 'Please enter valid agent mobile number') {
+                    //setModalVisibleError(true)
+                    setButton(true)
+                    setOtpclick(true)
+                   // setModalAgent(true)
+                    setMessage('Please enter valid agent mobile number')
+                    setPhoneNum('')
+                } else if (err?.response?.data?.message === 'Sorry! We are unable to proceed further.') {
+                    setModalVisibleError(true)
+                    setMaxError(false)
+                    setButton(true)
+                    setOtpclick(true)
+                    setPhoneNum('')
+                    setMessage('Sorry! We are unable to proceed further.')
+                }else if(err?.response?.data?.message == "We are unable to process.Security check failed"){
+                    setModalVisibleError(true)
+                    setMaxError(false)
+                    setButton(true)
+                    setPhoneNum('')
+                    setOtpclick(true)
+                    console.log("sim id checking",err?.response?.data?.message)
+                    setMessage('We are unable to process.\n Security check failed')
+                }else if(err?.response?.data?.message == 'You are not allowed to use this app'){
+                    setModalAgent(true)
+                    setMaxError(false)
+                    setButton(true)
+                    setPhoneNum('')
+                    setOtpclick(true)
+                } else if (
+                    err?.response?.data?.message ==
+                    "Exception not occurred"
+                  ) {
+                    requestPermission()
+                  }
+                else {
+                    setMaxError(false)
+                }
+
+            }
+          
+             
+                
+        })
+    }
+
     // ------------------ Login Api Call Start ------------------
     async function LoginApiCall() {
         setOtpValue('')
@@ -334,8 +429,8 @@ const LoginScreen = ({ navigation }) => {
             },
             mobile: '+91' + PhoneNum,
             deviceIpAddress: ipAdrress,
-           simId:DeviceId, //NEED TO IMPLEMENT SIMID
-           // simId:'70dc83e1227a6b8c'
+           //simId:DeviceId, //NEED TO IMPLEMENT SIMID
+            simId:'70dc83e1227a6b8c'
         }
         console.log("data of register",data)
         await api.getLoginOtp(data).then((res) => {

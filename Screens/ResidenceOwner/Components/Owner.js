@@ -31,8 +31,9 @@ import Image1s from '../../../assets/Images/cakes.svg';
 const { height, width } = Dimensions.get('screen');
 
 const DetailChecks = ({ navigation, setState, proofType1,
-    imageUrl1, relation1, relative1, isCheck, Correction }) => {
+    imageUrl1, relation1, relative1, isCheck, Correction,activityIds }) => {
 
+        
     const activityId = useSelector(state => state.activityId);
 
     const [ModalVisible, setModalVisible] = useState(false)
@@ -51,10 +52,12 @@ const DetailChecks = ({ navigation, setState, proofType1,
     const [emoji, setEmoji] = useState(false)
     const [ModalVisibleC, setModalVisibleC] = useState(false)
     const isLastPage = useSelector(state => state.isLastPage);
+    const [id,setId] = useState(activityIds)
     const [CorrectionStatus, setCorrectionStatus] = useState(isCheck)
     const [CustomerDetail, setCustomerDetail] = useState([])
 
     useEffect(() => {
+        console.log("activity id from correction",activityIds,id)
         if (!Correct1) {
             getResidenceowner()
             getCustomerdetail()
@@ -83,7 +86,7 @@ const DetailChecks = ({ navigation, setState, proofType1,
     // -------------------------------- spouse detail -----------------------------------------
     const getSpousedetail = async () => {
         const data = {
-            "activityId": activityId
+            "activityId": activityId?activityId:id
         }
         await api.getSpousedetail(data).then((res) => {
             console.log('-------------------res spousedetail', res)
@@ -128,7 +131,7 @@ const DetailChecks = ({ navigation, setState, proofType1,
     // ------------------save and update residence owner detail ------------------
     const UpdateResidenceowner = async () => {
         const data = {
-            "activityId": activityId,
+            "activityId": activityId?activityId:id,
             "ownerShipProofType": Purpose,
             "imageUrl": Image1,
             "relationShipWithCustomer": Purposes,
@@ -241,7 +244,7 @@ const DetailChecks = ({ navigation, setState, proofType1,
     const getLastPage = async () => {
         console.log("LASTPAGE", activityId)
         const data = {
-            "activityId": activityId
+            "activityId": activityId?activityId:id
         }
         await api.getLastPage(data).then((res) => {
             console.log("last page upadte", res?.data, res?.data?.body?.nextPage, CorrectionStatus)
@@ -287,7 +290,7 @@ const DetailChecks = ({ navigation, setState, proofType1,
 
     const getDLEConfirmation = async () => {
         const data = {
-            "activityId": activityId
+            "activityId": activityId?activityId:id
         }
         await api.getCorrectionNotify(data).then((res) => {
 
@@ -307,10 +310,10 @@ const DetailChecks = ({ navigation, setState, proofType1,
     };
 
     const getCustomerdetail = async () => {
-        console.log('api called')
+        console.log('api called customer',activityId,id)
 
         const data = {
-            "activityId": activityId
+            "activityId": activityId?activityId:id
         }
         await api.getCustomerdetail(data).then((res) => {
             console.log('-------------------res customerdetail', res.data.body)
@@ -319,7 +322,7 @@ const DetailChecks = ({ navigation, setState, proofType1,
                 //setSpousedetail(res?.data?.body)
             }
         }).catch((err) => {
-            console.log('-------------------err spousedetail', err?.response)
+            console.log('-------------------err customerdetail', err?.response)
         })
     };
 
@@ -381,7 +384,7 @@ const DetailChecks = ({ navigation, setState, proofType1,
                     <View>
                         <Text style={styles.proof}>Relationship with Customer</Text>
                     </View>
-                    <TouchableOpacity style={styles.SelectBox} onPress={() => { setModalVisible1(true), getSpousedetail(), setOwnersName(null) }} >
+                    <TouchableOpacity style={styles.SelectBox} onPress={() => { setModalVisible1(true), getSpousedetail(), setOwnersName(null),getCustomerdetail() }} >
                         {Purposes === null ?
                             <Text style={[styles.textSelect, { color: 'rgba(128, 128, 128, 1)', }]}>Select</Text>
                             :

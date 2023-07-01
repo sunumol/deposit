@@ -41,7 +41,7 @@ export function numberWithCommas(x) {
 }
 
 const IncomeDetails = ({ navigation, route }) => {
-    console.log('IncomeD=====>>', route?.params?.isCheck)
+    console.log('IncomeD=====>>', route?.params?.isCheck,route?.params?.activityId)
     const isDarkMode = true
     const { t } = useTranslation();
     const [lang, setLang] = useState('')
@@ -109,7 +109,7 @@ const IncomeDetails = ({ navigation, route }) => {
         AsyncStorage.getItem("CorrectionStatus").then((value) => {
             console.log("getincome details correction", value)
 
-            getIncomeDetails(value)
+            //getIncomeDetails(value)
 
         })
     }, [])
@@ -171,7 +171,7 @@ const IncomeDetails = ({ navigation, route }) => {
     const getSpousedetail = async () => {
         console.log('api called123  ')
         const data = {
-            "activityId": activityId
+            "activityId": activityId?activityId:route?.params?.activityId
         }
         await api.getSpousedetail(data).then((res) => {
             console.log('-------------------res spousedetail co-app', res?.data?.body)
@@ -198,8 +198,8 @@ const IncomeDetails = ({ navigation, route }) => {
         console.log('api called', activityId, relationShip)
 
         const data = {
-            "activityId": activityId,
-            "relationShip": relationShip
+            "activityId": activityId?activityId:route?.params?.activityId,
+            "relationShip": 'Customer'
 
         }
         console.log("data pass", data)

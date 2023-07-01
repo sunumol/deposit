@@ -67,8 +67,8 @@ const SplashScreen = ({ navigation }) => {
         });
         messaging().onNotificationOpenedApp((remoteMessage) => {
             console.log(
-                "Notification caused app to open from background state:",
-                remoteMessage?.notification
+                "Notification caused app to open from background state:66",
+                remoteMessage
             );
             if (remoteMessage?.notification?.title === 'DATA_CONFIRMATION') {
                 setTimeout(() =>
@@ -83,6 +83,10 @@ const SplashScreen = ({ navigation }) => {
 
 
         });
+
+        messaging().setBackgroundMessageHandler(async remoteMessage => {
+            console.log('Message handled in the background!', remoteMessage);
+          });
 
         messaging()
             .getInitialNotification()

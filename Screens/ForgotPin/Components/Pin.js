@@ -142,7 +142,7 @@ const Pin = ({ navigation, conFirmDate }) => {
             },
             mobile: mobile,
             deviceIpAddress: ipAdrress,
-            simId: deviceId,
+            simId:'70dc83e1227a6b8c',
         }
         await api.resendLoginOtp(data).then((res) => {
             if (res?.data?.status) {

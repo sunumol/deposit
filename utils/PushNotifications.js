@@ -22,8 +22,8 @@ export const NotificationServices = async () => {
   // Assume a message-notification contains a "type" property in the data payload of the screen to open
   messaging().onNotificationOpenedApp(remoteMessage => {
     console.log(
-      'Notification caused app to open from background state:',
-      remoteMessage.notification,
+      'Notification caused app to open from background state77:',
+      remoteMessage.notification?.data,
     );
     
     if (remoteMessage.notification?.title === 'DATA_CONFIRMATION') {

@@ -46,6 +46,23 @@ const CorrectionScreen = ({ navigation }) => {
         }, [handleGoBack]),
     );
 
+    useFocusEffect(
+        React.useCallback(() => {
+            dispatch({
+                type: 'SET_CGT_ACTIVITY_ID',
+                payload:route?.params?.AcyivityId ,
+            });
+            getCorrectionDetails()
+            console.log('Screen was focused', );
+            // Do something when the screen is focused
+            return () => {
+                console.log('Screen was focused');
+                // Do something when the screen is unfocused
+                // Useful for cleanup functions
+            };
+        }, [])
+    );
+
     useEffect(() => {
         dispatch({
             type: 'SET_CGT_ACTIVITY_ID',
@@ -53,17 +70,18 @@ const CorrectionScreen = ({ navigation }) => {
         });
             AsyncStorage.getItem("CallActivity").then((value) => {
                 setCustId(value)
-                getCorrectionDetails(value)
+               // getCorrectionDetails(value) 
             })
-        
+           // getCorrectionDetails()
     }, [])
 
     // ------------------ get Conduct DLE basic detail Village Api Call Start ------------------
-    const getCorrectionDetails = async (value) => {
+    const getCorrectionDetails = async () => {
+        console.log("inside useEFFECT",)
         const data = {
-            "activityId": activityId ?activityId:value   //-----> addd --- activityId
+            "activityId": activityId ?activityId:route?.params?.AcyivityId  //-----> addd --- activityId
         }
-        console.log("correction ",data)
+        console.log("correction ",data,activityId,route?.params?.AcyivityId)
         await api.getCorrectionDetails(data).then((res) => {
             console.log('-------------------res getCorrection', res)
             if (res?.data) {
@@ -79,10 +97,11 @@ const CorrectionScreen = ({ navigation }) => {
     const onProceed = async () => {
         
         const data = {
-            "activityId": activityId ? activityId:custID  //-----> addd --- activityId
+            "activityId": activityId ? activityId:route?.params?.AcyivityId  //-----> addd --- activityId
         }
+        console.log("proceed data",data)
         await api.getLastPage(data).then((res) => {
-            console.log('-------------------res getCorrection',res?.data?.body)
+            console.log('-------------------res getCorrection',res?.data?.body,activityId)
             if (res?.data) {
                 dispatch({
                     type: 'SET_LASTPAGE',
@@ -92,7 +111,7 @@ const CorrectionScreen = ({ navigation }) => {
                 if (res?.data?.body?.nextPage == 1) {
                     navigation.navigate('DetailCheck',{isCheck:res?.data?.body?.isLasCorrectin,Correction:true})
                 } else if (res?.data?.body?.nextPage == 2) {
-                    navigation.navigate('ResidenceOwner',{isCheck:res?.data?.body?.isLasCorrectin,Correction:true})
+                    navigation.navigate('ResidenceOwner',{isCheck:res?.data?.body?.isLasCorrectin,Correction:true,activityId:activityId?activityId:route?.params?.AcyivityId})
                 } else if (res?.data?.body?.nextPage == 3) {
                     navigation.navigate('ContinuingGuarantor',{isCheck:res?.data?.body?.isLasCorrectin,Correction:true})
                 } else if (res?.data?.body?.nextPage == 4) {
@@ -101,7 +120,7 @@ const CorrectionScreen = ({ navigation }) => {
                     navigation.navigate('VehicleOwn')
                 } else if (res?.data?.body?.nextPage == 6) {
                    
-                    navigation.navigate('EnergyUtility',{isCheck:res?.data?.body?.isLasCorrectin,Correction:true})
+                    navigation.navigate('EnergyUtility',{isCheck:res?.data?.body?.isLasCorrectin,Correction:true,activityId:route?.params?.AcyivityId})
                 } else if (res?.data?.body?.nextPage == 7) {
                     navigation.navigate('IncomeDetails', { relationShip: 'Customer',isCheck:res?.data?.body?.isLasCorrectin,Correction:true })
                 } else if (res?.data?.body?.nextPage == 8) {
@@ -109,11 +128,11 @@ const CorrectionScreen = ({ navigation }) => {
                 } else if (res?.data?.body?.nextPage == 9) {
                     navigation.navigate('UploadAdhaar',{isCheck:res?.data?.body?.isLasCorrectin,Correction:true})
                 }else if (res?.data?.body?.nextPage == 10) {
-                    navigation.navigate('CustomerDetails',{isCheck:res?.data?.body?.isLasCorrectin,Correction:true})
+                    navigation.navigate('CustomerDetails',{isCheck:res?.data?.body?.isLasCorrectin,Correction:true,activityId:route?.params?.AcyivityId})
                 }
             }
         }).catch((err) => {
-            console.log('-------------------err getCorrection', err)
+            console.log('-------------------err getCorrection',route?.params?.AcyivityId,activityId)
         })
     };
     // ------------------saveIncomeDetails detail ------------------

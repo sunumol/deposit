@@ -703,6 +703,17 @@ export const api = {
       "Content-Type": "application/json",
     });
   },
+  getCoappAdhaar: (data) => {
+    return axios.post(`${baseURL2}getCoApplicantAadhar`, data, {
+      "Content-Type": "application/json",
+    });
+  },
+
+  SaveCoappAdhaar: (data) => {
+    return axios.post(`${baseURL2}saveCoApplicantAadhar`, data, {
+      "Content-Type": "application/json",
+    });
+  },
 
   //     return axios.post(`${baseURL2}enterPinSimIdCheck`,data, {
   //       headers: {

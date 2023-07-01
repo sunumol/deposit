@@ -184,6 +184,7 @@ const ResidenceOwner = ({ navigation, }) => {
                     imageUrl1={setImageUrl}
                     relation1={setRelation}
                     relative1={setRelative}
+                    activityIds={route?.params?.activityId}
                     Correction={route?.params?.Correction}
                     isCheck={route?.params?.isCheck} />
             </View>

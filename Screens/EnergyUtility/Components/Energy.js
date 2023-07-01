@@ -27,7 +27,7 @@ import CorrectionModal from './CorrectionModal';
 const { height, width } = Dimensions.get('screen');
 
 const Energy = ({ navigation, setAmount1, setPurpose1, setDays1,
-    setCustomerId, setEnergyUtilityId, route,isCheck,Correction }) => {
+    setCustomerId, setEnergyUtilityId, route,isCheck,Correction,ActiveId }) => {
     const [Amount, setAmount] = useState(null)
     const [ModalVisible, setModalVisible] = useState(false)
     const [ModalVisibleC, setModalVisibleC] = useState(false)
@@ -126,7 +126,7 @@ const Energy = ({ navigation, setAmount1, setPurpose1, setDays1,
         console.log('api called')
 
         const data = {
-            "activityId": activityId,
+            "activityId": activityId?activityId:ActiveId,
             "customerId": utilities.customerId,
             "energyUtilityId": utilities.energyUtilityId,
             "averageElectrictyBill": Amount,
@@ -225,9 +225,9 @@ const Energy = ({ navigation, setAmount1, setPurpose1, setDays1,
     };
 
     const getLastPage = async () => {
-        console.log("LASTPAGE", activityId)
+        console.log("LASTPAGE", activityId,ActiveId)
         const data = {
-            "activityId": activityId
+            "activityId": activityId?activityId:ActiveId
         }
         await api.getLastPage(data).then((res) => {
             console.log("last page upadte", res?.data)
@@ -258,9 +258,9 @@ const Energy = ({ navigation, setAmount1, setPurpose1, setDays1,
             } else if (res?.data?.body?.isLasCorrectin == true && res?.data?.body?.nextPage == 7) {
                 if (customerdetail !== 'UNEMPLOYED') {
                     navigation.navigate('IncomeDetails', { relationShip: relationShip,
-                        isCheck:res?.data?.body?.isLasCorrectin ,Correction:Correct1})
+                        isCheck:res?.data?.body?.isLasCorrectin ,Correction:Correct1,activityId:ActiveId})
                 } else if (customerdetail == 'UNEMPLOYED' && spouseDetail !== 'UNEMPLOYED') {
-                    navigation.navigate('IncomeDetailsSpouse',{isCheck:res?.data?.body?.isLasCorrectin, Correction:Correct1})
+                    navigation.navigate('IncomeDetailsSpouse',{isCheck:res?.data?.body?.isLasCorrectin, Correction:Correct1,activityId:ActiveId})
                 } else if (customerdetail == 'UNEMPLOYED' && spouseDetail == 'UNEMPLOYED') {
                     saveIncomeDetails_Spouse()
                     navigation.navigate('Proceed')
@@ -271,9 +271,9 @@ const Energy = ({ navigation, setAmount1, setPurpose1, setDays1,
                 }
             } else if (res?.data?.body?.isLasCorrectin == false && res?.data?.body?.nextPage == 7) {
                 if (customerdetail !== 'UNEMPLOYED') {
-                    navigation.navigate('IncomeDetails', { relationShip: relationShip,isCheck:res?.data?.body?.isLasCorrectin , Correction:Correct1})
+                    navigation.navigate('IncomeDetails', { relationShip: relationShip,isCheck:res?.data?.body?.isLasCorrectin , Correction:Correct1,activityId:ActiveId})
                 } else if (customerdetail == 'UNEMPLOYED' && spouseDetail !== 'UNEMPLOYED') {
-                    navigation.navigate('IncomeDetailsSpouse',{isCheck:res?.data?.body?.isLasCorrectin, Correction:Correct1})
+                    navigation.navigate('IncomeDetailsSpouse',{isCheck:res?.data?.body?.isLasCorrectin, Correction:Correct1,activityId:ActiveId})
                 } else if (customerdetail == 'UNEMPLOYED' && spouseDetail == 'UNEMPLOYED') {
                     saveIncomeDetails_Spouse()
                     navigation.navigate('Proceed')
@@ -283,9 +283,9 @@ const Energy = ({ navigation, setAmount1, setPurpose1, setDays1,
                     navigation.navigate('Proceed')
                 }
             } else if (res?.data?.body?.isLasCorrectin == false && res?.data?.body?.nextPage == 8) {
-                navigation.navigate('IncomeDetailsSpouse',{ Correction:Correct1})
+                navigation.navigate('IncomeDetailsSpouse',{ Correction:Correct1,activityId:ActiveId})
             }else{
-                navigation.navigate('IncomeDetails', { relationShip: relationShip,isCheck:res?.data?.body?.isLasCorrectin , Correction:Correct1})
+                navigation.navigate('IncomeDetails', { relationShip: relationShip,isCheck:res?.data?.body?.isLasCorrectin , Correction:Correct1,activityId:ActiveId})
             }
 
         }).catch((err) => {

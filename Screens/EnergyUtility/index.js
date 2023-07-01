@@ -30,7 +30,7 @@ import ReasonModal from '../DetailedCheck/Components/ReasonModal';
 
 const EnergyUtility = ({ navigation, }) => {
     const route = useRoute();
-    console.log("route name",);
+    console.log("route name",route?.params?.activityId);
     const isDarkMode = true
     const { t } = useTranslation();
     const [lang, setLang] = useState('')
@@ -113,7 +113,7 @@ const EnergyUtility = ({ navigation, }) => {
         console.log('api called')
 
         const data = {
-            "activityId": activityId,
+            "activityId": activityId?activityId:route?.params?.activityId,
             "customerId": customerId,
             "energyUtilityId": energyUtilityId,
             "averageElectrictyBill": Amount1,
@@ -121,6 +121,7 @@ const EnergyUtility = ({ navigation, }) => {
             "cylinderLastingDays": days1
 
         }
+       
         await api.saveEnergyUtilities(data).then((res) => {
             console.log('-------------------res saveEnergyUtilities', res, data)
             if (res?.status) {
@@ -166,6 +167,7 @@ const EnergyUtility = ({ navigation, }) => {
                     isCheck={route?.params?.isCheck}
                     setPurpose1={setPurpose1}
                     setDays1={setDays1}
+                    ActiveId={route?.params?.activityId}
                     setCustomerId={setCustomerId}
                     Correction={route?.params?.Correction}
                     setEnergyUtilityId={setEnergyUtilityId} />

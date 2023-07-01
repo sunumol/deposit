@@ -96,7 +96,7 @@ const ResidenceOwner = ({ navigation, }) => {
         console.log('api called====',activityId)
 
         const data = {
-            "activityId": activityId,
+            "activityId": activityId?activityId:route?.params?.ActivityId,
             "housePhotoUrl": imagedata,
 
         }
