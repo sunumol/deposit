@@ -485,7 +485,7 @@ const Terms = ({ navigation }) => {
                         address.</Text>
                     <Text style={styles.text2}>b. Any notice to be given to Dhan Sethu by You shall be sent through email or registered post with
                         acknowledgement due to the address specified below:</Text>
-                    <Text style={[styles.text2, { backgroundColor: 'yellow', alignSelf: 'flex-start' }]}>Email: info@dhansethu.com</Text>
+                    <Text style={[styles.text2]}>Email: info@dhansethu.com</Text>
                     <Text style={styles.text2}>Address: Dhan Sethu DigiFin (P) Ltd., Bizcospaces, 8
                         th Floor, Infra Futura, Opp. Bharat Matha College,
                         Thrikkakara, Ernakulam, Kerala- 682021</Text>

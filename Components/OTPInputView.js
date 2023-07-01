@@ -44,6 +44,7 @@ class OTPTextView extends Component {
 
     this.state = {
       focusedInput: 0,
+      backPressed: false,
       otpText: getOTPTextChucks(
         props.inputCount,
         props.inputCellLength,
@@ -100,17 +101,41 @@ class OTPTextView extends Component {
     );
   };
 
-  onInputFocus = (i) => {
+  onInputFocus = (e, i) => {
     const { otpText } = this.state;
-
-    const prevIndex = i - 1;
-
-    if (prevIndex > -1 && !otpText[prevIndex] && !otpText.join("")) {
-      this.inputs[0].focus();
-      return;
+  
+    if (!otpText[0] && !this.state.backPressed) {
+      this.inputs[0].focus()
+    } else {
+      this.setState({ backPressed: false })
     }
-
-    this.setState({ focusedInput: i });
+    if (otpText[0] && !otpText[1] && !this.state.backPressed) {
+      this.inputs[1].focus()
+    } else {
+      this.setState({ backPressed: false })
+    }
+    if (otpText[0] && otpText[1] && !otpText[2] && !this.state.backPressed) {
+      this.inputs[2].focus()
+    } else {
+      this.setState({ backPressed: false })
+    }
+    if (otpText[0] && otpText[1] && otpText[2] && !otpText[3] && !this.state.backPressed) {
+      this.inputs[3].focus()
+    }
+    else {
+      this.setState({ backPressed: false })
+    }
+    if (otpText[0] && otpText[1] && otpText[2] && otpText[3] && !this.state.backPressed) {
+      this.inputs[3].focus()
+    }
+    else {
+      this.setState({ backPressed: false })
+    }
+    // if (prevIndex > -1 && !otpText[prevIndex] && !otpText.join("")) {
+    //   this.inputs[0].focus();
+    //   return;
+    // }
+    // this.setState({ focusedInput: i });
   };
 
   onKeyPress = (e, i) => {
@@ -118,13 +143,17 @@ class OTPTextView extends Component {
 
     this.setState({ times: 1 })
     if (e.nativeEvent.key === "Backspace" && i !== 0) {
-
-      if (this.state.times == 1) {
-        this.inputs[i].focus();
-        this.setState({ times: 2 })
-      } else {
+      if (!this.state.otpText[i]) {
         this.inputs[i - 1].focus();
-
+        this.setState({ backPressed: true })
+      } else {
+        if (this.state.times == 1) {
+          this.inputs[i].focus();
+          this.setState({ times: 2 })
+        } else {
+          this.inputs[i - 1].focus();
+          this.setState({ backPressed: true })
+        }
       }
 
     }
@@ -180,7 +209,6 @@ class OTPTextView extends Component {
     const { focusedInput, otpText } = this.state;
 
     const TextInputs = [];
-    const TextInputs2 = [];
 
     for (let i = 0; i < inputCount; i += 1) {
       const inputStyle = [
@@ -193,25 +221,26 @@ class OTPTextView extends Component {
         inputStyle.push({ borderColor: tintColor });
       }
 
-     TextInputs.push(
-            <TextInput
-              ref={(e) => {
-                this.inputs[i] = e;
-              }}
-              key={i}
-              autoCorrect={false}
-              keyboardType={keyboardType}
-              autoFocus={i === 0}
-              value={otpText[i] || ""}
-              style={inputStyle}
-              maxLength={this.props.inputCellLength}
-              onFocus={() => this.onInputFocus(i)}
-              onChangeText={(text) => this.onTextChange(text, i)}
-              multiline={false}
-              onKeyPress={(e) => this.onKeyPress(e, i)}
-              {...textInputProps}
-            />
-     )
+      TextInputs.push(
+        <TextInput
+          ref={(e) => {
+            this.inputs[i] = e;
+          }}
+          key={i}
+          autoCorrect={false}
+          keyboardType={keyboardType}
+          autoFocus={i === 0}
+          value={otpText[i] || ""}
+          style={inputStyle}
+          maxLength={this.props.inputCellLength}
+          onFocus={(e) => this.onInputFocus(e, i)}
+          onChangeText={(text) => this.onTextChange(text, i)}
+          multiline={false}
+
+          onKeyPress={(e) => this.onKeyPress(e, i)}
+          {...textInputProps}
+        />
+      )
     }
 
     return (
