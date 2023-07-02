@@ -141,39 +141,41 @@ const DetailChecks = ({ navigation, setState, setImagedata1,imagedata }) => {
                 cropping: true,
         }).then(image => {
             console.log("IMAGE", image);
-            cropimage(image)
-            // if(image?.size < 100000){
-            //     setsizemodalvisble(true)
-            // }else{
-            // setImage(image.path)
-            // setStatus(true)
-            // setUploadStatus(false)
-            // setDelf(true)
-            // uploadFile(image.path, image)
-            // }
+           // cropimage(image)
+            if(image?.size < 100000){
+                setsizemodalvisble(true)
+            }else{
+            setImage(image.path)
+            setStatus(true)
+            setUploadStatus(false)
+            setDelf(true)
+            uploadFile(image.path, image)
+            }
         });
     }
 
-    const cropimage=(image) =>{
-            ImagePicker.openCropper({
-                path: image.path,
-                width: width,
-                height: (width * 3) / 5,
-                hideBottomControls:true,
-             freeStyleCropEnabled:true,
-        }).then(image => {
-            console.log("IMAGE1", image);
-            // if(image?.size < 100000){
-            //     setsizemodalvisble(true)
-            // }else{
-            // setImage(image.path)
-            // setStatus(true)
-            // setUploadStatus(false)
-            // setDelf(true)
-            // uploadFile(image.path, image)
-            // }
-        });
-    }
+    // const cropimage=(image) =>{
+    //         ImagePicker.openCropper({
+    //             path: image.path,
+    //             width: width, 
+    //             height: (width * 3)/5,
+    //             compressImageMaxWidth: 1200,
+    //             compressImageMaxHeight: 1200,
+    //             hideBottomControls:true,
+    //          freeStyleCropEnabled:true,
+    //     }).then(image => {
+    //         console.log("IMAGE1", image);
+    //         // if(image?.size < 100000){
+    //         //     setsizemodalvisble(true)
+    //         // }else{
+    //         // setImage(image.path)
+    //         // setStatus(true)
+    //         // setUploadStatus(false)
+    //         // setDelf(true)
+    //         // uploadFile(image.path, image)
+    //         // }
+    //     });
+    // }
 
 
     const DeleteImageModal = () => {
