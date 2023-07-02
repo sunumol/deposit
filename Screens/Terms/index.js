@@ -50,7 +50,7 @@ const Terms = ({ navigation }) => {
 
             <Header navigation={navigation} name={t('common:Terms1')} onPress={handleGoBack} />
             <ScrollView>
-                <View style={styles.ViewContent}>
+                <View style={[styles.ViewContent,{paddingTop:14}]}>
                     <Text style={styles.text}>These terms and conditions of service (“<Text style={{ fontFamily: FONTS.FontBold }}>Terms</Text>”) along with the Privacy Policy forms a legally binding
                         agreement (“<Text style={{ fontFamily: FONTS.FontBold }}>Agreement</Text>”) between Dhan Sethu DigiFin Private Limited, a company registered under
                         the Companies Act 2013, having its principal place of business at Bizcospaces, 8
@@ -522,7 +522,7 @@ const styles = StyleSheet.create({
         fontWeight: '400',
         fontFamily: FONTS.FontRegular,
         fontSize: 14,
-        marginTop: 20,
+        marginTop: 12,
         textAlign: 'justify',
         color: "#1A051D",
     },

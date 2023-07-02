@@ -121,7 +121,7 @@ const Details = ({ navigation, details, spouse }) => {
 
         <>
             <View style={styles.mainContainer}>
-                <ScrollView showsVerticalScrollIndicator={false} >
+               
                     <View style={styles.searchBox}>
                         <View style={styles.boxStyle}>
                             <View style={{ flex: 1, flexDirection: 'row' }}>
@@ -254,7 +254,7 @@ const Details = ({ navigation, details, spouse }) => {
                                 </View>
                             </View>
                         </> : null}
-                </ScrollView>
+          
 
                 <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                     <TouchableOpacity onPress={() => onsubmit()}
