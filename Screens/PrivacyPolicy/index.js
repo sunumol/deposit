@@ -7,7 +7,8 @@ import {
     StatusBar,
     ScrollView,
     Dimensions,
-    BackHandler
+    BackHandler,
+    Linking
 } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
@@ -70,7 +71,7 @@ const Privacy = ({ navigation }) => {
                         your Sensitive Personal Data or Information, to whom we transfer, or share such Sensitive
                         Personal Data or Information with, and the details of our Grievance Officer.</Text>
                     <Text style={styles.text}>This Privacy Policy shall, at all times, be read along with the provisions of our Terms of
-                        Services, available at the link [<Text style={{ backgroundColor: 'yellow' }}>● Terms of Services’ link to be inserted here</Text>] (as amended from
+                        Services, available at the link <Text style={{ color:'blue',textDecorationLine:'underline'}} onPress={()=>Linking.openURL('https://www.svadhan.com/terms')}>www.svadhan.com/terms</Text> (as amended from
                         time to time).</Text>
                     <Text style={[styles.text, { fontFamily: FONTS.FontBold }]}>I. <Text style={{ textDecorationLine: 'underline' }}>Consent Disclaimer</Text></Text>
                     <Text style={styles.text}><Text style={{ textDecorationLine: 'underline' }}>Express Consent</Text>: The Privacy Policy applies to all users of our Services. By using our
@@ -95,7 +96,7 @@ const Privacy = ({ navigation }) => {
                         in any manner whatsoever, you may opt-out by sending a withdrawal/deletion request in
                         writing to our Grievance Officer. If you wish to have your Sensitive Personal Data or
                         Information with us deleted, removed or forgotten from our database, you can contact us for
-                        the same at [<Text style={{ backgroundColor: 'yellow' }}>● support email address to be inserted here</Text>].</Text>
+                        the same at info@dhansethu.com</Text>
                     <Text style={styles.text}>Our Services may not be available to you in the event you do not agree to give us your express
                         consent to use your Sensitive Personal Data or Information or withdraw your express consent
                         at any time in the future.</Text>
@@ -179,11 +180,13 @@ const Privacy = ({ navigation }) => {
                         disclosure, or impairment.</Text>
                     <Text style={styles.text}>If you have any queries about the security practices and procedures adopted by us, or if you
                         wish to review the Sensitive Personal Data or Information shared with us, you may contact us
-                        at [<Text style={{ backgroundColor: 'yellow' }}>● support email address to be inserted here</Text>].</Text>
+                        at info@dhansethu.com.</Text>
                     <Text style={styles.text}>If you have any grievances with respect to processing of Sensitive Personal Data or
                         Information, you may communicate such grievance to:</Text>
-                    <Text style={styles.text}>The Grievance Officer,
-                        [<Text style={{ backgroundColor: 'yellow' }}>● Details (name, and contact details) of the grievance officer to be inserted here</Text>].</Text>
+                        <Text style={styles.text}>The Grievance Officer,
+                        Dhan Sethu DigiFin (P) Ltd., Bizcospaces, 8
+                        th Floor, Infra Futura, Opp. Bharat Matha College,
+                        Thrikkakara, Ernakulam, Kerala- 682021.</Text>
                     <Text style={styles.text}>We are committed to addressing, any or all discrepancies, or your grievances with respect to
                         the Privacy Policy, as expeditiously as possible, and all such discrepancies or grievances shall
                         be redressed within a maximum period of 1 (One) month from the date of receipt of your

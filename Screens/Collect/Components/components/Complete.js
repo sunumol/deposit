@@ -30,7 +30,9 @@ import Img2 from '../../Images/p2.svg';
 import ComCard from './ComCard';
 import { api } from '../../../../Services/Api';
 
-
+String.prototype.replaceAt = function (index, replacement) {
+    return this.substring(0, index) + replacement + this.substring(index + replacement.length);
+}
 
 
 const CompleteTab = ({ navigation }) => {
@@ -214,7 +216,7 @@ useEffect(()=>{
                                                         <View style={{ flexDirection: 'column', paddingTop: 5, alignItems: 'flex-end' }}>
                                                             <View style={{ flexDirection: 'row' }}>
                                                                 <Icon2 name="phone-call" color={"black"} size={11} style={{ top: 4 }} />
-                                                                <Text style={[styles.numText, { paddingLeft: 6 }]}>{item?.mobileNumber}</Text>
+                                                                <Text style={[styles.numText, { paddingLeft: 6 }]}>{item?.mobileNumber?.replace(/^.{0}/g, '', " ").slice(-10).replaceAt(3, "X").replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X")}</Text>
                                                             </View>
 
 
@@ -307,7 +309,7 @@ useEffect(()=>{
                                                         <View style={{ flexDirection: 'column', paddingTop: 5, alignItems: 'flex-end' }}>
                                                             <View style={{ flexDirection: 'row' }}>
                                                                 <Icon2 name="phone-call" color={"black"} size={11} style={{ top: 4 }} />
-                                                                <Text style={[styles.numText, { paddingLeft: 6 }]}>{item?.mobileNumber}</Text>
+                                                                <Text style={[styles.numText, { paddingLeft: 6 }]}>{item?.mobileNumber?.replace(/^.{0}/g, '', " ").slice(-10).replaceAt(3, "X").replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X")}</Text>
                                                             </View>
 
 

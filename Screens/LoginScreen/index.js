@@ -24,7 +24,7 @@ import DeviceInfo from 'react-native-device-info';
 import { NetworkInfo } from 'react-native-network-info';
 import { useIsFocused } from '@react-navigation/native';
 import { useNetInfo } from "@react-native-community/netinfo";
-import OTPInputView from '@twotalltotems/react-native-otp-input'
+import OTPInputView from '../../Components/OTPInputView'
 import Clipboard from "@react-native-community/clipboard";
 
 // --------------- Component Imports ---------------------
@@ -231,7 +231,7 @@ const LoginScreen = ({ navigation }) => {
         setIsOtp1(false)
         setTimer(0)
         setSelectedPhoneNum()
-        setOtpValue('')
+        otpInput2?.current?.setValue('')
         const firstDigitStr = String(PhoneNum)[0]
         if (PhoneNum?.length != 10 || PhoneNum == "") {
             setModalVisible1(true)
@@ -296,7 +296,7 @@ const LoginScreen = ({ navigation }) => {
             setMaxError(false)
             setOtp(false)
             setIsExpired(false)
-            setOtpValue('')
+            otpInput2?.current?.setValue('')
             setIsExpired(false)
 
             // --------------- getOtp Button Disable Start ------------
@@ -419,7 +419,7 @@ const LoginScreen = ({ navigation }) => {
 
     // ------------------ Login Api Call Start ------------------
     async function LoginApiCall() {
-        setOtpValue('')
+        otpInput2?.current?.setValue('')
         setConfirmDate(new Date().getTime())
         const data = {
             deviceId: DeviceId,
@@ -660,8 +660,8 @@ const LoginScreen = ({ navigation }) => {
 
     // ------------------ Resend Api Call Start ------------------
     async function ResendApiCall() {
-        // otpInput2.current.clear()
-        setOtpValue('')
+        otpInput2.current.clear()
+        // setOtpValue('')
         setOtp(false)
         setIsExpired(false)
         console.log('otp enter', OtpValue)
@@ -701,7 +701,11 @@ const LoginScreen = ({ navigation }) => {
     }
     // ------------------ Resend Api Call End ----------------------
 
-
+    useEffect(() => {
+        if (otp) {
+        otpInput2?.current?.clear()
+        }
+      }, [otp]);
     
         
     return (
@@ -822,7 +826,32 @@ const LoginScreen = ({ navigation }) => {
                                             <Text style={styles.textOtp}>{t('common:EnterOtp')} </Text>
                                         </View> : null}
 
-                                    {IsOtp1 ?
+                                        {IsOtp1 ?
+                                        <OTPInputView
+                                            ref={otpInput2}
+                                            autoFocus={true}
+                                            inputCount={4}
+                                            inputCellLength={1}
+                                            offTintColor={!otp ? "lightgrey" : "red"}
+                                            tintColor={!otp ? "lightgrey" : "red"}
+                                            textInputStyle={[styles.imputContainerStyle, { color: '#090A0A', borderRadius: 8, backgroundColor: '#FCFCFC', borderColor: !otp ? "lightgrey" : "red" }]}
+                                            keyboardType="numeric"
+                                            containerStyle={{ marginTop: 7 }}
+                                            handleTextChange={(code => {
+                                                // setOtpValue(code)
+                                                if (code.length === 4) {
+                                                    ConfirmOtp(code)
+                                                } else {
+                                                  if(otp && code.length > 0 ){
+                                                    setOtp(false)
+                                                  }
+                                                  if(isExpired && code.length > 0  ){
+                                                    setIsExpired(false) 
+                                                  }
+                                                }
+                                            })} /> : null}
+
+                                    {/* {IsOtp1 ?
                                         <OTPInputView
                                             style={styles.OtpInput}
                                             //autoCompleteType="off"
@@ -868,7 +897,7 @@ const LoginScreen = ({ navigation }) => {
                                             })}
                                         />
                                         : null
-                                    }
+                                    } */}
 
                                     {isExpired
                                         ? <View style={{ justifyContent: 'center', alignItems: 'center' }}>
@@ -915,10 +944,7 @@ const LoginScreen = ({ navigation }) => {
                                 otpMessage={otpMessage}
                                 setModalVisible={setModalVisible}
                                 navigation={navigation}
-                                ConfirmOtp={(data) => {
-                                    setOtpValue(data)
-                                    ConfirmOtp(data)
-                                }}
+                                ConfirmOtp={(data) => otpInput2?.current?.setValue(data)}
                                 setOtpFetch={setOtpFetch}
                             /> : null}
                                   {screenIsFocused

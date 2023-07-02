@@ -180,10 +180,11 @@ const CustomerDetails = ({ navigation, }) => {
             <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} backgroundColor={"#002B59"} />
 
             <Header name="Detailed Eligibility Check" navigation={navigation} onPress={handleGoBack} />
-
-            <View style={styles.ViewContent}>
+            <ScrollView showsVerticalScrollIndicator={false} style={styles.ViewContent} >
+            {/* <View style={styles.ViewContent}> */}
                 <Details navigation={navigation} details={basicdetail} spouse={spousedetail} />
-            </View>
+            {/* </View> */}
+            </ScrollView>
 
 
             <ModalSave
@@ -245,6 +246,12 @@ const styles = StyleSheet.create({
         paddingLeft: 20,
         paddingRight: 20,
         paddingBottom: 20
+    },
+    ViewContent: {
+        flex: 1,
+        backgroundColor: COLORS.colorBackground,
+        paddingLeft: 20,
+        paddingRight: 20
     },
     text: {
         fontWeight: '400',
