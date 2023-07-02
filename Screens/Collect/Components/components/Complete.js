@@ -151,11 +151,8 @@ useEffect(()=>{
                                     </View>
 
                                 <View style={{ justifyContent: 'space-around', flexDirection: 'row', alignItems: 'center' }}>
-                                    <View style={{ marginLeft: width * 0.03 }}>
+                                    <View style={{ marginLeft: width * 0.03,alignItems:'center',flexDirection:'row' }}>
                                         <Text style={styles.timeText}>Deposit Pending ₹33,000 </Text>
-                                    </View>
-
-                                  
                                         <View style={[styles.Card1, { backgroundColor: 'rgba(235, 87, 87, 0.1)', marginLeft: width * 0.05 }]}>
                                             <Img2 />
                                         </View> 
@@ -163,7 +160,13 @@ useEffect(()=>{
                                     <View style={{ marginLeft: width * 0.025 }}>
                                         <Text style={styles.badgeText}>{completeloan?.depositPendingDetailsDTOS?.length}</Text>
                                     </View>
-                                    <View style={{ marginLeft:  width * 0.033 }}>
+                                    </View>
+
+                                  
+                                     
+                              
+                                </View>
+                                <View style={{ marginLeft:  width *0.15 }}>
 
                                         <TouchableOpacity
                                             onPress={() => {
@@ -178,13 +181,6 @@ useEffect(()=>{
                                             />
                                         </TouchableOpacity>
                                     </View>
-                                </View>
-                                <View style={{ alignItems: 'center', flexDirection: 'row' }}>
-
-                                    {/* <View style={{flex:1,alignItems:'flex-end'}}>
-                     
-                                    </View> */}
-                                </View>
                             </View>
 
 
@@ -241,43 +237,42 @@ useEffect(()=>{
                                         <Image2 />
                                         </View>
 
-                                <View style={{ justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center' ,width:width * 0.78}}>
-                                    <View style={{ marginLeft: width * 0.03 }}>
+                                <View style={{  flexDirection: 'row', alignItems: 'center' }}>
+                                    <View style={{ marginLeft: width * 0.03,flexDirection:'row',alignItems:'center'}}>
                                         <Text style={styles.timeText}>Deposited ₹15,224</Text>
+                                        <View style={[styles.Card1, { backgroundColor: 'rgba(39, 174, 96, 0.1)', marginLeft: width * 0.05 }]}>
+                                            <Img1 />
+                                            </View>
+                                    <View style={{marginLeft: width * 0.025}}>
+                                        <Text style={styles.badgeText}>{completeloan?.depositedDetailsDTOS?.length}</Text>
+                                    </View>
                                     </View>
 
                                  
-                                        <View style={[styles.Card1, { backgroundColor: 'rgba(39, 174, 96, 0.1)', marginLeft: width * 0.155 }]}>
-                                            <Img1 />
-                                            </View>
-                                    <View>
-                                        <Text style={styles.badgeText}>{completeloan?.depositedDetailsDTOS?.length}</Text>
-                                    </View>
-                                    <View>
-
-                                        <TouchableOpacity
-                                            onPress={() => {
-                                                setDeposopen(!deposopen)
-                                                // const nextList = [...data];
-                                                // nextList[index].open = !nextList[index].open;
-                                                // setData(nextList);
-                                            }}
-                                        >
-                                            <Icon name={ deposopen ?  "chevron-up": "chevron-down"}
-                                                color={COLORS.colorB}
-                                                size={25}
-                                                style={{ paddingLeft: 13 }}
-
-                                            />
-                                        </TouchableOpacity>
-                                    </View>
+                        
                                 </View>
-                                <View style={{ alignItems: 'center', flexDirection: 'row' }}>
 
-                                    {/* <View style={{flex:1,alignItems:'flex-end'}}>
-                     
-                                    </View> */}
-                                </View>
+                                
+                                <View>
+
+                                            <TouchableOpacity
+                                            style={{marginLeft: width *0.24}}
+                                                onPress={() => {
+                                                    setDeposopen(!deposopen)
+                                                    // const nextList = [...data];
+                                                    // nextList[index].open = !nextList[index].open;
+                                                    // setData(nextList);
+                                                }}
+                                            >
+                                                <Icon name={ deposopen ?  "chevron-up": "chevron-down"}
+                                                    color={COLORS.colorB}
+                                                    size={25}
+                                                    style={{ paddingLeft: 13 }}
+
+                                                />
+                                            </TouchableOpacity>
+</View>
+                              
                             </View>
 
 
@@ -565,7 +560,7 @@ const styles = StyleSheet.create({
     containerTab: {
         width: width * 0.90,
          backgroundColor: 'rgba(242, 242, 242, 1)',
-   
+  
         //elevation:2,
         flexDirection: 'row',
         marginTop: width * 0.06,
