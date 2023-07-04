@@ -613,7 +613,7 @@ const LoginScreen = ({ navigation }) => {
                 setConfirmDate(null)
                 AsyncStorage.setItem('Mobile', '+91' + selectedPhoneNum);
                 AsyncStorage.setItem('CustomerId', JSON.stringify(res?.data?.agentId));
-               
+                AsyncStorage.setItem('agentIdToShow', JSON.stringify(res?.data?.agentIdToShow));
                 setTimeout(() => {
                     isGrantedPermissions(res?.data?.status) 
                 }, 4000);

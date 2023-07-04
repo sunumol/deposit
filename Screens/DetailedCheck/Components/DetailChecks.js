@@ -71,7 +71,7 @@ const
             console.log('66666', villagename, postofficename, landmarkname, roadstatus, vstatus, poststatus)
             // if ((villagename || details?.village) && (postofficename || details?.postOffice) && (landmarkname || details?.landMark) && (roadstatus || details?.accessRoadType)) {
 
-            if (villagename && postofficename && landmarkname.length > 0 && roadstatus && vstatus && poststatus) {
+            if (villagename && postofficename && landmarkname?.length > 0 && roadstatus && vstatus && poststatus) {
                 setChecked(!checked)
             } else {
                 setChecked(false)

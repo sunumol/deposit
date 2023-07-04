@@ -36,6 +36,7 @@ const Generate = ({ navigation }) => {
     const [deviceId, setDeviceId] = useState();
     const [phoneSet, setPhoneSet] = useState()
     const [lang, setLang] = useState('')
+    const [agentID, setAgentID] = useState('');
     const [CustomerId, setCustomerId] = useState('')
     const [errorMessage, setErrorMessage] = useState('')
     const [maxError, setMaxError] = useState(false)
@@ -58,6 +59,8 @@ const Generate = ({ navigation }) => {
             const phone = await AsyncStorage.getItem('Mobile')
             const lang = await AsyncStorage.getItem('user-language')
             const customerId = await AsyncStorage.getItem('CustomerId')
+            const agentIdToShow = await AsyncStorage.getItem('agentIdToShow')
+            setAgentID(agentIdToShow)
             setCustomerId(customerId)
             setLang(lang)
             console.log("customer async", customerId)
@@ -84,54 +87,63 @@ const Generate = ({ navigation }) => {
     };
 
     async function forgotApiCall() {
-        console.log("moment format11", dob)
-        console.log("moment format", moment(dob).format('DD/MM/YYYY') + "T00:00:00")
-        const data = {
-            deviceId: deviceId,
-            geoLocation: {
-                latitude: "10.0302",//Todo
-                longitude: "76.33553"//Todo
-            },
-            mobile: phoneSet,
-            deviceIpAddress: ipAdrress,
-            simId: deviceId,
-            "otpReason": "FORGOT_PIN",
-            id:CustomerId,
-            dob: moment(dob).format('YYYY-MM-DD') + "T00:00:00"
+        console.log('=================90',agentID,'++++',JSON.stringify(MitraID))
+        if(agentID == JSON.stringify(MitraID)){
+            console.log("moment format11", dob)
+            console.log("moment format", moment(dob).format('DD/MM/YYYY') + "T00:00:00")
+            const data = {
+                deviceId: deviceId,
+                geoLocation: {
+                    latitude: "10.0302",//Todo
+                    longitude: "76.33553"//Todo
+                },
+                mobile: phoneSet,
+                deviceIpAddress: ipAdrress,
+                simId: deviceId,
+                "otpReason": "FORGOT_PIN",
+                id:parseInt(CustomerId),
+                dob: moment(dob).format('YYYY-MM-DD') + "T00:00:00"
+            }
+            console.log("data==============>>>", data)
+    
+            await api.getForgotOtp(data).then((res) => {
+                console.log('response Login Api===================>>>>>>>>>', res?.data?.status)
+                if (res?.data?.status == true) {
+                    setSMitraID('')
+                    setDob('')
+                    console.log('response Login Api', res?.data?.status)
+                    navigation.navigate('ForgotPin')
+                }
+            }).catch((err) => {
+                if (err?.response?.data?.message === "Your answers do not match with our records") {
+                    setModalVisible(true)
+                    setSMitraID('')
+                    setDob('')
+                } else if (err?.response?.data?.message.includes('Maximum number of OTPs are exceeded.')) {
+                    setMaxError(true)
+                    setErrorMessage(err?.response?.data?.message)
+                    setTimeout(() => {
+                        setMaxError(false)
+                    }, 5000);
+    
+    
+                } else {
+                    setModalVisible(true)
+                    setSMitraID('')
+                    setDob('')
+                }
+                console.log("err PRINT12->", err?.response)
+    
+    
+    
+            })
+        }else{
+            console.log('----hhh')
+                         setModalVisible(true)
+                    setSMitraID('')
+                    setDob('')
         }
-        console.log("data==============>>>", data)
-
-        await api.getForgotOtp(data).then((res) => {
-            console.log('response Login Api===================>>>>>>>>>', res?.data?.status)
-            if (res?.data?.status == true) {
-                setSMitraID('')
-                setDob('')
-                console.log('response Login Api', res?.data?.status)
-                navigation.navigate('ForgotPin')
-            }
-        }).catch((err) => {
-            if (err?.response?.data?.message === "Your answers do not match with our records") {
-                setModalVisible(true)
-                setSMitraID('')
-                setDob('')
-            } else if (err?.response?.data?.message.includes('Maximum number of OTPs are exceeded.')) {
-                setMaxError(true)
-                setErrorMessage(err?.response?.data?.message)
-                setTimeout(() => {
-                    setMaxError(false)
-                }, 5000);
-
-
-            } else {
-                setModalVisible(true)
-                setSMitraID('')
-                setDob('')
-            }
-            console.log("err PRINT->", err?.response)
-
-
-
-        })
+       
     }
 
     const removeEmojis = (string) => {

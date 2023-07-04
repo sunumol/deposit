@@ -201,11 +201,12 @@ const PinScreen = ({ navigation, }) => {
             id: custID,
         }
         await api.invalidPinApi(data).then((res) => {
-            if (res?.data?.status) {
+            console.log('response Login Api----222', res)
+            if (res?.data) {
                 console.log('response Login Api', res.data)
                 setInvalidState(1)
             } else {
-                console.log("error text", res?.data)
+                console.log("error text", res)
                 // setInvalidState(3)
             }
         }).catch((err) => {
@@ -229,8 +230,8 @@ const PinScreen = ({ navigation, }) => {
             },
             "mobile": mobile,
             "deviceIpAddress": ipAdrress,
-           // "simId":deviceId,
-            "simId":'70dc83e1227a6b8c',
+            "simId":deviceId,
+            //"simId":'70dc83e1227a6b8c',
             "id": custID
 
         }
