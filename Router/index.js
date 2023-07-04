@@ -75,7 +75,7 @@ export default function Router() {
       <Stack.Navigator screenOptions={{
         headerShown: false
       }}>
-        <Stack.Screen name="SplashScreen" component={SplashScreen} />
+        <Stack.Screen name="SplashScreen" component={UploadVid} />
         <Stack.Screen name="IntroScreen" component={netInfo.isConnected ? IntroScreens : NetWorkError} />
         <Stack.Screen name="LoginScreen" component={netInfo.isConnected ? LoginScreen : NetWorkError} />
         <Stack.Screen name="Permission" component={netInfo.isConnected ? Permission : NetWorkError} />

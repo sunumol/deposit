@@ -22,7 +22,9 @@ import ModalPhoto from './ModalPhoto';
 import { api } from '../../../Services/Api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ToastModal from '../../../Components/ToastModal';
+import SizeModal from '../../HousePhoto/Components/SizeModal';
 import { useSelector } from 'react-redux';
+import ImageResizer from '@bam.tech/react-native-image-resizer';  
 
 const UploadImage = ({ navigation, id ,setFrontimage,setBackimage}) => {
     const [ImagesF, setImagesF] = useState(null)
@@ -43,7 +45,8 @@ const UploadImage = ({ navigation, id ,setFrontimage,setBackimage}) => {
     const [custID, setCustId] = useState()
     const [errorVisible, setErrorVisible] = useState(false)
     const activityId = useSelector(state => state.activityId);
-    const [continueAble,setContinueAble] = useState(false)
+    const [continueAble,setContinueAble] = useState(false);
+    const [sizemodalvisble, setsizemodalvisble] = useState(false);
 
     useEffect(() => {
         getData()
@@ -69,11 +72,12 @@ const UploadImage = ({ navigation, id ,setFrontimage,setBackimage}) => {
             cropping: true,
         }).then(image => {
             console.log("IMAGE", image.path);
-            setImagesFSet(image)
-            setImagesF(image.path)
-            uploadFilefront(image)
-            setDelf(true) 
-           setModalVisible(false)
+            ChooseCameraFrontcropper(image)
+        //     setImagesFSet(image)
+        //     setImagesF(image.path)
+        //     uploadFilefront(image)
+        //     setDelf(true) 
+        //    setModalVisible(false)
         });
     }
 
@@ -86,27 +90,34 @@ const UploadImage = ({ navigation, id ,setFrontimage,setBackimage}) => {
             cropping: true,
         }).then(image => {
             console.log("IMAGE", image.path);
-            setImagesB(image.path)
-            setImagesBSet(image)
-            uploadFileback(image)
-            setDelb(true)
-            setModalVisible(false)
+            ChooseCamerabackcropper(image)
+            // setImagesB(image.path)
+            // setImagesBSet(image)
+            // uploadFileback(image)
+            // setDelb(true)
+            // setModalVisible(false)
         });
     }
     const ChooseCameraFront = () => {
         // Choose Image from Camera
         ImagePicker.openCamera({
+            // width: 600, 
+            // height: 1200,
             width: (width * 3) / 5, 
             height: width,
+            freeStyleCropEnabled:true,
+            compressImageMaxWidth: 800,
+             compressImageMaxHeight: 800, 
             hideBottomControls:true,
             cropping: true,
         }).then(image => {
             console.log(image);
-            setImagesF(image.path)
-            setImagesFSet(image)
-            uploadFilefront(image)
-            setDelf(true)
-            setModalVisible(false)
+            ChooseCameraFrontcropper(image)
+            // setImagesF(image.path)
+            // setImagesFSet(image)
+            // uploadFilefront(image)
+            // setDelf(true)
+            // setModalVisible(false)
         });
     }
 
@@ -119,13 +130,94 @@ const UploadImage = ({ navigation, id ,setFrontimage,setBackimage}) => {
             cropping: true,
         }).then(image => {
             console.log(image);
-            setImagesB(image.path)
-            setImagesBSet(image)
-            uploadFileback(image)
-            setDelb(true)
-            setModalVisible(false)
+            ChooseCamerabackcropper(image)
+            // setImagesB(image.path)
+            // setImagesBSet(image)
+            // uploadFileback(image)
+            // setDelb(true)
+            // setModalVisible(false)
         });
     }
+
+
+
+
+
+    const ChooseCameraFrontcropper = (value) => {
+
+        ImageResizer.createResizedImage(
+            value.path,
+            700,
+            1280,
+            'JPEG',
+            100,
+             0,
+             undefined,
+             false,
+        )
+            .then((response) => {
+            console.log('IMAGE1 1=========>>',response);
+            if(response?.size < 100000){
+                setsizemodalvisble(true)
+            }else{
+            //setImagesF(response.uri)
+            setImagesFSet(response)
+            uploadFilefront(response.uri)
+            setModalVisible(false)
+             setDelf(true)
+            }
+              // response.uri is the URI of the new image that can now be displayed, uploaded...
+              // response.path is the path of the new image
+              // response.name is the name of the new image with the extension
+              // response.size is the size of the new image
+            })
+            .catch((err) => {
+                console.log('IMAGE1 err=========>>',err);
+              // Oops, something went wrong. Check that the filename is correct and
+              // inspect err to get more details.
+            });
+    
+    }
+
+    const ChooseCamerabackcropper = (value) => {
+
+        ImageResizer.createResizedImage(
+            value.path,
+            700,
+            1280,
+            'JPEG',
+            100,
+             0,
+             undefined,
+             false,
+        )
+            .then((response) => {
+                console.log('IMAGE1=========>>',response);
+                if(response?.size < 100000){
+                    setsizemodalvisble(true)
+                }else{
+               // setImagesB(response.uri)
+                setImagesBSet(response)
+                uploadFileback(response.uri)
+                setModalVisible(false)
+                setDelb(true)
+                }
+              // response.uri is the URI of the new image that can now be displayed, uploaded...
+              // response.path is the path of the new image
+              // response.name is the name of the new image with the extension
+              // response.size is the size of the new image
+            })
+            .catch((err) => {
+                console.log('IMAGE1=========>>',err);
+              // Oops, something went wrong. Check that the filename is correct and
+              // inspect err to get more details.
+            });
+       
+    }
+
+
+
+
     const OpenModal = (title) => {
         console.log("tilt...", title)
         setTitle(title)
@@ -203,14 +295,15 @@ const UploadImage = ({ navigation, id ,setFrontimage,setBackimage}) => {
             let data = new FormData();
             data.append('multipartFile', {
                 name: 'aaa.jpg',
-                type: imagevalue.mime,
-                uri: imagevalue.path
+                type: 'image/jpeg',
+                uri: imagevalue
             })
     
             await api.uploadFile(data).then((res) => {
                 console.log('-------------------res voter upload front', res?.data[0]?.body)
                 if (res?.status) {
                     setImagesF1(res?.data[0]?.body)
+                    setImagesF(res?.data[0].body)
                     setFrontimage(res?.data[0]?.body)
                 }
             }).catch((err) => {
@@ -226,14 +319,15 @@ const UploadImage = ({ navigation, id ,setFrontimage,setBackimage}) => {
             let data = new FormData();
             data.append('multipartFile', {
                 name: 'aaa.jpg',
-                type: imagevalue.mime,
-                uri: imagevalue.path
+                type: 'image/jpeg',
+                uri: imagevalue
             })
     
             await api.uploadFile(data).then((res) => {
                 console.log('-------------------res voter upload back', res?.data[0]?.body)
                 if (res?.status) {
                     setImagesB1(res?.data[0]?.body)
+                    setImagesB(res?.data[0]?.body)
                     setBackimage(res?.data[0]?.body)
                 }
             }).catch((err) => {
@@ -387,6 +481,14 @@ const UploadImage = ({ navigation, id ,setFrontimage,setBackimage}) => {
                 onPressOut={() => setErrorVisible(!errorVisible)}
                 setModalVisible={setErrorVisible}
             />
+
+<SizeModal
+            ModalVisible={sizemodalvisble}
+            onPressOut={() => {
+              setsizemodalvisble(!sizemodalvisble)
+            }}
+            setModalVisible={setsizemodalvisble}
+          />
         </>
 
     )
