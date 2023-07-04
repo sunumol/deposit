@@ -16,6 +16,8 @@ import { NetworkInfo } from 'react-native-network-info';
 import { useRoute } from '@react-navigation/native';
 import { addDays } from 'date-fns'
 import ToastModal from '../../Components/ToastModal';
+import moment from 'moment';
+
 // ----------- Componenet Import ------------------------
 import { COLORS, FONTS } from '../../Constants/Constants';
 import Statusbar from '../../Components/StatusBar';
@@ -27,6 +29,7 @@ import ModalExitApp from '../../Components/ModalExitApp';
 import { useFocusEffect } from '@react-navigation/native';
 import UpdateModal from './Components/UpdateModal';
 import VersionModal from './Components/VersionModal';
+import ErrorModal from './Components/ErrorModal';
 // ----------- Image Import ------------------------
 import Svadhan from '../../assets/image/logofinpower1.svg';
 
@@ -56,6 +59,10 @@ const PinScreen = ({ navigation, }) => {
     const [mobile, setMobile] = useState();
     const [ModalVisibleError, setModalVisibleError] = useState(false)
     const [message, setMessage] = useState()
+
+    const [errorMessage, setErrorMessage] = useState(false)
+    const [ModalVisibleInvalid, setModalInvalid] = useState(false)
+
     // --------------Device Configuration End----------
 
     useEffect(() => {
@@ -105,19 +112,55 @@ const PinScreen = ({ navigation, }) => {
             });
     }
 
+    const printRemainingTime = (t2,date1) => {
+        
+        const t1 = new Date().getTime();
+        const date2 = moment(new Date(t1)).format("DD-MM-YY")
+        let ts = (t1-t2.getTime()) / 1000;
+      
+        var d = Math.floor(ts / (3600*24));
+        var h = Math.floor(ts % (3600*24) / 3600);
+        var m = Math.floor(ts % 3600 / 60);
+        var s = Math.floor(ts % 60);
+      
+        const timeerror = 60 - m;
+        const secondserror = 60 - s;
+        const te = JSON.stringify(timeerror);
+        const tse = JSON.stringify(secondserror);
+        
+        console.log('----',d, h, m, s,date1,date2)
+
+        if(JSON.stringify(h) >= 1){
+            AsyncStorage.removeItem('InavalidOtpDate')
+        }else{
+            setErrorMessage('Sorry.You have reached maximum tries.Your account is locked for next ' + `${te === 0 ? tse : te}` + ' ' +`${te === 0 ? 'seconds':'minutes'}` +'.Contact admin to unlock the account.')
+            setModalInvalid(true)
+        }
+      
+    }
+      
+      
     const getData = async () => {
         try {
             const id = await AsyncStorage.getItem('CustomerId')
             const Phone = await AsyncStorage.getItem('Mobile')
-
+            const InavalidOtpDate = await AsyncStorage.getItem('InavalidOtpDate')
             const userName = await AsyncStorage.getItem('userName')
-            console.log("userName", userName)
+          
             setUserName(userName)
             setMobile(Phone)
             setCustId(id)
-            // const userName = await AsyncStorage.getItem('userName')
-            console.log("userName", userName)
-
+            
+            if(InavalidOtpDate !== null){
+                const t1 = new Date().getTime();
+                const date2 = moment(new Date(t1)).format("DD-MM-YY")
+                const date1 = moment(new Date(InavalidOtpDate)).format("DD-MM-YY");
+                if(date2 === date1){
+                    printRemainingTime(new Date(InavalidOtpDate),date1);
+                }else{
+                    AsyncStorage.removeItem('InavalidOtpDate')
+                }
+            }
 
         } catch (e) {
             console.log(e)
@@ -182,9 +225,11 @@ const PinScreen = ({ navigation, }) => {
                     setInvalidState(invalidState + 1)
                     if (invalidState === 3) {
                         invalidOtpApi()
+                        setErrorMessage('Sorry.You have reached maximum tries.Your account is locked for next 30 minutes.Contact admin to unlock the account.')
+                        setModalInvalid(true)
                         setInvalidState(1)
+                        AsyncStorage.setItem('InavalidOtpDate',new Date().toISOString());
                     }
-                    console.log('invalidState', invalidState)
                 }
 
             } else {
@@ -210,7 +255,7 @@ const PinScreen = ({ navigation, }) => {
                 // setInvalidState(3)
             }
         }).catch((err) => {
-            console.log("err->", err)
+            console.log("err->", err?.response)
             // setInvalidState(3)
         })
 
@@ -356,6 +401,12 @@ const PinScreen = ({ navigation, }) => {
                 }}
                 setModalVisible={setModalVisibleError}
             />
+            <ErrorModal
+                Validation={errorMessage}
+                ModalVisible={ModalVisibleInvalid}
+                setModalVisible={setModalInvalid}
+            />
+
         </SafeAreaProvider>
     )
 }
