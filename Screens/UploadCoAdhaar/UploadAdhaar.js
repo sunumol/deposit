@@ -150,8 +150,14 @@ const UploadAdhaar = ({ navigation }) => {
             hideBottomControls:true,
             freeStyleCropEnabled:true,
             cropping: true,
+            disableCropperColorSetters:true,
+            cropperStatusBarColor: 'blue',
+      cropperToolbarColor: 'blue',
+      cropperActiveWidgetColor: 'blue',
+      cropperToolbarWidgetColor: '#3498DB',
         }).then(image => {
             console.log(image);
+           // navigation.navigate('CropImage', {details: image?.path})
             ChooseCameraFrontcropper(image)
             // setImagesF(image.path)
             // setImagesFSet(image)

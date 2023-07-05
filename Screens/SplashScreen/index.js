@@ -4,6 +4,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import messaging from '@react-native-firebase/messaging';
 import PushNotification from "react-native-push-notification";
+import { useDispatch } from 'react-redux';
 
 // --------------- Component Imports ---------------------
 import CustomStatusBar from './Component/CustomStatusbar';
@@ -17,7 +18,7 @@ const SplashScreen = ({ navigation }) => {
     const isDarkMode = true;
     const [ModalVisible1, setModalVisible1] = useState(false)
     const [ModalVisible2, setModalVisible2] = useState(false)
-
+    const dispatch = useDispatch()
     const onBackGroundNotification = () => {
         messaging().onMessage(async (remoteMessage) => {
             const { messageId, notification } = remoteMessage;
@@ -39,6 +40,12 @@ const SplashScreen = ({ navigation }) => {
                             soundName: "default",
                             vibrate: true,
                         });
+                        if (notification?.title){
+                            dispatch({
+                              type: 'SET_NOTIFICATION_COUNT',
+                              payload: '1',
+                          });
+                          }
 
                     if (notification?.title === 'DATA_CONFIRMATION') {
                         setTimeout(() =>
