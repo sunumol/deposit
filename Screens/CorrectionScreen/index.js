@@ -22,10 +22,10 @@ import { api } from '../../Services/Api'
 
 import Settings from './Images/settings.svg'
 
-const CorrectionScreen = ({ navigation }) => {
+const CorrectionScreen = ({ navigation,route }) => {
 
     const isDarkMode = true
-    const route = useRoute();
+   // const route = useRoute();
     console.log('--------- AcyivityId', route?.params?.AcyivityId)
     const activityId = useSelector(state => state.activityId);
     const [dataDetails, setDataDetails] = useState()
@@ -48,12 +48,12 @@ const CorrectionScreen = ({ navigation }) => {
 
     useFocusEffect(
         React.useCallback(() => {
-            dispatch({
-                type: 'SET_CGT_ACTIVITY_ID',
-                payload:route?.params?.AcyivityId ,
-            });
+            // dispatch({
+            //     type: 'SET_CGT_ACTIVITY_ID',
+            //     payload:route?.params?.AcyivityId ,
+            // });
             getCorrectionDetails()
-            console.log('Screen was focused', );
+            console.log('Screen was focused',activityId,route?.params?.AcyivityId );
             // Do something when the screen is focused
             return () => {
                 console.log('Screen was focused');
@@ -64,10 +64,10 @@ const CorrectionScreen = ({ navigation }) => {
     );
 
     useEffect(() => {
-        dispatch({
-            type: 'SET_CGT_ACTIVITY_ID',
-            payload:route?.params?.AcyivityId ,
-        });
+        // dispatch({
+        //     type: 'SET_CGT_ACTIVITY_ID',
+        //     payload:route?.params?.AcyivityId ,
+        // });
             AsyncStorage.getItem("CallActivity").then((value) => {
                 setCustId(value)
                // getCorrectionDetails(value) 
@@ -77,6 +77,10 @@ const CorrectionScreen = ({ navigation }) => {
 
     // ------------------ get Conduct DLE basic detail Village Api Call Start ------------------
     const getCorrectionDetails = async () => {
+        // dispatch({
+        //     type: 'SET_CGT_ACTIVITY_ID',
+        //     payload:activityId ,
+        // });
         console.log("inside useEFFECT",)
         const data = {
             "activityId": activityId ?activityId:route?.params?.AcyivityId  //-----> addd --- activityId
@@ -97,9 +101,9 @@ const CorrectionScreen = ({ navigation }) => {
     const onProceed = async () => {
         
         const data = {
-            "activityId": activityId ? activityId:route?.params?.AcyivityId  //-----> addd --- activityId
+            "activityId":activityId ?activityId:route?.params?.AcyivityId //-----> addd --- activityId
         }
-        console.log("proceed data",data)
+        console.log("proceed data",data,activityId)
         await api.getLastPage(data).then((res) => {
             console.log('-------------------res getCorrection',res?.data?.body,activityId)
             if (res?.data) {
@@ -109,22 +113,22 @@ const CorrectionScreen = ({ navigation }) => {
                 });
                // AsyncStorage.setItem('CorrectionStatus',JSON.stringify(res?.data?.body?.isLasCorrectin))
                 if (res?.data?.body?.nextPage == 1) {
-                    navigation.navigate('DetailCheck',{isCheck:res?.data?.body?.isLasCorrectin,Correction:true})
+                    navigation.navigate('DetailCheck',{isCheck:res?.data?.body?.isLasCorrectin,Correction:true,activityId: route?.params?.AcyivityId})
                 } else if (res?.data?.body?.nextPage == 2) {
-                    navigation.navigate('ResidenceOwner',{isCheck:res?.data?.body?.isLasCorrectin,Correction:true,activityId:activityId?activityId:route?.params?.AcyivityId})
+                    navigation.navigate('ResidenceOwner',{isCheck:res?.data?.body?.isLasCorrectin,Correction:true,activityId: route?.params?.AcyivityId})
                 } else if (res?.data?.body?.nextPage == 3) {
-                    navigation.navigate('ContinuingGuarantor',{isCheck:res?.data?.body?.isLasCorrectin,Correction:true})
+                    navigation.navigate('ContinuingGuarantor',{isCheck:res?.data?.body?.isLasCorrectin,Correction:true,activityId: route?.params?.AcyivityId})
                 } else if (res?.data?.body?.nextPage == 4) {
                     navigation.navigate('UploadVid')
                 } else if (res?.data?.body?.nextPage == 5) {
                     navigation.navigate('VehicleOwn')
                 } else if (res?.data?.body?.nextPage == 6) {
                    
-                    navigation.navigate('EnergyUtility',{isCheck:res?.data?.body?.isLasCorrectin,Correction:true,activityId:route?.params?.AcyivityId})
+                    navigation.navigate('EnergyUtility',{isCheck:res?.data?.body?.isLasCorrectin,Correction:true,activityId: route?.params?.AcyivityId })
                 } else if (res?.data?.body?.nextPage == 7) {
-                    navigation.navigate('IncomeDetails', { relationShip: 'Customer',isCheck:res?.data?.body?.isLasCorrectin,Correction:true })
+                    navigation.navigate('IncomeDetails', { relationShip: 'Customer',isCheck:res?.data?.body?.isLasCorrectin,Correction:true,activityId: route?.params?.AcyivityId })
                 } else if (res?.data?.body?.nextPage == 8) {
-                    navigation.navigate('IncomeDetails', { relationShip: 'Spouse',isCheck:res?.data?.body?.isLasCorrectin,Correction:true })
+                    navigation.navigate('IncomeDetails', { relationShip: 'Spouse',isCheck:res?.data?.body?.isLasCorrectin,Correction:true,activityId: route?.params?.AcyivityId })
                 } else if (res?.data?.body?.nextPage == 9) {
                     navigation.navigate('UploadAdhaar',{isCheck:res?.data?.body?.isLasCorrectin,Correction:true})
                 }else if (res?.data?.body?.nextPage == 10) {

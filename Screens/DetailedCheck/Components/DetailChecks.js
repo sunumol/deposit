@@ -37,7 +37,7 @@ const
     DetailChecks = ({ navigation, details, nav,isCheck,
          setVillagename1, setPostoffice1, setLandmarkname1,
           setRoadStatus1, setpoststatus, setvillagestatus,
-           setbackstate,Correction }) => {
+           setbackstate,Correction ,activityIds}) => {
         console.log('????===>>123', setbackstate)
 
         const isDarkMode = true;
@@ -71,7 +71,7 @@ const
             console.log('66666', villagename, postofficename, landmarkname, roadstatus, vstatus, poststatus)
             // if ((villagename || details?.village) && (postofficename || details?.postOffice) && (landmarkname || details?.landMark) && (roadstatus || details?.accessRoadType)) {
 
-            if (villagename && postofficename && landmarkname.length > 0 && roadstatus && vstatus && poststatus) {
+            if (villagename && postofficename && landmarkname?.length > 0 && roadstatus && vstatus && poststatus) {
                 setChecked(!checked)
             } else {
                 setChecked(false)
@@ -333,7 +333,7 @@ const
         const getLastPage = async () => {
             console.log("LASTPAGE", activityId)
             const data = {
-                "activityId": activityId
+                "activityId": activityId?activityId:activityIds
             }
             await api.getLastPage(data).then((res) => {
                 console.log("last page upadte", res?.data,CorrectionStatus)
@@ -385,7 +385,7 @@ const
 
         const getDLEConfirmation = async () => {
             const data = {
-                "activityId": activityId
+                "activityId": activityId?activityId:activityIds
             }
             await api.getCorrectionNotify(data).then((res) => {
 

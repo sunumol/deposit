@@ -95,6 +95,7 @@ const Generate = ({ navigation }) => {
             mobile: phoneSet,
             deviceIpAddress: ipAdrress,
             simId: deviceId,
+           // simId:'70dc83e1227a6b8c',
             "otpReason": "FORGOT_PIN",
             id:CustomerId,
             dob: moment(dob).format('YYYY-MM-DD') + "T00:00:00"

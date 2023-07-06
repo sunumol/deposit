@@ -14,7 +14,8 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Statusbar from '../../Components/StatusBar';
 import { useTranslation } from 'react-i18next';
-import moment from 'moment'
+import moment from 'moment';
+import { useDispatch } from 'react-redux';
 
 // -------------- Component Imports ----------------------
 import { COLORS, FONTS } from '../../Constants/Constants';
@@ -31,7 +32,7 @@ const LoanDetails = ({ navigation,route }) => {
     const { t } = useTranslation();
     console.log('----route',route)
     const [status,setStatus] = useState(true)
-
+    const dispatch = useDispatch()
     const [details, SetDetails] = useState()
 
     useEffect(() => {
@@ -80,7 +81,11 @@ const LoanDetails = ({ navigation,route }) => {
                                 onPress={()=>
                                   {  if(item?.notificationType === 'DATA_CONFIRMATION'){
                                     navigation.navigate('Proceed', { status: true ,AcyivityId: item?.message.replace(/\D/g, "")});
-                                    }else if(item?.notificationType === 'DATA_CORRECTION_REQUEST'){
+                                    }else if(item?.notificationType === 'DATA_CORRECTION_REQUEST'){  
+                                         dispatch({
+                                        type: 'SET_CGT_ACTIVITY_ID',
+                                        payload:item?.message.replace(/\D/g, "") ,
+                                    });
                                         navigation.navigate('CorrectionScreen', { AcyivityId: item?.message.replace(/\D/g, "")}) 
                                     }
                                 }

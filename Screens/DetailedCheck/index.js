@@ -88,7 +88,7 @@ const DetailCheck = ({ navigation, route }) => {
     const getConductDLEbasicdetail = async () => {
         console.log('api called', activityId)
         const data = {
-            "activityId": activityId
+            "activityId": activityId?activityId:route?.params?.activityId
         }
         await api.ConductDLEbasicdetail(data).then((res) => {
             console.log('-------------------res ConductDLEbasicdetail12', res)
@@ -154,7 +154,9 @@ const DetailCheck = ({ navigation, route }) => {
 
             <Header name="Detailed Eligibility Check" navigation={navigation} onPress={handleGoBack} />
 
-            <ScrollView showsVerticalScrollIndicator={false} style={styles.ViewContent}>
+            <ScrollView showsVerticalScrollIndicator={false}
+            keyboardShouldPersistTaps={"handled"}
+             style={styles.ViewContent}>
                 <DetailChecks
                     navigation={navigation}
                     details={basicdetail}
@@ -167,6 +169,7 @@ const DetailCheck = ({ navigation, route }) => {
                     setvillagestatus={setvillagestatus}
                     setbackstate={backstate}
                     Correction={Correct1}
+                    activityIds={route?.params?.activityId}
                 />
             </ScrollView>
 

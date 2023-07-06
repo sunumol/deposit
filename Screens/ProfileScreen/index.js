@@ -42,6 +42,7 @@ const ProfileScreen = ({ navigation }) => {
     useEffect(() => {
         AsyncStorage.getItem("CustomerId").then((value) => {
             setCustId(value)
+            getProfileDetails(value)
             console.log("value", value)
         })
         AsyncStorage.getItem('userName').then((value) => {
@@ -53,15 +54,15 @@ const ProfileScreen = ({ navigation }) => {
     }, [])
 
     useEffect(() => {
-        getProfileDetails()
+       // getProfileDetails()
     }, [custID])
 
 
     //.............Profile api calling.........//
 
-    async function getProfileDetails() {
+    async function getProfileDetails(value) {
         const data = {
-            id: custID
+            id: Number(value)
         }
         await api.getAgentProfile(data).then((res) => {
             console.log('-------------------res', res)

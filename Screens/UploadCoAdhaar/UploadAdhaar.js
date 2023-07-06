@@ -18,6 +18,7 @@ import Icon1 from 'react-native-vector-icons/AntDesign';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTranslation } from 'react-i18next';
 import { useFocusEffect } from '@react-navigation/native';
+import MismatchModal from './Components/MismatchModal';
 
 // ------------ Components Imports -----------------------
 import { COLORS, FONTS } from '../../Constants/Constants';
@@ -65,6 +66,7 @@ const UploadAdhaar = ({ navigation }) => {
     const [SaveModal,setModalsave] = useState(false)
     const [frontimage, setFrontimage] = useState('')
     const [backimage, setBackimage] = useState('')
+    const [MismatchModal1, setMismatchModal1] = useState(false)
 
     useEffect(() => {
         getData()
@@ -312,7 +314,7 @@ const UploadAdhaar = ({ navigation }) => {
             setContinueAble(false)
             console.log('-------------------err CG voter id upload', err?.response)
             if (err?.response?.data?.message === 'Could not read the details.Please upload a new image.' || err?.response?.data?.message === 'Could not verify the ID details. Please upload a new image.'
-                || err?.response?.status == 400) {
+                ) {
                 setErrorVisible(true)
                 setContinueAble(false)
                 setStatus(false)
@@ -321,6 +323,14 @@ const UploadAdhaar = ({ navigation }) => {
                 setImagesF('')
                 setImagesB('')
 
+            }else if (err?.response?.data?.message === 'This ID is already in use. Please upload a new ID.') {
+                setMismatchModal1(true)
+                setContinueAble(false)
+                setStatus(false)
+                setDelf(false)
+                setDelb(false)
+                setImagesF('')
+                setImagesB('')
             }
         })
 }
@@ -443,6 +453,12 @@ const UploadAdhaar = ({ navigation }) => {
                 ModalVisible={errorVisible}
                 onPressOut={() => setErrorVisible(!errorVisible)}
                 setModalVisible={setErrorVisible}
+            />
+              <MismatchModal
+                Validation={'This ID is already in use. Please upload a new ID.'}
+                ModalVisible={MismatchModal1}
+                onPressOut={() => setMismatchModal1(!MismatchModal1)}
+                setModalVisible={setMismatchModal1}
             />
         <ModalSave
         Press={() => {
