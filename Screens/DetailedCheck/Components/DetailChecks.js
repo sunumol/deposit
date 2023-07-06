@@ -37,7 +37,7 @@ const
     DetailChecks = ({ navigation, details, nav,isCheck,
          setVillagename1, setPostoffice1, setLandmarkname1,
           setRoadStatus1, setpoststatus, setvillagestatus,
-           setbackstate,Correction }) => {
+           setbackstate,Correction ,activityIds}) => {
         console.log('????===>>123', setbackstate)
 
         const isDarkMode = true;
@@ -256,14 +256,14 @@ const
 
         // ------------------ get Conduct DLE basic detail Village Api Call Start ------------------
         const getpostoffice = async (value) => {
-            console.log('api called')
+            console.log('api called',details?.pin)
             const data = {
                 "pin": details?.pin,
-                //"pin": 688540,
+               // "pin": 688540,
                 "postOfficeName": value
             }
             await api.getpostoffice(data).then((res) => {
-                console.log('-------------------res get Post', res?.data?.body)
+                console.log('-------------------res get Post', res?.data)
                 if (res?.status) {
                     setPostofficenamedata(res?.data?.body)
                     //setModalVisible4(true)
@@ -333,7 +333,7 @@ const
         const getLastPage = async () => {
             console.log("LASTPAGE", activityId)
             const data = {
-                "activityId": activityId
+                "activityId": activityId?activityId:activityIds
             }
             await api.getLastPage(data).then((res) => {
                 console.log("last page upadte", res?.data,CorrectionStatus)
@@ -385,7 +385,7 @@ const
 
         const getDLEConfirmation = async () => {
             const data = {
-                "activityId": activityId
+                "activityId": activityId?activityId:activityIds
             }
             await api.getCorrectionNotify(data).then((res) => {
 

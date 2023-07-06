@@ -196,7 +196,7 @@ console.log("button click data",Purpose,Month)
         const data = {
             "activityStatus": 'Submitted wrong data',
             "employeeId": Number(custID),
-            "activityId": activityId
+            "activityId": activityId?activityId:route?.params?.activityId
         }
         await api.updateActivity(data).then((res) => {
             console.log('-------------------res get Village', res)
@@ -218,7 +218,7 @@ console.log("button click data",Purpose,Month)
         console.log('api called asyn value', value)
 
         const data = {
-            "activityId": activityId,
+            "activityId": activityId?activityId:route?.params?.activityId,
             "relationShip": relationShip
 
         }
@@ -262,7 +262,7 @@ console.log("button click data",Purpose,Month)
         console.log('api called')
 
         const data = {
-            "activityId": activityId,
+            "activityId": activityId?activityId:route?.params?.activityId,
             "relationShip": relationShip,
             "field1": Amount,
             "field2": Purpose,
@@ -287,7 +287,7 @@ console.log("button click data",Purpose,Month)
         console.log('api called')
 
         const data = {
-            "activityId": activityId,
+            "activityId": activityId?activityId:route?.params?.activityId,
             "relationShip": relationShip,
             "field1": Amount,
             "field2": Purpose,

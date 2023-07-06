@@ -24,17 +24,18 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import ToastModal from '../../../Components/ToastModal';
 import SizeModal from '../../HousePhoto/Components/SizeModal';
 import { useSelector } from 'react-redux';
+import MismatchModal from './MismatchModal';
 import ImageResizer from '@bam.tech/react-native-image-resizer';  
 
-const UploadImage = ({ navigation, id ,setFrontimage,setBackimage}) => {
+const UploadImage = ({ navigation, id, setFrontimage, setBackimage }) => {
     const [ImagesF, setImagesF] = useState(null)
     const [ImagesB, setImagesB] = useState(null)
     const [ImagesF1, setImagesF1] = useState(null)
     const [ImagesB1, setImagesB1] = useState(null)
     const [ImagesFSet, setImagesFSet] = useState()
     const [ImagesBSet, setImagesBSet] = useState()
-    const [delf,setDelf] = useState(false)
-    const [delb,setDelb] = useState(false)
+    const [delf, setDelf] = useState(false)
+    const [delb, setDelb] = useState(false)
     const [ModalVisible2, setModalVisible2] = useState(false)
     const [title1, setTitle1] = useState('Front Image')
     const [title2, setTitle2] = useState('Back Image')
@@ -45,7 +46,9 @@ const UploadImage = ({ navigation, id ,setFrontimage,setBackimage}) => {
     const [custID, setCustId] = useState()
     const [errorVisible, setErrorVisible] = useState(false)
     const activityId = useSelector(state => state.activityId);
-    const [continueAble,setContinueAble] = useState(false);
+    const [continueAble, setContinueAble] = useState(false)
+    const [MismatchModal1, setMismatchModal1] = useState(false)
+  
     const [sizemodalvisble, setsizemodalvisble] = useState(false);
 
     useEffect(() => {
@@ -66,7 +69,7 @@ const UploadImage = ({ navigation, id ,setFrontimage,setBackimage}) => {
     const ChooseImageFront = () => {
         //Choose Image from gallery
         ImagePicker.openPicker({
-            width: (width * 3) / 5, 
+            width: (width * 3) / 5,
             height: width,
             hideBottomControls:true,
             freeStyleCropEnabled:true,
@@ -85,7 +88,7 @@ const UploadImage = ({ navigation, id ,setFrontimage,setBackimage}) => {
     const ChooseImageBack = () => {
         //Choose Image from gallery
         ImagePicker.openPicker({
-            width: (width * 3) / 5, 
+            width: (width * 3) / 5,
             height: width,
             hideBottomControls:true,
             freeStyleCropEnabled:true,
@@ -124,7 +127,7 @@ const UploadImage = ({ navigation, id ,setFrontimage,setBackimage}) => {
     const ChooseCameraBack = () => {
         // Choose Image from Camera
         ImagePicker.openCamera({
-            width: (width * 3) / 5, 
+            width: (width * 3) / 5,
             height: width,
             hideBottomControls:true,
             freeStyleCropEnabled:true,
@@ -259,36 +262,36 @@ const UploadImage = ({ navigation, id ,setFrontimage,setBackimage}) => {
     const DeleteImageModal = (title) => {
         setTitle(title)
         setModalVisible2(true)
-   
+
     }
 
     // ------------------get Cg voter id detail ------------------
-        const getCGvoterid = async (mobnumber) => {
-            console.log('api called')
-      
-            const data = {
-              "activityId":activityId,        
-          }
-            await api.getCGvoterid(data).then((res) => {
-                console.log('-------------------res voter id CG', res?.data?.body)
-                if (res?.status) {
-                    setImagesF(res?.data?.body?.cgFrontImage)
-                    setImagesF1(res?.data?.body?.cgFrontImage)
-                    setFrontimage(res?.data?.body?.cgFrontImage)
-                    setImagesB(res?.data?.body?.cgBackImage)
-                    setImagesB1(res?.data?.body?.cgBackImage)
-                    setBackimage(res?.data?.body?.cgBackImage)
-                    if(res?.data?.body?.cgFrontImage){
-                        setDelf(true) 
-                    }if(res?.data?.body?.cgBackImage){
-                        setDelb(true)
-                    } 
+    const getCGvoterid = async (mobnumber) => {
+        console.log('api called')
+
+        const data = {
+            "activityId": activityId,
+        }
+        await api.getCGvoterid(data).then((res) => {
+            console.log('-------------------res voter id CG', res?.data?.body)
+            if (res?.status) {
+                setImagesF(res?.data?.body?.cgFrontImage)
+                setImagesF1(res?.data?.body?.cgFrontImage)
+                setFrontimage(res?.data?.body?.cgFrontImage)
+                setImagesB(res?.data?.body?.cgBackImage)
+                setImagesB1(res?.data?.body?.cgBackImage)
+                setBackimage(res?.data?.body?.cgBackImage)
+                if (res?.data?.body?.cgFrontImage) {
+                    setDelf(true)
+                } if (res?.data?.body?.cgBackImage) {
+                    setDelb(true)
                 }
-            }).catch((err) => {
-                console.log('-------------------err  voter id CG', err)
-            })
-        };
-        // ------------------ ------------------
+            }
+        }).catch((err) => {
+            console.log('-------------------err  voter id CG', err)
+        })
+    };
+    // ------------------ ------------------
 
 
         async function uploadFilefront(imagevalue) {
@@ -345,21 +348,21 @@ const UploadImage = ({ navigation, id ,setFrontimage,setBackimage}) => {
 
     // ------------------ uploadVoter Api Call Start------------------
     async function uploadVoterID() {
-        console.log('Images Fronf url',ImagesF1)
-        console.log('Images back url',ImagesB1)
+        console.log('Images Fronf url', ImagesF1)
+        console.log('Images back url', ImagesB1)
         setDelf(false)
         setDelb(false)
         setStatus(true)
         setContinueAble(true)
         const data = {
-            "activityId":activityId,
+            "activityId": activityId,
             "cgFrontImage": ImagesF1,
-            "cgBackImage":  ImagesB1       
+            "cgBackImage": ImagesB1
         }
         await api.saveCGvoterid(data).then((res) => {
             console.log('-------------------res CG voter id upload', res)
             if (res?.status) {
-               navigation.navigate('AddVehicle')
+                navigation.navigate('AddVehicle')
                 setStatus(false)
             }
         })
@@ -368,7 +371,7 @@ const UploadImage = ({ navigation, id ,setFrontimage,setBackimage}) => {
                 setContinueAble(false)
                 console.log('-------------------err CG voter id upload', err)
                 if (err?.response?.data?.message === 'Could not read the details.Please upload a new image.' || err?.response?.data?.message === 'Could not verify the ID details. Please upload a new image.'
-                    || err?.response?.status == 400) {
+                  ) {
                     setErrorVisible(true)
                     setContinueAble(false)
                     setStatus(false)
@@ -377,6 +380,14 @@ const UploadImage = ({ navigation, id ,setFrontimage,setBackimage}) => {
                     setImagesF('')
                     setImagesB('')
 
+                }else if (err?.response?.data?.message === 'This ID is already in use. Please upload a new ID.') {
+                    setMismatchModal1(true)
+                    setContinueAble(false)
+                    setStatus(false)
+                    setDelf(false)
+                    setDelb(false)
+                    setImagesF('')
+                    setImagesB('')
                 }
             })
     }
@@ -393,12 +404,12 @@ const UploadImage = ({ navigation, id ,setFrontimage,setBackimage}) => {
                                 <TouchableOpacity onPress={() => DeleteImageModal("Front Image")}  >
                                     <Icon1 name="closecircleo" color="#BDBDBD" size={25} />
                                 </TouchableOpacity></View> :
-                                 <View style={{ justifyContent: 'center', alignItems: 'center', paddingBottom: 11.5, }}>
+                            <View style={{ justifyContent: 'center', alignItems: 'center', paddingBottom: 11.5, }}>
                                 <TouchableOpacity onPress={() => DeleteImageModal("Front Image")}  >
                                     <Icon1 name="closecircleo" color="#FFFFFF" size={25} />
                                 </TouchableOpacity></View>}
 
-                        <TouchableOpacity style={{}} onPress={() => OpenModal(title1)} disabled={continueAble?true:false}>
+                        <TouchableOpacity style={{}} onPress={() => OpenModal(title1)} disabled={continueAble ? true : false}>
                             <View style={styles.View1}>
                                 {ImagesF ?
                                     <View style={{ alignItems: 'center', padding: 13 }}>
@@ -424,7 +435,7 @@ const UploadImage = ({ navigation, id ,setFrontimage,setBackimage}) => {
                                     <Icon1 name="closecircleo" color="#FFFFFF" size={25} />
                                 </TouchableOpacity>
                             </View>}
-                        <TouchableOpacity style={{}} onPress={() => OpenModal(title2)} disabled={continueAble?true:false}>
+                        <TouchableOpacity style={{}} onPress={() => OpenModal(title2)} disabled={continueAble ? true : false}>
 
                             <View style={styles.View1}>
                                 {ImagesB ?
@@ -483,6 +494,12 @@ const UploadImage = ({ navigation, id ,setFrontimage,setBackimage}) => {
                 setModalVisible={setErrorVisible}
             />
 
+            <MismatchModal
+                Validation={'This ID is already in use. Please upload a new ID.'}
+                ModalVisible={MismatchModal1}
+                onPressOut={() => setMismatchModal1(!MismatchModal1)}
+                setModalVisible={setMismatchModal1}
+            />
 <SizeModal
             ModalVisible={sizemodalvisble}
             onPressOut={() => {

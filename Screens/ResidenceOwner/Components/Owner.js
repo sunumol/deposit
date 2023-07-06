@@ -159,7 +159,7 @@ const DetailChecks = ({ navigation, setState, proofType1,
             height: height*0.7,
             hideBottomControls: true,
             cropping: true,
-            useFrontCamera:false
+           // useFrontCamera:false
         }).then(image => {
             console.log("IMAGE", image.path);
             setImage(image.path)

@@ -262,7 +262,7 @@ const IncomeDetails = ({ navigation, route }) => {
         console.log('api called')
 
         const data = {
-            "activityId": activityId,
+            "activityId": activityId?activityId:route?.params?.activityId,
             "relationShip": relationShip,
             "field1": Amount,
             "field2": Month,
@@ -273,7 +273,7 @@ const IncomeDetails = ({ navigation, route }) => {
             console.log("data pass123", res)
             console.log('-------------------res saveIncomeDetails c', spousejob, spouseavailable)
             if (res?.status) {
-                if(route?.params?.isCheck == true){
+                if(route?.params?.isCheck == true && spousejob ==500){
                     setModalVisibleC()
                 }else{
                     if (spousejob === 500) {
@@ -284,7 +284,7 @@ const IncomeDetails = ({ navigation, route }) => {
                         navigation.navigate('Proceed')
     
                     } else if (spousejob !== 'UNEMPLOYED') {
-                        navigation.navigate('IncomeDetailsSpouse', { isCheck: route?.params?.isCheck, Correction: CorrectionStatus })
+                        navigation.navigate('IncomeDetailsSpouse', { isCheck: route?.params?.isCheck, Correction: CorrectionStatus,activityId:route?.params?.activityId })
     
                     }
                 }
@@ -386,81 +386,7 @@ const IncomeDetails = ({ navigation, route }) => {
         }
     }, [spouseDetail])
 
-    const NumberFormats = () => {
-        setAmountFocus(true)
-        if (Amount?.length == 4) {
-
-            const firstDigitStr0 = String(Amount)[0]
-            const firstDigitStr1 = String(Amount)[1]
-            const firstDigitStr2 = String(Amount)[2]
-            const firstDigitStr3 = String(Amount)[3]
-            const digitForm = firstDigitStr0 + ',' + firstDigitStr1 + firstDigitStr2 + firstDigitStr3
-            setAmount(digitForm)
-
-        } else if (Amount?.length == 5) {
-            const firstDigitStr0 = String(Amount)[0]
-            const firstDigitStr1 = String(Amount)[1]
-            const firstDigitStr2 = String(Amount)[2]
-            const firstDigitStr3 = String(Amount)[3]
-            const firstDigitStr4 = String(Amount)[4]
-            const digitForm = firstDigitStr0 + firstDigitStr1 + ',' + firstDigitStr2 + firstDigitStr3 + firstDigitStr4
-            setAmount(digitForm)
-        } else if (Amount?.length == 6) {
-            const firstDigitStr0 = String(Amount)[0]
-            const firstDigitStr1 = String(Amount)[1]
-            const firstDigitStr2 = String(Amount)[2]
-            const firstDigitStr3 = String(Amount)[3]
-            const firstDigitStr4 = String(Amount)[4]
-            const firstDigitStr5 = String(Amount)[5]
-
-            const digitForm = firstDigitStr0 + firstDigitStr1 + firstDigitStr2 + ',' + firstDigitStr3 + firstDigitStr4 + firstDigitStr5
-            setAmount(digitForm)
-        } else if (Amount?.length == 7) {
-            setAmount('')
-            const firstDigitStr0 = String(Amount)[0]
-            const firstDigitStr1 = String(Amount)[1]
-            const firstDigitStr2 = String(Amount)[2]
-            const firstDigitStr3 = String(Amount)[3]
-            const firstDigitStr4 = String(Amount)[4]
-            const firstDigitStr5 = String(Amount)[5]
-
-            const digitForm = firstDigitStr0 + firstDigitStr1 + firstDigitStr2 + ',' + firstDigitStr3 + firstDigitStr4 + firstDigitStr5
-            setAmount(digitForm)
-        }
-    }
-
-    const NumberFormat_avg = () => {
-        setNetMonth(true)
-        if (Avg?.length == 4) {
-            const firstDigitStr0 = String(Avg)[0]
-            const firstDigitStr1 = String(Avg)[1]
-            const firstDigitStr2 = String(Avg)[2]
-            const firstDigitStr3 = String(Avg)[3]
-            const digitForm = firstDigitStr0 + ',' + firstDigitStr1 + firstDigitStr2 + firstDigitStr3
-            setAvg(digitForm)
-
-        } else if (Avg?.length == 5) {
-            const firstDigitStr0 = String(Avg)[0]
-            const firstDigitStr1 = String(Avg)[1]
-            const firstDigitStr2 = String(Avg)[2]
-            const firstDigitStr3 = String(Avg)[3]
-            const firstDigitStr4 = String(Avg)[4]
-            const digitForm = firstDigitStr0 + firstDigitStr1 + ',' + firstDigitStr2 + firstDigitStr3 + firstDigitStr4
-            setAvg(digitForm)
-
-        } else if (Avg?.length == 6) {
-
-            const firstDigitStr0 = String(Avg)[0]
-            const firstDigitStr1 = String(Avg)[1]
-            const firstDigitStr2 = String(Avg)[2]
-            const firstDigitStr3 = String(Avg)[3]
-            const firstDigitStr4 = String(Avg)[4]
-            const firstDigitStr5 = String(Avg)[5]
-
-            const digitForm = firstDigitStr0 + firstDigitStr1 + firstDigitStr2 + ',' + firstDigitStr3 + firstDigitStr4 + firstDigitStr5
-            setAvg(digitForm)
-        }
-    }
+  
     return (
         <SafeAreaProvider>
             <SafeAreaView style={styles.container1} />
@@ -690,7 +616,7 @@ const IncomeDetails = ({ navigation, route }) => {
                     <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                         <TouchableOpacity style={[styles.buttonView, { backgroundColor: Amount && (Purpose || Month) && Avg ? COLORS.colorB : 'rgba(224, 224, 224, 1)' }]}
                             onPress={() => Amount && (Purpose || Month) && Avg ? ButtonClick() : console.log("hello")}>
-                            <Text style={[styles.continueText, { color: Amount && (Purpose || Month) && Avg ? COLORS.colorBackground : '#979C9E' }]}>{!route?.params?.isCheck ?  'Continue' : 'Submit'}</Text>
+                            <Text style={[styles.continueText, { color: Amount && (Purpose || Month) && Avg ? COLORS.colorBackground : '#979C9E' }]}>{!route?.params?.isCheck  ?  'Continue' : 'Submit'}</Text>
                         </TouchableOpacity>
                     </View>
                 </View>

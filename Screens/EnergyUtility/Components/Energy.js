@@ -297,7 +297,7 @@ const Energy = ({ navigation, setAmount1, setPurpose1, setDays1,
 
     const getDLEConfirmation = async () => {
         const data = {
-            "activityId": activityId
+            "activityId": activityId?activityId:ActiveId
         }
         await api.getCorrectionNotify(data).then((res) => {
 

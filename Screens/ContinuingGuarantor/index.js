@@ -50,7 +50,7 @@ import { fonts } from 'react-native-elements/dist/config';
 const { height, width } = Dimensions.get('screen');
 
 const ContinuingGuarantor = ({ navigation, route }) => {
-  console.log("route params", route?.params?.isCheck)
+  //console.log("route params", route?.params?.isCheck)
   const isDarkMode = true;
   const { t } = useTranslation();
   const otpInput2 = React.createRef();
@@ -213,7 +213,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
     const data = {
       "activityStatus": 'Submitted wrong data',
       "employeeId": Number(custID),
-      "activityId": activityId
+      "activityId":activityId?activityId:route?.params?.activityId
     }
     await api.updateActivity(data).then((res) => {
       // console.log('-------------------res get Village', res)
@@ -237,7 +237,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
   // ------------------spouse detail ------------------
   const getSpousedetail = async () => {
     const data = {
-      "activityId": activityId
+      "activityId":activityId?activityId:route?.params?.activityId
     }
     await api.getSpousedetail(data).then((res) => {
       // console.log('-------------------res spousedetail co-app', activityId)
@@ -255,7 +255,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
   // ------------------get CG detail ------------------
   const getCGdetails = async () => {
     const data = {
-      "activityId": activityId
+      "activityId": activityId?activityId:route?.params?.activityId
     }
     await api.getCGdetails(data).then((res) => {
       console.log('-------------------res getCGdetails', res)
@@ -275,7 +275,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
   const verifyCG = async (num) => {
     //console.log("verify resend come", maxError, IsOtp1, timerCount)
     const data = {
-      "activityId": activityId,
+      "activityId": activityId?activityId:route?.params?.activityId,
       "mobileNumber": "+91" + num,
       "name": relation !== 'Spouse' ? Name : spousedetail?.name,
       "relationShip": relation,
@@ -287,9 +287,8 @@ const ContinuingGuarantor = ({ navigation, route }) => {
         setPhoneValid(false)
         OtpRef?.current?.focus()
         setMaxError(false)
-        setIsOtp1(true)
+   
         setVerifyotpstatus(true)
-        setStatus(true)
         setTimer(30)
         setOtpFetch(true)
       }
@@ -316,6 +315,8 @@ const ContinuingGuarantor = ({ navigation, route }) => {
         setTimer(0)
       }
       else {
+        onChangeNumber('')
+        setverifypop(true)
         setMaxError(false)
       }
     })
@@ -334,7 +335,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
     //   otpInput2.current.clear()
     // }
     const data = {
-      "activityId": activityId,
+      "activityId": activityId?activityId:route?.params?.activityId,
       "mobileNumber": "+91" + number,
       "name": relation !== 'Spouse' ? Name : spousedetail?.name,
       "relationShip": relation,
@@ -374,7 +375,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
   const verifyCGOTP = async (mobnumber) => {
     setLoader(true)
     const data = {
-      "activityId": activityId,
+      "activityId": activityId?activityId:route?.params?.activityId,
       "otp": OtpValue
     }
     await api.verifyCGOTP(data).then((res) => {
@@ -458,6 +459,10 @@ const ContinuingGuarantor = ({ navigation, route }) => {
     else {
       console.log("phone validation",PhoneValid)
       //OtpRef?.current?.focus()
+      setIsOtp1(true)
+     // setIsOtp1(true)
+       
+      setStatus(true)
       verifyCG(num)
     }
   }
@@ -575,7 +580,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
   const getLastPage = async () => {
     console.log("LASTPAGE", activityId)
     const data = {
-      "activityId": activityId
+      "activityId": activityId?activityId:route?.params?.activityId
     }
     await api.getLastPage(data).then((res) => {
       console.log("last page upadte", res?.data, res?.data?.body?.nextPage)
@@ -642,7 +647,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
 
   const getDLEConfirmation = async () => {
     const data = {
-      "activityId": activityId
+      "activityId": activityId?activityId:route?.params?.activityId
     }
     await api.getCorrectionNotify(data).then((res) => {
 

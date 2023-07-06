@@ -256,7 +256,7 @@ const Details = ({ navigation, details, spouse }) => {
                         </> : null}
           
 
-                <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                <View style={{ alignItems: 'center', justifyContent: 'center',marginBottom:10 }}>
                     <TouchableOpacity onPress={() => onsubmit()}
                         style={[styles.Button1, { backgroundColor: COLORS.colorB }]}
                     >

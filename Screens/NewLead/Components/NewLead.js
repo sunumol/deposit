@@ -90,13 +90,43 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus,setbackstate }) 
     
     }, [])
 
+
+
     const OnchangeNumber = (num) => {
-        if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(num) || num === '') {
+        
+        const firstDigitStr = String(num)[0];
+        if (
+            firstDigitStr === "1" ||
+            firstDigitStr === "2" ||
+            firstDigitStr === "3" ||
+            firstDigitStr === "4" ||
+            firstDigitStr === "5" ||
+            firstDigitStr === "0"
+          ){
+            setMessage('Please enter a valid mobile number')
+            setMobile('')
+            MobileRef?.current?.focus()
+            setMoberror(true)
+            setValidModal1(true)
+          }
+          else if (verifyPhone(num)){
+            setMessage('Please enter a valid mobile number')
+            setMobile('')
+            MobileRef?.current?.focus()
+            setMoberror(true)
+            setValidModal1(true)
+          }
+        else if (/^[1234567890]+$/.test(num) || num === '') {
             setMobile(num)
             setMoberror(false)
 
         } else {
-            ToastAndroid.show(t('common:Valid'), ToastAndroid.SHORT);
+            setMessage('Please enter a valid mobile number')
+            setMobile('')
+            MobileRef?.current?.focus()
+            setMoberror(true)
+            setValidModal1(true)
+           // ToastAndroid.show(t('common:Valid'), ToastAndroid.SHORT);
         }
     }
 
@@ -148,7 +178,7 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus,setbackstate }) 
             if(res?.data?.body){
             setVStatus(true)
             }else{
-                setMessage('This PIN is not under your service area')
+                setMessage('Please enter a valid pincode')
                 setPincode('')
                 PinRef?.current?.focus()
                 setPinerror(true)
@@ -238,7 +268,7 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus,setbackstate }) 
             .catch((err) => {
                 console.log('-------------------err', err?.response)
                 if(err?.response?.data?.message === 'This PIN is not under your service area'){
-                    setMessage('This PIN is not under your service area')
+                    setMessage('Please enter a valid pincode')
                     setPincode('')
                     PinRef?.current?.focus()
                     setPinerror(true)
@@ -339,6 +369,7 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus,setbackstate }) 
                                                     keyboardType={'numeric'}
                                             
                                                     onChangeText={(text) => {
+                                                        setMobile(text)
                                                         OnchangeNumber(text)
                                                     }} />
                                                     </View>

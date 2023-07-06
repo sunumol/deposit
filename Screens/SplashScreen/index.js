@@ -13,12 +13,14 @@ import LinearGradient from 'react-native-linear-gradient';
 import VersionModal from './Component/VersionModal';
 import UpdateModal from './Component/UpdateModal';
 
+
 const SplashScreen = ({ navigation }) => {
 
     const isDarkMode = true;
+    const dispatch = useDispatch()
     const [ModalVisible1, setModalVisible1] = useState(false)
     const [ModalVisible2, setModalVisible2] = useState(false)
-    const dispatch = useDispatch()
+
     const onBackGroundNotification = () => {
         messaging().onMessage(async (remoteMessage) => {
             const { messageId, notification } = remoteMessage;
@@ -48,11 +50,19 @@ const SplashScreen = ({ navigation }) => {
                           }
 
                     if (notification?.title === 'DATA_CONFIRMATION') {
+                        dispatch({
+                            type: 'SET_CGT_ACTIVITY_ID',
+                            payload:notification?.data?.activityId ,
+                        });
                         setTimeout(() =>
                             navigation.navigate('Proceed', { status: true, AcyivityId: notification?.data?.activityId })
                             , 3000);
                     }
                     if (notification?.title === 'DATA_CORRECTION_REQUEST') {
+                        dispatch({
+                            type: 'SET_CGT_ACTIVITY_ID',
+                            payload:notification?.data?.activityId ,
+                        });
                         setTimeout(() =>
                             navigation.navigate('CorrectionScreen', { AcyivityId: notification?.data?.activityId })
                             , 3000);
@@ -73,18 +83,26 @@ const SplashScreen = ({ navigation }) => {
             });
         });
         messaging().onNotificationOpenedApp((remoteMessage) => {
+                 dispatch({
+                type: 'SET_CGT_ACTIVITY_ID',
+                payload:remoteMessage?.data?.activityId,
+            });
             console.log(
                 "Notification caused app to open from background state:66",
-                remoteMessage
+                remoteMessage?.notification?.data
+            );
+            console.log(
+                "Notification caused app to open from background state:6322",
+                remoteMessage?.data?.activityId
             );
             if (remoteMessage?.notification?.title === 'DATA_CONFIRMATION') {
                 setTimeout(() =>
-                    navigation.navigate('Proceed', { status: true, AcyivityId: remoteMessage?.notification?.data?.activityId })
+                    navigation.navigate('Proceed', { status: true, AcyivityId: remoteMessage?.data?.activityId })
                     , 3000);
             }
             if (remoteMessage?.notification?.title === 'DATA_CORRECTION_REQUEST') {
                 setTimeout(() =>
-                    navigation.navigate('CorrectionScreen', { AcyivityId: remoteMessage?.notification?.data?.activityId })
+                    navigation.navigate('CorrectionScreen', { AcyivityId: remoteMessage?.data?.activityId })
                     , 3000);
             }
 
