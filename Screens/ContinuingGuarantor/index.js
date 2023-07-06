@@ -315,6 +315,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
         setTimer(0)
       }
       else {
+        onChangeNumber('')
         setverifypop(true)
         setMaxError(false)
       }
