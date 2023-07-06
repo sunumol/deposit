@@ -26,7 +26,7 @@ const { height, width } = Dimensions.get('screen');
 
 
 const CustomDetails = ({ navigation,details }) => {
-    console.log('[-][-][-][-][-]111',details?.[0].data)
+    console.log('[-][-][-][-][-]111',details)
     const route = useRoute();
     const { t } = useTranslation();
     const dispatch = useDispatch()
@@ -103,52 +103,64 @@ String.prototype.replaceAt = function (index, replacement) {
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={{ justifyContent: 'center', paddingBottom: 10 }}>
 
-                    <View style={{ paddingLeft: width * 0.03, marginTop: width * 0.035 }}>
-                      {details?.[0].village ? <Text    onPress={()=>navigation.navigate('Collection')} style={styles.PlaceText}>{details?.[0].village}({details?.length})</Text> : null}
-                    </View>
+           
                 
-                    <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                        { details?.[0].data?.map((item) => {
-                        
+                    <View style={{ marginHorizontal:10}}>
+                        { details?.map((item) => {
+                        {console.log('@@@@',item)}
                             return (
-                                <TouchableOpacity
-                                onPress={()=>{navigation.navigate('Collection'),
-                                dispatch({
-                                    type: 'SET_SELECTED_LOANCUSTOMERID',
-                                    payload: item.id,
-                                  });}}
-                                    style={styles.boxStyle} >
-                                    <View style={{ flex: 1, flexDirection: 'row' }}>
+                                <>
+                                         <View style={{ paddingLeft: width * 0.03, marginTop: width * 0.035 }}>
+                      {item?.data?.length ? <Text    onPress={()=>navigation.navigate('Collection')} style={styles.PlaceText}>{item?.village}({item?.data?.length})</Text> : null}
+                    </View>
 
-                                        <View style={[styles.circleStyle, { backgroundColor: getRandomColor(item?.mobileNumber) }]}>
-                                            <Text style={styles.circleText}>{getInitials(item.name)}</Text>
-                                        </View>
 
-                                        <View style={{ flexDirection: 'column', paddingLeft: 12, paddingTop: 5 }}>
-                                            <Text style={styles.nameText}>{item.name}</Text>
-                                            <View style={{ flexDirection: 'row', }}>
-                                                <View style={{ paddingTop: 5, paddingRight: 1 }}>
-                                                    <Icon1 name="location-outline" color={"black"} />
-                                                </View>
-                                                <Text style={[styles.idText, { paddingTop: 3 }]}>{item.village}</Text>
+                    {item?.data.map((item1)=>{
+                        return(
+                            <TouchableOpacity
+                            onPress={()=>{navigation.navigate('Collection'),
+                            dispatch({
+                                type: 'SET_SELECTED_LOANCUSTOMERID',
+                                payload: item1?.id,
+                              });}}
+                                style={styles.boxStyle} >
+                                <View style={{ flex: 1, flexDirection: 'row' }}>
+
+                                    <View style={[styles.circleStyle, { backgroundColor: getRandomColor(item1?.mobileNumber) }]}>
+                                        <Text style={styles.circleText}>{getInitials(item1?.name)}</Text>
+                                    </View>
+
+                                    <View style={{ flexDirection: 'column', paddingLeft: 12, paddingTop: 5 }}>
+                                        <Text style={styles.nameText}>{item1?.name}</Text>
+                                        <View style={{ flexDirection: 'row', }}>
+                                            <View style={{ paddingTop: 5, paddingRight: 1 }}>
+                                                <Icon1 name="location-outline" color={"black"} />
                                             </View>
+                                            <Text style={[styles.idText, { paddingTop: 3 }]}>{item1?.village}</Text>
                                         </View>
-
                                     </View>
 
-                                    <View style={{ flexDirection: 'column', paddingTop: 5, alignItems: 'flex-end' }}>
-                                        <View style={{ flexDirection: 'row' }}>
-                                            <Icon2 name="phone-call" color={"black"} size={11} style={{ top: 4 }} />
-                                            <Text style={[styles.numText, { paddingLeft: 6 }]}>{(item?.mobileNumber.replace(/^.{0}/g, '').replaceAt(6, "X").replaceAt(7, "X").replaceAt(8, "X").replaceAt(9, "X").slice(3))}</Text>
-                                        </View>
+                                </View>
 
-
-                                        <Text style={[styles.leadText, { color: item?.DPD>30 ?  'rgba(234, 64, 71, 1)' :'rgba(26, 5, 29, 1)'}]}>₹{item.dueAmount}</Text>
-
-
+                                <View style={{ flexDirection: 'column', paddingTop: 5, alignItems: 'flex-end' }}>
+                                    <View style={{ flexDirection: 'row' }}>
+                                        <Icon2 name="phone-call" color={"black"} size={11} style={{ top: 4 }} />
+                                        <Text style={[styles.numText, { paddingLeft: 6 }]}>{(item1?.mobileNumber?.replace(/^.{0}/g, '').replaceAt(6, "X").replaceAt(7, "X").replaceAt(8, "X").replaceAt(9, "X").slice(3))}</Text>
                                     </View>
 
-                                </TouchableOpacity>
+
+                                    <Text style={[styles.leadText, { color: item?.DPD>30 ?  'rgba(234, 64, 71, 1)' :'rgba(26, 5, 29, 1)'}]}>₹{item1?.dueAmount}</Text>
+
+
+                                </View>
+
+                            </TouchableOpacity>
+
+                        )
+                    })}
+                  
+                                </>
+                               
                             )
                         })}
                     </View>

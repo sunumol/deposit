@@ -19,7 +19,8 @@ const initialState={
     DLEStatus:'',
     SpouseOccupation:'',
     isLastPage:'',
-    AgentId:''
+    AgentId:'',
+    notificationcount:''
 }
 
 export const baseReducer = (state = initialState, action) => {
@@ -109,6 +110,11 @@ export const baseReducer = (state = initialState, action) => {
             return {
                 ...state, // return the updated state
                 AgentId: action.payload  
+            }
+            case "SET_NOTIFICATION_COUNT":  // for updating state
+            return {
+                ...state, // return the updated state
+                notificationcount: action.payload  
             }
         default:
             return state;

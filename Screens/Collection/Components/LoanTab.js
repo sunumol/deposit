@@ -43,7 +43,7 @@ const LoanTab = ({ navigation }) => {
 
 
         const data = {
-            customerId: id
+            customerId: LoancustomerID
         }
 
         await api.getActiveLoansdetails(data).then((res) => {

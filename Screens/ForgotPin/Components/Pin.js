@@ -172,6 +172,13 @@ const Pin = ({ navigation, conFirmDate }) => {
         }
     }, [timerCount]);
 
+    
+    useEffect(() => {
+        if (Otpwrong) {
+        otpInput2?.current?.clear()
+        }
+      }, [Otpwrong]);
+
     useEffect(() => {
         if (fetOtp) {
             const interval = setInterval(() => {
@@ -259,9 +266,9 @@ const Pin = ({ navigation, conFirmDate }) => {
                     autoFocus={true}
                     ref={otpInput2}
                     inputCount={4}
+                    offTintColor={!Otpwrong ? "lightgrey" : "red"}
+                    tintColor={!Otpwrong ? "lightgrey" : "red"}
                     inputCellLength={1}
-                    offTintColor={'#ECEBED'}
-                    tintColor={'#ECEBED'}
                     textInputStyle={styles.imputContainerStyle}
                     keyboardType="numeric"
                     containerStyle={{ marginTop: 7 }}
@@ -270,12 +277,28 @@ const Pin = ({ navigation, conFirmDate }) => {
                         if (code.length === 4) {
                             ConfirmOtp(code)
                         } else {
-                            setOtpwrong(false)
-                            setIsExpired(false)
+                            if(Otpwrong && code.length > 0 ){
+                                setOtpwrong(false)
+                              }
+                              if(isExpired && code.length > 0  ){
+                                setIsExpired(false)
+                              }
+                            
+                            
                         }
 
                     })}
                 />
+                  {isExpired
+                    ? <View style={{  alignItems: 'center' }}>
+                        <Text style={styles.errrorText}>OTP has Expired</Text>
+                    </View>
+                    : null}
+
+                {Otpwrong
+                    ?
+                    <Text style={[styles.successText, { color: COLORS.colorRed }]}>{t('common:otpValid')}</Text>
+                    : null}
 
                 {maxError === true ?
                     <View style={{ marginTop: Dimensions.get('window').height * 0.03, }}>
@@ -294,16 +317,7 @@ const Pin = ({ navigation, conFirmDate }) => {
                             </View>
                         </TouchableOpacity>}
 
-                {isExpired
-                    ? <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                        <Text style={styles.errrorText}>OTP has Expired</Text>
-                    </View>
-                    : null}
-
-                {Otpwrong
-                    ?
-                    <Text style={[styles.successText, { color: COLORS.colorRed }]}>{t('common:otpValid')}</Text>
-                    : null}
+              
 
             </View>
             {screenIsFocused
@@ -391,7 +405,7 @@ const styles = StyleSheet.create({
         fontFamily: FONTS.FontRegular,
         textAlign: 'center',
         color: COLORS.colorGreen,
-        marginTop: 30,
+        marginTop: 10,
     }
 })
 

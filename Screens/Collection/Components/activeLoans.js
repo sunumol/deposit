@@ -102,7 +102,7 @@ const totalcollection =() =>{
 
 
     const getTrustcircledetails = async () => {
-        console.log('search------->>>>>',)
+        console.log('search------->>>>>',LoancustomerID)
         const data = {
             customerId: LoancustomerID,
 

@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Statusbar from '../../Components/StatusBar';
-import { useDispatch } from 'react-redux';
+import { useDispatch,useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import NetWorkError from '../NetWorkError';
 import { NetworkInfo } from 'react-native-network-info';
@@ -25,7 +25,7 @@ import BottomTabs from './Components/BottomTab';
 import ItemTabs from './Components/ItemTab';
 import { api } from '../../Services/Api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import messaging from '@react-native-firebase/messaging'
 // ------- Image Imports --------------------
 import ModalExitApp from '../../Components/ModalExitApp';
 import { useFocusEffect } from '@react-navigation/native';
@@ -51,6 +51,7 @@ const Profile = ({ navigation }) => {
     const [mobileNumber, setMobileNumber] = useState('')
     const [id, setId] = useState(null)
     const [IpAddress, setIPAddress] = useState()
+    const notificationcount2 = useSelector(state => state.notificationcount);
     useEffect(() => {
         AsyncStorage.getItem("CustomerId").then((value) => {
             setCustId(value)
@@ -70,7 +71,14 @@ const Profile = ({ navigation }) => {
         }
     }, [fcmToken])
 
-
+    useEffect(()=>{
+                       
+        if(notificationcount2 === '1'){
+            console.log('nnnnnnnnnnnnnnnnnn',notificationcount2)
+            HomeScreenApiCall()
+        }
+        
+    },[notificationcount2])
 
     const [ModalCall, setModalCall] = useState(false)
     const isDarkMode = true;
@@ -138,6 +146,10 @@ const Profile = ({ navigation }) => {
         await api.homeScreenApi(data).then((res) => {
             console.log('-------------------res', res?.data)
             SetNotificationCount(res?.data?.body)
+            dispatch({
+                type: 'SET_NOTIFICATION_COUNT',
+                payload: '2',
+            });
             setstatus(false)
         })
             .catch((err) => {

@@ -30,7 +30,8 @@ import ModalPhoto from './Components/ModalPhoto';
 import { api } from '../../Services/Api';
 import ToastModal from '../../Components/ToastModal';
 import ModalSave from '../../Components/ModalSave';
-
+import ImageResizer from '@bam.tech/react-native-image-resizer';  
+import SizeModal from '../HousePhoto/Components/SizeModal';
 // ------------ Image Imports ---------------------
 import BackImage from '../../assets/Images/10.svg';
 import FrontImage from '../../assets/Images/9.svg';
@@ -67,6 +68,7 @@ const UploadAdhaar = ({ navigation }) => {
     const [frontimage, setFrontimage] = useState('')
     const [backimage, setBackimage] = useState('')
     const [MismatchModal1, setMismatchModal1] = useState(false)
+    const [sizemodalvisble, setsizemodalvisble] = useState(false);
 
     useEffect(() => {
         getData()
@@ -114,11 +116,12 @@ const UploadAdhaar = ({ navigation }) => {
             cropping: true,
         }).then(image => {
             console.log("IMAGE", image);
-            setImagesFSet(image)
-            setImagesF(image.path)
-            uploadFilefront(image)
-            setModalVisible(false)
-            setDelf(true)
+            ChooseCameraFrontcropper(image)
+            // setImagesFSet(image)
+            // setImagesF(image.path)
+            // uploadFilefront(image)
+            // setModalVisible(false)
+            // setDelf(true)
         });
     }
 
@@ -132,11 +135,12 @@ const UploadAdhaar = ({ navigation }) => {
             cropping: true,
         }).then(image => {
             console.log("IMAGE", image);
-            setImagesB(image.path)
-            setImagesBSet(image)
-            uploadFileback(image)
-            setModalVisible(false)
-            setDelb(true)
+            ChooseCamerabackcropper(image)
+            // setImagesB(image.path)
+            // setImagesBSet(image)
+            // uploadFileback(image)
+            // setModalVisible(false)
+            // setDelb(true)
         });
     }
     const ChooseCameraFront = () => {
@@ -148,13 +152,20 @@ const UploadAdhaar = ({ navigation }) => {
             hideBottomControls:true,
             freeStyleCropEnabled:true,
             cropping: true,
+            disableCropperColorSetters:true,
+            cropperStatusBarColor: 'blue',
+      cropperToolbarColor: 'blue',
+      cropperActiveWidgetColor: 'blue',
+      cropperToolbarWidgetColor: '#3498DB',
         }).then(image => {
             console.log(image);
-            setImagesF(image.path)
-            setImagesFSet(image)
-            uploadFilefront(image)
-            setModalVisible(false)
-            setDelf(true)
+           // navigation.navigate('CropImage', {details: image?.path})
+            ChooseCameraFrontcropper(image)
+            // setImagesF(image.path)
+            // setImagesFSet(image)
+            // uploadFilefront(image)
+            // setModalVisible(false)
+            // setDelf(true)
         });
     }
 
@@ -168,13 +179,89 @@ const UploadAdhaar = ({ navigation }) => {
             cropping: true,
         }).then(image => {
             console.log(image);
-            setImagesB(image.path)
-            setImagesBSet(image)
-            uploadFileback(image)
-            setModalVisible(false)
-            setDelb(true)
+            ChooseCamerabackcropper(image)
+            // setImagesB(image.path)
+            // setImagesBSet(image)
+            // uploadFileback(image)
+            // setModalVisible(false)
+            // setDelb(true)
         });
     }
+
+
+
+    const ChooseCameraFrontcropper = (value) => {
+
+        ImageResizer.createResizedImage(
+            value.path,
+            700,
+            1280,
+            'JPEG',
+            100,
+             0,
+             undefined,
+             false,
+        )
+            .then((response) => {
+            console.log('IMAGE1 1=========>>',response);
+            if(response?.size < 100000){
+                setsizemodalvisble(true)
+            }else{
+            //setImagesF(response.uri)
+            setImagesFSet(response)
+            uploadFilefront(response.uri)
+            setModalVisible(false)
+             setDelf(true)
+            }
+              // response.uri is the URI of the new image that can now be displayed, uploaded...
+              // response.path is the path of the new image
+              // response.name is the name of the new image with the extension
+              // response.size is the size of the new image
+            })
+            .catch((err) => {
+                console.log('IMAGE1 err=========>>',err);
+              // Oops, something went wrong. Check that the filename is correct and
+              // inspect err to get more details.
+            });
+    
+    }
+
+    const ChooseCamerabackcropper = (value) => {
+
+        ImageResizer.createResizedImage(
+            value.path,
+            700,
+            1280,
+            'JPEG',
+            100,
+             0,
+             undefined,
+             false,
+        )
+            .then((response) => {
+                console.log('IMAGE1=========>>',response);
+                if(response?.size < 100000){
+                    setsizemodalvisble(true)
+                }else{
+               // setImagesB(response.uri)
+                setImagesBSet(response)
+                uploadFileback(response.uri)
+                setModalVisible(false)
+                setDelb(true)
+                }
+              // response.uri is the URI of the new image that can now be displayed, uploaded...
+              // response.path is the path of the new image
+              // response.name is the name of the new image with the extension
+              // response.size is the size of the new image
+            })
+            .catch((err) => {
+                console.log('IMAGE1=========>>',err);
+              // Oops, something went wrong. Check that the filename is correct and
+              // inspect err to get more details.
+            });
+       
+    }
+
     const OpenModal = (title) => {
         console.log("tilt...", title)
         setTitle(title)
@@ -252,14 +339,15 @@ const UploadAdhaar = ({ navigation }) => {
         let data = new FormData();
         data.append('multipartFile', {
             name: 'aaa.jpg',
-            type: imagevalue.mime,
-            uri: imagevalue.path
+            type: 'image/jpeg',
+            uri: imagevalue
         })
 
         await api.uploadFile(data).then((res) => {
             console.log('-------------------res voter upload front', res?.data[0]?.body)
             if (res?.status) {
                 setImagesF1(res?.data[0]?.body)
+                setImagesF(res?.data[0].body)
                 setFrontimage(res?.data[0]?.body)
             }
         }).catch((err) => {
@@ -275,14 +363,15 @@ const UploadAdhaar = ({ navigation }) => {
         let data = new FormData();
         data.append('multipartFile', {
             name: 'aaa.jpg',
-            type: imagevalue.mime,
-            uri: imagevalue.path
+            type: 'image/jpeg',
+            uri: imagevalue
         })
 
         await api.uploadFile(data).then((res) => {
             console.log('-------------------res voter upload back', res?.data[0]?.body)
             if (res?.status) {
                 setImagesB1(res?.data[0]?.body)
+                setImagesB(res?.data[0]?.body)
                 setBackimage(res?.data[0]?.body)
             }
         }).catch((err) => {
@@ -475,6 +564,16 @@ const UploadAdhaar = ({ navigation }) => {
 
         }}
         navigation={navigation} />
+
+
+<SizeModal
+            ModalVisible={sizemodalvisble}
+            onPressOut={() => {
+              setsizemodalvisble(!sizemodalvisble)
+            }}
+            setModalVisible={setsizemodalvisble}
+          />
+        
 
         </SafeAreaProvider>
     )

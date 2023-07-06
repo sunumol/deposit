@@ -73,7 +73,7 @@ const ItemTabs = ({ navigation }) => {
  
         setPurposes(Purposes)
         setRelation(Relation)
-
+        getPendingCollection()
 
         //setStatus(true)
     }, [Purposes, Relation])

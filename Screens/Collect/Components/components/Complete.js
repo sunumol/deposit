@@ -29,6 +29,7 @@ import Img1 from '../../Images/p1.svg';
 import Img2 from '../../Images/p2.svg';
 import ComCard from './ComCard';
 import { api } from '../../../../Services/Api';
+import { useDispatch, useSelector } from 'react-redux';
 
 String.prototype.replaceAt = function (index, replacement) {
     return this.substring(0, index) + replacement + this.substring(index + replacement.length);
@@ -39,6 +40,7 @@ const CompleteTab = ({ navigation }) => {
     const route = useRoute();
     const [Lang, setLang] = useState('')
     const { t } = useTranslation();
+    const dispatch = useDispatch()
     const [completeloan,setCompleteloan] = useState('');
     const [pendopen,setPendopen] = useState(false)
     const [deposopen,setDeposopen] = useState(false)
@@ -153,11 +155,8 @@ useEffect(()=>{
                                     </View>
 
                                 <View style={{ justifyContent: 'space-around', flexDirection: 'row', alignItems: 'center' }}>
-                                    <View style={{ marginLeft: width * 0.03 }}>
-                                        <Text style={styles.timeText}>Deposit Pending ₹33,000 </Text>
-                                    </View>
-
-                                  
+                                    <View style={{ marginLeft: width * 0.03,alignItems:'center',flexDirection:'row' }}>
+                                        <Text style={styles.timeText}>Deposit Pending ₹{completeloan?.depositPendingSum} </Text>
                                         <View style={[styles.Card1, { backgroundColor: 'rgba(235, 87, 87, 0.1)', marginLeft: width * 0.05 }]}>
                                             <Img2 />
                                         </View> 
@@ -165,11 +164,18 @@ useEffect(()=>{
                                     <View style={{ marginLeft: width * 0.025 }}>
                                         <Text style={styles.badgeText}>{completeloan?.depositPendingDetailsDTOS?.length}</Text>
                                     </View>
-                                    <View style={{ marginLeft:  width * 0.033 }}>
+                                    </View>
+
+                                  
+                                     
+                              
+                                </View>
+                                <View style={{ marginLeft:  width *0.15 }}>
 
                                         <TouchableOpacity
                                             onPress={() => {
                                             setPendopen(!pendopen)
+                                            setDeposopen(false)
                                             }}
                                         >
                                             <Icon name={pendopen ? "chevron-up" :"chevron-down"}
@@ -180,13 +186,6 @@ useEffect(()=>{
                                             />
                                         </TouchableOpacity>
                                     </View>
-                                </View>
-                                <View style={{ alignItems: 'center', flexDirection: 'row' }}>
-
-                                    {/* <View style={{flex:1,alignItems:'flex-end'}}>
-                     
-                                    </View> */}
-                                </View>
                             </View>
 
 
@@ -198,6 +197,11 @@ useEffect(()=>{
                                             {completeloan?.depositPendingDetailsDTOS?.map((item) => {
                                                 return (
                                                     <TouchableOpacity
+                                                    onPress={()=>{navigation.navigate('Collection'),
+                                                    dispatch({
+                                                        type: 'SET_SELECTED_LOANCUSTOMERID',
+                                                        payload: item?.id,
+                                                      });}}
                                                         style={styles.boxStyle} >
                                                         <View style={{ flex: 1, flexDirection: 'row' }}>
 
@@ -243,43 +247,43 @@ useEffect(()=>{
                                         <Image2 />
                                         </View>
 
-                                <View style={{ justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center' ,width:width * 0.78}}>
-                                    <View style={{ marginLeft: width * 0.03 }}>
-                                        <Text style={styles.timeText}>Deposited ₹15,224</Text>
+                                <View style={{  flexDirection: 'row', alignItems: 'center' }}>
+                                    <View style={{ marginLeft: width * 0.03,flexDirection:'row',alignItems:'center'}}>
+                                        <Text style={styles.timeText}>Deposited ₹{completeloan?.depositedSum}</Text>
+                                        <View style={[styles.Card1, { backgroundColor: 'rgba(39, 174, 96, 0.1)', marginLeft: width * 0.05 }]}>
+                                            <Img1 />
+                                            </View>
+                                    <View style={{marginLeft: width * 0.025}}>
+                                        <Text style={styles.badgeText}>{completeloan?.depositedDetailsDTOS?.length}</Text>
+                                    </View>
                                     </View>
 
                                  
-                                        <View style={[styles.Card1, { backgroundColor: 'rgba(39, 174, 96, 0.1)', marginLeft: width * 0.155 }]}>
-                                            <Img1 />
-                                            </View>
-                                    <View>
-                                        <Text style={styles.badgeText}>{completeloan?.depositedDetailsDTOS?.length}</Text>
-                                    </View>
-                                    <View>
-
-                                        <TouchableOpacity
-                                            onPress={() => {
-                                                setDeposopen(!deposopen)
-                                                // const nextList = [...data];
-                                                // nextList[index].open = !nextList[index].open;
-                                                // setData(nextList);
-                                            }}
-                                        >
-                                            <Icon name={ deposopen ?  "chevron-up": "chevron-down"}
-                                                color={COLORS.colorB}
-                                                size={25}
-                                                style={{ paddingLeft: 13 }}
-
-                                            />
-                                        </TouchableOpacity>
-                                    </View>
+                        
                                 </View>
-                                <View style={{ alignItems: 'center', flexDirection: 'row' }}>
 
-                                    {/* <View style={{flex:1,alignItems:'flex-end'}}>
-                     
-                                    </View> */}
-                                </View>
+                                
+                                <View>
+
+                                            <TouchableOpacity
+                                            style={{marginLeft: width *0.24}}
+                                                onPress={() => {
+                                                    setDeposopen(!deposopen)
+                                                    setPendopen(false)
+                                                    // const nextList = [...data];
+                                                    // nextList[index].open = !nextList[index].open;
+                                                    // setData(nextList);
+                                                }}
+                                            >
+                                                <Icon name={ deposopen ?  "chevron-up": "chevron-down"}
+                                                    color={COLORS.colorB}
+                                                    size={25}
+                                                    style={{ paddingLeft: 13 }}
+
+                                                />
+                                            </TouchableOpacity>
+</View>
+                              
                             </View>
 
 
@@ -292,6 +296,11 @@ useEffect(()=>{
                                             {completeloan?.depositedDetailsDTOS?.map((item) => {
                                                 return (
                                                     <TouchableOpacity
+                                                    onPress={()=>{navigation.navigate('Collection'),
+                                                    dispatch({
+                                                        type: 'SET_SELECTED_LOANCUSTOMERID',
+                                                        payload: item?.id,
+                                                      });}}
                                                         style={styles.boxStyle} >
                                                         <View style={{ flex: 1, flexDirection: 'row' }}>
 
@@ -567,7 +576,7 @@ const styles = StyleSheet.create({
     containerTab: {
         width: width * 0.90,
          backgroundColor: 'rgba(242, 242, 242, 1)',
-   
+  
         //elevation:2,
         flexDirection: 'row',
         marginTop: width * 0.06,

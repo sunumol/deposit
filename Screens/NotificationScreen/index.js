@@ -130,6 +130,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
     },
     columContainer: {
+        flex:1,
         flexDirection: 'column',
         paddingLeft :8
     },
