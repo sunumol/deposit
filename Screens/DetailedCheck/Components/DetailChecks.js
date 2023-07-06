@@ -256,14 +256,14 @@ const
 
         // ------------------ get Conduct DLE basic detail Village Api Call Start ------------------
         const getpostoffice = async (value) => {
-            console.log('api called')
+            console.log('api called',details?.pin)
             const data = {
                 "pin": details?.pin,
-                //"pin": 688540,
+               // "pin": 688540,
                 "postOfficeName": value
             }
             await api.getpostoffice(data).then((res) => {
-                console.log('-------------------res get Post', res?.data?.body)
+                console.log('-------------------res get Post', res?.data)
                 if (res?.status) {
                     setPostofficenamedata(res?.data?.body)
                     //setModalVisible4(true)
