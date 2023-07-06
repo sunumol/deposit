@@ -24,11 +24,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import ToastModal from '../../../Components/ToastModal';
 import SizeModal from '../../HousePhoto/Components/SizeModal';
 import { useSelector } from 'react-redux';
-<<<<<<< HEAD
 import MismatchModal from './MismatchModal';
-=======
 import ImageResizer from '@bam.tech/react-native-image-resizer';  
->>>>>>> 4ae9b916f0ef063b24be0feb1e19cc99119fb447
 
 const UploadImage = ({ navigation, id, setFrontimage, setBackimage }) => {
     const [ImagesF, setImagesF] = useState(null)
@@ -49,13 +46,10 @@ const UploadImage = ({ navigation, id, setFrontimage, setBackimage }) => {
     const [custID, setCustId] = useState()
     const [errorVisible, setErrorVisible] = useState(false)
     const activityId = useSelector(state => state.activityId);
-<<<<<<< HEAD
     const [continueAble, setContinueAble] = useState(false)
     const [MismatchModal1, setMismatchModal1] = useState(false)
-=======
-    const [continueAble,setContinueAble] = useState(false);
+  
     const [sizemodalvisble, setsizemodalvisble] = useState(false);
->>>>>>> 4ae9b916f0ef063b24be0feb1e19cc99119fb447
 
     useEffect(() => {
         getData()

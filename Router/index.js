@@ -64,7 +64,7 @@ import EnergyCorrection from '../Screens/EnergyCorrection';
 import NotificationScreen from '../Screens/NotificationScreen'
 import MissedActivities from '../Screens/MissedActivities';
 import UploadAdhaar from '../Screens/UploadCoAdhaar/UploadAdhaar';
-import CropImage from '../Screens/UploadCoAdhaar/Components/CropImage';
+// import CropImage from '../Screens/UploadCoAdhaar/Components/CropImage';
 const Stack = createNativeStackNavigator();
 
 export default function Router() {
@@ -137,7 +137,7 @@ export default function Router() {
         {/* --------------------------- Calendar Navigation Screens End -----------------------------------------*/}
         <Stack.Screen name="NotificationScreen" component={netInfo.isConnected ? NotificationScreen : NetWorkError} />
         <Stack.Screen name="MissedActivities" component={netInfo.isConnected ? MissedActivities : NetWorkError} />
-        <Stack.Screen name="CropImage" component={netInfo.isConnected ? CropImage : NetWorkError} />
+        {/* <Stack.Screen name="CropImage" component={netInfo.isConnected ? CropImage : NetWorkError} /> */}
         
       </Stack.Navigator>
     </NavigationContainer>

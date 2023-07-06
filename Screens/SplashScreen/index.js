@@ -12,7 +12,7 @@ import Statusbar from '../../Components/StatusBar';
 import LinearGradient from 'react-native-linear-gradient';
 import VersionModal from './Component/VersionModal';
 import UpdateModal from './Component/UpdateModal';
-import { useDispatch } from 'react-redux';
+
 
 const SplashScreen = ({ navigation }) => {
 
@@ -20,7 +20,7 @@ const SplashScreen = ({ navigation }) => {
     const dispatch = useDispatch()
     const [ModalVisible1, setModalVisible1] = useState(false)
     const [ModalVisible2, setModalVisible2] = useState(false)
-    const dispatch = useDispatch()
+
     const onBackGroundNotification = () => {
         messaging().onMessage(async (remoteMessage) => {
             const { messageId, notification } = remoteMessage;
