@@ -18,10 +18,10 @@ import History from './History';
 import { useFocusEffect } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 
-const DetailTab = ({ navigation,loandetail }) => {
+const DetailTab = ({ navigation,loandetail,loanIDs }) => {
 
 
-  console.log('detail tab [][][][][][]=====>>>',loandetail)
+
 
     const isDarkMode = true;
     const Tab = createMaterialTopTabNavigator();
@@ -55,8 +55,8 @@ const DetailTab = ({ navigation,loandetail }) => {
                 tabBarActiveTintColor: COLORS.colorDark ,
                 
               }}>
-                <Tab.Screen name={'Payment History'} component={History} navigation={navigation} />
-                <Tab.Screen name={'Trend'} component={Trend} />
+                <Tab.Screen name={'Payment History'} component={History} navigation={navigation} initialParams={{loanIDs:loanIDs}}/>
+                <Tab.Screen name={'Trend'} component={Trend} initialParams={{loanIDs:loanIDs}}/>
              
                
             </Tab.Navigator>

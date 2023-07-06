@@ -7,7 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const { height, width } = Dimensions.get('screen');
 
 
-const CollectModal = ({ ModalVisible, onPressOut, setModalVisible,ModalVisible2,ModalVisible3,navigation,collectedvalue }) => {
+const CollectModal = ({ ModalVisible, onPressOut, setModalVisible,ModalVisible2,navigation,collectedvalue,onsubmit }) => {
     const [state, setState] = useState(null);
     const { t } = useTranslation();
     const [Lang, setLang] = useState('')
@@ -51,13 +51,11 @@ const CollectModal = ({ ModalVisible, onPressOut, setModalVisible,ModalVisible2,
                         </TouchableOpacity>
 
                         <TouchableOpacity style={[styles.ButtonContinue, {}]} onPress={()=>{
+                            onsubmit()
                             setModalVisible(!ModalVisible)
                             ModalVisible2()
 
-                            setTimeout(()=>{
-                                ModalVisible3()
-                             
-                            },1000)
+                           
                         }}>
                             <Text style={styles.textC}>{t('common:Yes')}</Text>
                         </TouchableOpacity>

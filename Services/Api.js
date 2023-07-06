@@ -579,6 +579,18 @@ export const api = {
   },
 
 
+
+    // ------------------   customerProfile listing---------------------
+    collectionConfirmation: data => {
+
+      return axios.post(`${baseURL3}collectionConfirmation`,data, {
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      })
+    },
+
+
   // ------------------   customerProfile listing---------------------
   getTrustcircledetails: data => {
 

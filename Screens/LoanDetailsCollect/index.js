@@ -22,6 +22,7 @@ import { useTranslation } from 'react-i18next';
 import DetailTab from './Components/DetailTab';
 import History from './Components/History';
 import { api } from '../../Services/Api';
+import { useSelector } from 'react-redux';
 
 
 
@@ -37,7 +38,7 @@ const LoanDetailsCollect = ({ navigation,route }) => {
     const closeMenu = () => setVisible(false);
     const [status, setStatus] = useState(true);
     const [loanhistory,setLoanhistory] = useState('')
-
+    const LOANID = useSelector(state => state.loanID);
 
     const handleGoBack = useCallback(() => {
         navigation.goBack()
@@ -59,13 +60,13 @@ const LoanDetailsCollect = ({ navigation,route }) => {
     },[])
 
     async function getloanPaymentHistory()  {
-        console.log('search------->>>>>', )
+        console.log(' LOANID search------->>>>>', LOANID)
         const data = {
-            loanId:  route?.params?.loan?.loanId ? route?.params?.loan?.loanId :  2
+            loanId:route?.params?.loan?.loanId
         }
 
         await api.getloanPaymentHistory(data).then((res) => {
-          console.log('------------------- get history loan res', res.data.body)
+          console.log('------------------- get history loan res', res)
             setLoanhistory(res?.data?.body)
          
          
@@ -86,8 +87,8 @@ const LoanDetailsCollect = ({ navigation,route }) => {
             <Header name={t('common:LoanDetails')}  navigation={navigation} onPress={handleGoBack} />
 
             <View style={styles.mainContainer}>
-                <DetailBox loandetail={loanhistory} />
-                <DetailTab loandetail={loanhistory}  />
+                <DetailBox loandetail={loanhistory} loanIDs={route?.params?.loan?.loanId}/>
+                <DetailTab loandetail={loanhistory}  loanIDs={route?.params?.loan?.loanId}/>
             </View>
         </SafeAreaProvider>
     )

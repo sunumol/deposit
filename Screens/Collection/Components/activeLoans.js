@@ -26,7 +26,7 @@ import TCMModal from './TCMModal';
 const { height, width } = Dimensions.get('screen');
 
 const ActiveLoans = ({ navigation, loandetails }) => {
-    console.log('[=][=][=][=][=]', loandetails)
+  
 
     const LoancustomerID = useSelector(state => state.loancustomerID);
 
@@ -66,7 +66,7 @@ const totalcollection =() =>{
 
     const onCollect = (text, index) => {
 
-        console.log('on colle',itemsselected,text,index)
+     
      
         const updatedItems = [...itemsselected];
 
@@ -98,6 +98,27 @@ const totalcollection =() =>{
        setItems(updatedItems);
     };
 
+    const collectionConfirmation = async () => {
+        console.log('collectionConfirmation search------->>>>>',LoancustomerID,collectAmount1)
+        const data = {
+            "customerId":LoancustomerID,
+            "paidAmount":collectAmount1
+
+        };
+        await api.collectionConfirmation(data).then((res) => {
+            console.log('------------------- collectionConfirmation res', res)
+            setModalVisible1(true)
+            //setModalVisible1(false)
+            setTimeout(() => {
+                navigation.navigate('Collect')  
+            }, 500);
+           
+        })
+            .catch((err) => {
+                console.log('------------------- collectionConfirmation error', err?.response)
+
+            })
+    };
 
 
 
@@ -298,7 +319,6 @@ const totalcollection =() =>{
                 </TouchableOpacity>
             </View>
 
-            {console.log('{}{}{}{}{}{}{}{}', collectAmount)}
 
             <CollectModal
                 ModalVisible={ModalVisible}
@@ -306,13 +326,14 @@ const totalcollection =() =>{
                 setModalVisible={setModalVisible}
                 collectedvalue={collectAmount1}
                 ModalVisible2={() => {
-                    setModalVisible1(true)
+                  
                     setModalVisible(false)
                 }}
-                ModalVisible3={() => {
-                    setModalVisible1(false)
-                    navigation.navigate('Collect')
-                }}
+                onsubmit={()=>collectionConfirmation()}
+                // ModalVisible3={() => {
+                //     setModalVisible1(false)
+                //     navigation.navigate('Collect')
+                // }}
 
             />
 
@@ -398,7 +419,7 @@ const styles = StyleSheet.create({
         fontWeight: '400',
     },
     valueText: {
-
+        color: COLORS.colorDSText,
         width: 100,
         // height: 25,
         paddingTop: 4

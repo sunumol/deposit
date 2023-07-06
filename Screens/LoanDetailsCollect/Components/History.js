@@ -18,10 +18,11 @@ import { FONTS, COLORS } from '../../../Constants/Constants';
 import Icon1 from 'react-native-vector-icons/FontAwesome';
 import { api } from '../../../Services/Api';
 import { useSelector } from 'react-redux';
+import moment from 'moment'
 
 const { height, width } = Dimensions.get('screen');
 
-const History = ({ route }) => {
+const History = ({ route,navigation }) => {
    
     const LoanId = useSelector(state => state.loanId);
     const [loanhistory,setLoanhistory] = useState('')
@@ -62,19 +63,22 @@ const History = ({ route }) => {
 
     useEffect(()=>{
         getloanPaymentHistory()
-        console.log('detail tab [][][[][][][]]=====>>>',LoanId)
-    },[LoanId])
+        console.log('detail tab [][][[][][][]]=====>>>',route?.params?.loanIDs)
+    },[route?.params?.loanIDs])
  
 
     async function getloanPaymentHistory()  {
         console.log('search------->>>>>', )
         const data = {
-            loanId:   2
+            loanId:route?.params?.loanIDs,
         }
 
         await api.getloanPaymentHistory(data).then((res) => {
           console.log('------------------- get history loan res', res.data.body)
+          if(res){
             setLoanhistory(res?.data?.body)
+          }
+            
          
          
         })
@@ -97,7 +101,7 @@ const History = ({ route }) => {
                                 <View style={{ flexDirection: 'row', justifyContent: 'space-between',marginBottom:width*0.05,marginTop:width*0.05 }}>
 
                                     <View style={{ flexDirection: 'row' }}>
-                                        <Text style={styles.DateText}>{item.Date}</Text>
+                                        <Text style={styles.DateText}>{moment(item?.date).format('DD MMM')} '{moment(item?.date).format('YY')}</Text>
                                         {/* {item.Id !== 3 ? 
                                         <View style={styles.RsCard}>
                                             <Icon1 name="rupee" size={14} color={'#4F4F4F'} />
@@ -111,7 +115,7 @@ const History = ({ route }) => {
                                             </View> : null} */}
                                     </View>
 
-                                    <Text style={[styles.AmtText, { color: item.color }]}>{item.amount}</Text>
+                                    <Text style={[styles.AmtText, { color: 'red' }]}>{item.amount}</Text>
                                 </View>
                                 <View style={styles.Line} />
                             </View>

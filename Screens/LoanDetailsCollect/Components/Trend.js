@@ -19,8 +19,9 @@ import { useSelector } from 'react-redux';
 import { api } from '../../../Services/Api';
 const { height, width } = Dimensions.get('screen');
 
-const Trend = ({ navigation }) => {
+const Trend = ({ navigation ,route}) => {
     const LoanID = useSelector(state => state.loanId);
+
     const [loantrendlist,setLoantrendlist] = useState('')
     const [paidtcm, setpaidtcm] = useState();
     const [paidself, setpaidself] = useState();
@@ -57,20 +58,20 @@ const Trend = ({ navigation }) => {
     ];
 
 useEffect(()=>{
-getloantrend()},
-[LoanID])
+getloantrend()
+},[route?.params?.loanIDs])
 
 
       // ------------------ get Customer List Api Call Start ------------------
   const getloantrend = async () => {
     console.log('search------->>>>>', )
     const data = {
-    "loanId":LoanID ? LoanID : 2,
+    "loanId":route?.params?.loanIDs,
     "rangeType": "MONTH",
     "range": "3"
     };
     await api.getloantrend(data).then((res) => {
-      console.log('------------------- getloantrend res', res.data.body)
+      console.log('------------------- getloantrend res', res)
       setLoantrendlist(res?.data?.body)
 
 
@@ -83,7 +84,7 @@ getloantrend()},
      
     })
       .catch((err) => {
-        console.log('------------------- getloantrendlisterr', err?.response)
+        console.log('------------------- getloantrendlisterr', err)
        
       })
   };

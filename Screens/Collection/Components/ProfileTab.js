@@ -51,7 +51,7 @@ useEffect(()=>{
   const getCustomerProfile = async () => {
     console.log('search------->>>>>', )
     const data = {
-    "customerId": 1,
+    "customerId": LoancustID,
   
     };
     await api.getCustomerProfile(data).then((res) => {
