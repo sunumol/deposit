@@ -111,7 +111,7 @@ const UploadAdhaar = ({ navigation }) => {
         ImagePicker.openPicker({
             width: width,
             height:  (width * 3) / 5,
-            hideBottomControls:true,
+            hideBottomControls:false,
             freeStyleCropEnabled:true,
             cropping: true,
         }).then(image => {
@@ -130,7 +130,7 @@ const UploadAdhaar = ({ navigation }) => {
         ImagePicker.openPicker({
             width: width,
             height:  (width * 3) / 5,
-            hideBottomControls:true,
+            hideBottomControls:false,
             freeStyleCropEnabled:true,
             cropping: true,
         }).then(image => {
@@ -149,14 +149,9 @@ const UploadAdhaar = ({ navigation }) => {
         ImagePicker.openCamera({
             width: width,
             height:  (width * 3) / 5,
-            hideBottomControls:true,
+            hideBottomControls:false,
             freeStyleCropEnabled:true,
             cropping: true,
-            disableCropperColorSetters:true,
-            cropperStatusBarColor: 'blue',
-      cropperToolbarColor: 'blue',
-      cropperActiveWidgetColor: 'blue',
-      cropperToolbarWidgetColor: '#3498DB',
         }).then(image => {
             console.log(image);
            // navigation.navigate('CropImage', {details: image?.path})
@@ -174,7 +169,7 @@ const UploadAdhaar = ({ navigation }) => {
         ImagePicker.openCamera({
             width: width,
             height:  (width * 3) / 5,
-            hideBottomControls:true,
+            hideBottomControls:false,
             freeStyleCropEnabled:true,
             cropping: true,
         }).then(image => {
@@ -194,8 +189,8 @@ const UploadAdhaar = ({ navigation }) => {
 
         ImageResizer.createResizedImage(
             value.path,
-            700,
-            1280,
+            width * 2,
+           ((width * 3) / 5) * 2,
             'JPEG',
             100,
              0,
@@ -230,8 +225,8 @@ const UploadAdhaar = ({ navigation }) => {
 
         ImageResizer.createResizedImage(
             value.path,
-            700,
-            1280,
+            width * 2,
+            ((width * 3) / 5) * 2,
             'JPEG',
             100,
              0,

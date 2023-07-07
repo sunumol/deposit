@@ -56,7 +56,7 @@ const DetailTab = ({ navigation,loandetail,loanIDs }) => {
                 
               }}>
                 <Tab.Screen name={'Payment History'} component={History} navigation={navigation} initialParams={{loanIDs:loanIDs}}/>
-                <Tab.Screen name={'Trend'} component={Trend} initialParams={{loanIDs:loanIDs}}/>
+                <Tab.Screen name={'Trend'} component={Trend} navigation={navigation} initialParams={{loanIDs:loanIDs}}/>
              
                
             </Tab.Navigator>

@@ -13,8 +13,8 @@ const { height, width } = Dimensions.get('screen');
 
 
 
-const Header = (loandetail) => {
-
+const Header = (loandetail,navigation) => {
+console.log('loan detail',loandetail)
 
     const { t } = useTranslation();
     
@@ -23,11 +23,11 @@ const Header = (loandetail) => {
             <View style={{ flex: 1 }}>
                 <View style={{ marginTop: 15 }}>
                     <Text style={styles.headText}>{t('common:LoanID')} :</Text>
-                    <Text style={styles.valueText}>{loandetail?.loandetail?.loanId}</Text>
+                    <Text style={styles.valueText}>{loandetail?.loandetail?.loanId ? loandetail?.loandetail?.loanId :'-' }</Text>
                 </View>
                 <View style={{ marginTop: 15 }}>
                     <Text style={styles.headText}>{t('common:LoanOutstanding')} :</Text>
-                    <Text style={styles.valueText}>₹{loandetail?.loandetail?.loanOutstanding}</Text>
+                    <Text style={styles.valueText}>₹{loandetail?.loandetail?.loanOutstanding ? loandetail?.loandetail?.loanOutstanding : '-'}</Text>
                 </View>
                 <View style={{ marginVertical: 19 }}>
                     <Text style={styles.headText}>{t('common:EmiDue')}</Text>
@@ -46,15 +46,15 @@ const Header = (loandetail) => {
             <View style={{ flex: 1 }}>
                 <View style={{ marginTop: 15 }}>
                     <Text style={styles.headText}>{t('common:LoanAmount')} :</Text>
-                    <Text style={styles.valueText}>₹{loandetail?.loandetail?.loanAmount}</Text>
+                    <Text style={styles.valueText}>₹{loandetail?.loandetail?.loanAmount ? loandetail?.loandetail?.loanAmount : '-'}</Text>
                 </View>
                 <View style={{ marginTop: 15 }}>
                     <Text style={styles.headText}>{t('common:Emi')} :</Text>
-                    <Text style={styles.valueText}>₹{loandetail?.loandetail?.emi}</Text>
+                    <Text style={styles.valueText}>₹{loandetail?.loandetail?.emi ? loandetail?.loandetail?.emi: '-'}</Text>
                 </View>
                 <View style={{ marginVertical: 19 }}>
                     <Text style={styles.headText}>{t('common:PaymentDue')}</Text>
-                    <Text style={[styles.valueText,{color:COLORS.colorRed}]}>₹{loandetail?.loandetail?.paymentDue}</Text>
+                    <Text style={[styles.valueText,{color:COLORS.colorRed}]}>₹{loandetail?.loandetail?.paymentDue ? loandetail?.loandetail?.paymentDue : '-'}</Text>
                     <Text style={[styles.valueText,{color:COLORS.colorRed,fontSize:10}]}>*{t('common:Include')}</Text>
                 </View>
             </View>

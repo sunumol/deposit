@@ -27,6 +27,8 @@ const Trend = ({ navigation ,route}) => {
     const [paidself, setpaidself] = useState();
     const [paidcard, setpaidcard] = useState();
     const [paidcash, setpaidcash] = useState();
+    const [range, setRange] = useState('');
+
 
 
 
@@ -68,7 +70,7 @@ getloantrend()
     const data = {
     "loanId":route?.params?.loanIDs,
     "rangeType": "MONTH",
-    "range": "3"
+    "range": range? range : 6
     };
     await api.getloantrend(data).then((res) => {
       console.log('------------------- getloantrend res', res)
@@ -89,6 +91,11 @@ getloantrend()
       })
   };
 
+
+  useEffect(()=>{
+    getloantrend()
+  },[range])
+
     return (
 
         <>
@@ -96,7 +103,7 @@ getloantrend()
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={styles.mainContainer}>
 
-                    <Chart loandetails={loantrendlist?.loanMonthlyTrendDetailsDTOList} />
+                    <Chart loandetails={loantrendlist?.loanMonthlyTrendDetailsDTOList} setRange={setRange} />
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', }}>
                         <View style={styles.Cards}>
                             <Image1 top={2} />

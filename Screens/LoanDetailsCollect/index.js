@@ -68,12 +68,13 @@ const LoanDetailsCollect = ({ navigation,route }) => {
         await api.getloanPaymentHistory(data).then((res) => {
           console.log('------------------- get history loan res', res)
             setLoanhistory(res?.data?.body)
+            setStatus(false)
          
          
         })
           .catch((err) => {
             console.log('-------------------get history loan err', err)
-           
+            setStatus(false)
           })
       };
 
@@ -84,12 +85,25 @@ const LoanDetailsCollect = ({ navigation,route }) => {
         <SafeAreaProvider>
             <SafeAreaView style={styles.container1} />
             <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} backgroundColor={'#002B59'} />
-            <Header name={t('common:LoanDetails')}  navigation={navigation} onPress={handleGoBack} />
+            <Header name={t('common:LoanDetails')}  navigation={navigation} />
 
-            <View style={styles.mainContainer}>
-                <DetailBox loandetail={loanhistory} loanIDs={route?.params?.loan?.loanId}/>
-                <DetailTab loandetail={loanhistory}  loanIDs={route?.params?.loan?.loanId}/>
+          {  status?
+
+                    <View
+                    style={{
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flex: 1,
+                    marginTop: 250,
+                    }}>
+                    <ActivityIndicator size={30} color={COLORS.colorB} />
+                    </View>
+          :<View style={styles.mainContainer}>
+                <DetailBox loandetail={loanhistory} loanIDs={route?.params?.loan?.loanId} navigation={navigation}/>
+                <DetailTab loandetail={loanhistory}  loanIDs={route?.params?.loan?.loanId} navigation={navigation}/>
             </View>
+            
+            }
         </SafeAreaProvider>
     )
 }
