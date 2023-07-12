@@ -42,6 +42,10 @@ const DLE = ({ navigation, set, list }) => {
         getData()
     }, [])
 
+
+
+
+
     const getData = async () => {
         try {
             const lang = await AsyncStorage.getItem('user-language')
@@ -134,6 +138,7 @@ const DLE = ({ navigation, set, list }) => {
            
              : <>
               {list?.map((item) => {
+                console.log('===',item)
                     return (
                         <TouchableOpacity  onPress={() => { item.dleScheduleStatus == "Conduct DLE" ? setModalVisible2(true) : item.dleScheduleStatus == "TC approval pending" ? setModalVisible(true) : item.dleScheduleStatus == "Bank account verification pending" ? console.log('Bank Account pending')  : navigation.navigate('ScheduleMeet',{id:item.id}) }} style={[styles.viewCard, { borderColor: 'white', borderWidth: 2 }]}>
 
@@ -164,8 +169,8 @@ const DLE = ({ navigation, set, list }) => {
                                     <Text style={[styles.numText, {}]}>{item?.mobileNumber?.replace(/^.{0}/g, '', " ").slice(-10).replaceAt(3, "X").replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X")}</Text>
                                     <View
 
-                                        style={[styles.ViewExplain, { right: 0, backgroundColor: item.dleScheduleStatus == "Conduct DLE" ? "rgba(186, 134, 205, 0.1)" : item.dleScheduleStatus ==  "Bank account verification pending"? "rgba(134, 145, 186, 0.1)" : item.dleScheduleStatus == "TC approval pending" ? "rgb(40, 239, 18,0.1)" : "rgba(155, 81, 224, 0.1)",width:item?.dleScheduleStatus== "TC approval pending" ? 126:item?.dleScheduleStatus== "Bank account verification pending" ? 156 :item?.width}]}>
-                                        <Text style={[styles.explainText, { marginHorizontal:item?.dleScheduleStatus == "Bank account verification pending"? 0 : 7, marginVertical: 1, color: item.dleScheduleStatus == "Conduct DLE" ? "rgba(242, 153, 74, 1)" :item.dleScheduleStatus == "Bank account verification pending" ? '#115ef0' : item.dleScheduleStatus == "TC approval pending" ? "rgba(39, 174, 96, 1)" : "rgba(155, 81, 224, 1)",textAlign:item?.dleScheduleStatus == "Bank account verification pending"?'right': null }]}>{item.dleScheduleStatus == 'Bank account verification pending' ? 'Bank A/c Pending' : item.dleScheduleStatus}</Text>
+                                        style={[styles.ViewExplain, { right: 0, backgroundColor: item.dleScheduleStatus == "Conduct DLE" ? "rgba(186, 134, 205, 0.1)" : item.dleScheduleStatus ==  "Bank account verification pending"? "#E5E7FF" : item.dleScheduleStatus == "TC approval pending" ? "rgb(40, 239, 18,0.1)" : "rgba(155, 81, 224, 0.1)",width:item?.dleScheduleStatus== "TC approval pending" ? 126:item?.width}]}>
+                                        <Text style={[styles.explainText, { marginHorizontal: 7, marginVertical: 1, color: item.dleScheduleStatus == "Conduct DLE" ? "rgba(242, 153, 74, 1)" :item.dleScheduleStatus == "Bank account verification pending" ? '#003874' : item.dleScheduleStatus == "TC approval pending" ? "rgba(39, 174, 96, 1)" : "rgba(155, 81, 224, 1)",}]}>{item.dleScheduleStatus == 'Bank account verification pending' ? 'Bank A/c Pending' : item.dleScheduleStatus}</Text>
                                     </View>
                                 </View>
                             </View>
@@ -190,7 +195,7 @@ const DLE = ({ navigation, set, list }) => {
 
 
 
-            <ApprovalModal
+            {/* <ApprovalModal
                 ModalVisible={ModalVisible}
                 onPressOut={() => {
                     setModalVisible(false)
@@ -200,7 +205,7 @@ const DLE = ({ navigation, set, list }) => {
                 navigation={navigation}
                 //  onPressOut={() => setModalVisible(!ModalVisible)}
                 setModalVisible={setModalVisible}
-                list={list} />
+                list={list} /> */}
 
 
 
