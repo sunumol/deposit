@@ -20,7 +20,10 @@ const initialState={
     SpouseOccupation:'',
     isLastPage:'',
     AgentId:'',
-    notificationcount:''
+    notificationcount:'',
+    customer_ID:'',
+    TC_Customer_id:'',
+    TC_Customer_idADD:''
 }
 
 export const baseReducer = (state = initialState, action) => {
@@ -115,6 +118,21 @@ export const baseReducer = (state = initialState, action) => {
             return {
                 ...state, // return the updated state
                 notificationcount: action.payload  
+            }
+            case "SET_CUSTOMER_ID":  // for updating state
+            return {
+                ...state, // return the updated state
+                customer_ID: action.payload  
+            }
+            case "SET_TCCUSTOMER_ID":  // for updating state
+            return {
+                ...state, // return the updated state
+               TC_Customer_id: action.payload  
+            }
+            case "SET_TCCUSTOMER_ID_ADD":  // for updating state
+            return {
+                ...state, // return the updated state
+                TC_Customer_idADD: action.payload  
             }
         default:
             return state;

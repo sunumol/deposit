@@ -3,7 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import SplashScreen from '../Screens/SplashScreen';
-import IntroScreens from '../Screens/IntroScreens';
+
 import LoginScreen from '../Screens/LoginScreen';
 import Permission from '../Screens/Permission';
 import CreatePin from '../Screens/CreatePin';
@@ -60,7 +60,7 @@ import SelectCalendar from '../Screens/SelectCalendar'
 // import CameraPick from '../Screens/UploadVid/Components/CameraPick';
 import { navigationRef } from './RootNavigation';
 import GeneratePin from '../Screens/GeneratePin';
-import EnergyCorrection from '../Screens/EnergyCorrection';
+
 import NotificationScreen from '../Screens/NotificationScreen'
 import MissedActivities from '../Screens/MissedActivities';
 import UploadAdhaar from '../Screens/UploadCoAdhaar/UploadAdhaar';
@@ -77,7 +77,7 @@ export default function Router() {
         headerShown: false
       }}>
         <Stack.Screen name="SplashScreen" component={SplashScreen} />
-        <Stack.Screen name="IntroScreen" component={netInfo.isConnected ? IntroScreens : NetWorkError} />
+       
         <Stack.Screen name="LoginScreen" component={netInfo.isConnected ? LoginScreen : NetWorkError} />
         <Stack.Screen name="Permission" component={netInfo.isConnected ? Permission : NetWorkError} />
         <Stack.Screen name="CreatePin" component={netInfo.isConnected ? CreatePin : NetWorkError} />
@@ -128,7 +128,7 @@ export default function Router() {
         <Stack.Screen name="UploadVid" component={netInfo.isConnected ? UploadVid : NetWorkError} />
         <Stack.Screen name="CorrectionScreen" component={netInfo.isConnected ? CorrectionScreen : NetWorkError} />
         <Stack.Screen name="GeneratePin" component={netInfo.isConnected ? GeneratePin : NetWorkError} />
-        <Stack.Screen name="EnergyCorrection" component={netInfo.isConnected ? EnergyCorrection : NetWorkError} />
+       
  {/* <Stack.Screen name="CameraPick" component={netInfo.isConnected ? CameraPick : NetWorkError} /> */}
         {/* --------------------------- Calendar Navigation Screens Start ---------------------------------------*/}
         <Stack.Screen name="Calendar" component={netInfo.isConnected ? Calendar : NetWorkError} />

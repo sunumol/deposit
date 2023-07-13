@@ -34,7 +34,7 @@ import {
     eachMonthOfInterval,
     addWeeks
 } from 'date-fns';
-//import Swiper from 'react-native-swiper'
+
 const Cgt = ({navigation}) => {
     const [status, setStatus] = useState(false);
     const weekDay = [];

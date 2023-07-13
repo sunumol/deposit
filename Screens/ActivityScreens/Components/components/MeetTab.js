@@ -144,6 +144,7 @@ const MeetTab = (props) => {
                 props.navigation.navigate('CreateTrustCircle')
             } else if (res?.data?.body?.status  == 'TC_CREATED') {
                 props. navigation.navigate('DLESchedule')
+                
             } else if (res?.data?.body?.status  == 'FAILED') {
                 console.log('failed+++')
                // props.navigation.navigate('EnergyUtility')
@@ -170,8 +171,6 @@ console.log("error",occupation)
 
         const data = {
             "activityId": id,
-
-
         }
         await api.getDlePageNumber(data).then((res) => {
             console.log("cust api", customerdetail)
@@ -322,8 +321,14 @@ console.log("error",occupation)
                                         type: 'SET_CGT_ACTIVITY',
                                         payload: item,
                                     });
+
+                                    dispatch({
+                                        type: 'SET_CUSTOMER_ID',
+                                        payload: item?.customerId,
+                                    });
+                                    console.log("activity customer ids",item?.customerId)                                    
                                     getCgtStatus(item?.activityId)
-                                    //props.navigation.navigate('CGT')
+                                    // props.navigation.navigate('CGT')
 
 
                                 } else {

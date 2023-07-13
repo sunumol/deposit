@@ -429,6 +429,7 @@ export default {
     'Callback': 'You have already requested for a callback',
     'Requested': 'Requested',
     'Submit': 'Submit',
+    'SorryDescFail': 'We are unable to process.\n Security check failed',
 
     //Exit Modal
 

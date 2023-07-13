@@ -105,7 +105,8 @@ console.log('props====',props)
                 } else if (res?.data?.body?.status  == 'ADD_TC') {
                     props.navigation.navigate('CreateTrustCircle')
                 } else if (res?.data?.body?.status  == 'TC_CREATED') {
-                    props. navigation.navigate('DLESchedule')
+                   props. navigation.navigate('DLESchedule')
+                   
                 } else if (res?.data?.body?.status  == 'FAILED') {
                     console.log('failed+++')
                    // props.navigation.navigate('EnergyUtility')
@@ -120,11 +121,37 @@ console.log('props====',props)
     // ------------------ ------------------
 
 
+    const getSpousedetail = async (id) => {
+        const data = {
+            "activityId": id
+        }
+        await api.getSpousedetail(data).then((res) => {
+            console.log('-------------------res spousedetail co-app', res?.data?.body?.occupation)
+            if (res?.status) {
+                dispatch({
+                    type: 'SET_SPOUSE_OCCUPATION',
+                    payload: res?.data?.body?.occupation,
+                });
+
+                setSpousedetail(res?.data?.body?.occupation)
+               // props.navigation.navigate('ResidenceOwner')
+                //props.navigation.navigate('UploadAdhaar')
+                getDlePageNumber(id, res?.data?.body?.occupation,res?.data?.body)
+                console.log("spose detail", res?.data?.body)
+
+            }
+        }).catch((err) => {
+            setError(err?.response?.status)
+            //props.navigation.navigate('ContinuingGuarantor')
+            console.log('-------------------err spousedetail1', err?.response?.status)
+            getDlePageNumber(id,err?.response?.status)
+        })
+    };
 
 
     // ------------------getDlePageNumberdetail ------------------
 
-    const getDlePageNumber = async (id) => {
+    const getDlePageNumber = async (id,occupation) => {
         console.log('api called')
 
         const data = {
@@ -136,26 +163,67 @@ console.log('props====',props)
             console.log('-------------------res getDlePageNumber', res?.data?.body)
             if (res?.status) {
                 if (res?.data?.body == 1) {
-                    props.navigation.navigate('DetailCheck')
-                } else if (res?.data?.body == 2) {
-                    props.navigation.navigate('ResidenceOwner')
-                } else if (res?.data?.body == 3) {
-                    props.navigation.navigate('ContinuingGuarantor')
-                } else if (res?.data?.body == 4) {
-                    props.navigation.navigate('UploadVid')
-                } else if (res?.data?.body == 5) {
-                    props.navigation.navigate('EnergyUtility')
-                } else if (res?.data?.body == 6) {
-                    props.navigation.navigate('VehicleOwn')
-                } else if (res?.data?.body == 7) {
-                    props.navigation.navigate('IncomeDetails', { relationShip: 'Customer' })
-                } else if (res?.data?.body == 8) {
-                    props.navigation.navigate('IncomeDetails', { relationShip: 'Spouse' })
-                } else if (res?.data?.body == 9) {
-                    props.navigation.navigate('HousePhoto')
-
-                }
-                //props.navigation.navigate('DetailCheck')
+                    // if (DLEStatus) {
+                    //     props.navigation.navigate('CustomerDetails')
+                    // } else {
+                         props.navigation.navigate('DetailCheck')
+                     //}
+ 
+                 }else if (res?.data?.body == 10) {
+                     props.navigation.navigate('CustomerDetails')
+                   
+                 }
+                  else if (res?.data?.body == 2) {
+                     props.navigation.navigate('ResidenceOwner')
+                 } else if (res?.data?.body == 3) {
+                 
+                     props.navigation.navigate('ContinuingGuarantor')
+                 } else if (res?.data?.body == 4) {
+                     if (occupation == 500) {
+                         props.navigation.navigate('UploadAdhaar')
+                       
+                     } else {
+                         props.navigation.navigate('AddVehicle')
+                     }
+ 
+                 } else if (res?.data?.body == 5) {
+                     
+                     props.navigation.navigate('VehicleOwn')
+                 } else if (res?.data?.body == 6) {
+                     props.navigation.navigate('EnergyUtility')
+                 } else if (res?.data?.body == 7) {
+                     props.navigation.navigate('IncomeDetails', { relationShip: 'Customer' })
+                     // if (occupation !== 'UNEMPLOYED') {
+ 
+                     //     props.navigation.navigate('IncomeDetails', { relationShip: 'Customer' })
+                     // } else if (occupation == 'UNEMPLOYED' && spouseDetail !== 'UNEMPLOYED') {
+                     //     props.navigation.navigate('IncomeDetailsSpouse', { relationShip: 'Spouse' })
+                     // } else if (occupation == 'UNEMPLOYED' && spouseDetail == 'UNEMPLOYED') {
+                     //     navigation.navigate('Proceed')
+                     // }
+                     // props.navigation.navigate('IncomeDetails', { relationShip: 'Customer' })
+                 } else if (res?.data?.body == 8) {
+                     console.log("error handle",error)
+                     if(occupation == 500){
+                       //  props.navigation.navigate('IncomeDetails', { relationShip: 'Customer' })
+                         props.navigation.navigate('Proceed')
+                     }
+                     else if (occupation !== 'UNEMPLOYED') {
+                         props.navigation.navigate('IncomeDetailsSpouse', { relationShip: 'Spouse' })
+                     } else{
+                         props.navigation.navigate('Proceed')
+                     }
+                 } else if (res?.data?.body == 9) {
+                     console.log("occ",occupation)
+                     if (occupation == 500) {
+                         props.navigation.navigate('UploadVid')
+                        //
+                     } else {
+                         props.navigation.navigate('AddVehicle')
+                     }
+                    
+                 } 
+           
             }
         }).catch((err) => {
             console.log('-------------------err  getDlePageNumber', err)
@@ -201,15 +269,17 @@ console.log('props====',props)
                             type: 'SET_CGT_ACTIVITY',
                             payload:props?.details,
                         });
+                        
                         getCgtStatus(props?.details?.activityId)
+                        console.log("activity customer id",props?.details)
                         //console.log("props passing",props?.details?.customerId)
                        // props.navigation.navigate('CGT')
                     } else if (props?.details?.purpose === 'Conduct DLE') {
                         // setModalVisible(true)
 
-
+                        getSpousedetail(item?.activityId)
                         setDetails(item)
-                        getDlePageNumber(item.activityId)
+                        // getDlePageNumber(item.activityId)
                     }
 
                 }}

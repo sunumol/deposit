@@ -6,24 +6,27 @@ import {
     Platform,
     ScrollView,
     Dimensions,
+    TouchableOpacity
 } from 'react-native'
 import React, { useState } from 'react'
 import Icon1 from 'react-native-vector-icons/Ionicons'
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 import Verified from '../../../assets/Verified.svg'
-
+import EditAddModal from './EditAddressModal';
 import { FONTS, COLORS } from '../../../Constants/Constants';
-
+import { useSelector } from 'react-redux';
 const { height, width } = Dimensions.get('screen');
 
 const SelectTab = (props) => {
-
+    console.log("props tc details",props?.custID)
+    const TC_Customer_id = useSelector(state => state.TC_Customer_id);
     const [ButtonStatus, setButtonStatus] = useState(false)
-
+    const [EditAddsModal, setEditsModal] = useState(false)
+    const [Address, setAddress] = useState(props?.item?.address)
     String.prototype.replaceAt = function (index, replacement) {
         return this.substring(0, index) + replacement + this.substring(index + replacement.length);
     }
-
+{console.log("getTCDetails",TC_Customer_id)}
     const getInitials = (name) => {
         let initials;
         const nameSplit = name?.split(" ");
@@ -39,7 +42,7 @@ const SelectTab = (props) => {
         return initials.toUpperCase();
     };
 
-{console.log("initial",props?.item)}
+    { console.log("initial", props?.item) }
 
     return (
 
@@ -94,15 +97,15 @@ const SelectTab = (props) => {
                                 </View>
 
                                 <View style={{ flexDirection: 'column', paddingLeft: 12, paddingTop: 5 }}>
-                                <View style={{flexDirection:'row'}}>
-                                    <Text style={[styles.nameText,{paddingRight:5}]}>{props?.item?.customerName}</Text>
+                                    <View style={{ flexDirection: 'row' }}>
+                                        <Text style={[styles.nameText, { paddingRight: 5 }]}>{props?.item?.customerName}</Text>
 
-                                    {props?.item?.varificationStatus
-                                    ?<Verified width={18} height={18}/>
-                                    :null}
+                                        {props?.item?.varificationStatus
+                                            ? <Verified width={18} height={18} />
+                                            : null}
                                     </View>
 
-                                    <View style={{ flexDirection: 'row',marginBottom: 15 }}>
+                                    <View style={{ flexDirection: 'row', marginBottom: 15 }}>
 
                                         <View style={{ paddingTop: 5, paddingRight: 1 }}>
                                             <Icon1 name="location-outline" color={"black"} />
@@ -118,7 +121,7 @@ const SelectTab = (props) => {
 
                             <View style={{ flexDirection: 'column', paddingTop: 5, alignItems: 'flex-end', }}>
 
-                                <View style={{ flexDirection: 'row' ,}}>
+                                <View style={{ flexDirection: 'row', }}>
                                     <Icon2 name="phone-in-talk-outline" color={"black"} size={15} />
                                     <Text style={[styles.numText, { paddingLeft: 6 }]}>{props?.item?.mobileNumber?.replace(/^.{0}/g, '', " ").slice(-10).replaceAt(3, "X").replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X")}</Text>
                                 </View>
@@ -129,15 +132,21 @@ const SelectTab = (props) => {
 
                         <View style={styles.lineView} />
 
-                        <View style={{ paddingHorizontal: 17,marginBottom: 15 }}>
-                            <Text style={styles.headTextTitle}>Address</Text>
-                            <Text style={[styles.subText, { width: 260 }]}>{props?.item?.address}</Text>
-                        </View>
 
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                            <View style={{ paddingHorizontal: 17, marginBottom: 5 }}>
+                                <Text style={styles.headTextTitle}>Address</Text>
+
+                            </View>
+                            <TouchableOpacity style={styles.EditTouch} onPress={() => setEditsModal(true)} >
+                                <Text style={[styles.changeText, { paddingLeft: 0 }]}>Edit</Text>
+                            </TouchableOpacity>
+                        </View>
+                        <Text style={[styles.subText, { width: 260, paddingLeft: width * 0.04, textAlign: 'left', marginBottom: 10 }]}>{props?.item?.address}</Text>
                         <View style={styles.lineView} />
 
                         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 17, }}>
-                            <View style={{ flexDirection: 'column', flex: 1, marginRight: 10,paddingBottom:15 }}>
+                            <View style={{ flexDirection: 'column', flex: 1, marginRight: 10, paddingBottom: 15 }}>
                                 <Text style={styles.headTextTitle}>Aadhaar ID</Text>
                                 <Text style={styles.subText}>{props?.item?.aadharNumber}</Text>
                             </View>
@@ -162,7 +171,18 @@ const SelectTab = (props) => {
                 }
 
             </ScrollView>
+            <EditAddModal
 
+                ModalVisible={EditAddsModal}
+                onPressOut={() => { props.getTCDetails, setEditsModal(!EditAddsModal) }}
+                setModalVisible={setEditsModal}
+                navigation={props.navigation}
+                Address={Address}
+                custID={props?.custID}
+
+                getTCDetails={props.getTCDetails}
+                setAddress={setAddress}
+            />
         </View>
     )
 }
@@ -215,6 +235,16 @@ const styles = StyleSheet.create({
         fontFamily: FONTS.FontMedium,
         color: COLORS.colorB,
         paddingLeft: 8
+    },
+    EditTouch: {
+        backgroundColor: COLORS.colorLight,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 54,
+        height: 24,
+        marginBottom: 0,
+        width: '20%',
+        marginRight: 10
     },
     searchBox: {
         borderWidth: 1,

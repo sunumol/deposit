@@ -109,7 +109,7 @@ const UploadAdhaar = ({ navigation }) => {
 
         //Choose Image from gallery
         ImagePicker.openPicker({
-            width: width,
+            //width: width*0.90,
             height:  (width * 3) / 5,
             hideBottomControls:true,
             freeStyleCropEnabled:true,

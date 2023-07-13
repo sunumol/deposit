@@ -77,7 +77,9 @@ const MoreModal = ({ ModalVisible, onPressOut, setModalVisible, navigation }) =>
                                 </View>
 
                                 <View style={{ alignItems: 'center', justifyContent: 'center' ,paddingRight:Lang == 'en' ? width*0.01:0,}} >
-                                    <TouchableOpacity style={styles.touch} onPress={()=>navigation.navigate('FAQ')}>
+                                    <TouchableOpacity style={styles.touch} onPress={()=>{
+                                        setModalVisible(!ModalVisible)
+                                        navigation.navigate('FAQ')}}>
                                         <Image2 />
                                     </TouchableOpacity>
                                     <Text style={styles.text}>{t('common:FAQQ')}</Text>

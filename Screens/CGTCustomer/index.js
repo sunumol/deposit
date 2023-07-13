@@ -29,6 +29,7 @@ import ErrorModal from './Components/ErrorModal';
 import ReasonModal from './Components/ReasonModal';
 import { api } from '../../Services/Api';
 import Verified from '../../assets/Verified.svg'
+import EditAddModal from './Components/EditAddModal';
 
 // ------------- Import Image --------
 import Date from './Images/Date.svg';
@@ -40,15 +41,17 @@ const CgtCustomer = ({ navigation, route }) => {
 
     const isDarkMode = true;
     // const route = useRoute();
-
+    const customerId = useSelector(state => state.customer_ID);
     const [ModalVisible, setModalVisible] = useState(false)
     const [ModalError, setModalError] = useState(false)
     const [ModalReason, setModalReason] = useState(false)
     const [ModalVisible2, setModalVisible2] = useState(false)
     const [details, setDetails] = useState()
     const [custID, setCustId] = useState()
-    const [Status,setStatus] = useState(true)
+    const [Status, setStatus] = useState(true)
     const [rejectReason, setRejectReason] = useState()
+    const [EditAddsModal, setEditsModal] = useState(false)
+    const [Address, setAddress] = useState()
 
     const data = [
         {
@@ -85,7 +88,7 @@ const CgtCustomer = ({ navigation, route }) => {
 
     const handleGoBack = useCallback(() => {
         setModalVisible2(true)
-       // navigation.goBack()
+        // navigation.goBack()
 
         return true; // Returning true from onBackPress denotes that we have handled the event
     }, [navigation]);
@@ -123,14 +126,14 @@ const CgtCustomer = ({ navigation, route }) => {
 
     React.useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
-console.log('focus==========')
-getDetails()
+            console.log('focus==========')
+            getDetails()
 
         });
-     
+
         return unsubscribe;
     }, [navigation]);
-    
+
 
     // ------------------ GET Setails Cgt Api Call Start ------------------
     const getDetails = async () => {
@@ -140,6 +143,7 @@ getDetails()
         await api.getCGTDetails(data).then((res) => {
             console.log('-------------------res123', res)
             setDetails(res?.data?.body)
+            setAddress(res?.data?.body?.address)
             setStatus(false)
         })
             .catch((err) => {
@@ -216,105 +220,110 @@ getDetails()
 
             <Header navigation={navigation} name="CGT" onPress={handleGoBack} />
 
-            {Status ? 
-                <View style={{alignItems:'center',justifyContent:'center',flex:1,}}>
-                <ActivityIndicator size={30} color={COLORS.colorB}/>
-                </View>:
-            <View style={styles.mainContainer}>
-                <ScrollView showsVerticalScrollIndicator={false} >
-                    <View style={styles.boxView}>
-                        <View style={styles.contentView}>
-                            <Text style={styles.timeText}>{details?.cgtTime?.slice(0, -3)} PM</Text>
-                            <Text style={styles.dateText}>{details?.cgtDate ? moment(new Date(details?.cgtDate)).format("ddd, DD MMM") : ''}</Text>
+            {Status ?
+                <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1, }}>
+                    <ActivityIndicator size={30} color={COLORS.colorB} />
+                </View> :
+                <View style={styles.mainContainer}>
+                    <ScrollView showsVerticalScrollIndicator={false} >
+                        <View style={styles.boxView}>
+                            <View style={styles.contentView}>
+                                <Text style={styles.timeText}>{details?.cgtTime?.slice(0, -3)} PM</Text>
+                                <Text style={styles.dateText}>{details?.cgtDate ? moment(new Date(details?.cgtDate)).format("ddd, DD MMM") : ''}</Text>
+                            </View>
+                            <TouchableOpacity style={styles.editView} onPress={() => {
+                                navigation.navigate('SelectCalendar', { selectedData: [activityId], title: 'New CGT' }),
+                                    AsyncStorage.removeItem('DATECGT')
+                            }}>
+                                <Date />
+                                <Text style={styles.changeText}>Reschedule CGT</Text>
+                            </TouchableOpacity>
                         </View>
-                        <TouchableOpacity style={styles.editView} onPress={() => {
-                            navigation.navigate('SelectCalendar', { selectedData: [activityId], title: 'New CGT' }),
-                                AsyncStorage.removeItem('DATECGT')
-                        }}>
-                            <Date />
-                            <Text style={styles.changeText}>Reschedule CGT</Text>
+
+                        <View style={styles.searchBox}>
+                            <View style={styles.boxStyle}>
+                                <View style={{ flex: 1, flexDirection: 'row' }}>
+
+                                    <View style={[styles.circleStyle, { backgroundColor: '#6979F8' }]}>
+                                        <Text style={styles.circleText}>{getInitials(details?.customerName)}</Text>
+                                    </View>
+
+                                    <View style={{ flexDirection: 'column', paddingLeft: 12, paddingTop: 5 }}>
+                                        <View style={{ flexDirection: 'row' }}>
+                                            <Text style={[styles.nameText, { paddingRight: 5 }]}>{details?.customerName}</Text>
+                                            {details?.varificationStatus
+                                                ? <Verified width={18} height={18} />
+                                                : null}
+                                        </View>
+                                        <View style={{ flexDirection: 'row', }}>
+                                            <View style={{ paddingTop: 5, paddingRight: 1 }}>
+                                                <Icon1 name="location-outline" color={"black"} />
+                                            </View>
+                                            <Text style={[styles.idText, { paddingTop: 4 }]}>{details?.pin}</Text>
+                                        </View>
+                                    </View>
+                                </View>
+
+                                <View style={{ flexDirection: 'column', paddingTop: 5, alignItems: 'flex-end' }}>
+                                    <View style={{ flexDirection: 'row' }}>
+                                        <Icon2 name="phone-in-talk-outline" color={"black"} size={15} />
+                                        <Text style={[styles.numText, { paddingLeft: 6 }]}>{details?.mobileNumber?.replace(/^.{0}/g, '', " ").slice(-10).replaceAt(3, "X").replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X")}</Text>
+                                    </View>
+                                </View>
+
+                            </View>
+                            <View style={styles.lineView} />
+                            <View style={{ paddingHorizontal: 17, marginTop: 10 }}>
+                                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                                    <Text style={styles.headTextTitle}>Address</Text>
+                                    <TouchableOpacity style={styles.EditTouch} onPress={()=>setEditsModal(true)} >
+                                        <Text style={[styles.changeText,{paddingLeft:0}]}>Edit</Text>
+                                    </TouchableOpacity>
+                                </View>
+                                <Text style={[styles.subText, { maxWidth: 270 }]}>{details?.address}</Text>
+                            </View>
+                            <View style={styles.lineView} />
+                            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 17, }}>
+                                <View style={{ flexDirection: 'column', flex: 1, marginRight: 10, marginTop: 10 }}>
+                                    <Text style={styles.headTextTitle}>Aadhaar ID</Text>
+                                    <Text style={styles.subText}>{details?.aadharNumber}</Text>
+                                </View>
+                            </View>
+
+                            <>
+                                <View style={styles.lineView} />
+                                <View style={{ paddingHorizontal: 17, marginBottom: details?.spouseVoterId ? 0 : 10, marginTop: 10 }}>
+                                    <Text style={styles.headTextTitle}>Voter ID</Text>
+                                    <Text style={styles.subText}>{details?.voterId}</Text>
+                                </View>
+                            </>
+
+                            {details?.spouseVoterId &&
+                                <>
+                                    <View style={styles.lineView} />
+                                    <View style={{ paddingHorizontal: 17, paddingBottom: 16, marginTop: 10 }}>
+                                        <Text style={styles.headTextTitle}>Spouse Voter ID</Text>
+                                        <Text style={styles.subText}>{details?.spouseVoterId}</Text>
+                                    </View>
+                                </>}
+
+                        </View>
+
+                    </ScrollView>
+
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+
+                        <TouchableOpacity style={[styles.buttonView, { backgroundColor: COLORS.colorLight }]}
+                            onPress={() => setModalReason(true)}>
+                            <Text style={[styles.continueText, { color: COLORS.colorB }]}>Reject</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => updateActivity()}
+                            style={[styles.buttonView, { backgroundColor: COLORS.colorB }]}>
+                            <Text style={[styles.continueText, { color: COLORS.colorBackground }]}>Confirm</Text>
                         </TouchableOpacity>
                     </View>
 
-                    <View style={styles.searchBox}>
-                        <View style={styles.boxStyle}>
-                            <View style={{ flex: 1, flexDirection: 'row' }}>
-
-                                <View style={[styles.circleStyle, { backgroundColor: '#6979F8' }]}>
-                                    <Text style={styles.circleText}>{getInitials(details?.customerName)}</Text>
-                                </View>
-
-                                <View style={{ flexDirection: 'column', paddingLeft: 12, paddingTop: 5 }}>
-                                    <View style={{ flexDirection: 'row' }}>
-                                        <Text style={[styles.nameText, { paddingRight: 5 }]}>{details?.customerName}</Text>
-                                        {details?.varificationStatus
-                                            ? <Verified width={18} height={18} />
-                                            : null}
-                                    </View>
-                                    <View style={{ flexDirection: 'row', }}>
-                                        <View style={{ paddingTop: 5, paddingRight: 1 }}>
-                                            <Icon1 name="location-outline" color={"black"} />
-                                        </View>
-                                        <Text style={[styles.idText, { paddingTop: 4 }]}>{details?.pin}</Text>
-                                    </View>
-                                </View>
-                            </View>
-
-                            <View style={{ flexDirection: 'column', paddingTop: 5, alignItems: 'flex-end' }}>
-                                <View style={{ flexDirection: 'row' }}>
-                                    <Icon2 name="phone-in-talk-outline" color={"black"} size={15} />
-                                    <Text style={[styles.numText, { paddingLeft: 6 }]}>{details?.mobileNumber?.replace(/^.{0}/g, '', " ").slice(-10).replaceAt(3, "X").replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X")}</Text>
-                                </View>
-                            </View>
-
-                        </View>
-                        <View style={styles.lineView} />
-                        <View style={{ paddingHorizontal: 17, marginTop: 10 }}>
-                            <Text style={styles.headTextTitle}>Address</Text>
-                            <Text style={[styles.subText, { maxWidth: 270 }]}>{details?.address}</Text>
-                        </View>
-                        <View style={styles.lineView} />
-                        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 17, }}>
-                            <View style={{ flexDirection: 'column', flex: 1, marginRight: 10, marginTop: 10 }}>
-                                <Text style={styles.headTextTitle}>Aadhaar ID</Text>
-                                <Text style={styles.subText}>{details?.aadharNumber}</Text>
-                            </View>
-                        </View>
-
-                        <>
-                            <View style={styles.lineView} />
-                            <View style={{ paddingHorizontal: 17, marginBottom: details?.spouseVoterId ? 0 : 10, marginTop: 10 }}>
-                                <Text style={styles.headTextTitle}>Voter ID</Text>
-                                <Text style={styles.subText}>{details?.voterId}</Text>
-                            </View>
-                        </>
-
-                        {details?.spouseVoterId &&
-                            <>
-                                <View style={styles.lineView} />
-                                <View style={{ paddingHorizontal: 17, paddingBottom: 16, marginTop: 10 }}>
-                                    <Text style={styles.headTextTitle}>Spouse Voter ID</Text>
-                                    <Text style={styles.subText}>{details?.spouseVoterId}</Text>
-                                </View>
-                            </>}
-
-                    </View>
-
-                </ScrollView>
-
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-
-                    <TouchableOpacity style={[styles.buttonView, { backgroundColor: COLORS.colorLight }]}
-                        onPress={() => setModalReason(true)}>
-                        <Text style={[styles.continueText, { color: COLORS.colorB }]}>Reject</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={()=>updateActivity()}
-                        style={[styles.buttonView, { backgroundColor: COLORS.colorB }]}>
-                        <Text style={[styles.continueText, { color: COLORS.colorBackground }]}>Confirm</Text>
-                    </TouchableOpacity>
-                </View>
-
-            </View>}
+                </View>}
 
             <RejectModal
                 onPress1={() => {
@@ -351,15 +360,26 @@ getDetails()
                 data={data}
             />
 
-<CGTstatus
-                Press={() => {setModalVisible2(false),updateActivity(),navigation.navigate('ActivityScreens') }}
-                Press1={() => {setModalVisible2(false),navigation.navigate('ActivityScreens') }}
+            <CGTstatus
+                Press={() => { setModalVisible2(false), updateActivity(), navigation.navigate('ActivityScreens') }}
+                Press1={() => { setModalVisible2(false), navigation.navigate('ActivityScreens') }}
                 ModalVisible={ModalVisible2}
                 setModalVisible={setModalVisible2}
                 onPressOut={() => {
                     setModalVisible2(false)
                 }}
                 navigation={navigation}
+            />
+
+            <EditAddModal
+                onPress1={updateActivityReject}
+                ModalVisible={EditAddsModal}
+                onPressOut={() => {getDetails(),setEditsModal(!EditAddsModal)}}
+                setModalVisible={setEditsModal}
+                navigation={navigation}
+                Address={Address}
+                custID={customerId}
+                setAddress={setAddress}
             />
 
         </SafeAreaProvider>
@@ -532,5 +552,14 @@ const styles = StyleSheet.create({
         color: '#1A051D',
         fontFamily: FONTS.FontRegular,
         fontSize: 12
+    },
+    EditTouch: {
+        backgroundColor: COLORS.colorLight,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 54,
+        height: 24,
+        marginBottom: 0,
+        width: '20%'
     }
 })
