@@ -97,7 +97,7 @@ console.log('props====',props)
         await api.getCgtStatus(data).then((res) => {
             console.log('-------------------res getCgtStatus', res?.data?.body)
       
-                
+           
                 if (res?.data?.body?.status == 'START') {
                     props.navigation.navigate('CgtCustomer')
                 } else if (res?.data?.body?.status  == 'KCY_VERIFIED') {
@@ -269,11 +269,14 @@ console.log('props====',props)
                             type: 'SET_CGT_ACTIVITY',
                             payload:props?.details,
                         });
-                        
-                        getCgtStatus(props?.details?.activityId)
+                        dispatch({
+                            type: 'SET_CUSTOMER_ID',
+                            payload: props?.details?.customerId,
+                        });
+                       getCgtStatus(props?.details?.activityId)
                         console.log("activity customer id",props?.details)
                         //console.log("props passing",props?.details?.customerId)
-                       // props.navigation.navigate('CGT')
+                        
                     } else if (props?.details?.purpose === 'Conduct DLE') {
                         // setModalVisible(true)
 

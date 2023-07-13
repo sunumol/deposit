@@ -50,7 +50,7 @@ const ErrorModal3 = ({ ModalVisible, onPressOut,onPress1 }) => {
 
                     <View style={{ paddingTop: width * 0.02,paddingHorizontal: width *0.05 }}>
                       
-                        <Text style={styles.textdesc}>This mobile number has already registered</Text>
+                        <Text style={styles.textdesc}>This mobile number is already registered</Text>
                      
                     </View>
 

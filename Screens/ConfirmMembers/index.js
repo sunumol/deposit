@@ -19,6 +19,7 @@ import MemberModal from './Components/MemberModal';
 import IconD from 'react-native-vector-icons/AntDesign';
 import EditAddModal from './Components/EditAddressModal';
 
+
 String.prototype.replaceAt = function (index, replacement) {
   return this.substring(0, index) + replacement + this.substring(index + replacement.length);
 }
@@ -44,6 +45,7 @@ const ConfirmMembers = ({ navigation }) => {
   const [searchcustomerlist, setsearchcustomerlist] = useState();
   const [AddressId,setAddressId] = useState('')
 
+
   const [Address, setAddress] = useState()
   // -----------Redux State ---------------------------------
 
@@ -52,7 +54,7 @@ const ConfirmMembers = ({ navigation }) => {
   const cgtCustomerDetails = useSelector(state => state.cgtCustomerDetails);
   const activityId = useSelector(state => state.activityId);
   const agentId = useSelector(state => state.AgentId);
-
+  const [AddressStatus,setAddressStatus] = useState(false)
   const datas = [
     {
       id: 1,
@@ -297,6 +299,38 @@ const ConfirmMembers = ({ navigation }) => {
     // setStatus(false)
   }
 
+  const EditAddress = () => {
+ 
+    const data = {
+        "customerId":selectedItem,
+        "address": Address
+    }
+    console.log("data of banner", data)
+    api
+        .EditAddress(data)
+        .then((result) => {
+            if (result) {
+                console.log("result succe",result)
+              setAddressStatus(false)
+                TCMemberadded()
+                navigation.navigate('CreateTrustCircle')
+            }
+        })
+        .catch((err) => {
+            {console.log("addres print",Address,custID)}
+            console.log("banner banner 3333 ---->", err?.response);
+        });
+};
+
+const ConfirmButton=()=>{
+  if(AddressStatus){
+    EditAddress()
+  }else{
+    TCMemberadded()
+    navigation.navigate('CreateTrustCircle')
+  }
+}
+  
 
   return (
     <SafeAreaProvider>
@@ -406,8 +440,10 @@ const ConfirmMembers = ({ navigation }) => {
               ?
               <SelectTab item={dataSelected}
                 navigation={navigation}
-                Address={Address}
-                setAddress={setAddress}
+                Address={AddressStatus}
+                AddressTextInput={Address}
+                setAddressTextInput={setAddress}
+                setAddress={setAddressStatus}
                 custID={selectedItem}
                 getTCDetails={getTCDetails} />
               : null
@@ -440,8 +476,7 @@ const ConfirmMembers = ({ navigation }) => {
                 type: 'SET_SELECTED_CUSTOMERID',
                 payload: ids,
               });
-              TCMemberadded()
-              navigation.navigate('CreateTrustCircle')
+              ConfirmButton()
             }}
               style={[styles.buttonView, { backgroundColor: COLORS.colorB }]}>
               <Text style={[styles.continueText, { color: COLORS.colorBackground }]}>Confirm</Text>
