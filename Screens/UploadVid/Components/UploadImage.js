@@ -71,7 +71,8 @@ const UploadImage = ({ navigation, id, setFrontimage, setBackimage }) => {
         ImagePicker.openPicker({
             width: (width * 3) / 5,
             height: width,
-            hideBottomControls: true,
+            hideBottomControls:true,
+            freeStyleCropEnabled:true,
             cropping: true,
         }).then(image => {
             console.log("IMAGE", image.path);
@@ -89,7 +90,8 @@ const UploadImage = ({ navigation, id, setFrontimage, setBackimage }) => {
         ImagePicker.openPicker({
             width: (width * 3) / 5,
             height: width,
-            hideBottomControls: true,
+            hideBottomControls:true,
+            freeStyleCropEnabled:true,
             cropping: true,
         }).then(image => {
             console.log("IMAGE", image.path);
@@ -109,8 +111,6 @@ const UploadImage = ({ navigation, id, setFrontimage, setBackimage }) => {
             width: (width * 3) / 5, 
             height: width,
             freeStyleCropEnabled:true,
-            compressImageMaxWidth: 800,
-             compressImageMaxHeight: 800, 
             hideBottomControls:true,
             cropping: true,
         }).then(image => {
@@ -129,7 +129,8 @@ const UploadImage = ({ navigation, id, setFrontimage, setBackimage }) => {
         ImagePicker.openCamera({
             width: (width * 3) / 5,
             height: width,
-            hideBottomControls: true,
+            hideBottomControls:true,
+            freeStyleCropEnabled:true,
             cropping: true,
         }).then(image => {
             console.log(image);

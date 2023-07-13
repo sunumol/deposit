@@ -27,7 +27,7 @@ import { useSelector } from 'react-redux';
 const { height, width } = Dimensions.get('screen');
 
 const Profiles = ({ navigation,customerdata }) => {
-    console.log('prifle tab [][][][][][]=====>>>',customerdata)
+ 
     const [custData,setCustData] = useState('')
     String.prototype.replaceAt = function (index, replacement) {
         return this.substring(0, index) + replacement + this.substring(index + replacement.length);

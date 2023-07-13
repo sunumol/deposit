@@ -47,7 +47,7 @@ const LoanTab = ({ navigation }) => {
         }
 
         await api.getActiveLoansdetails(data).then((res) => {
-          console.log('------------------- Active loan res', res.data.body)
+          console.log('------------------- Active loan res', res)
             setActiveloandetail(res?.data?.body)
          
          

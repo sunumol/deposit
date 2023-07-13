@@ -18,13 +18,14 @@ import { FONTS, COLORS } from '../../../Constants/Constants';
 import Icon1 from 'react-native-vector-icons/FontAwesome';
 import { api } from '../../../Services/Api';
 import { useSelector } from 'react-redux';
+import moment from 'moment'
 
 const { height, width } = Dimensions.get('screen');
 
-const History = ({ route }) => {
+const History = ({ route,navigation }) => {
    
     const LoanId = useSelector(state => state.loanId);
-    const [loanhistory,setLoanhistory] = useState('')
+    const [loanhistory,setLoanhistory] = useState()
     const [Data, setData] = useState([
         {
             Id: 1,
@@ -62,24 +63,28 @@ const History = ({ route }) => {
 
     useEffect(()=>{
         getloanPaymentHistory()
-        console.log('detail tab [][][[][][][]]=====>>>',LoanId)
-    },[LoanId])
+        console.log('detail tab [][][[][][][]]=====>>>',route?.params?.loanIDs)
+    },[route?.params?.loanIDs])
  
 
     async function getloanPaymentHistory()  {
         console.log('search------->>>>>', )
         const data = {
-            loanId:   2
+            loanId:route?.params?.loanIDs,
         }
 
         await api.getloanPaymentHistory(data).then((res) => {
           console.log('------------------- get history loan res', res.data.body)
+          if(res){
             setLoanhistory(res?.data?.body)
+          }
+            
          
          
         })
           .catch((err) => {
-            console.log('-------------------get history loan err', err)
+            console.log('-------------------get history loan err', err?.response?.data?.message)
+            if(err?.response?.data?.message.includes("No EMIs found with given loan id")){}
            
           })
       };
@@ -91,32 +96,29 @@ const History = ({ route }) => {
             <View style={styles.mainContainer}>
 
                 <View>
+                    {console.log('---hhhhhhh--',loanhistory)}
+               
                     {loanhistory?.loanPaymentHistoryDetailsDTOS?.map((item) => {
                         return (
                             <View>
-                                <View style={{ flexDirection: 'row', justifyContent: 'space-between',marginBottom:width*0.05,marginTop:width*0.05 }}>
+                               
+                             
+                               <>
+                               <View style={{ flexDirection: 'row', justifyContent: 'space-between',marginBottom:width*0.05,marginTop:width*0.05 }}>
 
-                                    <View style={{ flexDirection: 'row' }}>
-                                        <Text style={styles.DateText}>{item.Date}</Text>
-                                        {/* {item.Id !== 3 ? 
-                                        <View style={styles.RsCard}>
-                                            <Icon1 name="rupee" size={14} color={'#4F4F4F'} />
-                                        </View>:
-                                        <Image1 width={18} height={18} marginRight={10} marginLeft={2} />}
-                                        <Text style={[styles.NumText, { marginRight: 10 }]}>{item.cash}</Text>
+                                        <View style={{ flexDirection: 'row' }}>
+                                            <Text style={styles.DateText}>{moment(item?.date).format('DD MMM')} '{moment(item?.date).format('YY')}</Text>
+                                        </View>
 
-                                        {item.paid !== '' ?
-                                            <View style={styles.Card1}>
-                                                <Text style={[styles.NumText, { paddingLeft: 2, paddingRight: 2 }]}>{item.paid}</Text>
-                                            </View> : null} */}
-                                    </View>
-
-                                    <Text style={[styles.AmtText, { color: item.color }]}>{item.amount}</Text>
-                                </View>
-                                <View style={styles.Line} />
+                                        <Text style={[styles.AmtText, { color: item?.isDueAmount == true ?  '#003874' :'#EA4047' }]}>{item.amount}</Text>
+                                        </View>
+                                        <View style={styles.Line} />
+                                </> 
+                           
                             </View>
                         )
                     })}
+                 
                 </View>
 
 
@@ -172,13 +174,14 @@ const styles = StyleSheet.create({
     AmtText: {
 
         fontSize: 14,
-        fontFamily: FONTS.FontSemiB
+        fontFamily: FONTS.FontBold
     },
     DateText: {
         color: '#000000',
         fontFamily: FONTS.FontRegular,
         fontSize: 12,
-        marginRight: 5
+        marginRight: 5,
+        fontWeight:'400'
     },
     RsCard: {
         width: 18,

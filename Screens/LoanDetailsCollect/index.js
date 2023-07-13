@@ -22,6 +22,7 @@ import { useTranslation } from 'react-i18next';
 import DetailTab from './Components/DetailTab';
 import History from './Components/History';
 import { api } from '../../Services/Api';
+import { useSelector } from 'react-redux';
 
 
 
@@ -37,7 +38,7 @@ const LoanDetailsCollect = ({ navigation,route }) => {
     const closeMenu = () => setVisible(false);
     const [status, setStatus] = useState(true);
     const [loanhistory,setLoanhistory] = useState('')
-
+    const LOANID = useSelector(state => state.loanID);
 
     const handleGoBack = useCallback(() => {
         navigation.goBack()
@@ -59,20 +60,21 @@ const LoanDetailsCollect = ({ navigation,route }) => {
     },[])
 
     async function getloanPaymentHistory()  {
-        console.log('search------->>>>>', )
+        console.log(' LOANID search------->>>>>', LOANID)
         const data = {
-            loanId:  route?.params?.loan?.loanId ? route?.params?.loan?.loanId :  2
+            loanId:route?.params?.loan?.loanId
         }
 
         await api.getloanPaymentHistory(data).then((res) => {
-          console.log('------------------- get history loan res', res.data.body)
+          console.log('------------------- get history loan res', res)
             setLoanhistory(res?.data?.body)
+            setStatus(false)
          
          
         })
           .catch((err) => {
             console.log('-------------------get history loan err', err)
-           
+            setStatus(false)
           })
       };
 
@@ -83,12 +85,25 @@ const LoanDetailsCollect = ({ navigation,route }) => {
         <SafeAreaProvider>
             <SafeAreaView style={styles.container1} />
             <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} backgroundColor={'#002B59'} />
-            <Header name={t('common:LoanDetails')}  navigation={navigation} onPress={handleGoBack} />
+            <Header name={t('common:LoanDetails')}  navigation={navigation} />
 
-            <View style={styles.mainContainer}>
-                <DetailBox loandetail={loanhistory} />
-                <DetailTab loandetail={loanhistory}  />
+          {  status?
+
+                    <View
+                    style={{
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flex: 1,
+                    marginTop: 250,
+                    }}>
+                    <ActivityIndicator size={30} color={COLORS.colorB} />
+                    </View>
+          :<View style={styles.mainContainer}>
+                <DetailBox loandetail={loanhistory} loanIDs={route?.params?.loan?.loanId} navigation={navigation}/>
+                <DetailTab loandetail={loanhistory}  loanIDs={route?.params?.loan?.loanId} navigation={navigation}/>
             </View>
+            
+            }
         </SafeAreaProvider>
     )
 }

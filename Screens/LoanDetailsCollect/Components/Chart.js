@@ -22,14 +22,14 @@ import { color } from 'react-native-elements/dist/helpers';
 import moment from 'moment/moment';
 const { height, width } = Dimensions.get('screen');
 
-const Chart = ({ navigation,loandetails }) => {
+const Chart = ({ navigation,loandetails ,setRange}) => {
     console.log('chart======>>>',loandetails)
     const [open, setOpen] = useState(false);
-    const [value, setValue] = useState('6 Months')
+    const [value, setValue] = useState('6')
     const [items, setItems] = useState([
-        { id: 1, label: '6 Months', value: '6 Months' },
-        { id: 2, label: '3 Months', value: '3 Months' },
-        { id: 3, label: '1 Month', value: '1 Month' }]);
+        { id: 1, label: '6 Months', value: '6' },
+        { id: 2, label: '3 Months', value: '3' },
+        { id: 3, label: '1 Month', value: '1' }]);
 
         const [dataSet, setDataSet] = useState([])
 
@@ -99,6 +99,10 @@ const Chart = ({ navigation,loandetails }) => {
 
     ];
 {console.log(dataSet,'jjkjkjkjk')}
+useEffect(()=>{
+    console.log('SORT--------------',value)
+    setRange(value)
+},[value])
 
 useEffect(() => {
     console.log('chart======>>>2222222222',loandetails)
@@ -144,7 +148,7 @@ useEffect(() => {
                             <Text style={styles.onTime}>Late</Text>
                         </View>
                     </View>
-
+{console.log('-------jjjj---',value)}
                     <View style={{ justifyContent: 'center',
                      width: width * 0.29, height: width * 0.03 }}>
                         <DropDownPicker
@@ -157,7 +161,7 @@ useEffect(() => {
                             itemSeparator={true}
                             showTickIcon={false}
                             required={true}
-                            items={items?.map(item => ({ label: item?.label, value: item?.label, id: item.id }))}
+                            items={items?.map(item => ({ label: item?.label, value: item?.value, id: item.id }))}
                             onChangeItem={item => setValue({
                                 country: item?.value
                             },
