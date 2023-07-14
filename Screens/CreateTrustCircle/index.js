@@ -138,6 +138,7 @@ getDetails()
            // console.log('-------------------getAllTrustCircleMembers', res)
             settcstatus(false)
             settcmember(res?.data?.body)
+            console.log("rc member ",res?.data?.body)
             // getDLEschedule(res?.data?.body?.primaryCustomerId)
         })
             .catch((err) => {
