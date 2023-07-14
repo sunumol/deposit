@@ -350,12 +350,12 @@ const ConfirmMembers = ({ navigation }) => {
 
 
   const ConfirmButton = () => {
-  
+  console.log("name change",NameChange,AddressChange)
     if(NameChange && AddressChange){
       EditName()
       EditAddress()
    
-      navigation.navigate('CreateTrustCircle')
+      //navigation.navigate('CreateTrustCircle')
   }
   if(NameChange){
       EditName()
@@ -487,6 +487,10 @@ const ConfirmMembers = ({ navigation }) => {
                 Name={Name}
                 setName={setName}
                 NameStatus={NameStatus}
+                NameChange={NameChange}
+                setNameChange={setNameChange}
+                AddressChange={AddressChange}
+                setAddressChange={setAddressChange}
                 setNameStatus={setNameStatus}
                 custID={selectedItem}
                 getTCDetails={getTCDetails} />

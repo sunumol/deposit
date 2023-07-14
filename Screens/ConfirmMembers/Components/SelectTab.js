@@ -169,6 +169,7 @@ const SelectTab = (props) => {
                                         props?.setName('')
                                     } else if (/^[a-zA-Z ]+$/g.test(text) || text === '') {
                                         props?.setName(text)
+                                        props?.setNameChange(true)
                                     } else {
 
                                     }
@@ -227,6 +228,7 @@ const SelectTab = (props) => {
                                         props?.setAddressTextInput('')
                                     } else if (/^[a-zA-Z1234567890,.:()/ ]+$/g.test(text) || text === '') {
                                         props?.setAddressTextInput(text)
+                                        props?.setAddressChange(true)
                                     } else {
 
                                     }
