@@ -53,7 +53,11 @@ const CgtCustomer = ({ navigation, route }) => {
     const [rejectReason, setRejectReason] = useState()
     const [EditAddsModal, setEditsModal] = useState(false)
     const [Address, setAddress] = useState()
-    const [AddressStatus,setAddressStatus] = useState(false)
+    const [AddressStatus, setAddressStatus] = useState(false)
+    const [Name, setName] = useState('')
+    const [NameStatus, setNameStatus] = useState(false)
+    const [NameChange,setNameChange] = useState(false)
+    const [AddressChange,setAddressChange] = useState(false)
 
     const data = [
         {
@@ -153,6 +157,7 @@ const CgtCustomer = ({ navigation, route }) => {
             console.log('-------------------res123', res)
             setDetails(res?.data?.body)
             setAddress(res?.data?.body?.address)
+            setName(res?.data?.body?.customerName)
             setStatus(false)
         })
             .catch((err) => {
@@ -224,7 +229,7 @@ const CgtCustomer = ({ navigation, route }) => {
     };
 
     const EditAddress = () => {
-       
+
         const data = {
             "customerId": customerId,
             "address": Address
@@ -235,16 +240,54 @@ const CgtCustomer = ({ navigation, route }) => {
             .then((result) => {
                 if (result) {
                     console.log("result succe", result)
-                    getDetails()
-                    setAddressStatus(false)
-                   updateActivity()
-                   
+                    updateActivity()
+
                 }
             })
             .catch((err) => {
                 console.log("banner banner 3333 ---->", err?.response);
             });
     };
+
+
+    const EditName = () => {
+
+        const data = {
+            "customerId": customerId,
+            "fullName": Name
+        }
+        console.log("data of banner", data)
+        api
+            .EditName(data)
+            .then((result) => {
+                if (result) {
+                    console.log("result succe", result)
+             
+
+                }
+            })
+            .catch((err) => {
+                console.log("banner banner 3333 ---->", err?.response);
+            });
+    };
+
+const ConfirmButton = ()=>{
+    if(NameChange && AddressChange){
+        EditName()
+        EditAddress()
+       
+        
+    }
+    if(NameChange){
+        EditName()
+        updateActivity()
+    }else if(AddressChange){
+        EditAddress()
+        //updateActivity()
+    }else{
+        updateActivity()
+    }
+}
     return (
         <SafeAreaProvider>
             <SafeAreaView style={styles.container1} />
@@ -273,12 +316,9 @@ const CgtCustomer = ({ navigation, route }) => {
                         </View>
 
                         <View style={styles.searchBox}>
-                            <View style={styles.boxStyle}>
+                            {/* <View style={styles.boxStyle}>
                                 <View style={{ flex: 1, flexDirection: 'row' }}>
 
-                                    <View style={[styles.circleStyle, { backgroundColor: '#6979F8' }]}>
-                                        <Text style={styles.circleText}>{getInitials(details?.customerName)}</Text>
-                                    </View>
 
                                     <View style={{ flexDirection: 'column', paddingLeft: 12, paddingTop: 5 }}>
                                         <View style={{ flexDirection: 'row' }}>
@@ -294,47 +334,105 @@ const CgtCustomer = ({ navigation, route }) => {
                                             <Text style={[styles.idText, { paddingTop: 4 }]}>{details?.pin}</Text>
                                         </View>
                                     </View>
-                                </View>
+                                </View> */}
 
-                                <View style={{ flexDirection: 'column', paddingTop: 5, alignItems: 'flex-end' }}>
+                            {/* <View style={{ flexDirection: 'column', paddingTop: 5, alignItems: 'flex-end' }}>
                                     <View style={{ flexDirection: 'row' }}>
-                                        <Icon2 name="phone-in-talk-outline" color={"black"} size={15} />
+                                     
                                         <Text style={[styles.numText, { paddingLeft: 6 }]}>{details?.mobileNumber?.replace(/^.{0}/g, '', " ").slice(-10).replaceAt(3, "X").replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X")}</Text>
                                     </View>
-                                </View>
+                                </View> */}
 
+                            {/* </View> */}
+
+                            <View style={{ paddingHorizontal: 17, marginBottom: 0, marginTop: 15 }}>
+                                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                                    <View style={{ paddingHorizontal: 0, marginBottom: 5 }}>
+                                        <Text style={styles.headTextTitle}>Name</Text>
+
+                                    </View>
+                                    {!NameStatus && !details?.varificationStatus&&
+                                    <TouchableOpacity style={[styles.EditTouch, { marginLeft: width * 0.52 }]} onPress={() => setNameStatus(true)} >
+                                        <Text style={[styles.changeText, { paddingLeft: 0 }]}>Edit</Text>
+                                    </TouchableOpacity>}
+                                </View>
+                                {NameStatus ? <View style={{
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    marginBottom: 10
+                                }}>
+                                    <TextInput style={styles.textInput}
+                                        value={removeEmojis(Name)}
+                                    maxLength={20}
+                                        onChangeText={(text) => {
+                                            //setAddress(text)
+                                            const firstDigitStr = String(text)[0];
+                                            if (firstDigitStr == ' ') {
+                                                setName('')
+                                            } else if (/^[a-zA-Z ]+$/g.test(text) || text === '') {
+                                                setName(text)
+                                                setNameChange(true)
+                                            } else {
+
+                                            }
+
+                                        }}
+                                    />
+                                </View> :
+                                    <View style={{ flexDirection: 'row' }}>
+                                        <Text style={[styles.nameText, { paddingRight: 5,fontFamily:FONTS.FontMedium }]}>{details?.customerName}</Text>
+
+                                        {details?.varificationStatus
+                                            ? <Verified width={18} height={18} />
+                                            : null}
+                                    </View>}
+                            </View>
+                            <View style={{ flexDirection: 'row',paddingLeft:17 }}>
+                                            <View style={{ paddingTop: 5, paddingRight: 1 }}>
+                                                <Icon1 name="location-outline" color={"black"} />
+                                            </View>
+                                            <Text style={[styles.idText, { paddingTop: 4 }]}>{details?.pin}</Text>
+                                        </View>
+                            <View style={styles.lineView} />
+                            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 17, }}>
+                                <View style={{ flexDirection: 'column', flex: 1, marginRight: 10, marginTop: 10 }}>
+                                    <Text style={styles.headTextTitle}>Mobile</Text>
+                                    <Text style={styles.subText}>{details?.mobileNumber?.replace(/^.{0}/g, '', " ").slice(-10).replaceAt(3, "X").replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X")}</Text>
+                                </View>
                             </View>
                             <View style={styles.lineView} />
                             <View style={{ paddingHorizontal: 17, marginTop: 10 }}>
                                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                                     <Text style={styles.headTextTitle}>Address</Text>
-                                    <TouchableOpacity style={styles.EditTouch} onPress={()=>setAddressStatus(true)} >
-                                        <Text style={[styles.changeText,{paddingLeft:0}]}>Edit</Text>
-                                    </TouchableOpacity>
+                                    {!AddressStatus && !details?.varificationStatus &&
+                                    <TouchableOpacity style={[styles.EditTouch]} onPress={() => setAddressStatus(true)} >
+                                        <Text style={[styles.changeText, { paddingLeft: 0 }]}>Edit</Text>
+                                    </TouchableOpacity>}
                                 </View>
                                 {!AddressStatus ?
-                                <Text style={[styles.subText, { maxWidth: 270 }]}>{details?.address}</Text>
-                               : <View style={{
-                            alignItems: 'center',
-                            justifyContent: 'center'
-                        }}>
-                            <TextInput style={styles.textInput}
-                                value={removeEmojis(Address)}
-                                multiline={true}
-                                onChangeText={(text) => {
-                                    //setAddress(text)
-                                    const firstDigitStr = String(text)[0];
-                                    if (firstDigitStr == ' ') {
-                                        setAddress('')
-                                    } else if (/^[a-zA-Z1234567890,.:()/ ]+$/g.test(text) || text === '') {
-                                        setAddress(text)
-                                    } else {
+                                    <Text style={[styles.subText, { maxWidth: 270 }]}>{details?.address}</Text>
+                                    : <View style={{
+                                        alignItems: 'center',
+                                        justifyContent: 'center'
+                                    }}>
+                                        <TextInput style={styles.textInput}
+                                            value={removeEmojis(Address)}
+                                            multiline={true}
+                                            onChangeText={(text) => {
+                                                //setAddress(text)
+                                                const firstDigitStr = String(text)[0];
+                                                if (firstDigitStr == ' ') {
+                                                    setAddress('')
+                                                } else if (/^[a-zA-Z1234567890,.:()/ ]+$/g.test(text) || text === '') {
+                                                    setAddress(text)
+                                                    setAddressChange(true)
+                                                } else {
 
-                                    }
+                                                }
 
-                                }}
-                            />
-                            </View>}
+                                            }}
+                                        />
+                                    </View>}
                             </View>
                             <View style={styles.lineView} />
                             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 17, }}>
@@ -371,7 +469,7 @@ const CgtCustomer = ({ navigation, route }) => {
                             onPress={() => setModalReason(true)}>
                             <Text style={[styles.continueText, { color: COLORS.colorB }]}>Reject</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() =>AddressStatus? EditAddress():updateActivity()}
+                        <TouchableOpacity onPress={() =>ConfirmButton()}
                             style={[styles.buttonView, { backgroundColor: COLORS.colorB }]}>
                             <Text style={[styles.continueText, { color: COLORS.colorBackground }]}>Confirm</Text>
                         </TouchableOpacity>
@@ -428,7 +526,7 @@ const CgtCustomer = ({ navigation, route }) => {
             <EditAddModal
                 onPress1={updateActivityReject}
                 ModalVisible={EditAddsModal}
-                onPressOut={() => {getDetails(),setEditsModal(!EditAddsModal)}}
+                onPressOut={() => { getDetails(), setEditsModal(!EditAddsModal) }}
                 setModalVisible={setEditsModal}
                 navigation={navigation}
                 Address={Address}
@@ -512,7 +610,8 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: COLORS.colorBorder,
         borderRadius: 8,
-        marginTop: 23
+        marginTop: 23,
+        marginBottom:25
     },
     lineView: {
         borderWidth: 0.6,

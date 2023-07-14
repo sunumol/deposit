@@ -728,12 +728,21 @@ export const api = {
   },
 
 
-
+//Edit address CGT
  EditAddress: (data) => {
     return axios.post(`${baseURL2}changeCustomerAddress`, data, {
       "Content-Type": "application/json",
     });
   },
+
+  //Edit Name CGT
+
+  EditName: (data) => {
+    return axios.post(`${baseURL2}changeCustomerName`, data, {
+      "Content-Type": "application/json",
+    });
+  },
+
   //     return axios.post(`${baseURL2}enterPinSimIdCheck`,data, {
   //       headers: {
   //         'Content-Type': 'application/json',

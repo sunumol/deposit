@@ -19,16 +19,16 @@ import { useSelector } from 'react-redux';
 const { height, width } = Dimensions.get('screen');
 
 const SelectTab = (props) => {
-    console.log("props tc details",props?.custID)
+    console.log("props tc details", props?.custID)
     const TC_Customer_id = useSelector(state => state.TC_Customer_id);
     const [ButtonStatus, setButtonStatus] = useState(false)
     const [EditAddsModal, setEditsModal] = useState(false)
     const [Address, setAddress] = useState(props?.item?.address)
-    const [AddressStatus,setAddressStatus] = useState(false)
+    const [AddressStatus, setAddressStatus] = useState(false)
     String.prototype.replaceAt = function (index, replacement) {
         return this.substring(0, index) + replacement + this.substring(index + replacement.length);
     }
-{console.log("getTCDetails",TC_Customer_id)}
+    { console.log("getTCDetails", TC_Customer_id) }
     const getInitials = (name) => {
         let initials;
         const nameSplit = name?.split(" ");
@@ -53,7 +53,7 @@ const SelectTab = (props) => {
         return string?.replace(regex, '')
     }
 
-    
+
 
     return (
 
@@ -99,24 +99,92 @@ const SelectTab = (props) => {
 
                     <View style={styles.searchBox}>
 
-                        <View style={styles.boxStyle}>
+                        {/* <View style={styles.boxStyle}> */}
 
-                            <View style={{ flex: 1, flexDirection: 'row' }}>
+                        {/* <View style={{ flex: 1, flexDirection: 'row' }}>
 
-                                <View style={[styles.circleStyle, { backgroundColor: '#4B9760' }]}>
-                                    <Text style={styles.circleText}>{getInitials(props?.item.customerName)}</Text>
-                                </View>
 
-                                <View style={{ flexDirection: 'column', paddingLeft: 12, paddingTop: 5 }}>
+                                <View style={{ flexDirection: 'column', paddingLeft: 0, paddingTop: 5 }}>
+                                    <View style={{ paddingHorizontal: 0, marginBottom: 5 }}>
+                                        <Text style={styles.headTextTitle}>Name</Text>
+
+                                    </View>
                                     <View style={{ flexDirection: 'row' }}>
-                                        <Text style={[styles.nameText, { paddingRight: 5 }]}>{props?.item?.customerName}</Text>
-
+                                        <Text style={[styles.nameText, { paddingRight: 5 }]}>{props?.item?.customerName}</Text> */}
+                        {/* 
                                         {props?.item?.varificationStatus
                                             ? <Verified width={18} height={18} />
                                             : null}
                                     </View>
+                                    <View style={styles.lineView} />
+                                    <View style={{ flexDirection: 'column', paddingTop: 5, }}> */}
 
-                                    <View style={{ flexDirection: 'row', marginBottom: 15 }}>
+                        {/* <Text style={styles.headTextTitle}>Mobile</Text>
+
+                                        <Text style={[styles.numText, { paddingLeft: 0 }]}>{props?.item?.mobileNumber?.replace(/^.{0}/g, '', " ").slice(-10).replaceAt(3, "X").replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X")}</Text>
+
+
+                                    </View> */}
+
+                        {/* <View style={{ flexDirection: 'row', marginBottom: 15 }}>
+
+                                        <View style={{ paddingTop: 5, paddingRight: 1 }}>
+                                            <Icon1 name="location-outline" color={"black"} />
+                                        </View>
+
+                                        <Text style={[styles.idText, { paddingTop: 4 }]}>{props?.item?.pin}</Text>
+
+                                    </View> */}
+                        {/* 
+                                </View>
+
+                            </View>
+
+
+
+                        </View> */}
+                        <View style={{ paddingHorizontal: 17, marginBottom: 0,marginTop:15 }}>
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                            <View style={{ paddingHorizontal: 0, marginBottom: 5 }}>
+                                <Text style={styles.headTextTitle}>Name</Text>
+
+                            </View>
+                            {!props?.NameStatus && !props?.item?.varificationStatus &&
+                            <TouchableOpacity style={[styles.EditTouch,{marginLeft:width*0.55}]} onPress={() => props?.setNameStatus(true)} >
+                                <Text style={[styles.changeText, { paddingLeft: 0 }]}>Edit</Text>
+                            </TouchableOpacity>}
+                        </View>
+                            {props?.NameStatus ? <View style={{
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            marginBottom: 10
+                        }}>
+                            <TextInput style={styles.textInput}
+                                value={removeEmojis(props?.Name)}
+                                maxLength={20}
+                                onChangeText={(text) => {
+                                    //setAddress(text)
+                                    const firstDigitStr = String(text)[0];
+                                    if (firstDigitStr == ' ') {
+                                        props?.setName('')
+                                    } else if (/^[a-zA-Z ]+$/g.test(text) || text === '') {
+                                        props?.setName(text)
+                                    } else {
+
+                                    }
+
+                                }}
+                            />
+                        </View> :
+                            <View style={{ flexDirection: 'row' }}>
+                                <Text style={[styles.nameText, { paddingRight: 5,fontFamily:FONTS.FontMedium }]}>{props?.item?.customerName}</Text> 
+
+                                {props?.item?.varificationStatus
+                                    ? <Verified width={18} height={18} />
+                                    : null}
+                            </View>}
+                        </View>
+                        <View style={{ flexDirection: 'row', marginBottom: 15,paddingLeft:17 }}>
 
                                         <View style={{ paddingTop: 5, paddingRight: 1 }}>
                                             <Icon1 name="location-outline" color={"black"} />
@@ -125,22 +193,12 @@ const SelectTab = (props) => {
                                         <Text style={[styles.idText, { paddingTop: 4 }]}>{props?.item?.pin}</Text>
 
                                     </View>
+                        <View style={styles.lineView} />
 
-                                </View>
-
-                            </View>
-
-                            <View style={{ flexDirection: 'column', paddingTop: 5, alignItems: 'flex-end', }}>
-
-                                <View style={{ flexDirection: 'row', }}>
-                                    <Icon2 name="phone-in-talk-outline" color={"black"} size={15} />
-                                    <Text style={[styles.numText, { paddingLeft: 6 }]}>{props?.item?.mobileNumber?.replace(/^.{0}/g, '', " ").slice(-10).replaceAt(3, "X").replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X")}</Text>
-                                </View>
-
-                            </View>
-
+                        <View style={{ paddingHorizontal: 17, marginBottom: 15 }}>
+                            <Text style={styles.headTextTitle}>Mobile</Text>
+                            <Text style={styles.subText}>{props?.item?.mobileNumber?.replace(/^.{0}/g, '', " ").slice(-10).replaceAt(3, "X").replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X")}</Text>
                         </View>
-
                         <View style={styles.lineView} />
 
 
@@ -149,14 +207,15 @@ const SelectTab = (props) => {
                                 <Text style={styles.headTextTitle}>Address</Text>
 
                             </View>
+                            {!props?.Address && !props?.item?.varificationStatus &&
                             <TouchableOpacity style={styles.EditTouch} onPress={() => props?.setAddress(true)} >
                                 <Text style={[styles.changeText, { paddingLeft: 0 }]}>Edit</Text>
-                            </TouchableOpacity>
+                            </TouchableOpacity>}
                         </View>
-                        {props?.Address? <View style={{
+                        {props?.Address ? <View style={{
                             alignItems: 'center',
                             justifyContent: 'center',
-                            marginBottom:10
+                            marginBottom: 15
                         }}>
                             <TextInput style={styles.textInput}
                                 value={removeEmojis(props?.AddressTextInput)}
@@ -174,9 +233,9 @@ const SelectTab = (props) => {
 
                                 }}
                             />
-                            </View>:
-                        <Text style={[styles.subText, { width: 260, paddingLeft: width * 0.04, textAlign: 'left', marginBottom: 10 }]}>{props?.item?.address}</Text>
-                }
+                        </View> :
+                            <Text style={[styles.subText, { width: 260, paddingLeft: width * 0.05, textAlign: 'left', marginBottom: 15 }]}>{props?.item?.address}</Text>
+                        }
                         <View style={styles.lineView} />
 
                         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 17, }}>

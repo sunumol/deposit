@@ -43,7 +43,9 @@ const ConfirmMembers = ({ navigation }) => {
   const [custID, setCustId] = useState('')
   const TC_Customer_id = useSelector(state => state.TC_Customer_idADD);
   const [searchcustomerlist, setsearchcustomerlist] = useState();
-  const [AddressId,setAddressId] = useState('')
+  const [AddressId, setAddressId] = useState('')
+  const [NameChange,setNameChange] = useState(false)
+  const [AddressChange,setAddressChange] = useState(false)
 
 
   const [Address, setAddress] = useState()
@@ -54,7 +56,10 @@ const ConfirmMembers = ({ navigation }) => {
   const cgtCustomerDetails = useSelector(state => state.cgtCustomerDetails);
   const activityId = useSelector(state => state.activityId);
   const agentId = useSelector(state => state.AgentId);
-  const [AddressStatus,setAddressStatus] = useState(false)
+  const [AddressStatus, setAddressStatus] = useState(false)
+  const [Name, setName] = useState('')
+  const [NameStatus, setNameStatus] = useState(false)
+
   const datas = [
     {
       id: 1,
@@ -177,14 +182,15 @@ const ConfirmMembers = ({ navigation }) => {
       type: 'SET_TCCUSTOMER_ID',
       payload: id,
     });
-    
- 
+
+
     const data = {
-      "customerId": id?id:selectedItem
+      "customerId": id ? id : selectedItem
     };
     await api.getCGTDetailsTCMembers(data).then((res) => {
       console.log('------------------- CGT slot res', res?.data?.body)
       setAddress(res?.data?.body?.address)
+      setName(res?.data?.body?.customerName)
       setDataSelected(res?.data?.body)
 
     }).catch((err) => {
@@ -300,37 +306,71 @@ const ConfirmMembers = ({ navigation }) => {
   }
 
   const EditAddress = () => {
- 
+
     const data = {
-        "customerId":selectedItem,
-        "address": Address
+      "customerId": selectedItem,
+      "address": Address
     }
     console.log("data of banner", data)
     api
-        .EditAddress(data)
-        .then((result) => {
-            if (result) {
-                console.log("result succe",result)
-              setAddressStatus(false)
-                TCMemberadded()
-                navigation.navigate('CreateTrustCircle')
-            }
-        })
-        .catch((err) => {
-            {console.log("addres print",Address,custID)}
-            console.log("banner banner 3333 ---->", err?.response);
-        });
-};
+      .EditAddress(data)
+      .then((result) => {
+        if (result) {
+          console.log("result succe", result)
+          TCMemberadded()
+        }
+      })
+      .catch((err) => {
+        { console.log("addres print", Address, custID) }
+        console.log("banner banner 3333 ---->", err?.response);
+      });
+  };
 
-const ConfirmButton=()=>{
-  if(AddressStatus){
-    EditAddress()
+
+  const EditName = () => {
+
+    const data = {
+      "customerId": selectedItem,
+      "fullName": Name
+    }
+    console.log("data of banner", data)
+    api
+      .EditName(data)
+      .then((result) => {
+        if (result) {
+          console.log("result succe", result)
+    
+        }
+      })
+      .catch((err) => {
+        { console.log("addres print", Address, custID) }
+        console.log("banner banner 3333 ---->", err?.response);
+      });
+  };
+
+
+  const ConfirmButton = () => {
+  
+    if(NameChange && AddressChange){
+      EditName()
+      EditAddress()
+   
+      navigation.navigate('CreateTrustCircle')
+  }
+  if(NameChange){
+      EditName()
+      TCMemberadded()
+      navigation.navigate('CreateTrustCircle')
+  }else if(AddressChange){
+      EditAddress()
+      
+      navigation.navigate('CreateTrustCircle')
   }else{
     TCMemberadded()
     navigation.navigate('CreateTrustCircle')
   }
-}
-  
+  }
+
 
   return (
     <SafeAreaProvider>
@@ -407,7 +447,7 @@ const ConfirmButton=()=>{
                       onPress={() => {
                         onChangeText('')
                         getTCDetails(item?.id)
-                  
+
                         console.log("customerID", customerID)
                         setSelectedItem(item?.id)
                       }}>
@@ -444,6 +484,10 @@ const ConfirmButton=()=>{
                 AddressTextInput={Address}
                 setAddressTextInput={setAddress}
                 setAddress={setAddressStatus}
+                Name={Name}
+                setName={setName}
+                NameStatus={NameStatus}
+                setNameStatus={setNameStatus}
                 custID={selectedItem}
                 getTCDetails={getTCDetails} />
               : null
