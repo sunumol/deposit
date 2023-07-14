@@ -105,6 +105,7 @@ const DetailChecks = ({ navigation, setState, proofType1,
     const getResidenceowner = async () => {
         const data = {
             "activityId": activityId
+           
         }
         await api.getResidenceowner(data).then((res) => {
             console.log('-------------------res Residence owner', res?.data?.body)
@@ -131,7 +132,7 @@ const DetailChecks = ({ navigation, setState, proofType1,
     // ------------------save and update residence owner detail ------------------
     const UpdateResidenceowner = async () => {
         const data = {
-            "activityId": activityId?activityId:id,
+             "activityId": activityId?activityId:id,
             "ownerShipProofType": Purpose,
             "imageUrl": Image1,
             "relationShipWithCustomer": Purposes,
@@ -290,7 +291,8 @@ const DetailChecks = ({ navigation, setState, proofType1,
 
     const getDLEConfirmation = async () => {
         const data = {
-            "activityId": activityId?activityId:id
+             "activityId": activityId?activityId:id
+           
         }
         await api.getCorrectionNotify(data).then((res) => {
 
@@ -313,7 +315,8 @@ const DetailChecks = ({ navigation, setState, proofType1,
         console.log('api called customer',activityId,id)
 
         const data = {
-            "activityId": activityId?activityId:id
+             "activityId": activityId?activityId:id
+          
         }
         await api.getCustomerdetail(data).then((res) => {
             console.log('-------------------res customerdetail', res.data.body)

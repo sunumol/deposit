@@ -160,6 +160,7 @@ const DLESchedule = ({ navigation, route }) => {
                             set={route?.params?.set}
                             list={tcdetail} />
                         }
+                     
                     </View>
                 </ScrollView>
             }

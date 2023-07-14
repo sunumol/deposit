@@ -31,6 +31,7 @@ const ItemTabs = ({navigation}) => {
   const [ModalVisible, setModalVisible] = useState(false);
   const [pendingdata, setPendingdata] = useState('');
   const [status, setStatus] = useState(true);
+  const [sortcondition, setsortcondition] = useState(true);
   const [listData, setListData] = useState({
     customersDue: 2,
     loansDue: 2,
@@ -96,7 +97,10 @@ const ItemTabs = ({navigation}) => {
         setStatus(false);
       })
       .catch(err => {
-        console.log('-------------------Pending collection err', err?.response);
+        console.log('-------------------Pending collection err', err?.response?.data?.message);
+        if(err?.response?.data?.message.includes('No customer details found for the assigned pin code')){
+          setsortcondition(false)
+        }
         setStatus(false);
       });
   };
@@ -209,7 +213,7 @@ const ItemTabs = ({navigation}) => {
               </View>
             </View>
 
-            <View style={{flex: 1, marginRight: 20, alignItems: 'flex-end'}}>
+          {sortcondition ?  <View style={{flex: 1, marginRight: 20, alignItems: 'flex-end'}}>
               <TouchableOpacity
                 onPress={() => setModalVisible(true)}
                 style={{
@@ -230,7 +234,7 @@ const ItemTabs = ({navigation}) => {
                   Sort
                 </Text>
               </TouchableOpacity>
-            </View>
+            </View>: null}
 
             <CustomDetails
               navigation={navigation}
