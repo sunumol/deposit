@@ -224,12 +224,13 @@ const SelectTab = (props) => {
                                 onChangeText={(text) => {
                                     //setAddress(text)
                                     const firstDigitStr = String(text)[0];
-                                    if (/^[a-zA-Z1234567890,.:()/ ]+$/g.test(text) || text === '') {
-                                        props?.setAddressTextInput(text)
-                                        props?.setAddressChange(true)
-                                    } else if (firstDigitStr == ' ') {
+                                 if (firstDigitStr === ' ') {
                                         props?.setAddressTextInput('')
                                     } 
+                                   else if (/^[a-zA-Z1234567890,.:()/ ]+$/g.test(text) || text === '') {
+                                        props?.setAddressTextInput(text)
+                                        props?.setAddressChange(true)
+                                    }
                                     else {
 
                                     }
