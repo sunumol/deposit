@@ -53,14 +53,16 @@ useEffect(()=>{
 console.log('@@@@@@@@@@@@@@@@@@@@@@@@@ Active Modal ACtivity REJECTion')
             const data = {
                 "employeeId":Number(custID),
-                "activityStatus":id,
+                "activityStatus":Number(id),
                 "activityId":details?.activityId
 
             };
             await api.updateActivity(data).then((res) => {
                 console.log('-------------------res update', res?.data)
                 // if(res)
-                AsyncStorage.removeItem('CallActivity')
+                AsyncStorage.removeItem('CallActivity_id')
+             
+                AsyncStorage.removeItem('CallActivityDetails')
                 onPressOut();
                 setEnab(true)
                 setEnableContinue(false)

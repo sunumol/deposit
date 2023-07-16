@@ -85,7 +85,7 @@ const MeetTab = (props) => {
         try {
 
             const lang = await AsyncStorage.getItem('user-language')
-            const lang1 = await AsyncStorage.getItem('CallActivity')
+            const lang1 = await AsyncStorage.getItem('CallActivity_id')
             const custId= await  AsyncStorage.getItem("CustomerId")
                 dispatch({
                   type: 'SET_AGENT_ID',
@@ -188,6 +188,7 @@ console.log("error",occupation)
                   
                 }
                  else if (res?.data?.body == 2) {
+                     
                     props.navigation.navigate('ResidenceOwner')
                 } else if (res?.data?.body == 3) {
                 
@@ -327,12 +328,12 @@ console.log("error",occupation)
                                         payload: item?.customerId,
                                     });
                                     console.log("activity customer ids",item?.customerId)                                    
-                                    getCgtStatus(item?.activityId)
-                                    // props.navigation.navigate('CGT')
+                                   getCgtStatus(item?.activityId)
+                                     //props.navigation.navigate('CGT')
 
 
                                 } else {
-                                    AsyncStorage.setItem('CallActivity', JSON.stringify(item?.activityId));
+                                    AsyncStorage.setItem('CallActivity_id', JSON.stringify(item?.activityId));
                                     console.log("item id", item?.activityId)
                                     if (!props?.meet) {
                                         openDialScreen(item?.mobileNumber)

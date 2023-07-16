@@ -209,7 +209,7 @@ const MeetTab = (props) => {
                                                                 });
                                                                 props.navigation.navigate('CGT')
                                                             } else {
-                                                                AsyncStorage.setItem('CallActivity', JSON.stringify(item?.activityId));
+                                                                AsyncStorage.setItem('CallActivity_id', JSON.stringify(item?.activityId));
                                                                 AsyncStorage.setItem('CallActivityDetails', JSON.stringify(item));
                                                                 console.log("item id", item?.activityId)
                                                                 if (!props?.meet) {

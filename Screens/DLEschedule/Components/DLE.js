@@ -169,8 +169,10 @@ const DLE = ({ navigation, set, list }) => {
                                     <Text style={[styles.numText, {}]}>{item?.mobileNumber?.replace(/^.{0}/g, '', " ").slice(-10).replaceAt(3, "X").replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X")}</Text>
                                     <View
 
-                                        style={[styles.ViewExplain, { right: 0, backgroundColor: item.dleScheduleStatus == "Conduct DLE" ? "rgba(186, 134, 205, 0.1)" : item.dleScheduleStatus ==  "Bank account verification pending"? "#E5E7FF" : item.dleScheduleStatus == "TC approval pending" ? "rgb(40, 239, 18,0.1)" : "rgba(155, 81, 224, 0.1)",width:item?.dleScheduleStatus== "TC approval pending" ? 126:item?.width}]}>
-                                        <Text style={[styles.explainText, { marginHorizontal: 7, marginVertical: 1, color: item.dleScheduleStatus == "Conduct DLE" ? "rgba(242, 153, 74, 1)" :item.dleScheduleStatus == "Bank account verification pending" ? '#003874' : item.dleScheduleStatus == "TC approval pending" ? "rgba(39, 174, 96, 1)" : "rgba(155, 81, 224, 1)",}]}>{item.dleScheduleStatus == 'Bank account verification pending' ? 'Bank A/c Pending' : item.dleScheduleStatus}</Text>
+                                        style={[styles.ViewExplain, { right: 0, backgroundColor: item.dleScheduleStatus == "Conduct DLE" ? "rgba(186, 134, 205, 0.1)" : item.dleScheduleStatus ==  "Bank account verification pending"? "#E5E7FF" : item.dleScheduleStatus == "TC approval pending" ? "rgba(39, 174, 96, 0.12)" : "rgba(155, 81, 224, 0.1)",width:item?.dleScheduleStatus== "TC approval pending" ? 126:item?.dleScheduleStatus == 'Bank account verification pending' ? 114 : item?.width}]}>
+                                        <Text style={[styles.explainText, { marginHorizontal: 7, 
+                                            marginVertical: 1, color: item.dleScheduleStatus == "Conduct DLE" ?
+                                             "rgba(242, 153, 74, 1)" :item.dleScheduleStatus == "Bank account verification pending" ? '#003874' : item.dleScheduleStatus == "TC approval pending" ? "rgba(39, 174, 96, 1)" : "rgba(155, 81, 224, 1)",}]}>{item.dleScheduleStatus == 'Bank account verification pending' ? 'Bank A/c pending' : item.dleScheduleStatus}</Text>
                                     </View>
                                 </View>
                             </View>

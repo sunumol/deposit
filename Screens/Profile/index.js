@@ -196,7 +196,7 @@ const Profile = ({ navigation }) => {
 
     const getData = async () => {
         try {
-            const lang = await AsyncStorage.getItem('CallActivity')
+            const lang = await AsyncStorage.getItem('CallActivity_id')
             const mobileNumber = await AsyncStorage.getItem('Mobile');
            const details = await AsyncStorage.getItem("CallActivityDetails");
        
@@ -206,6 +206,9 @@ const Profile = ({ navigation }) => {
                 console.log("no modal data inside",lang)
                 setId(lang)
                 setModalCall(true)
+            }else{
+                console.log("modal false",lang,details)
+                setModalCall(false)
             }
         } catch (e) {
             console.log(e)

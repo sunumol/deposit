@@ -52,14 +52,14 @@ const CallModal = ({ ModalVisible, onPressOut }) => {
         await api.updateActivity(data).then((res) => {
             console.log('-------------------res update', res?.data)
             // if(res)
-            AsyncStorage.removeItem('CallActivity')
+            AsyncStorage.removeItem('CallActivity_id')
             AsyncStorage.removeItem('CallActivityDetails')
             onPressOut();
             setEnableContinue(false)
         })
             .catch((err) => {
                 onPressOut();
-                AsyncStorage.removeItem('CallActivity')
+                AsyncStorage.removeItem('CallActivity_id')
                 AsyncStorage.removeItem('CallActivityDetails')
                 console.log('-------------------err123', err?.response)
             })

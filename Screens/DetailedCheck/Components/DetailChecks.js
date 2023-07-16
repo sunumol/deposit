@@ -34,10 +34,10 @@ import CorrectionModal from './CorrectionModal';
 const { height, width } = Dimensions.get('screen');
 
 const
-    DetailChecks = ({ navigation, details, nav,isCheck,
-         setVillagename1, setPostoffice1, setLandmarkname1,
-          setRoadStatus1, setpoststatus, setvillagestatus,
-           setbackstate,Correction ,activityIds}) => {
+    DetailChecks = ({ navigation, details, nav, isCheck,
+        setVillagename1, setPostoffice1, setLandmarkname1,
+        setRoadStatus1, setpoststatus, setvillagestatus,
+        setbackstate, Correction, activityIds }) => {
         console.log('????===>>123', setbackstate)
 
         const isDarkMode = true;
@@ -61,10 +61,10 @@ const
         const [postofficenamedata, setPostofficenamedata] = useState('');
         const [postpop, setpostpop] = useState(false);
         const activityId = useSelector(state => state.activityId);
-      
+
         const [ModalVisibleC, setModalVisibleC] = useState(false)
         const isLastPage = useSelector(state => state.isLastPage);
-        const [CorrectionStatus,setCorrectionStatus] = useState()
+        const [CorrectionStatus, setCorrectionStatus] = useState()
         const [Correct1, setCorrect1] = useState(Correction)
 
         const toggleCheckbox = () => {
@@ -91,13 +91,18 @@ const
 
 
         useEffect(() => {
-            setVillagename(details?.village)
-           
-            setRoadStatus(details?.accessRoadType)
 
-            if(!Correct1){
-            setPostofficename(details?.postOffice)
-            setLandmarkname(details?.landMark)
+            if (!Correct1) {
+                setPostofficename(details?.postOffice)
+                setLandmarkname(details?.landMark)
+                setRoadStatus(details?.accessRoadType)
+                setVillagename(details?.village)
+
+            } else {
+                setPostofficename()
+                setLandmarkname()
+                setRoadStatus()
+                setVillagename()
             }
 
         }, [details])
@@ -256,10 +261,10 @@ const
 
         // ------------------ get Conduct DLE basic detail Village Api Call Start ------------------
         const getpostoffice = async (value) => {
-            console.log('api called',details?.pin)
+            console.log('api called', details?.pin)
             const data = {
                 "pin": details?.pin,
-               // "pin": 688540,
+                // "pin": 688540,
                 "postOfficeName": value
             }
             await api.getpostoffice(data).then((res) => {
@@ -302,13 +307,13 @@ const
                     console.log("HELLO SAVE SUCCESS", res?.data)
                     if (isCheck) {
                         setModalVisibleC(true)
-        
+
                         AsyncStorage.removeItem('CorrectionStatus')
                         console.log("am here")
-                    }else{
+                    } else {
                         getLastPage()
                     }
-                  
+
 
 
                     // navigation.navigate('VehicleOwn') 
@@ -333,25 +338,25 @@ const
         const getLastPage = async () => {
             console.log("LASTPAGE", activityId)
             const data = {
-                "activityId": activityId?activityId:activityIds
+                "activityId": activityId ? activityId : activityIds
             }
             await api.getLastPage(data).then((res) => {
-                console.log("last page upadte", res?.data,CorrectionStatus)
-               if (res?.data?.body?.isLasCorrectin == false && res?.data?.body?.nextPage == 10) {
-                     //setModalVisibleC(true)
-                    console.log("am here",CorrectionStatus)
+                console.log("last page upadte", res?.data, CorrectionStatus)
+                if (res?.data?.body?.isLasCorrectin == false && res?.data?.body?.nextPage == 10) {
+                    //setModalVisibleC(true)
+                    console.log("am here", CorrectionStatus)
                     navigation.navigate('CustomerDetails')
                 }
                 else if (res?.data?.body?.isLasCorrectin == false && res?.data?.body?.nextPage == 2) {
-                    navigation.navigate('ResidenceOwner',{Correction:Correct1})
+                    navigation.navigate('ResidenceOwner', { Correction: Correct1 })
                 }
                 else if (res?.data?.body?.isLasCorrectin == false && res?.data?.body?.nextPage == 6) {
-                    navigation.navigate('EnergyUtility',{Correction:Correct1})
+                    navigation.navigate('EnergyUtility', { Correction: Correct1 })
                 } else if (res?.data?.body?.isLasCorrectin == false && res?.data?.body?.nextPage == 3) {
-                    navigation.navigate('ContinuingGuarantor',{Correction:Correct1})
+                    navigation.navigate('ContinuingGuarantor', { Correction: Correct1 })
                 }
                 else if (res?.data?.body?.isLasCorrectin == false && res?.data?.body?.nextPage == 7) {
-                    navigation.navigate('IncomeDetails',{Correction:Correct1})
+                    navigation.navigate('IncomeDetails', { Correction: Correct1 })
                 } else if (res?.data?.body?.isLasCorrectin == false && res?.data?.body?.nextPage == 8) {
                     navigation.navigate('IncomeDetailsSpouse')
                 }
@@ -359,21 +364,21 @@ const
                     navigation.navigate('CustomerDetails')
                 }
                 else if (res?.data?.body?.isLasCorrectin == true && res?.data?.body?.nextPage == 2) {
-                    navigation.navigate('ResidenceOwner',{isCheck:res?.data?.body?.isLasCorrectin,Correction:Correct1})
+                    navigation.navigate('ResidenceOwner', { isCheck: res?.data?.body?.isLasCorrectin, Correction: Correct1 })
                 } else if (res?.data?.body?.isLasCorrectin == true && res?.data?.body?.nextPage == 3) {
-                    navigation.navigate('ContinuingGuarantor',{isCheck:res?.data?.body?.isLasCorrectin,Correction:Correct1})
+                    navigation.navigate('ContinuingGuarantor', { isCheck: res?.data?.body?.isLasCorrectin, Correction: Correct1 })
                 }
 
 
                 else if (res?.data?.body?.isLasCorrectin == true && res?.data?.body?.nextPage == 6) {
-                    navigation.navigate('EnergyUtility',{isCheck:res?.data?.body?.isLasCorrectin,Correction:Correct1})
+                    navigation.navigate('EnergyUtility', { isCheck: res?.data?.body?.isLasCorrectin, Correction: Correct1 })
                 }
                 else if (res?.data?.body?.isLasCorrectin == true && res?.data?.body?.nextPage == 7) {
-                    navigation.navigate('IncomeDetails',{isCheck:res?.data?.body?.isLasCorrectin,Correction:Correct1})
+                    navigation.navigate('IncomeDetails', { isCheck: res?.data?.body?.isLasCorrectin, Correction: Correct1 })
                 } else if (res?.data?.body?.isLasCorrectin == true && res?.data?.body?.nextPage == 8) {
                     navigation.navigate('IncomeDetailsSpouse')
                 } else if (res?.data?.body?.isLasCorrectin == true && res?.data?.body?.nextPage == 10) {
-                  setModalVisibleC(true)
+                    setModalVisibleC(true)
                 }
 
             }).catch((err) => {
@@ -385,7 +390,7 @@ const
 
         const getDLEConfirmation = async () => {
             const data = {
-                "activityId": activityId?activityId:activityIds
+                "activityId": activityId ? activityId : activityIds
             }
             await api.getCorrectionNotify(data).then((res) => {
 
@@ -689,7 +694,7 @@ const
                     </TouchableOpacity> */}
                     <TouchableOpacity onPress={() => checked ? onsubmit() : console.log('')}
                         style={[styles.buttonView, { backgroundColor: checked ? COLORS.colorB : 'rgba(236, 235, 237, 1)' }]}>
-                        <Text style={[styles.continueText, { color: checked ? COLORS.colorBackground : '#979C9E' }]}>{!isCheck ? 'Confirm' :'Submit'}</Text>
+                        <Text style={[styles.continueText, { color: checked ? COLORS.colorBackground : '#979C9E' }]}>{!isCheck ? 'Confirm' : 'Submit'}</Text>
                     </TouchableOpacity>
                 </View>
                 <CorrectionModal

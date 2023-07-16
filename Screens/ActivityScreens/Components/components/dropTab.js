@@ -254,7 +254,7 @@ console.log('props====',props)
 
                         if (!props?.meet) {
                             openDialScreen(props?.phoneNumber)
-                            AsyncStorage.setItem('CallActivity', JSON.stringify(props?.details?.activityId));
+                            AsyncStorage.setItem('CallActivity_id', JSON.stringify(props?.details?.activityId));
                             AsyncStorage.setItem('CallActivityDetails', JSON.stringify(props?.details));
                             console.log('hehheheheh')
                         }
@@ -273,7 +273,9 @@ console.log('props====',props)
                             type: 'SET_CUSTOMER_ID',
                             payload: props?.details?.customerId,
                         });
+                       // props.navigation.navigate('CGT')
                        getCgtStatus(props?.details?.activityId)
+
                         console.log("activity customer id",props?.details)
                         //console.log("props passing",props?.details?.customerId)
                         
