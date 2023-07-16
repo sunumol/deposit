@@ -111,7 +111,7 @@ const ConfirmMembers = ({ navigation }) => {
     console.log('qqqq-----', num)
     const firstDigitStr = String(num)[0];
 
-    if (firstDigitStr == ' ') {
+    if (firstDigitStr == '') {
       //onChangeText(num)
       //setTccustomerlist([])
       setData([])

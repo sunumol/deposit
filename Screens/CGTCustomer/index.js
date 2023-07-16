@@ -367,9 +367,9 @@ const ConfirmButton = ()=>{
                                         onChangeText={(text) => {
                                             //setAddress(text)
                                             const firstDigitStr = String(text)[0];
-                                            if (firstDigitStr == ' ') {
+                                            if (firstDigitStr == '') {
                                                 setName('')
-                                            } else if (/^[a-zA-Z ]+$/g.test(text) || text === '') {
+                                            } else if (/^[a-zA-Z. ]+$/g.test(text) || text === '') {
                                                 setName(text)
                                                 setNameChange(true)
                                             } else {
@@ -421,7 +421,8 @@ const ConfirmButton = ()=>{
                                             onChangeText={(text) => {
                                                 //setAddress(text)
                                                 const firstDigitStr = String(text)[0];
-                                                if (firstDigitStr == ' ') {
+                                              
+                                                if (firstDigitStr == '') {
                                                     setAddress('')
                                                 } else if (/^[a-zA-Z1234567890,.:()/ ]+$/g.test(text) || text === '') {
                                                     setAddress(text)

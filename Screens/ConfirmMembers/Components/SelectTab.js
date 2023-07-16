@@ -165,9 +165,9 @@ const SelectTab = (props) => {
                                 onChangeText={(text) => {
                                     //setAddress(text)
                                     const firstDigitStr = String(text)[0];
-                                    if (firstDigitStr == ' ') {
+                                    if (firstDigitStr == '') {
                                         props?.setName('')
-                                    } else if (/^[a-zA-Z ]+$/g.test(text) || text === '') {
+                                    } else if (/^[a-zA-Z. ]+$/g.test(text) || text === '') {
                                         props?.setName(text)
                                         props?.setNameChange(true)
                                     } else {
@@ -224,7 +224,7 @@ const SelectTab = (props) => {
                                 onChangeText={(text) => {
                                     //setAddress(text)
                                     const firstDigitStr = String(text)[0];
-                                 if (firstDigitStr === ' ') {
+                                 if (firstDigitStr === '') {
                                         props?.setAddressTextInput('')
                                     } 
                                    else if (/^[a-zA-Z1234567890,.:()/ ]+$/g.test(text) || text === '') {

@@ -62,6 +62,15 @@
 		<string>Inter-Regular.ttf</string>
 		<string>Inter-SemiBold.ttf</string>
 		<string>Inter-Thin.ttf</string>
+		<string>Inter-Blacko.ttf</string>
+		<string>Inter-Boldo.ttf</string>
+		<string>Inter-ExtraBoldo.ttf</string>
+		<string>Inter-ExtraLighto.ttf</string>
+		<string>Inter-Lighto.ttf</string>
+		<string>Inter-Mediumo.ttf</string>
+		<string>Inter-Regularo.ttf</string>
+		<string>Inter-SemiBoldo.ttf</string>
+		<string>Inter-Thino.ttf</string>
 	</array>
 </dict>
 </plist>
