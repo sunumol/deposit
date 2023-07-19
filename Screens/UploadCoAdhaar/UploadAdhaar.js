@@ -32,6 +32,7 @@ import ToastModal from '../../Components/ToastModal';
 import ModalSave from '../../Components/ModalSave';
 import ImageResizer from '@bam.tech/react-native-image-resizer';  
 import SizeModal from '../HousePhoto/Components/SizeModal';
+import ReasonModal from '../DetailedCheck/Components/ReasonModal';
 // ------------ Image Imports ---------------------
 import BackImage from '../../assets/Images/10.svg';
 import FrontImage from '../../assets/Images/9.svg';
@@ -49,6 +50,7 @@ const UploadAdhaar = ({ navigation }) => {
     const [ImagesB1, setImagesB1] = useState(null)
     const [ImagesFSet, setImagesFSet] = useState()
     const [ImagesBSet, setImagesBSet] = useState()
+    const [ModalReason, setModalReason] = useState(false)
     const [title1, setTitle1] = useState('Front Image')
     const [title2, setTitle2] = useState('Back Image')
     const [title, setTitle] = useState('')
@@ -109,77 +111,97 @@ const UploadAdhaar = ({ navigation }) => {
 
         //Choose Image from gallery
         ImagePicker.openPicker({
+            compressImageQuality:0.4
             //width: width*0.90,
-            height:  (width * 3) / 5,
-            hideBottomControls:false,
-            freeStyleCropEnabled:true,
-            cropping: true,
+            // height:  (width * 3) / 5,
+            // hideBottomControls:false,
+            // freeStyleCropEnabled:true,
+            // cropping: true,
         }).then(image => {
             console.log("IMAGE", image);
-            ChooseCameraFrontcropper(image)
-            // setImagesFSet(image)
-            // setImagesF(image.path)
-            // uploadFilefront(image)
-            // setModalVisible(false)
-            // setDelf(true)
+           // ChooseCameraFrontcropper(image)
+           if(image?.size < 100000 || image?.size > 500000){
+            setsizemodalvisble(true)
+        }else{
+            setImagesFSet(image)
+            setImagesF(image.path)
+            uploadFilefront(image)
+            setModalVisible(false)
+            setDelf(true)
+        }
         });
     }
 
     const ChooseImageBack = () => {
         //Choose Image from gallery
         ImagePicker.openPicker({
-            width: width,
-            height:  (width * 3) / 5,
-            hideBottomControls:false,
-            freeStyleCropEnabled:true,
-            cropping: true,
+            compressImageQuality:0.4
+            // width: width,
+            // height:  (width * 3) / 5,
+            // hideBottomControls:false,
+            // freeStyleCropEnabled:true,
+            // cropping: true,
         }).then(image => {
             console.log("IMAGE", image);
-            ChooseCamerabackcropper(image)
-            // setImagesB(image.path)
-            // setImagesBSet(image)
-            // uploadFileback(image)
-            // setModalVisible(false)
-            // setDelb(true)
+            //ChooseCamerabackcropper(image)
+            if(image?.size < 100000 || image?.size > 500000){
+                setsizemodalvisble(true)
+            }else{
+            setImagesB(image.path)
+            setImagesBSet(image)
+            uploadFileback(image)
+            setModalVisible(false)
+            setDelb(true)
+            }
         });
     }
     const ChooseCameraFront = () => {
         
         // Choose Image from Camera
         ImagePicker.openCamera({
-            width: width,
-            height:  (width * 3) / 5,
-            hideBottomControls:false,
-            freeStyleCropEnabled:true,
-            cropping: true,
+            compressImageQuality:0.4
+            // width: width,
+            // height:  (width * 3) / 5,
+            // hideBottomControls:false,
+            // freeStyleCropEnabled:true,
+            // cropping: true,
         }).then(image => {
             console.log(image);
            // navigation.navigate('CropImage', {details: image?.path})
-            ChooseCameraFrontcropper(image)
-            // setImagesF(image.path)
-            // setImagesFSet(image)
-            // uploadFilefront(image)
-            // setModalVisible(false)
-            // setDelf(true)
+          //  ChooseCameraFrontcropper(image)
+          if(image?.size < 100000 || image?.size > 500000){
+            setsizemodalvisble(true)
+        }else{
+            setImagesF(image.path)
+            setImagesFSet(image)
+            uploadFilefront(image)
+            setModalVisible(false)
+            setDelf(true)
+        }
         });
     }
 
     const ChooseCameraBack = () => {
         // Choose Image from Camera
         ImagePicker.openCamera({
-            width: width,
-            height:  (width * 3) / 5,
-            hideBottomControls:false,
-            freeStyleCropEnabled:true,
-            cropping: true,
+            compressImageQuality:0.4
+            // width: width,
+            // height:  (width * 3) / 5,
+            // hideBottomControls:false,
+            // freeStyleCropEnabled:true,
+            // cropping: true,
         }).then(image => {
             console.log(image);
-            ChooseCamerabackcropper(image)
-            // setImagesB(image.path)
-            // setImagesBSet(image)
-            // uploadFileback(image)
-            // setModalVisible(false)
-            // setDelb(true)
+         //   ChooseCamerabackcropper(image)
+         if(image?.size < 100000 || image?.size > 500000){
+            setsizemodalvisble(true)
+        }else{
+            setImagesB(image.path)
+            setImagesBSet(image)
+            uploadFileback(image)
+            setModalVisible(false)
+            setDelb(true)
+        }
         });
     }
 
@@ -300,6 +322,29 @@ const UploadAdhaar = ({ navigation }) => {
         setModalVisible2(true)
 
     }
+    
+    // ------------------ get Conduct DLE basic detail Village Api Call Start ------------------
+    const updateRejection = async () => {
+        console.log('api called for rejection')
+        const data = {
+            "activityStatus": 'Submitted wrong data',
+            "employeeId": Number(custID),
+            "activityId": activityId
+        }
+        await api.updateActivity(data).then((res) => {
+            console.log('-------------------updateActivity', res)
+            setModalError(true)
+            setModalReason(false)
+            setTimeout(() => {
+                navigation.navigate('Profile')
+            }, 1000);
+
+        }).catch((err) => {
+            console.log('-------------------err get Village', err)
+        })
+    };
+    // ------------------ HomeScreen Api Call End ------------------
+
 
     // ------------------get Cg voter id detail ------------------
     const getCGvoterid = async (mobnumber) => {
@@ -546,21 +591,27 @@ const UploadAdhaar = ({ navigation }) => {
             />
         <ModalSave
         Press={() => {
-          setModalsave(false),
-            setModalReason(true)
+          setModalsave(false)
+             setModalReason(true)
 
         }}
-        Press1={() => { uploadVoterID(), setModalsave(false) }}
+        Press1={() => { uploadAdhaar(), setModalsave(false) }}
         ModalVisible={SaveModal}
         setModalVisible={setModalsave}
         onPressOut={() => {
           setModalsave(false)
-
-
         }}
         navigation={navigation} />
 
-
+<ReasonModal
+                onPress1={() => {
+                    updateRejection()
+                    // setModalError(true)
+                }}
+                ModalVisible={ModalReason}
+                onPressOut={() => setModalReason(!ModalReason)}
+                setModalVisible={setModalReason}
+            />
 <SizeModal
             ModalVisible={sizemodalvisble}
             onPressOut={() => {

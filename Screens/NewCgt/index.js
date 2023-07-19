@@ -88,7 +88,7 @@ const NewCgt = ({ navigation, route }) => {
         var date1 = moment(Dates, "HH:mm:ss").format("hh:mm A")
         var date2 = "07:00 AM"
 
-        console.log("selected date", moment(NewDates).utc().format('DD-MM-YYYY'))
+        console.log("selected date", moment(NewDates).utc().format('DD-MM-YYYY'),custID)
 
         const data = {
             "employeeId":Number(custID),
@@ -99,7 +99,7 @@ const NewCgt = ({ navigation, route }) => {
                 type: 'SET_ACTIVITY',
                 payload: res?.data?.body[0].sloatActivityList,
             });
-            console.log('------------------- CGT slot res', res?.data?.body[0].sloatActivityList)
+          
 
 
             // Compare the times
@@ -120,7 +120,7 @@ const NewCgt = ({ navigation, route }) => {
                         element.selection = true;
                     }
                    
-                    console.log("temp data", temp)
+                   // console.log("temp data", temp)
                 })
                 setSlotlist(temp);
             // } else  {

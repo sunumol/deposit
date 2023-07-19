@@ -141,7 +141,7 @@ const DetailChecks = ({ navigation, setState, setImagedata1,imagedata }) => {
                 cropping: true,
         }).then(image => {
             console.log("IMAGE", image);
-           // cropimage(image)
+           // ChooseCameraFrontcropper(image)
             if(image?.size < 100000){
                 setsizemodalvisble(true)
             }else{
@@ -154,27 +154,40 @@ const DetailChecks = ({ navigation, setState, setImagedata1,imagedata }) => {
         });
     }
 
-    // const cropimage=(image) =>{
-    //         ImagePicker.openCropper({
-    //             path: image.path,
-    //             width: width, 
-    //             height: (width * 3)/5,
-    //             compressImageMaxWidth: 1200,
-    //             compressImageMaxHeight: 1200,
-    //             hideBottomControls:true,
-    //          freeStyleCropEnabled:true,
-    //     }).then(image => {
-    //         console.log("IMAGE1", image);
-    //         // if(image?.size < 100000){
-    //         //     setsizemodalvisble(true)
-    //         // }else{
-    //         // setImage(image.path)
-    //         // setStatus(true)
-    //         // setUploadStatus(false)
-    //         // setDelf(true)
-    //         // uploadFile(image.path, image)
-    //         // }
-    //     });
+    // const ChooseCameraFrontcropper = (value) => {
+
+    //     ImageResizer.createResizedImage(
+    //         value.path,
+    //         width * 2,
+    //        ((width * 3) / 5) * 2,
+    //         'JPEG',
+    //         100,
+    //          0,
+    //          undefined,
+    //          false,
+    //     )
+    //         .then((response) => {
+    //         console.log('IMAGE1 1=========>>',response);
+    //         if(response?.size < 100000){
+    //             setsizemodalvisble(true)
+    //         }else{
+    //         //setImagesF(response.uri)
+    //         setImagesFSet(response)
+    //         uploadFilefront(response.uri)
+    //         setModalVisible(false)
+    //          setDelf(true)
+    //         }
+    //           // response.uri is the URI of the new image that can now be displayed, uploaded...
+    //           // response.path is the path of the new image
+    //           // response.name is the name of the new image with the extension
+    //           // response.size is the size of the new image
+    //         })
+    //         .catch((err) => {
+    //             console.log('IMAGE1 err=========>>',err);
+    //           // Oops, something went wrong. Check that the filename is correct and
+    //           // inspect err to get more details.
+    //         });
+    
     // }
 
 

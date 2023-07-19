@@ -69,77 +69,78 @@ const UploadImage = ({ navigation, id, setFrontimage, setBackimage }) => {
     const ChooseImageFront = () => {
         //Choose Image from gallery
         ImagePicker.openPicker({
-            width: (width * 3) / 5,
-            height: width,
-            hideBottomControls:true,
-            freeStyleCropEnabled:true,
-            cropping: true,
+         compressImageQuality:0.4
         }).then(image => {
             console.log("IMAGE", image.path);
-            ChooseCameraFrontcropper(image)
-        //     setImagesFSet(image)
-        //     setImagesF(image.path)
-        //     uploadFilefront(image)
-        //     setDelf(true) 
-        //    setModalVisible(false)
+          //  ChooseCameraFrontcropper(image)
+          if(image?.size < 100000 || image?.size > 500000){
+            setsizemodalvisble(true)
+        }else{
+            setImagesFSet(image)
+            setImagesF(image.path)
+            uploadFilefront(image)
+            setDelf(true) 
+           setModalVisible(false)
+        }
         });
     }
 
     const ChooseImageBack = () => {
         //Choose Image from gallery
         ImagePicker.openPicker({
-            width: (width * 3) / 5,
-            height: width,
-            hideBottomControls:true,
-            freeStyleCropEnabled:true,
-            cropping: true,
+            compressImageQuality:0.4
+
         }).then(image => {
             console.log("IMAGE", image.path);
-            ChooseCamerabackcropper(image)
-            // setImagesB(image.path)
-            // setImagesBSet(image)
-            // uploadFileback(image)
-            // setDelb(true)
-            // setModalVisible(false)
+           // ChooseCamerabackcropper(image)
+           if(image?.size < 100000 || image?.size > 500000){
+            setsizemodalvisble(true)
+        }else{
+            setImagesB(image.path)
+            setImagesBSet(image)
+            uploadFileback(image)
+            setDelb(true)
+            setModalVisible(false)
+        }
         });
     }
     const ChooseCameraFront = () => {
         // Choose Image from Camera
         ImagePicker.openCamera({
-            // width: 600, 
-            // height: 1200,
-            width: (width * 3) / 5, 
-            height: width,
-            freeStyleCropEnabled:true,
-            hideBottomControls:true,
-            cropping: true,
+            compressImageQuality:0.4
+
         }).then(image => {
             console.log(image);
-            ChooseCameraFrontcropper(image)
-            // setImagesF(image.path)
-            // setImagesFSet(image)
-            // uploadFilefront(image)
-            // setDelf(true)
-            // setModalVisible(false)
+            // ChooseCameraFrontcropper(image)
+            if(image?.size < 100000 || image?.size > 500000){
+                setsizemodalvisble(true)
+            }else{
+            setImagesF(image.path)
+            setImagesFSet(image)
+            uploadFilefront(image)
+            setDelf(true)
+            setModalVisible(false)
+            }
         });
     }
 
     const ChooseCameraBack = () => {
         // Choose Image from Camera
         ImagePicker.openCamera({
-            width: (width * 3) / 5,
-            height: width,
-            hideBottomControls:true,
-            freeStyleCropEnabled:true,
-            cropping: true,
+            compressImageQuality:0.4
+
         }).then(image => {
             console.log(image);
-            ChooseCamerabackcropper(image)
-            // setImagesB(image.path)
-            // setImagesBSet(image)
-            // uploadFileback(image)
-            // setDelb(true)
-            // setModalVisible(false)
+            //ChooseCamerabackcropper(image)
+            if(image?.size < 100000 || image?.size > 500000){
+                setsizemodalvisble(true)
+            }else{
+            setImagesB(image.path)
+            setImagesBSet(image)
+            uploadFileback(image)
+            setDelb(true)
+            setModalVisible(false)
+            }
         });
     }
 

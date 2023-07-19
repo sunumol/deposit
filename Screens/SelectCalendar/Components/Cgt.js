@@ -19,6 +19,7 @@ const { height, width } = Dimensions.get('screen');
 
 const Cgt = ({ navigation, data, date, selectedData, status }) => {
 
+
     const [ModalVisible, setModalVisible] = useState(false)
     const [ModalVisible2, setModalVisible2] = useState(false)
     const [errorMessage, setErrorMessage] = useState('')
@@ -72,6 +73,7 @@ const Cgt = ({ navigation, data, date, selectedData, status }) => {
     };
 
     const renderItem = ({ item, index }) => {
+        
         return (
             <View style={{ justifyContent: 'space-around', margin: 5 }} key={index}>
                 <TouchableOpacity

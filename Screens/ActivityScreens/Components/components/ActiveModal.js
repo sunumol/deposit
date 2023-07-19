@@ -53,12 +53,12 @@ useEffect(()=>{
 console.log('@@@@@@@@@@@@@@@@@@@@@@@@@ Active Modal ACtivity REJECTion')
             const data = {
                 "employeeId":Number(custID),
-                "activityStatus":Number(id),
+                "activityStatus":id,
                 "activityId":details?.activityId
 
             };
             await api.updateActivity(data).then((res) => {
-                console.log('-------------------res update', res?.data)
+                console.log('-------------------res update', res)
                 // if(res)
                 AsyncStorage.removeItem('CallActivity_id')
              

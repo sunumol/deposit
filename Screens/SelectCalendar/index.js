@@ -98,6 +98,7 @@ const Calendar = ({ navigation, route }) => {
             "employeeId": custID ? Number(custID) : Number(value),
             "selectedDate": moment(NewDates).utc().format('DD-MM-YYYY')
         };
+        console.log('+++++++++',custID,'/////',value)
         await api.getCGTslot(data).then((res) => {
            // console.log("data print", NewDates)
             const temp = res?.data?.body[0].sloatActivityList
@@ -115,7 +116,9 @@ const Calendar = ({ navigation, route }) => {
                     element.selection = true;
                 }
 
-                console.log("temp data", temp)
+             //   console.log("temp data", temp)
+
+               // console.log("temp data", temp)
             })
             setSlotlist(temp);
             //setSlotlist(res?.data?.body[0].sloatActivityList);
@@ -129,12 +132,14 @@ const Calendar = ({ navigation, route }) => {
 
     // ------------------ get Slot Api Call Start ------------------
     const getCGTslot_callback = async (cgtdate) => {
+        console.log('????????------',custID)
         var date1 = moment(Dates, "HH:mm:ss").format("hh:mm A")
         const data = {
             "employeeId": Number(custID),
             "selectedDate": moment(cgtdate ? cgtdate : NewDates).utc().format('DD-MM-YYYY')
         };
         await api.getCGTslot(data).then((res) => {
+        
             const temp = res?.data?.body[0].sloatActivityList
             temp.forEach((element, index) => {
 
@@ -150,7 +155,7 @@ const Calendar = ({ navigation, route }) => {
                     element.selection = true;
                 }
 
-                console.log("temp data", temp)
+              //  console.log("temp data", temp)
             })
             setSlotlist(temp);
             //setSlotlist(res?.data?.body[0].sloatActivityList);

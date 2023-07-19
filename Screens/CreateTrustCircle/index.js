@@ -258,7 +258,7 @@ getDetails()
             //     payload: idData,
             // });
         }).catch((err) => {
-            console.log('-------------------errytttyrtty', err)
+            console.log('-------------------errytttyrtty1', err)
         })
     };
     // --------------------------------------------------------------------
@@ -325,9 +325,10 @@ getDetails()
                                 </View>
                                 {/* <TouchableOpacity style={styles.editView} onPress={() => navigation.navigate('NewCgt', { reschedule: cgtCustomerDetails })}> */}
                                 <TouchableOpacity style={styles.editView} onPress={() => {
-                                  navigation.navigate('SelectCalendar', { selectedData: [activityId], title: 'New CGT' }),
-                                AsyncStorage.removeItem('DATECGT')
-                        }}>
+                                    console.log('--2--',activityId)
+                                navigation.navigate('SelectCalendar', { selectedData: [activityId], title: 'New CGT' }),
+                                    AsyncStorage.removeItem('DATECGT')
+                            }}>
                                     <Date />
                                     <Text style={styles.changeText}>Reschedule CGT</Text>
                                 </TouchableOpacity>

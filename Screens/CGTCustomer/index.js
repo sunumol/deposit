@@ -307,6 +307,7 @@ const ConfirmButton = ()=>{
                                 <Text style={styles.dateText}>{details?.cgtDate ? moment(new Date(details?.cgtDate)).format("ddd, DD MMM") : ''}</Text>
                             </View>
                             <TouchableOpacity style={styles.editView} onPress={() => {
+                                console.log('--1---',activityId)
                                 navigation.navigate('SelectCalendar', { selectedData: [activityId], title: 'New CGT' }),
                                     AsyncStorage.removeItem('DATECGT')
                             }}>
