@@ -37,29 +37,16 @@ const Calendar = ({ navigation, route }) => {
     const [custID, setCustId] = useState('')
     const [Dates, setDate] = useState(new Date())
 
-    useEffect(() => {
-        getData()
-    }, [])
-
-    const getData = async () => {
-        try {
-            const Cgtdate = await AsyncStorage.getItem('DATECGT')
-            getCGTslot_callback(Cgtdate)
-
-        } catch (e) {
-            console.log(e)
-        }
-    }
+   
     useEffect(() => {
         AsyncStorage.getItem("CustomerId").then((value) => {
             setCustId(value)
-            getCGTslot(value)
         })
 
     }, [])
+
     useFocusEffect(
         React.useCallback(() => {
-            getData()
             return () => {
                 console.log('Screen was focused');
                 // Do something when the screen is unfocused
@@ -130,56 +117,13 @@ const Calendar = ({ navigation, route }) => {
     };
     // ------------------ get slot Api Call End ------------------
 
-    // ------------------ get Slot Api Call Start ------------------
-    const getCGTslot_callback = async (cgtdate) => {
-        console.log('????????------',custID)
-        var date1 = moment(Dates, "HH:mm:ss").format("hh:mm A")
-        const data = {
-            "employeeId": Number(custID),
-            "selectedDate": moment(cgtdate ? cgtdate : NewDates).utc().format('DD-MM-YYYY')
-        };
-        await api.getCGTslot(data).then((res) => {
-        
-            const temp = res?.data?.body[0].sloatActivityList
-            temp.forEach((element, index) => {
-
-                const minutes1 = convertToMinutes(date1);
-                const minutes2 = convertToMinutes(element?.time);
-                if (minutes1 < minutes2 && moment(NewDates).utc().format('DD-MM-YYYY') === moment(Dates).utc().format('DD-MM-YYYY')) {
-                    element.selection = true;
-
-                } else if (minutes1 > minutes2 && moment(NewDates).utc().format('DD-MM-YYYY') === moment(Dates).utc().format('DD-MM-YYYY')) {
-                    element.selection = false;
-
-                } else if (moment(NewDates).utc().format('DD-MM-YYYY') !== moment(Dates).utc().format('DD-MM-YYYY')) {
-                    element.selection = true;
-                }
-
-              //  console.log("temp data", temp)
-            })
-            setSlotlist(temp);
-            //setSlotlist(res?.data?.body[0].sloatActivityList);
-            setStatus(false)
-        })
-            .catch((err) => {
-                console.log('-------------------err slot', err?.response)
-                setStatus(false)
-            })
-    };
-
     useEffect(() => {
-
+        getCGTslot()
     }, []);
 
     useEffect(() => {
-        getCGTslot(NewDates)
+        getCGTslot()
     }, [NewDates]);
-
-    useEffect(() => {
-        if (NewDates !== NewDates) {
-            setNewDates(NewDates)
-        }
-    }, [NewDates])
 
     return (
         <SafeAreaProvider>
