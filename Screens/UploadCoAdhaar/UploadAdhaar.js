@@ -111,18 +111,16 @@ const UploadAdhaar = ({ navigation }) => {
 
         //Choose Image from gallery
         ImagePicker.openPicker({
-            compressImageQuality:0.4
-            //width: width*0.90,
-            // height:  (width * 3) / 5,
-            // hideBottomControls:false,
-            // freeStyleCropEnabled:true,
-            // cropping: true,
+            compressImageQuality:1
+        
         }).then(image => {
             console.log("IMAGE", image);
            // ChooseCameraFrontcropper(image)
-           if(image?.size < 100000 || image?.size > 500000){
-            setsizemodalvisble(true)
-        }else{
+           if( image?.size > 500000){
+            ChooseCameraFrontcropper(image)
+             }else  if(image?.size < 100000 ){
+                setsizemodalvisble(true)
+                 }else{
             setImagesFSet(image)
             setImagesF(image.path)
             uploadFilefront(image)
@@ -135,18 +133,16 @@ const UploadAdhaar = ({ navigation }) => {
     const ChooseImageBack = () => {
         //Choose Image from gallery
         ImagePicker.openPicker({
-            compressImageQuality:0.4
-            // width: width,
-            // height:  (width * 3) / 5,
-            // hideBottomControls:false,
-            // freeStyleCropEnabled:true,
-            // cropping: true,
+            compressImageQuality:1
+     
         }).then(image => {
             console.log("IMAGE", image);
             //ChooseCamerabackcropper(image)
-            if(image?.size < 100000 || image?.size > 500000){
+            if(image?.size < 100000 ){
                 setsizemodalvisble(true)
-            }else{
+            }else if (image?.size > 500000){
+                ChooseCamerabackcropper(image)
+            } else{
             setImagesB(image.path)
             setImagesBSet(image)
             uploadFileback(image)
@@ -159,48 +155,43 @@ const UploadAdhaar = ({ navigation }) => {
         
         // Choose Image from Camera
         ImagePicker.openCamera({
-            compressImageQuality:0.4
-            // width: width,
-            // height:  (width * 3) / 5,
-            // hideBottomControls:false,
-            // freeStyleCropEnabled:true,
-            // cropping: true,
+            compressImageQuality:1
+        
         }).then(image => {
             console.log(image);
-           // navigation.navigate('CropImage', {details: image?.path})
-          //  ChooseCameraFrontcropper(image)
-          if(image?.size < 100000 || image?.size > 500000){
-            setsizemodalvisble(true)
-        }else{
-            setImagesF(image.path)
-            setImagesFSet(image)
-            uploadFilefront(image)
-            setModalVisible(false)
-            setDelf(true)
-        }
+            if( image?.size > 500000){
+                ChooseCameraFrontcropper(image)
+                 }else  if(image?.size < 100000 ){
+                    setsizemodalvisble(true)
+                     }else{
+                setImagesFSet(image)
+                setImagesF(image.path)
+                uploadFilefront(image)
+                setModalVisible(false)
+                setDelf(true)
+            }
         });
     }
 
     const ChooseCameraBack = () => {
         // Choose Image from Camera
         ImagePicker.openCamera({
-            compressImageQuality:0.4
-            // width: width,
-            // height:  (width * 3) / 5,
-            // hideBottomControls:false,
-            // freeStyleCropEnabled:true,
-            // cropping: true,
+            compressImageQuality:1
+       
         }).then(image => {
             console.log(image);
          //   ChooseCamerabackcropper(image)
-         if(image?.size < 100000 || image?.size > 500000){
+        
+         if(image?.size < 100000 ){
             setsizemodalvisble(true)
-        }else{
-            setImagesB(image.path)
-            setImagesBSet(image)
-            uploadFileback(image)
-            setModalVisible(false)
-            setDelb(true)
+        }else if (image?.size > 500000){
+            ChooseCamerabackcropper(image)
+        } else{
+        setImagesB(image.path)
+        setImagesBSet(image)
+        uploadFileback(image)
+        setModalVisible(false)
+        setDelb(true)
         }
         });
     }
@@ -211,19 +202,20 @@ const UploadAdhaar = ({ navigation }) => {
 
         ImageResizer.createResizedImage(
             value.path,
-            width * 2,
-           ((width * 3) / 5) * 2,
+            value.width,
+            value.height,
             'JPEG',
-            100,
-             0,
-             undefined,
-             false,
+            value.size > 500000 ?  (500000/value.size) *100:100,
+           // value.size > 1000000 ? 95 : value.size > 2000000 ? 90 : value.size > 3000000 ? 90 : value.size > 4000000 ? 50 : 100,
+            0,
+            undefined,
+            false,
         )
             .then((response) => {
             console.log('IMAGE1 1=========>>',response);
-            if(response?.size < 100000){
-                setsizemodalvisble(true)
-            }else{
+            // if (response?.size < 100000 || response?.size >500000) {
+            //     setsizemodalvisble(true)
+            // } else {
             //setImagesF(response.uri)
             setImagesFSet(response)
             uploadFilefront(response.uri)
@@ -234,7 +226,8 @@ const UploadAdhaar = ({ navigation }) => {
               // response.path is the path of the new image
               // response.name is the name of the new image with the extension
               // response.size is the size of the new image
-            })
+            //}
+            )
             .catch((err) => {
                 console.log('IMAGE1 err=========>>',err);
               // Oops, something went wrong. Check that the filename is correct and
@@ -247,25 +240,25 @@ const UploadAdhaar = ({ navigation }) => {
 
         ImageResizer.createResizedImage(
             value.path,
-            width * 2,
-            ((width * 3) / 5) * 2,
+            value.width,
+            value.height,
             'JPEG',
-            100,
-             0,
-             undefined,
-             false,
+            value.size > 500000 ?  (500000/value.size) *100:100,
+           // value.size > 1000000 ? 95 : value.size > 2000000 ? 90 : value.size > 3000000 ? 90 : value.size > 4000000 ? 50 : 100,
+            0,
+            undefined,
+            false,
         )
             .then((response) => {
                 console.log('IMAGE1=========>>',response);
-                if(response?.size < 100000){
-                    setsizemodalvisble(true)
-                }else{
-               // setImagesB(response.uri)
+                // if (response?.size < 100000 || response?.size >500000) {
+                //     setsizemodalvisble(true)
+                // } else {
                 setImagesBSet(response)
                 uploadFileback(response.uri)
                 setModalVisible(false)
                 setDelb(true)
-                }
+                //}
               // response.uri is the URI of the new image that can now be displayed, uploaded...
               // response.path is the path of the new image
               // response.name is the name of the new image with the extension
@@ -380,7 +373,7 @@ const UploadAdhaar = ({ navigation }) => {
         data.append('multipartFile', {
             name: 'aaa.jpg',
             type: 'image/jpeg',
-            uri: imagevalue
+            uri: imagevalue?.path ?  imagevalue?.path : imagevalue
         })
 
         await api.uploadFile(data).then((res) => {
@@ -404,7 +397,7 @@ const UploadAdhaar = ({ navigation }) => {
         data.append('multipartFile', {
             name: 'aaa.jpg',
             type: 'image/jpeg',
-            uri: imagevalue
+            uri: imagevalue?.path ?  imagevalue?.path : imagevalue
         })
 
         await api.uploadFile(data).then((res) => {

@@ -93,7 +93,7 @@ getData = async () => {
       () => {
         handleTextChange(this.state.otpText.join(""));
         if (text.length === inputCellLength && i !== inputCount - 1) {
-          this.inputs[i + 1].focus();
+          this.inputs[i + 1]?.focus();
         }
       }
     );
@@ -105,7 +105,7 @@ getData = async () => {
     const prevIndex = i - 1;
 
     if (prevIndex > -1 && !otpText[prevIndex] && !otpText.join("")) {
-      this.inputs[0].focus();
+      this.inputs[0]?.focus();
       return;
     }
 
@@ -119,10 +119,10 @@ getData = async () => {
     if (e.nativeEvent.key === "Backspace" && i !== 0) {
         
         if (this.state.times == 1) {
-            this.inputs[i].focus();
+            this.inputs[i]?.focus();
             this.setState({ times: 2 })
         } else {
-            this.inputs[i - 1].focus();
+            this.inputs[i - 1]?.focus();
 
         }
 
@@ -136,7 +136,7 @@ getData = async () => {
         otpText: [],
       },
       () => {
-        this.inputs[0].focus();
+        this.inputs[0]?.focus();
         this.props.handleTextChange("");
       }
     );
@@ -153,7 +153,7 @@ getData = async () => {
       },
       () => {
         if (this.inputs[updatedFocusInput]) {
-          this.inputs[updatedFocusInput].focus();
+          this.inputs[updatedFocusInput]?.focus();
         }
 
         this.props.handleTextChange(value);

@@ -75,12 +75,14 @@ const DetailChecks = ({ navigation, setState, proofType1,
     }, [])
 
     useEffect(() => {
+     
         setState(Purpose)
         setPurpose(Purpose)
         proofType1(Purpose)
         setPurposes(Purposes)
         relation1(Purposes)
         setRelation(Relation)
+      
     }, [Purpose, Relation])
 
     // -------------------------------- spouse detail -----------------------------------------
@@ -136,9 +138,9 @@ const DetailChecks = ({ navigation, setState, proofType1,
             "ownerShipProofType": Purpose,
             "imageUrl": Image1,
             "relationShipWithCustomer": Purposes,
-            "ownersName": ownersName ? ownersName : spousedetail?.name
+            "ownersName": ownersName ? ownersName : Purposes == 'Self' ? CustomerDetail?.name : spousedetail?.name
         }
-        console.log("data", data)
+        console.log("data====== update residence owner", data)
         await api.UpdateResidenceowner(data).then((res) => {
             console.log('-------------------res  update Residence owner', isCheck)
             if (isCheck) {
@@ -315,13 +317,14 @@ const DetailChecks = ({ navigation, setState, proofType1,
         console.log('api called customer',activityId,id)
 
         const data = {
-             "activityId": activityId?activityId:id
+             "activityId": activityId ? activityId :id
           
         }
         await api.getCustomerdetail(data).then((res) => {
             console.log('-------------------res customerdetail', res.data.body)
             if (res?.status) {
                 setCustomerDetail(res.data.body)
+             
                 //setSpousedetail(res?.data?.body)
             }
         }).catch((err) => {

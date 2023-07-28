@@ -69,13 +69,15 @@ const UploadImage = ({ navigation, id, setFrontimage, setBackimage }) => {
     const ChooseImageFront = () => {
         //Choose Image from gallery
         ImagePicker.openPicker({
-         compressImageQuality:0.4
+         compressImageQuality:1
         }).then(image => {
             console.log("IMAGE", image.path);
-          //  ChooseCameraFrontcropper(image)
-          if(image?.size < 100000 || image?.size > 500000){
+        
+          if(image?.size < 100000){
             setsizemodalvisble(true)
-        }else{
+         } else if(image?.size > 500000){
+            ChooseCameraFrontcropper(image)
+         }else{
             setImagesFSet(image)
             setImagesF(image.path)
             uploadFilefront(image)
@@ -88,14 +90,16 @@ const UploadImage = ({ navigation, id, setFrontimage, setBackimage }) => {
     const ChooseImageBack = () => {
         //Choose Image from gallery
         ImagePicker.openPicker({
-            compressImageQuality:0.4
+            compressImageQuality:1
 
         }).then(image => {
             console.log("IMAGE", image.path);
            // ChooseCamerabackcropper(image)
-           if(image?.size < 100000 || image?.size > 500000){
+           if(image?.size < 100000){
             setsizemodalvisble(true)
-        }else{
+         } else if(image?.size > 500000){
+            ChooseCamerabackcropper(image)
+         }else{
             setImagesB(image.path)
             setImagesBSet(image)
             uploadFileback(image)
@@ -107,14 +111,16 @@ const UploadImage = ({ navigation, id, setFrontimage, setBackimage }) => {
     const ChooseCameraFront = () => {
         // Choose Image from Camera
         ImagePicker.openCamera({
-            compressImageQuality:0.4
+            compressImageQuality:1
 
         }).then(image => {
             console.log(image);
             // ChooseCameraFrontcropper(image)
-            if(image?.size < 100000 || image?.size > 500000){
+            if(image?.size < 100000){
                 setsizemodalvisble(true)
-            }else{
+             } else if(image?.size > 500000){
+                ChooseCameraFrontcropper(image)
+             }else{
             setImagesF(image.path)
             setImagesFSet(image)
             uploadFilefront(image)
@@ -127,14 +133,16 @@ const UploadImage = ({ navigation, id, setFrontimage, setBackimage }) => {
     const ChooseCameraBack = () => {
         // Choose Image from Camera
         ImagePicker.openCamera({
-            compressImageQuality:0.4
+            compressImageQuality:1
 
         }).then(image => {
             console.log(image);
             //ChooseCamerabackcropper(image)
-            if(image?.size < 100000 || image?.size > 500000){
+            if(image?.size < 100000){
                 setsizemodalvisble(true)
-            }else{
+             } else if(image?.size > 500000){
+                ChooseCamerabackcropper(image)
+             }else{
             setImagesB(image.path)
             setImagesBSet(image)
             uploadFileback(image)
@@ -152,29 +160,26 @@ const UploadImage = ({ navigation, id, setFrontimage, setBackimage }) => {
 
         ImageResizer.createResizedImage(
             value.path,
-            700,
-            1280,
+            value.width,
+            value.height,
             'JPEG',
-            100,
-             0,
-             undefined,
-             false,
+            value.size > 500000 ?  (500000/value.size) *100:100,
+           // value.size > 1000000 ? 95 : value.size > 2000000 ? 90 : value.size > 3000000 ? 90 : value.size > 4000000 ? 50 : 100,
+            0,
+            undefined,
+            false,
         )
             .then((response) => {
             console.log('IMAGE1 1=========>>',response);
-            if(response?.size < 100000){
-                setsizemodalvisble(true)
-            }else{
-            //setImagesF(response.uri)
+            // if (response?.size < 100000 || response?.size >500000) {
+            //     setsizemodalvisble(true)
+            // } else {
             setImagesFSet(response)
             uploadFilefront(response.uri)
             setModalVisible(false)
              setDelf(true)
-            }
-              // response.uri is the URI of the new image that can now be displayed, uploaded...
-              // response.path is the path of the new image
-              // response.name is the name of the new image with the extension
-              // response.size is the size of the new image
+           // }
+          
             })
             .catch((err) => {
                 console.log('IMAGE1 err=========>>',err);
@@ -188,36 +193,36 @@ const UploadImage = ({ navigation, id, setFrontimage, setBackimage }) => {
 
         ImageResizer.createResizedImage(
             value.path,
-            700,
-            1280,
+            value.width,
+            value.height,
             'JPEG',
-            100,
-             0,
-             undefined,
-             false,
+            value.size > 500000 ?  (500000/value.size) *100:100,
+           // value.size > 1000000 ? 95 : value.size > 2000000 ? 90 : value.size > 3000000 ? 90 : value.size > 4000000 ? 50 : 100,
+            0,
+            undefined,
+            false,
         )
             .then((response) => {
-                console.log('IMAGE1=========>>',response);
-                if(response?.size < 100000){
-                    setsizemodalvisble(true)
-                }else{
-               // setImagesB(response.uri)
-                setImagesBSet(response)
-                uploadFileback(response.uri)
-                setModalVisible(false)
-                setDelb(true)
-                }
-              // response.uri is the URI of the new image that can now be displayed, uploaded...
-              // response.path is the path of the new image
-              // response.name is the name of the new image with the extension
-              // response.size is the size of the new image
+                console.log('IMAGE1 resized back=========>>', response);
+                // if (response?.size > 500000) {
+                //     setsizemodalvisble(true)
+                // } else {
+                    setImagesB(response.uri)
+                    uploadFileback(response.uri)
+                    setModalVisible(false)
+                    setDelb(true)
+               // }
+                // response.uri is the URI of the new image that can now be displayed, uploaded...
+                // response.path is the path of the new image
+                // response.name is the name of the new image with the extension
+                // response.size is the size of the new image
             })
             .catch((err) => {
-                console.log('IMAGE1=========>>',err);
-              // Oops, something went wrong. Check that the filename is correct and
-              // inspect err to get more details.
+                console.log('IMAGE1=========>>', err);
+                // Oops, something went wrong. Check that the filename is correct and
+                // inspect err to get more details.
             });
-       
+
     }
 
 
@@ -301,7 +306,7 @@ const UploadImage = ({ navigation, id, setFrontimage, setBackimage }) => {
             data.append('multipartFile', {
                 name: 'aaa.jpg',
                 type: 'image/jpeg',
-                uri: imagevalue
+                uri: imagevalue?.path ?  imagevalue?.path : imagevalue
             })
     
             await api.uploadFile(data).then((res) => {
@@ -325,7 +330,7 @@ const UploadImage = ({ navigation, id, setFrontimage, setBackimage }) => {
             data.append('multipartFile', {
                 name: 'aaa.jpg',
                 type: 'image/jpeg',
-                uri: imagevalue
+                uri: imagevalue?.path ?  imagevalue?.path : imagevalue
             })
     
             await api.uploadFile(data).then((res) => {

@@ -95,7 +95,7 @@ class OTPTextView extends Component {
       () => {
         handleTextChange(this.state.otpText.join(""));
         if (text.length === inputCellLength && i !== inputCount - 1) {
-          this.inputs[i + 1].focus();
+          this.inputs[i + 1]?.focus();
         }
       }
     );
@@ -105,28 +105,28 @@ class OTPTextView extends Component {
     const { otpText } = this.state;
   
     if (!otpText[0] && !this.state.backPressed) {
-      this.inputs[0].focus()
+      this.inputs[0]?.focus()
     } else {
       this.setState({ backPressed: false })
     }
     if (otpText[0] && !otpText[1] && !this.state.backPressed) {
-      this.inputs[1].focus()
+      this.inputs[1]?.focus()
     } else {
       this.setState({ backPressed: false })
     }
     if (otpText[0] && otpText[1] && !otpText[2] && !this.state.backPressed) {
-      this.inputs[2].focus()
+      this.inputs[2]?.focus()
     } else {
       this.setState({ backPressed: false })
     }
     if (otpText[0] && otpText[1] && otpText[2] && !otpText[3] && !this.state.backPressed) {
-      this.inputs[3].focus()
+      this.inputs[3]?.focus()
     }
     else {
       this.setState({ backPressed: false })
     }
     if (otpText[0] && otpText[1] && otpText[2] && otpText[3] && !this.state.backPressed) {
-      this.inputs[3].focus()
+      this.inputs[3]?.focus()
     }
     else {
       this.setState({ backPressed: false })
@@ -144,14 +144,14 @@ class OTPTextView extends Component {
     this.setState({ times: 1 })
     if (e.nativeEvent.key === "Backspace" && i !== 0) {
       if (!this.state.otpText[i]) {
-        this.inputs[i - 1].focus();
+        this.inputs[i - 1]?.focus();
         this.setState({ backPressed: true })
       } else {
         if (this.state.times == 1) {
-          this.inputs[i].focus();
+          this.inputs[i]?.focus();
           this.setState({ times: 2 })
         } else {
-          this.inputs[i - 1].focus();
+          this.inputs[i - 1]?.focus();
           this.setState({ backPressed: true })
         }
       }
@@ -166,7 +166,7 @@ class OTPTextView extends Component {
         otpText: [],
       },
       () => {
-        this.inputs[0].focus();
+        this.inputs[0]?.focus();
         this.props.handleTextChange("");
       }
     );
@@ -183,7 +183,7 @@ class OTPTextView extends Component {
       },
       () => {
         if (this.inputs[updatedFocusInput]) {
-          this.inputs[updatedFocusInput].focus();
+          this.inputs[updatedFocusInput]?.focus();
         }
 
         this.props.handleTextChange(value);

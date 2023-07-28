@@ -99,7 +99,7 @@ class OTPTextView extends Component {
             () => {
                 handleTextChange(this.state.otpText.join(""));
                 if (text.length === inputCellLength && i !== inputCount - 1) {
-                    this.inputs[i + 1].focus();
+                    this.inputs[i + 1]?.focus();
                 }
             }
         );
@@ -109,7 +109,7 @@ class OTPTextView extends Component {
         const { otpText } = this.state;
         const prevIndex = i - 1;
         if (prevIndex > -1 && !otpText[prevIndex] && !otpText.join("")) {
-            this.inputs[0].focus();
+            this.inputs[0]?.focus();
             return;
         }
         this.setState({ focusedInput: i });
@@ -122,10 +122,10 @@ class OTPTextView extends Component {
         if (e.nativeEvent.key === "Backspace" && i !== 0) {
 
             if (this.state.times == 1) {
-                this.inputs[i].focus();
+                this.inputs[i]?.focus();
                 this.setState({ times: 2 })
             } else {
-                this.inputs[i - 1].focus();
+                this.inputs[i - 1]?.focus();
 
             }
 
@@ -138,7 +138,7 @@ class OTPTextView extends Component {
                 otpText: [],
             },
             () => {
-                this.inputs[0].focus();
+                this.inputs[0]?.focus();
                 this.props.handleTextChange("");
             }
         );
@@ -155,7 +155,7 @@ class OTPTextView extends Component {
             },
             () => {
                 if (this.inputs[updatedFocusInput]) {
-                    this.inputs[updatedFocusInput].focus();
+                    this.inputs[updatedFocusInput]?.focus();
                 }
 
                 this.props.handleTextChange(value);
