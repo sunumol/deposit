@@ -55,7 +55,7 @@ const Privacy = ({ navigation }) => {
                         at 720A, Southern Side of Nirmithi Kendra, Ayyanthole, Thrissur, Kerala 680003. We are the
                         publisher and the owner of the internet resource – www.svadhan.com, and all its sub-domains,
                         on the world wide web (“<Text style={{ fontFamily: FONTS.FontBold }}>Website</Text>”) as well as our mobile application having Android package
-                        name <Text style={{ backgroundColor: 'yellow' }}>com.svadhan</Text> (“<Text style={{ fontFamily: FONTS.FontBold }}>Mobile App</Text>”) (together “<Text style={{ fontFamily: FONTS.FontBold }}>Online Resources</Text>”), used by us, or which aide
+                        name com.svadhan and com.finpower (“<Text style={{ fontFamily: FONTS.FontBold }}>Mobile App</Text>”) (together “<Text style={{ fontFamily: FONTS.FontBold }}>Online Resources</Text>”), used by us, or which aide
                         us, in any form, and/or manner for the lawful operation of our business [under our brand name
                         ‘Svadhan’].</Text>
                     <Text style={styles.text}>This Privacy Policy describes the type of information, and/or data, whether personal
@@ -183,15 +183,18 @@ const Privacy = ({ navigation }) => {
                         at info@dhansethu.com.</Text>
                     <Text style={styles.text}>If you have any grievances with respect to processing of Sensitive Personal Data or
                         Information, you may communicate such grievance to:</Text>
-                        <Text style={styles.text}>The Grievance Officer,
-                        Dhan Sethu DigiFin (P) Ltd., Bizcospaces, 8
-                        th Floor, Infra Futura, Opp. Bharat Matha College,
-                        Thrikkakara, Ernakulam, Kerala- 682021.</Text>
+                        <Text style={styles.text}>The Grievance Officer,{"\n"}
+                        Krishna Chandran V,{"\n"}
+                        8th Floor, Infra Futura, Opp. Bharat Matha College,
+                        Thrikkakara, Ernakulam, Kerala- 682021.{"\n"}
+                        Email: <Text style={{ color:'blue',textDecorationLine:'underline'}} onPress={() => Linking.openURL('mailto:krishnachandranv@dhansethu.com')}>krishnachandranv@dhansethu.com,</Text>  ,{"\n"}
+                        Ph: 9526163666 </Text>
                     <Text style={styles.text}>We are committed to addressing, any or all discrepancies, or your grievances with respect to
                         the Privacy Policy, as expeditiously as possible, and all such discrepancies or grievances shall
                         be redressed within a maximum period of 1 (One) month from the date of receipt of your
                         grievance with our Grievance Officer.</Text>
                     <Text style={[styles.text, { textAlign: 'center' }]}>***</Text>
+                    <Text style={[styles.text, { alignSelf: 'flex-start' }]}>Last Updated On: 9th August, 2023</Text>
                 </View>
             </ScrollView>
         </SafeAreaProvider>

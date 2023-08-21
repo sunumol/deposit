@@ -80,7 +80,12 @@ const LoanDetails = ({ navigation,route }) => {
                                 <TouchableOpacity style={[styles.renderComponent, { alignItems: 'center', backgroundColor:item.readStatus?COLORS.colorBackground:'#00387426' }]} 
                                 onPress={()=>
                                   {  if(item?.notificationType === 'DATA_CONFIRMATION'){
+                                    console.log('*******',item?.message.replace(/\D/g, ""))
                                     navigation.navigate('Proceed', { status: true ,AcyivityId: item?.message.replace(/\D/g, "")});
+                                    dispatch({
+                                        type: 'SET_CGT_ACTIVITY_ID',
+                                        payload:item?.message.replace(/\D/g, "") ,
+                                    });
                                     }else if(item?.notificationType === 'DATA_CORRECTION_REQUEST'){  
                                          dispatch({
                                         type: 'SET_CGT_ACTIVITY_ID',

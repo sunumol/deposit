@@ -614,9 +614,9 @@ export const api = {
 
   //----------------------APP NEW VERSION CHECK
 
-  getAppNewVersion: () => {
+  getAppNewVersion: (data) => {
 
-    return axios.post(`${baseURLVersion}getLatestAppVersion`, {
+    return axios.post(`${baseURLVersion}getLatestAppVersion`, data,  {
       headers: {
         'Content-Type': 'application/json',
       }

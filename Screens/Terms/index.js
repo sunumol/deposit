@@ -62,7 +62,7 @@ const Terms = ({ navigation }) => {
                         “Party” and collectively as “Parties”.</Text>
                     <Text style={styles.text}>This Agreement is a computer generated electronic record and does not require any physical or digital
                         signatures.</Text>
-                    <Text style={styles.text}>As You downloaded and installed our mobile application (hereinafter referred to as “<Text style={{ fontFamily: FONTS.FontBold }}>App</Text>”, which
+                    <Text style={styles.text}>If you downloaded and installed our mobile application (hereinafter referred to as “<Text style={{ fontFamily: FONTS.FontBold }}>App</Text>”, which
                         expression shall include all mobile application(s) and website(s) operated by Dhan Sethu DigiFin Private
                         Limited, including under the brand name of <Text style={{ fontFamily: FONTS.FontBold }}>Svadhan</Text>) from Google Play, You will also be subjected to
                         Google Play’s terms of service. In case of any conflict of the Agreement with Google Play’s terms of
@@ -132,7 +132,7 @@ const Terms = ({ navigation }) => {
                         amended.</Text>
                     <Text style={styles.text2}>b. By accessing, downloading, installing or using the App, You expressly agree to be bound by this
                         Agreement</Text>
-                    <Text style={styles.text2}>c. You understand that it You do not agree with the terms of this Agreement, You must immediately
+                    <Text style={styles.text2}>c. You understand that if You do not agree with the terms of this Agreement, You must immediately
                         discontinue the use and cease to access the App and any Services</Text>
                     <Text style={styles.text2}>d. Supplemental Terms are in addition to, and shall be deemed a part of, these Terms for the purposes of
                         the applicable service. Supplemental Terms shall prevail over these Terms in the event of a conflict
@@ -498,7 +498,7 @@ const Terms = ({ navigation }) => {
                         matter contained herein and any written or oral Agreements existing between the parties or
                         modifications to these Terms shall have no force or effect unless expressly agreed to in writing or
                         acknowledged in writing by Dhan Sethu.</Text>
-                    <Text style={[styles.text, { backgroundColor: 'yellow', alignSelf: 'flex-start' }]}>Last Updated On: 18th April, 2023</Text>
+                    <Text style={[styles.text, {  alignSelf: 'flex-start' }]}>Last Updated On: 9th August, 2023</Text>
                 </View>
             </ScrollView>
         </SafeAreaProvider>

@@ -37,7 +37,6 @@ const EnergyModal = ({ visible, onPressOut, setModalVisible, setPurpose, Purpose
                             <View style={{ paddingRight: 10 }}>
                                 {Purpose == 'LPG Cylinder' ?
                                 <Icon1 name="radio-btn-active" size={18} color={COLORS.colorB} /> :
-                                
                                 <Icon1 name="radio-btn-passive" size={18}  color={COLORS.DSMuted}/>}
                             </View>
                         </TouchableOpacity >

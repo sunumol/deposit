@@ -34,6 +34,7 @@ const Profiles = ({ navigation,customerdata }) => {
       }
 useEffect(()=>{
     setCustData(customerdata)
+    console.log('((((((',customerdata)
 },[customerdata])
 
 
@@ -46,7 +47,7 @@ useEffect(()=>{
 
                     <View style={{ flexDirection: 'row',marginTop:5 }}>
 
-                        <Image source={require('../../../assets/image/Profile1.png')}
+                        <Image source={{uri: custData?.photo}}
                             resizeMode={'contain'} style={{ borderRadius: 25, width: 50, height: 50 }} />
                         <View style={{ flexDirection: 'column', marginLeft: width * 0.035, marginTop: 3 }}>
                             <Text style={styles.nameText}>{custData?.fullName}</Text>
@@ -69,8 +70,9 @@ useEffect(()=>{
 
                     <View style={{ flexDirection: 'row' ,}}>
                         <View style={styles.HomeCard}>
-                        <Image source={require('../../../assets/image/home.png')} resizeMode={"contain"}
-                        style={{width:width*0.15,height:width*0.27}}/>
+                        <Image source={{uri: custData?.housePhoto}} resizeMode={"contain"}
+                        style={{width:width*0.18,
+                                height:width*0.16}}/>
                         </View>
 
                         <View style={{ flexDirection: 'column', width:width*0.37,marginLeft:width*0.05,marginTop:width*0.05}}>
@@ -173,7 +175,7 @@ const styles = StyleSheet.create({
         paddingTop: 12,
         paddingBottom: 14,
         marginBottom: 10,
-        height: width * 0.74,
+       // height: width * 0.74,
         alignItems: 'center',
         
     },

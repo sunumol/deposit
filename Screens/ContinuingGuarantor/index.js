@@ -366,7 +366,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
         onChangeNumber('')
         setverifypop(true)
       }
-      console.log('-------------------err verifyCG34', err?.response)
+      console.log('-------------------err verifyCG34 ------>>>', err?.response)
     })
   };
   // ------------------ ----------------------------------------------

@@ -55,7 +55,7 @@ const LoginScreen = ({ navigation }) => {
     const screenIsFocused = useIsFocused();
     const netInfo = useNetInfo();
     const otpInput2 = React.createRef();
-
+    const ver = DeviceInfo.getBuildNumber() 
     const [OtpValue, setOtpValue] = useState('')
     const [PhoneNum, setPhoneNum] = useState(null)
     const [lang, setLang] = useState('')
@@ -187,8 +187,14 @@ const LoginScreen = ({ navigation }) => {
 
     const getAppNewVersion = () => {
         console.log("inside api")
+        const data={
+            "appName" : "AGENT_APP",
+            "versionNumber" : ver,
+          }
 
-        api.getAppNewVersion().then(result => {
+        api.getAppNewVersion(data).then(result => {
+        console.log('Version check',result?.config)
+
             if (result?.data?.body == null) {
                 setMandatory(false)
                

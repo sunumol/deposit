@@ -12,9 +12,9 @@ import Statusbar from '../../Components/StatusBar';
 import LinearGradient from 'react-native-linear-gradient';
 import VersionModal from './Component/VersionModal';
 import UpdateModal from './Component/UpdateModal';
+import SplashScreen from 'react-native-splash-screen'
 
-
-const SplashScreen = ({ navigation }) => {
+const SplashScreen2 = ({ navigation }) => {
 
     const isDarkMode = true;
     const dispatch = useDispatch()
@@ -143,6 +143,10 @@ const SplashScreen = ({ navigation }) => {
         onBackGroundNotification()
     }, []);
 
+    useEffect(() => {
+        SplashScreen.hide();
+      }, []);
+
     const getData = async () => {
         try {
             const Token = await AsyncStorage.getItem('Token')
@@ -212,4 +216,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default SplashScreen;
+export default SplashScreen2;

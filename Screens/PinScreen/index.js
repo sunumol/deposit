@@ -41,6 +41,7 @@ const PinScreen = ({ navigation, }) => {
     const routes = useRoute();
     const { t } = useTranslation();
     const otpInput2 = React.createRef();
+    const ver = DeviceInfo.getBuildNumber() 
 
     const [OtpValue, setOtpValue] = useState('')
     const [ModalVisible, setModalVisible] = useState(false)
@@ -92,8 +93,11 @@ const PinScreen = ({ navigation, }) => {
 
     const getAppNewVersion = () => {
         console.log("inside api")
-
-        api.getAppNewVersion().then(result => {
+        const data={
+            "appName" : "AGENT_APP",
+            "versionNumber" : ver,
+          }
+        api.getAppNewVersion(data).then(result => {
             if (result?.data?.body !== null) {
 
                 if (result?.data?.body?.mandatory) {
