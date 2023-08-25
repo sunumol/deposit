@@ -23,7 +23,7 @@ import moment from 'moment/moment';
 const { height, width } = Dimensions.get('screen');
 
 const Chart = ({ navigation,loandetails ,setRange}) => {
-    console.log('chart======>>>',loandetails)
+    //console.log('chart======>>>',loandetails)
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState('6')
     const [items, setItems] = useState([
@@ -98,14 +98,14 @@ const Chart = ({ navigation,loandetails ,setRange}) => {
         },
 
     ];
-{console.log(dataSet,'jjkjkjkjk')}
+
 useEffect(()=>{
-    console.log('SORT--------------',value)
+   // console.log('SORT--------------',value)
     setRange(value)
 },[value])
 
 useEffect(() => {
-    console.log('chart======>>>2222222222',loandetails)
+   // console.log('chart======>>>2222222222',loandetails)
 
     const Datas = [];
     loandetails?.map((item,index)=>{
@@ -122,7 +122,7 @@ useEffect(() => {
                 )
                 })
     })
-    console.log('chart======>>>77777',Datas)
+   // console.log('chart======>>>77777',Datas)
     setDataSet(Datas)
 
   }, [loandetails]);
@@ -148,7 +148,7 @@ useEffect(() => {
                             <Text style={styles.onTime}>Late</Text>
                         </View>
                     </View>
-{console.log('-------jjjj---',value)}
+
                     <View style={{ justifyContent: 'center',
                      width: width * 0.29, height: width * 0.03 }}>
                         <DropDownPicker

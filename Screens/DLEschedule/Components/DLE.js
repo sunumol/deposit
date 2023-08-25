@@ -140,7 +140,7 @@ const DLE = ({ navigation, set, list }) => {
               {list?.map((item) => {
                 console.log('===',item)
                     return (
-                        <TouchableOpacity  onPress={() => { item.dleScheduleStatus == "Conduct DLE" ? setModalVisible2(true) : item.dleScheduleStatus == "TC approval pending" ? setModalVisible(true) : item.dleScheduleStatus == "Bank account verification pending" ? console.log('Bank Account pending')  : navigation.navigate('ScheduleMeet',{id:item.id}) }} style={[styles.viewCard, { borderColor: 'white', borderWidth: 2 }]}>
+                        <TouchableOpacity  onPress={() => { item.dleScheduleStatus == "Conduct DLE" ? setModalVisible2(true) : item.dleScheduleStatus == "TC approval pending" ? setModalVisible(true) : item.dleScheduleStatus == "DLE completed" ? console.log('DLE completed')  : item.dleScheduleStatus == "Bank account verification pending" ? console.log('Bank Account pending')  : navigation.navigate('ScheduleMeet',{id:item.id}) }} style={[styles.viewCard, { borderColor: 'white', borderWidth: 2 }]}>
 
 
                             <View style={[styles.circleStyle, { backgroundColor: getRandomColor(item?.mobileNumber) }]}>

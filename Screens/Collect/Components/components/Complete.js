@@ -11,7 +11,8 @@ import {
     StatusBar,
     ScrollView,
     Dimensions,
-    BackHandler
+    BackHandler,
+    ActivityIndicator
 } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { COLORS, FONTS } from '../../../../Constants/Constants';
@@ -30,6 +31,7 @@ import Img2 from '../../Images/p2.svg';
 import ComCard from './ComCard';
 import { api } from '../../../../Services/Api';
 import { useDispatch, useSelector } from 'react-redux';
+import moment from 'moment';
 
 String.prototype.replaceAt = function (index, replacement) {
     return this.substring(0, index) + replacement + this.substring(index + replacement.length);
@@ -44,6 +46,9 @@ const CompleteTab = ({ navigation }) => {
     const [completeloan,setCompleteloan] = useState('');
     const [pendopen,setPendopen] = useState(false)
     const [deposopen,setDeposopen] = useState(false)
+    const [deposittime, setdeposittime] = useState('');
+    const [hoursleft, sethoursleft] = useState('');
+    const [completedcollectionstatus, setcompletedcollectionstatus] = useState(false);
    
  
 
@@ -125,8 +130,16 @@ useEffect(()=>{
         await api.getcompletedCollections(data).then((res) => {
           console.log('------------------- getcompletedCollections res', res.data.body)
             setCompleteloan(res?.data?.body)
-         
-         
+            setcompletedcollectionstatus(true)
+            const dateToday = new Date();
+            const dateExpired = new Date((new Date(res?.data?.body?.firstCollectionTime)));
+            var Difference_In_Time = dateExpired.getTime() - dateToday.getTime();
+            setdeposittime(Difference_In_Time)
+            var seconds = moment.duration(Difference_In_Time).seconds();
+            var minutes = moment.duration(Difference_In_Time).minutes();
+            var hours = Math.trunc(moment.duration(Difference_In_Time).asHours());
+            sethoursleft(hours)
+            console.log('date checking',dateToday,'[]',dateExpired,'[]',Difference_In_Time,'[][][]',hours)
         })
           .catch((err) => {
             console.log('-------------------getcompletedCollections  err', err)
@@ -141,310 +154,325 @@ useEffect(()=>{
 
     return (
         <>
+{
+    completedcollectionstatus ? 
+    <View style={styles.mainContainer}>
+    <ComCard details={completeloan} hoursleft={hoursleft} deposittime={deposittime} />
 
-            <View style={styles.mainContainer}>
-                <ComCard details={completeloan} />
 
 
-         
 
-                <View style={[styles.containerTab, { backgroundColor:  'rgba(255, 255, 255, 1)' }]}>
+
+               <View style={[styles.containerTab]}>
+               
+                        <View style={{flex:8,flexDirection:'row' ,justifyContent:'space-around'}}>
+                        <View style={styles.Card1}>
+                            <Image1 />
+                        </View>
+
+                    <View style={{ flexDirection: 'row', alignItems: 'center',flex:4 }}>
+                        <View style={{ marginLeft: width * 0.03,alignItems:'center',flexDirection:'row' }}>
+                            <Text style={styles.timeText}>Deposit Pending ₹{completeloan?.depositPendingSum} </Text>
                            
-                                    <View style={[styles.Card1, { backgroundColor: 'rgba(235, 87, 87, 0.1)' }]}>
-                                        <Image1 />
-                                    </View>
-
-                                <View style={{ justifyContent: 'space-around', flexDirection: 'row', alignItems: 'center' }}>
-                                    <View style={{ marginLeft: width * 0.03,alignItems:'center',flexDirection:'row' }}>
-                                        <Text style={styles.timeText}>Deposit Pending ₹{completeloan?.depositPendingSum} </Text>
-                                        <View style={[styles.Card1, { backgroundColor: 'rgba(235, 87, 87, 0.1)', marginLeft: width * 0.05 }]}>
-                                            <Img2 />
-                                        </View> 
-                                       
-                                    <View style={{ marginLeft: width * 0.025 }}>
-                                        <Text style={styles.badgeText}>{completeloan?.depositPendingDetailsDTOS?.length}</Text>
-                                    </View>
-                                    </View>
-
-                                  
-                                     
-                              
-                                </View>
-                                <View style={{ marginLeft:  width *0.15 }}>
-
-                                        <TouchableOpacity
-                                            onPress={() => {
-                                            setPendopen(!pendopen)
-                                            setDeposopen(false)
-                                            }}
-                                        >
-                                            <Icon name={pendopen ? "chevron-up" :"chevron-down"}
-                                                color={COLORS.colorB}
-                                                size={25}
-                                                style={{ paddingLeft: 13 }}
-
-                                            />
-                                        </TouchableOpacity>
-                                    </View>
-                            </View>
-
-
-                            <>
-                                    {pendopen &&
-                                        <View>
-
-
-                                            {completeloan?.depositPendingDetailsDTOS?.map((item) => {
-                                                return (
-                                                    <TouchableOpacity
-                                                    onPress={()=>{navigation.navigate('Collection'),
-                                                    dispatch({
-                                                        type: 'SET_SELECTED_LOANCUSTOMERID',
-                                                        payload: item?.id,
-                                                      });}}
-                                                        style={styles.boxStyle} >
-                                                        <View style={{ flex: 1, flexDirection: 'row' }}>
-
-                                                            <View style={[styles.circleStyle, { backgroundColor: getRandomColor(item?.mobileNumber)}]}>
-                                                                <Text style={styles.circleText}>{getInitials(item?.customerName)}</Text>
-                                                            </View>
-
-                                                            <View style={{ flexDirection: 'column', paddingLeft: 12, paddingTop: 5 }}>
-                                                                <Text style={styles.nameText}>{item?.customerName}</Text>
-                                                                <View style={{ flexDirection: 'row', }}>
-                                                                    <View style={{ paddingTop: 5, paddingRight: 1 }}>
-                                                                        <Icon1 name="location-outline" color={"black"} />
-                                                                    </View>
-                                                                    <Text style={[styles.idText, { paddingTop: 4 }]}>{item?.village}</Text>
-                                                                </View>
-                                                            </View>
-
-                                                        </View>
-
-                                                        <View style={{ flexDirection: 'column', paddingTop: 5, alignItems: 'flex-end' }}>
-                                                            <View style={{ flexDirection: 'row' }}>
-                                                                <Icon2 name="phone-call" color={"black"} size={11} style={{ top: 4 }} />
-                                                                <Text style={[styles.numText, { paddingLeft: 6 }]}>{item?.mobileNumber?.replace(/^.{0}/g, '', " ").slice(-10).replaceAt(3, "X").replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X")}</Text>
-                                                            </View>
-
-
-                                                            <Text style={[styles.leadText, { color: item?.dueDatePassed === 'true' ? 'red' :'#000000' }]}>{item?.amount}</Text>
-
-
-                                                        </View>
-
-                                                    </TouchableOpacity>
-                                                );
-                                            })}
-
-                                        </View>}
-
-                                </>
-
-                            <View style={[styles.containerTab]}>
-                            {/* <View style={[styles.containerTab, { backgroundColor: 'rgba(255, 255, 255, 1)' }]}> */}
-                                    <View style={[styles.Card1, { backgroundColor: 'rgba(39, 174, 96, 0.1)' }]}>
-                                        <Image2 />
-                                        </View>
-
-                                <View style={{  flexDirection: 'row', alignItems: 'center' }}>
-                                    <View style={{ marginLeft: width * 0.03,flexDirection:'row',alignItems:'center'}}>
-                                        <Text style={styles.timeText}>Deposited ₹{completeloan?.depositedSum}</Text>
-                                        <View style={[styles.Card1, { backgroundColor: 'rgba(39, 174, 96, 0.1)', marginLeft: width * 0.05 }]}>
-                                            <Img1 />
-                                            </View>
-                                    <View style={{marginLeft: width * 0.025}}>
-                                        <Text style={styles.badgeText}>{completeloan?.depositedDetailsDTOS?.length}</Text>
-                                    </View>
-                                    </View>
-
-                                 
-                        
-                                </View>
-
+                           
+                        {/* <View style={{ marginLeft: width * 0.025 }}> */}
                                 
+                        </View>
+                        
+                        </View>
+
+                        <View style={{justifyContent:'center',alignItems:'center',flexDirection:'row',flex:1.2,marginRight: width * 0.01}} >
+                        <View style={[styles.Card1, { backgroundColor: 'rgba(235, 87, 87, 0.1)',marginRight:5 }]}>
+                                <Img2 />
+                            </View> 
+                                    <Text style={styles.badgeText}>{completeloan?.depositPendingDetailsDTOS?.length}</Text>
+                                </View>
+                         
+                  
+                    </View>
+                    <View style={{ flex:1,marginRight:width * 0.03}}>
+
+                            <TouchableOpacity
+                                onPress={() => {
+                                setPendopen(!pendopen)
+                                setDeposopen(false)
+                                }}
+                            >
+                                <Icon name={pendopen ? "chevron-up" :"chevron-down"}
+                                    color={COLORS.colorB}
+                                    size={25}
+                                    style={{ paddingLeft: 13 }}
+
+                                />
+                            </TouchableOpacity>
+                        </View>
+                </View>
+
+
+                <>
+                        {pendopen &&
+                            <View>
+
+
+                                {completeloan?.depositPendingDetailsDTOS?.map((item) => {
+                                    return (
+                                        <TouchableOpacity
+                                        onPress={()=>{navigation.navigate('Collection'),
+                                        dispatch({
+                                            type: 'SET_SELECTED_LOANCUSTOMERID',
+                                            payload: item?.customerId,
+                                          });}}
+                                            style={styles.boxStyle} >
+                                            <View style={{ flex: 1, flexDirection: 'row' }}>
+
+                                                <View style={[styles.circleStyle, { backgroundColor: getRandomColor(item?.mobileNumber)}]}>
+                                                    <Text style={styles.circleText}>{getInitials(item?.customerName)}</Text>
+                                                </View>
+
+                                                <View style={{ flexDirection: 'column', paddingLeft: 12, paddingTop: 5 }}>
+                                                    <Text style={styles.nameText}>{item?.customerName}</Text>
+                                                    <View style={{ flexDirection: 'row', }}>
+                                                        <View style={{ paddingTop: 5, paddingRight: 1 }}>
+                                                            <Icon1 name="location-outline" color={"black"} />
+                                                        </View>
+                                                        <Text style={[styles.idText, { paddingTop: 3 }]}>{item?.village ? item?.village : 'Other'}</Text>
+                                                    </View>
+                                                </View>
+
+                                            </View>
+
+                                            <View style={{ flexDirection: 'column', paddingTop: 5, alignItems: 'flex-end' }}>
+                                                <View style={{ flexDirection: 'row' }}>
+                                                    <Icon2 name="phone-call" color={"black"} size={11} style={{ top: 4 }} />
+                                                    <Text style={[styles.numText, { paddingLeft: 6 }]}>{item?.mobileNumber?.replace(/^.{0}/g, '', " ").slice(-10).replaceAt(3, "X").replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X")}</Text>
+                                                </View>
+
+
+                                                <Text style={[styles.leadText, { color: item?.dueDatePassed === 'true' ? 'red' :'#000000' }]}>₹{item?.amount ? item?.amount : 0}</Text>
+
+
+                                            </View>
+
+                                        </TouchableOpacity>
+                                    );
+                                })}
+
+                            </View>}
+
+                    </>
+
+          
+
+
+                <View style={[styles.containerTab]}>
+               
+               <View style={{flex:8,flexDirection:'row' ,justifyContent:'space-around'}}>
+               <View style={styles.Card1}>
+               <Image2 />
+               </View>
+
+           <View style={{ flexDirection: 'row', alignItems: 'center',flex:4 }}>
+               <View style={{ marginLeft: width * 0.03,alignItems:'center',flexDirection:'row' }}>
+                   <Text style={styles.timeText}>Deposited ₹{completeloan?.depositedSum} </Text>
+                  
+                  
+               {/* <View style={{ marginLeft: width * 0.025 }}> */}
+                       
+               </View>
+               
+               </View>
+
+               <View style={{justifyContent:'center',alignItems:'center',flexDirection:'row',flex:1.2,marginRight: width * 0.01}} >
+               <View style={[styles.Card1, { backgroundColor: 'rgba(39, 174, 96, 0.1)',marginRight:5 }]}>
+               <Img1 />
+                   </View> 
+                           <Text style={styles.badgeText}>{completeloan?.depositedDetailsDTOS?.length}</Text>
+                       </View>
+                
+         
+           </View>
+           <View style={{ flex:1,marginRight:width * 0.03}}>
+
+                   <TouchableOpacity
+                       onPress={() => {
+                        setDeposopen(!deposopen)
+                        setPendopen(false)
+                       }}
+                   >
+                       <Icon name={deposopen ? "chevron-up" :"chevron-down"}
+                           color={COLORS.colorB}
+                           size={25}
+                           style={{ paddingLeft: 13 }}
+
+                       />
+                   </TouchableOpacity>
+               </View>
+       </View>
+
+
+
+                <>
+                        {deposopen &&
+                            <View>
+
+
+                                {completeloan?.depositedDetailsDTOS?.map((item) => {
+                                    return (
+                                        <TouchableOpacity
+                                        onPress={()=>{navigation.navigate('Collection'),
+                                        dispatch({
+                                            type: 'SET_SELECTED_LOANCUSTOMERID',
+                                            payload:item?.customerId,
+                                          });}}
+                                            style={styles.boxStyle} >
+                                            <View style={{ flex: 1, flexDirection: 'row' }}>
+
+                                                <View style={[styles.circleStyle, { backgroundColor: getRandomColor(item?.mobileNumber)}]}>
+                                                    <Text style={styles.circleText}>{getInitials(item?.customerName)}</Text>
+                                                </View>
+
+                                                <View style={{ flexDirection: 'column', paddingLeft: 12, paddingTop: 5 }}>
+                                                    <Text style={styles.nameText}>{item?.customerName}</Text>
+                                                    <View style={{ flexDirection: 'row', }}>
+                                                        <View style={{ paddingTop: 5, paddingRight: 1 }}>
+                                                            <Icon1 name="location-outline" color={"black"} />
+                                                        </View>
+                                                        <Text style={[styles.idText, { paddingTop: 3 }]}>{item?.village ? item?.village : 'Other'}</Text>
+                                                    </View>
+                                                </View>
+
+                                            </View>
+
+                                            <View style={{ flexDirection: 'column', paddingTop: 5, alignItems: 'flex-end' }}>
+                                                <View style={{ flexDirection: 'row' }}>
+                                                    <Icon2 name="phone-call" color={"black"} size={11} style={{ top: 4 }} />
+                                                    <Text style={[styles.numText, { paddingLeft: 6 }]}>{item?.mobileNumber?.replace(/^.{0}/g, '', " ").slice(-10).replaceAt(3, "X").replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X")}</Text>
+                                                </View>
+
+
+                                                <Text style={[styles.leadText, { color: item?.dueDatePassed === 'true' ? 'red' :'#000000' }]}>₹{item?.amount ? item?.amount : 0 }</Text>
+
+
+                                            </View>
+
+                                        </TouchableOpacity>
+                                    );
+                                })}
+
+                            </View>}
+
+                    </>
+
+    {/* {data.map((item, index) => {
+        return (
+            <>
+           
+                {item.id === 1 ?
+
+
+                    <>
+                        {item.open &&
+                            <View>
+
+
+                                {Data1.map((item) => {
+                                    return (
+                                        <TouchableOpacity
+                                            style={styles.boxStyle} >
+                                            <View style={{ flex: 1, flexDirection: 'row' }}>
+
+                                                <View style={[styles.circleStyle, { backgroundColor: item.color }]}>
+                                                    <Text style={styles.circleText}>{item.Initial}</Text>
+                                                </View>
+
+                                                <View style={{ flexDirection: 'column', paddingLeft: 12, paddingTop: 5 }}>
+                                                    <Text style={styles.nameText}>{item.name}</Text>
+                                                    <View style={{ flexDirection: 'row', }}>
+                                                        <View style={{ paddingTop: 5, paddingRight: 1 }}>
+                                                            <Icon1 name="location-outline" color={"black"} />
+                                                        </View>
+                                                        <Text style={[styles.idText, { paddingTop: 4 }]}>{item.place}</Text>
+                                                    </View>
+                                                </View>
+
+                                            </View>
+
+                                            <View style={{ flexDirection: 'column', paddingTop: 5, alignItems: 'flex-end' }}>
+                                                <View style={{ flexDirection: 'row' }}>
+                                                    <Icon2 name="phone-call" color={"black"} size={11} style={{ top: 4 }} />
+                                                    <Text style={[styles.numText, { paddingLeft: 6 }]}>{item.phone}</Text>
+                                                </View>
+
+
+                                                <Text style={[styles.leadText, { color: item.color1 }]}>{item.Amount}</Text>
+
+
+                                            </View>
+
+                                        </TouchableOpacity>
+                                    );
+                                })}
+
+                            </View>}
+
+                    </> : item.id === 2 ?
+                        <>
+                            {item.open &&
                                 <View>
 
+
+                                    {Data2.map((item) => {
+                                        return (
                                             <TouchableOpacity
-                                            style={{marginLeft: width *0.24}}
-                                                onPress={() => {
-                                                    setDeposopen(!deposopen)
-                                                    setPendopen(false)
-                                                    // const nextList = [...data];
-                                                    // nextList[index].open = !nextList[index].open;
-                                                    // setData(nextList);
-                                                }}
-                                            >
-                                                <Icon name={ deposopen ?  "chevron-up": "chevron-down"}
-                                                    color={COLORS.colorB}
-                                                    size={25}
-                                                    style={{ paddingLeft: 13 }}
+                                                style={styles.boxStyle} >
+                                                <View style={{ flex: 1, flexDirection: 'row' }}>
 
-                                                />
+                                                    <View style={[styles.circleStyle, { backgroundColor: item.color }]}>
+                                                        <Text style={styles.circleText}>{item.Initial}</Text>
+                                                    </View>
+
+                                                    <View style={{ flexDirection: 'column', paddingLeft: 12, paddingTop: 5 }}>
+                                                        <Text style={styles.nameText}>{item.name}</Text>
+                                                        <View style={{ flexDirection: 'row', }}>
+                                                            <View style={{ paddingTop: 5, paddingRight: 1 }}>
+                                                                <Icon1 name="location-outline" color={"black"} />
+                                                            </View>
+                                                            <Text style={[styles.idText, { paddingTop: 4 }]}>{item.place}</Text>
+                                                        </View>
+                                                    </View>
+
+                                                </View>
+
+                                                <View style={{ flexDirection: 'column', paddingTop: 5, alignItems: 'flex-end' }}>
+                                                    <View style={{ flexDirection: 'row' }}>
+                                                        <Icon2 name="phone-call" color={"black"} size={11} style={{ top: 4 }} />
+                                                        <Text style={[styles.numText, { paddingLeft: 6 }]}>{item.phone}</Text>
+                                                    </View>
+
+
+                                                    <Text style={[styles.leadText, { color: item.color1 }]}>{item.Amount}</Text>
+
+
+                                                </View>
+
                                             </TouchableOpacity>
-</View>
-                              
-                            </View>
-
-
-
-                            <>
-                                    {deposopen &&
-                                        <View>
-
-
-                                            {completeloan?.depositedDetailsDTOS?.map((item) => {
-                                                return (
-                                                    <TouchableOpacity
-                                                    onPress={()=>{navigation.navigate('Collection'),
-                                                    dispatch({
-                                                        type: 'SET_SELECTED_LOANCUSTOMERID',
-                                                        payload: item?.id,
-                                                      });}}
-                                                        style={styles.boxStyle} >
-                                                        <View style={{ flex: 1, flexDirection: 'row' }}>
-
-                                                            <View style={[styles.circleStyle, { backgroundColor: getRandomColor(item?.mobileNumber)}]}>
-                                                                <Text style={styles.circleText}>{getInitials(item?.customerName)}</Text>
-                                                            </View>
-
-                                                            <View style={{ flexDirection: 'column', paddingLeft: 12, paddingTop: 5 }}>
-                                                                <Text style={styles.nameText}>{item?.customerName}</Text>
-                                                                <View style={{ flexDirection: 'row', }}>
-                                                                    <View style={{ paddingTop: 5, paddingRight: 1 }}>
-                                                                        <Icon1 name="location-outline" color={"black"} />
-                                                                    </View>
-                                                                    <Text style={[styles.idText, { paddingTop: 4 }]}>{item?.village}</Text>
-                                                                </View>
-                                                            </View>
-
-                                                        </View>
-
-                                                        <View style={{ flexDirection: 'column', paddingTop: 5, alignItems: 'flex-end' }}>
-                                                            <View style={{ flexDirection: 'row' }}>
-                                                                <Icon2 name="phone-call" color={"black"} size={11} style={{ top: 4 }} />
-                                                                <Text style={[styles.numText, { paddingLeft: 6 }]}>{item?.mobileNumber?.replace(/^.{0}/g, '', " ").slice(-10).replaceAt(3, "X").replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X")}</Text>
-                                                            </View>
-
-
-                                                            <Text style={[styles.leadText, { color: item?.dueDatePassed === 'true' ? 'red' :'#000000' }]}>{item?.amount}</Text>
-
-
-                                                        </View>
-
-                                                    </TouchableOpacity>
-                                                );
-                                            })}
-
-                                        </View>}
-
-                                </>
-
-                {/* {data.map((item, index) => {
-                    return (
-                        <>
-                       
-                            {item.id === 1 ?
-
-
-                                <>
-                                    {item.open &&
-                                        <View>
-
-
-                                            {Data1.map((item) => {
-                                                return (
-                                                    <TouchableOpacity
-                                                        style={styles.boxStyle} >
-                                                        <View style={{ flex: 1, flexDirection: 'row' }}>
-
-                                                            <View style={[styles.circleStyle, { backgroundColor: item.color }]}>
-                                                                <Text style={styles.circleText}>{item.Initial}</Text>
-                                                            </View>
-
-                                                            <View style={{ flexDirection: 'column', paddingLeft: 12, paddingTop: 5 }}>
-                                                                <Text style={styles.nameText}>{item.name}</Text>
-                                                                <View style={{ flexDirection: 'row', }}>
-                                                                    <View style={{ paddingTop: 5, paddingRight: 1 }}>
-                                                                        <Icon1 name="location-outline" color={"black"} />
-                                                                    </View>
-                                                                    <Text style={[styles.idText, { paddingTop: 4 }]}>{item.place}</Text>
-                                                                </View>
-                                                            </View>
-
-                                                        </View>
-
-                                                        <View style={{ flexDirection: 'column', paddingTop: 5, alignItems: 'flex-end' }}>
-                                                            <View style={{ flexDirection: 'row' }}>
-                                                                <Icon2 name="phone-call" color={"black"} size={11} style={{ top: 4 }} />
-                                                                <Text style={[styles.numText, { paddingLeft: 6 }]}>{item.phone}</Text>
-                                                            </View>
-
-
-                                                            <Text style={[styles.leadText, { color: item.color1 }]}>{item.Amount}</Text>
-
-
-                                                        </View>
-
-                                                    </TouchableOpacity>
-                                                );
-                                            })}
-
-                                        </View>}
-
-                                </> : item.id === 2 ?
-                                    <>
-                                        {item.open &&
-                                            <View>
-
-
-                                                {Data2.map((item) => {
-                                                    return (
-                                                        <TouchableOpacity
-                                                            style={styles.boxStyle} >
-                                                            <View style={{ flex: 1, flexDirection: 'row' }}>
-
-                                                                <View style={[styles.circleStyle, { backgroundColor: item.color }]}>
-                                                                    <Text style={styles.circleText}>{item.Initial}</Text>
-                                                                </View>
-
-                                                                <View style={{ flexDirection: 'column', paddingLeft: 12, paddingTop: 5 }}>
-                                                                    <Text style={styles.nameText}>{item.name}</Text>
-                                                                    <View style={{ flexDirection: 'row', }}>
-                                                                        <View style={{ paddingTop: 5, paddingRight: 1 }}>
-                                                                            <Icon1 name="location-outline" color={"black"} />
-                                                                        </View>
-                                                                        <Text style={[styles.idText, { paddingTop: 4 }]}>{item.place}</Text>
-                                                                    </View>
-                                                                </View>
-
-                                                            </View>
-
-                                                            <View style={{ flexDirection: 'column', paddingTop: 5, alignItems: 'flex-end' }}>
-                                                                <View style={{ flexDirection: 'row' }}>
-                                                                    <Icon2 name="phone-call" color={"black"} size={11} style={{ top: 4 }} />
-                                                                    <Text style={[styles.numText, { paddingLeft: 6 }]}>{item.phone}</Text>
-                                                                </View>
-
-
-                                                                <Text style={[styles.leadText, { color: item.color1 }]}>{item.Amount}</Text>
-
-
-                                                            </View>
-
-                                                        </TouchableOpacity>
-                                                    );
-                                                })}
-                                            </View>}
-                                    </>
-                                    : null}
-
-
+                                        );
+                                    })}
+                                </View>}
                         </>
-                    )
-                })
-                } */}
-            </View>
+                        : null}
+
+
+            </>
+        )
+    })
+    } */}
+</View> :
+<View style={{ alignItems: 'center', justifyContent: 'center', flex: 1, }}>
+                    <ActivityIndicator size={30} color={COLORS.colorB} />
+</View>
+}
+           
 
         </>
     )
@@ -463,7 +491,8 @@ const styles = StyleSheet.create({
     badgeText: {
         fontSize: 12,
         fontFamily: FONTS.FontBold,
-        color: COLORS.colorDark
+        color: COLORS.colorDark,
+        marginTop:2.5
     },
     Card1: {
         backgroundColor: 'rgba(39, 174, 96, 0.1)',
@@ -574,17 +603,18 @@ const styles = StyleSheet.create({
         maxWidth: 150
     },
     containerTab: {
+        //flex:1,
         width: width * 0.90,
-         backgroundColor: 'rgba(242, 242, 242, 1)',
-  
-        //elevation:2,
+        backgroundColor: 'rgba(242, 242, 242, 1)',
+       // backgroundColor:'green',
         flexDirection: 'row',
         marginTop: width * 0.06,
         borderWidth: 0.5,
         borderRadius: 6,
         borderColor: COLORS.colorBorder,
+        justifyContent:'space-between',
         alignItems: 'center',
-        height: width * 0.13
+        height: width * 0.13,
         //justifyContent:'center'
     },
     timeText: {

@@ -111,11 +111,13 @@ String.prototype.replaceAt = function (index, replacement) {
                             return (
                                 <>
                                          <View style={{ paddingLeft: width * 0.03, marginTop: width * 0.035 }}>
-                      {item?.data?.length ? <Text    onPress={()=>navigation.navigate('Collection')} style={styles.PlaceText}>{item?.village}({item?.data?.length})</Text> : null}
+                                        
+                      {item?.data?.length ? <Text style={styles.PlaceText}>{item?.village}({item?.data?.length})</Text> : null}
                     </View>
 
 
                     {item?.data.map((item1)=>{
+                        if(item1?.dueAmount > 0.0)
                         return(
                             <TouchableOpacity
                             onPress={()=>{navigation.navigate('Collection'),

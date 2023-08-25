@@ -26,8 +26,8 @@ const { height, width } = Dimensions.get('screen');
 import Image1 from '../../Images/greenCash.svg';
 
 
-const ComCard = ({ navigation,details }) => {
-console.log('[00000000]',details)
+const ComCard = ({ navigation,details,hoursleft,deposittime }) => {
+
 
 
     const route = useRoute();
@@ -66,14 +66,14 @@ console.log('[00000000]',details)
                     </View>
                 </View>
 
-                <View style={{ flexDirection: 'row',marginLeft:width*0.05,marginTop:width*0.022 }}>
+                <View style={{ flexDirection: 'row',marginLeft:width*0.05,marginTop:width*0.02}}>
                     <Image2 style={{top:3,right:5}} />
                     {/* <Text style={[styles.TextNum,{color:COLORS.colorDark}]}>Please deposit amount in </Text> */}
                    
-                        {(details?.timeLeftToDeposit === 0 ) ?  
+                        {(deposittime <= 0 ) ?  
                         <>
                           <Text style={[styles.TextNum,{color:COLORS.colorDark}]}>Please deposit the amount</Text>
-                         <View style={[styles.TimeCard,{marginLeft:width*0.1}]}>
+                         <View style={[styles.TimeCard,{marginLeft:5,paddingBottom:2}]}>
                            <Text style={styles.Time1}>Immediately</Text> 
                            </View>
                         </>
@@ -82,7 +82,7 @@ console.log('[00000000]',details)
                            <>
                             <Text style={[styles.TextNum,{color:COLORS.colorDark}]}>Please deposit the amount in </Text>
                            <View style={styles.TimeCard}> 
-                           <Text style={styles.Time1}>{details?.timeLeftToDeposit} hours</Text>
+                           <Text style={styles.Time1}>{hoursleft} hours</Text>
                            </View>
                            </>
                           }
@@ -130,8 +130,9 @@ const styles = StyleSheet.create({
         borderColor: COLORS.colorBorder,
         //flexDirection: 'row',
         width: width * 0.90,
-        height: width * 0.28,
+        //height: width * 0.28,
        // alignItems:'center',
+       paddingVertical:15,
         justifyContent:'center'
     },
     circleStyle: {
@@ -229,7 +230,6 @@ const styles = StyleSheet.create({
     TimeCard:{
         backgroundColor:'rgba(235, 87, 87, 0.1)',
         width:width*0.21,
-      
         alignItems:'center',
         justifyContent:'center',
         borderRadius:4,

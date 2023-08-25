@@ -8,6 +8,7 @@ import {
     Platform,
     TextInput,
     Image,
+    Linking,
     ScrollView,
     Dimensions,
     TouchableOpacity
@@ -93,6 +94,16 @@ useEffect(()=>{
     }, [Salary, Purpose])
 
 
+    const openDialScreen = (userPhone) => {
+        let number = '';
+        if (Platform.OS === 'ios') {
+            number = `telprompt:${userPhone}`;
+        } else {
+            number = `tel:${userPhone}`;
+        }
+        Linking.openURL(number);
+    };
+
     useEffect(() => {
         if (EMI === '' || Frequency === '') {
             setButtonSP(false)
@@ -147,7 +158,7 @@ useEffect(()=>{
                             <View style={{ flexDirection: 'column' }}>
                                 <View style={{ flexDirection: 'row' }}>
                                     <Icon2 name="phone-call" color={'rgba(0, 56, 116, 1)'} size={11} style={{ top: 4 }} />
-                                    <Text style={[styles.numText, { paddingLeft: 6 }]}>{custData?.continuingGuarantorDTO?.phoneNumber?.replace(/^.{0}/g, '').replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X")}</Text>
+                                    <Text onPress={()=> openDialScreen(custData?.continuingGuarantorDTO?.phoneNumber) } style={[styles.numText, { paddingLeft: 6 }]}>{custData?.continuingGuarantorDTO?.phoneNumber?.replace(/^.{0}/g, '').replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X")}</Text>
                                 </View>
                                 <Text style={[styles.numText, { paddingLeft: width * 0.05, color: COLORS.colorDark }]}>{custData?.continuingGuarantorDTO?.voterId?.replace(/^.{0}/g, '').replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X")}</Text>
                             </View>

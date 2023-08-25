@@ -9,6 +9,7 @@ import {
     Dimensions,
     StatusBar,
     ActivityIndicator,
+    ToastAndroid,
     BackHandler
 } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -33,6 +34,7 @@ import ModalSave from '../../Components/ModalSave';
 import ImageResizer from '@bam.tech/react-native-image-resizer';  
 import SizeModal from '../HousePhoto/Components/SizeModal';
 import ReasonModal from '../DetailedCheck/Components/ReasonModal';
+import Retryuploadimage from '../HousePhoto/Components/Retryuploadimage';
 // ------------ Image Imports ---------------------
 import BackImage from '../../assets/Images/10.svg';
 import FrontImage from '../../assets/Images/9.svg';
@@ -71,6 +73,8 @@ const UploadAdhaar = ({ navigation }) => {
     const [backimage, setBackimage] = useState('')
     const [MismatchModal1, setMismatchModal1] = useState(false)
     const [sizemodalvisble, setsizemodalvisble] = useState(false);
+    const [imageurlfrontfailederror, setimageurlfrontfailederror] = useState(false);
+  
 
     useEffect(() => {
         getData()
@@ -121,7 +125,7 @@ const UploadAdhaar = ({ navigation }) => {
              }else  if(image?.size < 100000 ){
                 setsizemodalvisble(true)
                  }else{
-            setImagesFSet(image)
+           
             setImagesF(image.path)
             uploadFilefront(image)
             setModalVisible(false)
@@ -144,7 +148,7 @@ const UploadAdhaar = ({ navigation }) => {
                 ChooseCamerabackcropper(image)
             } else{
             setImagesB(image.path)
-            setImagesBSet(image)
+           
             uploadFileback(image)
             setModalVisible(false)
             setDelb(true)
@@ -164,7 +168,7 @@ const UploadAdhaar = ({ navigation }) => {
                  }else  if(image?.size < 100000 ){
                     setsizemodalvisble(true)
                      }else{
-                setImagesFSet(image)
+              
                 setImagesF(image.path)
                 uploadFilefront(image)
                 setModalVisible(false)
@@ -188,7 +192,7 @@ const UploadAdhaar = ({ navigation }) => {
             ChooseCamerabackcropper(image)
         } else{
         setImagesB(image.path)
-        setImagesBSet(image)
+     
         uploadFileback(image)
         setModalVisible(false)
         setDelb(true)
@@ -216,8 +220,8 @@ const UploadAdhaar = ({ navigation }) => {
             // if (response?.size < 100000 || response?.size >500000) {
             //     setsizemodalvisble(true)
             // } else {
-            //setImagesF(response.uri)
-            setImagesFSet(response)
+            setImagesF(response.uri)
+           
             uploadFilefront(response.uri)
             setModalVisible(false)
              setDelf(true)
@@ -254,8 +258,9 @@ const UploadAdhaar = ({ navigation }) => {
                 // if (response?.size < 100000 || response?.size >500000) {
                 //     setsizemodalvisble(true)
                 // } else {
-                setImagesBSet(response)
+                
                 uploadFileback(response.uri)
+                setImagesB(response.uri)
                 setModalVisible(false)
                 setDelb(true)
                 //}
@@ -380,14 +385,54 @@ const UploadAdhaar = ({ navigation }) => {
             console.log('-------------------res voter upload front', res?.data[0]?.body)
             if (res?.status) {
                 setImagesF1(res?.data[0]?.body)
-                setImagesF(res?.data[0].body)
+               // setImagesF(res?.data[0].body)
                 setFrontimage(res?.data[0]?.body)
+                setimageurlfrontfailederror(false)
             }
         }).catch((err) => {
-            console.log('-------------------err voter upload back', err)
+            console.log('-------------------err voter upload back', err)    
+           
+       
+            setTimeout(() => {
+                uploadFilefrontretry(ImagesF) 
+            }, 1000);
+
+        
+
         })
     };
+    async function uploadFilefrontretry(imagevalue) {
+        console.log('api called front',imagevalue)
+        let data = new FormData();
+        data.append('multipartFile', {
+            name: 'aaa.jpg',
+            type: 'image/jpeg',
+            uri: imagevalue?.path ?  imagevalue?.path : imagevalue
+        })
 
+        await api.uploadFile(data).then((res) => {
+            console.log('-------------------res voter upload front', res?.data[0]?.body)
+            if (res?.status) {
+                setImagesF1(res?.data[0]?.body)
+               // setImagesF(res?.data[0].body)
+                setFrontimage(res?.data[0]?.body)
+                setimageurlfrontfailederror(false)
+            }
+        }).catch((err) => {
+            console.log('-------------------err voter upload back', err)    
+          
+                setimageurlfrontfailederror(true)
+                setStatus(false)
+                setDelf(false)
+                setImagesF('')
+            
+
+
+
+        
+
+        })
+    };
 
 
 
@@ -404,13 +449,45 @@ const UploadAdhaar = ({ navigation }) => {
             console.log('-------------------res voter upload back', res?.data[0]?.body)
             if (res?.status) {
                 setImagesB1(res?.data[0]?.body)
-                setImagesB(res?.data[0]?.body)
+                //setImagesB(res?.data[0]?.body)
+                setBackimage(res?.data[0]?.body)
+                setimageurlfrontfailederror(false)
+            }
+        }).catch((err) => {
+            console.log('-------------------err voter upload back', err)
+            
+            setTimeout(() => {
+                uploadFilebackRetry(ImagesB)  
+            }, 1000);
+        })
+    };
+
+    async function uploadFilebackRetry(imagevalue) {
+        console.log('api called back',imagevalue)
+        let data = new FormData();
+        data.append('multipartFile', {
+            name: 'aaa.jpg',
+            type: 'image/jpeg',
+            uri: imagevalue?.path ?  imagevalue?.path : imagevalue
+        })
+
+        await api.uploadFile(data).then((res) => {
+            console.log('-------------------res voter upload back', res?.data[0]?.body)
+            if (res?.status) {
+                setImagesB1(res?.data[0]?.body)
+                //setImagesB(res?.data[0]?.body)
                 setBackimage(res?.data[0]?.body)
             }
         }).catch((err) => {
             console.log('-------------------err voter upload back', err)
+            setimageurlfrontfailederror(true)
+            setStatus(false)
+            setDelb(false)
+            setImagesB('')
         })
     };
+
+
   // ------------------ uploadVoter Api Call Start------------------
   async function uploadAdhaar() {
  
@@ -611,6 +688,14 @@ const UploadAdhaar = ({ navigation }) => {
               setsizemodalvisble(!sizemodalvisble)
             }}
             setModalVisible={setsizemodalvisble}
+          />
+
+        <Retryuploadimage
+            ModalVisible={imageurlfrontfailederror}
+            onPressOut={() => {
+              setimageurlfrontfailederror(!imageurlfrontfailederror)
+            }}
+            setModalVisible={setimageurlfrontfailederror}
           />
         
 

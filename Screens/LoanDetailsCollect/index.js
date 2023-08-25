@@ -38,6 +38,8 @@ const LoanDetailsCollect = ({ navigation,route }) => {
     const closeMenu = () => setVisible(false);
     const [status, setStatus] = useState(true);
     const [loanhistory,setLoanhistory] = useState('')
+    const [emiavailable, setemiavailable] = useState(false);
+
     const LOANID = useSelector(state => state.loanID);
 
     const handleGoBack = useCallback(() => {
@@ -69,12 +71,16 @@ const LoanDetailsCollect = ({ navigation,route }) => {
           console.log('------------------- get history loan res', res)
             setLoanhistory(res?.data?.body)
             setStatus(false)
+            setemiavailable(false)
          
          
         })
           .catch((err) => {
             console.log('-------------------get history loan err', err)
             setStatus(false)
+            if(err?.response?.data?.message.includes("No EMIs found with given loan id")){
+            setemiavailable(true)
+            }
           })
       };
 
@@ -98,9 +104,24 @@ const LoanDetailsCollect = ({ navigation,route }) => {
                     }}>
                     <ActivityIndicator size={30} color={COLORS.colorB} />
                     </View>
-          :<View style={styles.mainContainer}>
-                <DetailBox loandetail={loanhistory} loanIDs={route?.params?.loan?.loanId} navigation={navigation}/>
-                <DetailTab loandetail={loanhistory}  loanIDs={route?.params?.loan?.loanId} navigation={navigation}/>
+          :
+          
+          <View style={styles.mainContainer}>
+              {emiavailable?
+           
+                <View style={{justifyContent:'center',alignItems:'center',flex:1}}> 
+                    <Text style ={{
+                            //paddingTop: 15,
+                            fontSize: 18,
+                            fontFamily: FONTS.FontBold,
+                            color: COLORS.colorB,
+                        }}>No EMIs found!!</Text>
+                </View > :
+                   <>
+                   <DetailBox loandetail={loanhistory} loanIDs={route?.params?.loan?.loanId} navigation={navigation}/>
+                    <DetailTab loandetail={loanhistory}  loanIDs={route?.params?.loan?.loanId} navigation={navigation}/>
+                    </> 
+             }
             </View>
             
             }

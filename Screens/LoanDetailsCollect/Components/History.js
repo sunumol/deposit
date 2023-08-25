@@ -84,7 +84,7 @@ const History = ({ route,navigation }) => {
         })
           .catch((err) => {
             console.log('-------------------get history loan err', err?.response?.data?.message)
-            if(err?.response?.data?.message.includes("No EMIs found with given loan id")){}
+           
            
           })
       };

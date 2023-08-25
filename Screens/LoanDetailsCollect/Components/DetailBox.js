@@ -19,11 +19,13 @@ console.log('loan detail',loandetail)
     const { t } = useTranslation();
     
     return (
-        <View style={styles.loanContainer}>
+        <>
+        {
+            (!loandetail == " " || !loandetail == ' ') &&   <View style={styles.loanContainer}>
             <View style={{ flex: 1 }}>
                 <View style={{ marginTop: 15 }}>
                     <Text style={styles.headText}>{t('common:LoanID')} :</Text>
-                    <Text style={styles.valueText}>{loandetail?.loandetail?.loanId ? loandetail?.loandetail?.loanId :'-' }</Text>
+                    <Text style={styles.valueText}>{loandetail?.loandetail?.loanId ? loandetail?.loandetail?.maskedLenderLoanId :'-' }</Text>
                 </View>
                 <View style={{ marginTop: 15 }}>
                     <Text style={styles.headText}>{t('common:LoanOutstanding')} :</Text>
@@ -60,7 +62,10 @@ console.log('loan detail',loandetail)
             </View>
 
 
-        </View>
+        </View> 
+        }
+        </>
+      
     )
 }
 

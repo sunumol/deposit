@@ -6,6 +6,7 @@ import {
     TouchableOpacity,
     Image,
     Dimensions,
+    ToastAndroid,
     ActivityIndicator
 } from 'react-native';
 import { COLORS, FONTS } from '../../../Constants/Constants';
@@ -25,15 +26,14 @@ import ToastModal from '../../../Components/ToastModal';
 import SizeModal from '../../HousePhoto/Components/SizeModal';
 import { useSelector } from 'react-redux';
 import MismatchModal from './MismatchModal';
-import ImageResizer from '@bam.tech/react-native-image-resizer';  
+import ImageResizer from '@bam.tech/react-native-image-resizer';
+import Retryuploadimage from '../../HousePhoto/Components/Retryuploadimage';  
 
 const UploadImage = ({ navigation, id, setFrontimage, setBackimage }) => {
     const [ImagesF, setImagesF] = useState(null)
     const [ImagesB, setImagesB] = useState(null)
     const [ImagesF1, setImagesF1] = useState(null)
     const [ImagesB1, setImagesB1] = useState(null)
-    const [ImagesFSet, setImagesFSet] = useState()
-    const [ImagesBSet, setImagesBSet] = useState()
     const [delf, setDelf] = useState(false)
     const [delb, setDelb] = useState(false)
     const [ModalVisible2, setModalVisible2] = useState(false)
@@ -48,7 +48,7 @@ const UploadImage = ({ navigation, id, setFrontimage, setBackimage }) => {
     const activityId = useSelector(state => state.activityId);
     const [continueAble, setContinueAble] = useState(false)
     const [MismatchModal1, setMismatchModal1] = useState(false)
-  
+    const [imageurlfrontfailederror, setimageurlfrontfailederror] = useState(false);
     const [sizemodalvisble, setsizemodalvisble] = useState(false);
 
     useEffect(() => {
@@ -78,7 +78,7 @@ const UploadImage = ({ navigation, id, setFrontimage, setBackimage }) => {
          } else if(image?.size > 500000){
             ChooseCameraFrontcropper(image)
          }else{
-            setImagesFSet(image)
+         
             setImagesF(image.path)
             uploadFilefront(image)
             setDelf(true) 
@@ -101,7 +101,6 @@ const UploadImage = ({ navigation, id, setFrontimage, setBackimage }) => {
             ChooseCamerabackcropper(image)
          }else{
             setImagesB(image.path)
-            setImagesBSet(image)
             uploadFileback(image)
             setDelb(true)
             setModalVisible(false)
@@ -122,7 +121,7 @@ const UploadImage = ({ navigation, id, setFrontimage, setBackimage }) => {
                 ChooseCameraFrontcropper(image)
              }else{
             setImagesF(image.path)
-            setImagesFSet(image)
+        
             uploadFilefront(image)
             setDelf(true)
             setModalVisible(false)
@@ -144,7 +143,6 @@ const UploadImage = ({ navigation, id, setFrontimage, setBackimage }) => {
                 ChooseCamerabackcropper(image)
              }else{
             setImagesB(image.path)
-            setImagesBSet(image)
             uploadFileback(image)
             setDelb(true)
             setModalVisible(false)
@@ -174,10 +172,10 @@ const UploadImage = ({ navigation, id, setFrontimage, setBackimage }) => {
             // if (response?.size < 100000 || response?.size >500000) {
             //     setsizemodalvisble(true)
             // } else {
-            setImagesFSet(response)
+            setImagesF(response.uri)
             uploadFilefront(response.uri)
             setModalVisible(false)
-             setDelf(true)
+            setDelf(true)
            // }
           
             })
@@ -313,14 +311,43 @@ const UploadImage = ({ navigation, id, setFrontimage, setBackimage }) => {
                 console.log('-------------------res voter upload front', res?.data[0]?.body)
                 if (res?.status) {
                     setImagesF1(res?.data[0]?.body)
-                    setImagesF(res?.data[0].body)
+                   // setImagesF(res?.data[0].body)
                     setFrontimage(res?.data[0]?.body)
+                    setimageurlfrontfailederror(false)
                 }
             }).catch((err) => {
                 console.log('-------------------err voter upload back', err)
+               setTimeout(() => {
+                uploadFilefrontRetry(ImagesF)
+               }, 1000);
             })
         };
 
+
+        async function uploadFilefrontRetry(imagevalue) {
+            console.log('api called front',imagevalue)
+            let data = new FormData();
+            data.append('multipartFile', {
+                name: 'aaa.jpg',
+                type: 'image/jpeg',
+                uri: imagevalue?.path ?  imagevalue?.path : imagevalue
+            })
+    
+            await api.uploadFile(data).then((res) => {
+                console.log('-------------------res voter upload front', res?.data[0]?.body)
+                if (res?.status) {
+                    setImagesF1(res?.data[0]?.body)
+                   // setImagesF(res?.data[0].body)
+                    setFrontimage(res?.data[0]?.body)
+                    setimageurlfrontfailederror(false)
+                }
+            }).catch((err) => {
+                console.log('-------------------err voter upload back', err)
+                setDelf(false)
+                setImagesF('')
+                setimageurlfrontfailederror(true)
+            })
+        };
 
 
 
@@ -337,11 +364,42 @@ const UploadImage = ({ navigation, id, setFrontimage, setBackimage }) => {
                 console.log('-------------------res voter upload back', res?.data[0]?.body)
                 if (res?.status) {
                     setImagesB1(res?.data[0]?.body)
-                    setImagesB(res?.data[0]?.body)
+                    //setImagesB(res?.data[0]?.body)
                     setBackimage(res?.data[0]?.body)
+                    setimageurlfrontfailederror(false)
                 }
             }).catch((err) => {
-                console.log('-------------------err voter upload back', err)
+                console.log('-------------------err voter upload back', ImagesF)
+              setTimeout(() => {
+                setDelb(false)
+                setImagesB('')
+                uploadFilebackRetry(ImagesB)
+              }, 1000);
+            })
+        };
+
+        async function uploadFilebackRetry(imagevalue) {
+            console.log('api called back',imagevalue)
+            let data = new FormData();
+            data.append('multipartFile', {
+                name: 'aaa.jpg',
+                type: 'image/jpeg',
+                uri: imagevalue?.path ?  imagevalue?.path : imagevalue
+            })
+    
+            await api.uploadFile(data).then((res) => {
+                console.log('-------------------res voter upload back', res?.data[0]?.body)
+                if (res?.status) {
+                    setImagesB1(res?.data[0]?.body)
+                    //setImagesB(res?.data[0]?.body)
+                    setBackimage(res?.data[0]?.body)
+                    setimageurlfrontfailederror(false)
+                }
+            }).catch((err) => {
+                console.log('-------------------err voter upload back', ImagesF)
+                setDelb(false)
+                setImagesB('')
+                setimageurlfrontfailederror(true)
             })
         };
         // ------------------ HomeScreen Api Call End ------------------
@@ -513,7 +571,17 @@ const UploadImage = ({ navigation, id, setFrontimage, setBackimage }) => {
             }}
             setModalVisible={setsizemodalvisble}
           />
+
+<Retryuploadimage
+            ModalVisible={imageurlfrontfailederror}
+            onPressOut={() => {
+              setimageurlfrontfailederror(!imageurlfrontfailederror)
+            }}
+            setModalVisible={setimageurlfrontfailederror}
+          />
         </>
+
+        
 
     )
 

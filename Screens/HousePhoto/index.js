@@ -11,6 +11,7 @@ import {
     StatusBar,
     ScrollView,
     Dimensions,
+    ToastAndroid,
     BackHandler
 } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -93,7 +94,7 @@ const ResidenceOwner = ({ navigation, }) => {
     // ------------------save and update residence owner detail ------------------
 
     const saveHousePhoto = async () => {
-        console.log('api called====',activityId)
+        console.log('api called====',activityId,imagedata)
 
         const data = {
             "activityId": activityId?activityId:route?.params?.ActivityId,
@@ -107,6 +108,7 @@ const ResidenceOwner = ({ navigation, }) => {
             }
         }).catch((err) => {
             console.log('-------------------err  update House photo', err?.response)
+            ToastAndroid.show("Please upload another image ", ToastAndroid.SHORT);
         })
     };
     // -

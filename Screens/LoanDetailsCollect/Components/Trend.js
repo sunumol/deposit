@@ -124,6 +124,8 @@ getloantrend()
                         </View>
                     </View>
 
+               
+
                     <View style={{ alignItems: 'center',marginBottom:10 }}>
                         <View style={styles.ViewCard}>
                             <View style={{ margin: width * 0.05, top: -5 }}>
@@ -132,7 +134,7 @@ getloantrend()
 
                             <View style={{ flexDirection: 'row' }}>
                                 <View style={{}}>
-                                    <View style={{ left: -245 }}>
+                                    <View style={{ left: -255 }}>
                                         <VictoryPie
                                             data={graphicData}
                                             colorScale={graphicColor}
@@ -170,12 +172,12 @@ getloantrend()
 
                                 </View>
 
-                                <View style={{left:-340}}>
+                                <View style={{left:-360}}>
                                 <View style={styles.verticleLine}/>
                                 </View>
 
                                 <View style={{}}>
-                                    <View style={{ left: -455 }}>
+                                    <View style={{ left: -475 }}>
                                         <VictoryPie
                                             data={graphicData1}
                                             colorScale={graphicColor}
@@ -211,7 +213,9 @@ getloantrend()
                                     </View>
                                 </View>
                             </View>
-                        </View></View>
+                        </View>
+                        
+                        </View>
                 </View>
             </ScrollView>
         </>
@@ -230,7 +234,7 @@ const styles = StyleSheet.create({
     ViewCard: {
         width: width * 0.86,
         height: width * 0.50,
-        backgroundColor: COLORS.colorBackground,
+       backgroundColor: COLORS.colorBackground,
         elevation: 2,
         // alignItems: 'center',
         flexDirection: 'row',
@@ -238,7 +242,7 @@ const styles = StyleSheet.create({
         borderRadius: 15,
         shadowColor: '#000000',
         marginTop: 20,
-        marginLeft: 20,
+        //marginLeft: 20,
         marginRight: 20,
         marginBottom: 10
     },
