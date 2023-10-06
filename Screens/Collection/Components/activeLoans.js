@@ -44,21 +44,55 @@ const ActiveLoans = ({navigation, loandetails}) => {
   const [Activeloandetail, setActiveloandetail] = useState('');
   const [itemsselected, setItems] = useState([]);
   const [TCM, setTCM] = useState('');
+  const [confirmbtnenable,setconfirmbtnenable] = useState(false)
 
-  console.log('-------', itemsselected);
+  console.log('-------TCM MEMBER', isEnabled,TCM);
 
   const totalcollection = () => {
-    // const sum = itemsselected.reduce((partialSum, a) => partialSum + a, 0);
-    let sum = 0;
 
-    for (const value of itemsselected) {
-      if (typeof value === 'number') {
-        sum += value;
+    if(collectAmount){
+      if(isEnabled == true && TCM !== ''){
+        setModalVisible(true);
+        setconfirmbtnenable(true)
+      }else if(isEnabled == false){
+        setModalVisible(true)  
       }
+
     }
-    setCollectAmount1(sum);
-    console.log('total', sum);
+
+
+    // FOR MULTIPLE LEMDERS CASE------------------------------------
+    // const sum = itemsselected.reduce((partialSum, a) => partialSum + a, 0);
+    // let sum = 0;
+
+    // for (const value of itemsselected) {
+    //   if (typeof value === 'number') {
+    //     sum += value;
+    //   }
+    // }
+  //  setCollectAmount1(sum);
+   // console.log('total', sum);
   };
+
+  useEffect(()=>{
+    
+     if(isEnabled == true && TCM == ''){
+      setconfirmbtnenable(false)  
+    }else if(isEnabled == false){
+      setconfirmbtnenable(false) 
+     // setTCM('')
+    }
+  },[isEnabled])
+
+
+  useEffect(()=>{
+    
+    if(TCM && collectAmount ){
+     setconfirmbtnenable(true)  
+   }else if(TCM == '' && collectAmount != ''){
+    setconfirmbtnenable(true)
+   }
+ },[TCM])
 
   useEffect(() => {
     setTimeout(() => {
@@ -69,29 +103,45 @@ const ActiveLoans = ({navigation, loandetails}) => {
   const onCollect = (text, index) => {
     const updatedItems = [...itemsselected];
 
-    if (index == 0) {
-      updatedItems[0] = JSON.parse(text);
-      updatedItems[1] = updatedItems[1] ? updatedItems[1] : 0;
-      updatedItems[2] = updatedItems[2] ? updatedItems[2] : 0;
-      updatedItems[3] = updatedItems[3] ? updatedItems[3] : 0;
-    } else if (index == 1) {
-      updatedItems[1] = JSON.parse(text);
-      updatedItems[0] = updatedItems[0] ? updatedItems[0] : 0;
-      updatedItems[2] = updatedItems[2] ? updatedItems[2] : 0;
-      updatedItems[3] = updatedItems[3] ? updatedItems[3] : 0;
-    } else if (index == 2) {
-      updatedItems[2] = JSON.parse(text);
-      updatedItems[0] = updatedItems[0] ? updatedItems[0] : 0;
-      updatedItems[1] = updatedItems[1] ? updatedItems[1] : 0;
-      updatedItems[3] = updatedItems[3] ? updatedItems[3] : 0;
-    } else if (index == 3) {
-      updatedItems[3] = JSON.parse(text);
-      updatedItems[0] = updatedItems[0] ? updatedItems[0] : 0;
-      updatedItems[1] = updatedItems[1] ? updatedItems[1] : 0;
-      updatedItems[2] = updatedItems[2] ? updatedItems[2] : 0;
+    if(text == 0){
+      setCollectAmount1('')
+      setCollectAmount('')
+      setconfirmbtnenable(false)
+    }else if(text.includes(',') || text.includes('.')){
+      setCollectAmount1('')
+      setCollectAmount('')
+      setconfirmbtnenable(false)
     }
+    else{
+      setCollectAmount1(text)
+      setCollectAmount(text)
+      setconfirmbtnenable(true)
+  
+    }
+// FOR MULTIPLE LENDERS CASE-----------------------------------------------
+    // if (index == 0) {
+    //   updatedItems[0] = JSON.parse(text);
+    //   updatedItems[1] = updatedItems[1] ? updatedItems[1] : 0;
+    //   updatedItems[2] = updatedItems[2] ? updatedItems[2] : 0;
+    //   updatedItems[3] = updatedItems[3] ? updatedItems[3] : 0;
+    // } else if (index == 1) {
+    //   updatedItems[1] = JSON.parse(text);
+    //   updatedItems[0] = updatedItems[0] ? updatedItems[0] : 0;
+    //   updatedItems[2] = updatedItems[2] ? updatedItems[2] : 0;
+    //   updatedItems[3] = updatedItems[3] ? updatedItems[3] : 0;
+    // } else if (index == 2) {
+    //   updatedItems[2] = JSON.parse(text);
+    //   updatedItems[0] = updatedItems[0] ? updatedItems[0] : 0;
+    //   updatedItems[1] = updatedItems[1] ? updatedItems[1] : 0;
+    //   updatedItems[3] = updatedItems[3] ? updatedItems[3] : 0;
+    // } else if (index == 3) {
+    //   updatedItems[3] = JSON.parse(text);
+    //   updatedItems[0] = updatedItems[0] ? updatedItems[0] : 0;
+    //   updatedItems[1] = updatedItems[1] ? updatedItems[1] : 0;
+    //   updatedItems[2] = updatedItems[2] ? updatedItems[2] : 0;
+    // }
 
-    setItems(updatedItems);
+    // setItems(updatedItems);
   };
 
   const collectionConfirmation = async () => {
@@ -347,6 +397,7 @@ const ActiveLoans = ({navigation, loandetails}) => {
 
                           <TextInput
                             style={styles.CardAmt}
+                            maxLength={5}
                             onChangeText={text =>
                               onCollect(text == '' ? 0 : text, index)
                             }
@@ -366,9 +417,19 @@ const ActiveLoans = ({navigation, loandetails}) => {
       </ScrollView>
       <View style={styles.viewsB}>
         <TouchableOpacity
-          style={[styles.buttonView]}
+          style={{
+            backgroundColor: confirmbtnenable ? COLORS.colorB : "#ECEBED",
+            alignItems: 'center',
+            justifyContent: 'center',
+            borderRadius: 54,
+            height: 48,
+            marginBottom: 10,
+            width: width * 0.9,
+          }}
           onPress={() => {
-            totalcollection(), setModalVisible(true);
+
+              
+            totalcollection()
           }}>
           <Text style={[styles.continueText]}>Submit</Text>
         </TouchableOpacity>
@@ -383,6 +444,7 @@ const ActiveLoans = ({navigation, loandetails}) => {
           setModalVisible(false);
         }}
         onsubmit={() => collectionConfirmation()}
+        onsubmit1={() => {setCollectAmount(''),setconfirmbtnenable(false)}}
       />
 
       <TCMModal
@@ -413,7 +475,7 @@ const styles = StyleSheet.create({
   },
   CardAmt: {
     backgroundColor: '#FCFCFC',
-    width: width * 0.17,
+    width: width * 0.22,
     marginTop: 4,
     //alignItems:'center',
     height: width * 0.075,

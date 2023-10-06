@@ -85,9 +85,14 @@ const AddVehicle = ({ navigation, }) => {
 
 
     const saveVehicleDetails = async () => {
-        console.log('api called1')
+        console.log('saveVehicleDetails api called1',searchvehicledata)
+    
+            var obj = searchvehicledata
+            var newobj = {...obj,isApproved :true}
+     
 
-        const data = [searchvehicledata]
+        console.log('vehicle added data',newobj)
+        const data = [newobj]
         await api.saveVehicleDetails(data).then((res) => {
             console.log('-------------------res save vehicle', res)
             if (res?.status) {
@@ -96,6 +101,7 @@ const AddVehicle = ({ navigation, }) => {
             }
         }).catch((err) => {
             console.log('-------------------err save vehicle', err)
+            navigation.navigate('Profile')
         })
     };
     const handleGoBack = useCallback(() => {

@@ -240,11 +240,13 @@ const ContinuingGuarantor = ({ navigation, route }) => {
       "activityId":activityId?activityId:route?.params?.activityId
     }
     await api.getSpousedetail(data).then((res) => {
-      // console.log('-------------------res spousedetail co-app', activityId)
+       console.log('-------------------res spousedetail co-app', activityId)
       if (res?.status) {
         console.log('-------------------res spousedetail co-app', res?.data?.body)
         setSpousedetail(res?.data?.body)
-        setRelation('Spouse')
+        if(res?.data?.body?.isSpouseEligibleBYAge === true){
+          setRelation('Spouse')
+        }
       }
     }).catch((err) => {
       console.log('-------------------err spousedetail', err?.response)
@@ -270,6 +272,58 @@ const ContinuingGuarantor = ({ navigation, route }) => {
     })
   };
   // ------------------ ------------------------------------------------
+
+  const verifyCG_back = async (num) => {
+    //console.log("verify resend come", maxError, IsOtp1, timerCount)
+    const data = {
+      "activityId": activityId?activityId:route?.params?.activityId,
+      "mobileNumber": "+91" + num,
+      "name": relation !== 'Spouse' ? Name : spousedetail?.name,
+      "relationShip": relation,
+      "occupation": relation !== 'Spouse' ? OccupationD : spousedetail?.occupation
+    }
+    await api.verifyCG(data).then((res) => {
+      console.log('-------------------res verifyCG------verifyCG_back', res)
+      if (res?.status) {
+        setPhoneValid(false)
+        OtpRef?.current?.focus()
+        setMaxError(false)
+   
+        setVerifyotpstatus(true)
+        setTimer(30)
+        setOtpFetch(true)
+      }
+    }).catch((err) => {
+      setVerifyotpstatus(true)
+      setStatus(false)
+      setTimer(0)
+      console.log('-------------------err verifyCG12 otp request', err?.response)
+      if (err?.response?.data?.message.includes('Maximum number of OTPs are exceeded.' || 'Max attempts exceeded')) {
+        setIsOtp1(true)
+        setMaxError(true)
+        setErrorMessage(err?.response?.data?.message)
+        setTimeout(() => {
+          setMaxError(false)
+          setTimer(0)
+        }, 5000);
+      } else if (err?.response?.data?.message === "Mobile number cannot be same as that of the Customer") {
+        setModalError2(true)
+        setResends(false)
+        setTimer(0)
+      } else if (err?.response?.data?.message === "This mobile number already registered") {
+        setModalError3(true)
+        setResends(false)
+        setTimer(0)
+      }
+      else {
+        onChangeNumber('')
+        setverifypop(true)
+        setMaxError(false)
+      }
+    })
+  };
+
+
 
   // ------------------ verifyCG detail --------------------------------
   const verifyCG = async (num) => {
@@ -366,7 +420,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
         onChangeNumber('')
         setverifypop(true)
       }
-      console.log('-------------------err verifyCG34 ------>>>', err?.response)
+      console.log('-------------------err verifyCG34 ------>>>', err)
     })
   };
   // ------------------ ----------------------------------------------
@@ -954,6 +1008,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
             }}
             Press1={() => {
               navigation.navigate('Profile'),
+              verifyCG_back()
                 setModalVisible(false)
             }}
             ModalVisible={ModalVisible}

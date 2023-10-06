@@ -126,7 +126,7 @@ console.log('props====',props)
             "activityId": id
         }
         await api.getSpousedetail(data).then((res) => {
-            console.log('-------------------res spousedetail co-app', res?.data?.body?.occupation)
+            console.log('-------------------res spousedetail co-app', res?.data?.body)
             if (res?.status) {
                 dispatch({
                     type: 'SET_SPOUSE_OCCUPATION',
@@ -152,7 +152,7 @@ console.log('props====',props)
     // ------------------getDlePageNumberdetail ------------------
 
     const getDlePageNumber = async (id,occupation) => {
-        console.log('api called')
+        console.log('api called  getDlePageNumber------------------------>>>>>>>>>>>>>>>>> ', occupation)
 
         const data = {
             "activityId": id,
@@ -160,7 +160,7 @@ console.log('props====',props)
 
         }
         await api.getDlePageNumber(data).then((res) => {
-            console.log('-------------------res getDlePageNumber', res?.data?.body)
+            console.log('-------------------res getDlePageNumber1', res?.data?.body,occupation)
             if (res?.status) {
                 if (res?.data?.body == 1) {
                     // if (DLEStatus) {
@@ -222,7 +222,12 @@ console.log('props====',props)
                          props.navigation.navigate('AddVehicle')
                      }
                     
-                 } 
+                 }  else if (res?.data?.body == 11) {
+                   
+                    props.navigation.navigate('AddVehicle')
+            
+               
+            } 
            
             }
         }).catch((err) => {

@@ -27,6 +27,7 @@ import { api } from '../../../Services/Api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CorrectionModal from './CorrectionModal';
 import Image1s from '../../../assets/Images/cakes.svg';
+import Retryuploadimage from '../../HousePhoto/Components/Retryuploadimage';
 
 const { height, width } = Dimensions.get('screen');
 
@@ -43,6 +44,8 @@ const DetailChecks = ({ navigation, setState, proofType1,
     const [imageStatus, setImageStatus] = useState(false)
     const [Relation, setRelation] = useState('')
     const [Image1, setImage] = useState(null)
+    const [Imagefile, setImagefile] = useState(null)
+    const [imageurlfailed,setimageurlfailed] = useState(false)
     const [Correct1, setCorrect1] = useState(Correction)
     const [UploadStatus, setUploadStatus] = useState(false)
     const [NameStatus, setNamestatus] = useState(false)
@@ -75,6 +78,7 @@ const DetailChecks = ({ navigation, setState, proofType1,
     }, [])
 
     useEffect(() => {
+    
      
         setState(Purpose)
         setPurpose(Purpose)
@@ -83,7 +87,20 @@ const DetailChecks = ({ navigation, setState, proofType1,
         relation1(Purposes)
         setRelation(Relation)
       
+      
     }, [Purpose, Relation])
+
+
+    useEffect(() => {
+        console.log('purpose checking=========================',Purpose,'{}{}{}{',Purposes,'[][][][]',Relation)
+     
+       
+        setPurposes(Purposes)
+        relation1(Purposes)
+    
+      
+      
+    }, [Purposes])
 
     // -------------------------------- spouse detail -----------------------------------------
     const getSpousedetail = async () => {
@@ -110,14 +127,19 @@ const DetailChecks = ({ navigation, setState, proofType1,
            
         }
         await api.getResidenceowner(data).then((res) => {
-            console.log('-------------------res Residence owner', res?.data?.body)
+            console.log('-------------------res Residence owner123', res?.data?.body)
             if (res?.status) {
                 setPurposes(res?.data?.body?.relationShipWithCustomer)
                 setPurpose(res?.data?.body?.ownerShipProofType)
+                proofType1(res?.data?.body?.ownerShipProofType)
                 setImage(res?.data?.body?.imageUrl)
+                setImagefile(res?.data?.body?.imageUrl)
+                imageUrl1(res?.data?.body?.imageUrl)
+                relation1(res?.data?.body?.relationShipWithCustomer)
                 if (res?.data?.body?.relationShipWithCustomer != 'Spouse') {
                     setOwnersName(res?.data?.body?.ownersName)
                     relative1(res?.data?.body?.ownersName)
+                   
                 }
                 if (res?.data?.body?.ownerShipProofType && res?.data?.body?.imageUrl !== null) {
                     setImageStatus(true)
@@ -142,7 +164,7 @@ const DetailChecks = ({ navigation, setState, proofType1,
         }
         console.log("data====== update residence owner", data)
         await api.UpdateResidenceowner(data).then((res) => {
-            console.log('-------------------res  update Residence owner', isCheck)
+            console.log('-------------------res  update Residence owner', res)
             if (isCheck) {
                 setModalVisibleC(true)
                 console.log("sauccess")
@@ -165,7 +187,7 @@ const DetailChecks = ({ navigation, setState, proofType1,
            // useFrontCamera:false
         }).then(image => {
             console.log("IMAGE", image.path);
-            setImage(image.path)
+            setImagefile(image.path)
             setUploadStatus(false)
             setImageStatus(true)
             uploadFile(image.path, image)
@@ -176,7 +198,7 @@ const DetailChecks = ({ navigation, setState, proofType1,
         let data = new FormData();
         data.append('multipartFile', {
             name: 'aaa.jpg',
-            type: image.mime,
+            type:'image/jpeg',
             uri: imagevalue
         })
 
@@ -188,6 +210,31 @@ const DetailChecks = ({ navigation, setState, proofType1,
             }
         }).catch((err) => {
             console.log('-------------------err file upload', err)
+            uploadFileRetry(Imagefile)
+        })
+    };
+
+
+    async function uploadFileRetry(imagevalue, image) {
+        console.log('retry api called,',imagevalue)
+        let data = new FormData();
+        data.append('multipartFile', {
+            name: 'aaa.jpg',
+            type: 'image/jpeg',
+            uri: imagevalue
+        })
+
+        await api.uploadFile(data).then((res) => {
+            console.log('-------------------res file upload', res?.data[0]?.body)
+            if (res?.status) {
+                setImage(res?.data[0]?.body)
+                imageUrl1(res?.data[0]?.body)
+            }
+        }).catch((err) => {
+            console.log('-------------------err file upload', err)
+            setimageurlfailed(true)
+            setImage(null)
+            setImagefile(null)
         })
     };
     // ------------------ HomeScreen Api Call End ------------------
@@ -211,24 +258,6 @@ const DetailChecks = ({ navigation, setState, proofType1,
         return initials.toUpperCase();
     };
 
-    function hasEmoji(text) {
-        console.log("text has emogi")
-        const emojiRegex = /[\u{1F000}-\u{1FFFF}\u{200D}\u{FE0F}]/u; // Emoji regular expression pattern
-        if (emojiRegex.test(text)) {
-            setEmoji(true)
-            console.log("text true", text)
-            setOwnersName('')
-
-        } else {
-            console.log("text false", text)
-        }
-    }
-    // useEffect(() => {
-    //     console.log("emoji pass", emoji)
-    //     if (emoji) {
-    //         setOwnersName('')
-    //     }
-    // })
 
 
     const removeEmojis = (string) => {
@@ -372,7 +401,7 @@ const DetailChecks = ({ navigation, setState, proofType1,
                                 </View>
                                 :
                                 <View style={{ alignItems: 'flex-start', flex: 1, marginLeft: 10 }}>
-                                    <Image source={{ uri: Image1 }}
+                                    <Image source={{ uri: Imagefile }}
                                         style={{ width: 55, height: 65, borderRadius: 6 }}
                                     />
                                 </View>
@@ -507,6 +536,14 @@ const DetailChecks = ({ navigation, setState, proofType1,
                 Error={error}
                 onPressOut={() => setModalVisible1(!ModalVisible1)}
             />
+
+<Retryuploadimage
+            ModalVisible={imageurlfailed}
+            onPressOut={() => {
+              setimageurlfailed(!imageUrl1)
+            }}
+            setModalVisible={setimageurlfailed}
+          />
         </View>
     )
 }

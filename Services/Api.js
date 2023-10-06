@@ -4,6 +4,7 @@ import axios from 'axios';
 // --------- Base URL Start------------------
 //const baseUAT = 'http://13.235.213.160:' // UAT Production
 const baseUAT = 'http://3.108.93.231:' //dev server
+//const baseUAT = "http://43.205.44.67:"
 
 const baseURL5 = `${baseUAT}8488/`;
 const baseURL = `${baseUAT}8383/`

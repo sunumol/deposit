@@ -50,6 +50,7 @@ const SplashScreen2 = ({ navigation }) => {
                           }
 
                     if (notification?.title === 'DATA_CONFIRMATION') {
+                        console.log('DATA Confuirmed-----------......>>>>>>>',notification?.data)
                         dispatch({
                             type: 'SET_CGT_ACTIVITY_ID',
                             payload:notification?.data?.activityId ,
@@ -89,7 +90,7 @@ const SplashScreen2 = ({ navigation }) => {
             });
             console.log(
                 "Notification caused app to open from background state:66",
-                remoteMessage?.notification?.data
+                remoteMessage?.data
             );
             console.log(
                 "Notification caused app to open from background state:6322",

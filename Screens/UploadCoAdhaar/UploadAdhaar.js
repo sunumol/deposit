@@ -412,6 +412,7 @@ const UploadAdhaar = ({ navigation }) => {
 
         await api.uploadFile(data).then((res) => {
             console.log('-------------------res voter upload front', res?.data[0]?.body)
+            setImagesF1(res?.data[0]?.body)
             if (res?.status) {
                 setImagesF1(res?.data[0]?.body)
                // setImagesF(res?.data[0].body)
@@ -447,6 +448,7 @@ const UploadAdhaar = ({ navigation }) => {
 
         await api.uploadFile(data).then((res) => {
             console.log('-------------------res voter upload back', res?.data[0]?.body)
+            setImagesB1(res?.data[0]?.body)
             if (res?.status) {
                 setImagesB1(res?.data[0]?.body)
                 //setImagesB(res?.data[0]?.body)
@@ -490,7 +492,7 @@ const UploadAdhaar = ({ navigation }) => {
 
   // ------------------ uploadVoter Api Call Start------------------
   async function uploadAdhaar() {
- 
+    console.log('-------------------upkoad aadhhar api call --------------------------', ImagesB1)
     setDelf(false)
     setDelb(false)
     setStatus(true)
@@ -498,11 +500,11 @@ const UploadAdhaar = ({ navigation }) => {
     const data = {
         "activityId":activityId,
         "cgFrontImage": ImagesF1,
-        "cgBackImage":  ImagesB1     
+        "cgBackImage": ImagesB1 ? ImagesB1 : backimage     
     }
     console.log("data save",data)
     await api.SaveCoappAdhaar(data).then((res) => {
-        console.log('-------------------res CG voter id upload', res)
+        console.log('-------------------res CG voter id upload123', res)
         if (res?.status) {
            navigation.navigate('UploadVid')
             setStatus(false)

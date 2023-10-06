@@ -102,6 +102,15 @@ const Vehicles = ({ navigation, vehicleslist }) => {
     //     }
     // }, [vehicle, vehicleslist])
 
+    useEffect(() => {
+        const willFocusSubscription = navigation.addListener('focus', () => {
+            getVehicleDetails()
+            console.log("search status.....", SearchStatus)
+
+        });
+        return willFocusSubscription;
+    }, []);
+
 
     const getVehicleDetails = async () => {
         console.log('api called', activityId)
@@ -134,20 +143,28 @@ const Vehicles = ({ navigation, vehicleslist }) => {
 
         const data = vehicleslist
         await api.saveVehicleDetails(data).then((res) => {
-            console.log('-------------------res fetchVehicleDetailsForDle', res)
+            console.log('-------------------res saveVehicleDetails', res)
             if (res?.status) {
                 //getLastPage()
                 navigation.navigate('EnergyUtility',{isCheck:false})
             }
         }).catch((err) => {
-            console.log('-------------------err fetchVehicleDetailsForDle', err?.response)
+            console.log('-------------------err saveVehicleDetails', err?.response)
         })
     };
 
     const saveVehicleDetails_AddNew = async () => {
         console.log('api called1')
+        
+        var obj = vehicleslist
+        var newobj = {...obj,isApproved :true}
+ 
 
-        const data = vehicleslist
+            console.log('vehicle added data',newobj)
+            const data = newobj
+
+
+
         await api.saveVehicleDetails(data).then((res) => {
             console.log('-------------------res fetchVehicleDetailsForDle', res)
             if (res?.status) {

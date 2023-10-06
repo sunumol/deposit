@@ -5,6 +5,7 @@ import { COLORS, FONTS } from '../../../Constants/Constants';
 import { useTranslation } from 'react-i18next';
 import Icon1 from 'react-native-vector-icons/Fontisto';
 
+                           
 const EnergyModal = ({ visible, onPressOut, setModalVisible, setPurpose, Purpose
 }) => {
     const { t } = useTranslation();
@@ -28,7 +29,7 @@ const EnergyModal = ({ visible, onPressOut, setModalVisible, setPurpose, Purpose
                         <TouchableOpacity style={styles.textTouch}
                             onPress={() => {
                                 setPurpose('LPG Cylinder')
-
+                              
                                 setModalVisible(!visible)
 
                             }
@@ -43,6 +44,7 @@ const EnergyModal = ({ visible, onPressOut, setModalVisible, setPurpose, Purpose
                         <View style={styles.lineView} />
                         <TouchableOpacity style={styles.textTouch} onPress={() => {
                             setPurpose("Others")
+                          
                             setModalVisible(!visible)
 
                         }

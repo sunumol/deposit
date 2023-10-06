@@ -197,7 +197,7 @@ const DLE = ({ navigation, set, list }) => {
 
 
 
-            {/* <ApprovalModal
+            <ApprovalModal
                 ModalVisible={ModalVisible}
                 onPressOut={() => {
                     setModalVisible(false)
@@ -207,7 +207,7 @@ const DLE = ({ navigation, set, list }) => {
                 navigation={navigation}
                 //  onPressOut={() => setModalVisible(!ModalVisible)}
                 setModalVisible={setModalVisible}
-                list={list} /> */}
+                list={list} />
 
 
 

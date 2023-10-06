@@ -167,60 +167,38 @@ const MeetTab = (props) => {
     // ------------------getDlePageNumberdetail ------------------
 
     const getDlePageNumber = async (id, occupation) => {
-console.log("error",occupation)
+
 
         const data = {
             "activityId": id,
         }
         await api.getDlePageNumber(data).then((res) => {
             console.log("cust api", customerdetail)
-            console.log('-------------------res getDlePageNumber', res?.data?.body, spouseDetail)
+            console.log('-------------------res getDlePageNumber12', res?.data?.body, occupation)
             if (res?.status) {
                 if (res?.data?.body == 1) {
-                   // if (DLEStatus) {
-                   //     props.navigation.navigate('CustomerDetails')
-                   // } else {
                         props.navigation.navigate('DetailCheck')
-                    //}
-
                 }else if (res?.data?.body == 10) {
-                    props.navigation.navigate('CustomerDetails')
-                  
-                }
-                 else if (res?.data?.body == 2) {
-                     
+                    props.navigation.navigate('CustomerDetails')  
+                } else if (res?.data?.body == 2) {    
                     props.navigation.navigate('ResidenceOwner')
                 } else if (res?.data?.body == 3) {
-                
                     props.navigation.navigate('ContinuingGuarantor')
                 } else if (res?.data?.body == 4) {
                     if (occupation == 500) {
-                        props.navigation.navigate('UploadAdhaar')
-                      
+                        props.navigation.navigate('UploadAdhaar')  
                     } else {
                         props.navigation.navigate('AddVehicle')
                     }
-
-                } else if (res?.data?.body == 5) {
-                    
+                } else if (res?.data?.body == 5) {        
                     props.navigation.navigate('VehicleOwn')
                 } else if (res?.data?.body == 6) {
                     props.navigation.navigate('EnergyUtility')
                 } else if (res?.data?.body == 7) {
                     props.navigation.navigate('IncomeDetails', { relationShip: 'Customer' })
-                    // if (occupation !== 'UNEMPLOYED') {
-
-                    //     props.navigation.navigate('IncomeDetails', { relationShip: 'Customer' })
-                    // } else if (occupation == 'UNEMPLOYED' && spouseDetail !== 'UNEMPLOYED') {
-                    //     props.navigation.navigate('IncomeDetailsSpouse', { relationShip: 'Spouse' })
-                    // } else if (occupation == 'UNEMPLOYED' && spouseDetail == 'UNEMPLOYED') {
-                    //     navigation.navigate('Proceed')
-                    // }
-                    // props.navigation.navigate('IncomeDetails', { relationShip: 'Customer' })
                 } else if (res?.data?.body == 8) {
                     console.log("error handle",error)
                     if(occupation == 500){
-                      //  props.navigation.navigate('IncomeDetails', { relationShip: 'Customer' })
                         props.navigation.navigate('Proceed')
                     }
                     else if (occupation !== 'UNEMPLOYED') {
@@ -236,12 +214,12 @@ console.log("error",occupation)
                     } else {
                         props.navigation.navigate('AddVehicle')
                     }
-                   
-                } 
-                // else if (res?.data?.body == 10) {
-                //     props.navigation.navigate('AddVehicle')
-                // }
-                //props.navigation.navigate('DetailCheck')
+                    } else if (res?.data?.body == 11) {
+                        props.navigation.navigate('AddVehicle') 
+                } else if(res?.data?.body == 12){
+                    props.navigation.navigate('HousePhoto') 
+                }
+              
             }
         }).catch((err) => {
             console.log('-------------------err  getDlePageNumber', err)

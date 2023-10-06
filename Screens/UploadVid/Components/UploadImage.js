@@ -33,7 +33,7 @@ const UploadImage = ({ navigation, id, setFrontimage, setBackimage }) => {
     const [ImagesF, setImagesF] = useState(null)
     const [ImagesB, setImagesB] = useState(null)
     const [ImagesF1, setImagesF1] = useState(null)
-    const [ImagesB1, setImagesB1] = useState(null)
+    const [ImagesB1, setImagesB1] = useState('')
     const [delf, setDelf] = useState(false)
     const [delb, setDelb] = useState(false)
     const [ModalVisible2, setModalVisible2] = useState(false)
@@ -362,6 +362,7 @@ const UploadImage = ({ navigation, id, setFrontimage, setBackimage }) => {
     
             await api.uploadFile(data).then((res) => {
                 console.log('-------------------res voter upload back', res?.data[0]?.body)
+                setImagesB1(res?.data[0]?.body)
                 if (res?.status) {
                     setImagesB1(res?.data[0]?.body)
                     //setImagesB(res?.data[0]?.body)
@@ -379,7 +380,7 @@ const UploadImage = ({ navigation, id, setFrontimage, setBackimage }) => {
         };
 
         async function uploadFilebackRetry(imagevalue) {
-            console.log('api called back',imagevalue)
+            console.log('api called back0000000000000000000000000000000000000000000000000000000000000000000000')
             let data = new FormData();
             data.append('multipartFile', {
                 name: 'aaa.jpg',
@@ -433,6 +434,8 @@ const UploadImage = ({ navigation, id, setFrontimage, setBackimage }) => {
             .catch((err) => {
                 setStatus(false)
                 setContinueAble(false)
+                setDelf(false)
+                setDelb(false)
                 console.log('-------------------err CG voter id upload', err)
                 if (err?.response?.data?.message === 'Could not read the details.Please upload a new image.' || err?.response?.data?.message === 'Could not verify the ID details. Please upload a new image.'
                   ) {

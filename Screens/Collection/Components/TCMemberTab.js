@@ -28,71 +28,7 @@ const TCMemberTab = ({ navigation }) => {
     String.prototype.replaceAt = function (index, replacement) {
         return this.substring(0, index) + replacement + this.substring(index + replacement.length);
     }
-    const Data1 = [
-        {
-            id: 1,
-            name: 'Athira Anil',
-            place: 'Kakkanad',
-            phone: '925XXXXX45',
-            Initial: 'AA',
-            Amount: '₹10,500',
-            color1: 'rgba(234, 64, 71, 1)',
-            color: 'rgba(109, 171, 205, 1)'
-        },
-        {
-            id: 2,
-            name: 'Aparna CS',
-            place: 'Kakkanad',
-            phone: '777XXXXX11',
-            Initial: 'AC',
-            Amount: '₹8,500',
-            color1: 'rgba(26, 5, 29, 1)',
-            color: 'rgba(140, 167, 133, 1)'
-        },
-        {
-            id: 3,
-            name: 'Ashly James',
-            place: 'Kakkanad',
-            phone: '968XXXXX66',
-            Initial: 'AJ',
-            Amount: '₹8,500',
-            color1: 'rgba(234, 64, 71, 1)',
-            color: 'rgba(228, 105, 248, 1)'
-        },
-        {
-            id: 4,
-            name: 'Dayana James',
-            place: 'Kakkanad',
-            phone: '968XXXXX66',
-            Initial: 'DJ',
-            Amount: '₹2,200',
-            color1: 'rgba(26, 5, 29, 1)',
-            color: 'rgba(173, 200, 117, 1)'
-        },
-    ]
 
-    const Data2 = [
-        {
-            id: 1,
-            name: 'Ashly James',
-            place: 'Kakkanad',
-            phone: '987XXXXX22',
-            Initial: 'AT',
-            Amount: '₹7,500',
-            color1: 'rgba(39, 174, 96, 1)',
-            color: 'rgba(148, 166, 200, 1)'
-        },
-        {
-            id: 2,
-            name: 'Anupama S',
-            place: 'Kakkanad',
-            phone: '987XXXXX22',
-            Initial: 'AJ',
-            Amount: '₹7,724',
-            color1: 'rgba(235, 87, 87, 1)',
-            color: 'rgba(200, 148, 148, 1)'
-        },
-    ]
 
               // ------------------ get Customer List Api Call Start ------------------
   const getTrustcircledetails = async () => {

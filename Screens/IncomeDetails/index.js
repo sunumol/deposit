@@ -316,7 +316,7 @@ const IncomeDetails = ({ navigation, route }) => {
         }
 
         await api.saveIncomeDetails(data).then((res) => {
-            console.log('-------------------res saveIncomeDetails', res?.data?.body)
+            console.log('-------------------res saveIncomeDetails', res)
             if (res?.status) {
 
                 navigation.navigate('Profile')
@@ -324,7 +324,7 @@ const IncomeDetails = ({ navigation, route }) => {
                 // navigation.navigate('DebitDetails')
             }
         }).catch((err) => {
-            console.log('-------------------err saveIncomeDetails', err?.response)
+            console.log('-------------------err saveIncomeDetails', err)
         })
     };
     // ------------------ ------------------

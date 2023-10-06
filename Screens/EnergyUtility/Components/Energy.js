@@ -159,7 +159,7 @@ const Energy = ({ navigation, setAmount1, setPurpose1, setDays1,
                 // }
             }
         }).catch((err) => {
-            console.log('-------------------err saveEnergyUtilities', err?.response)
+            console.log('-------------------err saveEnergyUtilities save', err?.response)
         })
     };
     // ------------------ ------------------
@@ -376,6 +376,7 @@ const Energy = ({ navigation, setAmount1, setPurpose1, setDays1,
                                 }
                                 else if (/^[^!-\/:-@\.,[-`{-~ ]+$/.test(text) || text === "") {
                                     setAmount(text)
+                                    setAmount1(text)
                                     setZeroStatus(false)
                                 }
                             }
@@ -444,7 +445,7 @@ const Energy = ({ navigation, setAmount1, setPurpose1, setDays1,
             <EnergyModal
                 visible={ModalVisible}
                 setPurpose={setPurpose}
-                Purpose={Purpose}
+                Purpose={(Purpose,setPurpose1(Purpose))}
                 setModalVisible={setModalVisible}
                 onPressOut={() => setModalVisible(!ModalVisible)}
             />

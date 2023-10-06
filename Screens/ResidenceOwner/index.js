@@ -42,13 +42,19 @@ const ResidenceOwner = ({ navigation, }) => {
     const [proofType, setProoftype] = useState('')
     const [imageurl, setImageUrl] = useState('')
     const [relation, setRelation] = useState('')
+    const [relativename,setrelativename] = useState('')
+    const [customername,setcustomername] = useState('')
     const [relative, setRelative] = useState('')
     const [custID, setCustId] = useState('')
     const activityId = useSelector(state => state.activityId);
+    const [spousename,setspousename] = useState('')
     const [Correct1, setCorrect1] = useState(route?.params?.Correction)
 
     useEffect(() => {
         getData()
+        getResidenceowner()
+        getCustomerdetail()
+        getSpousedetail()
     }, [])
     useEffect(() => {
         AsyncStorage.getItem("CustomerId").then((value) => {
@@ -87,7 +93,60 @@ const ResidenceOwner = ({ navigation, }) => {
         })
     };
     // ------------------ HomeScreen Api Call End ------------------
+    const getCustomerdetail = async () => {
+        console.log('api called customer',activityId,id)
 
+        const data = {
+             "activityId": activityId ? activityId :id
+          
+        }
+        await api.getCustomerdetail(data).then((res) => {
+            console.log('-------------------res customerdetail', res.data.body)
+            if (res?.status) {
+                setcustomername(res?.data?.body?.name)
+             
+                //setSpousedetail(res?.data?.body)
+            }
+        }).catch((err) => {
+            console.log('-------------------err customerdetail', err?.response)
+        })
+    };
+
+    const getResidenceowner = async () => {
+
+
+    console.log('getResidenceowner api called')
+        const data = {
+            "activityId": activityId
+           
+        }
+        await api.getResidenceowner(data).then((res) => {
+            console.log('-------------------res Residence owner', res?.data?.body)
+            if (res?.status) {
+                setrelativename(res?.data?.body?.ownersName)
+         
+              
+            }
+        }).catch((err) => {
+            console.log('-------------------err Residence Owner', err?.response)
+        })
+    };
+
+
+    const getSpousedetail = async () => {
+        const data = {
+            "activityId": activityId?activityId:id
+        }
+        await api.getSpousedetail(data).then((res) => {
+            console.log('-------------------res spousedetail', res)
+           
+                setspousename(res?.data?.body?.name)
+            
+        }).catch((err) => {
+            setError(err?.response?.status)
+            console.log('-------------------err spousedetail', err?.response?.status, activityId)
+        })
+    };
 
     // ------------------save and update residence owner detail ------------------
 
@@ -124,14 +183,14 @@ const ResidenceOwner = ({ navigation, }) => {
     // device back api call------------------
 
     const UpdateResidenceowner_backButton = async () => {
-        console.log('api called', activityId, proofType, imageurl, relation, relative)
+        console.log('api called UpdateResidenceowner_backButton....', activityId, proofType, imageurl, relation, relative,spousename)
 
         const data = {
             "activityId": activityId,
             "ownerShipProofType": proofType,
             "imageUrl": imageurl,
             "relationShipWithCustomer": relation,
-            "ownersName": relative
+            "ownersName": relation == 'Self'? customername : relation == 'Spouse' ? spousename : relative
         }
         await api.UpdateResidenceowner(data).then((res) => {
             console.log('-------------------res  update Residence owner', res)

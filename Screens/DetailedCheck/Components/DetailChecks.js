@@ -302,7 +302,7 @@ const
                 "pin": details?.pin
             }
             await api.savebasicdetail(data).then((res) => {
-                console.log('-------------------res update', res?.data)
+                console.log('-------------------res update', res)
                 if (res?.status) {
                     console.log("HELLO SAVE SUCCESS", res?.data)
                     if (isCheck) {

@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
-import { useSelector } from 'react-redux';
+import { useSelector,useDispatch } from 'react-redux';
 
 // -------------- Component Imports ----------------------
 import ModalSave from '../../Components/ModalSave';
@@ -28,6 +28,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const DetailCheck = ({ navigation, route }) => {
     console.log("api correction", route?.params?.isCheck)
     const isDarkMode = true
+    const dispatch = useDispatch()
 
     const [basicdetail, setBasicdetail] = useState('')
     const [ModalVisible, setModalVisible] = useState(false)
@@ -36,7 +37,7 @@ const DetailCheck = ({ navigation, route }) => {
     const [villagename, setVillagename] = useState('')
     const [roadstatus, setRoadStatus] = useState('')
     const [postofficename, setPostofficename] = useState('')
-    const [landmarkname, setLandmarkname] = useState('false')
+    const [landmarkname, setLandmarkname] = useState('')
     const [poststatus, setpoststatus] = useState(false);
     const [villagestatus, setvillagestatus] = useState(false);
     const [backstate, setbackstate] = useState(false);
@@ -79,7 +80,7 @@ const DetailCheck = ({ navigation, route }) => {
             }, 1000);
 
         }).catch((err) => {
-            console.log('-------------------err get Village', err)
+            console.log('-------------------err get updateActivity', err)
         })
     };
     // ------------------ HomeScreen Api Call End ------------------
@@ -94,6 +95,12 @@ const DetailCheck = ({ navigation, route }) => {
             console.log('-------------------res ConductDLEbasicdetail12', res)
             if (res?.status) {
                 setBasicdetail(res?.data?.body)
+                dispatch({
+                    type: "SET_SELECTED_CUSTOMERID_OF_DLE",
+                    payload:res?.data?.body?.customerId ,
+                });
+
+
             }
         }).catch((err) => {
             console.log('-------------------err ConductDLEbasicdetail', err?.response)
@@ -117,7 +124,7 @@ const DetailCheck = ({ navigation, route }) => {
             "pin": basicdetail?.pin
         }
         await api.savebasicdetail(data).then((res) => {
-            console.log('-------------------res update', res?.data)
+            console.log('-------------------res update', res,landmarkname)
             if (res?.status) {
                 navigation.navigate('Profile')
             }

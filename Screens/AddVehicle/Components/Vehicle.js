@@ -200,9 +200,14 @@ const Vehicle = ({ navigation,setsearchvehicledata }) => {
     // ------------------get fetchVehicleDetailsForDle detail ------------------
 
     const saveVehicleDetails = async () => {
-        console.log('api called1')
+        console.log('api called1',searchvehicledata)
 
-        const data = [searchvehicledata]
+        var obj = searchvehicledata
+        var newobj = {...obj,isApproved :true}
+ 
+
+    console.log('vehicle added data',newobj)
+    const data = [newobj]
         await api.saveVehicleDetails(data).then((res) => {
             console.log('-------------------res save vehicle', res)
             if (res?.status) {
@@ -493,7 +498,7 @@ const Vehicle = ({ navigation,setsearchvehicledata }) => {
                                 }}>
 
                                     <TouchableOpacity style={[styles.buttonView1, { backgroundColor: 'rgba(229, 231, 250, 1)' }]}
-                                        onPress={() => { setSearchStatus2(false), setNumbers(''), setPurpose(''), setStatus(!Status) }}>
+                                        onPress={() => { setSearchStatus2(false), setNumbers(''), setPurpose(''), setStatus(!Status),setError('') }}>
                                         <Text style={[styles.continueText, { color: COLORS.colorB }]}>Reject</Text>
                                     </TouchableOpacity>
                                     {console.log('~~~~~>>>', searchvehicledata)}

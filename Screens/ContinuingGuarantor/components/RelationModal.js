@@ -61,13 +61,13 @@ const RelationModal = ({ visible, onPressOut, setModalVisible, setRelation, setP
                         </TouchableOpacity>
                         <View style={styles.lineView} />
                         <TouchableOpacity style={styles.textTouch} onPress={() => {
-                            setPurposes("Son-in-law")
+                            setPurposes("Son–in-law")
                             setModalVisible(!visible)
                         }
                         }>
                             <Text style={styles.modalText}>Son-in-law</Text>
                             <View style={{ paddingRight: 10 }}>
-                                {relation === 'Son-in-law' ?
+                                {relation === 'Son–in-law' ?
 
                                     <Icon name="radio-btn-active" size={18}color={COLORS.colorB} /> :
                                     <Icon name="radio-btn-passive" size={18}  color={COLORS.DSMuted}/>}
@@ -128,6 +128,8 @@ const RelationModal = ({ visible, onPressOut, setModalVisible, setRelation, setP
 
 
                         <View style={styles.lineView} />
+
+
                         <TouchableOpacity style={styles.textTouch} onPress={() => {
                             setPurposes('Father')
                             setModalVisible(!visible)
@@ -163,6 +165,46 @@ const RelationModal = ({ visible, onPressOut, setModalVisible, setRelation, setP
 
 
                         <View style={styles.lineView} />
+
+
+
+                        <TouchableOpacity style={styles.textTouch} onPress={() => {
+                            setPurposes('Brother')
+                            setModalVisible(!visible)
+                        }
+                        }>
+                            <Text style={styles.modalText}>Brother</Text>
+                            <View style={{ paddingRight: 10 }}>
+                                {relation === 'Brother' ?
+                            
+                            <Icon name="radio-btn-active" size={18} color={COLORS.colorB} /> :
+                            <Icon name="radio-btn-passive" size={18}  color={COLORS.DSMuted} />}
+                            </View>
+
+                        </TouchableOpacity>
+
+
+
+                        <View style={styles.lineView} />
+                        <TouchableOpacity style={styles.textTouch} onPress={() => {
+                            setPurposes('Sister')
+                            setModalVisible(!visible)
+                        }
+                        }>
+                            <Text style={styles.modalText}>Sister</Text>
+                            <View style={{ paddingRight: 10 }}>
+                                {relation === 'Sister' ?
+                         
+                         <Icon name="radio-btn-active" size={18}color={COLORS.colorB} /> :
+                         <Icon name="radio-btn-passive" size={18}   color={COLORS.DSMuted} />}
+                            </View>
+
+                        </TouchableOpacity>
+
+
+                        <View style={styles.lineView} />
+
+
                         <TouchableOpacity style={styles.textTouch} onPress={() => {
                             setPurposes('Uncle')
                             setModalVisible(!visible)

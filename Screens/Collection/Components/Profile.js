@@ -20,6 +20,7 @@ import Icon1 from 'react-native-vector-icons/Ionicons'
 import Icon2 from 'react-native-vector-icons/Feather';
 import { api } from '../../../Services/Api';
 import { useSelector } from 'react-redux';
+import ProfileImage from './profileimage';
 
 
 
@@ -30,6 +31,7 @@ const { height, width } = Dimensions.get('screen');
 const Profiles = ({ navigation,customerdata }) => {
  
     const [custData,setCustData] = useState('')
+    const [profiledata, setprofiledata] = useState(false)
     String.prototype.replaceAt = function (index, replacement) {
         return this.substring(0, index) + replacement + this.substring(index + replacement.length);
       }
@@ -57,8 +59,12 @@ const openDialScreen = (userPhone) => {
 
                     <View style={{ flexDirection: 'row',marginTop:5 }}>
 
+                        <TouchableOpacity  onPress={()=>{setprofiledata(true),console.log('image')}}>
                         <Image source={{uri: custData?.photo}}
                             resizeMode={'contain'} style={{ borderRadius: 25, width: 50, height: 50 }} />
+                        </TouchableOpacity>
+
+                     
                         <View style={{ flexDirection: 'column', marginLeft: width * 0.035, marginTop: 3 }}>
                             <Text style={styles.nameText}>{custData?.fullName}</Text>
                             <View style={{ flexDirection: 'row', }}>
@@ -114,6 +120,14 @@ const openDialScreen = (userPhone) => {
                             <Text style={[styles.nameText, { fontFamily: FONTS.FontRegular }]}>{custData?.voterIdNumber?.replace(/^.{0}/g, '').replaceAt(3, "X").replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X")}</Text>
                         </View>
                     </View>
+
+                    <ProfileImage
+                        ModalVisible={profiledata}
+                        onPressOut={() => setprofiledata(false)}
+                        setModalVisible={setprofiledata}
+                        data={custData?.photo}
+      
+      />
                 </View>
             </View>
         </>

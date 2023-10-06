@@ -9,7 +9,7 @@ import {
 import React, { useState,useEffect } from 'react'
 import LottieView from 'lottie-react-native';
 import { useRoute } from '@react-navigation/native';
-import { useDispatch } from 'react-redux';
+import { useDispatch,useSelector } from 'react-redux';
 
 import { FONTS, COLORS } from '../../../Constants/Constants';
 
@@ -18,12 +18,16 @@ const { height, width } = Dimensions.get('screen');
 const Energy = ({ navigation }) => {
     const route = useRoute();
     const dispatch = useDispatch()
-
+    const activityId = useSelector(state => state.activityId);
+    const customerId = useSelector(state => state.DLEcustomerID);
     const [ButtonS, setButtonS] = useState( false)
    
     useEffect(() => {
-        if(route?.params?.status){
+        console.log('Proceed......screen-------route',route?.params,'Activity id',activityId)
+        if(route?.params?.status && route?.params.AcyivityId == activityId){
             setButtonS(true)
+        }else{
+            setButtonS(false)
         }
     }, [route])
     

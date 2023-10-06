@@ -200,14 +200,14 @@ const CgtCustomer = ({ navigation, route }) => {
         };
         await api.updateActivity(data).then((res) => {
             console.log("rejectreason", rejectReason)
-            console.log('-------------------res789', res?.data)
+            console.log('--------------updateActivityReject-----res789', res?.data)
             if (res?.status) {
                 setModalError(true)
                 setRejectReason()
             }
         })
             .catch((err) => {
-                console.log('-------------------err789', err?.response)
+                console.log('---------updateActivityReject----------err789', err?.response)
             })
     };
     // ------------------ Update Activity Reject Api Call End ------------------

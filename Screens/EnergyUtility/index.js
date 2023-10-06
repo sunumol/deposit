@@ -110,7 +110,7 @@ const EnergyUtility = ({ navigation, }) => {
     );
 
     const saveEnergyUtilities = async () => {
-        console.log('api called')
+        console.log('api called',Purpose1s)
 
         const data = {
             "activityId": activityId?activityId:route?.params?.activityId,
@@ -123,7 +123,7 @@ const EnergyUtility = ({ navigation, }) => {
         }
        
         await api.saveEnergyUtilities(data).then((res) => {
-            console.log('-------------------res saveEnergyUtilities', res, data)
+            console.log('-------------------res saveEnergyUtilities save', res, data)
             if (res?.status) {
                 navigation.navigate('Profile'),
                     setModalVisible(false)

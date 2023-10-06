@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Dimensions, Modal, StyleSheet, Text, TouchableOpacity, View, BackHandler } from "react-native";
+import { Dimensions, Modal, StyleSheet, Text, TouchableOpacity, View, Image } from "react-native";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { COLORS, FONTS } from '../../../Constants/Constants';
 import { useTranslation } from 'react-i18next';
@@ -7,7 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const { height, width } = Dimensions.get('screen');
 
 
-const CollectModal = ({ ModalVisible, onPressOut, setModalVisible,ModalVisible2,navigation,collectedvalue,onsubmit,onsubmit1 }) => {
+const ProfileImage = ({ ModalVisible, onPressOut, setModalVisible ,data}) => {
     const [state, setState] = useState(null);
     const { t } = useTranslation();
     const [Lang, setLang] = useState('')
@@ -43,31 +43,13 @@ const CollectModal = ({ ModalVisible, onPressOut, setModalVisible,ModalVisible2,
                 <View style={styles.modalContainer}>
 
 
-                    <Text style={[styles.textdesc, { paddingTop: width * 0.06, textAlign: 'center' }]}>Confirm Collection of
-                    <Text style={[styles.textdesc, { paddingTop: width * 0.06, textAlign: 'center',fontFamily:FONTS.FontMedium }]}> ₹{collectedvalue}?</Text></Text>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingTop: 22, paddingBottom: 22, }}>
-                        <TouchableOpacity style={styles.ButtonCancel} onPress={() => {
-                             onsubmit1()
-                            setModalVisible(false)}}>
-                            <Text style={styles.text2}>{t('common:No')}</Text>
-                        </TouchableOpacity>
-
-                        <TouchableOpacity style={[styles.ButtonContinue, {}]} onPress={()=>{
-                            onsubmit()
-                            setModalVisible(!ModalVisible)
-                            ModalVisible2()
-
-                           
-                        }}>
-                            <Text style={styles.textC}>{t('common:Yes')}</Text>
-                        </TouchableOpacity>
-
-
-                    </View>
+                <Image source={{uri: data}}
+                            resizeMode={'contain'} style={styles.modalContainer} />
+            
                 </View>
                 <TouchableOpacity
                     onPressOut={onPressOut}
-                    style={styles.touchableStyle} >
+                    style={styles.touchableStyle1} >
                 </TouchableOpacity>
             </View>
         </Modal>
@@ -79,16 +61,28 @@ const styles = StyleSheet.create({
     mainContainer: {
         backgroundColor: "#000000aa",
         flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center'
+        paddingHorizontal: Dimensions.get('window').width * 0.05,
+        // alignItems: 'center',
+        // justifyContent: 'center'
+    },
+    touchableStyle: {
+
+        height: Dimensions.get('window').height * 0.3,
+
+
+    },
+    touchableStyle1: {
+
+        height: Dimensions.get('window').height * 0.4,
+
+
     },
     modalContainer: {
         width: Dimensions.get('window').width * 0.9,
-        height: Dimensions.get('window').width * 0.34,
+        height: Dimensions.get('window').width * 0.6,
         backgroundColor: COLORS.colorBackground,
         borderRadius: 20,
-        //alignItems: 'center',
-        justifyContent: 'center'
+    
     },
 
     textStyle: {
@@ -181,4 +175,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default CollectModal;
+export default ProfileImage;

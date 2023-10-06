@@ -115,6 +115,14 @@ const CompleteTab = ({ navigation }) => {
         }
     }
 
+    useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+            setcompletedcollectionstatus(false)
+            getcompletedCollections();
+        });
+        return unsubscribe;
+      }, [navigation]);
+
 useEffect(()=>{
     getcompletedCollections()
 },[])

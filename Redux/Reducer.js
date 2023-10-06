@@ -10,6 +10,7 @@ const initialState={
     
     customerList:[],
     customerID:[],
+    DLEcustomerID:'',
     cgtCustomerDetails:'',
     activityId:'',
     cgtactivity:'',
@@ -52,6 +53,11 @@ export const baseReducer = (state = initialState, action) => {
             return {
                 ...state, // return the updated state
                 customerID: action.payload  
+            }
+            case "SET_SELECTED_CUSTOMERID_OF_DLE":  // for updating state
+            return {
+                ...state, // return the updated state
+                DLEcustomerID: action.payload  
             }
 
             case "SET_SELECTED_LOANCUSTOMERID":  // for updating state
