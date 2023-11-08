@@ -38,7 +38,7 @@ const
         setVillagename1, setPostoffice1, setLandmarkname1,
         setRoadStatus1, setpoststatus, setvillagestatus,
         setbackstate, Correction, activityIds }) => {
-        console.log('????===>>123', setbackstate)
+        console.log('????===>>123', Correction)
 
         const isDarkMode = true;
         const villageinput = useRef();
@@ -393,6 +393,7 @@ const
                 "activityId": activityId ? activityId : activityIds
             }
             await api.getCorrectionNotify(data).then((res) => {
+                console.log('dle confirmation',res)
 
                 if (res?.status) {
                     setModalVisibleC(false)
@@ -407,7 +408,7 @@ const
 
             })
         };
-
+console.log('detail check value',details)
         return (
 
 
@@ -496,7 +497,8 @@ const
                                         placeholder={"Search village"}
                                         contextMenuHidden={true}
                                         placeholderTextColor="#808080"
-                                        editable={details?.village ? false : true}
+                                        //editable={details?.village ? false : true}
+                                        editable={(details?.village && Correction == false) ? false : true}
                                         style={[styles.TextInputBranch, { width: width * 0.48, color: 'rgba(26, 5, 29, 1)', fontSize: 12, left: 3 }]}
                                         onChangeText={(text) => {
                                             if (text.length == 25) {

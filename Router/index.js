@@ -60,7 +60,7 @@ import SelectCalendar from '../Screens/SelectCalendar'
 // import CameraPick from '../Screens/UploadVid/Components/CameraPick';
 import { navigationRef } from './RootNavigation';
 import GeneratePin from '../Screens/GeneratePin';
-
+import TCProfile from '../Screens/Collection/Components/TCProfile'
 import NotificationScreen from '../Screens/NotificationScreen'
 import MissedActivities from '../Screens/MissedActivities';
 import UploadAdhaar from '../Screens/UploadCoAdhaar/UploadAdhaar';
@@ -82,6 +82,7 @@ export default function Router() {
         <Stack.Screen name="CreatePin" component={netInfo.isConnected ? CreatePin : NetWorkError} />
         <Stack.Screen name="Profile" component={Profile} />
         <Stack.Screen name="Privacy" component={netInfo.isConnected ? PrivacyPolicy : NetWorkError} />
+        <Stack.Screen name="TCProfile" component={netInfo.isConnected ? TCProfile : NetWorkError} />
         <Stack.Screen name="Terms" component={netInfo.isConnected ? Terms : NetWorkError} />
         <Stack.Screen name="ActivityScreens" component={netInfo.isConnected ? ActivityScreens : NetWorkError}  />
         <Stack.Screen name="NewLead" component={netInfo.isConnected ? NewLead : NetWorkError} />

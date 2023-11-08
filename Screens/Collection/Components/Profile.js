@@ -11,7 +11,8 @@ import {
     ScrollView,
     Dimensions,
     Linking,
-    TouchableOpacity
+    TouchableOpacity,
+    Pressable
 } from 'react-native'
 import React, { useCallback, useEffect, useState } from 'react'
 import Image1 from '../../../assets/image/loc1.svg';
@@ -21,7 +22,7 @@ import Icon2 from 'react-native-vector-icons/Feather';
 import { api } from '../../../Services/Api';
 import { useSelector } from 'react-redux';
 import ProfileImage from './profileimage';
-
+import Geolocation from '@react-native-community/geolocation';
 
 
 
@@ -32,6 +33,11 @@ const Profiles = ({ navigation,customerdata }) => {
  
     const [custData,setCustData] = useState('')
     const [profiledata, setprofiledata] = useState(false)
+    const [latitudevalue,setlatitudevalue] = useState('')
+    const [longitudevalue,setlongitudevalue] = useState('')
+
+
+
     String.prototype.replaceAt = function (index, replacement) {
         return this.substring(0, index) + replacement + this.substring(index + replacement.length);
       }
@@ -51,6 +57,34 @@ const openDialScreen = (userPhone) => {
 };
 
 
+useEffect(()=>{
+    Geolocation.getCurrentPosition(info =>{ console.log('geolocation',custData?.houseLocation?.latitude,custData?.houseLocation?.longitude)
+    setlatitudevalue(custData?.houseLocation?.latitude)
+    setlongitudevalue(custData?.houseLocation?.longitude)
+      }
+    );
+  },[])
+
+
+  const openGoogleMaps = () => {
+    console.log('location values',custData?.houseLocation?.latitude,custData?.houseLocation?.longitude)
+    const url = `https://www.google.com/maps/dir/?api=1&destination=${custData?.houseLocation?.latitude},${custData?.houseLocation?.longitude}`;
+    
+    Linking.canOpenURL(url)
+      .then(() => {
+        Linking.openURL(url);
+        // if (supported) {
+        //   return Linking.openURL(url);
+        // } else {
+        //   console.error('Google Maps is not supported on this device');
+        // }
+      })
+      .catch((error) => {
+        console.error('An error occurred while opening Google Maps: ', error);
+      });
+  };
+  
+
     return (
 
         <>
@@ -68,7 +102,7 @@ const openDialScreen = (userPhone) => {
                         <View style={{ flexDirection: 'column', marginLeft: width * 0.035, marginTop: 3 }}>
                             <Text style={styles.nameText}>{custData?.fullName}</Text>
                             <View style={{ flexDirection: 'row', }}>
-                                <View style={{ paddingTop: 2, paddingRight: 1 }}>
+                                <View  style={{ paddingTop: 2, paddingRight: 1 }}>
                                     <Icon1 name="location-outline" color={"black"} />
                                 </View>
                                 <Text style={[styles.idText, { paddingTop: 0 }]}>{custData?.village}</Text>
@@ -98,10 +132,10 @@ const openDialScreen = (userPhone) => {
                             <Text style={[styles.nameText, { fontFamily: FONTS.FontRegular }]}>Kochi-560016</Text> */}
                         </View>
 
-                        <View style={styles.LocCard}>
+                        <Pressable  onPress={()=>openGoogleMaps()} style={styles.LocCard}>
                          <Image1 /> 
-                            {/* <Icon1 name="location-outline" color={COLORS.colorB} size={20} /> */}
-                        </View>
+                           
+                        </Pressable>
                     </View>
 
                     <View style={styles.Line} />

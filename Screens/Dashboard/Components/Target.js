@@ -46,6 +46,7 @@ const Target = () => {
     const getTarget = () => {
         console.log("inside api")
         api.DashBoardTarget(EMPID).then(result => {
+            console.log('DASHBOARD TARGET API',result)
             if (result) {
                // console.log("avail....", result.data)
                 setTarget(result?.data?.body)
@@ -54,7 +55,7 @@ const Target = () => {
             }
         })
             .catch(err => {
-                console.log("banner 3333 ---->", err);
+                console.log("DASHBOARD TARGET API error ---->", err);
 
             });
     }
@@ -62,7 +63,7 @@ const Target = () => {
     return (
         <View style={{ backgroundColor: COLORS.colorBackground, flex: 1 }}>
 
-            <TargetLoad  Target={Percentage}/>
+           {Percentage && <TargetLoad  Target={Percentage}/>}
             <View style={{ marginTop: width * 0.05 }}>
                 <View style={{ justifyContent: 'flex-start', marginLeft: 16 }}>
                     <Text style={styles.Target}>Pending target</Text>

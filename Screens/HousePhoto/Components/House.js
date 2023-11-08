@@ -34,6 +34,7 @@ import {api} from '../../../Services/Api';
 import {useSelector} from 'react-redux';
 import SizeModal from './SizeModal.js';
 import Retryuploadimage from './Retryuploadimage';
+import Geolocation from '@react-native-community/geolocation';
 
 const DetailChecks = ({navigation, setState, setImagedata1, imagedata}) => {
   const isDarkMode = true;
@@ -51,10 +52,21 @@ const DetailChecks = ({navigation, setState, setImagedata1, imagedata}) => {
   const [urlimagefailed, seturlimagefailed] = useState(false);
   const [delf, setDelf] = useState(false);
   const {height, width} = Dimensions.get('screen');
+  const [latitudevalue,setlatitudevalue] = useState('')
+  const [longitudevalue,setlongitudevalue] = useState('')
 
   useEffect(() => {
     getHousePhoto();
   }, []);
+
+
+  useEffect(()=>{
+    Geolocation.getCurrentPosition(info =>{ console.log('geolocation',info?.coords)
+    setlatitudevalue(info?.coords?.latitude)
+    setlongitudevalue(info?.coords?.longitude)
+      }
+    );
+  },[])
 
   // ------------------get residence owner detail ------------------
 
@@ -89,6 +101,8 @@ const DetailChecks = ({navigation, setState, setImagedata1, imagedata}) => {
     const data = {
       activityId: Number(activityId),
       housePhotoUrl: imagedata,
+       latitude: latitudevalue,
+       longitude: longitudevalue
     };
     await api
       .saveHousePhoto(data)

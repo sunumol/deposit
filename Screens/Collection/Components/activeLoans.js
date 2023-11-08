@@ -58,6 +58,8 @@ const ActiveLoans = ({navigation, loandetails}) => {
         setModalVisible(true)  
       }
 
+    }else{
+
     }
 
 
@@ -228,10 +230,11 @@ const ActiveLoans = ({navigation, loandetails}) => {
 
                 <Switch
                   trackColor={{
-                    true: '#767577',
+                   // true: '#767577',
+                   true: 'rgba(165, 175, 251, 1)',
                     false: 'rgba(165, 175, 251, 1)',
                   }}
-                  thumbColor={!isEnabled ? COLORS.colorB : '#f4f3f4'}
+                  thumbColor={!isEnabled ? COLORS.colorB : COLORS.colorB }
                   //ios_backgroundColor="#3e3e3e"
                   // style={{ transform: [{ scaleX: 1 }, { scaleY: -1.8 }] }}
                   style={{transform: [{scaleX: 0.83}, {scaleY: 0.78}], top: -3}}
@@ -426,10 +429,10 @@ const ActiveLoans = ({navigation, loandetails}) => {
             marginBottom: 10,
             width: width * 0.9,
           }}
-          onPress={() => {
-
-              
-            totalcollection()
+          onPress={() => { 
+            confirmbtnenable?  
+            totalcollection():
+            console.log('confirm button')
           }}>
           <Text style={[styles.continueText]}>Submit</Text>
         </TouchableOpacity>

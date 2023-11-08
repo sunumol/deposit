@@ -437,7 +437,7 @@ const UploadImage = ({ navigation, id, setFrontimage, setBackimage }) => {
                 setDelf(false)
                 setDelb(false)
                 console.log('-------------------err CG voter id upload', err)
-                if (err?.response?.data?.message === 'Could not read the details.Please upload a new image.' || err?.response?.data?.message === 'Could not verify the ID details. Please upload a new image.'
+                if (err?.response?.data?.message === 'Could not read the details. Please upload a new image.' || err?.response?.data?.message === 'Could not verify the ID details. Please upload a new image.'
                   ) {
                     setErrorVisible(true)
                     setContinueAble(false)

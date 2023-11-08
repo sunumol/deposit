@@ -514,7 +514,55 @@ const UploadAdhaar = ({ navigation }) => {
             setStatus(false)
             setContinueAble(false)
             console.log('-------------------err CG voter id upload', err?.response)
-            if (err?.response?.data?.message === 'Could not read the details.Please upload a new image.' || err?.response?.data?.message === 'Could not verify the ID details. Please upload a new image.'
+            if (err?.response?.data?.message === 'Could not read the details. Please upload a new image.' || err?.response?.data?.message === 'Could not verify the ID details. Please upload a new image.'
+                ) {
+                setErrorVisible(true)
+                setContinueAble(false)
+                setStatus(false)
+                setDelf(false)
+                setDelb(false)
+                setImagesF('')
+                setImagesB('')
+
+            }else if (err?.response?.data?.message === 'This ID is already in use. Please upload a new ID.') {
+                setMismatchModal1(true)
+                setContinueAble(false)
+                setStatus(false)
+                setDelf(false)
+                setDelb(false)
+                setImagesF('')
+                setImagesB('')
+            }
+        })
+}
+
+
+
+async function uploadAdhaar_back() {
+    console.log('-------------------upkoad aadhhar api call --------------------------', ImagesB1)
+    setDelf(false)
+    setDelb(false)
+    setStatus(true)
+    setContinueAble(true)
+    const data = {
+        "activityId":activityId,
+        "cgFrontImage": ImagesF1,
+        "cgBackImage": ImagesB1 ? ImagesB1 : backimage     
+    }
+    console.log("data save",data)
+    await api.SaveCoappAdhaar(data).then((res) => {
+        console.log('-------------------res CG voter id upload123', res)
+        navigation.navigate('Profile')
+        if (res?.status) {
+           navigation.navigate('Profile')
+            setStatus(false)
+        }
+    })
+        .catch((err) => {
+            setStatus(false)
+            setContinueAble(false)
+            console.log('-------------------err CG voter id upload', err?.response)
+            if (err?.response?.data?.message === 'Could not read the details. Please upload a new image.' || err?.response?.data?.message === 'Could not verify the ID details. Please upload a new image.'
                 ) {
                 setErrorVisible(true)
                 setContinueAble(false)
@@ -667,7 +715,7 @@ const UploadAdhaar = ({ navigation }) => {
              setModalReason(true)
 
         }}
-        Press1={() => { uploadAdhaar(), setModalsave(false) }}
+        Press1={() => { uploadAdhaar_back(), setModalsave(false) }}
         ModalVisible={SaveModal}
         setModalVisible={setModalsave}
         onPressOut={() => {

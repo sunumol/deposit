@@ -17,7 +17,7 @@ const ItemTabs = (props) => {
     const { t } = useTranslation();
     const [Lang, setLang] = useState('')
     const [ModalVisible, setModalVisible] = useState(false)
-        console.log('Home Screen=========',props)
+        console.log('Home Screen click@@@@@@@=========',props)
 
     useEffect(() => {
         getData()

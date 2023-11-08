@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Dimensions, Modal, StyleSheet, Text, TouchableOpacity, View, Image } from "react-native";
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';;
 import { COLORS, FONTS } from '../../../Constants/Constants';
 import { useTranslation } from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -8,6 +8,8 @@ const { height, width } = Dimensions.get('screen');
 
 
 const ProfileImage = ({ ModalVisible, onPressOut, setModalVisible ,data}) => {
+
+    console.log('profile image--------------',data)
     const [state, setState] = useState(null);
     const { t } = useTranslation();
     const [Lang, setLang] = useState('')
@@ -42,9 +44,17 @@ const ProfileImage = ({ ModalVisible, onPressOut, setModalVisible ,data}) => {
                 </TouchableOpacity>
                 <View style={styles.modalContainer}>
 
-
+                <TouchableOpacity onPress={onPressOut} style= {{position:'absolute',top: -50,right:5,height: 40,width:40,borderRadius:20,backgroundColor:'#fff',justifyContent:'center',alignItems:'center'}}>
+                                <Icon
+                                    name="close"
+                                    color={'#000000'}
+                                    size={23}
+                                    style={{ fontWeight: 'bold' }}
+                                />
+                            </TouchableOpacity>
                 <Image source={{uri: data}}
-                            resizeMode={'contain'} style={styles.modalContainer} />
+                resizeMode="contain"
+                 style={styles.modalContainer1} />
             
                 </View>
                 <TouchableOpacity
@@ -61,13 +71,13 @@ const styles = StyleSheet.create({
     mainContainer: {
         backgroundColor: "#000000aa",
         flex: 1,
-        paddingHorizontal: Dimensions.get('window').width * 0.05,
+        paddingHorizontal: Dimensions.get('window').width * 0.12,
         // alignItems: 'center',
         // justifyContent: 'center'
     },
     touchableStyle: {
 
-        height: Dimensions.get('window').height * 0.3,
+        height: Dimensions.get('window').height * 0.4,
 
 
     },
@@ -78,10 +88,21 @@ const styles = StyleSheet.create({
 
     },
     modalContainer: {
-        width: Dimensions.get('window').width * 0.9,
-        height: Dimensions.get('window').width * 0.6,
+        width: Dimensions.get('window').width * 0.75,
+        height: Dimensions.get('window').width * 0.8,
         backgroundColor: COLORS.colorBackground,
-        borderRadius: 20,
+        borderRadius: 10,
+        
+        
+    
+    },
+    modalContainer1: {
+        width: '100%',
+        height: '100%',
+        borderRadius: 10,
+        //flexGrow:'0'
+       // flexWrap:'nowrap'
+        
     
     },
 

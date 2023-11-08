@@ -25,7 +25,8 @@ import OTPTextInput from './Components/OtpPin'
 import Reset from './Images/Reset.svg'
 import ModalExitApp from '../../Components/ModalExitApp';
 
-const CreatePin = ({ navigation }) => {
+const CreatePin = ({ navigation,route }) => {
+    console.log('create pin------>>>',route)
 
     const isDarkMode = true;
     const { t } = useTranslation();
