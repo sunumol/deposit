@@ -21,6 +21,7 @@ import Header from '../../Components/Header2';
 import { api } from '../../Services/Api'
 
 import Settings from './Images/settings.svg'
+import ContinuingGuarantor from '../ContinuingGuarantor';
 
 const CorrectionScreen = ({ navigation,route }) => {
 
@@ -105,7 +106,7 @@ const CorrectionScreen = ({ navigation,route }) => {
         }
         console.log("proceed data",data,activityId)
         await api.getLastPage(data).then((res) => {
-            console.log('-------------------res getCorrection',res?.data?.body,activityId)
+            console.log('-------------------res getCorrection',res?.data?.body?.nextPage )
             if (res?.data) {
                 dispatch({
                     type: 'SET_LASTPAGE',
@@ -156,7 +157,7 @@ const CorrectionScreen = ({ navigation,route }) => {
                     <View style={{ paddingTop: Dimensions.get('window').height * 0.02 }}>
                         {dataDetails?.map((item, index) => {
                             return (
-                                <Text style={styles.descText2}>{'\u2B24'} {item}</Text>
+                                <Text style={styles.descText2}>{'\u2B24'} {item == 'Continuing guarantor' ? 'Co-applicant' : item }</Text>
                             )
                         })
                         }

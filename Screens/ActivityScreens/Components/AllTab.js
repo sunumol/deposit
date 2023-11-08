@@ -34,19 +34,15 @@ const ItemTabs = ({ navigation }) => {
 
     // ------------------ Activity Listing Api Call Start ------------------
     const ActivityListingApiCall = async (value) => {
-        console.log("inside api calls hai")
         const data = {
-             "employeeId": Number(value)
-
-
-           
+             "employeeId": Number(value)       
         };
-        console.log("data call4",data)
+ 
         await api.activitylistingscreenApi(data).then((res) => {
             res?.data?.body?.slottedActivities.forEach(function (item) {
                 item.open = false
             })
-            console.log('-------------------res all', res?.data?.body)
+            console.log('-------------------Activity Listing all', res?.data?.body)
             setSlottedListing(res?.data?.body?.slottedActivities)
             setNonslottedActivities(res?.data?.body?.nonSlottedActivities)
             setEnab(false)
@@ -74,7 +70,7 @@ const ItemTabs = ({ navigation }) => {
             setCustId(value)
             ActivityListingApiCall(value)
         })
-        console.log("data",custID)
+      
       
     }, [enab]);
 
@@ -83,7 +79,7 @@ const ItemTabs = ({ navigation }) => {
             setCustId(value)
             ActivityListingApiCall(value)
         })
-        console.log("data",custID)
+      
       
     }, []);
 
@@ -204,7 +200,6 @@ const ItemTabs = ({ navigation }) => {
                         </>
 
                         {slottedlisting?.map((item, index) => {
-                            console.log("item lenghieur",slottedlisting?.length)
                             return (
                                 <>
                                     {item?.data?.length > 0 ? <TouchableOpacity
@@ -216,11 +211,11 @@ const ItemTabs = ({ navigation }) => {
                                                 if (indexes === index) {
                                                     updatedItems[indexes].open = !updatedItems[indexes].open;
                                                     setSlottedListing(updatedItems);
-                                                    console.log('hhhehhehe---  open --', item.open)
+                                                
                                                 } else {
                                                     updatedItems[indexes].open = false;
                                                     setSlottedListing(updatedItems);
-                                                    console.log('hhhehhehe---  closed --', item.open)
+                                                   
                                                 }
 
                                             })
@@ -246,11 +241,11 @@ const ItemTabs = ({ navigation }) => {
                                                         if (indexes === index) {
                                                             updatedItems[indexes].open = !updatedItems[indexes].open;
                                                             setSlottedListing(updatedItems);
-                                                            console.log('hhhehhehe---  open --', item.open)
+                                                        
                                                         } else {
                                                             updatedItems[indexes].open = false;
                                                             setSlottedListing(updatedItems);
-                                                            console.log('hhhehhehe---  closed --', item.open)
+                                                       
                                                         }
 
                                                     })
@@ -281,13 +276,13 @@ const ItemTabs = ({ navigation }) => {
                                                 
                                             
                                                 {item?.data.map((items, index) => {
-                                                console.log('---listing firt -----',items)
+                                            
                                                   return(
                                                     <>
                                                    <Text style={[styles.timeDropStyle, { paddingTop: items.time ? 18 : 0 }]}>{items?.time} ({items?.data?.length})</Text>
                                                     {items?.data[0]?.activityType == 'CALL' ?  <Text style={styles.headText}>{t('common:Call')}</Text> :     <Text style={styles.headText}>{t('common:Meet')}</Text> } 
                                                     {items?.data?.map((item1,i)=>{
-                                                        console.log('ALLLLLL',item1?.activityType)
+                                                     
                                                         if(item1?.activityType == 'CALL'){
                                                          
                                                             return(

@@ -31,6 +31,7 @@ import ExitModal from '../Proceed/Components/ExitModal';
 import { api } from '../../Services/Api';
 import { useNetInfo } from "@react-native-community/netinfo";
 import NetWorkError from '../NetWorkError';
+import Geolocation from '@react-native-community/geolocation';
 
 
 const ResidenceOwner = ({ navigation, }) => {
@@ -51,6 +52,8 @@ const ResidenceOwner = ({ navigation, }) => {
     const [ModalError, setModalError] = useState(false)
     const activityId = useSelector(state => state.activityId);
     const [custID,setCustId] = useState('')
+    const [latitudevalue,setlatitudevalue] = useState('')
+    const [longitudevalue,setlongitudevalue] = useState('')
 
     useEffect(() => {
         getData()
@@ -61,6 +64,15 @@ const ResidenceOwner = ({ navigation, }) => {
         })
     
     }, [])
+
+
+    useEffect(()=>{
+        Geolocation.getCurrentPosition(info =>{ console.log('geolocation',info?.coords)
+        setlatitudevalue(info?.coords?.latitude)
+        setlongitudevalue(info?.coords?.longitude)
+          }
+        );
+      },[])
     const getData = async () => {
         try {
             const lang = await AsyncStorage.getItem('user-language')
@@ -99,6 +111,8 @@ const ResidenceOwner = ({ navigation, }) => {
         const data = {
             "activityId": activityId?activityId:route?.params?.ActivityId,
             "housePhotoUrl": imagedata,
+           "latitude": latitudevalue,
+            "longitude": longitudevalue
 
         }
         await api.saveHousePhoto(data).then((res) => {

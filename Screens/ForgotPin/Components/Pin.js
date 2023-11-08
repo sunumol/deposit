@@ -113,7 +113,7 @@ const Pin = ({ navigation, conFirmDate }) => {
             if (res?.data?.status) {
                 console.log(res?.data)
                 setStatus(false)
-                navigation.navigate('ChangeMPIN')
+                navigation.navigate('ResetPin',{forgotpin: true})
                 setOtpFetch(false)
             } else {
                 console.log(res?.data)

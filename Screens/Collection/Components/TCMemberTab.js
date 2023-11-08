@@ -110,6 +110,7 @@ const getInitials = (name) => {
                     return(
              
                 <TouchableOpacity
+                 onPress={()=> navigation.navigate('TCProfile',{customerid: item?.customerId})}
                     style={styles.boxStyle} >
                     <View style={{ flex: 1, flexDirection: 'row' }}>
 

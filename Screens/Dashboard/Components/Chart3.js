@@ -107,7 +107,7 @@ const GroupedBars3 = ({Summary}) => {
                width:width*0.90
             }}>
             {renderTitle()}
-            <BarChart
+         { barData &&  <BarChart
                 data={barData}
                 barWidth={22}
                 spacing={38}
@@ -132,7 +132,7 @@ const GroupedBars3 = ({Summary}) => {
                 width={width*0.72}
                
             
-            />
+            />}
         </View>
         </View>
     );

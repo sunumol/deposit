@@ -270,7 +270,7 @@ const IncomeDetails = ({ navigation, route }) => {
 
         }
         await api.saveIncomeDetails(data).then((res) => {
-            console.log("data pass123", res)
+            console.log("data pass123--------", res)
             console.log('-------------------res saveIncomeDetails c', spousejob, spouseavailable)
             if (res?.status) {
                 if(route?.params?.isCheck == true && spousejob ==500){

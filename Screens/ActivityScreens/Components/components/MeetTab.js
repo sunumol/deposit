@@ -22,6 +22,7 @@ const MeetTab = (props) => {
     const [callStatus, setCallStatus] = useState(false)
     const [ModalCall, setModalCall] = useState(false)
     const [spouseDetail, setSpousedetail] = useState('')
+    const [spouseeligibilty, setspouseeligibilty] = useState()
     const [customerdetail, setCustomerDetail] = useState('')
     const DLEStatus = useSelector(state => state?.DLEStatus);
     const [error,setError] = useState()
@@ -123,6 +124,14 @@ const MeetTab = (props) => {
         console.log("spousedetail useef", spouseDetail)
     }, [spouseDetail])
 
+    useEffect(() => {
+        if (spouseeligibilty !== spouseeligibilty) {
+            setspouseeligibilty(spouseeligibilty)
+        }
+        console.log("spousedetail useef", spouseDetail)
+    }, [spouseeligibilty])
+
+
  // ------------------get cgt status ------------------
 
  const getCgtStatus = async (id) => {
@@ -166,7 +175,7 @@ const MeetTab = (props) => {
 
     // ------------------getDlePageNumberdetail ------------------
 
-    const getDlePageNumber = async (id, occupation) => {
+    const getDlePageNumber = async (id, occupation,spouseeligible) => {
 
 
         const data = {
@@ -174,7 +183,7 @@ const MeetTab = (props) => {
         }
         await api.getDlePageNumber(data).then((res) => {
             console.log("cust api", customerdetail)
-            console.log('-------------------res getDlePageNumber12', res?.data?.body, occupation)
+            console.log('-------------------res getDlePageNumber12', res)
             if (res?.status) {
                 if (res?.data?.body == 1) {
                         props.navigation.navigate('DetailCheck')
@@ -185,7 +194,7 @@ const MeetTab = (props) => {
                 } else if (res?.data?.body == 3) {
                     props.navigation.navigate('ContinuingGuarantor')
                 } else if (res?.data?.body == 4) {
-                    if (occupation == 500) {
+                    if (occupation == 500 || spouseeligible == false ) {
                         props.navigation.navigate('UploadAdhaar')  
                     } else {
                         props.navigation.navigate('AddVehicle')
@@ -207,13 +216,7 @@ const MeetTab = (props) => {
                         props.navigation.navigate('Proceed')
                     }
                 } else if (res?.data?.body == 9) {
-                    console.log("occ",occupation)
-                    if (occupation == 500) {
                         props.navigation.navigate('UploadVid')
-                       //
-                    } else {
-                        props.navigation.navigate('AddVehicle')
-                    }
                     } else if (res?.data?.body == 11) {
                         props.navigation.navigate('AddVehicle') 
                 } else if(res?.data?.body == 12){
@@ -243,7 +246,7 @@ const MeetTab = (props) => {
             "activityId": id
         }
         await api.getSpousedetail(data).then((res) => {
-            console.log('-------------------res spousedetail co-app', res?.data?.body?.occupation)
+            console.log('-------------------res spousedetail co-app', res?.data?.body?.isSpouseEligibleBYAge)
             if (res?.status) {
                 dispatch({
                     type: 'SET_SPOUSE_OCCUPATION',
@@ -251,9 +254,10 @@ const MeetTab = (props) => {
                 });
 
                 setSpousedetail(res?.data?.body?.occupation)
+                setspouseeligibilty(res?.data?.body?.isSpouseEligibleBYAge)
                // props.navigation.navigate('ResidenceOwner')
                 //props.navigation.navigate('UploadAdhaar')
-                getDlePageNumber(id, res?.data?.body?.occupation,res?.data?.body)
+                getDlePageNumber(id, res?.data?.body?.occupation,res?.data?.body?.isSpouseEligibleBYAge)
                 console.log("spose detail", res?.data?.body)
 
             }

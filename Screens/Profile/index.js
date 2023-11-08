@@ -144,7 +144,7 @@ const Profile = ({ navigation }) => {
             "employeeId": custID ? Number(custID) :Number(value)
         };
         await api.homeScreenApi(data).then((res) => {
-            console.log('-------------------res', res?.data)
+            console.log('----------HomeScreenApiCall---------res', res?.data)
             SetNotificationCount(res?.data?.body)
             dispatch({
                 type: 'SET_NOTIFICATION_COUNT',
@@ -153,7 +153,7 @@ const Profile = ({ navigation }) => {
             setstatus(false)
         })
             .catch((err) => {
-                console.log('-------------------err notification', err)
+                console.log('-------------------err HomeScreenApiCall', err)
                 setstatus(false)
             })
     };

@@ -98,6 +98,8 @@ const PinScreen = ({ navigation, }) => {
             "versionNumber" : ver,
           }
         api.getAppNewVersion(data).then(result => {
+
+            console.log('getAppNewVersion--------------------------',result)
             if (result?.data?.body !== null) {
 
                 if (result?.data?.body?.mandatory) {

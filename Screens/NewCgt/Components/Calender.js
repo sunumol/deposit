@@ -45,16 +45,19 @@ const CalendarStrips = ({ setNewDates, getCGTslot }) => {
       }
       setNewDates(parseAsUTC(s).toISOString())
       setMonth(parseAsUTC(s).toISOString())
+      console.log('CAlender----------------',parseAsUTC(s).toISOString())
 
     }
   }, [selectedDate])
 
   useEffect(() => {
     const today = new Date();
+    console.log('arrow case====================>>',new Date(new Date().setDate(new Date().getDate() + 29)),'month----------------',moment(month).format("MMMM YYYY"),'-------------',moment(maxDate).format("MMMM YYYY"))
     if (month) {
       if (moment(today).format("MMMM YYYY") === moment(month).format("MMMM YYYY")) {
         setLeftArrow(false)
         setRightArrow(true)
+        console.log('same true')
 
       } else {
         setLeftArrow(true)

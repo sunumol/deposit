@@ -203,7 +203,7 @@ const DetailChecks = ({ navigation, setState, proofType1,
         })
 
         await api.uploadFile(data).then((res) => {
-            console.log('-------------------res file upload', res?.data[0]?.body)
+            console.log('-------------------res file upload', res)
             if (res?.status) {
                 setImage(res?.data[0]?.body)
                 imageUrl1(res?.data[0]?.body)
@@ -225,7 +225,7 @@ const DetailChecks = ({ navigation, setState, proofType1,
         })
 
         await api.uploadFile(data).then((res) => {
-            console.log('-------------------res file upload', res?.data[0]?.body)
+            console.log('-------------------res file upload', res)
             if (res?.status) {
                 setImage(res?.data[0]?.body)
                 imageUrl1(res?.data[0]?.body)

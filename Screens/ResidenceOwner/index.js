@@ -30,7 +30,7 @@ import { useSelector } from 'react-redux';
 
 const ResidenceOwner = ({ navigation, }) => {
     const route = useRoute();
-    console.log("route name",);
+ 
     const isDarkMode = true
     const { t } = useTranslation();
     const [lang, setLang] = useState('')
@@ -56,6 +56,16 @@ const ResidenceOwner = ({ navigation, }) => {
         getCustomerdetail()
         getSpousedetail()
     }, [])
+
+    useEffect(() => {
+        const willFocusSubscription = navigation.addListener('focus', () => {
+            getCustomerdetail(); 
+            getSpousedetail() 
+
+        });
+        return willFocusSubscription;
+    }, []);
+
     useEffect(() => {
         AsyncStorage.getItem("CustomerId").then((value) => {
             setCustId(value)
@@ -71,6 +81,12 @@ const ResidenceOwner = ({ navigation, }) => {
             console.log(e)
         }
     }
+
+
+    useEffect(()=>{
+        getCustomerdetail(); 
+        getSpousedetail() 
+    },[relation])
 
     // ------------------ get Conduct DLE basic detail Village Api Call Start ------------------
     const updateRejection = async () => {
@@ -93,15 +109,19 @@ const ResidenceOwner = ({ navigation, }) => {
         })
     };
     // ------------------ HomeScreen Api Call End ------------------
+
+
+
+
     const getCustomerdetail = async () => {
-        console.log('api called customer',activityId,id)
+        console.log('api called customer  getCustomerdetail',activityId)
 
         const data = {
-             "activityId": activityId ? activityId :id
+             "activityId": activityId 
           
         }
         await api.getCustomerdetail(data).then((res) => {
-            console.log('-------------------res customerdetail', res.data.body)
+            console.log('-------------------res customerdetail in save page', res.data.body)
             if (res?.status) {
                 setcustomername(res?.data?.body?.name)
              
@@ -123,7 +143,7 @@ const ResidenceOwner = ({ navigation, }) => {
         await api.getResidenceowner(data).then((res) => {
             console.log('-------------------res Residence owner', res?.data?.body)
             if (res?.status) {
-                setrelativename(res?.data?.body?.ownersName)
+               // setrelativename(res?.data?.body?.ownersName)
          
               
             }
@@ -143,7 +163,7 @@ const ResidenceOwner = ({ navigation, }) => {
                 setspousename(res?.data?.body?.name)
             
         }).catch((err) => {
-            setError(err?.response?.status)
+           // setError(err?.response?.status)
             console.log('-------------------err spousedetail', err?.response?.status, activityId)
         })
     };
@@ -183,7 +203,7 @@ const ResidenceOwner = ({ navigation, }) => {
     // device back api call------------------
 
     const UpdateResidenceowner_backButton = async () => {
-        console.log('api called UpdateResidenceowner_backButton....', activityId, proofType, imageurl, relation, relative,spousename)
+        console.log('api called UpdateResidenceowner_backButton....', imageurl)
 
         const data = {
             "activityId": activityId,

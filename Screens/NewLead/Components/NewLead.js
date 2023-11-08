@@ -175,7 +175,7 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus,setbackstate }) 
         }
         await api.pinCodeValidation(data).then((res) => {
             console.log('-------------------res pinCodeValidation', res?.data?.body)
-            if(res?.data?.body){
+            if(res?.data?.body == true){
             setVStatus(true)
             }else{
                 setMessage('Please enter a valid pincode')
@@ -250,6 +250,7 @@ const NewLead1 = ({ navigation, setVillageStatus, VillageStatus,setbackstate }) 
             "village": Village
         }
         await api.createLead(data).then((res) => {
+            console.log('new lead creation------',res)
             if (res?.status == 200) {
                 if (res?.data?.body == 'This number is already registered') {
                     setMessage('Lead has already been created with this number')

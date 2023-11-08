@@ -70,7 +70,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
   const [invalidotp, setInvalidotp] = useState(false)
   const [invalidotp1, setInvalidotp1] = useState(false)
   const [OtpValue, setOtpValue] = useState('')
-  const [timerCount, setTimer] = useState(30)
+  const [timerCount, setTimer] = useState('')
   const [IsOtp1, setIsOtp1] = useState(false)
   const [Resends, setResends] = useState(false)
   const [verifyotpstatus, setVerifyotpstatus] = useState(false)
@@ -217,7 +217,8 @@ const ContinuingGuarantor = ({ navigation, route }) => {
     }
     await api.updateActivity(data).then((res) => {
       // console.log('-------------------res get Village', res)
-      setModalError(true)
+      setModalError1
+      (true)
       setModalReason(false)
       setTimeout(() => {
         navigation.navigate('Profile')
@@ -291,6 +292,8 @@ const ContinuingGuarantor = ({ navigation, route }) => {
    
         setVerifyotpstatus(true)
         setTimer(30)
+        setIsOtp1(true)
+        setStatus(true)
         setOtpFetch(true)
       }
     }).catch((err) => {
@@ -344,6 +347,8 @@ const ContinuingGuarantor = ({ navigation, route }) => {
    
         setVerifyotpstatus(true)
         setTimer(30)
+        setIsOtp1(true)
+        setStatus(true)
         setOtpFetch(true)
       }
     }).catch((err) => {
@@ -1040,7 +1045,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
           <ErrorModal1
             ModalVisible={ModalError1}
             onPressOut={() => {
-              setModalError(!ModalError1)
+              setModalError1(!ModalError1)
               setModalReason(!ModalReason)
             }}
             setModalVisible={setModalError1}

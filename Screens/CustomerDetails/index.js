@@ -123,11 +123,34 @@ const CustomerDetails = ({ navigation, }) => {
     // ------------------ HomeScreen Api Call End ------------------
 
 
+    const getResidenceowner = async () => {
+
+
+        console.log('getResidenceowner api called')
+            const data = {
+                "activityId": activityId
+               
+            }
+            await api.getResidenceowner(data).then((res) => {
+                console.log('-------------------res Residence owner', res?.data?.body)
+                if (res?.status) {
+                    navigation.navigate('Profile')
+             
+                  
+                }
+            }).catch((err) => {
+                console.log('-------------------err Residence Owner', err?.response)
+            })
+        };
+    
+
     useEffect(() => {
         getSpousedetail()
     }, [])
-    const onsubmit = async (value) => {
 
+
+    const onsubmit = async (value) => {
+        getResidenceowner()
         console.log('api called')
         const data = {
             "customerId": basicdetail?.customerId,
@@ -193,7 +216,7 @@ const CustomerDetails = ({ navigation, }) => {
                         setModalReason(true)
 
                 }}
-                Press1={() => { onsubmit() }}
+                Press1={() => { onsubmit(),getResidenceowner() }}
                 ModalVisible={ModalVisible}
                 setModalVisible={setModalVisible}
                 onPressOut={() => {
