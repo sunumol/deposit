@@ -53,6 +53,7 @@ const ConfirmMembers = ({ navigation }) => {
 
   const customerList = useSelector(state => state.customerList);
   const customerID = useSelector(state => state.customerID);
+  const customerId = useSelector(state => state.customer_ID);
   const cgtCustomerDetails = useSelector(state => state.cgtCustomerDetails);
   const activityId = useSelector(state => state.activityId);
   const agentId = useSelector(state => state.AgentId);
@@ -205,7 +206,8 @@ const ConfirmMembers = ({ navigation }) => {
     const data = {
       "employeeId": custID ? Number(custID) : Number(agentId),
       "customerNameOrNumber": phone ? phone : "",
-      "addedTcIds": [cgtCustomerDetails?.primaryCustomerId]
+      "addedTcIds": [customerId]
+     // "addedTcIds": [cgtCustomerDetails?.primaryCustomerId]
 
     };
     console.log("data of tc list", data)
@@ -214,7 +216,7 @@ const ConfirmMembers = ({ navigation }) => {
     }
     await api.getCustomerListForTc(data).then((res) => {
 
-      console.log("api response123", res?.data?.body?.length)
+      console.log("api response123---------", res)
       const data1 = res?.data?.body?.filter((item, index) => !customerID.includes(item?.id))
       console.log('?????????', data.customerNameOrNumber)
 

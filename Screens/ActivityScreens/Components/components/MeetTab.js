@@ -370,6 +370,7 @@ const MeetTab = (props) => {
                                                 payload: item,
                                             });
                                             getCgtStatus(item?.activityId)
+                                            console.log('conduct cgt clicked',item)
                                         }}>
                                             <Text style={[styles.leadText, { color: props.meet ? COLORS.DarkBlue : COLORS.DarkPurple }]}>{t('common:ConductCGT')}</Text>
                                         </TouchableOpacity> :
