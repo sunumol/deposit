@@ -2,31 +2,31 @@
 import axios from 'axios';
 
 ///////////////////////////////////////////            DEV ENVIRONMENT                ///////////////////////////////////////
-const baseUAT = 'http://3.108.93.231:' //dev server
+// const baseUAT = 'http://3.108.93.231:' //dev server
 
-const baseURL5 = `${baseUAT}8488/`;
-const baseURL = `${baseUAT}8383/`
-const baseURL2 = `${baseUAT}8686/`
-const baseURL3 = `${baseUAT}8086/`
-const baseURLDPD = `${baseUAT}8084/`
-const baseURLVersion = `${baseUAT}8810/`
+// const baseURL5 = `${baseUAT}8488/`;
+// const baseURL = `${baseUAT}8383/`
+// const baseURL2 = `${baseUAT}8686/`
+// const baseURL3 = `${baseUAT}8086/`
+// const baseURLDPD = `${baseUAT}8084/`
+// const baseURLVersion = `${baseUAT}8810/`
 
 ///////////////////////////////////////////            STAGING ENVIRONMENT                ///////////////////////////////////////
 
-// const baseUAT = 'https://seqa2fq5bb.execute-api.ap-south-2.amazonaws.com/stage'
-// const baseUAT2= 'http://dhansethu-alb-2013531087.ap-south-2.elb.amazonaws.com/agentApp'
-// const baseUAT3 = 'https://ex5116hrci.execute-api.ap-south-2.amazonaws.com/stage'
+const baseUAT = 'https://seqa2fq5bb.execute-api.ap-south-2.amazonaws.com/stage'
+const baseUAT2= 'http://dhansethu-alb-2013531087.ap-south-2.elb.amazonaws.com/agentApp'
+const baseUAT3 = 'https://ex5116hrci.execute-api.ap-south-2.amazonaws.com/stage'
 
 
-// const baseURL5 = `${baseUAT}/`;
-// const baseURL = `${baseUAT}/`
-// const baseURL2 = `${baseUAT}/`
-// const baseURL3 = `${baseUAT}/`
-// // --------- Base URL End--------------------
-// const baseURLDPD = `${baseUAT}/`
-// const baseURLVersion = `${baseUAT}/`
-// const baseURLIMG =  `${baseUAT}/`
-// const baseURL6 = `${baseUAT3}/`
+const baseURL5 = `${baseUAT}/`;
+const baseURL = `${baseUAT}/`
+const baseURL2 = `${baseUAT}/`
+const baseURL3 = `${baseUAT}/`
+// --------- Base URL End--------------------
+const baseURLDPD = `${baseUAT}/`
+const baseURLVersion = `${baseUAT}/`
+const baseURLIMG =  `${baseUAT}/`
+const baseURL6 = `${baseUAT3}/`
 
 
 export const api = {
