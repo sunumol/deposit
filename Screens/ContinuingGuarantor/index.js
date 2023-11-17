@@ -709,7 +709,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
       "activityId": activityId?activityId:route?.params?.activityId
     }
     await api.getCorrectionNotify(data).then((res) => {
-
+      console.log('getCorrectionNotify --------------------> ',res)
       if (res?.status) {
 
         setModalVisibleC(false)

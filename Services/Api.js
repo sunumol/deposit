@@ -1,19 +1,33 @@
 
 import axios from 'axios';
 
-// --------- Base URL Start------------------
-//const baseUAT = 'http://13.235.213.160:' // UAT Production
+///////////////////////////////////////////            DEV ENVIRONMENT                ///////////////////////////////////////
 const baseUAT = 'http://3.108.93.231:' //dev server
-//const baseUAT = "http://43.205.44.67:"
 
 const baseURL5 = `${baseUAT}8488/`;
 const baseURL = `${baseUAT}8383/`
 const baseURL2 = `${baseUAT}8686/`
 const baseURL3 = `${baseUAT}8086/`
-// --------- Base URL End--------------------
 const baseURLDPD = `${baseUAT}8084/`
 const baseURLVersion = `${baseUAT}8810/`
-//const baseRegister =  `${baseUAT2}8686/` 
+
+///////////////////////////////////////////            STAGING ENVIRONMENT                ///////////////////////////////////////
+
+// const baseUAT = 'https://seqa2fq5bb.execute-api.ap-south-2.amazonaws.com/stage'
+// const baseUAT2= 'http://dhansethu-alb-2013531087.ap-south-2.elb.amazonaws.com/agentApp'
+// const baseUAT3 = 'https://ex5116hrci.execute-api.ap-south-2.amazonaws.com/stage'
+
+
+// const baseURL5 = `${baseUAT}/`;
+// const baseURL = `${baseUAT}/`
+// const baseURL2 = `${baseUAT}/`
+// const baseURL3 = `${baseUAT}/`
+// // --------- Base URL End--------------------
+// const baseURLDPD = `${baseUAT}/`
+// const baseURLVersion = `${baseUAT}/`
+// const baseURLIMG =  `${baseUAT}/`
+// const baseURL6 = `${baseUAT3}/`
+
 
 export const api = {
 
@@ -25,7 +39,18 @@ export const api = {
       }
     })
   },
+  // ------------------ upload file image---------------------
+  uploadFile: data => {
+   //return axios.post(`${baseURLIMG}uploadFileAgent`, data, {                            //staging
+    return axios.post(`${baseURL2}uploadFileAgent`, data, {                                 //dev + staging
 
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Accept: "application/json",
+      },
+
+    })
+  },
   // ---------------- get NewLead Village Api -----------------
   getNewLeadVillage: data => {
     return axios.post(`${baseURL2}village`, data, {
@@ -46,7 +71,7 @@ export const api = {
 
   // ---------------- Logout Api -----------------
   logoutApi: data => {
-    return axios.get(`${baseURL}logout/${data.id}`, {
+    return axios.get(`${baseURL6}logout/${data.id}`, {
       headers: {
         'Content-Type': 'application/json',
       }
@@ -64,7 +89,7 @@ export const api = {
 
   // ---------------- Resend Otp Api -----------------
   resendLoginOtp: data => {
-    return axios.post(`${baseURL2}resendOtp`, data, {
+    return axios.post(`${baseURL2}resendOtpAgent`, data, {
       headers: {
         'Content-Type': 'application/json',
       }
@@ -73,7 +98,8 @@ export const api = {
 
   // ---------------- confirm Login Otp Api -------------
   confirmLoginOtp: data => {
-    return axios.post(`${baseURL2}confirm`, data, {
+    return axios.post(`${baseURL2}confirmAgent`, data, {
+     // return axios.post(`${baseURL2}confirm`, data, {
       headers: {
         'Content-Type': 'application/json',
       }
@@ -301,7 +327,8 @@ export const api = {
 
   // ------------------ get Spouse details---------------------
   getCustomerdetail: data => {
-    return axios.post(`${baseURL2}getCustomerDetails`, data, {
+   return axios.post(`${baseURL2}getCustomerDetailsAgent`, data, {
+    //  return axios.post(`${baseURL2}getCustomerDetails`, data, {
       headers: {
         'Content-Type': 'application/json',
       }
@@ -316,16 +343,7 @@ export const api = {
     })
   },
 
-  // ------------------ upload file image---------------------
-  uploadFile: data => {
-    return axios.post(`${baseURL2}uploadFile`, data, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-        Accept: "application/json",
-      },
 
-    })
-  },
 
   // ------------------ save and update Residence Owner  details---------------------
   UpdateResidenceowner: data => {
@@ -538,7 +556,7 @@ export const api = {
   // ------------------   collection listing---------------------
   getActiveLoansdetails: data => {
 
-    return axios.get(`${baseURL3}activeLoans/${data.customerId}`, {
+    return axios.get(`${baseURL3}activeLoansCollection/${data.customerId}`, {
       headers: {
         'Content-Type': 'application/json',
       }
@@ -572,7 +590,7 @@ export const api = {
   // ------------------   customerProfile listing---------------------
   getCustomerProfile: data => {
 
-    return axios.get(`${baseURL3}customerProfile/${data.customerId}`, {
+    return axios.get(`${baseURL3}customerProfileCollection/${data.customerId}`, {
       headers: {
         'Content-Type': 'application/json',
       }
@@ -627,8 +645,9 @@ export const api = {
   //gethomescreen device check
 
   gethomeScreenDeviceCheck: () => {
+    return axios.post(`${baseURL2}homeScreenDeviceCheckAgent`, {
 
-    return axios.post(`${baseURL2}homeScreenDeviceCheck`, {
+  // return axios.post(`${baseURL2}homeScreenDeviceCheck`, {
       headers: {
         'Content-Type': 'application/json',
       }
@@ -638,7 +657,9 @@ export const api = {
 
   UpdateSIMID: (data) => {
 
-    return axios.post(`${baseURL2}enterPinSimIdCheck`, data, {
+    return axios.post(`${baseURL2}enterPinSimIdCheckAgent`, data, {
+
+   // return axios.post(`${baseURL2}enterPinSimIdCheck`, data, {
       headers: {
         'Content-Type': 'application/json',
       }
@@ -763,4 +784,13 @@ export const api = {
   //   });
   // },
 };
+
+
+//////////////////////////////////////////              DEV ENVIRONMENT       / ////////////////////////////////////////////////////////////////////////////////////
+
+// --------- Base URL Start------------------
+//const baseUAT = 'http://13.235.213.160:' // UAT Production
+//const baseUAT = "http://43.205.44.67:"
+
+
 

@@ -300,7 +300,7 @@ const Energy = ({ navigation, setAmount1, setPurpose1, setDays1,
             "activityId": activityId?activityId:ActiveId
         }
         await api.getCorrectionNotify(data).then((res) => {
-
+            console.log('getCorrectionNotify --------------------> ',res)
             if (res?.status) {
                 setModalVisibleC(false)
                 navigation.reset({

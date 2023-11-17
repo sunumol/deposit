@@ -27,6 +27,7 @@ import ApprovalModal from './ApprovalModal';
 import { set } from 'date-fns';
 import ModalSchedule from '../../../Components/ModalSchedule';
 import ModalDLESchedule from '../../../Components/ModalDLESchedule';
+import { useDispatch } from 'react-redux';
 const { height, width } = Dimensions.get('screen');
 
 const DLE = ({ navigation, set, list }) => {
@@ -36,7 +37,10 @@ const DLE = ({ navigation, set, list }) => {
     const [ModalVisible, setModalVisible] = useState(false)
     const [ModalVisible1, setModalVisible1] = useState(false)
     const [ModalVisible2, setModalVisible2] = useState(false)
+    const [tcpendmember,settcpendmember] = useState('')
     const [status, setStatus] = useState(false)
+    const dispatch = useDispatch()
+
 
     useEffect(() => {
         getData()
@@ -138,14 +142,20 @@ const DLE = ({ navigation, set, list }) => {
            
              : <>
               {list?.map((item) => {
-                console.log('===',item)
+                console.log('===',item?.name)
                     return (
-                        <TouchableOpacity  onPress={() => { item.dleScheduleStatus == "Conduct DLE" ? setModalVisible2(true) : item.dleScheduleStatus == "TC approval pending" ? setModalVisible(true) : item.dleScheduleStatus == "DLE completed" ? console.log('DLE completed')  : item.dleScheduleStatus == "Bank account verification pending" ? console.log('Bank Account pending')  : navigation.navigate('ScheduleMeet',{id:item.id}) }} style={[styles.viewCard, { borderColor: 'white', borderWidth: 2 }]}>
+                        <TouchableOpacity  onPress={() => { item.dleScheduleStatus == "Conduct DLE" ? setModalVisible2(true) : item.dleScheduleStatus == "TC approval pending" ?  [setModalVisible(true),console.log('tc approval pending -------------------------'),
+                        dispatch({
+                            type: 'SET_CUSTOMER_TC_PENDING',
+                            payload: item?.name,
+                        }),
+                        settcpendmember(item?.name)
+                       ] : item.dleScheduleStatus == "DLE completed" ? console.log('DLE completed')  : item.dleScheduleStatus == "Bank account verification pending" ? console.log('Bank Account pending')  : navigation.navigate('ScheduleMeet',{id:item.id}) }} style={[styles.viewCard, { borderColor: 'white', borderWidth: 2 }]}>
 
 
                             <View style={[styles.circleStyle, { backgroundColor: getRandomColor(item?.mobileNumber) }]}>
                                 {/* <Text numberOfLines={1} style={styles.circleText}>{(item.customerName)}</Text> */}
-                                <Text numberOfLines={1} style={styles.circleText}>{getInitials(item.name)}</Text>
+                                <Text numberOfLines={1} style={styles.circleText}>{getInitials(item?.name)}</Text>
                             </View>
 
                             <View style={{ flexDirection: 'row', justifyContent: 'space-between', flex: 1 }}>
@@ -207,6 +217,7 @@ const DLE = ({ navigation, set, list }) => {
                 navigation={navigation}
                 //  onPressOut={() => setModalVisible(!ModalVisible)}
                 setModalVisible={setModalVisible}
+                tcpendmember={tcpendmember}
                 list={list} />
 
 

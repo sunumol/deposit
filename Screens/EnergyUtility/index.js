@@ -110,7 +110,7 @@ const EnergyUtility = ({ navigation, }) => {
     );
 
     const saveEnergyUtilities = async () => {
-        console.log('api called',Purpose1s)
+        console.log('api called',Purpose1)
 
         const data = {
             "activityId": activityId?activityId:route?.params?.activityId,

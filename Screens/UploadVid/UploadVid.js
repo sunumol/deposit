@@ -628,7 +628,7 @@ const getDLEConfirmation = async () => {
         "activityId": activityId
     }
     await api.getCorrectionNotify(data).then((res) => {
-
+        console.log('getCorrectionNotify --------------------> ',res)
         if (res?.status) {
             navigation.navigate('Proceed')
 

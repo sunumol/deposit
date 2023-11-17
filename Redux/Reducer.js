@@ -7,7 +7,7 @@ const initialState={
     createPin:'123',
     createDate:'12',
     ExpiryDate:'123',
-    
+    customertcpending:'',
     customerList:[],
     customerID:[],
     DLEcustomerID:'',
@@ -39,6 +39,11 @@ export const baseReducer = (state = initialState, action) => {
                 ...state, // return the updated state
                 createDate: action.payload  
             }
+            case "SET_CUSTOMER_TC_PENDING":
+                return {
+                    ...state, // return the updated state
+                    customertcpending: action.payload  
+                }
             case "SET_EXPIRYDATE":  // for updating state
             return {
                 ...state, // return the updated state

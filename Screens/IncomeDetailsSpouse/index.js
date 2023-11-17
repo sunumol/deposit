@@ -471,6 +471,8 @@ console.log("button click data",Purpose,Month)
         }
         await api.getCorrectionNotify(data).then((res) => {
 
+            console.log('getCorrectionNotify --------------------> ',res)
+
             if (res?.status) {
                 setModalVisibleC(false)
                 navigation.reset({
@@ -739,6 +741,7 @@ console.log("button click data",Purpose,Month)
                 //getDLEConfirmation={()=>}
                 setModalVisible1={setModalVisibleC}
                 onPressOut={() => {
+                    getDLEConfirmation(),
                     navigation.reset({
                         index: 0,
                         routes: [{ name: 'Proceed' }],

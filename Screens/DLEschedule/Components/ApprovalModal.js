@@ -6,16 +6,19 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const { height, width } = Dimensions.get('screen');
 import Image1 from '../../../assets/image/warning.svg';
 import Icon1 from 'react-native-vector-icons/Octicons';
+import { useSelector,useDispatch } from 'react-redux';
 
-const ApprovalModal = ({ ModalVisible, onPressOut, setModalVisible, onPress, navigation ,list}) => {
+const ApprovalModal = ({ ModalVisible, onPressOut, setModalVisible, tcpendmember, navigation ,list}) => {
     const [state, setState] = useState(null);
     const { t } = useTranslation();
     const [Lang, setLang] = useState('')
     const [BStatus, setBstatus] = useState(false)
+    const tcmember = useSelector(state => state.customertcpending);
+    console.log('-----jkkjjj',tcpendmember)
 
     useEffect(() => {
         getData()
-        console.log('-----jkkjjj',list)
+      
     }, [])
 
     const getData = async () => {
@@ -57,7 +60,7 @@ const ApprovalModal = ({ ModalVisible, onPressOut, setModalVisible, onPress, nav
                     </View>
                     <View style={{ flexDirection: 'column' }}>
                         {list.map((item,index)=>{
-                            if(item.dleScheduleStatus === 'TC approval pending'){
+                            if(item.dleScheduleStatus === 'TC approval pending' && item?.name !== tcpendmember){
                                 return(
                                     <View style={{ flexDirection: 'row' }}>
                                     <Icon1 name="dot-fill" size={10} color={'#1A051D'} style={{ marginTop: 5 }} />

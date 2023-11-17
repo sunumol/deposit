@@ -326,7 +326,7 @@ const DetailChecks = ({ navigation, setState, proofType1,
            
         }
         await api.getCorrectionNotify(data).then((res) => {
-
+            console.log('getCorrectionNotify --------------------> ',res)
             if (res?.status) {
                 setModalVisibleC(false)
                 AsyncStorage.removeItem('CorrectionStatus')
