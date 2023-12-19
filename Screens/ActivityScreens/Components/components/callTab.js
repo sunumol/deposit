@@ -211,7 +211,7 @@ const MeetTab = (props) => {
                                                             } else {
                                                                 AsyncStorage.setItem('CallActivity_id', JSON.stringify(item?.activityId));
                                                                 AsyncStorage.setItem('CallActivityDetails', JSON.stringify(item));
-                                                                console.log("item id", item?.activityId)
+                                                                console.log("phone number56--------------", item?.mobileNumber)
                                                                 if (!props?.meet) {
                                                                     openDialScreen(item?.mobileNumber)
                                                                 }

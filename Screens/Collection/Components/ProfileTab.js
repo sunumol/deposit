@@ -158,7 +158,7 @@ useEffect(()=>{
                             <View style={{ flexDirection: 'column' }}>
                                 <View style={{ flexDirection: 'row' }}>
                                     <Icon2 name="phone-call" color={'rgba(0, 56, 116, 1)'} size={11} style={{ top: 4 }} />
-                                    <Text onPress={()=> openDialScreen(custData?.continuingGuarantorDTO?.phoneNumber) } style={[styles.numText, { paddingLeft: 6 }]}>{custData?.continuingGuarantorDTO?.phoneNumber?.replace(/^.{0}/g, '').replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X")}</Text>
+                                    <Text onPress={()=> {openDialScreen(custData?.continuingGuarantorDTO?.phoneNumber),console.log('phone numver 22',custData?.continuingGuarantorDTO?.phoneNumber) }} style={[styles.numText, { paddingLeft: 6 }]}>{custData?.continuingGuarantorDTO?.phoneNumber?.replace(/^.{0}/g, '').replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X")}</Text>
                                 </View>
                                 <Text style={[styles.numText, { paddingLeft: width * 0.05, color: COLORS.colorDark }]}>{custData?.continuingGuarantorDTO?.voterId?.replace(/^.{0}/g, '').replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X")}</Text>
                             </View>

@@ -146,7 +146,7 @@ const Pin = ({ navigation, conFirmDate }) => {
         }
         await api.resendLoginOtp(data).then((res) => {
             if (res?.data?.status) {
-                console.log('----date', res?.data)
+                console.log('----date', res)
                 setStatus(true)
                 setTimer(30)
                 setOtpFetch(true)

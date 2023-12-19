@@ -236,7 +236,7 @@ console.log('props====',props)
     };
     // ------------------ ------------------
     const openDialScreen = (userPhone) => {
-        console.log("inside diale")
+      
         let number = '';
         if (Platform.OS === 'ios') {
             number = `telprompt:${userPhone}`;
@@ -244,6 +244,7 @@ console.log('props====',props)
             number = `tel:${userPhone}`;
         }
         Linking.openURL(number);
+        console.log("inside dialer----------------->>",userPhone)
     };
 
     return (
@@ -261,7 +262,7 @@ console.log('props====',props)
                             openDialScreen(props?.phoneNumber)
                             AsyncStorage.setItem('CallActivity_id', JSON.stringify(props?.details?.activityId));
                             AsyncStorage.setItem('CallActivityDetails', JSON.stringify(props?.details));
-                            console.log('hehheheheh')
+                            console.log('phone number 23--------->>>',props?.phoneNumber)
                         }
 
                         setModalVisible(true)

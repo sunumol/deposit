@@ -103,6 +103,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
   const isLastPage = useSelector(state => state.isLastPage);
   const [Loader,setLoader] = useState(false)
   const [Correct1, setCorrect1] = useState(route?.params?.Correction)
+  const [spouseloader,setspouseloader] = useState(true)
 
 
   const getData = async () => {
@@ -135,7 +136,7 @@ const ContinuingGuarantor = ({ navigation, route }) => {
       setCustId(value)
     })
     // console.log("route?.params?.relation", route?.params?.relation)
-    getCGdetails()
+   // getCGdetails()
     getSpousedetail()
     //  }
 
@@ -245,12 +246,18 @@ const ContinuingGuarantor = ({ navigation, route }) => {
       if (res?.status) {
         console.log('-------------------res spousedetail co-app', res?.data?.body)
         setSpousedetail(res?.data?.body)
+      
+        setspouseloader(false)
         if(res?.data?.body?.isSpouseEligibleBYAge === true){
           setRelation('Spouse')
+          getCGdetails()
+          setspouseloader(false)
         }
       }
     }).catch((err) => {
       console.log('-------------------err spousedetail', err?.response)
+      getCGdetails()
+      setspouseloader(false)
     })
   };
   // ------------------ ------------------
@@ -264,8 +271,11 @@ const ContinuingGuarantor = ({ navigation, route }) => {
       console.log('-------------------res getCGdetails', res)
       if (res?.status) {
         if (res?.data?.body?.relationShip == 'Spouse') {
-          getSpousedetail()
+         // getSpousedetail()
+        
           setRelation('Spouse')
+        }else{
+         // setspouseloader(false)
         }
       }
     }).catch((err) => {
@@ -736,339 +746,349 @@ const ContinuingGuarantor = ({ navigation, route }) => {
 
       <Header navigation={navigation} name="Co-Applicant" onPress={handleGoBack} />
 
-      <View style={styles.mainContainer}>
+ 
 
-        <KeyboardAvoidingView style={{ flex: 1 }}
-          {...(Platform.OS === 'ios' && { behavior: 'position' })}
-        >
-          <ScrollView ref={scrollViewRef} keyboardShouldPersistTaps={'handled'}
-            onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: true })}>
-            <View style={{ flex: 1 }}>
-              <Text style={styles.headerText}>Relationship with Customer</Text>
-              <TouchableOpacity onPress={() => relation == 'Spouse' ? setModalVisible1(false) : setModalVisible1(true)} style={styles.dropDown}>
-                <Text style={[styles.spouseText, { color: relation ? COLORS.colorDark : COLORS.colorDSText }]}>{relation ? relation : 'Select'}</Text>
-
-
-                {/* {relation !== 'Spouse' && <Icon1 name="chevron-down" size={18} color={'#808080'} />} */}
-              </TouchableOpacity>
-              {relation == 'Spouse' ? <View style={styles.containerBox}>
-                <View style={{ flex: 1, flexDirection: 'row' }}>
-                  <View style={styles.circleView}>
-                    <Text style={styles.shortText}>{getInitials(spousedetail?.name)}</Text>
-                  </View>
-                  <View style={{ flexDirection: 'column', flex: 1, marginLeft: 12 }}>
-                    <Text style={styles.nameText}>{spousedetail?.name}</Text>
-
-
-                    <Text style={[styles.underText, { textTransform: 'capitalize' }]}>{spousedetail?.occupation?.replace(/_/g, ' ')}</Text>
-
-
-                  </View>
-                  <View style={{ flexDirection: 'row', left: -5 }}>
-
-                    <Image1 width={11} height={11} top={3} />
-                    <Text style={styles.dateText}>{spousedetail?.dateOfBirth}</Text>
-                  </View>
-                </View>
-              </View> : null}
-
-              {relation !== 'Spouse' ?
-                <View>
-                  <Text style={styles.mobileText}>Name</Text>
-                  <View style={[styles.inPutStyle, { backgroundColor: COLORS.colorBackground, }]}>
-                    <TextInput
-                      placeholder=''
-                      value={removeEmojis(Name)}
-                      maxLength={25}
-                      contextMenuHidden={true}
-                      style={[styles.textIn1,
-                      {
-                        left: -6,
-                        color: COLORS.colorDark
-                      }]}
-                      onChangeText={(text) => {
-                        const firstDigitStr = String(text)[0];
-                        if (firstDigitStr == ' ') {
-                          containsWhitespace(text)
-                          // 👇️ this runs
-                          setName('')
-                          // ToastAndroid.show("Please enter a valid name ", ToastAndroid.SHORT);
-                          console.log('The string contains whitespace', Name);
-                        }
-                        else if (/^[a-zA-Z ]+$/.test(text) || text === '') {
-                          setName(text)
-                          console.log("verify daat1")
-                        }
-
-
-
-                      }}
-                      placeholderTextColor={COLORS.colorDark}
-                      keyboardType="email-address"
-
-                    />
-                  </View>
-                </View> : null}
-
-
-              {relation !== 'Spouse' &&
-                <View >
-                  <Text style={styles.mobileText}>Occupation</Text>
-                  <TouchableOpacity style={[styles.dropDownContainmer, { borderColor: COLORS.colorBorder }]} onPress={() => {
-                    setOccupationModalVisible(true)
-                  }}>
-                    {occupation == ''
-                      ? <Text style={styles.textStyle}>{t('common:Select')}</Text>
-                      : <Text style={styles.textStyleDrop}>{occupation}</Text>
-                    }
-                  </TouchableOpacity>
-                </View>}
-
-              <Text style={styles.mobileText}>Mobile Number</Text>
-              <View style={[styles.inPutStyle, { backgroundColor: IsOtp1 && status === true ? '#ECEBED' : COLORS.colorBackground, }]}>
-                <TextInput
-                  contextMenuHidden={true}
-                  placeholder=''
-                  value={number}
-                  maxLength={10}
-                  style={[styles.textIn1,
-                  {
-                    left: -6,
-                    color: IsOtp1 && status === true ? '#808080' : COLORS.colorDark
-                  }]}
-                  onChangeText={(text) => {
-                    console.log("text length", text?.length)
-                    //OtpRef?.current?.focus()
-                    OnchangeNumbers(text)
-                    setInvalidotp(false)
-                    setInvalidotp1(false)
-                    setMaxError(false)
-                  }}
-                  placeholderTextColor={COLORS.colorDark}
-                  keyboardType="numeric"
-                  editable={IsOtp1 && status === true ? false : true}
-                />
-                {number?.length === 10 &&
-                  <View style={styles.CallView}>
-                    <Call width={16} height={16} />
-                  </View>}
-              </View>
-              {PhoneValid &&
-                <Text style={{
-                  fontFamily: FONTS.FontRegular, color: "red", paddingTop: width * 0.02,
-                  fontSize: 12
-                }}>Please enter a valid Mobile Number</Text>}
-
-
-              {/* #################################################################### */}
-
-
-              {/* {number?.length === 10 && */}
-              {/* <View style={styles.CallView}>
-                  <TouchableOpacity style={styles.CallView} >
-                   <Text style={{color:COLORS.colorB,fontSize:12,fontFamily:fonts.FontBold,fontWeight:'600'}}>Send</Text>
-                  </TouchableOpacity>
-                  </View> */}
-              {/* </View> */}
-              {(number?.length === 10 && PhoneValid == false) &&
-                <View style={[styles.ViewOtp, {}]}>
-                  <Text style={styles.textOtp}>{t('common:EnterOtp')} </Text>
-
-                  <View style={[styles.inPutStyle1, {
-                    backgroundColor: COLORS.colorBackground,
-                  }]}>
-                    <TextInput
-                      autoFocus={true}
-                      //contextMenuHidden={true}
-                      ref={OtpRef}
-                      placeholder=''
-                      value={OtpValue}
-                      maxLength={6}
-                      style={[styles.textIn3,
-                      {
-                        textAlign: 'center',
-                        // alignItems:'center',justifyContent:'center'
-                        //color: IsOtp1 && status === true ? '#808080' : COLORS.colorDark
-                      }]}
-                      onChangeText={(text) => {
-                        console.log("text length", text?.length)
-                        if (/^[0123456789]+$/.test(text) || text === '') {
-                          setOtpValue(text)
-                          setInvalidotp(false)
-                          setInvalidotp1(false)
-                          setMaxError(false)
-                        }
-
-                      }}
-                      placeholderTextColor={COLORS.colorDark}
-                      keyboardType="numeric"
-                    // editable={IsOtp1 && status === true ? false : true}
-                    />
-                  </View>
-                  {/* <OTPInputView
-
-                    ref={otpInput2}
-                    autoFocus={true}
-                    inputCount={4}
-                    inputCellLength={1}
-                    offTintColor={!otp ? "lightgrey" : "red"}
-                    tintColor={!otp ? "lightgrey" : "red"}
-                    textInputStyle={[styles.imputContainerStyle, { color: '#090A0A', borderRadius: 8, backgroundColor: '#FCFCFC', borderColor: !otp ? "lightgrey" : "red" }]}
-                    keyboardType="numeric"
-                    containerStyle={{ marginTop: 7 }}
-                    handleTextChange={(code => {
-                      setOtpValue(code)
-                      setInvalidotp(false)
-                      setInvalidotp1(false)
-
-                      if (code.length < 4) {
-                        setOtp(false)
-                      }
-                    })}
-                  /> */}
-
-                  {invalidotp ?
-                    <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 12, marginBottom: 5 }}>
-                      <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center' }}>{t('common:otpValid')}</Text>
-                    </View> : null}
-               
-
-                  {IsOtp1 && status === true &&
-                    <View style={{ marginTop: Dimensions.get('window').height * 0.03 }}>
-                      <Text style={styles.TextResend}>{t('common:Resend')} 00:{timerCount < 10 ? '0' : ''}{timerCount}</Text>
-                    </View>
-                  }
-
-                  {Resends && timerCount === 0 ?
-                    <TouchableOpacity onPress={() => { ResendOtp() }} style={{ padding: 18 }} >
-                      <View style={{ flexDirection: 'row', }}>
-                        <Resend style={{ width: 9, height: 11, top: 3, marginRight: 6, }} resizeMode="contain" />
-                        <Text style={styles.TextResend1} >{t('common:Resend1')}</Text>
-                      </View>
-                    </TouchableOpacity> : null}
-
-                </View>
-              }
-
-              {/* ############################################################################ */}
-
-              {maxError === true ?
-                lang == "en" ?
-                  <View style={{ marginTop: Dimensions.get('window').height * 0.03, alignItems: 'center', justifyContent: 'center' }}>
-                    <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center', width: width * 0.8 }}>{t('common:Valid2')}</Text>
-                    <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center' }}>Please try after {errorMessage.replace(/\D/g, '')} minutes</Text>
-                  </View>
-                  :
-                  <View style={{ marginTop: Dimensions.get('window').height * 0.03, alignItems: 'center', justifyContent: 'center' }}>
-                    <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center', width: width * 0.8 }}>{t('common:Valid2')}</Text>
-                    <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center' }}>{errorMessage.replace(/\D/g, '')} {t('common:Valid3')}</Text>
-                  </View>
-                : null}
-
-              <Call />
-
-            </View>
-          </ScrollView>
-
-          <RelationModal
-            visible={ModalVisible1}
-            setRelation={setRelation}
-            setPurposes={setPurposes}
-            setModalVisible={setModalVisible1}
-            setStatus={setStatus}
-            Purpose={Purpose}
-            relation={relation}
-            onPressOut={() => setModalVisible1(!ModalVisible1)}
-          />
-
-          <ErrorModal
-            ModalVisible={ModalError}
-            onPressOut={() => {
-              setModalError(!ModalError)
-            }}
-            setModalVisible={setModalError}
-          />
-
-          <ErrorModal2
-            ModalVisible={ModalError2}
-            onPressOut={() => {
-              setModalError2(!ModalError2)
-              onChangeNumber('')
-            }}
-            setModalVisible={setModalError2}
-          />
-          <ErrorModal3
-            ModalVisible={ModalError3}
-            onPressOut={() => {
-              setModalError3(!ModalError3)
-              onChangeNumber('')
-            }}
-            setModalVisible={setModalError3}
-          />
-
-          <ModalSave
-            Press={() => {
-              setModalVisible(false),
-                setModalReason(true)
-            }}
-            Press1={() => {
-              navigation.navigate('Profile'),
-              verifyCG_back()
-                setModalVisible(false)
-            }}
-            ModalVisible={ModalVisible}
-            setModalVisible={setModalVisible}
-            onPressOut={() => {
-              setModalVisible(false)
-            }}
-            navigation={navigation}
-          />
-
-          <ReasonModal
-            onPress1={() => {
-              updateRejection()
-            }}
-            ModalVisible={ModalReason}
-            onPressOut={() => setModalReason(!ModalReason)}
-            setModalVisible={setModalReason}
-          />
-          <Verifypop
-            ModalVisible={verifypop}
-            onPressOut={() => setverifypop(!verifypop)}
-            setModalVisible={setverifypop}
-          />
-          <Verifypop2
-            ModalVisible={verifypop2}
-            onPressOut={() => setverifypop2(!verifypop2)}
-            setModalVisible={setverifypop2}
-          />
-          <ErrorModal1
-            ModalVisible={ModalError1}
-            onPressOut={() => {
-              setModalError1(!ModalError1)
-              setModalReason(!ModalReason)
-            }}
-            setModalVisible={setModalError1}
-            navigation={navigation}
-          />
-          <OccupationModal
-            visible={occupationModalVisible}
-            setOccupation={setOccupation}
-            setState={setOccupationD}
-            state={OccupationD}
-            setOccupationModalVisible={setOccupationModalVisible}
-            onPressOut={() => setOccupationModalVisible(!occupationModalVisible)}
-            navigation={navigation}
-          />
-
-          <TouchableOpacity onPress={() => OtpValue && number?.length === 10 && relation ? verifyCGOTP() : console.log("geki")}
-            style={[styles.buttonView, { backgroundColor: OtpValue && number?.length === 10 && relation ? COLORS.colorB : '#E0E0E0' }]}>
-            <Text style={[styles.continueText, { color: OtpValue && number?.length === 10 && relation ? COLORS.colorBackground : COLORS.colorWhite3 }]}>{route?.params?.isCheck ? 'Submit' : 'Continue'}</Text>
-            {Loader && <ActivityIndicator size={15} color={COLORS.colorBackground} />}
-          </TouchableOpacity>
-        </KeyboardAvoidingView>
-
+   
+         <View style={styles.mainContainer}>
+         {spouseloader  ?
+      <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
+         <ActivityIndicator size={25} color={COLORS.DarkBlue} />
       </View>
+      :
+         <KeyboardAvoidingView style={{ flex: 1 }}
+           {...(Platform.OS === 'ios' && { behavior: 'position' })}
+         >
+           <ScrollView ref={scrollViewRef} keyboardShouldPersistTaps={'handled'}
+             onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: true })}>
+             <View style={{ flex: 1 }}>
+               <Text style={styles.headerText}>Relationship with Customer</Text>
+               <TouchableOpacity onPress={() => relation == 'Spouse' ? setModalVisible1(false) : setModalVisible1(true)} style={styles.dropDown}>
+                 <Text style={[styles.spouseText, { color: relation ? COLORS.colorDark : COLORS.colorDSText }]}>{relation ? relation : 'Select'}</Text>
+ 
+ 
+                 {/* {relation !== 'Spouse' && <Icon1 name="chevron-down" size={18} color={'#808080'} />} */}
+               </TouchableOpacity>
+               {relation == 'Spouse' ? <View style={styles.containerBox}>
+                 <View style={{ flex: 1, flexDirection: 'row' }}>
+                   <View style={styles.circleView}>
+                     <Text style={styles.shortText}>{getInitials(spousedetail?.name)}</Text>
+                   </View>
+                   <View style={{ flexDirection: 'column', flex: 1, marginLeft: 12 }}>
+                     <Text style={styles.nameText}>{spousedetail?.name}</Text>
+ 
+ 
+                     <Text style={[styles.underText, { textTransform: 'capitalize' }]}>{spousedetail?.occupation?.replace(/_/g, ' ')}</Text>
+ 
+ 
+                   </View>
+                   <View style={{ flexDirection: 'row', left: -5 }}>
+ 
+                     <Image1 width={11} height={11} top={3} />
+                     <Text style={styles.dateText}>{spousedetail?.dateOfBirth}</Text>
+                   </View>
+                 </View>
+               </View> : null}
+ 
+               {relation !== 'Spouse' ?
+                 <View>
+                   <Text style={styles.mobileText}>Name</Text>
+                   <View style={[styles.inPutStyle, { backgroundColor: COLORS.colorBackground, }]}>
+                     <TextInput
+                       placeholder=''
+                       value={removeEmojis(Name)}
+                       maxLength={25}
+                       contextMenuHidden={true}
+                       style={[styles.textIn1,
+                       {
+                         left: -6,
+                         color: COLORS.colorDark
+                       }]}
+                       onChangeText={(text) => {
+                         const firstDigitStr = String(text)[0];
+                         if (firstDigitStr == ' ') {
+                           containsWhitespace(text)
+                           // 👇️ this runs
+                           setName('')
+                           // ToastAndroid.show("Please enter a valid name ", ToastAndroid.SHORT);
+                           console.log('The string contains whitespace', Name);
+                         }
+                         else if (/^[a-zA-Z ]+$/.test(text) || text === '') {
+                           setName(text)
+                           console.log("verify daat1")
+                         }
+ 
+ 
+ 
+                       }}
+                       placeholderTextColor={COLORS.colorDark}
+                       keyboardType="email-address"
+ 
+                     />
+                   </View>
+                 </View> : null}
+ 
+ 
+               {relation !== 'Spouse' &&
+                 <View >
+                   <Text style={styles.mobileText}>Occupation</Text>
+                   <TouchableOpacity style={[styles.dropDownContainmer, { borderColor: COLORS.colorBorder }]} onPress={() => {
+                     setOccupationModalVisible(true)
+                   }}>
+                     {occupation == ''
+                       ? <Text style={styles.textStyle}>{t('common:Select')}</Text>
+                       : <Text style={styles.textStyleDrop}>{occupation}</Text>
+                     }
+                   </TouchableOpacity>
+                 </View>}
+ 
+               <Text style={styles.mobileText}>Mobile Number</Text>
+               <View style={[styles.inPutStyle, { backgroundColor: IsOtp1 && status === true ? '#ECEBED' : COLORS.colorBackground, }]}>
+                 <TextInput
+                   contextMenuHidden={true}
+                   placeholder=''
+                   value={number}
+                   maxLength={10}
+                   style={[styles.textIn1,
+                   {
+                     left: -6,
+                     color: IsOtp1 && status === true ? '#808080' : COLORS.colorDark
+                   }]}
+                   onChangeText={(text) => {
+                     console.log("text length", text?.length)
+                     //OtpRef?.current?.focus()
+                     OnchangeNumbers(text)
+                     setInvalidotp(false)
+                     setInvalidotp1(false)
+                     setMaxError(false)
+                   }}
+                   placeholderTextColor={COLORS.colorDark}
+                   keyboardType="numeric"
+                   editable={IsOtp1 && status === true ? false : true}
+                 />
+                 {number?.length === 10 &&
+                   <View style={styles.CallView}>
+                     <Call width={16} height={16} />
+                   </View>}
+               </View>
+               {PhoneValid &&
+                 <Text style={{
+                   fontFamily: FONTS.FontRegular, color: "red", paddingTop: width * 0.02,
+                   fontSize: 12
+                 }}>Please enter a valid Mobile Number</Text>}
+ 
+ 
+               {/* #################################################################### */}
+ 
+ 
+               {/* {number?.length === 10 && */}
+               {/* <View style={styles.CallView}>
+                   <TouchableOpacity style={styles.CallView} >
+                    <Text style={{color:COLORS.colorB,fontSize:12,fontFamily:fonts.FontBold,fontWeight:'600'}}>Send</Text>
+                   </TouchableOpacity>
+                   </View> */}
+               {/* </View> */}
+               {(number?.length === 10 && PhoneValid == false) &&
+                 <View style={[styles.ViewOtp, {}]}>
+                   <Text style={styles.textOtp}>{t('common:EnterOtp')} </Text>
+ 
+                   <View style={[styles.inPutStyle1, {
+                     backgroundColor: COLORS.colorBackground,
+                   }]}>
+                     <TextInput
+                       autoFocus={true}
+                       //contextMenuHidden={true}
+                       ref={OtpRef}
+                       placeholder=''
+                       value={OtpValue}
+                       maxLength={6}
+                       style={[styles.textIn3,
+                       {
+                         textAlign: 'center',
+                         // alignItems:'center',justifyContent:'center'
+                         //color: IsOtp1 && status === true ? '#808080' : COLORS.colorDark
+                       }]}
+                       onChangeText={(text) => {
+                         console.log("text length", text?.length)
+                         if (/^[0123456789]+$/.test(text) || text === '') {
+                           setOtpValue(text)
+                           setInvalidotp(false)
+                           setInvalidotp1(false)
+                           setMaxError(false)
+                         }
+ 
+                       }}
+                       placeholderTextColor={COLORS.colorDark}
+                       keyboardType="numeric"
+                     // editable={IsOtp1 && status === true ? false : true}
+                     />
+                   </View>
+                   {/* <OTPInputView
+ 
+                     ref={otpInput2}
+                     autoFocus={true}
+                     inputCount={4}
+                     inputCellLength={1}
+                     offTintColor={!otp ? "lightgrey" : "red"}
+                     tintColor={!otp ? "lightgrey" : "red"}
+                     textInputStyle={[styles.imputContainerStyle, { color: '#090A0A', borderRadius: 8, backgroundColor: '#FCFCFC', borderColor: !otp ? "lightgrey" : "red" }]}
+                     keyboardType="numeric"
+                     containerStyle={{ marginTop: 7 }}
+                     handleTextChange={(code => {
+                       setOtpValue(code)
+                       setInvalidotp(false)
+                       setInvalidotp1(false)
+ 
+                       if (code.length < 4) {
+                         setOtp(false)
+                       }
+                     })}
+                   /> */}
+ 
+                   {invalidotp ?
+                     <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 12, marginBottom: 5 }}>
+                       <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center' }}>{t('common:otpValid')}</Text>
+                     </View> : null}
+                
+ 
+                   {IsOtp1 && status === true &&
+                     <View style={{ marginTop: Dimensions.get('window').height * 0.03 }}>
+                       <Text style={styles.TextResend}>{t('common:Resend')} 00:{timerCount < 10 ? '0' : ''}{timerCount}</Text>
+                     </View>
+                   }
+ 
+                   {Resends && timerCount === 0 ?
+                     <TouchableOpacity onPress={() => { ResendOtp() }} style={{ padding: 18 }} >
+                       <View style={{ flexDirection: 'row', }}>
+                         <Resend style={{ width: 9, height: 11, top: 3, marginRight: 6, }} resizeMode="contain" />
+                         <Text style={styles.TextResend1} >{t('common:Resend1')}</Text>
+                       </View>
+                     </TouchableOpacity> : null}
+ 
+                 </View>
+               }
+ 
+               {/* ############################################################################ */}
+ 
+               {maxError === true ?
+                 lang == "en" ?
+                   <View style={{ marginTop: Dimensions.get('window').height * 0.03, alignItems: 'center', justifyContent: 'center' }}>
+                     <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center', width: width * 0.8 }}>{t('common:Valid2')}</Text>
+                     <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center' }}>Please try after {errorMessage.replace(/\D/g, '')} minutes</Text>
+                   </View>
+                   :
+                   <View style={{ marginTop: Dimensions.get('window').height * 0.03, alignItems: 'center', justifyContent: 'center' }}>
+                     <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center', width: width * 0.8 }}>{t('common:Valid2')}</Text>
+                     <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center' }}>{errorMessage.replace(/\D/g, '')} {t('common:Valid3')}</Text>
+                   </View>
+                 : null}
+ 
+               <Call />
+ 
+             </View>
+           </ScrollView>
+ 
+           <RelationModal
+             visible={ModalVisible1}
+             setRelation={setRelation}
+             setPurposes={setPurposes}
+             setModalVisible={setModalVisible1}
+             setStatus={setStatus}
+             Purpose={Purpose}
+             relation={relation}
+             onPressOut={() => setModalVisible1(!ModalVisible1)}
+           />
+ 
+           <ErrorModal
+             ModalVisible={ModalError}
+             onPressOut={() => {
+               setModalError(!ModalError)
+             }}
+             setModalVisible={setModalError}
+           />
+ 
+           <ErrorModal2
+             ModalVisible={ModalError2}
+             onPressOut={() => {
+               setModalError2(!ModalError2)
+               onChangeNumber('')
+             }}
+             setModalVisible={setModalError2}
+           />
+           <ErrorModal3
+             ModalVisible={ModalError3}
+             onPressOut={() => {
+               setModalError3(!ModalError3)
+               onChangeNumber('')
+             }}
+             setModalVisible={setModalError3}
+           />
+ 
+           <ModalSave
+             Press={() => {
+               setModalVisible(false),
+                 setModalReason(true)
+             }}
+             Press1={() => {
+               navigation.navigate('Profile'),
+               verifyCG_back()
+                 setModalVisible(false)
+             }}
+             ModalVisible={ModalVisible}
+             setModalVisible={setModalVisible}
+             onPressOut={() => {
+               setModalVisible(false)
+             }}
+             navigation={navigation}
+           />
+ 
+           <ReasonModal
+             onPress1={() => {
+               updateRejection()
+             }}
+             ModalVisible={ModalReason}
+             onPressOut={() => setModalReason(!ModalReason)}
+             setModalVisible={setModalReason}
+           />
+           <Verifypop
+             ModalVisible={verifypop}
+             onPressOut={() => setverifypop(!verifypop)}
+             setModalVisible={setverifypop}
+           />
+           <Verifypop2
+             ModalVisible={verifypop2}
+             onPressOut={() => setverifypop2(!verifypop2)}
+             setModalVisible={setverifypop2}
+           />
+           <ErrorModal1
+             ModalVisible={ModalError1}
+             onPressOut={() => {
+               setModalError1(!ModalError1)
+               setModalReason(!ModalReason)
+             }}
+             setModalVisible={setModalError1}
+             navigation={navigation}
+           />
+           <OccupationModal
+             visible={occupationModalVisible}
+             setOccupation={setOccupation}
+             setState={setOccupationD}
+             state={OccupationD}
+             setOccupationModalVisible={setOccupationModalVisible}
+             onPressOut={() => setOccupationModalVisible(!occupationModalVisible)}
+             navigation={navigation}
+           />
+ 
+           <TouchableOpacity onPress={() => OtpValue && number?.length === 10 && relation ? verifyCGOTP() : console.log("geki")}
+             style={[styles.buttonView, { backgroundColor: OtpValue && number?.length === 10 && relation ? COLORS.colorB : '#E0E0E0' }]}>
+             <Text style={[styles.continueText, { color: OtpValue && number?.length === 10 && relation ? COLORS.colorBackground : COLORS.colorWhite3 }]}>{route?.params?.isCheck ? 'Submit' : 'Continue'}</Text>
+             {Loader && <ActivityIndicator size={15} color={COLORS.colorBackground} />}
+           </TouchableOpacity>
+         </KeyboardAvoidingView>
+}
+       </View>
+      
+
+   
       <CorrectionModal
         visible1={ModalVisibleC}
         onPress1={() =>

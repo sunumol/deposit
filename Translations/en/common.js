@@ -381,7 +381,7 @@ export default {
     'Verify1': 'Verify',
     'verifyBA': 'Verifying your bank account',
     'VerifySuccess': 'Verification Successful',
-    'VerifyDesc': 'Your Bank account could not be verified, Please try again with correct details',
+    'VerifyDesc': 'Your Bank account could not be , Please try again with correct details',
 
     //Bank Account page
 

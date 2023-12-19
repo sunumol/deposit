@@ -103,6 +103,8 @@ useEffect(()=>{
 
 
     const openDialScreen = (userPhone) => {
+
+        console.log('Phone numer11 ------------->')
         let number = '';
         if (Platform.OS === 'ios') {
             number = `telprompt:${userPhone}`;

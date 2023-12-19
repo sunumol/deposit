@@ -111,7 +111,7 @@ useEffect(()=>{
 
                         <View style={{ flexDirection: 'row', marginLeft: width * 0.06, marginTop: 3 }}>
                             <Icon2 name="phone-call" color={'rgba(0, 56, 116, 1)'} size={11} style={{ top: 4 }} />
-                            <Text onPress={()=>openDialScreen(custData?.mobile)} style={[styles.numText, { paddingLeft: 6 }]}>{custData?.mobile?.replace(/^.{0}/g, '').replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X")}</Text>
+                            <Text onPress={()=>{openDialScreen(custData?.mobile),console.log('phone number3------------>>>',custData?.mobile)}} style={[styles.numText, { paddingLeft: 6 }]}>{custData?.mobile?.replace(/^.{0}/g, '').replaceAt(4, "X").replaceAt(5, "X").replaceAt(6, "X").replaceAt(7, "X")}</Text>
                         </View>
                     </View>
 

@@ -1,5 +1,7 @@
 
 import axios from 'axios';
+import { API_KEY} from '@env'
+
 
 ///////////////////////////////////////////            DEV ENVIRONMENT                ///////////////////////////////////////
 // const baseUAT = 'http://3.108.93.231:' //dev server
@@ -13,10 +15,14 @@ import axios from 'axios';
 
 ///////////////////////////////////////////            STAGING ENVIRONMENT                ///////////////////////////////////////
 
-const baseUAT = 'https://seqa2fq5bb.execute-api.ap-south-2.amazonaws.com/stage'
-const baseUAT2= 'http://dhansethu-alb-2013531087.ap-south-2.elb.amazonaws.com/agentApp'
-const baseUAT3 = 'https://ex5116hrci.execute-api.ap-south-2.amazonaws.com/stage'
+// const baseUAT = 'https://seqa2fq5bb.execute-api.ap-south-2.amazonaws.com/stage'
+// const baseUAT2= 'http://dhansethu-alb-2013531087.ap-south-2.elb.amazonaws.com/agentApp'
+// const baseUAT3 = 'https://ex5116hrci.execute-api.ap-south-2.amazonaws.com/stage'
 
+
+const baseUAT = 'https://l0nptyww7k.execute-api.ap-south-2.amazonaws.com/stage'
+const baseUAT2= 'http://dhansethu-alb-2013531087.ap-south-2.elb.amazonaws.com/agentApp'
+const baseUAT3 = 'https://l0nptyww7k.execute-api.ap-south-2.amazonaws.com/stage'
 
 const baseURL5 = `${baseUAT}/`;
 const baseURL = `${baseUAT}/`
@@ -36,6 +42,7 @@ export const api = {
     return axios.post(`${baseURL2}getHomeDetails`, data, {
       headers: {
         'Content-Type': 'application/json',
+        'x-api-key': API_KEY
       }
     })
   },
@@ -47,6 +54,7 @@ export const api = {
       headers: {
         "Content-Type": "multipart/form-data",
         Accept: "application/json",
+        'x-api-key': API_KEY
       },
 
     })
@@ -56,6 +64,7 @@ export const api = {
     return axios.post(`${baseURL2}village`, data, {
       headers: {
         'Content-Type': 'application/json',
+        'x-api-key': API_KEY
       }
     })
   },
@@ -65,6 +74,7 @@ export const api = {
     return axios.post(`${baseURL2}lead`, data, {
       headers: {
         'Content-Type': 'application/json',
+        'x-api-key': API_KEY
       }
     })
   },
@@ -74,6 +84,7 @@ export const api = {
     return axios.get(`${baseURL6}logout/${data.id}`, {
       headers: {
         'Content-Type': 'application/json',
+        'x-api-key': API_KEY
       }
     })
   },
@@ -83,6 +94,7 @@ export const api = {
     return axios.post(`${baseURL2}agentRegister`, data, {
       headers: {
         'Content-Type': 'application/json',
+        'x-api-key': API_KEY
       }
     })
   },
@@ -92,6 +104,7 @@ export const api = {
     return axios.post(`${baseURL2}resendOtpAgent`, data, {
       headers: {
         'Content-Type': 'application/json',
+        'x-api-key': API_KEY
       }
     })
   },
@@ -102,6 +115,7 @@ export const api = {
      // return axios.post(`${baseURL2}confirm`, data, {
       headers: {
         'Content-Type': 'application/json',
+        'x-api-key': API_KEY
       }
     })
   },
@@ -111,6 +125,7 @@ export const api = {
     return axios.post(`${baseURL2}agentRegister`, data, {
       headers: {
         'Content-Type': 'application/json',
+        'x-api-key': API_KEY
       }
     })
   },
@@ -120,6 +135,7 @@ export const api = {
     return axios.get(`${baseURL}notifyCustomerForWrongPin/${data.id}`, {
       headers: {
         'Content-Type': 'application/json',
+        'x-api-key': API_KEY
       }
     })
   },
@@ -129,6 +145,7 @@ export const api = {
     return axios.post(`${baseURL2}getActivity`, data, {
       headers: {
         'Content-Type': 'application/json',
+        'x-api-key': API_KEY
       }
     })
   },
@@ -138,6 +155,7 @@ export const api = {
     return axios.post(`${baseURL2}updateActivity`, data, {
       headers: {
         'Content-Type': 'application/json',
+        'x-api-key': API_KEY
       }
     })
   },
@@ -147,6 +165,7 @@ export const api = {
     return axios.post(`${baseURL2}updateActivity`, data, {
       headers: {
         'Content-Type': 'application/json',
+        'x-api-key': API_KEY
       }
     })
   },
@@ -156,6 +175,7 @@ export const api = {
     return axios.post(`${baseURL2}getCGTSlot`, data, {
       headers: {
         'Content-Type': 'application/json',
+        'x-api-key': API_KEY
       }
     })
   },
@@ -165,6 +185,7 @@ export const api = {
     return axios.post(`${baseURL2}getCustomerForEmployee`, data, {
       headers: {
         'Content-Type': 'application/json',
+        'x-api-key': API_KEY
       }
     })
   },
@@ -174,6 +195,7 @@ export const api = {
     return axios.post(`${baseURL2}getCgtDetails`, data, {
       headers: {
         'Content-Type': 'application/json',
+        'x-api-key': API_KEY
       }
     })
   },
@@ -183,6 +205,7 @@ export const api = {
     return axios.post(`${baseURL2}getCgtDetailsTrustCircleMember`, data, {
       headers: {
         'Content-Type': 'application/json',
+        'x-api-key': API_KEY
       }
     })
   },
@@ -192,6 +215,7 @@ export const api = {
     return axios.get(`${baseURL2}getTcCount`, {
       headers: {
         'Content-Type': 'application/json',
+        'x-api-key': API_KEY
       }
     })
   },
@@ -201,6 +225,7 @@ export const api = {
     return axios.post(`${baseURL2}createTrustCircle`, data, {
       headers: {
         'Content-Type': 'application/json',
+        'x-api-key': API_KEY
       }
     })
   },
@@ -211,6 +236,7 @@ export const api = {
     return axios.post(`${baseURL2}getCustomerListForTc`, data, {
       headers: {
         'Content-Type': 'application/json',
+        'x-api-key': API_KEY
       }
     })
   },
@@ -220,6 +246,7 @@ export const api = {
     return axios.post(`${baseURL2}createOrUpdateCGT`, data, {
       headers: {
         'Content-Type': 'application/json',
+        'x-api-key': API_KEY
       }
     })
   },
@@ -229,6 +256,7 @@ export const api = {
     return axios.post(`${baseURL2}verifyTcKyc`, data, {
       headers: {
         'Content-Type': 'application/json',
+        'x-api-key': API_KEY
       }
     })
   },
@@ -239,6 +267,7 @@ export const api = {
     return axios.get(`${baseURLDPD}dpdOverview/${EMPID}/${Sort}`, {
       headers: {
         'Content-Type': 'application/json',
+        'x-api-key': API_KEY
       }
     })
   },
@@ -249,6 +278,7 @@ export const api = {
     return axios.get(`${baseURLDPD}summary/${EMPID}`, {
       headers: {
         'Content-Type': 'application/json',
+        'x-api-key': API_KEY
       }
     })
   },
@@ -259,6 +289,7 @@ export const api = {
     return axios.get(`${baseURLDPD}target/${EMPID}`, {
       headers: {
         'Content-Type': 'application/json',
+        'x-api-key': API_KEY
       }
     })
   },
@@ -268,6 +299,7 @@ export const api = {
     return axios.post(`${baseURL2}getTcDetails`, data, {
       headers: {
         'Content-Type': 'application/json',
+        'x-api-key': API_KEY
       }
     })
   },
@@ -277,6 +309,7 @@ export const api = {
     return axios.post(`${baseURL2}scheduleDle`, data, {
       headers: {
         'Content-Type': 'application/json',
+        'x-api-key': API_KEY
       }
     })
   },
@@ -285,6 +318,7 @@ export const api = {
     return axios.post(`${baseURL2}conductDleBasicDetail`, data, {
       headers: {
         'Content-Type': 'application/json',
+        'x-api-key': API_KEY
       }
     })
   },
@@ -294,6 +328,7 @@ export const api = {
     return axios.post(`${baseURL2}village`, data, {
       headers: {
         'Content-Type': 'application/json',
+        'x-api-key': API_KEY
       }
     })
   },
@@ -303,6 +338,7 @@ export const api = {
     return axios.post(`${baseURL2}postOffice`, data, {
       headers: {
         'Content-Type': 'application/json',
+        'x-api-key': API_KEY
       }
     })
   },
@@ -312,6 +348,7 @@ export const api = {
     return axios.post(`${baseURL2}saveOrUpdateBasicDetails`, data, {
       headers: {
         'Content-Type': 'application/json',
+        'x-api-key': API_KEY
       }
     })
   },
@@ -321,6 +358,7 @@ export const api = {
     return axios.post(`${baseURL2}getSpouseDetail`, data, {
       headers: {
         'Content-Type': 'application/json',
+        'x-api-key': API_KEY
       }
     })
   },
@@ -331,6 +369,7 @@ export const api = {
     //  return axios.post(`${baseURL2}getCustomerDetails`, data, {
       headers: {
         'Content-Type': 'application/json',
+        'x-api-key': API_KEY
       }
     })
   },
@@ -339,6 +378,7 @@ export const api = {
     return axios.post(`${baseURL2}getCurrentResidenceOwner`, data, {
       headers: {
         'Content-Type': 'application/json',
+        'x-api-key': API_KEY
       }
     })
   },
@@ -350,6 +390,7 @@ export const api = {
     return axios.post(`${baseURL2}saveOrUpdateCurrentResidenceOwner`, data, {
       headers: {
         'Content-Type': 'application/json',
+        'x-api-key': API_KEY
       }
     })
   },
@@ -359,6 +400,7 @@ export const api = {
     return axios.post(`${baseURL2}getCGDetails`, data, {
       headers: {
         'Content-Type': 'application/json',
+        'x-api-key': API_KEY
       }
     })
   },
@@ -368,6 +410,7 @@ export const api = {
     return axios.post(`${baseURL2}verifyContinuingGuarantor`, data, {
       headers: {
         'Content-Type': 'application/json',
+        'x-api-key': API_KEY
       }
     })
   },
@@ -377,6 +420,7 @@ export const api = {
     return axios.post(`${baseURL2}verifyCGOtp`, data, {
       headers: {
         'Content-Type': 'application/json',
+        'x-api-key': API_KEY
       }
     })
   },
@@ -386,6 +430,7 @@ export const api = {
     return axios.post(`${baseURL2}getCCVoterId`, data, {
       headers: {
         'Content-Type': 'application/json',
+        'x-api-key': API_KEY
       }
     })
   },
@@ -395,6 +440,7 @@ export const api = {
     return axios.post(`${baseURL2}saveCGVoterIds`, data, {
       headers: {
         'Content-Type': 'application/json',
+        'x-api-key': API_KEY
       }
     })
   },
@@ -404,6 +450,7 @@ export const api = {
     return axios.post(`${baseURL2}getVehicleDetails`, data, {
       headers: {
         'Content-Type': 'application/json',
+        'x-api-key': API_KEY
       }
     })
   },
@@ -413,6 +460,7 @@ export const api = {
     return axios.post(`${baseURL2}fetchVehicleDetailsForDle`, data, {
       headers: {
         'Content-Type': 'application/json',
+        'x-api-key': API_KEY
       }
     })
   },
@@ -422,6 +470,7 @@ export const api = {
     return axios.post(`${baseURL2}saveOrUpdateVehicleDetails`, data, {
       headers: {
         'Content-Type': 'application/json',
+        'x-api-key': API_KEY
       }
     })
   },
@@ -431,6 +480,7 @@ export const api = {
     return axios.post(`${baseURL2}getEnergyUtilities`, data, {
       headers: {
         'Content-Type': 'application/json',
+        'x-api-key': API_KEY
       }
     })
   },
@@ -440,6 +490,7 @@ export const api = {
     return axios.post(`${baseURL2}saveOrUpdateEnergyUtilities`, data, {
       headers: {
         'Content-Type': 'application/json',
+        'x-api-key': API_KEY
       }
     })
   },
@@ -449,6 +500,7 @@ export const api = {
     return axios.post(`${baseURL2}getIncomeDetails`, data, {
       headers: {
         'Content-Type': 'application/json',
+        'x-api-key': API_KEY
       }
     })
   },
@@ -458,6 +510,7 @@ export const api = {
     return axios.post(`${baseURL2}saveOrUpdateIncomeDetails`, data, {
       headers: {
         'Content-Type': 'application/json',
+        'x-api-key': API_KEY
       }
     })
   },
@@ -467,6 +520,7 @@ export const api = {
     return axios.post(`${baseURL2}getHousePhoto`, data, {
       headers: {
         'Content-Type': 'application/json',
+        'x-api-key': API_KEY
       }
     })
   },
@@ -476,6 +530,7 @@ export const api = {
     return axios.post(`${baseURL2}saveOrUpdateHousePhoto`, data, {
       headers: {
         'Content-Type': 'application/json',
+        'x-api-key': API_KEY
       }
     })
   },
@@ -486,6 +541,7 @@ export const api = {
     return axios.post(`${baseURL2}deleteHousePhoto`, data, {
       headers: {
         'Content-Type': 'application/json',
+        'x-api-key': API_KEY
       }
     })
   },
@@ -495,6 +551,7 @@ export const api = {
     return axios.post(`${baseURL2}getDlePageNumber`, data, {
       headers: {
         'Content-Type': 'application/json',
+        'x-api-key': API_KEY
       }
     })
   },
@@ -506,6 +563,7 @@ export const api = {
     return axios.get(`${baseURL2}agentProfile/${data.id}`, {
       headers: {
         'Content-Type': 'application/json',
+        'x-api-key': API_KEY
       }
     })
   },
@@ -514,6 +572,7 @@ export const api = {
     return axios.post(`${baseURL2}getCorrectionPages`, data, {
       headers: {
         'Content-Type': 'application/json',
+        'x-api-key': API_KEY
       }
     })
   },
@@ -523,6 +582,7 @@ export const api = {
     return axios.post(`${baseURL2}getDlePageNumber`, data, {
       headers: {
         'Content-Type': 'application/json',
+        'x-api-key': API_KEY
       }
     })
   },
@@ -532,6 +592,7 @@ export const api = {
     return axios.post(`${baseURL2}reScheduleActivityToNextSlot`, data, {
       headers: {
         'Content-Type': 'application/json',
+        'x-api-key': API_KEY
       }
     })
   },
@@ -541,6 +602,7 @@ export const api = {
     return axios.post(`${baseURL2}updateAgentToken`, data, {
       headers: {
         'Content-Type': 'application/json',
+        'x-api-key': API_KEY
       }
     })
   },
@@ -550,6 +612,7 @@ export const api = {
     return axios.post(`${baseURL3}pendingCollections`, data, {
       headers: {
         'Content-Type': 'application/json',
+        'x-api-key': API_KEY
       }
     })
   },
@@ -559,6 +622,7 @@ export const api = {
     return axios.get(`${baseURL3}activeLoansCollection/${data.customerId}`, {
       headers: {
         'Content-Type': 'application/json',
+        'x-api-key': API_KEY
       }
     })
   },
@@ -571,6 +635,7 @@ export const api = {
     return axios.get(`${baseURL3}loanPaymentHistory/${data.loanId}`, {
       headers: {
         'Content-Type': 'application/json',
+        'x-api-key': API_KEY
       }
     })
   },
@@ -582,6 +647,7 @@ export const api = {
     return axios.post(`${baseURL3}loanTrend`, data, {
       headers: {
         'Content-Type': 'application/json',
+        'x-api-key': API_KEY
       }
     })
   },
@@ -593,6 +659,7 @@ export const api = {
     return axios.get(`${baseURL3}customerProfileCollection/${data.customerId}`, {
       headers: {
         'Content-Type': 'application/json',
+        'x-api-key': API_KEY
       }
     })
   },
@@ -605,6 +672,7 @@ export const api = {
       return axios.post(`${baseURL3}collectionConfirmation`,data, {
         headers: {
           'Content-Type': 'application/json',
+          'x-api-key': API_KEY
         }
       })
     },
@@ -616,6 +684,7 @@ export const api = {
     return axios.get(`${baseURL3}trustCircleDetails/${data.customerId}`, {
       headers: {
         'Content-Type': 'application/json',
+        'x-api-key': API_KEY
       }
     })
   },
@@ -627,6 +696,7 @@ export const api = {
     return axios.get(`${baseURL3}completedCollections/${data.agentId}`, {
       headers: {
         'Content-Type': 'application/json',
+        'x-api-key': API_KEY
       }
     })
   },
@@ -638,6 +708,7 @@ export const api = {
     return axios.post(`${baseURLVersion}getLatestAppVersion`, data,  {
       headers: {
         'Content-Type': 'application/json',
+        'x-api-key': API_KEY
       }
     })
   },
@@ -650,6 +721,7 @@ export const api = {
   // return axios.post(`${baseURL2}homeScreenDeviceCheck`, {
       headers: {
         'Content-Type': 'application/json',
+        'x-api-key': API_KEY
       }
     })
   },
@@ -662,6 +734,7 @@ export const api = {
    // return axios.post(`${baseURL2}enterPinSimIdCheck`, data, {
       headers: {
         'Content-Type': 'application/json',
+        'x-api-key': API_KEY
       }
     })
   },
@@ -671,6 +744,7 @@ export const api = {
     return axios.post(`${baseURL2}isLastCorrectionPage`, data, {
       headers: {
         'Content-Type': 'application/json',
+        'x-api-key': API_KEY
       }
     })
   },
@@ -680,6 +754,7 @@ export const api = {
     return axios.post(`${baseURL2}dleConfemation`, data, {
       headers: {
         'Content-Type': 'application/json',
+        'x-api-key': API_KEY
       }
     })
   },
@@ -691,6 +766,7 @@ export const api = {
       return axios.post(`${baseURL2}getCgtStatus`, data, {
         headers: {
           'Content-Type': 'application/json',
+          'x-api-key': API_KEY
         }
       })
     },
@@ -701,6 +777,7 @@ export const api = {
         return axios.post(`${baseURL2}addNewTrustCircleMember`, data, {
           headers: {
             'Content-Type': 'application/json',
+            'x-api-key': API_KEY
           }
         })
       },
@@ -712,6 +789,7 @@ export const api = {
         return axios.post(`${baseURL2}getAllTrustCircleMembers`, data, {
           headers: {
             'Content-Type': 'application/json',
+            'x-api-key': API_KEY
           }
         })
       },
@@ -723,29 +801,44 @@ export const api = {
    //---------------- In App Notification ------------------------
    getNotification: (data) => {
     return axios.post(`${baseURL5}notificationsHistory`, data, {
-      "Content-Type": "application/json",
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': API_KEY
+      }
     });
   },
   //---------------- In App Notification ------------------------
   getNotificationCount: (data) => {
     return axios.post(`${baseURL5}agentNotificationCount`, data, {
-      "Content-Type": "application/json",
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': API_KEY
+      }
     });
   },
   pinCodeValidation: (data) => {
     return axios.post(`${baseURL2}pinCodeValidation`, data, {
-      "Content-Type": "application/json",
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': API_KEY
+      }
     });
   },
   getCoappAdhaar: (data) => {
     return axios.post(`${baseURL2}getCoApplicantAadhar`, data, {
-      "Content-Type": "application/json",
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': API_KEY
+      }
     });
   },
 
   SaveCoappAdhaar: (data) => {
     return axios.post(`${baseURL2}saveCoApplicantAadhar`, data, {
-      "Content-Type": "application/json",
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': API_KEY
+      }
     });
   },
 
@@ -753,7 +846,10 @@ export const api = {
 //Edit address CGT
  EditAddress: (data) => {
     return axios.post(`${baseURL2}changeCustomerAddress`, data, {
-      "Content-Type": "application/json",
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': API_KEY
+      }
     });
   },
 
@@ -761,7 +857,10 @@ export const api = {
 
   EditName: (data) => {
     return axios.post(`${baseURL2}changeCustomerName`, data, {
-      "Content-Type": "application/json",
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': API_KEY
+      }
     });
   },
 

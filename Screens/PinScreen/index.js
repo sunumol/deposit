@@ -129,8 +129,8 @@ const PinScreen = ({ navigation, }) => {
         var m = Math.floor(ts % 3600 / 60);
         var s = Math.floor(ts % 60);
       
-        const timeerror = 60 - m;
-        const secondserror = 60 - s;
+        const timeerror = 30 - m;
+        const secondserror = 30 - s;
         const te = JSON.stringify(timeerror);
         const tse = JSON.stringify(secondserror);
         
