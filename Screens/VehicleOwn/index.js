@@ -93,7 +93,7 @@ const VehicleOwn = ({ navigation, route }) => {
     );
 
     const saveVehicleDetails = async () => {
-        console.log('api called1')
+        console.log('api called124444')
 
        // const data = [searchvehicledata]
         await api.saveVehicleDetails(data).then((res) => {

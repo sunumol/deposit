@@ -61,7 +61,7 @@ const FAQ= ({ navigation, route }) => {
             <View style={styles.container2}>
             <ScrollView showsVerticalScrollIndicator={false}>
         <FaqList/>
-        <LoanFaq/>
+        {/* <LoanFaq/> */}
         </ScrollView>
             </View>
         

@@ -139,7 +139,7 @@ const Vehicles = ({ navigation, vehicleslist }) => {
     // ------------------get fetchVehicleDetailsForDle detail ------------------
 
     const saveVehicleDetails = async () => {
-        console.log('api called1')
+        console.log('api called1',vehicleslist)
 
         const data = vehicleslist
         await api.saveVehicleDetails(data).then((res) => {
@@ -149,7 +149,9 @@ const Vehicles = ({ navigation, vehicleslist }) => {
                 navigation.navigate('EnergyUtility',{isCheck:false})
             }
         }).catch((err) => {
-            console.log('-------------------err saveVehicleDetails', err?.response)
+            console.log('-------------------err saveVehicleDetails', err)
+            navigation.navigate('EnergyUtility',{isCheck:false})
+
         })
     };
 
