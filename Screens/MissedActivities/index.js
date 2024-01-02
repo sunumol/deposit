@@ -390,7 +390,7 @@ console.log("missed activir",route?.params)
                                                     {item.purpose === 'Conduct CGT' &&
                                                         <Text style={[styles.explainText, { color: COLORS.DarkBlue, backgroundColor: COLORS.LightBlue }]}>{item.purpose} </Text>
                                                     }
-                                                    {item.purpose === 'Collection followup' &&
+                                                    {item.purpose === 'Collection Follow Up' &&
                                                         <Text style={[styles.explainText, { color: COLORS.DarkGreen, backgroundColor: COLORS.LightGreen }]}>{item.purpose} </Text>
                                                     }
                                                     {item.purpose === 'Leads Follow Up' &&
@@ -503,7 +503,7 @@ console.log("missed activir",route?.params)
                                                     {item.purpose === 'Conduct CGT' &&
                                                         <Text style={[styles.explainText, { color: COLORS.DarkBlue, backgroundColor: COLORS.LightBlue }]}>{item.purpose} </Text>
                                                     }
-                                                    {item.purpose === 'Collection followup' &&
+                                                    {item.purpose === 'Collection Fsollow Up' &&
                                                         <Text style={[styles.explainText, { color: COLORS.DarkGreen, backgroundColor: COLORS.LightGreen }]}>{item.purpose} </Text>
                                                     }
                                                     {item.purpose === 'Leads Follow Up' &&
