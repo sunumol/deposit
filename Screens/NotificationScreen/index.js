@@ -16,6 +16,7 @@ import Statusbar from '../../Components/StatusBar';
 import { useTranslation } from 'react-i18next';
 import moment from 'moment';
 import { useDispatch } from 'react-redux';
+import PushNotification from 'react-native-push-notification';
 
 // -------------- Component Imports ----------------------
 import { COLORS, FONTS } from '../../Constants/Constants';
@@ -37,6 +38,7 @@ const LoanDetails = ({ navigation,route }) => {
 
     useEffect(() => {
         getNotifications()
+        PushNotification.removeAllDeliveredNotifications()
     }, [])
 
     async function getNotifications() {
