@@ -4,6 +4,8 @@ import BlueTitleBar from './BlueTitleBar';
 import DepositedAmount from './DepositedAmount';
 import EntityName from './EntityName';
 import './common.css';
+import ReferenceNumber from './ReferenceNumber';
+import ConfirmReferenceNumber from './ConfirmReferenceNumber';
 
 const App = () => {
   // Define options for the entity dropdown list
@@ -31,7 +33,8 @@ const App = () => {
         selectedOption={selectedEntity}
         onSelect={handleSelectEntity}
       />
-
+      <ReferenceNumber/>
+      <ConfirmReferenceNumber/>
       {/* Add other components/content of your application */}
     </View>
   );
