@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
         width: 370,
     },
     heading: {
-        marginTop: 20,
+        marginTop: 7,
         marginLeft: 30,
         fontWeight: 'bold',
         marginBottom: 10,

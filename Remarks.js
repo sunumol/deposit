@@ -1,10 +1,10 @@
 import React from 'react';
 import { View, Text, TextInput, StyleSheet } from 'react-native';
 
-const ReferenceNumber = ({ value }) => {
+const Remarks = ({ value }) => {
     return (
         <View>
-            <Text style={styles.heading}>Reference Number</Text>
+            <Text style={styles.heading}>Remarks</Text>
             <View style={styles.container}>
                 <TextInput
                     style={styles.textInput}
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
         width: 370,
     },
     heading: {
-        marginTop: 15,
+        marginTop: 0,
         marginLeft: 30,
         fontWeight: 'bold',
         marginBottom: 10,
@@ -44,4 +44,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default ReferenceNumber;
+export default Remarks;

@@ -6,6 +6,11 @@ import EntityName from './EntityName';
 import './common.css';
 import ReferenceNumber from './ReferenceNumber';
 import ConfirmReferenceNumber from './ConfirmReferenceNumber';
+import UploadPhoto from './UploadPhoto';
+import Remarks from './Remarks';
+import SubmitButton from './SubmitButton';
+
+
 
 const App = () => {
   // Define options for the entity dropdown list
@@ -35,6 +40,10 @@ const App = () => {
       />
       <ReferenceNumber/>
       <ConfirmReferenceNumber/>
+      <UploadPhoto/>
+      <Remarks/>
+      <SubmitButton/>
+    
       {/* Add other components/content of your application */}
     </View>
   );

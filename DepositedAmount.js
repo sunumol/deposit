@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
     },
     box: {
         backgroundColor: '#f0f0f0',
-        width: 390,
+        width: 350,
         height: 100,
         borderRadius: 20,
         justifyContent: 'center', // Center align text vertically

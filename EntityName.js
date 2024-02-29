@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
         marginLeft:30,
     },
     title: {
-        marginTop:30,
+        marginTop:15,
         fontWeight: 'bold',
         marginBottom:20,
         
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: '#ccc',
         borderRadius: 5,
-        marginTop: 5, // Adjust spacing from dropdown header
+        marginTop: 2, // Adjust spacing from dropdown header
     },
     option: {
         paddingVertical: 10,
