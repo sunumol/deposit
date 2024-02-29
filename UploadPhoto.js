@@ -29,9 +29,12 @@ const UploadPhoto = () => {
 
     return (
         <View style={styles.container}>
-
             <TouchableOpacity style={styles.button} onPress={handleChoosePhoto}>
-                <Text style={styles.buttonText}>Proof of Deposit</Text>
+                <Image source={require('./assets/icons/15.png')} style={styles.icon} />
+                <View style={styles.textContainer}>
+                    <Text style={styles.uploadText}>Upload</Text>
+                    <Text style={styles.proofText}>Proof of Receipt</Text>
+                </View>
             </TouchableOpacity>
             {photo && <Image source={photo} style={styles.image} />}
         </View>
@@ -41,13 +44,6 @@ const UploadPhoto = () => {
 const styles = StyleSheet.create({
     container: {
         alignItems: 'center',
-
-    },
-    heading: {
-        fontSize: 18,
-        fontWeight: 'bold',
-        marginBottom: 10,
-
     },
     button: {
         marginTop: 20,
@@ -60,9 +56,19 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         width: 350,
         height: 90,
+        flexDirection: 'row', // Align items horizontally
+        justifyContent: 'center', // Center items horizontally
     },
-    buttonText: {
-        color: 'black', // changed text color to black
+    textContainer: {
+        marginLeft: 10, // Add margin between icon and text
+    },
+    uploadText: {
+        color: 'black',
+        fontSize: 16,
+        fontWeight: 'bold',
+    },
+    proofText: {
+        color: 'black',
         fontSize: 16,
         fontWeight: 'bold',
     },
@@ -70,6 +76,10 @@ const styles = StyleSheet.create({
         width: 200,
         height: 200,
         resizeMode: 'contain',
+    },
+    icon: {
+        width: 24,
+        height: 24,
     },
 });
 

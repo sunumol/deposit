@@ -24,9 +24,10 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         marginLeft: 20,
         width: 370,
+        height:100,
     },
     heading: {
-        marginTop: 0,
+        
         marginLeft: 30,
         fontWeight: 'bold',
         marginBottom: 10,
