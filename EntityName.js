@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons'; // Import MaterialIcons from expo/vector-icons
 import './common.css';
 
 const EntityName = ({ options, selectedOption, onSelect }) => {
@@ -21,9 +20,7 @@ const EntityName = ({ options, selectedOption, onSelect }) => {
             <Text style={styles.title}>Entity Name</Text>
             {/* Dropdown header */}
             <TouchableOpacity onPress={toggleDropdown} style={styles.header}>
-                <Text style={styles.selectedOption}>{selectedOption || 'Select Entity'}</Text>
-                {/* Dropdown arrow */}
-                <MaterialIcons name={isOpen ? 'keyboard-arrow-up' : 'keyboard-arrow-down'} size={24} color="black" />
+                <Text style={styles.selectedOption}>{selectedOption || 'Select'}</Text>
             </TouchableOpacity>
             {/* Dropdown */}
             {isOpen && (
@@ -45,23 +42,22 @@ const EntityName = ({ options, selectedOption, onSelect }) => {
 
 const styles = StyleSheet.create({
     container: {
-        width:350,
+        width: 350,
         position: 'relative',
         zIndex: 1,
-        marginLeft:30,
+        marginLeft: 30,
     },
     title: {
-        marginTop:15,
+        marginTop: 15,
         fontWeight: 'bold',
-        marginBottom:20,
-        
+        marginBottom: 20,
     },
     header: {
         flexDirection: 'row', // Align items horizontally
         alignItems: 'center', // Center align vertically
         paddingVertical: 10,
         paddingHorizontal: 15,
-        backgroundColor: '#f0f0f0',
+        backgroundColor: '#ECEBED',
         borderWidth: 1,
         borderColor: '#ccc',
         borderRadius: 5,

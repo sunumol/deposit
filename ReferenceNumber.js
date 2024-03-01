@@ -10,6 +10,7 @@ const ReferenceNumber = ({ value }) => {
                     style={styles.textInput}
                     value={value}
                     editable={true} // Now editable
+                    secureTextEntry={true} // Display stars instead of characters
                 // Add any other TextInput props as needed
                 />
             </View>

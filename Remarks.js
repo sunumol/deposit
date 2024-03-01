@@ -25,6 +25,7 @@ const styles = StyleSheet.create({
         marginLeft: 20,
         width: 370,
         height:100,
+        
     },
     heading: {
         
@@ -33,7 +34,7 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     textInput: {
-        backgroundColor: '#f0f0f0',
+        backgroundColor: '#ECEBED',
         padding: 10,
         borderRadius: 5,
         borderWidth: 1,

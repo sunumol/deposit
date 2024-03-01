@@ -29,11 +29,20 @@ const styles = StyleSheet.create({
     box: {
         flexDirection: 'row', // Arrange icon and text horizontally
         alignItems: 'center', // Center align items vertically
-        backgroundColor: '#f0f0f0',
+        backgroundColor: '#FCFCFC',
         width: 350,
         height: 100,
         borderRadius: 20,
         justifyContent: 'center', // Center align text vertically
+        borderWidth: 1, // Add border width
+        borderColor: '#FCFCFC',// Set border color
+        shadowOffset: {
+            width: 1,
+            height: 1,
+        },
+        shadowOpacity: 0.2, // Set shadow opacity
+        shadowRadius: 3, // Set shadow radius
+        elevation: 2, // For Android shadow
     },
     icon: {
         width: 24, // Adjust icon width as needed

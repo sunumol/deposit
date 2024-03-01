@@ -11,7 +11,7 @@ const BlueTitleBar = ({ title }) => {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: 'blue',
+        backgroundColor: '#003874',
         padding: 15,
         alignItems: 'center',
     },
