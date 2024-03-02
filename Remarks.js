@@ -3,7 +3,7 @@ import { View, Text, TextInput, StyleSheet } from 'react-native';
 
 const Remarks = ({ value }) => {
     return (
-        <View>
+        <View style={styles.remarksContainer}>
             <Text style={styles.heading}>Remarks</Text>
             <View style={styles.container}>
                 <TextInput
@@ -18,17 +18,19 @@ const Remarks = ({ value }) => {
 };
 
 const styles = StyleSheet.create({
+    remarksContainer: {
+        marginTop: 0, // Adjust as needed to move it up
+    },
     container: {
         backgroundColor: 'white',
         padding: 10,
         borderRadius: 5,
         marginLeft: 20,
         width: 370,
-        height:100,
-        
+        height: 100,
     },
     heading: {
-        
+        paddingTop:30,
         marginLeft: 30,
         fontWeight: 'bold',
         marginBottom: 10,

@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         marginLeft:140,
-        marginTop: 20,
+        marginTop: 10,
         width: 150, // Adjusted width
         height: 50, // Adjusted height
     },

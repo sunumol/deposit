@@ -10,9 +10,13 @@
   },
   "dependencies": {
     "expo": "~50.0.8",
+    "expo-image-picker": "^14.7.1",
+    "expo-media-library": "^15.9.1",
     "expo-status-bar": "~1.11.1",
     "react": "18.2.0",
     "react-native": "0.73.4",
+    "react-native-document-picker": "^9.1.1",
+    "react-native-fs": "^2.20.0",
     "react-native-image-picker": "^7.1.0"
   },
   "devDependencies": {

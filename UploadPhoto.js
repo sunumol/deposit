@@ -1,85 +1,72 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
-import ImagePicker from 'react-native-image-picker';
+import { View, Image, TouchableOpacity, Button, StyleSheet, Dimensions } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
+import * as MediaLibrary from 'expo-media-library';
 
 const UploadPhoto = () => {
-    const [photo, setPhoto] = useState(null);
+    const [imageUri, setImageUri] = useState(null);
 
-    // Function to open image picker
-    const handleChoosePhoto = () => {
-        const options = {
-            title: 'Select Photo',
-            storageOptions: {
-                skipBackup: true,
-                path: 'images',
-            },
-        };
+    const handleFileUpload = async () => {
+        const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (status !== 'granted') {
+            alert('Permission to access camera roll is required!');
+            return;
+        }
 
-        ImagePicker.showImagePicker(options, (response) => {
-            if (response.didCancel) {
-                console.log('User cancelled image picker');
-            } else if (response.error) {
-                console.log('ImagePicker Error: ', response.error);
-            } else {
-                const source = { uri: response.uri };
-                setPhoto(source);
-            }
+        const result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            quality: 1,
         });
+
+        if (!result.cancelled) {
+            setImageUri(result.uri);
+        }
     };
 
     return (
         <View style={styles.container}>
-            <TouchableOpacity style={styles.button} onPress={handleChoosePhoto}>
-                <Image source={require('./assets/icons/15.png')} style={styles.icon} />
-                <View style={styles.textContainer}>
-                    <Text style={styles.uploadText}>Upload</Text>
-                    <Text style={styles.proofText}>Proof of Receipt</Text>
-                </View>
+            <TouchableOpacity onPress={handleFileUpload} style={styles.imageContainer}>
+                {imageUri ? (
+                    <Image source={{ uri: imageUri }} style={styles.thumbnail} />
+                ) : (
+                    <Image source={require('./assets/icons/Group 9525.png')} style={styles.icon} />
+                )}
             </TouchableOpacity>
-            {photo && <Image source={photo} style={styles.image} />}
+            {/* <Button title="Upload Image" onPress={handleFileUpload} /> */}
         </View>
     );
 };
 
+const windowWidth = Dimensions.get('window').width;
+
 const styles = StyleSheet.create({
     container: {
+        marginTop:-40,
+        marginTop:30,
+        justifyContent: 'center',
         alignItems: 'center',
+
     },
-    button: {
-        marginTop: 20,
-        backgroundColor: '#f0f0f0',
-        paddingVertical: 10,
-        paddingHorizontal: 20,
-        borderWidth: 1,
-        borderColor: '#ccc',
-        borderRadius: 10,
-        marginBottom: 20,
+    imageContainer: {
         width: 350,
         height: 90,
-        flexDirection: 'row', // Align items horizontally
-        justifyContent: 'center', // Center items horizontally
-    },
-    textContainer: {
-        marginLeft: 10, // Add margin between icon and text
-    },
-    uploadText: {
-        color: 'black',
-        fontSize: 16,
-        fontWeight: 'bold',
-    },
-    proofText: {
-        color: 'black',
-        fontSize: 16,
-        fontWeight: 'bold',
-    },
-    image: {
-        width: 200,
-        height: 200,
-        resizeMode: 'contain',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderWidth: 1,
+        borderColor: '#ccc',
+        borderRadius: 8,
+        overflow: 'hidden',
     },
     icon: {
-        width: 24,
-        height: 24,
+        width: '100%',
+        height: '100%',
+        resizeMode: 'cover',
+    },
+    thumbnail: {
+        width: '100%',
+        height: '100%',
+        resizeMode: 'cover',
     },
 });
 
