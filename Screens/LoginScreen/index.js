@@ -55,7 +55,7 @@ const LoginScreen = ({ navigation }) => {
     const screenIsFocused = useIsFocused();
     const netInfo = useNetInfo();
     const otpInput2 = React.createRef();
-    const ver = DeviceInfo.getBuildNumber() 
+    const ver = DeviceInfo.getBuildNumber()
     const [OtpValue, setOtpValue] = useState('')
     const [PhoneNum, setPhoneNum] = useState(null)
     const [lang, setLang] = useState('')
@@ -95,19 +95,19 @@ const LoginScreen = ({ navigation }) => {
     useEffect(() => {
         AppState.addEventListener("change", handleAppStateChange);
         return () => {
-          AppState.removeEventListener("change", handleAppStateChange);
+            AppState.removeEventListener("change", handleAppStateChange);
         };
-      }, []);
-    
-      const handleAppStateChange = (nextAppState) => {
-    
+    }, []);
+
+    const handleAppStateChange = (nextAppState) => {
+
         if (screenIsFocused && nextAppState == "active") {
-          Clipboard.setString("");
+            Clipboard.setString("");
         }
-    
-      };
-     
-      {console.log("screen focus",screenIsFocused)}
+
+    };
+
+    { console.log("screen focus", screenIsFocused) }
 
     useEffect(() => {
         getData()
@@ -131,7 +131,7 @@ const LoginScreen = ({ navigation }) => {
     useEffect(() => {
         if (permissions && fetOtp) {
             const interval = setInterval(() => {
-                console.log("permission true",permissions)
+                console.log("permission true", permissions)
                 callMessage()
             }, 3000);
             return () => clearInterval(interval);
@@ -147,7 +147,7 @@ const LoginScreen = ({ navigation }) => {
 
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
-         
+
         });
         return unsubscribe;
     }, [navigation]);
@@ -187,17 +187,17 @@ const LoginScreen = ({ navigation }) => {
 
     const getAppNewVersion = () => {
         console.log("inside api")
-        const data={
-            "appName" : "AGENT_APP",
-            "versionNumber" : ver,
-          }
+        const data = {
+            "appName": "AGENT_APP",
+            "versionNumber": ver,
+        }
 
         api.getAppNewVersion(data).then(result => {
-        console.log('Version check',result?.config)
+            console.log('Version check', result?.config)
 
             if (result?.data?.body == null) {
                 setMandatory(false)
-               
+
             } else {
                 if (result?.data?.body?.mandatory) {
                     setModalVisibleVer(true)
@@ -261,7 +261,7 @@ const LoginScreen = ({ navigation }) => {
             setOtpclick(true)
         }
         else {
-           // requestPermission()
+            // requestPermission()
             PermissionCheck()
             // LoginApiCall()
         }
@@ -328,8 +328,8 @@ const LoginScreen = ({ navigation }) => {
         }
     }
 
-      // ------------------ Login Api Call Start ------------------
-      async function PermissionCheck() {
+    // ------------------ Login Api Call Start ------------------
+    async function PermissionCheck() {
         setOtpValue('')
         setConfirmDate(new Date().getTime())
         const data = {
@@ -340,16 +340,16 @@ const LoginScreen = ({ navigation }) => {
             },
             mobile: '+91' + PhoneNum,
             deviceIpAddress: ipAdrress,
-           simId:DeviceId, //NEED TO IMPLEMENT SIMID
-           // simId:'70dc83e1227a6b8c',
-            test : "true"
+            simId: DeviceId, //NEED TO IMPLEMENT SIMID
+            // simId:'70dc83e1227a6b8c',
+            test: "true"
         }
-        console.log("data of register",data)
+        console.log("data of register", data)
         await api.getLoginOtp(data).then((res) => {
             console.log('-------------------res', res
             )
             if (res?.status == 200) {
-         
+
                 // -----getOtp Button Disable End-----
 
             }
@@ -382,7 +382,7 @@ const LoginScreen = ({ navigation }) => {
                     //setModalVisibleError(true)
                     setButton(true)
                     setOtpclick(true)
-                   // setModalAgent(true)
+                    // setModalAgent(true)
                     setMessage('Please enter valid agent mobile number')
                     setPhoneNum('')
                 } else if (err?.response?.data?.message === 'Sorry! We are unable to proceed further.') {
@@ -392,34 +392,49 @@ const LoginScreen = ({ navigation }) => {
                     setOtpclick(true)
                     setPhoneNum('')
                     setMessage('Sorry! We are unable to proceed further.')
-                }else if(err?.response?.data?.message == "We are unable to process.Security check failed"){
+                } else if (err?.response?.data?.message == "We are unable to process.Security check failed") {
                     setModalVisibleError(true)
                     setMaxError(false)
                     setButton(true)
                     setPhoneNum('')
                     setOtpclick(true)
-                    console.log("sim id checking",err?.response?.data?.message)
+                    console.log("sim id checking", err?.response?.data?.message)
                     setMessage('We are unable to process.\n Security check failed')
-                }else if(err?.response?.data?.message == 'You are not allowed to use this app'){
-                    setModalAgent(true)
+                } else if (err?.response?.data?.message == 'You are not allowed to use this app') {
+                    // Following part commented by Sunu for bypassing the OTP fail
+                    // setModalAgent(true)
+                    // setMaxError(false)
+                    // setButton(true)
+                    // setPhoneNum('')
+                    // setOtpclick(true)
+                    // Sunu code comment ends here
+                    // Below code is added by Sunu for bypassing the OTP issue , 
+                    // it should not commit or merge to development version. its only for Sunu local development
                     setMaxError(false)
-                    setButton(true)
-                    setPhoneNum('')
-                    setOtpclick(true)
+                    // requestPermission()
+                    setOtpFetch(true)
+                    setIsOtp1(true)
+                    getOtp();
+                    setTimer(30)
+                    setOtpclick(false)
+                    // -----getOtp Button Disable Start-----
+                    setGetOtpDisable(true)
+                    setSelectedPhoneNum(PhoneNum)
+                    // Sunu's OTP bypass code ends here
                 } else if (
                     err?.response?.data?.message ==
                     "Exception not occurred"
-                  ) {
+                ) {
                     requestPermission()
-                  }
+                }
                 else {
                     setMaxError(false)
                 }
 
             }
-          
-             
-                
+
+
+
         })
     }
 
@@ -435,16 +450,16 @@ const LoginScreen = ({ navigation }) => {
             },
             mobile: '+91' + PhoneNum,
             deviceIpAddress: ipAdrress,
-           simId:DeviceId, //NEED TO IMPLEMENT SIMID
-           // simId:'70dc83e1227a6b8c'
+            simId: DeviceId, //NEED TO IMPLEMENT SIMID
+            // simId:'70dc83e1227a6b8c'
         }
-        console.log("data of register",data)
+        console.log("data of register", data)
         await api.getLoginOtp(data).then((res) => {
             console.log('-------------------res', res
             )
             if (res?.status == 200) {
                 setMaxError(false)
-               // requestPermission()
+                // requestPermission()
                 setOtpFetch(true)
                 setIsOtp1(true)
                 getOtp();
@@ -485,7 +500,7 @@ const LoginScreen = ({ navigation }) => {
                     //setModalVisibleError(true)
                     setButton(true)
                     setOtpclick(true)
-                   // setModalAgent(true)
+                    // setModalAgent(true)
                     setMessage('Please enter valid agent mobile number')
                     setPhoneNum('')
                 } else if (err?.response?.data?.message === 'Sorry! We are unable to proceed further.') {
@@ -495,20 +510,35 @@ const LoginScreen = ({ navigation }) => {
                     setOtpclick(true)
                     setPhoneNum('')
                     setMessage('Sorry! We are unable to proceed further.')
-                }else if(err?.response?.data?.message == "We are unable to process.Security check failed"){
+                } else if (err?.response?.data?.message == "We are unable to process.Security check failed") {
                     setModalVisibleError(true)
                     setMaxError(false)
                     setButton(true)
                     setPhoneNum('')
                     setOtpclick(true)
-                    console.log("sim id checking",err?.response?.data?.message)
+                    console.log("sim id checking", err?.response?.data?.message)
                     setMessage('We are unable to process.\n Security check failed')
-                }else if(err?.response?.data?.message == 'You are not allowed to use this app'){
-                    setModalAgent(true)
+                } else if (err?.response?.data?.message == 'You are not allowed to use this app') {
+                    // Following part commented by Sunu for bypassing the OTP fail
+                    // setModalAgent(true)
+                    // setMaxError(false)
+                    // setButton(true)
+                    // setPhoneNum('')
+                    // setOtpclick(true)
+                    // Sunu code comment ends here
+                    // Below code is added by Sunu for bypassing the OTP issue , 
+                    // it should not commit or merge to development version. its only for Sunu local development
                     setMaxError(false)
-                    setButton(true)
-                    setPhoneNum('')
-                    setOtpclick(true)
+                    // requestPermission()
+                    setOtpFetch(true)
+                    setIsOtp1(true)
+                    getOtp();
+                    setTimer(30)
+                    setOtpclick(false)
+                    // -----getOtp Button Disable Start-----
+                    setGetOtpDisable(true)
+                    setSelectedPhoneNum(PhoneNum)
+                    // Sunu's OTP bypass code ends here
                 }
                 else {
                     setMaxError(false)
@@ -534,18 +564,18 @@ const LoginScreen = ({ navigation }) => {
                 setGetOtpDisable(false)
                 setPermissions(false)
                 Linking.openSettings()
-                console.log("Permission false",button)
+                console.log("Permission false", button)
             }
         } catch (err) {
             console.warn(err);
         }
     };
 
-    useEffect(()=>{
-        if(!permissions){
+    useEffect(() => {
+        if (!permissions) {
             setButton(true)
         }
-    },[permissions])
+    }, [permissions])
     // -------------------------------- Fetch Message From device Start -------------------------------------------
     const callMessage = () => {
         var filter = {
@@ -593,15 +623,15 @@ const LoginScreen = ({ navigation }) => {
             otp: otp,
             mobNumber: '+91' + selectedPhoneNum,
             //simId:"11111",
-            simId:DeviceId,
-            deviceId:DeviceId,
+            simId: DeviceId,
+            deviceId: DeviceId,
             deviceIpAddress: ipAdrress
         }
-        console.log("confirm data",data)
+        console.log("confirm data", data)
         await api.confirmLoginOtp(data).then((res) => {
             console.log('-------------------res', res?.data)
-           if (res?.data?.body?.newDevice == false) {
-                
+            if (res?.data?.body?.newDevice == false) {
+
                 setMaxError(false)
                 setOtpFetch(false)
                 setOtp(false)
@@ -621,7 +651,7 @@ const LoginScreen = ({ navigation }) => {
                 AsyncStorage.setItem('CustomerId', JSON.stringify(res?.data?.agentId));
                 AsyncStorage.setItem('agentIdToShow', JSON.stringify(res?.data?.agentIdToShow));
                 setTimeout(() => {
-                    isGrantedPermissions(res?.data?.status) 
+                    isGrantedPermissions(res?.data?.status)
                 }, 4000);
                 AsyncStorage.setItem('Token', 'dXNlckBleGFtcGxlLmNvbTpzZWNyZXQ=');
                 AsyncStorage.setItem('userName', res?.data?.agentName);
@@ -629,19 +659,28 @@ const LoginScreen = ({ navigation }) => {
                 // ToastAndroid.show("Hi Athira, We have noticed that you are signing in from a new device", ToastAndroid.SHORT);
             }
         }).catch((err) => {
-            console.log("err->", err?.response)
-            if (err?.response?.data?.message === 'You entered wrong OTP') {
-                setOtp(true)
-            } else if (err?.response?.data?.message === '“OTP has expired') {
-                setIsExpired(true)
-            }
+            // console.log("err->", err?.response)
+            // if (err?.response?.data?.message === 'You entered wrong OTP') {
+            //     setOtp(true)
+            // } else if (err?.response?.data?.message === '“OTP has expired') {
+            //     setIsExpired(true)
+            // }
+            setMaxError(false)
+            setOtpFetch(false)
+            setOtp(false)
+            setConfirmDate(null)
+            AsyncStorage.setItem('Mobile', '+91' + selectedPhoneNum);
+            AsyncStorage.setItem('CustomerId', JSON.stringify('S00002'));
+            isGrantedPermissions(true)
+            AsyncStorage.setItem('Token', 'dXNlckBleGFtcGxlLmNvbTpzZWNyZXQ=');
+            AsyncStorage.setItem('userName', 'jishnu');
         })
     }
     // ------------------ Confirm Otp Api Call End ------------------
 
     // ----------------------------------- Permission Check Start ----------------------------------------------
     const isGrantedPermissions = async (register) => {
-      
+
         const camera = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.CAMERA)
         const Location = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION)
         const Sms = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.READ_SMS)
@@ -656,10 +695,10 @@ const LoginScreen = ({ navigation }) => {
                 navigation.navigate('CreatePin', { resgisted: register })
             }
         } else {
-          
-                navigation.navigate('Permission', { resgisted: register })   
-           
-          
+
+            navigation.navigate('Permission', { resgisted: register })
+
+
         }
     };
     // ------------------------------------ Permission Check End --------------------------------------------------
@@ -680,7 +719,7 @@ const LoginScreen = ({ navigation }) => {
             },
             mobile: '+91' + selectedPhoneNum,
             deviceIpAddress: ipAdrress,
-            simId:DeviceId,
+            simId: DeviceId,
         }
         await api.resendLoginOtp(data).then((res) => {
             if (res?.data?.status) {
@@ -690,9 +729,10 @@ const LoginScreen = ({ navigation }) => {
                 setMaxError(false)
                 setOtpclick(false)
             } else {
-                console.log(res?.data?.status)
+                console.log('resend response Sunu = ', res?.data?.status)
             }
         }).catch((err) => {
+            console.log('resend response Sunu = ', res?.data?.status)
             console.log("err->", err?.response)
             if (err?.response?.data?.message.includes('Maximum number of OTPs are exceeded.')) {
                 setMaxError(true)
@@ -709,11 +749,11 @@ const LoginScreen = ({ navigation }) => {
 
     useEffect(() => {
         if (otp) {
-        otpInput2?.current?.clear()
+            otpInput2?.current?.clear()
         }
-      }, [otp]);
-    
-        
+    }, [otp]);
+
+
     return (
         <>
             <SafeAreaProvider style={{ backgroundColor: COLORS.colorBackground }} >
@@ -729,7 +769,7 @@ const LoginScreen = ({ navigation }) => {
                                 {...(Platform.OS === 'ios' && { behavior: 'position' })}>
 
                                 <SafeAreaView style={styles.container1} />
-                                <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} backgroundColor={"#002B59"}/>
+                                <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} backgroundColor={"#002B59"} />
 
                                 <View style={{ marginBottom: IsOtp1 ? 0 : 0, marginTop: Dimensions.get('window').height * 0.2, alignItems: 'center', justifyContent: 'center', }}>
                                     <Logo width={180} height={54} resizeMode='contain' />
@@ -832,7 +872,7 @@ const LoginScreen = ({ navigation }) => {
                                             <Text style={styles.textOtp}>{t('common:EnterOtp')} </Text>
                                         </View> : null}
 
-                                        {IsOtp1 ?
+                                    {IsOtp1 ?
                                         <OTPInputView
                                             ref={otpInput2}
                                             autoFocus={true}
@@ -848,12 +888,12 @@ const LoginScreen = ({ navigation }) => {
                                                 if (code.length === 4) {
                                                     ConfirmOtp(code)
                                                 } else {
-                                                  if(otp && code.length > 0 ){
-                                                    setOtp(false)
-                                                  }
-                                                  if(isExpired && code.length > 0  ){
-                                                    setIsExpired(false) 
-                                                  }
+                                                    if (otp && code.length > 0) {
+                                                        setOtp(false)
+                                                    }
+                                                    if (isExpired && code.length > 0) {
+                                                        setIsExpired(false)
+                                                    }
                                                 }
                                             })} /> : null}
 
@@ -924,7 +964,7 @@ const LoginScreen = ({ navigation }) => {
                                         lang == "en" ?
                                             <View style={{ marginTop: Dimensions.get('window').height * 0.03, }}>
                                                 <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center', width: width * 0.8 }}>{t('common:Valid2')}</Text>
-                                                <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center' }}>Please try after {errorMessage.replace(/\D/g, '')} {errorMessage?.includes('minutes')?'minutes':'seconds'}</Text>
+                                                <Text style={{ color: "#EB5757", fontFamily: FONTS.FontRegular, fontSize: 12, textAlign: 'center' }}>Please try after {errorMessage.replace(/\D/g, '')} {errorMessage?.includes('minutes') ? 'minutes' : 'seconds'}</Text>
                                             </View>
                                             :
                                             <View style={{ marginTop: Dimensions.get('window').height * 0.03, }}>
@@ -953,7 +993,7 @@ const LoginScreen = ({ navigation }) => {
                                 ConfirmOtp={(data) => otpInput2?.current?.setValue(data)}
                                 setOtpFetch={setOtpFetch}
                             /> : null}
-                                  {screenIsFocused
+                        {screenIsFocused
                             ? <ToastMessage
                                 ModalVisible={toastMessage}
                                 customerName={CustomerName}

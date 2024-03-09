@@ -64,6 +64,7 @@ import TCProfile from '../Screens/Collection/Components/TCProfile'
 import NotificationScreen from '../Screens/NotificationScreen'
 import MissedActivities from '../Screens/MissedActivities';
 import UploadAdhaar from '../Screens/UploadCoAdhaar/UploadAdhaar';
+import Deposit from '../Screens/Deposit';
 const Stack = createNativeStackNavigator();
 
 export default function Router() {
@@ -137,6 +138,7 @@ export default function Router() {
         {/* --------------------------- Calendar Navigation Screens End -----------------------------------------*/}
         <Stack.Screen name="NotificationScreen" component={netInfo.isConnected ? NotificationScreen : NetWorkError} />
         <Stack.Screen name="MissedActivities" component={netInfo.isConnected ? MissedActivities : NetWorkError} />
+        <Stack.Screen name="Deposit" component={netInfo.isConnected ? Deposit : NetWorkError} />
         
       </Stack.Navigator>
     </NavigationContainer>

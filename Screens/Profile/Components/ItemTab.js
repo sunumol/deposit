@@ -17,7 +17,8 @@ const ItemTabs = (props) => {
     const { t } = useTranslation();
     const [Lang, setLang] = useState('')
     const [ModalVisible, setModalVisible] = useState(false)
-        console.log('Home Screen click@@@@@@@=========',props)
+    console.log('Home Screen click@@@@@@@=========', props)
+    console.log('Sunu props.index = ', props.index)
 
     useEffect(() => {
         getData()
@@ -36,9 +37,10 @@ const ItemTabs = (props) => {
     return (
         <>
             <TouchableOpacity style={[styles.tabContainer]} onPress={() => {
+                console.log('sunu inside props.index = ', props.index);
                 if (props.index === 0) {
                     props.navigation.navigate('ActivityScreens')
-                }else if (props.index === 1) {
+                } else if (props.index === 1) {
                     props.navigation.navigate('Calendar')
                 } else if (props.index === 2) {
                     props.navigation.navigate('NewLead')
@@ -49,6 +51,8 @@ const ItemTabs = (props) => {
                     AsyncStorage.removeItem('DATECGT')
                 } else if (props.index === 4) {
                     props.navigation.navigate('Collect')
+                } else if (props.index === 6) {
+                    props.navigation.navigate('Deposit')
                 }
             }}>
                 {props.image}
@@ -57,35 +61,35 @@ const ItemTabs = (props) => {
                 {props.notification
                     ?
                     <>
-                    
+
                         {props.index === 0 ?
 
                             <>
-                           {
-                            props?.notificationCounts?.activityCount != 0 ? <View style={styles.badgeView}>
-                            <Text style={[styles.badgeText,{color:'white'}]}>{props?.notificationCounts?.activityCount}</Text>
-                            </View>: null
-                             }
+                                {
+                                    props?.notificationCounts?.activityCount != 0 ? <View style={styles.badgeView}>
+                                        <Text style={[styles.badgeText, { color: 'white' }]}>{props?.notificationCounts?.activityCount}</Text>
+                                    </View> : null
+                                }
                             </>
 
-                       
-                            
-                            
-                            
+
+
+
+
                             : props.index === 4 ?
 
 
-                            <>
-                            {
-                             props?.notificationCounts?.collectCount != 0 ?
-                             <View style={styles.badgeView}>
-                             <Text style={[styles.badgeText,{color:'white'}]}>{props?.notificationCounts?.collectCount}</Text>
-                             </View>: null
-                              }
-                             </>
-                             : null}
-                  
-                    
+                                <>
+                                    {
+                                        props?.notificationCounts?.collectCount != 0 ?
+                                            <View style={styles.badgeView}>
+                                                <Text style={[styles.badgeText, { color: 'white' }]}>{props?.notificationCounts?.collectCount}</Text>
+                                            </View> : null
+                                    }
+                                </>
+                                : null}
+
+
                     </>
                     : null}
                 {console.log("pros pass", props.notificationCounts)}
