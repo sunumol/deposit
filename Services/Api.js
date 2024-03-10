@@ -1,6 +1,6 @@
 
 import axios from 'axios';
-import { API_KEY} from '@env'
+import { API_KEY } from '@env'
 
 
 ///////////////////////////////////////////            DEV ENVIRONMENT                ///////////////////////////////////////
@@ -21,7 +21,7 @@ import { API_KEY} from '@env'
 
 
 const baseUAT = 'https://l0nptyww7k.execute-api.ap-south-2.amazonaws.com/stage'
-const baseUAT2= 'http://dhansethu-alb-2013531087.ap-south-2.elb.amazonaws.com/agentApp'
+const baseUAT2 = 'http://dhansethu-alb-2013531087.ap-south-2.elb.amazonaws.com/agentApp'
 const baseUAT3 = 'https://l0nptyww7k.execute-api.ap-south-2.amazonaws.com/stage'
 
 const baseURL5 = `${baseUAT}/`;
@@ -31,7 +31,7 @@ const baseURL3 = `${baseUAT}/`
 // --------- Base URL End--------------------
 const baseURLDPD = `${baseUAT}/`
 const baseURLVersion = `${baseUAT}/`
-const baseURLIMG =  `${baseUAT}/`
+const baseURLIMG = `${baseUAT}/`
 const baseURL6 = `${baseUAT3}/`
 
 
@@ -48,7 +48,7 @@ export const api = {
   },
   // ------------------ upload file image---------------------
   uploadFile: data => {
-   //return axios.post(`${baseURLIMG}uploadFileAgent`, data, {                            //staging
+    //return axios.post(`${baseURLIMG}uploadFileAgent`, data, {                            //staging
     return axios.post(`${baseURL2}uploadFileAgent`, data, {                                 //dev + staging
 
       headers: {
@@ -112,7 +112,7 @@ export const api = {
   // ---------------- confirm Login Otp Api -------------
   confirmLoginOtp: data => {
     return axios.post(`${baseURL2}confirmAgent`, data, {
-     // return axios.post(`${baseURL2}confirm`, data, {
+      // return axios.post(`${baseURL2}confirm`, data, {
       headers: {
         'Content-Type': 'application/json',
         'x-api-key': API_KEY
@@ -365,8 +365,8 @@ export const api = {
 
   // ------------------ get Spouse details---------------------
   getCustomerdetail: data => {
-   return axios.post(`${baseURL2}getCustomerDetailsAgent`, data, {
-    //  return axios.post(`${baseURL2}getCustomerDetails`, data, {
+    return axios.post(`${baseURL2}getCustomerDetailsAgent`, data, {
+      //  return axios.post(`${baseURL2}getCustomerDetails`, data, {
       headers: {
         'Content-Type': 'application/json',
         'x-api-key': API_KEY
@@ -666,16 +666,16 @@ export const api = {
 
 
 
-    // ------------------   customerProfile listing---------------------
-    collectionConfirmation: data => {
+  // ------------------   customerProfile listing---------------------
+  collectionConfirmation: data => {
 
-      return axios.post(`${baseURL3}collectionConfirmation`,data, {
-        headers: {
-          'Content-Type': 'application/json',
-          'x-api-key': API_KEY
-        }
-      })
-    },
+    return axios.post(`${baseURL3}collectionConfirmation`, data, {
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': API_KEY
+      }
+    })
+  },
 
 
   // ------------------   customerProfile listing---------------------
@@ -692,7 +692,11 @@ export const api = {
 
   // ------------------   customerProfile listing---------------------
   getcompletedCollections: data => {
-
+    console.log('sunu completedCollections API = ', `${baseURL3}completedCollections/${data.agentId}`);
+    console.log('sunu header API = ', {
+      'Content-Type': 'application/json',
+      'x-api-key': API_KEY
+    })
     return axios.get(`${baseURL3}completedCollections/${data.agentId}`, {
       headers: {
         'Content-Type': 'application/json',
@@ -705,7 +709,7 @@ export const api = {
 
   getAppNewVersion: (data) => {
 
-    return axios.post(`${baseURLVersion}getLatestAppVersion`, data,  {
+    return axios.post(`${baseURLVersion}getLatestAppVersion`, data, {
       headers: {
         'Content-Type': 'application/json',
         'x-api-key': API_KEY
@@ -718,7 +722,7 @@ export const api = {
   gethomeScreenDeviceCheck: () => {
     return axios.post(`${baseURL2}homeScreenDeviceCheckAgent`, {
 
-  // return axios.post(`${baseURL2}homeScreenDeviceCheck`, {
+      // return axios.post(`${baseURL2}homeScreenDeviceCheck`, {
       headers: {
         'Content-Type': 'application/json',
         'x-api-key': API_KEY
@@ -731,7 +735,7 @@ export const api = {
 
     return axios.post(`${baseURL2}enterPinSimIdCheckAgent`, data, {
 
-   // return axios.post(`${baseURL2}enterPinSimIdCheck`, data, {
+      // return axios.post(`${baseURL2}enterPinSimIdCheck`, data, {
       headers: {
         'Content-Type': 'application/json',
         'x-api-key': API_KEY
@@ -761,45 +765,45 @@ export const api = {
 
 
 
-    //CGT Status
-    getCgtStatus: (data) => {
-      return axios.post(`${baseURL2}getCgtStatus`, data, {
-        headers: {
-          'Content-Type': 'application/json',
-          'x-api-key': API_KEY
-        }
-      })
-    },
+  //CGT Status
+  getCgtStatus: (data) => {
+    return axios.post(`${baseURL2}getCgtStatus`, data, {
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': API_KEY
+      }
+    })
+  },
 
 
-      //CGT add a new trust circle member
-      addNewTrustCircleMember: (data) => {
-        return axios.post(`${baseURL2}addNewTrustCircleMember`, data, {
-          headers: {
-            'Content-Type': 'application/json',
-            'x-api-key': API_KEY
-          }
-        })
-      },
-
-
-
-      //CGT gettrust circle member
-      getAllTrustCircleMembers: (data) => {
-        return axios.post(`${baseURL2}getAllTrustCircleMembers`, data, {
-          headers: {
-            'Content-Type': 'application/json',
-            'x-api-key': API_KEY
-          }
-        })
-      },
+  //CGT add a new trust circle member
+  addNewTrustCircleMember: (data) => {
+    return axios.post(`${baseURL2}addNewTrustCircleMember`, data, {
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': API_KEY
+      }
+    })
+  },
 
 
 
+  //CGT gettrust circle member
+  getAllTrustCircleMembers: (data) => {
+    return axios.post(`${baseURL2}getAllTrustCircleMembers`, data, {
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': API_KEY
+      }
+    })
+  },
 
 
-   //---------------- In App Notification ------------------------
-   getNotification: (data) => {
+
+
+
+  //---------------- In App Notification ------------------------
+  getNotification: (data) => {
     return axios.post(`${baseURL5}notificationsHistory`, data, {
       headers: {
         'Content-Type': 'application/json',
@@ -843,8 +847,8 @@ export const api = {
   },
 
 
-//Edit address CGT
- EditAddress: (data) => {
+  //Edit address CGT
+  EditAddress: (data) => {
     return axios.post(`${baseURL2}changeCustomerAddress`, data, {
       headers: {
         'Content-Type': 'application/json',
@@ -861,6 +865,16 @@ export const api = {
         'Content-Type': 'application/json',
         'x-api-key': API_KEY
       }
+    });
+  },
+
+  // -------------- get Bank Name ----------------
+  getBankName: (data) => {
+    return axios.get(`${baseURL}bankNames/${data.bankName}`, {
+      headers: {
+        "Content-Type": "application/json",
+        'x-api-key': API_KEY
+      },
     });
   },
 

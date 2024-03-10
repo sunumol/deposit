@@ -490,6 +490,7 @@ export default {
     'NewCGT': 'New CGT',
     'NewCall': 'New Call',
     'Collect': 'Collect',
+    'Deposit': 'Deposits',
 
     //  Activity
 

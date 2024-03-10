@@ -1,16 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Text, Image } from 'react-native';
-// import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage'; // Import AsyncStorage
 import { api } from '../../../Services/Api';
 
 const DepositedAmount = () => {
-    const [depositedAmount, setDepositedAmount] = useState(0);
+    const [depositedAmount, setDepositedAmount] = useState({
+        totalAmountCollected: 0,
+        depositedSum: 0,
+        depositPendingSum: 0
+    });
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 // const id = await AsyncStorage.getItem("CustomerId");
-                const id = 'S00002';
+                const id = 1;
                 const data = {
                     agentId: id,
                 };
@@ -19,8 +23,15 @@ const DepositedAmount = () => {
                 const response = await api.getcompletedCollections(data);
                 console.log("------------------- getcompletedCollections res", response.data.body);
 
-                // Assuming response.data.body contains depositedAmount
-                setDepositedAmount(response.data.body);
+                // Destructure necessary values from the API response
+                const { totalAmountCollected, depositedSum, depositPendingSum } = response.data.body;
+
+                // Update the state with the fetched values
+                setDepositedAmount({
+                    totalAmountCollected,
+                    depositedSum,
+                    depositPendingSum
+                });
             } catch (error) {
                 console.log("-------------------getcompletedCollections  err", error);
             }
@@ -32,9 +43,10 @@ const DepositedAmount = () => {
     return (
         <View style={styles.container}>
             <View style={styles.box}>
-                {/* <Image source={require('../assets/icons/coins.png')} style={styles.icon} /> */}
-                <Text style={styles.text}>Amount to be deposited: {depositedAmount}</Text>
-                {/* You had this line duplicated */}
+                {/* <Image source={require('./assets/icons/coins.png')} style={styles.icon} /> */}
+                <Text style={styles.text}>Amount to be Deposited: {depositedAmount.totalAmountCollected}</Text>
+                {/* <Text style={styles.text}>Deposited Sum: {depositedAmount.depositedSum}</Text>
+                <Text style={styles.text}>Deposit Pending Sum: {depositedAmount.depositPendingSum}</Text> */}
             </View>
         </View>
     );
@@ -48,15 +60,16 @@ const styles = StyleSheet.create({
         marginTop: 20,
     },
     box: {
-        flexDirection: 'row',
+        flexDirection: 'column', // Changed to column to stack the text vertically
         alignItems: 'center',
     },
     icon: {
         width: 24,
         height: 24,
-        marginRight: 10,
+        marginBottom: 10, // Added margin bottom to separate from text
     },
     text: {
         fontSize: 16,
+        marginBottom: 5, // Added margin bottom to separate text elements
     },
 });

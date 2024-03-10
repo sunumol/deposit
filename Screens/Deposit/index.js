@@ -3,6 +3,8 @@ import {
   StyleSheet,
   View,
   BackHandler,
+  SafeAreaView,
+  StatusBar,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRoute } from '@react-navigation/native';
@@ -11,10 +13,15 @@ import { useTranslation } from 'react-i18next';
 import BlueTitleBar from './Components/BlueTitleBar';
 import ConfirmReferenceNumber from './Components/ConfirmReferenceNumber';
 import DepositedAmount from './Components/DepositedAmount';
+import BankList from './Components/BankList';
 import EntityName from './Components/EntityName';
 import ReferenceNumber from './Components/ReferenceNumber';
 import Remarks from './Components/Remarks';
 import SubmitButton from './Components/SubmitButton';
+import Header from '../../Components/Header';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import Statusbar from '../../Components/StatusBar';
+
 // import UploadPhoto from './Components/UploadPhoto';
 
 const Deposit = ({ navigation }) => {
@@ -64,27 +71,34 @@ const Deposit = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
-      {/* Blue Title Bar */}
-      <BlueTitleBar title="Deposit" />
+    <SafeAreaProvider>
+      <SafeAreaView style={styles.container1} />
+      <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} backgroundColor={"#002B59"} />
 
-      {/* Deposited Amount Component */}
-      <DepositedAmount />
+      <Header navigation={navigation} name={t('common:Deposit')} onPress={handleGoBack} />
+      <View style={styles.container}>
+        {/* Blue Title Bar */}
+        {/* <BlueTitleBar title="Deposit" /> */}
 
-      {/* Entity Name Component with Dropdown */}
-      <EntityName
-        options={entityOptions}
-        selectedOption={selectedEntity}
-        onSelect={handleSelectEntity}
-      />
-      <ReferenceNumber />
-      <ConfirmReferenceNumber />
-      {/* <UploadPhoto /> */}
-      <Remarks />
-      <SubmitButton />
+        {/* Deposited Amount Component */}
+        <DepositedAmount />
 
-      {/* Add other components/content of your application */}
-    </View>
+        {/* Entity Name Component with Dropdown */}
+        {/* <EntityName
+          options={entityOptions}
+          selectedOption={selectedEntity}
+          onSelect={handleSelectEntity}
+        /> */}
+        <BankList/>
+        <ReferenceNumber />
+        <ConfirmReferenceNumber />
+        {/* <UploadPhoto /> */}
+        <Remarks />
+        <SubmitButton />
+
+        {/* Add other components/content of your application */}
+      </View>
+    </SafeAreaProvider>
   );
 };
 
@@ -94,5 +108,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
+  },
+  container1: {
+    flex: 0,
+    backgroundColor: "#002B59",
+    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
   },
 });
