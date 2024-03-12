@@ -1,18 +1,38 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet } from 'react-native';
 
-const ConfirmReferenceNumber = ({ value }) => {
+const ConfirmReferenceNumber = ({ referenceNumber }) => {
+    const [inputValue, setInputValue] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
+
+    const handleChange = (text) => {
+        setInputValue(text);
+
+        if (text.length <= referenceNumber.length) {
+            let mismatch = false;
+            for (let i = 0; i < text.length; i++) {
+                if (text[i] !== referenceNumber[i]) {
+                    mismatch = true;
+                    break;
+                }
+            }
+            setErrorMessage(mismatch ? 'Reference numbers do not match' : '');
+        } else {
+            setErrorMessage('Reference number length exceeded');
+        }
+    };
+
     return (
         <View>
-            <Text style={styles.heading}>Confirm Reference Number</Text>
+            <Text style={styles.heading}>Confirm Transaction ID</Text>
             <View style={styles.container}>
                 <TextInput
                     style={styles.textInput}
-                    value={value}
-                    editable={true} // Now editable
-                // Add any other TextInput props as needed
+                    value={inputValue}
+                    onChangeText={handleChange}
                 />
             </View>
+            <Text style={styles.errorMessage}>{errorMessage}</Text>
         </View>
     );
 };
@@ -37,10 +57,14 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         borderWidth: 1,
         borderColor: '#ccc',
-        color: '#333', // Adjust text color as needed
-        fontSize: 16, // Adjust font size as needed
+        color: '#333',
+        fontSize: 16,
         textAlign: 'center',
-        // Add any other textInput styles as needed
+    },
+    errorMessage: {
+        color: 'red',
+        marginLeft: 20,
+        marginTop: 5,
     },
 });
 

@@ -4,7 +4,7 @@ import { View, Text, TextInput, StyleSheet } from 'react-native';
 const ReferenceNumber = ({ value }) => {
     return (
         <View>
-            <Text style={styles.heading}>Reference Number</Text>
+            <Text style={styles.heading}>Transaction ID</Text>
             <View style={styles.container}>
                 <TextInput
                     style={styles.textInput}

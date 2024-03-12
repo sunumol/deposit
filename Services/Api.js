@@ -692,11 +692,6 @@ export const api = {
 
   // ------------------   customerProfile listing---------------------
   getcompletedCollections: data => {
-    console.log('sunu completedCollections API = ', `${baseURL3}completedCollections/${data.agentId}`);
-    console.log('sunu header API = ', {
-      'Content-Type': 'application/json',
-      'x-api-key': API_KEY
-    })
     return axios.get(`${baseURL3}completedCollections/${data.agentId}`, {
       headers: {
         'Content-Type': 'application/json',
@@ -870,7 +865,7 @@ export const api = {
 
   // -------------- get Bank Name ----------------
   getBankName: (data) => {
-    return axios.get(`${baseURL}bankNames/${data.bankName}`, {
+    return axios.get(`${baseURL3}bankNames/${data.bankName}`, {
       headers: {
         "Content-Type": "application/json",
         'x-api-key': API_KEY

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, TextInput, FlatList, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { api } from '../../../Services/Api';
 
@@ -7,27 +7,30 @@ const BankList = () => {
     const [suggestions, setSuggestions] = useState([]);
     const [showSuggestions, setShowSuggestions] = useState(true);
 
-    const fetchBankSuggestions = async (text) => {
-        try {
-            const requestData = {
-                bankName: text,
-            };
-            const response = await api.getBankName(requestData);
-            setSuggestions(response.data);
-        } catch (error) {
-            console.error('Error fetching bank names:', error);
-        }
-    };
+    useEffect(() => {
+        const fetchSuggestions = async () => {
+            try {
+                const requestData = {
+                    bankName: query,
+                };
+                const response = await api.getBankName(requestData);
+                setSuggestions(response.data);
+            } catch (error) {
+                console.error('Error fetching bank names:', error);
+            }
+        };
 
-    const handleInputChange = (text) => {
-        setQuery(text);
-        if (text.length > 0) {
-            fetchBankSuggestions(text);
+        if (query.length > 0) {
+            fetchSuggestions();
             setShowSuggestions(true); // Show suggestions when input changes
         } else {
             setSuggestions([]);
             setShowSuggestions(false); // Hide suggestions when input is empty
         }
+    }, [query]);
+
+    const handleInputChange = (text) => {
+        setQuery(text);
     };
 
     const handleItemPress = (item) => {

@@ -10,17 +10,17 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRoute } from '@react-navigation/native';
 import { useFocusEffect } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
-import BlueTitleBar from './Components/BlueTitleBar';
+// import BlueTitleBar from './Components/BlueTitleBar';
 import ConfirmReferenceNumber from './Components/ConfirmReferenceNumber';
 import DepositedAmount from './Components/DepositedAmount';
-import BankList from './Components/BankList';
-import EntityName from './Components/EntityName';
+// import EntityName from './Components/EntityName';
 import ReferenceNumber from './Components/ReferenceNumber';
 import Remarks from './Components/Remarks';
 import SubmitButton from './Components/SubmitButton';
 import Header from '../../Components/Header';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Statusbar from '../../Components/StatusBar';
+// import BankList from './Components/BankList';
 
 // import UploadPhoto from './Components/UploadPhoto';
 
@@ -89,7 +89,7 @@ const Deposit = ({ navigation }) => {
           selectedOption={selectedEntity}
           onSelect={handleSelectEntity}
         /> */}
-        <BankList/>
+        {/* <BankList /> */}
         <ReferenceNumber />
         <ConfirmReferenceNumber />
         {/* <UploadPhoto /> */}
