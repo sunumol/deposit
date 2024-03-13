@@ -44,7 +44,6 @@ const BankList = () => {
             <View style={styles.searchBoxContainer}>
                 <TextInput
                     style={styles.searchBox}
-                    placeholder="Type here..."
                     value={query}
                     onChangeText={handleInputChange}
                 />

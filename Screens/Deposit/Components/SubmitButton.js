@@ -1,9 +1,24 @@
 import React from 'react';
-import { TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { TouchableOpacity, Text, StyleSheet, ToastAndroid } from 'react-native';
 
 const SubmitButton = ({ onPress, title }) => {
+    const showToast = () => {
+        ToastAndroid.showWithGravityAndOffset(
+            'You have deposited ? amount',
+            ToastAndroid.LONG,
+            ToastAndroid.BOTTOM,
+            25,
+            50
+        );
+    };
+
+    const handlePress = () => {
+        showToast();
+        onPress(); // Call the provided onPress function
+    };
+
     return (
-        <TouchableOpacity onPress={onPress} style={styles.button}>
+        <TouchableOpacity onPress={handlePress} style={styles.button}>
             <Text style={styles.buttonText}>SUBMIT</Text>
         </TouchableOpacity>
     );
@@ -11,20 +26,20 @@ const SubmitButton = ({ onPress, title }) => {
 
 const styles = StyleSheet.create({
     button: {
-        backgroundColor: '#003874', // Adjust color as needed
-        paddingVertical: 8, // Reduced padding
-        paddingHorizontal: 12, // Reduced padding
+        backgroundColor: '#003874',
+        paddingVertical: 8,
+        paddingHorizontal: 12,
         borderRadius: 8,
         alignItems: 'center',
         justifyContent: 'center',
-        marginLeft:140,
+        marginLeft: 140,
         marginTop: 10,
-        width: 150, // Adjusted width
-        height: 50, // Adjusted height
+        width: 150,
+        height: 50,
     },
     buttonText: {
         color: 'white',
-        fontSize: 14, // Reduced font size
+        fontSize: 14,
         fontWeight: 'bold',
     },
 });

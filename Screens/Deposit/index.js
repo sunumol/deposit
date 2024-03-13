@@ -11,16 +11,18 @@ import { useRoute } from '@react-navigation/native';
 import { useFocusEffect } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 // import BlueTitleBar from './Components/BlueTitleBar';
-import ConfirmReferenceNumber from './Components/ConfirmReferenceNumber';
+// import ConfirmReferenceNumber from './Components/ConfirmReferenceNumber';
 import DepositedAmount from './Components/DepositedAmount';
 // import EntityName from './Components/EntityName';
-import ReferenceNumber from './Components/ReferenceNumber';
+// import ReferenceNumber from './Components/ReferenceNumber';
 import Remarks from './Components/Remarks';
 import SubmitButton from './Components/SubmitButton';
 import Header from '../../Components/Header';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Statusbar from '../../Components/StatusBar';
-// import BankList from './Components/BankList';
+import BankList from './Components/BankList';
+import TransactionIdField from './Components/TransactionIdField';
+import UploadReceiptImage from './Components/UploadReceiptImage'
 
 // import UploadPhoto from './Components/UploadPhoto';
 
@@ -89,10 +91,12 @@ const Deposit = ({ navigation }) => {
           selectedOption={selectedEntity}
           onSelect={handleSelectEntity}
         /> */}
-        {/* <BankList /> */}
-        <ReferenceNumber />
-        <ConfirmReferenceNumber />
+        <BankList />
+        {/* <ReferenceNumber />
+        <ConfirmReferenceNumber /> */}
+        <TransactionIdField />
         {/* <UploadPhoto /> */}
+        <UploadReceiptImage />
         <Remarks />
         <SubmitButton />
 
