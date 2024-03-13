@@ -24,7 +24,7 @@ const TransactionIdField = () => {
 
     return (
         <View style={styles.container}>
-            <View style={styles.inputContainer}>
+            <View style={[styles.inputContainer, { marginTop: 265.53 }]}>
                 <Text style={styles.label}>Transaction ID</Text>
                 <TextInput
                     style={styles.input}
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#ECEBED',
         borderRadius: 5,
         paddingHorizontal: 10,
-        borderColor: '#ccc',
+        borderColor: 'border: 1px solid #ECEBED',
         borderWidth: 1,
     },
     error: {

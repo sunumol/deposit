@@ -41,8 +41,8 @@ const DepositedAmount = () => {
     }, []); // Empty dependency array ensures useEffect runs only once after the initial render
 
     return (
-        <View style={styles.container}>
-            <View style={styles.box}>
+        <View style={styles.outerContainer}>
+            <View style={styles.innerContainer}>
                 {/* <Image source={require('./assets/icons/coins.png')} style={styles.icon} /> */}
                 <Text style={styles.text}>Amount to be Deposited: {depositedAmount.totalAmountCollected}</Text>
                 {/* <Text style={styles.text}>Deposited Sum: {depositedAmount.depositedSum}</Text>
@@ -58,6 +58,7 @@ const styles = StyleSheet.create({
     container: {
         alignItems: 'center',
         marginTop: 20,
+        backgroundColor: 'white', // Background color changed to white
     },
     box: {
         flexDirection: 'column', // Changed to column to stack the text vertically
@@ -68,8 +69,29 @@ const styles = StyleSheet.create({
         height: 24,
         marginBottom: 10, // Added margin bottom to separate from text
     },
+    // text: {
+    //     fontSize: 16,
+    //     marginBottom: 5, // Added margin bottom to separate text elements
+    // },
+    outerContainer: {
+        width: 330,
+        height: 84.12,
+        position: 'absolute',
+        top: 87,
+        left: 15,
+        borderColor: '#ECEBED',
+        borderWidth: 1,
+        borderRadius: 15,
+        overflow: 'hidden',
+        borderStyle: 'solid', // Border style added
+    },
+    innerContainer: {
+        backgroundColor: 'white', // Background color changed to #ECEBED
+        padding: 20,
+        borderRadius: 15,
+    },
     text: {
         fontSize: 16,
-        marginBottom: 5, // Added margin bottom to separate text elements
+        textAlign: 'center',
     },
 });
