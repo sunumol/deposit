@@ -35,7 +35,7 @@ import Collect from './assets/Collect.svg';
 import Dashboard from './assets/a.svg';
 import NewLead from './assets/NewLead.svg';
 import NewUser from './assets/NewUser.svg';
-import Deposit from './assets/call.svg';
+import Deposit from './assets/Deposit.svg';
 import CallModal from './Components/Modal';
 import { useNetInfo } from "@react-native-community/netinfo";
 const Profile = ({ navigation }) => {

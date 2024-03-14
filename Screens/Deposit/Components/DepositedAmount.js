@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Text, Image } from 'react-native';
+import { View, StyleSheet, Text, Image, Dimensions } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage'; // Import AsyncStorage
 import { api } from '../../../Services/Api';
+import Money from '../assets/icons/Money.svg';
+import { makeStyles } from 'react-native-elements';
 
+const { height, width } = Dimensions.get('screen');
 const DepositedAmount = () => {
     const [depositedAmount, setDepositedAmount] = useState({
         totalAmountCollected: 0,
@@ -42,11 +45,12 @@ const DepositedAmount = () => {
 
     return (
         <View style={styles.outerContainer}>
-            <View style={styles.innerContainer}>
-                {/* <Image source={require('./assets/icons/coins.png')} style={styles.icon} /> */}
-                <Text style={styles.text}>Amount to be Deposited: {depositedAmount.totalAmountCollected}</Text>
-                {/* <Text style={styles.text}>Deposited Sum: {depositedAmount.depositedSum}</Text>
-                <Text style={styles.text}>Deposit Pending Sum: {depositedAmount.depositPendingSum}</Text> */}
+            <View style={styles.container}>
+                <Money style={styles.moneyIcon} />
+                <View style={styles.innerContainer}>
+                    <Text style={styles.text}>Amount to be Deposited: </Text>
+                    <Text style={styles.amountTxt}>{depositedAmount.totalAmountCollected}</Text>
+                </View>
             </View>
         </View>
     );
@@ -55,43 +59,37 @@ const DepositedAmount = () => {
 export default DepositedAmount;
 
 const styles = StyleSheet.create({
-    container: {
-        alignItems: 'center',
-        marginTop: 20,
-        backgroundColor: 'white', // Background color changed to white
-    },
-    box: {
-        flexDirection: 'column', // Changed to column to stack the text vertically
-        alignItems: 'center',
-    },
-    icon: {
-        width: 24,
-        height: 24,
-        marginBottom: 10, // Added margin bottom to separate from text
-    },
-    // text: {
-    //     fontSize: 16,
-    //     marginBottom: 5, // Added margin bottom to separate text elements
-    // },
     outerContainer: {
-        width: 330,
+        width: width * 0.90,
         height: 84.12,
-        position: 'absolute',
-        top: 87,
-        left: 15,
+        marginTop: 20,
+        marginLeft: 20,
+        borderWidth: 1, // Border width
+        borderColor: 'black', // Border color
+        justifyContent: 'center', // Align vertically
+        alignItems: 'center', // Align horizontally
+        padding: 10, // Padding around inner container
         borderColor: '#ECEBED',
         borderWidth: 1,
         borderRadius: 15,
-        overflow: 'hidden',
-        borderStyle: 'solid', // Border style added
+    },
+    container: {
+        flexDirection: 'row', // Arrange children horizontally
+        alignItems: 'center', // Align children vertically
     },
     innerContainer: {
-        backgroundColor: 'white', // Background color changed to #ECEBED
-        padding: 20,
-        borderRadius: 15,
+        marginLeft: 10, // Margin between Money SVG and text
     },
     text: {
+       fontSize:15,
+    },
+    amountTxt: {
         fontSize: 16,
-        textAlign: 'center',
+        color: '#27AE60',
+    },
+    moneyIcon: {
+        // Style for the Money SVG
+        width: 24, // Adjust according to your SVG
+        height: 24, // Adjust according to your SVG
     },
 });

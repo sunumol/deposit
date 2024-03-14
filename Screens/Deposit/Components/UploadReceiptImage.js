@@ -1,108 +1,76 @@
-import React, { useState, useEffect } from 'react';
-import { Button, Image, View, StyleSheet, ActivityIndicator, SafeAreaView, Text } from 'react-native';
-import ImagePicker from 'react-native-image-picker';
-import RNFS from 'react-native-fs';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import React, { useState } from 'react';
+import { View, Pressable, StyleSheet, Dimensions, Image, Alert, Text } from 'react-native';
+import ImagePicker from 'react-native-image-crop-picker'; // Required import for image picker
+import { FONTS, COLORS } from '../../../Constants/Constants';
+import AddRecipt from '../assets/icons/AddRecipt.svg';
 
-const imgDir = RNFS.DocumentDirectoryPath + '/images/';
+const { height, width } = Dimensions.get('screen');
 
-const UploadReceiptImage = () => {
-    const [uploading, setUploading] = useState(false);
-    const [imageUri, setImageUri] = useState < string | null > (null);
+const UploadReceiptImage = ({ navigation, setState, proofType1, imageUrl1, relation1, relative1, isCheck, Correction, activityIds }) => {
+    const [thumbnailUri, setThumbnailUri] = useState(null);
 
-    useEffect(() => {
-        loadImage();
-    }, []);
+    const handleUploadImage = async () => {
+        try {
+            const image = await ImagePicker.openPicker({
+                width: width * 1.2,
+                height: height * 0.7,
+                cropping: true,
+                multiple: false,
+                mediaType: 'photo',
+                // Add other options as needed
+            });
 
-    const ensureDirExists = async () => {
-        const dirExists = await RNFS.exists(imgDir);
-        if (!dirExists) {
-            await RNFS.mkdir(imgDir);
-        }
-    };
-
-    const loadImage = async () => {
-        await ensureDirExists();
-        const files = await RNFS.readDir(imgDir);
-        if (files.length > 0) {
-            setImageUri(files[0].path);
-        }
-    };
-
-    const selectImage = () => {
-        const options = {
-            title: 'Select Image',
-            mediaType: 'photo',
-            quality: 0.75,
-            storageOptions: {
-                skipBackup: true,
-                path: 'images'
+            console.log('Selected image:', image);
+            setThumbnailUri(image.path); // Save the URI of the selected image
+        } catch (error) {
+            console.log('Image picker error:', error);
+            if (error.code !== 'E_PICKER_CANCELLED') {
+                Alert.alert('Error', 'Failed to pick an image. Please try again later.');
             }
-        };
-
-        ImagePicker.showImagePicker(options, (response) => {
-            if (response.didCancel) {
-                console.log('User cancelled image picker');
-            } else if (response.error) {
-                console.log('ImagePicker Error: ', response.error);
-            } else {
-                saveImage(response.uri);
-            }
-        });
-    };
-
-    const saveImage = async (uri: string) => {
-        await ensureDirExists();
-        const filename = new Date().getTime() + '.jpeg';
-        const dest = imgDir + filename;
-        await RNFS.copyFile(uri, dest);
-        setImageUri(dest);
-    };
-
-    const uploadImage = async (uri: string) => {
-        setUploading(true);
-
-        // Implement your upload logic here
-
-        setUploading(false);
-    };
-
-    const deleteImage = async (uri: string) => {
-        await RNFS.unlink(uri);
-        setImageUri(null);
+        }
     };
 
     return (
-        <SafeAreaView style={{ flex: 1, gap: 20 }}>
-            <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', marginVertical: 20 }}>
-                <Button title="Select Image" onPress={selectImage} />
-            </View>
-
-            <Text style={{ textAlign: 'center', fontSize: 20, fontWeight: '500' }}>My Image</Text>
-            {imageUri && (
-                <View style={{ alignItems: 'center' }}>
-                    <Image style={{ width: 200, height: 200, marginVertical: 10 }} source={{ uri: imageUri }} />
-                    <Ionicons.Button name="cloud-upload" onPress={() => uploadImage(imageUri)} />
-                    <Ionicons.Button name="trash" onPress={() => deleteImage(imageUri)} />
-                </View>
-            )}
-
-            {uploading && (
-                <View
-                    style={[
-                        StyleSheet.absoluteFill,
-                        {
-                            backgroundColor: 'rgba(0,0,0,0.4)',
-                            alignItems: 'center',
-                            justifyContent: 'center'
-                        }
-                    ]}
-                >
-                    <ActivityIndicator color="#fff" animating size="large" />
-                </View>
-            )}
-        </SafeAreaView>
+        <View style={styles.container}>
+            <Pressable style={styles.uploadCard} onPress={handleUploadImage}>
+                {thumbnailUri ? (
+                    <Image source={{ uri: thumbnailUri }} style={styles.thumbnail} />
+                ) : (
+                    <>
+                        <AddRecipt />
+                        <Text>Upload Receipt</Text>
+                    </>
+                )}
+            </Pressable>
+        </View>
     );
 };
 
 export default UploadReceiptImage;
+
+const styles = StyleSheet.create({
+    container: {
+        width: 370,
+        height: 71,
+        position: 'absolute',
+        top: 461.41,
+        left: 15.5,
+        right:15.5,
+    },
+    uploadCard: {
+        width: '100%',
+        height: '100%',
+        backgroundColor: '#FCFCFC',
+        borderWidth: 1,
+        borderColor: '#ECEBED',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 6,
+        elevation: 1,
+    },
+    thumbnail: {
+        width: '100%',
+        height: '100%',
+        borderRadius: 6,
+    },
+});
