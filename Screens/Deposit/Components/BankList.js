@@ -40,7 +40,7 @@ const BankList = () => {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Entity Name</Text>
+            <Text style={styles.title}>Deposit Entity Name</Text>
             <View style={styles.searchBoxContainer}>
                 <TextInput
                     style={styles.searchBox}
@@ -69,18 +69,22 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: 'white',
         padding: 10,
-        borderRadius: 5,
-        marginLeft: 20,
-        width: 370,
+        borderRadius: 8,
+        marginLeft: 16,
+        width: 380,
+        position: 'absolute',
+        marginTop:125,
+        marginLeft:16,
     },
     title: {
         fontWeight: 'bold',
         marginBottom: 10,
     },
     searchBoxContainer: {
+        height:45,
         backgroundColor: '#f0f0f0',
         padding: 5,
-        borderRadius: 5,
+        borderRadius: 8,
         borderWidth: 1,
         borderColor: '#ccc',
         color: '#333', // Adjust text color as needed
@@ -90,5 +94,6 @@ const styles = StyleSheet.create({
     searchBox: {
         paddingHorizontal: 10,
         paddingVertical: 5,
+        width: 66,
     },
 });

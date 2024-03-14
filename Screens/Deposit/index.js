@@ -22,9 +22,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Statusbar from '../../Components/StatusBar';
 import BankList from './Components/BankList';
 import TransactionIdField from './Components/TransactionIdField';
-import UploadReceiptImage from './Components/UploadReceiptImage'
-
-// import UploadPhoto from './Components/UploadPhoto';
+import UploadReceiptImage from './Components/UploadReceiptImage';
 
 const Deposit = ({ navigation }) => {
   const route = useRoute();
@@ -79,28 +77,13 @@ const Deposit = ({ navigation }) => {
 
       <Header navigation={navigation} name={t('common:Deposit')} onPress={handleGoBack} />
       <View style={styles.container}>
-        {/* Blue Title Bar */}
-        {/* <BlueTitleBar title="Deposit" /> */}
 
-        {/* Deposited Amount Component */}
         <DepositedAmount />
-
-        {/* Entity Name Component with Dropdown */}
-        {/* <EntityName
-          options={entityOptions}
-          selectedOption={selectedEntity}
-          onSelect={handleSelectEntity}
-        /> */}
         <BankList />
-        {/* <ReferenceNumber />
-        <ConfirmReferenceNumber /> */}
         <TransactionIdField />
-        {/* <UploadPhoto /> */}
-        <UploadReceiptImage />
         <Remarks />
+        <UploadReceiptImage />
         <SubmitButton />
-
-        {/* Add other components/content of your application */}
       </View>
     </SafeAreaProvider>
   );

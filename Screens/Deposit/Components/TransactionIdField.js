@@ -24,7 +24,7 @@ const TransactionIdField = () => {
 
     return (
         <View style={styles.container}>
-            <View style={styles.inputContainer}>
+            <View style={[styles.inputContainer1]}>
                 <Text style={styles.label}>Transaction ID</Text>
                 <TextInput
                     style={styles.input}
@@ -33,7 +33,7 @@ const TransactionIdField = () => {
                     onChangeText={handleTransactionIdChange}
                 />
             </View>
-            <View style={styles.inputContainer}>
+            <View style={styles.inputContainer2}>
                 <Text style={styles.label}>Confirm Transaction ID</Text>
                 <TextInput
                     style={styles.input}
@@ -49,25 +49,35 @@ const TransactionIdField = () => {
 
 const styles = StyleSheet.create({
     container: {
+        marginTop:160,
         alignItems: 'center',
         paddingLeft: 30,
         paddingRight: 30,
     },
-    inputContainer: {
-        marginBottom: 10,
-        width: '100%',
+    inputContainer1: {
+        width: 370,
+        height: 45,
+        borderRadius: 8,
+        backgroundColor: '#ECEBED',
+        // paddingHorizontal: 10,
+        justifyContent: 'center',
+    },
+    inputContainer2: {
+        width: 370,
+        height: 45,
+        borderRadius: 8,
+        backgroundColor: '#ECEBED',
+        paddingHorizontal: 10,
+        justifyContent: 'center',
+        marginTop:50, // Adjust as needed
     },
     label: {
         fontWeight: 'bold',
-        marginBottom: 10,
+        marginBottom: 20,
     },
     input: {
         width: '100%',
-        backgroundColor: '#ECEBED',
-        borderRadius: 5,
-        paddingHorizontal: 10,
-        borderColor: '#ccc',
-        borderWidth: 1,
+        height: '100%',
     },
     error: {
         color: 'red',

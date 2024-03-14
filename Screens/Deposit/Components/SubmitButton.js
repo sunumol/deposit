@@ -27,15 +27,16 @@ const SubmitButton = ({ onPress, title }) => {
 const styles = StyleSheet.create({
     button: {
         backgroundColor: '#003874',
-        paddingVertical: 8,
-        paddingHorizontal: 12,
-        borderRadius: 8,
-        alignItems: 'center',
+        width: 375,
+        height: 48,
+        position: 'absolute',
+        top: 675,
+        left: 16,
         justifyContent: 'center',
-        marginLeft: 140,
-        marginTop: 10,
-        width: 150,
-        height: 50,
+        alignItems: 'center',
+        borderRadius: 88, // Adjust the border radius as needed
+        borderWidth: 1,
+        borderColor: '#003874', // Match the button background color for seamless border
     },
     buttonText: {
         color: 'white',
