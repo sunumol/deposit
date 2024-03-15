@@ -873,6 +873,21 @@ export const api = {
     });
   },
 
+  // ------------------ upload file deposit---------------------
+  uploadFileDeposit: data => {
+    console.log("uploadFileDeposit = ",data);
+    console.log("uploadFileDeposit = ", `${baseURL2}uploadFileDeposit`);
+
+    return axios.post(`${baseURL2}uploadFileDeposit`, data, {     
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Accept: "application/json",
+        'x-api-key': API_KEY
+      },
+
+    })
+  },
+
   //     return axios.post(`${baseURL2}enterPinSimIdCheck`,data, {
   //       headers: {
   //         'Content-Type': 'application/json',

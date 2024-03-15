@@ -31,6 +31,7 @@ const TransactionIdField = () => {
                     secureTextEntry={true}
                     value={transactionId}
                     onChangeText={handleTransactionIdChange}
+                    
                 />
             </View>
             <View style={styles.inputContainer2}>
@@ -40,6 +41,7 @@ const TransactionIdField = () => {
                     // secureTextEntry={true}
                     value={confirmTransactionId}
                     onChangeText={handleConfirmTransactionIdChange}
+                    
                 />
             </View>
             {error !== '' && <Text style={styles.error}>{error}</Text>}
@@ -49,7 +51,7 @@ const TransactionIdField = () => {
 
 const styles = StyleSheet.create({
     container: {
-        marginTop:160,
+        marginTop: 160,
         alignItems: 'center',
         paddingLeft: 30,
         paddingRight: 30,
@@ -58,7 +60,9 @@ const styles = StyleSheet.create({
         width: 370,
         height: 45,
         borderRadius: 8,
-        backgroundColor: '#ECEBED',
+        borderWidth: 1,
+        borderColor: '#ECEBED',
+        backgroundColor: '#FCFCFC',
         // paddingHorizontal: 10,
         justifyContent: 'center',
     },
@@ -66,18 +70,24 @@ const styles = StyleSheet.create({
         width: 370,
         height: 45,
         borderRadius: 8,
-        backgroundColor: '#ECEBED',
+        backgroundColor: '#FCFCFC',
         paddingHorizontal: 10,
         justifyContent: 'center',
-        marginTop:50, // Adjust as needed
+        borderWidth: 1,
+        borderColor: '#ECEBED',
+        marginTop: 50, // Adjust as needed
     },
     label: {
-        fontWeight: 'bold',
-        marginBottom: 20,
+        fontFamily:'Inter',
+        fontSize:14,
+        marginBottom:20,
+        
+        
     },
     input: {
-        width: '100%',
-        height: '100%',
+        width: 327,
+        height: 66,
+        textAlign: 'center',
     },
     error: {
         color: 'red',

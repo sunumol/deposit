@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View, TextInput, FlatList, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, TextInput, FlatList, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
 import { api } from '../../../Services/Api';
-
+// import Search from '../assets/icons/Search.svg';
+const { height, width } = Dimensions.get('screen');
 const BankList = () => {
     const [query, setQuery] = useState('');
     const [suggestions, setSuggestions] = useState([]);
@@ -46,7 +47,9 @@ const BankList = () => {
                     style={styles.searchBox}
                     value={query}
                     onChangeText={handleInputChange}
+                    
                 />
+                {/* <Search style={styles.searchIcon} /> */}
             </View>
             {showSuggestions && (
                 <FlatList
@@ -68,25 +71,33 @@ export default BankList;
 const styles = StyleSheet.create({
     container: {
         backgroundColor: 'white',
-        padding: 10,
+        paddingTop: 10,
         borderRadius: 8,
         marginLeft: 16,
-        width: 380,
+        width: width*.9,
         position: 'absolute',
         marginTop:125,
-        marginLeft:16,
+        marginLeft:20,
+        height:height*.05
+    },
+    searchIcon:{
+        
+        paddingLeft:700,
+        paddingRight:5,
     },
     title: {
-        fontWeight: 'bold',
-        marginBottom: 10,
+        fontWeight: 'inter',
+        paddingLeft:5,
+        marginBottom: 10,   
+        paddingBottom:1,
     },
     searchBoxContainer: {
         height:45,
-        backgroundColor: '#f0f0f0',
+        backgroundColor: '#FCFCFC',
         padding: 5,
         borderRadius: 8,
         borderWidth: 1,
-        borderColor: '#ccc',
+        borderColor: '#ECEBED',
         color: '#333', // Adjust text color as needed
         fontSize: 16, // Adjust font size as needed
         textAlign: 'center',

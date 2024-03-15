@@ -49,11 +49,11 @@ const styles = StyleSheet.create({
         
         flex: 1,
         height:57,
-        backgroundColor: '#ECEBED',
+        backgroundColor: '#FCFCFC',
         padding: 10,
         borderRadius: 5,
         borderWidth: 1,
-        borderColor: '#ccc',
+        borderColor: '#ECEBED',
         color: '#333',
         fontSize: 16,
         textAlign: 'center',
