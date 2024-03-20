@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Text, Image, Dimensions } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage'; // Import AsyncStorage
+import { View, StyleSheet, Text, Dimensions } from 'react-native';
 import { api } from '../../../Services/Api';
 import Money from '../assets/icons/Money.svg';
-import { makeStyles } from 'react-native-elements';
 import Ellipse from '../assets/icons/Ellipse.svg';
+import AsyncStorage from '@react-native-async-storage/async-storage'; // Import AsyncStorage
 
-const { height, width } = Dimensions.get('screen');
-const DepositedAmount = () => {
+const { width } = Dimensions.get('screen');
+
+const DepositedAmount = ({ setParentDepositedAmount }) => {
     const [depositedAmount, setDepositedAmount] = useState({
         totalAmountCollected: 0,
         depositedSum: 0,
@@ -17,42 +17,27 @@ const DepositedAmount = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                //const id = await AsyncStorage.getItem("CustomerId");
-                // console.log("sunu deposit=",AsyncStorage.getAllKeys());
-                // const phone = await AsyncStorage.getItem('Mobile')
-                // const lang = await AsyncStorage.getItem('user-language')
-                // const customerId = await AsyncStorage.getItem('CustomerId')
-                // const agentIdToShow = await AsyncStorage.getItem('agentIdToShow')
-                // console.log("sunu phone=", phone);
-                // console.log("sunu lang=", lang);
-                // console.log("sunu customerId=", customerId);
-                // console.log("sunu agentIdToShow=", agentIdToShow);
-
-                const id = 1;
+                const agentId = await AsyncStorage.getItem('AgentId'); // Retrieve agentId from AsyncStorage
                 const data = {
-                    agentId: id,
+                    agentId: JSON.parse(agentId), // Parse agentId if needed
+                    
                 };
-                console.log("Sunu data = ", data);
-
+                console.log("Sunu printing ......", data);
                 const response = await api.getcompletedCollections(data);
-                console.log("------------------- getcompletedCollections res", response.data.body);
-
-                // Destructure necessary values from the API response
                 const { totalAmountCollected, depositedSum, depositPendingSum } = response.data.body;
-
-                // Update the state with the fetched values
                 setDepositedAmount({
                     totalAmountCollected,
                     depositedSum,
                     depositPendingSum
                 });
+                setParentDepositedAmount(totalAmountCollected); // Setting parent state
             } catch (error) {
                 console.log("-------------------getcompletedCollections  err", error);
             }
         };
 
         fetchData();
-    }, []); // Empty dependency array ensures useEffect runs only once after the initial render
+    }, []);
 
     return (
         <View style={styles.outerContainer}>
@@ -61,7 +46,7 @@ const DepositedAmount = () => {
                 <Money style={styles.moneyIcon} />
 
                 <View style={styles.innerContainer}>
-                    <Text style={styles.text}>Amount to be Deposited: </Text>
+                    <Text style={styles.text}>Amount to be Deposited </Text>
                     <Text style={styles.amountTxt}>₹{depositedAmount.totalAmountCollected}</Text>
                 </View>
             </View>
@@ -74,9 +59,9 @@ export default DepositedAmount;
 const styles = StyleSheet.create({
     outerContainer: {
         width: width * 0.90,
-        height: 84.12,
-        top: 30,
-        left: 20,
+        height: 85.12,
+        top: 20,
+        left: 19,
         borderRadius: 15,
         borderWidth: 1,
         backgroundColor: '#FFFFFF',
@@ -86,39 +71,39 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.14,
         shadowRadius: 14,
         elevation: 4, // Android shadow
-
     },
-    /* EllipseIcon.css */
-
     EllipseIcon: {
         width: 27.83,
         height: 28,
-        top:1,
+        top: 10,
         left: 22,
         backgroundColor: 'rgba(39, 174, 96, 0.1)', // Background color with opacity
+        borderRadius: 10,
         /* Add any additional styles or properties here */
     },
-
     container: {
-    flexDirection: 'row', // Arrange children horizontally
-    alignItems: 'center', // Align children vertically
-},
+        flexDirection: 'row', // Arrange children horizontally
+        alignItems: 'center', // Align children vertically
+    },
     innerContainer: {
-    paddingTop:20,
-    marginLeft: 10, // Margin between Money SVG and text
-},
+        paddingTop: 20,
+        marginLeft: 10, // Margin between Money SVG and text
+    },
     text: {
-    fontSize: 15,
-        fontFamily:'Inter',
+        fontSize: 17,
+        fontFamily: 'Inter',
         // fontWeight:400,
-},
+        marginLeft: 10,
+    },
     amountTxt: {
-    fontSize: 16,
-    color: '#27AE60',
-},
+        fontSize: 18,
+        color: '#27AE60',
+        marginLeft: 10,
+    },
     moneyIcon: {
-    // Style for the Money SVG
-    width: 24, // Adjust according to your SVG
-    height: 24, // Adjust according to your SVG
-},
+        // Style for the Money SVG
+        width: 24, // Adjust according to your SVG
+        height: 24, // Adjust according to your SVG
+        top: 10,
+    },
 });

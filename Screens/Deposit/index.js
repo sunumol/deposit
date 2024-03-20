@@ -10,19 +10,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRoute } from '@react-navigation/native';
 import { useFocusEffect } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
-// import BlueTitleBar from './Components/BlueTitleBar';
-// import ConfirmReferenceNumber from './Components/ConfirmReferenceNumber';
-import DepositedAmount from './Components/DepositedAmount';
-// import EntityName from './Components/EntityName';
-// import ReferenceNumber from './Components/ReferenceNumber';
-import Remarks from './Components/Remarks';
-import SubmitButton from './Components/SubmitButton';
 import Header from '../../Components/Header';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Statusbar from '../../Components/StatusBar';
-import BankList from './Components/BankList';
-import TransactionIdField from './Components/TransactionIdField';
-import UploadReceiptImage from './Components/UploadReceiptImage';
+import Deposits from './Components/Deposits';
 
 const Deposit = ({ navigation }) => {
   const route = useRoute();
@@ -59,31 +50,15 @@ const Deposit = ({ navigation }) => {
         BackHandler.removeEventListener('hardwareBackPress', handleGoBack);
     }, [handleGoBack]),
   );
-  // Define options for the entity dropdown list
-  const entityOptions = ['Entity 1', 'Entity 2', 'Entity 3'];
 
-  // State variable to hold the selected entity
-  const [selectedEntity, setSelectedEntity] = useState(null);
-
-  // Function to handle the selection of an entity
-  const handleSelectEntity = (entity) => {
-    setSelectedEntity(entity);
-  };
 
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container1} />
       <Statusbar barStyle={isDarkMode ? 'light-content' : 'dark-content'} backgroundColor={"#002B59"} />
-
       <Header navigation={navigation} name={t('common:Deposit')} onPress={handleGoBack} />
       <View style={styles.container}>
-
-        <DepositedAmount />
-        <BankList />
-        <TransactionIdField />
-        <Remarks />
-        <UploadReceiptImage />
-        <SubmitButton />
+        <Deposits/>
       </View>
     </SafeAreaProvider>
   );

@@ -401,26 +401,11 @@ const LoginScreen = ({ navigation }) => {
                     console.log("sim id checking", err?.response?.data?.message)
                     setMessage('We are unable to process.\n Security check failed')
                 } else if (err?.response?.data?.message == 'You are not allowed to use this app') {
-                    // Following part commented by Sunu for bypassing the OTP fail
-                    // setModalAgent(true)
-                    // setMaxError(false)
-                    // setButton(true)
-                    // setPhoneNum('')
-                    // setOtpclick(true)
-                    // Sunu code comment ends here
-                    // Below code is added by Sunu for bypassing the OTP issue , 
-                    // it should not commit or merge to development version. its only for Sunu local development
+                    setModalAgent(true)
                     setMaxError(false)
-                    // requestPermission()
-                    setOtpFetch(true)
-                    setIsOtp1(true)
-                    getOtp();
-                    setTimer(30)
-                    setOtpclick(false)
-                    // -----getOtp Button Disable Start-----
-                    setGetOtpDisable(true)
-                    setSelectedPhoneNum(PhoneNum)
-                    // Sunu's OTP bypass code ends here
+                    setButton(true)
+                    setPhoneNum('')
+                    setOtpclick(true)
                 } else if (
                     err?.response?.data?.message ==
                     "Exception not occurred"
@@ -519,26 +504,11 @@ const LoginScreen = ({ navigation }) => {
                     console.log("sim id checking", err?.response?.data?.message)
                     setMessage('We are unable to process.\n Security check failed')
                 } else if (err?.response?.data?.message == 'You are not allowed to use this app') {
-                    // Following part commented by Sunu for bypassing the OTP fail
-                    // setModalAgent(true)
-                    // setMaxError(false)
-                    // setButton(true)
-                    // setPhoneNum('')
-                    // setOtpclick(true)
-                    // Sunu code comment ends here
-                    // Below code is added by Sunu for bypassing the OTP issue , 
-                    // it should not commit or merge to development version. its only for Sunu local development
+                    setModalAgent(true)
                     setMaxError(false)
-                    // requestPermission()
-                    setOtpFetch(true)
-                    setIsOtp1(true)
-                    getOtp();
-                    setTimer(30)
-                    setOtpclick(false)
-                    // -----getOtp Button Disable Start-----
-                    setGetOtpDisable(true)
-                    setSelectedPhoneNum(PhoneNum)
-                    // Sunu's OTP bypass code ends here
+                    setButton(true)
+                    setPhoneNum('')
+                    setOtpclick(true)
                 }
                 else {
                     setMaxError(false)
@@ -659,21 +629,12 @@ const LoginScreen = ({ navigation }) => {
                 // ToastAndroid.show("Hi Athira, We have noticed that you are signing in from a new device", ToastAndroid.SHORT);
             }
         }).catch((err) => {
-            // console.log("err->", err?.response)
-            // if (err?.response?.data?.message === 'You entered wrong OTP') {
-            //     setOtp(true)
-            // } else if (err?.response?.data?.message === '“OTP has expired') {
-            //     setIsExpired(true)
-            // }
-            setMaxError(false)
-            setOtpFetch(false)
-            setOtp(false)
-            setConfirmDate(null)
-            AsyncStorage.setItem('Mobile', '+91' + selectedPhoneNum);
-            AsyncStorage.setItem('CustomerId', JSON.stringify('S00002'));
-            isGrantedPermissions(true)
-            AsyncStorage.setItem('Token', 'dXNlckBleGFtcGxlLmNvbTpzZWNyZXQ=');
-            AsyncStorage.setItem('userName', 'jishnu');
+            console.log("err->", err?.response)
+            if (err?.response?.data?.message === 'You entered wrong OTP') {
+                setOtp(true)
+            } else if (err?.response?.data?.message === '“OTP has expired') {
+                setIsExpired(true)
+            }
         })
     }
     // ------------------ Confirm Otp Api Call End ------------------
@@ -729,10 +690,9 @@ const LoginScreen = ({ navigation }) => {
                 setMaxError(false)
                 setOtpclick(false)
             } else {
-                console.log('resend response Sunu = ', res?.data?.status)
+                console.log(res?.data?.status)
             }
         }).catch((err) => {
-            console.log('resend response Sunu = ', res?.data?.status)
             console.log("err->", err?.response)
             if (err?.response?.data?.message.includes('Maximum number of OTPs are exceeded.')) {
                 setMaxError(true)

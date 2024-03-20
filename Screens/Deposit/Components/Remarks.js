@@ -1,7 +1,10 @@
-import React from 'react';
-import { View, Text, TextInput, StyleSheet } from 'react-native';
+// Remarks.js
 
-const Remarks = ({ value }) => {
+import React from 'react';
+import { View, Text, TextInput, StyleSheet, Dimensions } from 'react-native';
+const { height, width } = Dimensions.get('screen');
+
+const Remarks = ({ value, setValue }) => {
     return (
         <View style={styles.remarksContainer}>
             <Text style={styles.heading}>Remarks</Text>
@@ -9,8 +12,9 @@ const Remarks = ({ value }) => {
                 <TextInput
                     style={styles.textInput}
                     value={value}
-                    editable={true} // Now editable
-                // Add any other TextInput props as needed
+                    keyboardType="alphanumeric" // Restrict to alphanumeric characters
+                    onChangeText={setValue}
+                    editable={true}
                 />
             </View>
         </View>
@@ -19,18 +23,17 @@ const Remarks = ({ value }) => {
 
 const styles = StyleSheet.create({
     remarksContainer: {
-        
         marginTop: 20,
         position: 'absolute',
-        width: 380,
-        height: 78.76,
-        top: 552.93,
-        left: 16,
+        width: width * 0.93,
+        height: 90,
+        top: 570,
+        left: 13,
         borderRadius: 8,
         backgroundColor: 'transparent',
+        zIndex:-1,
     },
     container: {
-        
         backgroundColor: 'white',
         padding: 10,
         borderRadius: 8,
@@ -43,20 +46,20 @@ const styles = StyleSheet.create({
         top: -20,
         left: 0,
         marginLeft: 10,
-        fontWeight: 'bold',
+        fontWeight: 'inter',
+        zIndex: -1,
     },
     textInput: {
-        
         flex: 1,
-        height:57,
+        height: 57,
         backgroundColor: '#FCFCFC',
         padding: 10,
-        borderRadius: 5,
+        borderRadius: 8,
         borderWidth: 1,
         borderColor: '#ECEBED',
         color: '#333',
         fontSize: 16,
-        textAlign: 'center',
+
     },
 });
 

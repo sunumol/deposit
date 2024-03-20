@@ -222,8 +222,8 @@ const PinScreen = ({ navigation, }) => {
                 + Difference_In_Days);
             if (Difference_In_Days && Difference_In_Days > 0 && Difference_In_Days < 91) {
                 if (Pin === code) {
-                    // UpdateSIMID()
-                  navigation.navigate('Profile')
+                  UpdateSIMID()
+                  //navigation.navigate('Profile')
                     setMaxError(false);
                 } else {
                     otpInput2?.current?.clear()

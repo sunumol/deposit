@@ -1,37 +1,29 @@
+// SubmitButton.js
+
 import React from 'react';
-import { TouchableOpacity, Text, StyleSheet, ToastAndroid } from 'react-native';
+import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 
-const SubmitButton = ({ onPress, title }) => {
-    const showToast = () => {
-        ToastAndroid.showWithGravityAndOffset(
-            'You have deposited ? amount',
-            ToastAndroid.LONG,
-            ToastAndroid.BOTTOM,
-            25,
-            50
-        );
-    };
-
-    const handlePress = () => {
-        showToast();
-        onPress(); // Call the provided onPress function
-    };
-
+const SubmitButton = ({ onPress, title, disabled }) => {
     return (
-        <TouchableOpacity onPress={handlePress} style={styles.button}>
-            <Text style={styles.buttonText}>SUBMIT</Text>
+        <TouchableOpacity
+            onPress={onPress}
+            style={[styles.button, disabled ? styles.disabledButton : null]}
+            disabled={disabled}
+        >
+            <Text style={styles.buttonText}>{title}</Text>
         </TouchableOpacity>
     );
 };
 
 const styles = StyleSheet.create({
     button: {
+        zIndex: -1,
         backgroundColor: '#003874',
-        width: 375,
+        width: 370,
         height: 48,
         position: 'absolute',
-        top: 675,
-        left: 16,
+        top: 700,
+        left: 20,
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 88, // Adjust the border radius as needed
@@ -40,8 +32,12 @@ const styles = StyleSheet.create({
     },
     buttonText: {
         color: 'white',
-        fontSize: 14,
+        fontSize: 16,
         fontWeight: 'bold',
+    },
+    disabledButton: {
+        backgroundColor: '#CCCCCC', // Adjust the color for disabled state
+        borderColor: '#CCCCCC', // Adjust the color for disabled state
     },
 });
 
