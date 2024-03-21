@@ -16,6 +16,7 @@ const BankList = ({ setSelectedBank }) => {
                     bankName: query,
                 };
                 const response = await api.getBankName(requestData);
+                console.log("bank names",response);
                 setSuggestions(response.data);
                 setShowSuggestions(true); // Show suggestions when input changes
             } catch (error) {

@@ -514,7 +514,15 @@ export const api = {
       }
     })
   },
-
+//.........................TO SAVE COMMITS................
+  saveDeposit: data => {
+    return axios.post(`${baseURL2}deposit`, data, {
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': API_KEY
+      }
+    })
+  },
   // ------------------   getHousePhoto details---------------------
   getHousePhoto: data => {
     return axios.post(`${baseURL2}getHousePhoto`, data, {
@@ -874,9 +882,9 @@ export const api = {
   },
 
   // ------------------ upload file deposit---------------------
-  uploadFileDeposit: data => {
+  uploadImageToS3AndGetURL: data => {
     console.log("uploadFileDeposit = ",data);
-    console.log("uploadFileDeposit = ", `${baseURL2}uploadFileDeposit`);
+    console.log("uploadFileDeposit = ", `${baseURL2}uploadDepositImage`);
 
     return axios.post(`${baseURL2}uploadFileDeposit`, data, {     
       headers: {

@@ -42,8 +42,8 @@ const UploadReceiptImage = ({ thumbnailUri, setThumbnailUri, handleApiResponse }
                 type: 'image/jpeg',
                 name: `${imageName}.jpg`,
             });
-            const response = await api.uploadFile(formData).then((res) => {
-                console.log('--HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH-----------------res file upload', res);
+            const response = await api.uploadImageToS3AndGetURL(formData).then((res) => {
+                console.log('------------------res file upload', res);
                 if (res?.status) {
                     setThumbnailUri(res?.data[0]?.body);
                 }
@@ -82,7 +82,7 @@ const UploadReceiptImage = ({ thumbnailUri, setThumbnailUri, handleApiResponse }
                 name: `${imageName}.jpg`,
             });
 
-            const response = await api.uploadFile(formData).then((res) => {
+            const response = await api.uploadImageToS3AndGetURL(formData).then((res) => {
                 console.log('-------------------res file upload', res);
                 if (res?.status) {
                     setThumbnailUri(res?.data[0]?.body);
