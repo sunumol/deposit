@@ -22,7 +22,7 @@ const DepositedAmount = ({ setParentDepositedAmount }) => {
                     agentId: JSON.parse(agentId), // Parse agentId if needed
                     
                 };
-                console.log("Sunu printing ......", data);
+                console.log("printing ......", data);
                 const response = await api.getcompletedCollections(data);
                 const { totalAmountCollected, depositedSum, depositPendingSum } = response.data.body;
                 setDepositedAmount({
@@ -46,7 +46,7 @@ const DepositedAmount = ({ setParentDepositedAmount }) => {
                 <Money style={styles.moneyIcon} />
 
                 <View style={styles.innerContainer}>
-                    <Text style={styles.text}>Amount to be Deposited </Text>
+                    <Text style={styles.text}>Amount to be deposited </Text>
                     <Text style={styles.amountTxt}>₹{depositedAmount.totalAmountCollected}</Text>
                 </View>
             </View>

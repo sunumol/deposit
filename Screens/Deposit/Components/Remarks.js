@@ -12,9 +12,10 @@ const Remarks = ({ value, setValue }) => {
                 <TextInput
                     style={styles.textInput}
                     value={value}
-                    keyboardType="alphanumeric" // Restrict to alphanumeric characters
+                    keyboardType="default"
                     onChangeText={setValue}
                     editable={true}
+                    multiline={true} // Set to true to allow multiline input
                 />
             </View>
         </View>
@@ -31,7 +32,7 @@ const styles = StyleSheet.create({
         left: 13,
         borderRadius: 8,
         backgroundColor: 'transparent',
-        zIndex:-1,
+        zIndex: -1,
     },
     container: {
         backgroundColor: 'white',
@@ -43,14 +44,13 @@ const styles = StyleSheet.create({
     heading: {
         marginBottom: 10,
         position: 'absolute',
-        top: -20,
+        top: -25,
         left: 0,
         marginLeft: 10,
         fontWeight: 'inter',
         zIndex: -1,
     },
     textInput: {
-        flex: 1,
         height: 57,
         backgroundColor: '#FCFCFC',
         padding: 10,
@@ -59,7 +59,6 @@ const styles = StyleSheet.create({
         borderColor: '#ECEBED',
         color: '#333',
         fontSize: 16,
-
     },
 });
 

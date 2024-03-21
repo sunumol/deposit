@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
         marginBottom: 5,
         zIndex: -1,
         position: 'absolute',
-        top: 10,
+        top:5,
     },
     label2: {
         fontFamily: 'Inter',
