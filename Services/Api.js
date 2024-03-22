@@ -23,6 +23,7 @@ import { API_KEY } from '@env'
 const baseUAT = 'https://l0nptyww7k.execute-api.ap-south-2.amazonaws.com/stage'
 const baseUAT2 = 'http://dhansethu-alb-2013531087.ap-south-2.elb.amazonaws.com/agentApp'
 const baseUAT3 = 'https://l0nptyww7k.execute-api.ap-south-2.amazonaws.com/stage'
+//const baseUAT2 = 'http://localhost:8086/uploadDepositImage'
 
 const baseURL5 = `${baseUAT}/`;
 const baseURL = `${baseUAT}/`
@@ -514,7 +515,7 @@ export const api = {
       }
     })
   },
-//.........................TO SAVE COMMITS................
+//.........................TO SAVE values in deposit form................
   saveDeposit: data => {
     return axios.post(`${baseURL2}deposit`, data, {
       headers: {
